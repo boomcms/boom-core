@@ -2,10 +2,12 @@
 
 namespace BoomCMS\Repositories;
 
+use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
+use BoomCMS\Contracts\Repositories\Tag as TagRepositoryInterface;
 use BoomCMS\Database\Models\Tag as Model;
 
-class Tag
+class Tag implements TagRepositoryInterface
 {
     /**
      * @var Model
@@ -21,14 +23,16 @@ class Tag
     }
 
     /**
-     * @param string $name
-     * @param string $group
+     * @param SiteInterface $site
+     * @param string        $name
+     * @param string        $group
      *
      * @return TagInterface
      */
-    public function create($name, $group)
+    public function create(SiteInterface $site, $name, $group)
     {
         return $this->model->create([
+            Model::ATTR_SITE  => $site,
             Model::ATTR_NAME  => $name,
             Model::ATTR_GROUP => $group,
         ]);
@@ -45,55 +49,64 @@ class Tag
     }
 
     /**
-     * @param string $name
+     * @param SiteInterface $site
+     * @param string        $name
      *
      * @return TagInterface
      */
-    public function findByName($name)
+    public function findByName(SiteInterface $site, $name)
     {
-        return $this->model->where(Model::ATTR_NAME, '=', $name)->first();
+        return $this->model
+            ->whereSiteIs($site)
+            ->where(Model::ATTR_NAME, '=', $name)
+            ->first();
     }
 
     /**
-     * @param string $name
-     * @param string $group
+     * @param SiteInterface $site
+     * @param string        $name
+     * @param string        $group
      *
      * @return TagInterface
      */
-    public function findByNameAndGroup($name, $group = null)
+    public function findByNameAndGroup(SiteInterface $site, $name, $group = null)
     {
         return $this->model
+            ->whereSiteIs($site)
             ->where(Model::ATTR_NAME, '=', $name)
             ->where(Model::ATTR_GROUP, '=', $group)
             ->first();
     }
 
     /**
-     * @param string $slug
-     * @param string $group
+     * @param SiteInterface $site
+     * @param string        $slug
+     * @param string        $group
      *
      * @return TagInterface
      */
-    public function findBySlugAndGroup($slug, $group = null)
+    public function findBySlugAndGroup(SiteInterface $site, $slug, $group = null)
     {
         return $this->model
+            ->whereSiteIs($site)
             ->where(Model::ATTR_SLUG, '=', $slug)
             ->where(Model::ATTR_GROUP, '=', $group)
             ->first();
     }
 
     /**
-     * @param string $name
-     * @param string $group
+     * @param SiteInterface $site
+     * @param string        $name
+     * @param string        $group
      *
      * @return TagInterface
      */
-    public function findOrCreateByNameAndGroup($name, $group = null)
+    public function findOrCreate(SiteInterface $site, $name, $group = null)
     {
         // Ensure group is null if an empty string is passed.
         $group = $group ?: null;
-        $tag = $this->findByNameAndGroup($name, $group);
+        $tag = $this->findByNameAndGroup($site, $name, $group);
 
-        return $tag ?: $this->create($name, $group);
+        return $tag ?: $this->create($site, $name, $group);
     }
 }

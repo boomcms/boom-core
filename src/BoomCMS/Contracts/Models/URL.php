@@ -25,6 +25,11 @@ interface URL
     public function getPageId();
 
     /**
+     * @return Site
+     */
+    public function getSite();
+
+    /**
      * @param string $location
      *
      * @return bool
@@ -63,4 +68,11 @@ interface URL
      * @return $this
      */
     public function setPageId($id);
+
+    /**
+     * @param Site $site
+     *
+     * @return $this
+     */
+    public function setSite(Site $site);
 }

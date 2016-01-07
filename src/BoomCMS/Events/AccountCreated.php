@@ -21,7 +21,7 @@ class AccountCreated
      */
     protected $person;
 
-    public function __construct(Person $person, $password, Person $createdBy)
+    public function __construct(Person $person, $password, Person $createdBy = null)
     {
         $this->createdBy = $createdBy;
         $this->password = $password;

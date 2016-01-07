@@ -11,6 +11,7 @@ use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 class Page extends Model implements PageInterface
 {
     use Comparable;
+    use SingleSite;
     use SoftDeletes;
 
     const ATTR_ID = 'id';
@@ -50,6 +52,7 @@ class Page extends Model implements PageInterface
     const ATTR_DISABLE_DELETE = 'disable_delete';
     const ATTR_ADD_BEHAVIOUR = 'add_behaviour';
     const ATTR_CHILD_ADD_BEHAVIOUR = 'child_add_behaviour';
+    const ATTR_SITE = 'site_id';
 
     const ORDER_SEQUENCE = 1;
     const ORDER_TITLE = 2;
@@ -62,13 +65,15 @@ class Page extends Model implements PageInterface
      * 
      * These columns store the behaviour of the add page button when on the page / its children
      */
-    const ADD_PAGE_PROMPT = 1;
+    const ADD_PAGE_NONE = 1;
     const ADD_PAGE_CHILD = 2;
     const ADD_PAGE_SIBLING = 3;
 
     protected $casts = [
         self::ATTR_ADD_BEHAVIOUR       => 'integer',
         self::ATTR_CHILD_ADD_BEHAVIOUR => 'integer',
+        self::ATTR_CHILD_TEMPLATE      => 'integer',
+        self::ATTR_GRANDCHILD_TEMPLATE => 'integer',
     ];
 
     /**
@@ -166,20 +171,6 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @return bool
-     */
-    public function childShouldPromptOnAddPage()
-    {
-        $behaviour = $this->getChildAddPageBehaviour();
-
-        if ($behaviour === self::ADD_PAGE_CHILD || $behaviour === self::ADD_PAGE_SIBLING) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * @return int
      */
     public function countChildren()
@@ -210,25 +201,25 @@ class Page extends Model implements PageInterface
      */
     public function getAddPageBehaviour()
     {
-        return $this->{self::ATTR_ADD_BEHAVIOUR} ?: self::ADD_PAGE_PROMPT;
+        return $this->{self::ATTR_ADD_BEHAVIOUR} ?: self::ADD_PAGE_NONE;
     }
 
     /**
-     * @return null|Page
+     * @return Page
      */
     public function getAddPageParent()
     {
         $behaviour = $this->{self::ATTR_ADD_BEHAVIOUR};
 
-        if ($behaviour === self::ADD_PAGE_PROMPT && !$this->isRoot()) {
+        if ($behaviour === self::ADD_PAGE_NONE && !$this->isRoot()) {
             $behaviour = $this->getParent()->getChildAddPageBehaviour();
         }
 
-        if ($behaviour === self::ADD_PAGE_CHILD || $behaviour === self::ADD_PAGE_PROMPT) {
-            return $this;
-        } elseif ($behaviour === self::ADD_PAGE_SIBLING) {
-            return $this->isRoot() ? $this : $this->getParent();
+        if ($behaviour === self::ADD_PAGE_SIBLING && !$this->isRoot()) {
+            return $this->getParent();
         }
+
+        return $this;
     }
 
     /**
@@ -236,7 +227,7 @@ class Page extends Model implements PageInterface
      */
     public function getChildAddPageBehaviour()
     {
-        return $this->{self::ATTR_CHILD_ADD_BEHAVIOUR} ?: self::ADD_PAGE_PROMPT;
+        return $this->{self::ATTR_CHILD_ADD_BEHAVIOUR} ?: self::ADD_PAGE_NONE;
     }
 
     public function getChildOrderingPolicy()
@@ -531,24 +522,6 @@ class Page extends Model implements PageInterface
     public function relations()
     {
         return $this->belongsToMany(self::class, 'pages_relations', 'page_id', 'related_page_id');
-    }
-
-    /**
-     * @return bool
-     */
-    public function shouldPromptOnAddPage()
-    {
-        $behaviour = $this->getAddPageBehaviour();
-
-        if ($behaviour === self::ADD_PAGE_CHILD || $behaviour === self::ADD_PAGE_SIBLING) {
-            return false;
-        }
-
-        if (!$this->isRoot()) {
-            return $this->getParent()->childShouldPromptOnAddPage();
-        }
-
-        return true;
     }
 
     /**

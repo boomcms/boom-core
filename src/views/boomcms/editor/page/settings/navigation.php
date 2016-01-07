@@ -9,7 +9,7 @@
 
             <select name="visible_in_nav" id="visible_in_nav">
                 <option value="1"<?php if ($page->isVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                <option value="0"<?php if (!$page->isVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
+                <option value=""<?php if (!$page->isVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
             </select>
         </label>
 
@@ -18,7 +18,7 @@
 
             <select name="visible_in_nav_cms" id="visible_in_nav_cms">
                 <option value="1"<?php if ($page->isVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                <option value="0"<?php if (!$page->isVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
+                <option value=""<?php if (!$page->isVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
             </select>
         </label>
     </section>

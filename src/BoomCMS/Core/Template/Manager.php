@@ -37,7 +37,7 @@ class Manager
     {
         $installed = [];
 
-        foreach ($this->findInstalledThemes() as $theme) {
+        foreach ($this->findAvailableThemes() as $theme) {
             foreach ($this->findAvailableTemplates($theme) as $template) {
                 if (!$this->templateIsInstalled($theme, $template)) {
                     $installed[] = [$theme, $template];
@@ -49,16 +49,20 @@ class Manager
         return $installed;
     }
 
+    /**
+     * @param Theme $theme
+     *
+     * @return array
+     */
     public function findAvailableTemplates(Theme $theme)
     {
         $files = $this->filesystem->files($theme->getTemplateDirectory());
         $templates = [];
 
         if (is_array($files)) {
-            foreach ($files as $file) {
-                if (strpos($file, '.php') !== false) {
-                    $file = str_replace($theme->getTemplateDirectory().'/', '', $file);
-                    $templates[] = str_replace('.php', '', $file);
+            foreach ($files as $filename) {
+                if (pathinfo($filename, PATHINFO_EXTENSION) === 'php') {
+                    $templates[] = basename($filename, '.php');
                 }
             }
         }
@@ -66,37 +70,23 @@ class Manager
         return $templates;
     }
 
-    public function findInstalledThemes()
+    /**
+     * @return array
+     */
+    public function findAvailableThemes()
     {
         $theme = new Theme();
-        $themes = $this->filesystem->directories($theme->getThemesDirectory());
+        $directories = $this->filesystem->directories($theme->getThemesDirectory());
+        $themes = [];
 
-        if (is_array($themes)) {
-            foreach ($themes as &$t) {
-                $t = new Theme(str_replace($theme->getThemesDirectory().'/', '', $t));
+        if (is_array($directories)) {
+            foreach ($directories as $directory) {
+                $themeName = basename($directory);
+                $themes[] = new Theme($themeName);
             }
         }
 
-        return $themes ?: [];
-    }
-
-    public function getAllTemplates()
-    {
-        return $this->repository->findAll();
-    }
-
-    public function getValidTemplates()
-    {
-        $valid = [];
-        $templates = $this->getAllTemplates();
-
-        foreach ($templates as $template) {
-            if ($template->fileExists()) {
-                $valid[] = $template;
-            }
-        }
-
-        return $valid;
+        return $themes;
     }
 
     public function templateIsInstalled($theme, $filename)

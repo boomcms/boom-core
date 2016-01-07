@@ -85,25 +85,56 @@ $.widget('boom.peopleManager', {
 		this.document.find('body').height(this.window.height());
 	},
 
-	currentPersonAddGroups : function() {
-		var person_id = this.getCurrentPersonId(),
-			person = new boomPerson(person_id),
+	currentPersonAddGroups: function() {
+		var personId = this.getCurrentPersonId(),
+			person = new boomPerson(personId),
 			peopleManager = this,
-			$group_list = this.element.find('#b-person-groups-list');
+			$groupList = this.element.find('#b-person-groups-list'),
+			$addGroup = this.element.find('#b-people-addgroup');
 
-		person.addGroups()
-			.done(function(new_groups) {
-				if (Object.keys(new_groups).length) {
-					var id, name;
+		person.getAddableGroups()
+			.done(function(groups) {
+				var groupsById = [];
+				$addGroup.find('option').remove();
 
-					for (id in new_groups) {
-						name = new_groups[id];
+				for (var i = 0; i < groups.length; i++) {
+					var $option = $('<option>')
+						.attr('value', groups[i].id)
+						.text(groups[i].name);
 
-						$group_list.append($("<li data-group-id=" + id +">" + name +"&nbsp;<a title='Remove user from group' class='b-person-group-delete' href='#'>x</a></li>"));
-					}
-
-					new boomNotification('This person has been added to the groups');
+					groupsById[groups[i].id] = groups[i].name;
+					$addGroup.find('select').append($option);
 				}
+
+				var dialog = new boomDialog({
+					msg: $addGroup.html(),
+					title: 'Add group',
+					closeButton: false,
+					saveButton: true
+				}).done(function() {
+					var groups = {};
+
+					dialog.contents.find('form select option:selected').each(function(i, el) {
+						var $el = $(el);
+						groups[$el.val()] = $el.text();
+					});
+
+					var groupIds = Object.keys(groups);
+
+					if (groupIds.length) {
+						person.addGroups(groupIds)
+							.done(function() {
+								for (var i =  0; i < groupIds.length; i++) {
+									var id = groupIds[i],
+										name = groupsById[id];
+
+									$groupList.append($("<li data-group-id=" + id +">" + name +"&nbsp;<a title='Remove user from group' class='b-person-group-delete' href='#'>x</a></li>"));
+								}
+
+								new boomNotification('This person has been added to the groups');	
+							});
+					}
+				});
 			});
 	},
 

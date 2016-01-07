@@ -10,8 +10,8 @@
 		<div>
 			<div id="logo"></div>
 
-            <?php if (isset($status)): ?>
-                <p><?= $status ?>
+            <?php if (session('status')): ?>
+                <p><?= session('status') ?>
             <?php else: ?>
                 <form name="login-form" action="<?= URL::route('password') ?>" method="post">
                     <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">

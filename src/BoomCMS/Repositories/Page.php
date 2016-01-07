@@ -2,21 +2,15 @@
 
 namespace BoomCMS\Repositories;
 
+use BoomCMS\Contracts\Models\Page as PageModelInterface;
+use BoomCMS\Contracts\Models\Site as SiteInterface;
+use BoomCMS\Contracts\Repositories\Page as PageRepositoryInterface;
 use BoomCMS\Core\Page\Finder;
 use BoomCMS\Database\Models\Page as Model;
+use BoomCMS\Support\Facades\Router;
 
-class Page
+class Page implements PageRepositoryInterface
 {
-    /**
-     * @var array
-     */
-    protected $cache = [
-        'id'            => [],
-        'uri'           => [],
-        'internal_name' => [],
-        'primary_uri'   => [],
-    ];
-
     /**
      * @var Model
      */
@@ -32,7 +26,7 @@ class Page
         return Model::create($attrs);
     }
 
-    public function delete(Model $page)
+    public function delete(PageModelInterface $page)
     {
         $page->delete();
 
@@ -57,9 +51,30 @@ class Page
         return $finder->findAll();
     }
 
+    /**
+     * @param string $uri
+     *
+     * @return null|Model
+     */
     public function findByPrimaryUri($uri)
     {
-        return $this->model->where(Model::ATTR_PRIMARY_URI, '=', $uri)->first();
+        $site = Router::getActiveSite();
+
+        return $this->findBySiteAndPrimaryUri($site, $uri);
+    }
+
+    /**
+     * @param SiteInterface $site
+     * @param string        $uri
+     *
+     * @return null|Model
+     */
+    public function findBySiteAndPrimaryUri(SiteInterface $site, $uri)
+    {
+        return $this->model
+            ->where(Model::ATTR_SITE, '=', $site->getId())
+            ->where(Model::ATTR_PRIMARY_URI, '=', $uri)
+            ->first();
     }
 
     public function findByUri($uri)
@@ -70,7 +85,7 @@ class Page
         return $page = $finder->find();
     }
 
-    public function save(Model $page)
+    public function save(PageModelInterface $page)
     {
         $page->save();
 

@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\MakeURLPrimary;
 use BoomCMS\Jobs\ReassignURL;
@@ -49,17 +50,17 @@ class Urls extends Controller
         ]);
     }
 
-    public function postAdd()
+    public function postAdd(Site $site)
     {
         $location = $this->request->input('location');
-        $this->url = URL::findByLocation($location);
+        $this->url = URL::findBySiteAndLocation($site, $location);
 
         if ($this->url && !$this->url->isForPage($this->page)) {
             // Url is being used for a different page.
             // Notify that the url is already in use so that the JS can load a prompt to move the url.
             return ['existing_url_id' => $this->url->getId()];
         } elseif (!$this->url) {
-            URL::create($location, $this->page->getId());
+            URL::create($location, $this->page);
         }
     }
 

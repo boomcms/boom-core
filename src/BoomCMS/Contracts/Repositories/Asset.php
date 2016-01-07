@@ -27,15 +27,6 @@ interface Asset
     public function find($id);
 
     /**
-     * Find assets by an array of asset IDs.
-     *
-     * @param array $assetIds
-     *
-     * @return array
-     */
-    public function findMultiple(array $assetIds);
-
-    /**
      * Find the asset which is associated with a particular version ID.
      *
      * @param int $versionId

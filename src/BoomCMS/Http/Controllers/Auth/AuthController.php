@@ -14,4 +14,5 @@ class AuthController extends Controller
     use ValidatesRequests;
 
     protected $loginPath = '/boomcms/login';
+    protected $redirectTo = '/';
 }

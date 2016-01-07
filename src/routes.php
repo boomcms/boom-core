@@ -28,6 +28,8 @@ Route::group(['middleware' => [
             Route::controller('approvals', 'Approvals');
             Route::controller('settings', 'Settings');
             Route::controller('search', 'Search');
+            Route::post('editor/state', 'Editor@setState');
+            Route::get('editor/{page}/toolbar', 'Editor@getToolbar');
 
             Route::group([
                 'prefix'    => 'assets',
@@ -48,36 +50,22 @@ Route::group(['middleware' => [
                 Route::get('tags/list/{assets}', 'Tags@listTags');
             });
 
-            Route::group(['namespace' => 'People', 'middleware' => [Middleware\PeopleManager::class]], function () {
-                Route::get('people', 'PeopleManager@index');
-
-                Route::get('person/add', 'Person\ViewPerson@add');
-                Route::post('person/add', 'Person\SavePerson@add');
-                Route::get('person/view/{person}', 'Person\ViewPerson@view');
-                Route::post('person/save/{person}', 'Person\SavePerson@save');
-                Route::post('person/delete', 'Person\SavePerson@delete');
-                Route::get('person/add_group/{person}', 'Person\ViewPerson@addGroup');
-                Route::post('person/add_group/{person}', 'Person\SavePerson@addGroup');
-                Route::get('person/remove_group/{person}', 'Person\ViewPerson@removeGroup');
-                Route::post('person/remove_group/{person}', 'Person\SavePerson@removeGroup');
-            });
-
             Route::group([
-                'namespace'  => 'Group',
+                'namespace'  => 'People',
                 'middleware' => [Middleware\PeopleManager::class],
             ], function () {
-                Route::get('group/add', 'View@add');
-                Route::post('group/add', 'Save@add');
-                Route::get('group/list_roles/{group}', 'View@listRoles');
-                Route::post('group/remove_role/{group}', 'Save@removeRole');
-                Route::post('group/add_role/{group}', 'Save@addRole');
-                Route::post('group/delete/{group}', 'Save@delete');
-                Route::post('group/save/{group}', 'Save@save');
+                Route::get('people', 'PeopleManager@index');
 
-                Route::get('group/edit/{group}', [
-                    'as'   => 'group-edit',
-                    'uses' => 'View@edit',
-                ]);
+                Route::delete('person', 'Person@destroy');
+                Route::get('person/{person}/groups', 'Person@availableGroups');
+                Route::delete('person/{person}/groups/{group}', 'Person@removeGroup');
+                Route::post('person/{person}/groups', 'Person@addGroups');
+                Route::resource('person', 'Person');
+
+                Route::get('group/{group}/roles', 'Group@roles');
+                Route::delete('group/{group}/roles', 'Group@removeRole');
+                Route::put('group/{group}/roles', 'Group@addRole');
+                Route::resource('group', 'Group');
             });
 
             Route::group(['prefix' => 'templates'], function () {
@@ -188,7 +176,7 @@ Route::group(['middleware' => [
 
 Route::any('{location}.{format?}', [
     'middleware' => [
-        Middleware\Route::class,
+        Middleware\RoutePage::class,
         Middleware\InsertCMSToolbar::class,
     ],
     'uses' => 'BoomCMS\Http\Controllers\PageController@show',
