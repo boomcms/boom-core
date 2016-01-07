@@ -10,6 +10,11 @@ class AssetTest extends AbstractModelTestCase
 {
     protected $model = Asset::class;
 
+    public function testAddSite()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testDirectory()
     {
         $model = new Asset();
@@ -83,6 +88,11 @@ class AssetTest extends AbstractModelTestCase
     {
         $asset = $this->mockVersionedAttribute(['filesize' => 1000]);
         $this->assertEquals(1000, $asset->getFilesize());
+    }
+
+    public function testGetSites()
+    {
+        $this->markTestIncomplete();
     }
 
     public function testGetType()
@@ -168,6 +178,11 @@ class AssetTest extends AbstractModelTestCase
 
         $asset = $this->mockVersionedAttribute([]);
         $this->assertFalse($asset->hasMetadata());
+    }
+
+    public function testRemoveSite()
+    {
+        $this->markTestIncomplete();
     }
 
     public function testSetVersion()

@@ -37,6 +37,11 @@ class URLTest extends AbstractModelTestCase
         $this->assertEquals($page, $url->getPage());
     }
 
+    public function testGetSite()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testGetLocation()
     {
         $url = new URL();
@@ -64,6 +69,11 @@ class URLTest extends AbstractModelTestCase
         $url->setPageId(2);
 
         $this->assertEquals(2, $url->getPageId());
+    }
+
+    public function testSetSite()
+    {
+        $this->markTestIncomplete();
     }
 
     public function testSetIsPrimary()

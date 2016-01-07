@@ -6,6 +6,13 @@ interface Person
 {
     public function addGroup(Group $group);
 
+    /**
+     * @param Site $site
+     *
+     * @return $this
+     */
+    public function addSite(Site $site);
+
     public function checkPassword($password);
 
     public function checkPersistCode($code);
@@ -27,11 +34,23 @@ interface Person
 
     public function getRememberToken();
 
+    /**
+     * @return array
+     */
+    public function getSites();
+
     public function isEnabled();
 
     public function isSuperUser();
 
     public function removeGroup(Group $group);
+
+    /**
+     * @param Site $site
+     *
+     * @return $this
+     */
+    public function removeSite(Site $site);
 
     public function setEmail($email);
 

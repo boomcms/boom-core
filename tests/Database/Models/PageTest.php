@@ -215,6 +215,11 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
+    public function testGetSite()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testSetAddPageBehaviour()
     {
         $page = new Page();
@@ -285,6 +290,11 @@ class PageTest extends AbstractModelTestCase
         $page->setParent($page);
 
         $this->assertEquals(2, $page->getParentId());
+    }
+
+    public function testSetSite()
+    {
+        $this->markTestIncomplete();
     }
 
     public function testSetVisibleAtAnyTime()

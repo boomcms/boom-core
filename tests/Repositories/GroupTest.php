@@ -3,6 +3,7 @@
 namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Group as GroupModel;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Group as GroupRepository;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
@@ -32,6 +33,16 @@ class GroupTest extends AbstractTestCase
         $repository = new GroupRepository($model);
 
         $repository->find($id);
+    }
+
+    public function testFindBySite()
+    {
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        $this->markTestIncomplete();
+
+        $repository->findBySite($site);
     }
 
     public function testSave()

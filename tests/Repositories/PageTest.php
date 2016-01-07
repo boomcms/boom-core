@@ -18,4 +18,9 @@ class PageTest extends AbstractTestCase
 
         $this->assertEquals($repository, $repository->delete($page));
     }
+
+    public function testFindBySiteAndPrimaryUri()
+    {
+        $this->markTestIncomplete();
+    }
 }

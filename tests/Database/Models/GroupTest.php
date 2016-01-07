@@ -15,12 +15,22 @@ class GroupTest extends AbstractModelTestCase
         $this->assertEquals('test', $group->getName());
     }
 
+    public function testGetSite()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testSetName()
     {
         $group = new Group();
         $group->setName('test');
 
         $this->assertEquals('test', $group->getName());
+    }
+
+    public function testSiteSite()
+    {
+        $this->markTestIncomplete();
     }
 
     public function testNameIsTrimmed()

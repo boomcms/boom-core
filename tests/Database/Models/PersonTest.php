@@ -8,6 +8,11 @@ class PersonTest extends AbstractModelTestCase
 {
     protected $model = Person::class;
 
+    public function testAddSite()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testGetAuthIdentifier()
     {
         $person = new Person();
@@ -38,6 +43,11 @@ class PersonTest extends AbstractModelTestCase
         $this->assertEquals(Person::ATTR_REMEMBER_TOKEN, $person->getRememberTokenName());
     }
 
+    public function testGetSites()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testIsSuperuserDefaultFalse()
     {
         $person = new Person([]);
@@ -50,6 +60,11 @@ class PersonTest extends AbstractModelTestCase
         $person = new Person(['superuser' => true]);
 
         $this->assertTrue($person->isSuperuser());
+    }
+
+    public function testRemoveSite()
+    {
+        $this->markTestIncomplete();
     }
 
     public function testSetGetRememberLoginToken()
