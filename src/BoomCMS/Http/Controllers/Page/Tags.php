@@ -5,6 +5,8 @@ namespace BoomCMS\Http\Controllers\Page;
 use BoomCMS\Events\PageHadTagAdded;
 use BoomCMS\Events\PageHadTagRemoved;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Support\Facades\Tag;
 use BoomCMS\Support\Helpers;
 use Illuminate\Http\Request;
@@ -12,31 +14,31 @@ use Illuminate\Support\Facades\Event;
 
 class Tags extends Controller
 {
-    public function __construct(Request $request)
+    protected $role = 'edit';
+
+    /**
+     * @param Request $request
+     * @param Page $page
+     *
+     * @return int
+     */
+    public function add(Request $request, Site $site, Page $page)
     {
-        $this->request = $request;
-        $this->page = $request->route()->getParameter('page');
+        $tag = Tag::findOrCreate($site, $request->input('tag'), $request->input('group'));
+        $page->addTag($tag);
 
-        $this->authorize('edit', $this->page);
-    }
-
-    public function add()
-    {
-        $tag = Tag::findOrCreateByNameAndGroup(
-            $this->request->input('tag'),
-            $this->request->input('group')
-        );
-
-        $this->page->addTag($tag);
         Event::fire(new PageHadTagAdded($this->page, $tag));
 
         return $tag->getId();
     }
 
-    public function listTags()
+    /**
+     * @param Page $page
+     */
+    public function listTags(Page $page)
     {
         $grouped = [];
-        $tags = Helpers::getTags($this->page);
+        $tags = Helpers::getTags($page);
 
         foreach ($tags as $t) {
             $group = $t->getGroup() ?: '';
@@ -48,11 +50,15 @@ class Tags extends Controller
         ]);
     }
 
-    public function remove()
+    /**
+     * @param Request $request
+     * @param Page $page
+     */
+    public function remove(Request $request, Page $page)
     {
-        $tag = Tag::find($this->request->input('tag'));
-        $this->page->removeTag($tag);
+        $tag = Tag::find($request->input('tag'));
+        $page->removeTag($tag);
 
-        Event::fire(new PageHadTagRemoved($this->page, $tag));
+        Event::fire(new PageHadTagRemoved($page, $tag));
     }
 }

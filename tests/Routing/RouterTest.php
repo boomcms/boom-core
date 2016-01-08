@@ -20,4 +20,9 @@ class RouterTest extends AbstractTestCase
     {
         $this->markTestIncomplete();
     }
+
+    public function testProcessSiteRegistersSiteInstanceForDI()
+    {
+        $this->markTestIncomplete();
+    }
 }
