@@ -28,7 +28,7 @@
 					<li data-group-id="<?= $group->getId() ?>"<?php if ($group->getId() == $request->input('group')): ?> class='current'<?php endif ?>>
 						<a class='b-groups-item' href='/boomcms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?></a>
 
-						<a href='<?= route('group-edit', ['id' => $group->getId()]) ?>' title="Edit" class="fa fa-edit"></a>
+						<a href='/boomcms/group/<?= $group->getId() ?>/edit' title="Edit" class="fa fa-edit"></a>
 						<a href='#' title="Delete" class="fa fa-trash-o b-group-delete"></a>
                     </li>
 				<?php endforeach ?>
