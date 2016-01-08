@@ -8,11 +8,9 @@ trait SingleSite
 {
     public function getSite()
     {
-        
     }
 
     public function setSite(Site $site)
     {
-        
     }
 }

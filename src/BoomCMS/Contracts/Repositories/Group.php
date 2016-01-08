@@ -25,7 +25,7 @@ interface Group
 
     /**
      * @param SiteInterface $site
-     * @param array $groupIds
+     * @param array         $groupIds
      */
     public function findBySiteExcluding(SiteInterface $site, array $groupIds);
 

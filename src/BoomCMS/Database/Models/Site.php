@@ -28,49 +28,39 @@ class Site extends Model implements SiteInterface
         self::ATTR_ID,
     ];
 
-
     public function getAdminEmail()
     {
-        
     }
 
     public function getAnalytics()
     {
-        
     }
 
     public function getHostname()
     {
-        
     }
 
     public function getId()
     {
-        
     }
 
     public function getName()
     {
-        
     }
 
     public function setAdminEmail($email)
     {
-        
     }
 
     public function setAnalytics($code)
     {
-        
     }
 
     public function setHostname($hostname)
     {
-        
     }
 
     public function setName($name)
     {
-        
     }
 }
