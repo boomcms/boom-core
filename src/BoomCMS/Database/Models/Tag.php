@@ -16,6 +16,7 @@ class Tag extends Model implements TagInterface
     const ATTR_ID = 'id';
     const ATTR_GROUP = 'group';
     const ATTR_NAME = 'name';
+    const ATTR_SITE = 'site_id';
     const ATTR_SLUG = 'slug';
 
     protected $table = 'tags';

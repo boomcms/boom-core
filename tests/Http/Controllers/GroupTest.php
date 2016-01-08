@@ -3,8 +3,10 @@
 namespace BoomCMS\Tests\Http\Controllers;
 
 use BoomCMS\Database\Models\Group;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Group as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Mockery as m;
@@ -95,10 +97,18 @@ class GroupTest extends AbstractTestCase
         ]);
 
         $group = new Group();
-        $group->id = 1;
+        $group->{Group::ATTR_ID} = 1;
+
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        Router::shouldReceive('getActiveSite')->andReturn($site);
 
         GroupFacade::shouldReceive('create')
-            ->with(['name' => $name])
+            ->with([
+                Group::ATTR_NAME => $name,
+                Group::ATTR_SITE => $site->getId(),
+            ])
             ->andReturn($group);
 
         $this->assertEquals($group->getId(), $this->controller->store($request));

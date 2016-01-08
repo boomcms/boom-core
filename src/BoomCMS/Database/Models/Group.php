@@ -16,6 +16,7 @@ class Group extends Model implements GroupInterface
 
     const ATTR_ID = 'id';
     const ATTR_NAME = 'name';
+    const ATTR_SITE = 'site_id';
     const PIVOT_ATTR_ID = 'id';
     const PIVOT_ATTR_PAGE_ID = 'page_id';
     const PIVOT_ATTR_ROLE_ID = 'role_id';
