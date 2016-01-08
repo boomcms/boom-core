@@ -24,8 +24,8 @@ class Tag implements TagRepositoryInterface
 
     /**
      * @param SiteInterface $site
-     * @param string $name
-     * @param string $group
+     * @param string        $name
+     * @param string        $group
      *
      * @return TagInterface
      */
@@ -49,7 +49,7 @@ class Tag implements TagRepositoryInterface
 
     /**
      * @param SiteInterface $site
-     * @param string $name
+     * @param string        $name
      *
      * @return TagInterface
      */
@@ -60,8 +60,8 @@ class Tag implements TagRepositoryInterface
 
     /**
      * @param SiteInterface $site
-     * @param string $name
-     * @param string $group
+     * @param string        $name
+     * @param string        $group
      *
      * @return TagInterface
      */
@@ -75,8 +75,8 @@ class Tag implements TagRepositoryInterface
 
     /**
      * @param SiteInterface $site
-     * @param string $slug
-     * @param string $group
+     * @param string        $slug
+     * @param string        $group
      *
      * @return TagInterface
      */
@@ -90,8 +90,8 @@ class Tag implements TagRepositoryInterface
 
     /**
      * @param SiteInterface $site
-     * @param string $name
-     * @param string $group
+     * @param string        $name
+     * @param string        $group
      *
      * @return TagInterface
      */

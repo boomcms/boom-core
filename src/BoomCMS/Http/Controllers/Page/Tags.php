@@ -2,11 +2,11 @@
 
 namespace BoomCMS\Http\Controllers\Page;
 
+use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Events\PageHadTagAdded;
 use BoomCMS\Events\PageHadTagRemoved;
 use BoomCMS\Http\Controllers\Controller;
-use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Support\Facades\Tag;
 use BoomCMS\Support\Helpers;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class Tags extends Controller
 
     /**
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      *
      * @return int
      */
@@ -52,7 +52,7 @@ class Tags extends Controller
 
     /**
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      */
     public function remove(Request $request, Page $page)
     {

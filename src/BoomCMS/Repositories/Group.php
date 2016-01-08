@@ -61,12 +61,11 @@ class Group implements GroupRepositoryInterface
      */
     public function findBySite(SiteModelInterface $site)
     {
-        
     }
 
     /**
      * @param SiteModelInterface $site
-     * @param array $groupIds
+     * @param array              $groupIds
      */
     public function findBySiteExcluding(SiteModelInterface $site, array $groupIds)
     {
