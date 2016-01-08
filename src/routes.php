@@ -63,21 +63,12 @@ Route::group(['middleware' => [
             });
 
             Route::group([
-                'namespace'  => 'Group',
                 'middleware' => [Middleware\PeopleManager::class],
             ], function () {
-                Route::get('group/add', 'View@add');
-                Route::post('group/add', 'Save@add');
-                Route::get('group/list_roles/{group}', 'View@listRoles');
-                Route::post('group/remove_role/{group}', 'Save@removeRole');
-                Route::post('group/add_role/{group}', 'Save@addRole');
-                Route::post('group/delete/{group}', 'Save@delete');
-                Route::post('group/save/{group}', 'Save@save');
-
-                Route::get('group/edit/{group}', [
-                    'as'   => 'group-edit',
-                    'uses' => 'View@edit',
-                ]);
+                Route::get('group/{group}/roles', 'Group@roles');
+                Route::delete('group/{group}/roles', 'Group@removeRole');
+                Route::put('group/{group}/roles', 'Group@addRole');
+                Route::resource('group', 'Group');
             });
 
             Route::group(['prefix' => 'templates'], function () {
