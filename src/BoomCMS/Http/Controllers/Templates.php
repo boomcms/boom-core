@@ -32,38 +32,37 @@ class Templates extends Controller
     {
         $pages = Helpers::getPages(['template' => $template, 'order' => 'title asc']);
 
-        if ($this->request->route()->getParameter('format') === 'csv') {
-            $headers = [
-                'Content-type'        => 'text/csv',
-                'Content-Disposition' => "attachment; filename=pages_with_template_{$template->getFilename()}.csv",
-            ];
-
-            $callback = function () use ($pages) {
-                $fh = fopen('php://output', 'w');
-
-                fputcsv($fh, ['Title', 'URL', 'Visible?', 'Last edited']);
-
-                foreach ($pages as $p) {
-                    $data = [
-                        'title'       => $p->getTitle(),
-                        'url'         => (string) $p->url(),
-                        'visible'     => $p->isVisible() ? 'Yes' : 'No',
-                        'last_edited' => $p->getLastModified()->format('Y-m-d H:i:s'),
-                    ];
-
-                    fputcsv($fh, $data);
-                }
-
-                fclose($fh);
-            };
-
-            return Response::stream($callback, 200, $headers);
-        } else {
+        if ($this->request->route()->getParameter('format') !== 'csv') {
             return view($this->viewPrefix.'.pages', [
                 'pages'    => $pages,
                 'template' => $template,
             ]);
         }
+        $headers = [
+            'Content-type'        => 'text/csv',
+            'Content-Disposition' => "attachment; filename=pages_with_template_{$template->getFilename()}.csv",
+        ];
+
+        $callback = function () use ($pages) {
+            $fh = fopen('php://output', 'w');
+
+            fputcsv($fh, ['Title', 'URL', 'Visible?', 'Last edited']);
+
+            foreach ($pages as $p) {
+                $data = [
+                    'title'       => $p->getTitle(),
+                    'url'         => (string) $p->url(),
+                    'visible'     => $p->isVisible() ? 'Yes' : 'No',
+                    'last_edited' => $p->getLastModified()->format('Y-m-d H:i:s'),
+                ];
+
+                fputcsv($fh, $data);
+            }
+
+            fclose($fh);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 
     public function save()

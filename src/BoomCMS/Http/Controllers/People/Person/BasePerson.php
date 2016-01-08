@@ -28,6 +28,7 @@ class BasePerson extends PeopleManager
     {
         $this->request = $request;
 
+        $this->authorize('managePeople', $request);
         $this->editPerson = $request->route()->getParameter('person');
     }
 }
