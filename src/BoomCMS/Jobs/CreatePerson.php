@@ -21,17 +21,11 @@ class CreatePerson extends Command implements SelfHandling
     protected $credentials;
 
     /**
-     * @var array
-     */
-    protected $groups;
-
-    /**
      * @return void
      */
-    public function __construct(array $credentials, array $groups)
+    public function __construct(array $credentials)
     {
         $this->credentials = $credentials;
-        $this->groups = $groups;
     }
 
     /**
@@ -49,10 +43,6 @@ class CreatePerson extends Command implements SelfHandling
         }
 
         if (isset($person)) {
-            foreach ($this->groups as $groupId) {
-                $person->addGroup(Group::find($groupId));
-            }
-
             Event::fire(new AccountCreated($person, $password, Auth::user()));
 
             return $person;

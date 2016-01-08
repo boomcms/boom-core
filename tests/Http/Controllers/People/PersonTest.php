@@ -62,4 +62,9 @@ class PersonTest extends AbstractTestCase
 
         $this->controller->removeGroup($person, $group);
     }
+
+    public function testStoreAddsNewPersonToCurrentSite()
+    {
+        $this->markTestIncomplete();
+    }
 }
