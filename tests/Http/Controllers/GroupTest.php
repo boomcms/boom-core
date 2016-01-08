@@ -40,7 +40,6 @@ class GroupTest extends AbstractTestCase
             ->shouldReceive('addRole')
             ->with($roleId, $allowed, $pageId);
 
-        
         $this->controller->addRole($request, $group);
     }
 

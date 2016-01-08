@@ -4,7 +4,7 @@ namespace BoomCMS\Tests;
 
 use BoomCMS\Database\Models\Page;
 use Illuminate\Contracts\Console\Kernel;
-use \Illuminate\Foundation\Testing\TestCase;
+use Illuminate\Foundation\Testing\TestCase;
 
 abstract class AbstractTestCase extends TestCase
 {
