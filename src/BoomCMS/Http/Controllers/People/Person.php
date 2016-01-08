@@ -63,12 +63,8 @@ class Person extends PeopleManager
 
     public function store(Request $request)
     {
-        $person = Bus::dispatch(new CreatePerson(
-            [
-                'email' => $request->input('email'),
-                'name'  => $request->input('name'),
-            ]
-        ));
+        $job = new CreatePerson($request->input('email'), $request->input('name'));
+        $person = Bus::dispatch($job);
 
         $this->addGroups($request, $person);
     }

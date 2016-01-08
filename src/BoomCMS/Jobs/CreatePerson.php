@@ -6,7 +6,6 @@ use BoomCMS\Auth\Hasher;
 use BoomCMS\Auth\RandomPassword;
 use BoomCMS\Events\AccountCreated;
 use BoomCMS\Exceptions\DuplicateEmailException;
-use BoomCMS\Support\Facades\Group;
 use BoomCMS\Support\Facades\Person;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
@@ -16,16 +15,22 @@ use Illuminate\Support\Facades\Event;
 class CreatePerson extends Command implements SelfHandling
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $credentials;
+    protected $email;
+
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * @return void
      */
-    public function __construct(array $credentials)
+    public function __construct($email, $name)
     {
-        $this->credentials = $credentials;
+        $this->name = $name;
+        $this->email = $email;
     }
 
     /**
@@ -35,10 +40,13 @@ class CreatePerson extends Command implements SelfHandling
     {
         $password = (string) new RandomPassword();
         $hasher = new Hasher();
-        $this->credentials['password'] = $hasher->make($password);
 
         try {
-            $person = Person::create($this->credentials);
+            $person = Person::create([
+                'name'     => $this->name,
+                'email'    => $this->email,
+                'password' => $hasher->make($password)
+            ]);
         } catch (DuplicateEmailException $e) {
         }
 
