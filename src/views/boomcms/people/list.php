@@ -15,7 +15,7 @@
 						<input type="checkbox" class="b-people-select" />
 					</td>
 					<td>
-						<a href="/boomcms/person/view/<?= $person->getId() ?>"><?= $person->getName() ?></a>
+						<a href="/boomcms/person/<?= $person->getId() ?>"><?= $person->getName() ?></a>
 					</td>
 					<td>
 						<?= $person->getEmail() ?>

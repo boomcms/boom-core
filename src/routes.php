@@ -51,15 +51,11 @@ Route::group(['middleware' => [
             Route::group(['namespace' => 'People', 'middleware' => [Middleware\PeopleManager::class]], function () {
                 Route::get('people', 'PeopleManager@index');
 
-                Route::get('person/add', 'Person\ViewPerson@add');
-                Route::post('person/add', 'Person\SavePerson@add');
-                Route::get('person/view/{person}', 'Person\ViewPerson@view');
-                Route::post('person/save/{person}', 'Person\SavePerson@save');
-                Route::post('person/delete', 'Person\SavePerson@delete');
-                Route::get('person/add_group/{person}', 'Person\ViewPerson@addGroup');
-                Route::post('person/add_group/{person}', 'Person\SavePerson@addGroup');
-                Route::get('person/remove_group/{person}', 'Person\ViewPerson@removeGroup');
-                Route::post('person/remove_group/{person}', 'Person\SavePerson@removeGroup');
+                Route::delete('person', 'Person@destroy');
+                Route::get('person/{person}/groups', 'Person@availableGroups');
+                Route::delete('person/{person}/groups/{group}', 'Person@removeGroup');
+                Route::post('person/{person}/groups', 'Person@addGroups');
+                Route::resource('person', 'Person');
             });
 
             Route::group([
