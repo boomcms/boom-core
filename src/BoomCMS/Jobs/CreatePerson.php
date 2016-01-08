@@ -45,7 +45,7 @@ class CreatePerson extends Command implements SelfHandling
             $person = Person::create([
                 'name'     => $this->name,
                 'email'    => $this->email,
-                'password' => $hasher->make($password)
+                'password' => $hasher->make($password),
             ]);
         } catch (DuplicateEmailException $e) {
         }
