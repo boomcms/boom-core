@@ -171,7 +171,7 @@ interface Page
     public function getParentId();
 
     /**
-     * Returns the site that the page belongs to
+     * Returns the site that the page belongs to.
      *
      * @return Site
      */
@@ -429,7 +429,7 @@ interface Page
     public function setSequence($sequence);
 
     /**
-     * Set the site that the page belongs to
+     * Set the site that the page belongs to.
      *
      * @param Site $site
      *

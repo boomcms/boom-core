@@ -4,7 +4,6 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Contracts\Models\Site as SiteContract;
 use BoomCMS\Database\Models\Site;
-use Mockery as m;
 
 class SiteTest extends AbstractModelTestCase
 {
@@ -16,11 +15,11 @@ class SiteTest extends AbstractModelTestCase
     public function testColumnAttributes()
     {
         $values = [
-            'ATTR_ID' => 'id',
-            'ATTR_NAME' => 'name',
-            'ATTR_HOSTNAME' => 'hostname',
+            'ATTR_ID'          => 'id',
+            'ATTR_NAME'        => 'name',
+            'ATTR_HOSTNAME'    => 'hostname',
             'ATTR_ADMIN_EMAIL' => 'admin_email',
-            'ATTR_ANALYTICS' => 'analytics',
+            'ATTR_ANALYTICS'   => 'analytics',
         ];
 
         foreach ($values as $const => $col) {
@@ -63,7 +62,7 @@ class SiteTest extends AbstractModelTestCase
     public function setSetHostNameCleansValue()
     {
         $values = [
-            ' test ' => 'test',
+            ' test '  => 'test',
             '<b>test' => 'test',
         ];
 
@@ -87,7 +86,7 @@ class SiteTest extends AbstractModelTestCase
     public function setSetNameCleansValue()
     {
         $values = [
-            ' test ' => 'test',
+            ' test '  => 'test',
             '<b>test' => 'test',
         ];
 
@@ -111,9 +110,9 @@ class SiteTest extends AbstractModelTestCase
     public function setSetAdminEmailCleansValue()
     {
         $values = [
-            ' test ' => 'test',
+            ' test '  => 'test',
             '<b>test' => 'test',
-            'TEST' => 'test',
+            'TEST'    => 'test',
         ];
 
         $site = new Site();

@@ -28,7 +28,7 @@ class AddMultiSiteSupport extends Migration
             $table->softDeletes();
         });
 
-        Scheme::table('pages', function(Blueprint $table) {
+        Scheme::table('pages', function (Blueprint $table) {
             $table
                 ->integer(Page::ATTR_SITE)
                 ->unsigned()
@@ -38,7 +38,7 @@ class AddMultiSiteSupport extends Migration
                 ->onDelete('CASCADE');
         });
 
-        Scheme::table('page_urls', function(Blueprint $table) {
+        Scheme::table('page_urls', function (Blueprint $table) {
             $table
                 ->integer(URL::ATTR_SITE)
                 ->unsigned()
@@ -50,7 +50,7 @@ class AddMultiSiteSupport extends Migration
             $table->unique([URL::ATTR_SITE, URL::ATTR_LOCATION]);
         });
 
-        Scheme::table('groups', function(Blueprint $table) {
+        Scheme::table('groups', function (Blueprint $table) {
             $table
                 ->integer(Group::ATTR_SITE)
                 ->unsigned()
@@ -115,7 +115,7 @@ class AddMultiSiteSupport extends Migration
         DB::table('roles')
             ->where('name', '=', 'manageSettings')
             ->update([
-                'name' => 'manageSites',
+                'name'        => 'manageSites',
                 'description' => 'Manage sites',
             ]);
     }
@@ -131,15 +131,15 @@ class AddMultiSiteSupport extends Migration
         Schema::drop('asset_site');
         Schema::drop('person_site');
 
-        Scheme::table('pages', function(Blueprint $table) {
+        Scheme::table('pages', function (Blueprint $table) {
             $table->dropColumn(Page::ATTR_SITE);
         });
 
-        Scheme::table('groups', function(Blueprint $table) {
+        Scheme::table('groups', function (Blueprint $table) {
             $table->dropColumn(Group::ATTR_SITE);
         });
 
-        Scheme::table('page_urls', function(Blueprint $table) {
+        Scheme::table('page_urls', function (Blueprint $table) {
             $table->dropColumn(Page::ATTR_SITE);
             $table->dropUnique('page_urls_site_id_location');
         });
@@ -147,7 +147,7 @@ class AddMultiSiteSupport extends Migration
         DB::table('roles')
             ->where('name', '=', 'manageSites')
             ->update([
-                'name' => 'manageSettings',
+                'name'        => 'manageSettings',
                 'description' => 'Manage CMS settings',
             ]);
     }
