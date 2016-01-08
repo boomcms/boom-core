@@ -25,6 +25,11 @@ class PersonTest extends AbstractTestCase
         $this->controller = m::mock(Controller::class)->makePartial();
     }
 
+    public function testAddSites()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testAvailableGroups()
     {
         $groupIds = [1, 2];
@@ -61,6 +66,11 @@ class PersonTest extends AbstractTestCase
         $person->shouldReceive('removeGroup')->with($group);
 
         $this->controller->removeGroup($person, $group);
+    }
+
+    public function testRemoveSite()
+    {
+        $this->markTestIncomplete();
     }
 
     public function testStoreAddsNewPersonToCurrentSite()
