@@ -3,6 +3,7 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Group as GroupModelInterface;
+use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Contracts\Repositories\Group as GroupRepositoryInterface;
 use BoomCMS\Database\Models\Group as Model;
 
@@ -53,6 +54,23 @@ class Group implements GroupRepositoryInterface
     public function find($id)
     {
         return $this->model->find($id);
+    }
+
+    /**
+     * @param SiteInterface $site
+     */
+    public function findBySite(SiteModelInterface $site)
+    {
+        
+    }
+
+    /**
+     * @param SiteModelInterface $site
+     * @param array $groupIds
+     */
+    public function findBySiteExcluding(SiteModelInterface $site, array $groupIds)
+    {
+        ;
     }
 
     public function save(GroupModelInterface $group)

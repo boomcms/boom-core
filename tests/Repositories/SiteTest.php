@@ -44,11 +44,16 @@ class SiteTest extends AbstractTestCase
         $this->markTestIncomplete();
     }
 
+    public function testFindByPerson()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testSave()
     {
-        $repository = new GroupRepository();
+        $repository = new SiteRepository();
 
-        $model = m::mock(GroupModel::class);
+        $model = m::mock(SiteModel::class);
         $model->shouldReceive('save');
 
         $repository->save($model);

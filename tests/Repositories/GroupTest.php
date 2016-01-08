@@ -45,6 +45,11 @@ class GroupTest extends AbstractTestCase
         $repository->findBySite($site);
     }
 
+    public function testFindBySiteExcluding()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testSave()
     {
         $repository = new GroupRepository();

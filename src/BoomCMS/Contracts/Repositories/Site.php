@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Contracts\Repositories;
 
+use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Database\Models\Site as SiteModel;
 
@@ -10,7 +11,7 @@ interface Site
     /**
      * @param SiteModel $model
      */
-    public function __construct(SiteModel $model = null);
+    public function __construct(SiteModel $model);
 
     /**
      * @param array $attrs
@@ -20,7 +21,7 @@ interface Site
     public function create(array $attrs);
 
     /**
-     * @param SiteInterface $group
+     * @param SiteInterface $site
      */
     public function delete(SiteInterface $site);
 
@@ -39,6 +40,13 @@ interface Site
      * @return null|SiteInterface
      */
     public function findByHostname($hostname);
+
+    /**
+     * @param PersonInterface $person
+     *
+     * @return array
+     */
+    public function findByPerson(PersonInterface $person);
 
     /**
      * @param SiteInterface $site

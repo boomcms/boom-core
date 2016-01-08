@@ -5,12 +5,15 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
 use BoomCMS\Support\Helpers\URL as URLHelper;
+use BoomCMS\Support\Traits\SingleSite;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL as URLFacade;
 use InvalidArgumentException;
 
 class URL extends Model implements URLInterface
 {
+    use SingleSite;
+
     const ATTR_ID = 'id';
     const ATTR_PAGE_ID = 'page_id';
     const ATTR_LOCATION = 'location';

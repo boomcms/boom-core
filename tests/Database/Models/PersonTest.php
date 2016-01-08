@@ -48,6 +48,11 @@ class PersonTest extends AbstractModelTestCase
         $this->markTestIncomplete();
     }
 
+    public function testHasSite()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testIsSuperuserDefaultFalse()
     {
         $person = new Person([]);

@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Repositories;
 
+use BoomCMS\Contracts\Models\Person as PersonModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Contracts\Repositories\Site as SiteRepositoryInterface;
 use BoomCMS\Database\Models\Site as Model;
@@ -40,11 +41,6 @@ class Site implements SiteRepositoryInterface
         return $this;
     }
 
-    public function findAll()
-    {
-        return $this->model->all();
-    }
-
     /**
      * @param int $id
      *
@@ -53,6 +49,29 @@ class Site implements SiteRepositoryInterface
     public function find($id)
     {
         return $this->model->find($id);
+    }
+
+    public function findAll()
+    {
+        return $this->model->all();
+    }
+
+    /**
+     * @param string $hostname
+     *
+     * @return null|Site
+     */
+    public function findByHostname($hostname)
+    {
+        ;
+    }
+
+    /**
+     * @param PersonModelInterface $person
+     */
+    public function findByPerson(PersonModelInterface $person)
+    {
+        ;
     }
 
     /**

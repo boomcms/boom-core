@@ -155,6 +155,13 @@ interface Asset
     public function hasPreviousVersions();
 
     /**
+     * @param \Site $site
+     *
+     * @return bool
+     */
+    public function hasSite(Site $site);
+
+    /**
      * @return bool
      */
     public function hasThumbnail();

@@ -11,6 +11,7 @@ use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 class Page extends Model implements PageInterface
 {
     use Comparable;
+    use SingleSite;
     use SoftDeletes;
 
     const ATTR_ID = 'id';

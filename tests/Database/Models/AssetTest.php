@@ -107,6 +107,11 @@ class AssetTest extends AbstractModelTestCase
         $this->assertEquals('', $asset->getType());
     }
 
+    public function testHasSite()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testIsImage()
     {
         $image = new Asset([Asset::ATTR_TYPE => 'image']);

@@ -6,6 +6,7 @@ use BoomCMS\Auth\Hasher;
 use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\MultipleSites;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -17,6 +18,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     use Authenticatable;
     use Comparable;
     use SoftDeletes;
+    use MultipleSites;
 
     const ATTR_ID = 'id';
     const ATTR_NAME = 'name';

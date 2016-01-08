@@ -12,6 +12,11 @@ use Mockery as m;
 
 class PagePolicyTest extends AbstractTestCase
 {
+    public function testBeforeReturnsFalseIsUserCantAccessCurrentSite()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testBeforeReturnsTrueForSuperUser()
     {
         $super = new Person([Person::ATTR_SUPERUSER => true]);

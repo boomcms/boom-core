@@ -8,6 +8,11 @@ use BoomCMS\Tests\AbstractTestCase;
 
 class SitePolicyTest extends AbstractTestCase
 {
+    public function testBeforeReturnsFalseIsUserCantAccessCurrentSite()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testBeforeReturnsTrueForSuperUser()
     {
         $super = new Person([Person::ATTR_SUPERUSER => true]);

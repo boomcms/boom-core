@@ -4,12 +4,14 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\SingleSite;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Group extends Model implements GroupInterface
 {
     use Comparable;
+    use SingleSite;
     use SoftDeletes;
 
     const ATTR_ID = 'id';

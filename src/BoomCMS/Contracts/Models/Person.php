@@ -39,6 +39,13 @@ interface Person
      */
     public function getSites();
 
+    /**
+     * @param Site $site
+     *
+     * @return bool
+     */
+    public function hasSite(Site $site);
+
     public function isEnabled();
 
     public function isSuperUser();
