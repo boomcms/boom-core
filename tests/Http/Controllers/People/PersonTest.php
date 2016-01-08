@@ -49,7 +49,7 @@ class PersonTest extends AbstractTestCase
         $request = new Request(['people' => $peopleIds]);
 
         PersonFacade::shouldReceive('deleteByIds')->with($peopleIds);
-        
+
         $this->controller->destroy($request);
     }
 
