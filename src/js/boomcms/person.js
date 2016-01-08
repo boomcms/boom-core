@@ -64,8 +64,6 @@ function boomPerson(person_id) {
 	};
 
 	boomPerson.prototype.addWithData = function(data) {
-		console.log(data);
-		console.log(this.baseUrl);
 		return $.post(this.baseUrl, data);
 	};
 
