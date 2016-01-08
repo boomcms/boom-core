@@ -3,11 +3,10 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Repositories;
 use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Session\SessionManager;
+use \Illuminate\Foundation\Testing\TestCase;
 
-abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
+abstract class AbstractTestCase extends TestCase
 {
     protected $baseUrl = 'localhost';
 
@@ -27,23 +26,6 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
         });
 
         return $app;
-    }
-
-    protected function getMockSession()
-    {
-        return $this
-            ->getMockBuilder(SessionManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    protected function getMockPersonRepository($methods = null)
-    {
-        return $this
-            ->getMockBuilder(Repositories\Person::class)
-            ->setMethods($methods)
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     protected function invalidPage()
