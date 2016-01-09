@@ -25,6 +25,22 @@ class PersonTest extends AbstractTestCase
         $this->controller = m::mock(Controller::class)->makePartial();
     }
 
+    public function testAddGroups()
+    {
+        $groupIds = [1, 2];
+        $groups = [new Group(), new Group()];
+        $request = new Request(['groups' => $groupIds]);
+        $person = m::mock(Person::class);
+
+        foreach ($groups as $group) {
+            $person->shouldReceive('addGroup')->once()->with($group);
+        }
+
+        GroupFacade::shouldReceive('find')->with($groupIds)->andReturn($groups);
+
+        $this->controller->addGroups($request, $person);
+    }
+
     public function testAvailableGroups()
     {
         $groupIds = [1, 2];

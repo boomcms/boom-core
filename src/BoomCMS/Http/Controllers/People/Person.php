@@ -18,12 +18,10 @@ class Person extends PeopleManager
 
     public function addGroups(Request $request, PersonModel $person)
     {
-        foreach ($request->input('groups') as $groupId) {
-            $group = GroupFacade::find($groupId);
+        $groups = GroupFacade::find($request->input('groups'));
 
-            if ($group) {
-                $person->addGroup($group);
-            }
+        foreach ($groups as $group) {
+            $person->addGroup($group);
         }
     }
 
