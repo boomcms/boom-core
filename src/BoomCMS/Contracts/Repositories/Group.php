@@ -12,7 +12,7 @@ interface Group
 
     /**
      * @param SiteInterface $site
-     * @param string $name
+     * @param string        $name
      *
      * @return GroupModel
      */

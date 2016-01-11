@@ -93,7 +93,7 @@ class Site implements SiteRepositoryInterface
             $this->model
                 ->where(Model::ATTR_ID, '!=', $site->getId())
                 ->update([
-                    Model::ATTR_DEFAULT => false
+                    Model::ATTR_DEFAULT => false,
                 ]);
 
             $site->setDefault(true);

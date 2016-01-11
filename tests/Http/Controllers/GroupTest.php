@@ -6,7 +6,6 @@ use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Group as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
-use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Mockery as m;

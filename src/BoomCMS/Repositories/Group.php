@@ -36,7 +36,7 @@ class Group implements GroupRepositoryInterface
 
     /**
      * @param SiteModelInterface $site
-     * @param string $name
+     * @param string             $name
      *
      * @return Model
      */
@@ -44,7 +44,7 @@ class Group implements GroupRepositoryInterface
     {
         return $this->model->create([
             Model::ATTR_SITE => $site->getId(),
-            Model::ATTR_NAME => $name
+            Model::ATTR_NAME => $name,
         ]);
     }
 

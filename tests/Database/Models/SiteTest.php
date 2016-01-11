@@ -63,7 +63,7 @@ class SiteTest extends AbstractModelTestCase
     public function testSetDefault()
     {
         $site = new Site();
-        
+
         $this->assertEquals($site, $site->setDefault(true));
         $this->assertEquals(true, $site->isDefault());
     }

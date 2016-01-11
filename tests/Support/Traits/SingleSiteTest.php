@@ -6,7 +6,7 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Support\Traits\SingleSite;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
-use \Mockery as m;
+use Mockery as m;
 
 class SingleSiteTest extends AbstractTestCase
 {

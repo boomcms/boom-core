@@ -50,7 +50,7 @@ class RepositoryServiceProvider extends ServiceProvider
             return new Repositories\URL(new Models\URL());
         });
 
-        $this->app->singleton(Repositories\Site::class, function() {
+        $this->app->singleton(Repositories\Site::class, function () {
             return new Repositories\Site(new Models\Site());
         });
     }
