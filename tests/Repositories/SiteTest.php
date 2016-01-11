@@ -110,7 +110,7 @@ class SiteTest extends AbstractTestCase
     {
         $model = m::mock(SiteModel::class);
         $repository = new SiteRepository($model);
-        
+
         $model->shouldReceive('save')->once();
 
         $repository->save($model);

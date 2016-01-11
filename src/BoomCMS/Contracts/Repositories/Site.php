@@ -54,7 +54,7 @@ interface Site
     public function findDefault();
 
     /**
-     * Make a site the default
+     * Make a site the default.
      *
      * @param SiteInterface $site
      */

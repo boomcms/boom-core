@@ -40,7 +40,7 @@ interface Site
     public function getName();
 
     /**
-     * Returns whether this site is the default
+     * Returns whether this site is the default.
      *
      * @return bool
      */

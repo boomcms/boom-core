@@ -21,14 +21,14 @@ class RouteSiteTest extends AbstractTestCase
     public function testSiteIsRouted()
     {
         $hostname = 'test.com';
-        
+
         $router = m::mock(Router::class);
         $router->shouldReceive('routeHostname')->with($hostname);
 
         $request = m::mock(Request::class);
         $request->shouldReceive('getHttpHost')->andReturn($hostname);
-        
+
         $middleware = new RouteSite($router);
-        $middleware->handle($request, function(){});
+        $middleware->handle($request, function () {});
     }
 }

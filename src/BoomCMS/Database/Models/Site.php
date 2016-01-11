@@ -79,8 +79,8 @@ class Site extends Model implements SiteInterface
     }
 
     /**
-     * 
      * @param type $email
+     *
      * @return $this
      */
     public function setAdminEmail($email)
@@ -91,8 +91,8 @@ class Site extends Model implements SiteInterface
     }
 
     /**
-     * 
      * @param type $code
+     *
      * @return $this
      */
     public function setAnalytics($code)
@@ -115,8 +115,8 @@ class Site extends Model implements SiteInterface
     }
 
     /**
-     * 
      * @param type $hostname
+     *
      * @return $this
      */
     public function setHostname($hostname)
@@ -127,7 +127,6 @@ class Site extends Model implements SiteInterface
     }
 
     /**
-     * 
      * @param string $name
      *
      * @return $this

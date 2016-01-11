@@ -16,7 +16,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Router
 {
     /**
-     *
      * @var Application
      */
     protected $app;
@@ -48,7 +47,6 @@ class Router
     }
 
     /**
-     * 
      * @return SiteInterface
      */
     public function getActiveSite()
@@ -101,7 +99,7 @@ class Router
 
         $site = Site::findByHostname($hostname);
         $site = $site ?: Site::findDefault();
-        
+
         $this->setActiveSite($site);
     }
 

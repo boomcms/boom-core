@@ -7,7 +7,7 @@ use BoomCMS\Routing\Router;
 use BoomCMS\Support\Facades\Site as SiteFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Foundation\Application;
-use \Mockery as m;
+use Mockery as m;
 
 class RouterTest extends AbstractTestCase
 {
@@ -85,7 +85,7 @@ class RouterTest extends AbstractTestCase
 
         $this->router->routeHostname($this->hostname);
 
-        putenv("BOOMCMS_HOST");
+        putenv('BOOMCMS_HOST');
     }
 
     public function testRouteHostnameGetsDefaultSiteIfHostnameDoesntMatch()
