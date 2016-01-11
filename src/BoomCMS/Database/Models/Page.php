@@ -52,6 +52,7 @@ class Page extends Model implements PageInterface
     const ATTR_DISABLE_DELETE = 'disable_delete';
     const ATTR_ADD_BEHAVIOUR = 'add_behaviour';
     const ATTR_CHILD_ADD_BEHAVIOUR = 'child_add_behaviour';
+    const ATTR_SITE = 'site_id';
 
     const ORDER_SEQUENCE = 1;
     const ORDER_TITLE = 2;

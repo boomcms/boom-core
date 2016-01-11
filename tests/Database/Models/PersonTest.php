@@ -3,6 +3,8 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Database\Models\Site;
+use Mockery as m;
 
 class PersonTest extends AbstractModelTestCase
 {
@@ -10,7 +12,18 @@ class PersonTest extends AbstractModelTestCase
 
     public function testAddSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $person = m::mock(Person::class.'[sites,attach]');
+
+        $person->shouldReceive('sites')
+            ->once()
+            ->andReturnSelf();
+
+        $person->shouldReceive('attach')
+            ->once()
+            ->with($site);
+
+        $this->assertEquals($person, $person->addSite($site));
     }
 
     public function testGetAuthIdentifier()
@@ -45,12 +58,50 @@ class PersonTest extends AbstractModelTestCase
 
     public function testGetSites()
     {
-        $this->markTestIncomplete();
+        $sites = [new Site(), new Site()];
+        $person = m::mock(Person::class.'[sites,orderBy,get]');
+
+        $person->shouldReceive('sites')
+            ->once()
+            ->andReturnSelf();
+
+        $person->shouldReceive('orderBy')
+            ->once()
+            ->with('name', 'asc')
+            ->andReturnSelf();
+
+        $person->shouldReceive('get')
+            ->once()
+            ->andReturn($sites);
+
+        $this->assertEquals($sites, $person->getSites());
     }
 
     public function testHasSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        $query = m::mock(Site::class);
+        $person = m::mock(Person::class)->makePartial();
+
+        $person
+            ->shouldReceive('sites')
+            ->once()
+            ->andReturn($query);
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->with(Site::ATTR_ID, '=', $site->getId())
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('exists')
+            ->once()
+            ->andReturn(true);
+
+        $this->assertTrue($person->hasSite($site));
     }
 
     public function testIsSuperuserDefaultFalse()
@@ -69,7 +120,20 @@ class PersonTest extends AbstractModelTestCase
 
     public function testRemoveSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $person = m::mock(Person::class)->makePartial();
+
+        $person
+            ->shouldReceive('sites')
+            ->once()
+            ->andReturnSelf();
+
+        $person
+            ->shouldReceive('detach')
+            ->once()
+            ->with($site);
+
+        $this->assertEquals($person, $person->removeSite($site));
     }
 
     public function testSetGetRememberLoginToken()

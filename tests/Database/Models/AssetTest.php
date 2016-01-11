@@ -4,7 +4,9 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
+use BoomCMS\Database\Models\Site;
 use DateTime;
+use Mockery as m;
 
 class AssetTest extends AbstractModelTestCase
 {
@@ -12,7 +14,18 @@ class AssetTest extends AbstractModelTestCase
 
     public function testAddSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $asset = m::mock(Asset::class.'[sites,attach]');
+
+        $asset->shouldReceive('sites')
+            ->once()
+            ->andReturnSelf();
+
+        $asset->shouldReceive('attach')
+            ->once()
+            ->with($site);
+
+        $this->assertEquals($asset, $asset->addSite($site));
     }
 
     public function testDirectory()
@@ -92,7 +105,23 @@ class AssetTest extends AbstractModelTestCase
 
     public function testGetSites()
     {
-        $this->markTestIncomplete();
+        $sites = [new Site(), new Site()];
+        $asset = m::mock(Asset::class.'[sites,orderBy,get]');
+
+        $asset->shouldReceive('sites')
+            ->once()
+            ->andReturnSelf();
+
+        $asset->shouldReceive('orderBy')
+            ->once()
+            ->with('name', 'asc')
+            ->andReturnSelf();
+
+        $asset->shouldReceive('get')
+            ->once()
+            ->andReturn($sites);
+
+        $this->assertEquals($sites, $asset->getSites());
     }
 
     public function testGetType()
@@ -109,7 +138,29 @@ class AssetTest extends AbstractModelTestCase
 
     public function testHasSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        $query = m::mock(Site::class);
+        $asset = m::mock(Asset::class)->makePartial();
+
+        $asset
+            ->shouldReceive('sites')
+            ->once()
+            ->andReturn($query);
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->with(Site::ATTR_ID, '=', $site->getId())
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('exists')
+            ->once()
+            ->andReturn(true);
+
+        $this->assertTrue($asset->hasSite($site));
     }
 
     public function testIsImage()
@@ -187,7 +238,20 @@ class AssetTest extends AbstractModelTestCase
 
     public function testRemoveSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $asset = m::mock(Asset::class)->makePartial();
+
+        $asset
+            ->shouldReceive('sites')
+            ->once()
+            ->andReturnSelf();
+
+        $asset
+            ->shouldReceive('detach')
+            ->once()
+            ->with($site);
+
+        $this->assertEquals($asset, $asset->removeSite($site));
     }
 
     public function testSetVersion()

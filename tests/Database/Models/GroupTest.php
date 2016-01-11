@@ -3,6 +3,8 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Group;
+use BoomCMS\Database\Models\Site;
+use Mockery as m;
 
 class GroupTest extends AbstractModelTestCase
 {
@@ -17,7 +19,21 @@ class GroupTest extends AbstractModelTestCase
 
     public function testGetSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $group = m::mock(Group::class.'[belongsTo,first]');
+
+        $group
+            ->shouldReceive('belongsTo')
+            ->once()
+            ->with(Site::class, 'site_id')
+            ->andReturnSelf();
+
+        $group
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($site);
+        
+        $this->assertEquals($site, $group->getSite());
     }
 
     public function testSetName()
@@ -28,9 +44,15 @@ class GroupTest extends AbstractModelTestCase
         $this->assertEquals('test', $group->getName());
     }
 
-    public function testSiteSite()
+    public function testSetSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        $group = new Group();
+        $group->setSite($site);
+
+        $this->assertEquals($site->getId(), $group->{Group::ATTR_SITE});
     }
 
     public function testNameIsTrimmed()
