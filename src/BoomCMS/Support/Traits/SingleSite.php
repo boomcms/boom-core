@@ -28,8 +28,8 @@ trait SingleSite
     }
 
     /**
-     * 
      * @param Site $site
+     *
      * @return $this
      */
     public function setSite(Site $site)

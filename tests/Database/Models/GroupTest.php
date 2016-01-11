@@ -32,7 +32,7 @@ class GroupTest extends AbstractModelTestCase
             ->shouldReceive('first')
             ->once()
             ->andReturn($site);
-        
+
         $this->assertEquals($site, $group->getSite());
     }
 

@@ -8,8 +8,8 @@ use BoomCMS\Database\Models\Site as SiteModel;
 trait MultipleSites
 {
     /**
-     * 
      * @param Site $site
+     *
      * @return $this
      */
     public function addSite(Site $site)
@@ -20,7 +20,6 @@ trait MultipleSites
     }
 
     /**
-     * 
      * @return array
      */
     public function getSites()
@@ -31,7 +30,6 @@ trait MultipleSites
     }
 
     /**
-     * 
      * @param Site $site
      *
      * @return bool
@@ -44,8 +42,8 @@ trait MultipleSites
     }
 
     /**
-     * 
      * @param Site $site
+     *
      * @return $this
      */
     public function removeSite(Site $site)
