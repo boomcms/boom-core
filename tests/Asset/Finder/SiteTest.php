@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Tests\Asset\Finder;
 
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Core\Asset\Finder\Site as SiteFilter;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
@@ -14,7 +14,7 @@ class SiteTest extends AbstractTestCase
     {
         $site = new Site();
         $site->{Site::ATTR_ID} = 1;
-        
+
         $query = m::mock(Builder::class);
         $siteFilter = new SiteFilter($site);
 

@@ -231,7 +231,7 @@ class PageTest extends AbstractModelTestCase
             ->shouldReceive('first')
             ->once()
             ->andReturn($site);
-        
+
         $this->assertEquals($site, $page->getSite());
     }
 
