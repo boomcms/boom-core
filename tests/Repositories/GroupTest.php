@@ -10,11 +10,32 @@ use Mockery as m;
 
 class GroupTest extends AbstractTestCase
 {
+    public function testCreate()
+    {
+        $newGroup = new GroupModel();
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+        $name = 'test';
+
+        $model = m::mock(GroupModel::class);
+        $model
+            ->shouldReceive('create')
+            ->once()
+            ->with([
+                GroupModel::ATTR_SITE => $site->getId(),
+                GroupModel::ATTR_NAME => $name,
+            ])
+            ->andReturn($newGroup);
+
+        $repository = new GroupRepository($model);
+
+        $this->assertEquals($newGroup, $repository->create($site, $name));
+    }
+
     public function testDelete()
     {
         $model = m::mock(GroupModel::class);
-        $model
-            ->shouldReceive('delete');
+        $model->shouldReceive('delete')->once();
 
         $repository = new GroupRepository($model);
 

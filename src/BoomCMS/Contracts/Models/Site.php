@@ -40,6 +40,13 @@ interface Site
     public function getName();
 
     /**
+     * Returns whether this site is the default
+     *
+     * @return bool
+     */
+    public function isDefault();
+
+    /**
      * Sets the email of the site admin.
      *
      * @param type $email
@@ -56,6 +63,13 @@ interface Site
      * @return $this
      */
     public function setAnalytics($code);
+
+    /**
+     * @param bool $default
+     *
+     * @return $this
+     */
+    public function setDefault($default);
 
     /**
      * Set the site's hostname.

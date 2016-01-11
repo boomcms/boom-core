@@ -27,7 +27,7 @@ class Tags extends Controller
         $tag = Tag::findOrCreate($site, $request->input('tag'), $request->input('group'));
         $page->addTag($tag);
 
-        Event::fire(new PageHadTagAdded($this->page, $tag));
+        Event::fire(new PageHadTagAdded($page, $tag));
 
         return $tag->getId();
     }

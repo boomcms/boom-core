@@ -6,7 +6,7 @@ use BoomCMS\Routing\Router;
 use Closure;
 use Illuminate\Http\Request;
 
-class Route
+class RouteSite
 {
     /**
      * @var Router
@@ -24,18 +24,14 @@ class Route
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param Request $request
+     * @param Closure $next
      *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        $response = $this->router->process($request->route()->getParameter('location'));
-
-        if ($response) {
-            return $response;
-        }
+        $this->router->routeHostname($request->getHttpHost());
 
         return $next($request);
     }

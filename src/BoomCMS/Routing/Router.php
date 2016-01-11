@@ -3,23 +3,41 @@
 namespace BoomCMS\Routing;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
+use BoomCMS\Contracts\Models\Site as SiteInterface;
+use BoomCMS\Database\Models\Site as SiteModel;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Page;
+use BoomCMS\Support\Facades\Site;
 use BoomCMS\Support\Facades\URL;
+use Illuminate\Foundation\Application;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Router
 {
     /**
+     *
+     * @var Application
+     */
+    protected $app;
+
+    /**
      * @var PageInterface
      */
     protected $page;
 
     /**
-     * @var string
+     * @var SiteInterface
      */
-    protected $requestUri;
+    protected $site;
+
+    /**
+     * @param Application $app
+     */
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * @return PageInterface
@@ -27,6 +45,15 @@ class Router
     public function getActivePage()
     {
         return $this->page;
+    }
+
+    /**
+     * 
+     * @return SiteInterface
+     */
+    public function getActiveSite()
+    {
+        return $this->site;
     }
 
     /**
@@ -63,5 +90,31 @@ class Router
         if (!$this->page->url()->is($uri)) {
             return redirect((string) $this->page->url(), 301);
         }
+    }
+
+    /**
+     * @param string $hostname
+     */
+    public function routeHostname($hostname)
+    {
+        $hostname = env('BOOMCMS_HOST', $hostname);
+
+        $site = Site::findByHostname($hostname);
+        $site = $site ?: Site::findDefault();
+        
+        $this->setActiveSite($site);
+    }
+
+    /**
+     * @param SiteInterface $site
+     *
+     * @return $this
+     */
+    public function setActiveSite(SiteInterface $site)
+    {
+        $this->site = $site;
+        $this->app->instance(SiteModel::class, $site);
+
+        return $this;
     }
 }

@@ -32,6 +32,7 @@ class Tag implements TagRepositoryInterface
     public function create(SiteInterface $site, $name, $group)
     {
         return $this->model->create([
+            Model::ATTR_SITE  => $site,
             Model::ATTR_NAME  => $name,
             Model::ATTR_GROUP => $group,
         ]);
@@ -55,7 +56,10 @@ class Tag implements TagRepositoryInterface
      */
     public function findByName(SiteInterface $site, $name)
     {
-        return $this->model->where(Model::ATTR_NAME, '=', $name)->first();
+        return $this->model
+            ->whereSiteIs($site)
+            ->where(Model::ATTR_NAME, '=', $name)
+            ->first();
     }
 
     /**
@@ -68,6 +72,7 @@ class Tag implements TagRepositoryInterface
     public function findByNameAndGroup(SiteInterface $site, $name, $group = null)
     {
         return $this->model
+            ->whereSiteIs($site)
             ->where(Model::ATTR_NAME, '=', $name)
             ->where(Model::ATTR_GROUP, '=', $group)
             ->first();
@@ -83,6 +88,7 @@ class Tag implements TagRepositoryInterface
     public function findBySlugAndGroup(SiteInterface $site, $slug, $group = null)
     {
         return $this->model
+            ->whereSiteIs($site)
             ->where(Model::ATTR_SLUG, '=', $slug)
             ->where(Model::ATTR_GROUP, '=', $group)
             ->first();
@@ -99,8 +105,8 @@ class Tag implements TagRepositoryInterface
     {
         // Ensure group is null if an empty string is passed.
         $group = $group ?: null;
-        $tag = $this->findByNameAndGroup($name, $group);
+        $tag = $this->findByNameAndGroup($site, $name, $group);
 
-        return $tag ?: $this->create($name, $group);
+        return $tag ?: $this->create($site, $name, $group);
     }
 }

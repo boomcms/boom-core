@@ -49,5 +49,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton('boomcms.repositories.url', function () {
             return new Repositories\URL(new Models\URL());
         });
+
+        $this->app->singleton(Repositories\Site::class, function() {
+            return new Repositories\Site(new Models\Site());
+        });
     }
 }

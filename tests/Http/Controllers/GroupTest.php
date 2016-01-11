@@ -102,16 +102,11 @@ class GroupTest extends AbstractTestCase
         $site = new Site();
         $site->{Site::ATTR_ID} = 1;
 
-        Router::shouldReceive('getActiveSite')->andReturn($site);
-
         GroupFacade::shouldReceive('create')
-            ->with([
-                Group::ATTR_NAME => $name,
-                Group::ATTR_SITE => $site->getId(),
-            ])
+            ->with($site, $name)
             ->andReturn($group);
 
-        $this->assertEquals($group->getId(), $this->controller->store($request));
+        $this->assertEquals($group->getId(), $this->controller->store($request, $site));
     }
 
     public function testUpdate()

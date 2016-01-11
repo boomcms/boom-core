@@ -10,8 +10,19 @@ interface Group
 {
     public function __construct(GroupModel $model = null);
 
-    public function create(array $attrs);
+    /**
+     * @param SiteInterface $site
+     * @param string $name
+     *
+     * @return GroupModel
+     */
+    public function create(SiteInterface $site, $name);
 
+    /**
+     * @param GroupInterface $group
+     *
+     * @return $this
+     */
     public function delete(GroupInterface $group);
 
     public function find($id);

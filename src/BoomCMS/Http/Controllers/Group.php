@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Database\Models\Group as GroupModel;
 use BoomCMS\Database\Models\Role;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use Illuminate\Http\Request;
 
@@ -46,9 +47,9 @@ class Group extends Controller
         return $group->getRoles($request->input('page_id'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Site $site)
     {
-        $group = GroupFacade::create(['name' => $request->input('name')]);
+        $group = GroupFacade::create($site, $request->input('name'));
 
         return $group->getId();
     }

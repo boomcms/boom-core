@@ -18,6 +18,7 @@ class FacadesTest extends AbstractTestCase
         Facades\Group::class    => Repositories\Group::class,
         Facades\Page::class     => Repositories\Page::class,
         Facades\Router::class   => Router::class,
+        Facades\Site::class     => Repositories\Site::class,
         Facades\Tag::class      => Repositories\Tag::class,
         Facades\URL::class      => Repositories\URL::class,
     ];

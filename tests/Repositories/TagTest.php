@@ -17,6 +17,8 @@ class TagTest extends AbstractTestCase
 
     public function setUp()
     {
+        parent::setUp();
+
         $this->site = new Site();
         $this->site->{Site::ATTR_ID} = 1;
     }
@@ -48,9 +50,9 @@ class TagTest extends AbstractTestCase
     {
         $model = m::mock(Tag::class);
         $model
-            ->shouldReceive('where')
+            ->shouldReceive('whereSiteIs')
             ->once()
-            ->with(Tag::ATTR_SITE, '=', $this->site->getId())
+            ->with($this->site)
             ->andReturnSelf();
 
         $model
@@ -73,9 +75,9 @@ class TagTest extends AbstractTestCase
 
         $model = m::mock(Tag::class);
         $model
-            ->shouldReceive('where')
+            ->shouldReceive('whereSiteIs')
             ->once()
-            ->with(Tag::ATTR_SITE, '=', $this->site->getId())
+            ->with($this->site)
             ->andReturnSelf();
 
         $model
@@ -104,9 +106,9 @@ class TagTest extends AbstractTestCase
         $model = m::mock(Tag::class);
 
         $model
-            ->shouldReceive('where')
+            ->shouldReceive('whereSiteIs')
             ->once()
-            ->with(Tag::ATTR_SITE, '=', $this->site->getId())
+            ->with($this->site)
             ->andReturnSelf();
 
         $model
@@ -132,7 +134,7 @@ class TagTest extends AbstractTestCase
         $name = 'name';
         $group = 'group';
         $model = new Tag();
-        $repository = m::mock(TagRepository::class.'[findOrCreate]', [$model]);
+        $repository = m::mock(TagRepository::class.'[findByNameAndGroup]', [$model]);
 
         $repository
             ->shouldReceive('findByNameAndGroup')
@@ -148,7 +150,7 @@ class TagTest extends AbstractTestCase
         $name = 'name';
         $group = 'group';
         $model = new Tag();
-        $repository = m::mock(TagRepository::class.'[findOrCreate,create]', [$model]);
+        $repository = m::mock(TagRepository::class.'[findByNameAndGroup,create]', [$model]);
 
         $repository
             ->shouldReceive('findByNameAndGroup')
@@ -157,13 +159,9 @@ class TagTest extends AbstractTestCase
 
         $repository
             ->shouldReceive('create')
-            ->with([
-                Tag::ATTR_SITE  => $this->site->getId(),
-                Tag::ATTR_NAME  => $name,
-                Tag::ATTR_GROUP => $group,
-            ])
+            ->with($this->site, $name, $group)
             ->andReturn($model);
 
-        $this->assertEquals($model, $repository->findOrCreate($site, $name, $group));
+        $this->assertEquals($model, $repository->findOrCreate($this->site, $name, $group));
     }
 }

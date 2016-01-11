@@ -34,9 +34,18 @@ class Group implements GroupRepositoryInterface
             ->get();
     }
 
-    public function create(array $attributes)
+    /**
+     * @param SiteModelInterface $site
+     * @param string $name
+     *
+     * @return Model
+     */
+    public function create(SiteModelInterface $site, $name)
     {
-        return Model::create($attributes);
+        return $this->model->create([
+            Model::ATTR_SITE => $site->getId(),
+            Model::ATTR_NAME => $name
+        ]);
     }
 
     public function delete(GroupModelInterface $group)
