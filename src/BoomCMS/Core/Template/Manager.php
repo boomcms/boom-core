@@ -51,19 +51,20 @@ class Manager
 
     public function findAvailableTemplates(Theme $theme)
     {
-        $files = $this->filesystem->files($theme->getTemplateDirectory());
-        $templates = [];
+        $filesArr = $this->filesystem->files($theme->getTemplateDirectory());
 
-        if (is_array($files)) {
-            foreach ($files as $file) {
-                if (strpos($file, '.php') !== false) {
-                    $file = str_replace($theme->getTemplateDirectory().'/', '', $file);
-                    $templates[] = str_replace('.php', '', $file);
-                }
-            }
+        if (!is_array($filesArr))
+            return [];
+
+        $templatesArr = [];
+        foreach ($filesArr as $fileStr) {
+            if (strpos($fileStr, '.php') === false) continue; // if does not have .php skip it.
+
+            $fileStr = str_replace($theme->getTemplateDirectory().'/', '', $fileStr); // remove the template directory
+            $templatesArr[] = str_replace('.php', '', $fileStr); // remove .php
         }
-
-        return $templates;
+        
+        return $templatesArr;
     }
 
     public function findInstalledThemes()
