@@ -28,6 +28,22 @@ class AssetTest extends AbstractModelTestCase
         $this->assertEquals($asset, $asset->addSite($site));
     }
 
+    public function testAddSites()
+    {
+        $sites = [new Site(), new Site()];
+        $asset = m::mock(Asset::class.'[addSite]');
+
+        foreach ($sites as $s) {
+            $asset
+                ->shouldReceive('addSite')
+                ->once()
+                ->with($s)
+                ->andReturnSelf();
+        }
+
+        $this->assertEquals($asset, $asset->addSites($sites));
+    }
+
     public function testDirectory()
     {
         $model = new Asset();

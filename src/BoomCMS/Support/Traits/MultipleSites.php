@@ -20,6 +20,20 @@ trait MultipleSites
     }
 
     /**
+     * @param array $sites
+     *
+     * @return $this
+     */
+    public function addSites(array $sites)
+    {
+        foreach ($sites as $site) {
+            $this->addSite($site);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getSites()

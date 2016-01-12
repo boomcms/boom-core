@@ -2,8 +2,10 @@
 
 namespace BoomCMS\Tests\Assets;
 
+use BoomCMS\Database\Models\Asset;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Assets\AssetManager as Controller;
-use BoomCMS\Support\Facades\Site;
+use BoomCMS\Support\Facades\Site as SiteFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Mockery as m;
@@ -19,27 +21,29 @@ class AssetManagerTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->controller = m::mock(Controller::class);
+        $this->controller = m::mock(Controller::class)->makePartial();
     }
 
     public function testAddSites()
     {
         $siteIds = [1, 2];
         $sites = [new Site(), new Site()];
-        $request = new Request([
-            'sites' => $sites
-        ]);
-
-        Site::shouldReceive('find')
-            ->once()
-            ->with($siteIds)
-            ->andReturn($sites);
-
+        $request = new Request(['sites' => $siteIds]);
         $asset = m::mock(Asset::class);
-        $asset
-            ->shouldReceive('addSites')
-            ->once()
-            ->with($sites);
+
+        $asset->shouldReceive('addSites')->once()->with($sites);
+
+        SiteFacade::shouldReceive('find')->with($siteIds)->andReturn($sites);
+
+        $this->controller->addSites($request, $asset);
+    }
+
+    public function testAddSitesDoesNotQueryForSitesIfNoIdsGiven()
+    {
+        $request = new Request();
+        $asset = m::mock(Asset::class);
+
+        SiteFacade::shouldReceive('find')->never();
 
         $this->controller->addSites($request, $asset);
     }

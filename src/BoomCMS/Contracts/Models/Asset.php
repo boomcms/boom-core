@@ -15,6 +15,13 @@ interface Asset
     public function addSite(Site $site);
 
     /**
+     * @param array $sites
+     *
+     * @return $this
+     */
+    public function addSites(array $sites);
+
+    /**
      * @return string
      */
     public function directory();

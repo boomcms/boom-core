@@ -8,6 +8,7 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Jobs\CreatePerson;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
+use BoomCMS\Support\Facades\Site as SiteFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
@@ -22,7 +23,7 @@ class Person extends PeopleManager
         $groupIds = $request->input('groups');
 
         if ($groupIds) {
-            $groups = GroupFacade::find($request->input('groups'));
+            $groups = GroupFacade::find($groupIds);
 
             foreach ($groups as $group) {
                 $person->addGroup($group);
@@ -32,7 +33,12 @@ class Person extends PeopleManager
 
     public function addSites(Request $request, PersonModel $person)
     {
-        
+        $siteIds = $request->input('sites');
+
+        if ($siteIds) {
+            $sites = SiteFacade::find($siteIds);
+            $person->addSites($sites);
+        }
     }
 
     public function availableGroups(PersonModel $person)

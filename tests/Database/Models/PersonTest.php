@@ -26,6 +26,22 @@ class PersonTest extends AbstractModelTestCase
         $this->assertEquals($person, $person->addSite($site));
     }
 
+    public function testAddSites()
+    {
+        $sites = [new Site(), new Site()];
+        $person = m::mock(Person::class.'[addSite]');
+
+        foreach ($sites as $s) {
+            $person
+                ->shouldReceive('addSite')
+                ->once()
+                ->with($s)
+                ->andReturnSelf();
+        }
+
+        $this->assertEquals($person, $person->addSites($sites));
+    }
+
     public function testGetAuthIdentifier()
     {
         $person = new Person();
