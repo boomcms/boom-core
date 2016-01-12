@@ -16,32 +16,21 @@ class PageController extends Controller
 
     protected $viewPrefix = 'boomcms::editor.page.';
 
-    /**
-     * @var Page
-     */
-    protected $page;
-
-    public function __construct(Request $request)
+    public function add(Request $request, Page $page)
     {
-        $this->request = $request;
-        $this->page = $this->request->route()->getParameter('page');
-    }
+        $this->authorize('add', $page);
 
-    public function add()
-    {
-        $this->authorize('add', $this->page);
-
-        if (!$this->request->input('noprompt') && $this->page->shouldPromptOnAddPage()) {
+        if (!$request->input('noprompt') && $page->shouldPromptOnAddPage()) {
             return [
                 'prompt' => view("{$this->viewPrefix}add", [
-                    'page' => $this->page,
+                    'page' => $page,
                 ])->render(),
             ];
         } else {
-            $parent = $this->page->getAddPageParent();
+            $parent = $page->getAddPageParent();
             $newPage = $this->dispatch(new CreatePage(auth()->user(), $parent));
 
-            Event::fire(new PageWasCreated($newPage, $this->page));
+            Event::fire(new PageWasCreated($newPage, $page));
 
             return [
                 'url' => (string) $newPage->url(),
@@ -50,16 +39,19 @@ class PageController extends Controller
         }
     }
 
-    public function discard()
+    public function discard(Page $page)
     {
-        $this->page->deleteDrafts();
+        $this->authorize('edit', $page);
+        $page->deleteDrafts();
     }
 
-    public function urls()
+    public function urls(Page $page)
     {
+        $this->authorize('editUrls', $page);
+
         return view($this->viewPrefix.'urls', [
-            'page' => $this->page,
-            'urls' => $this->page->getUrls(),
+            'page' => $page,
+            'urls' => $page->getUrls(),
         ]);
     }
 }
