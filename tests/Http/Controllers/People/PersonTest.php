@@ -147,12 +147,12 @@ class PersonTest extends AbstractTestCase
 
         Auth::shouldReceive('user')->andReturn(new Person());
         Event::shouldReceive('fire');
-        
+
         $request = new Request([
             'email' => 'support@uxblondon.com',
             'name'  => 'Test user',
         ]);
-        
+
         $this->controller->shouldReceive('addGroups');
         $this->controller->store($request, $site);
     }
