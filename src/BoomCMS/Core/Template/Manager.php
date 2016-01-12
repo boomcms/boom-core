@@ -53,12 +53,15 @@ class Manager
     {
         $filesArr = $this->filesystem->files($theme->getTemplateDirectory());
 
-        if (!is_array($filesArr))
+        if (!is_array($filesArr)){
             return [];
+        }
 
         $templatesArr = [];
         foreach ($filesArr as $fileStr) {
-            if (strpos($fileStr, '.php') === false) continue; // if does not have .php skip it.
+            if (strpos($fileStr, '.php') === false){
+            continue;
+            } // if does not have .php skip it.
 
             $fileStr = str_replace($theme->getTemplateDirectory().'/', '', $fileStr); // remove the template directory
             $templatesArr[] = str_replace('.php', '', $fileStr); // remove .php
