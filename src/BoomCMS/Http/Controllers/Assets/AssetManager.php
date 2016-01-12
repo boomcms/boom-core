@@ -45,7 +45,6 @@ class AssetManager extends Controller
                 $assetsArr[0]->getOriginalFilename()
             );
         }
-        $downloadFilenameStr = rtrim($this->request->input('filename'), '.zip').'.zip';
         $fileNameStr = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
         $zipObj = new ZipArchive();
         $zipObj->open($fileNameStr, ZipArchive::CREATE);
@@ -55,15 +54,16 @@ class AssetManager extends Controller
         }
 
         $zipObj->close();
-
-        $response = response()
+        
+        $downloadFilenameStr = rtrim($this->request->input('filename'), '.zip').'.zip';
+        $responseObj = response()
             ->header('Content-type', 'application/zip')
             ->header('Content-Disposition', "attachment; filename=$downloadFilenameStr")
             ->setContent(file_get_contents($fileNameStr));
 
         unlink($fileNameStr);
 
-        return $response;
+        return $responseObj;
         
     }
 
