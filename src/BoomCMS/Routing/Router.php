@@ -45,7 +45,7 @@ class Router
             // The URL is in use and has a page - the page must not be visible to the current user
             //
             // 404.
-            if (!$url || !$url->getPage()->isVisible()) {
+            if (!$url || ($url->getPage() && !$url->getPage()->isVisible())) {
                 throw new NotFoundHttpException();
             }
 
