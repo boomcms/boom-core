@@ -15,6 +15,7 @@ return [
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 'application/msexcel',
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/zip',
                 'text/plain',
             ],
             'video' => [
@@ -38,6 +39,7 @@ return [
             'mp4'  => 'video/mp4',
             'mpeg' => 'video/quicktime',
             'mp3'  => 'audio/mpeg',
+            'zip'  => 'application/zip',
         ],
     ],
 ];
