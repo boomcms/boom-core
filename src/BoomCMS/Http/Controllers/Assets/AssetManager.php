@@ -11,7 +11,6 @@ use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
 use ZipArchive;
 
 class AssetManager extends Controller
@@ -41,7 +40,7 @@ class AssetManager extends Controller
 
         if (count($assetsArr) === 1) {
 
-            return Response::download(
+            return response()->download(
                 $assetsArr[0]->getFilename(),
                 $assetsArr[0]->getOriginalFilename()
             );
@@ -57,7 +56,7 @@ class AssetManager extends Controller
 
         $zipObj->close();
 
-        $response = Response::make()
+        $response = response()
             ->header('Content-type', 'application/zip')
             ->header('Content-Disposition', "attachment; filename=$downloadFilenameStr")
             ->setContent(file_get_contents($fileNameStr));
