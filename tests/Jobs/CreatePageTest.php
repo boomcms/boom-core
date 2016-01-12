@@ -17,11 +17,15 @@ class CreatePageTest extends AbstractTestCase
         $site = new Site();
         $site->{Site::ATTR_ID} = 1;
 
+        $newPage = m::mock(Page::class.'[addVersion]');
+        $newPage->shouldReceive('addVersion');
+
         PageFacade::shouldReceive('create')
             ->once()
-            ->with(m::contains([
+            ->with(m::subset([
                 Page::ATTR_SITE => $site->getId(),
-            ]));
+            ]))
+            ->andReturn($newPage);
 
         $job = new CreatePage(new Person(), $site);
         $job->handle();

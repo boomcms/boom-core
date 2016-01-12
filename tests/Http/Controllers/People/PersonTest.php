@@ -8,9 +8,9 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\People\Person as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
-use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Mockery as m;
 
@@ -54,6 +54,16 @@ class PersonTest extends AbstractTestCase
         }
 
         GroupFacade::shouldReceive('find')->with($groupIds)->andReturn($groups);
+
+        $this->controller->addGroups($request, $person);
+    }
+
+    public function testAddGroupsDoesNotQueryForGroupsIfNoIdsGiven()
+    {
+        $request = new Request();
+        $person = m::mock(Person::class);
+
+        GroupFacade::shouldReceive('find')->never();
 
         $this->controller->addGroups($request, $person);
     }
@@ -120,21 +130,19 @@ class PersonTest extends AbstractTestCase
             ->once()
             ->with($site);
 
-        Router::shouldReceive('getActiveSite')
-            ->once()
-            ->andReturn($site);
-
         PersonFacade::shouldReceive('create')
             ->once()
             ->andReturn($person);
 
+        Auth::shouldReceive('user')->andReturn(new Person());
         Event::shouldReceive('fire');
         
         $request = new Request([
             'email' => 'support@uxblondon.com',
             'name'  => 'Test user',
         ]);
-
-        $this->controller->store($request);
+        
+        $this->controller->shouldReceive('addGroups');
+        $this->controller->store($request, $site);
     }
 }

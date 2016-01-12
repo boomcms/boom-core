@@ -19,10 +19,14 @@ class Person extends PeopleManager
 
     public function addGroups(Request $request, PersonModel $person)
     {
-        $groups = GroupFacade::find($request->input('groups'));
+        $groupIds = $request->input('groups');
 
-        foreach ($groups as $group) {
-            $person->addGroup($group);
+        if ($groupIds) {
+            $groups = GroupFacade::find($request->input('groups'));
+
+            foreach ($groups as $group) {
+                $person->addGroup($group);
+            }
         }
     }
 
@@ -70,12 +74,13 @@ class Person extends PeopleManager
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Site $site)
     {
         $job = new CreatePerson($request->input('email'), $request->input('name'));
         $person = Bus::dispatch($job);
 
         $this->addGroups($request, $person);
+        $person->addSite($site);
     }
 
     public function update(Request $request, PersonModel $person)
