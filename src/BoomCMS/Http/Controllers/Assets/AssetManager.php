@@ -39,7 +39,6 @@ class AssetManager extends Controller
         $assetsArr = AssetFacade::findMultiple((array) $this->request->input('asset'));
 
         if (count($assetsArr) === 1) {
-
             return response()->download(
                 $assetsArr[0]->getFilename(),
                 $assetsArr[0]->getOriginalFilename()
