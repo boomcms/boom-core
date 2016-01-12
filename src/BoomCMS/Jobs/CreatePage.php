@@ -22,7 +22,7 @@ class CreatePage extends Command implements SelfHandling
     protected $parent;
 
     /**
-     * The site to which to add the new page
+     * The site to which to add the new page.
      * 
      * @var Site
      */
