@@ -3,6 +3,7 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
@@ -39,7 +40,21 @@ class URLTest extends AbstractModelTestCase
 
     public function testGetSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $url = m::mock(URL::class.'[belongsTo,first]');
+
+        $url
+            ->shouldReceive('belongsTo')
+            ->once()
+            ->with(Site::class, 'site_id')
+            ->andReturnSelf();
+
+        $url
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($site);
+
+        $this->assertEquals($site, $url->getSite());
     }
 
     public function testGetLocation()
@@ -73,7 +88,13 @@ class URLTest extends AbstractModelTestCase
 
     public function testSetSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        $url = new URL();
+        $url->setSite($site);
+
+        $this->assertEquals($site->getId(), $url->{URL::ATTR_SITE});
     }
 
     public function testSetIsPrimary()

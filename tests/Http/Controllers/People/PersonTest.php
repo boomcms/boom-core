@@ -4,11 +4,14 @@ namespace BoomCMS\Tests\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\People\Person as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Mockery as m;
 
 class PersonTest extends AbstractTestCase
@@ -27,7 +30,16 @@ class PersonTest extends AbstractTestCase
 
     public function testAddSites()
     {
-        $this->markTestIncomplete();
+        $siteIds = [1, 2];
+        $sites = [new Group(), new Group()];
+        $request = new Request(['sites' => $siteIds]);
+        $person = m::mock(Person::class);
+
+        $person->shouldReceive('addSites')->once()->with($sites);
+
+        GroupFacade::shouldReceive('find')->with($siteIds)->andReturn($sites);
+
+        $this->controller->addGroups($request, $person);
     }
 
     public function testAddGroups()
@@ -86,11 +98,43 @@ class PersonTest extends AbstractTestCase
 
     public function testRemoveSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $person = m::mock(Person::class);
+
+        $person
+            ->shouldReceive('removeSite')
+            ->once()
+            ->with($site);
+
+        $this->controller->removeSite($person, $site);
     }
 
     public function testStoreAddsNewPersonToCurrentSite()
     {
-        $this->markTestIncomplete();
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        $person = m::mock(Person::class);
+        $person
+            ->shouldReceive('addSite')
+            ->once()
+            ->with($site);
+
+        Router::shouldReceive('getActiveSite')
+            ->once()
+            ->andReturn($site);
+
+        PersonFacade::shouldReceive('create')
+            ->once()
+            ->andReturn($person);
+
+        Event::shouldReceive('fire');
+        
+        $request = new Request([
+            'email' => 'support@uxblondon.com',
+            'name'  => 'Test user',
+        ]);
+
+        $this->controller->store($request);
     }
 }

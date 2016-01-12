@@ -5,6 +5,7 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Site as SiteModel;
 use BoomCMS\Repositories\Site as SiteRepository;
 use BoomCMS\Tests\AbstractTestCase;
+use Illuminate\Database\Eloquent\Collection;
 use Mockery as m;
 
 class SiteTest extends AbstractTestCase
@@ -37,12 +38,39 @@ class SiteTest extends AbstractTestCase
 
     public function testFindAll()
     {
-        $this->markTestIncomplete();
+        $collection = m::mock(Collection::class);
+
+        $model = m::mock(SiteModel::class);
+        $model
+            ->shouldReceive('all')
+            ->once()
+            ->andReturn($collection);
+
+        $repository = new SiteRepository($model);
+
+        $this->assertEquals($collection, $repository->findAll());
     }
 
     public function testFindByHostname()
     {
-        $this->markTestIncomplete();
+        $hostname = 'test.com';
+        $site = new SiteModel();
+
+        $model = m::mock(SiteModel::class);
+        $model
+            ->shouldReceive('where')
+            ->once()
+            ->with(SiteModel::ATTR_HOSTNAME, '=', $hostname)
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($site);
+
+        $repository = new SiteRepository($model);
+
+        $this->assertEquals($site, $repository->findByHostname($hostname));
     }
 
     public function testFindByPerson()
@@ -52,7 +80,23 @@ class SiteTest extends AbstractTestCase
 
     public function testFindDefault()
     {
-        $this->markTestIncomplete();
+        $site = new SiteModel();
+
+        $model = m::mock(SiteModel::class);
+        $model
+            ->shouldReceive('where')
+            ->once()
+            ->with(SiteModel::ATTR_DEFAULT, '=', true)
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($site);
+
+        $repository = new SiteRepository($model);
+
+        $this->assertEquals($site, $repository->findDefault());
     }
 
     public function testMakeDefault()

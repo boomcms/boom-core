@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Person as PersonModel;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Jobs\CreatePerson;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
@@ -23,6 +24,11 @@ class Person extends PeopleManager
         foreach ($groups as $group) {
             $person->addGroup($group);
         }
+    }
+
+    public function addSites(Request $request, PersonModel $person)
+    {
+        
     }
 
     public function availableGroups(PersonModel $person)
@@ -48,6 +54,11 @@ class Person extends PeopleManager
     public function removeGroup(PersonModel $person, Group $group)
     {
         $person->removeGroup($group);
+    }
+
+    public function removeSite(PersonModel $person, Site $site)
+    {
+        $person->removeSite($site);
     }
 
     public function show(Request $request, PersonModel $person)

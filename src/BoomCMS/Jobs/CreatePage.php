@@ -45,6 +45,7 @@ class CreatePage extends Command implements SelfHandling
                 'visible_in_nav_cms'          => $this->parent->childrenAreVisibleInCmsNav(),
                 'children_visible_in_nav'     => $this->parent->childrenAreVisibleInNav(),
                 'children_visible_in_nav_cms' => $this->parent->childrenAreVisibleInCmsNav(),
+                'site_id'                     => $site->getId(),
             ];
         }
 

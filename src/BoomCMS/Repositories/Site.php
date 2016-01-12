@@ -63,7 +63,7 @@ class Site implements SiteRepositoryInterface
      */
     public function findByHostname($hostname)
     {
-        ;
+        return $this->model->where(Model::ATTR_HOSTNAME, '=', $hostname)->first();
     }
 
     /**
@@ -79,7 +79,7 @@ class Site implements SiteRepositoryInterface
      */
     public function findDefault()
     {
-        ;
+        return $this->model->where(Model::ATTR_DEFAULT, '=', true)->first();
     }
 
     /**

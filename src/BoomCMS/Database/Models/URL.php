@@ -18,6 +18,7 @@ class URL extends Model implements URLInterface
     const ATTR_PAGE_ID = 'page_id';
     const ATTR_LOCATION = 'location';
     const ATTR_IS_PRIMARY = 'is_primary';
+    const ATTR_SITE = 'site_id';
 
     /**
      * @var PageInterface

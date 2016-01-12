@@ -34,7 +34,7 @@ trait SingleSite
      */
     public function setSite(Site $site)
     {
-        $this->{static::ATTR_SITE} = $site->getId();
+        $this->site_id = $site->getId();
 
         return $this;
     }

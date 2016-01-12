@@ -25,6 +25,7 @@ class Site extends Model implements SiteInterface
     ];
 
     protected $table = 'sites';
+    public $timestamps = false;
 
     public $guarded = [
         self::ATTR_ID,
