@@ -37,31 +37,32 @@ class AssetManager extends Controller
 
     public function download()
     {
-        $assets = AssetFacade::findMultiple((array) $this->request->input('asset'));
+        $assetsArr = AssetFacade::findMultiple((array) $this->request->input('asset'));
 
-        if (count($assets) === 1) {
+        if (count($assetsArr) === 1) {
+
             return Response::download(
-                $assets[0]->getFilename(),
-                $assets[0]->getOriginalFilename()
+                $assetsArr[0]->getFilename(),
+                $assetsArr[0]->getOriginalFilename()
             );
         }
-        $downloadFilename = rtrim($this->request->input('filename'), '.zip').'.zip';
-        $filename = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
-        $zip = new ZipArchive();
-        $zip->open($filename, ZipArchive::CREATE);
+        $downloadFilenameStr = rtrim($this->request->input('filename'), '.zip').'.zip';
+        $fileNameStr = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
+        $zipObj = new ZipArchive();
+        $zipObj->open($fileNameStr, ZipArchive::CREATE);
 
-        foreach ($assets as $asset) {
-            $zip->addFile($asset->getFilename(), $asset->getOriginalFilename());
+        foreach ($assetsArr as $asset) {
+            $zipObj->addFile($asset->getFilename(), $asset->getOriginalFilename());
         }
 
-        $zip->close();
+        $zipObj->close();
 
         $response = Response::make()
             ->header('Content-type', 'application/zip')
-            ->header('Content-Disposition', "attachment; filename=$downloadFilename")
-            ->setContent(file_get_contents($filename));
+            ->header('Content-Disposition', "attachment; filename=$downloadFilenameStr")
+            ->setContent(file_get_contents($fileNameStr));
 
-        unlink($filename);
+        unlink($fileNameStr);
 
         return $response;
         
