@@ -59,7 +59,7 @@ class Router
      *
      * @return mixed
      */
-    public function process($uri)
+    public function routePage($uri)
     {
         $this->page = Page::findByUri($uri);
 

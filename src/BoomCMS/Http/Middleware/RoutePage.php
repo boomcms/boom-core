@@ -6,7 +6,7 @@ use BoomCMS\Routing\Router;
 use Closure;
 use Illuminate\Http\Request;
 
-class Route
+class RoutePage
 {
     /**
      * @var Router
@@ -31,7 +31,7 @@ class Route
      */
     public function handle(Request $request, Closure $next)
     {
-        $response = $this->router->process($request->route()->getParameter('location'));
+        $response = $this->router->routePage($request->route()->getParameter('location'));
 
         if ($response) {
             return $response;

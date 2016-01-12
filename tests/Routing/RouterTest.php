@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Tests\Routing;
 
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Routing\Router;
 use BoomCMS\Support\Facades\Site as SiteFacade;
@@ -31,9 +32,18 @@ class RouterTest extends AbstractTestCase
         $this->router = m::mock(Router::class, [$this->app])->makePartial();
     }
 
-    public function testGetActivePage()
+    public function testSetAndGetActivePage()
     {
-        $this->markTestIncomplete();
+        $page = new Page();
+
+        $this->app
+            ->shouldReceive('instance')
+            ->once()
+            ->with(Page::class, $page);
+
+        $this->router->setActivePage($page);
+
+        $this->assertEquals($page, $this->router->getActivePage());
     }
 
     public function testSetAndGetActiveSite()
@@ -48,6 +58,26 @@ class RouterTest extends AbstractTestCase
         $this->router->setActiveSite($site);
 
         $this->assertEquals($site, $this->router->getActiveSite());
+    }
+
+    public function testRoutePageByPrimaryUri()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testRoutePageNotFound()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testRoutePageDeleted()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testRoutePageSecondaryUrl()
+    {
+        $this->markTestIncomplete();
     }
 
     public function testRouteHostname()
