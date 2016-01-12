@@ -8,7 +8,6 @@ use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use ZipArchive;
@@ -115,7 +114,7 @@ class AssetManager extends Controller
         }
 
         if (count($errors)) {
-            return new JsonResponse($errors, 500);
+            return response()->json($errors, 500);
         }
     }
 
@@ -153,7 +152,7 @@ class AssetManager extends Controller
             AssetFacade::createVersionFromFile($asset, $file);
         }
 
-        return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
+        return (count($errors)) ? new response()->json($errors, 500) : $assetIds;
     }
 
     protected function validateFileUpload()
