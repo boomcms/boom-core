@@ -8,10 +8,8 @@ use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
 use ZipArchive;
 
 class AssetManager extends Controller
@@ -37,34 +35,34 @@ class AssetManager extends Controller
 
     public function download()
     {
-        $assets = AssetFacade::findMultiple((array) $this->request->input('asset'));
+        $assetsArr = AssetFacade::findMultiple((array) $this->request->input('asset'));
 
-        if (count($assets) === 1) {
-            return Response::download(
-                $assets[0]->getFilename(),
-                $assets[0]->getOriginalFilename()
+        if (count($assetsArr) === 1) {
+            return response()->download(
+                $assetsArr[0]->getFilename(),
+                $assetsArr[0]->getOriginalFilename()
             );
-        } else {
-            $downloadFilename = rtrim($this->request->input('filename'), '.zip').'.zip';
-            $filename = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
-            $zip = new ZipArchive();
-            $zip->open($filename, ZipArchive::CREATE);
-
-            foreach ($assets as $asset) {
-                $zip->addFile($asset->getFilename(), $asset->getOriginalFilename());
-            }
-
-            $zip->close();
-
-            $response = Response::make()
-                ->header('Content-type', 'application/zip')
-                ->header('Content-Disposition', "attachment; filename=$downloadFilename")
-                ->setContent(file_get_contents($filename));
-
-            unlink($filename);
-
-            return $response;
         }
+        $fileNameStr = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
+        $zipObj = new ZipArchive();
+        $zipObj->open($fileNameStr, ZipArchive::CREATE);
+
+        foreach ($assetsArr as $asset) {
+            $zipObj->addFile($asset->getFilename(), $asset->getOriginalFilename());
+        }
+
+        $zipObj->close();
+        
+        $downloadFilenameStr = rtrim($this->request->input('filename'), '.zip').'.zip';
+        $responseObj = response()
+            ->header('Content-type', 'application/zip')
+            ->header('Content-Disposition', "attachment; filename=$downloadFilenameStr")
+            ->setContent(file_get_contents($fileNameStr));
+
+        unlink($fileNameStr);
+
+        return $responseObj;
+        
     }
 
     /**
@@ -116,7 +114,7 @@ class AssetManager extends Controller
         }
 
         if (count($errors)) {
-            return new JsonResponse($errors, 500);
+            return response()->json($errors, 500);
         }
     }
 
@@ -154,7 +152,7 @@ class AssetManager extends Controller
             AssetFacade::createVersionFromFile($asset, $file);
         }
 
-        return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
+        return (count($errors)) ? new response()->json($errors, 500) : $assetIds;
     }
 
     protected function validateFileUpload()
