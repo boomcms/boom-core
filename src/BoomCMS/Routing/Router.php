@@ -83,7 +83,7 @@ class Router
             $this->setActivePage($page);
 
             return;
-        } 
+        }
 
         throw new NotFoundHttpException();
     }
