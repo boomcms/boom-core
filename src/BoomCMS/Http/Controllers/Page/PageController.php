@@ -24,8 +24,8 @@ class PageController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
-        
-        /**
+
+        /*
          * Although no longer needed in this class, many classes extend this one
          * which still assume that this property will be set.
          * 
@@ -35,7 +35,7 @@ class PageController extends Controller
          */
         $this->page = $this->request->route()->getParameter('page');
     }
-    
+
     public function add(Request $request, Page $page)
     {
         $this->authorize('add', $page);
