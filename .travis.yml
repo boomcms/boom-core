@@ -7,5 +7,4 @@ services:
   - mysql
 script: composer test
 before_script:
-  - printf "\n" | pecl install imagick
-  - composer install
+  - composer install --ignore-platform-reqs
