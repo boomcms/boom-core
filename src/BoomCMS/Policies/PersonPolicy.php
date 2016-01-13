@@ -8,6 +8,6 @@ class PersonPolicy
 {
     public function editSuperuser(Person $user, Person $editing)
     {
-        return $user->isSuperUser() && $user->getId() !== $editing->getId();
+        return $user->isSuperUser() && $user->getId() != $editing->getId();
     }
 }

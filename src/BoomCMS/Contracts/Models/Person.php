@@ -13,6 +13,13 @@ interface Person
      */
     public function addSite(Site $site);
 
+    /**
+     * @param array $sites
+     *
+     * @return $this
+     */
+    public function addSites(array $sites);
+
     public function checkPassword($password);
 
     public function checkPersistCode($code);

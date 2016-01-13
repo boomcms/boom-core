@@ -4,9 +4,11 @@ namespace BoomCMS\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Person as PersonModel;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Jobs\CreatePerson;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
+use BoomCMS\Support\Facades\Site as SiteFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
@@ -18,10 +20,24 @@ class Person extends PeopleManager
 
     public function addGroups(Request $request, PersonModel $person)
     {
-        $groups = GroupFacade::find($request->input('groups'));
+        $groupIds = $request->input('groups');
 
-        foreach ($groups as $group) {
-            $person->addGroup($group);
+        if ($groupIds) {
+            $groups = GroupFacade::find($groupIds);
+
+            foreach ($groups as $group) {
+                $person->addGroup($group);
+            }
+        }
+    }
+
+    public function addSites(Request $request, PersonModel $person)
+    {
+        $siteIds = $request->input('sites');
+
+        if ($siteIds) {
+            $sites = SiteFacade::find($siteIds);
+            $person->addSites($sites);
         }
     }
 
@@ -50,6 +66,11 @@ class Person extends PeopleManager
         $person->removeGroup($group);
     }
 
+    public function removeSite(PersonModel $person, Site $site)
+    {
+        $person->removeSite($site);
+    }
+
     public function show(Request $request, PersonModel $person)
     {
         return view($this->viewPrefix.'view', [
@@ -59,12 +80,13 @@ class Person extends PeopleManager
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Site $site)
     {
         $job = new CreatePerson($request->input('email'), $request->input('name'));
         $person = Bus::dispatch($job);
 
         $this->addGroups($request, $person);
+        $person->addSite($site);
     }
 
     public function update(Request $request, PersonModel $person)

@@ -6,7 +6,6 @@ use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Group as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
-use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Mockery as m;
@@ -102,16 +101,11 @@ class GroupTest extends AbstractTestCase
         $site = new Site();
         $site->{Site::ATTR_ID} = 1;
 
-        Router::shouldReceive('getActiveSite')->andReturn($site);
-
         GroupFacade::shouldReceive('create')
-            ->with([
-                Group::ATTR_NAME => $name,
-                Group::ATTR_SITE => $site->getId(),
-            ])
+            ->with($site, $name)
             ->andReturn($group);
 
-        $this->assertEquals($group->getId(), $this->controller->store($request));
+        $this->assertEquals($group->getId(), $this->controller->store($request, $site));
     }
 
     public function testUpdate()

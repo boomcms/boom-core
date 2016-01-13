@@ -59,11 +59,11 @@ class Site implements SiteRepositoryInterface
     /**
      * @param string $hostname
      *
-     * @return null|Site
+     * @return null|Model
      */
     public function findByHostname($hostname)
     {
-        ;
+        return $this->model->where(Model::ATTR_HOSTNAME, '=', $hostname)->first();
     }
 
     /**
@@ -72,6 +72,35 @@ class Site implements SiteRepositoryInterface
     public function findByPerson(PersonModelInterface $person)
     {
         ;
+    }
+
+    /**
+     * @return null|SiteModelInterface
+     */
+    public function findDefault()
+    {
+        return $this->model->where(Model::ATTR_DEFAULT, '=', true)->first();
+    }
+
+    /**
+     * @param SiteModelInterface $site
+     *
+     * @return $this
+     */
+    public function makeDefault(SiteModelInterface $site)
+    {
+        if (!$site->isDefault()) {
+            $this->model
+                ->where(Model::ATTR_ID, '!=', $site->getId())
+                ->update([
+                    Model::ATTR_DEFAULT => false,
+                ]);
+
+            $site->setDefault(true);
+            $this->save($site);
+        }
+
+        return $this;
     }
 
     /**

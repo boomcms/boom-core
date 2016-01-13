@@ -2,21 +2,30 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Database\Models;
 use BoomCMS\Routing\Router as BoomCMSRouter;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    protected $models = [
+        'Asset',
+        'Group',
+        'Page',
+        'Person',
+        'Site',
+        'Template',
+        'URL',
+    ];
+
     public function boot(Router $router)
     {
-        $router->model('asset', Models\Asset::class);
-        $router->model('page', Models\Page::class);
-        $router->model('person', Models\Person::class);
-        $router->model('group', Models\Group::class);
-        $router->model('template', Models\Template::class);
-        $router->model('url', Models\URL::class);
+        foreach ($this->models as $model) {
+            $binding = strtolower($model);
+            $className = "BoomCMS\Database\Models\\$model";
+
+            $router->model($binding, $className);
+        }
 
         require __DIR__.'/../../routes.php';
     }
@@ -24,7 +33,7 @@ class RouteServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(BoomCMSRouter::class, function () {
-            return new BoomCMSRouter();
+            return new BoomCMSRouter($this->app);
         });
     }
 }

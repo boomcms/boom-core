@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Contracts\Models\Site;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
@@ -24,24 +25,33 @@ class PageController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
+
+        /*
+         * Although no longer needed in this class, many classes extend this one
+         * which still assume that this property will be set.
+         * 
+         * This can be safely removed once all controllers are updated to use DI to get the page parameter.
+         * 
+         * @see https://github.com/boomcms/boom-core/issues/171
+         */
         $this->page = $this->request->route()->getParameter('page');
     }
 
-    public function add()
+    public function add(Request $request, Site $site, Page $page)
     {
-        $this->authorize('add', $this->page);
+        $this->authorize('add', $page);
 
-        if (!$this->request->input('noprompt') && $this->page->shouldPromptOnAddPage()) {
+        if (!$request->input('noprompt') && $page->shouldPromptOnAddPage()) {
             return [
                 'prompt' => view("{$this->viewPrefix}add", [
-                    'page' => $this->page,
+                    'page' => $page,
                 ])->render(),
             ];
         } else {
-            $parent = $this->page->getAddPageParent();
+            $parent = $page->getAddPageParent();
             $newPage = $this->dispatch(new CreatePage(auth()->user(), $parent));
 
-            Event::fire(new PageWasCreated($newPage, $this->page));
+            Event::fire(new PageWasCreated($newPage, $site, $page));
 
             return [
                 'url' => (string) $newPage->url(),
@@ -50,16 +60,19 @@ class PageController extends Controller
         }
     }
 
-    public function discard()
+    public function discard(Page $page)
     {
-        $this->page->deleteDrafts();
+        $this->authorize('edit', $page);
+        $page->deleteDrafts();
     }
 
-    public function urls()
+    public function urls(Page $page)
     {
+        $this->authorize('editUrls', $page);
+
         return view($this->viewPrefix.'urls', [
-            'page' => $this->page,
-            'urls' => $this->page->getUrls(),
+            'page' => $page,
+            'urls' => $page->getUrls(),
         ]);
     }
 }

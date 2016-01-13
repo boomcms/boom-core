@@ -7,6 +7,8 @@ use BoomCMS\Database\Models\Site;
 
 class SiteTest extends AbstractModelTestCase
 {
+    protected $model = Site::class;
+
     public function testShouldImplementSiteContract()
     {
         $this->assertTrue(in_array(SiteContract::class, class_implements(Site::class)));
@@ -20,6 +22,7 @@ class SiteTest extends AbstractModelTestCase
             'ATTR_HOSTNAME'    => 'hostname',
             'ATTR_ADMIN_EMAIL' => 'admin_email',
             'ATTR_ANALYTICS'   => 'analytics',
+            'ATTR_DEFAULT'     => 'default',
         ];
 
         foreach ($values as $const => $col) {
@@ -42,13 +45,27 @@ class SiteTest extends AbstractModelTestCase
     public function testGetAdminEmail()
     {
         $site = new Site([Site::ATTR_ADMIN_EMAIL => 'test@test.com']);
-        $this->assertEquals('test@test.com', $site->getHostname());
+        $this->assertEquals('test@test.com', $site->getAdminEmail());
     }
 
     public function testGetAnalytics()
     {
         $site = new Site([Site::ATTR_ANALYTICS => 'test']);
         $this->assertEquals('test', $site->getAnalytics());
+    }
+
+    public function testIsDefault()
+    {
+        $site = new Site([Site::ATTR_DEFAULT => true]);
+        $this->assertEquals(true, $site->isDefault());
+    }
+
+    public function testSetDefault()
+    {
+        $site = new Site();
+
+        $this->assertEquals($site, $site->setDefault(true));
+        $this->assertEquals(true, $site->isDefault());
     }
 
     public function testSetHostname()

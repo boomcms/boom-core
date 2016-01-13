@@ -49,6 +49,18 @@ interface Site
     public function findByPerson(PersonInterface $person);
 
     /**
+     * @return SiteInterface
+     */
+    public function findDefault();
+
+    /**
+     * Make a site the default.
+     *
+     * @param SiteInterface $site
+     */
+    public function makeDefault(SiteInterface $site);
+
+    /**
      * @param SiteInterface $site
      *
      * @return SiteInterface

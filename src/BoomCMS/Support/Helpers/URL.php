@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Support\Helpers;
 
+use BoomCMS\Contracts\Models\Site;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
@@ -35,10 +36,11 @@ abstract class URL
      *
      * @param string $url
      */
-    public static function isAvailable($url, $ignore_url = null)
+    public static function isAvailable(Site $site, $url, $ignore_url = null)
     {
         $query = DB::table('page_urls')
             ->select(DB::raw('1'))
+            ->where('site_id', '=', $site->getId())
             ->where('location', '=', $url);
 
         if ($ignore_url) {
@@ -60,7 +62,7 @@ abstract class URL
      *
      * @param string $url
      */
-    public static function makeUnique($url)
+    public static function makeUnique(Site $site, $url)
     {
         $append = 0;
         $start_url = $url;
@@ -68,7 +70,7 @@ abstract class URL
         do {
             $url = ($append > 0) ? ($start_url.$append) : $start_url;
             $append++;
-        } while (!static::isAvailable($url));
+        } while (!static::isAvailable($site, $url));
 
         return $url;
     }
