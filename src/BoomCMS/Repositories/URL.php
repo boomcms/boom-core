@@ -25,9 +25,9 @@ class URL implements URLRepositoryInterface
     }
 
     /**
-     * @param string $location
-     * @param PageInterface    $page
-     * @param bool   $isPrimary
+     * @param string        $location
+     * @param PageInterface $page
+     * @param bool          $isPrimary
      *
      * @return URLInterface
      */
@@ -69,7 +69,7 @@ class URL implements URLRepositoryInterface
 
     /**
      * @param SiteInterface $site
-     * @param string $location
+     * @param string        $location
      *
      * @return URLInterface
      */

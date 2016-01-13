@@ -9,9 +9,9 @@ use BoomCMS\Contracts\Models\URL as URLInterface;
 interface URL
 {
     /**
-     * @param string $location
-     * @param PageInterface    $page
-     * @param bool   $isPrimary
+     * @param string        $location
+     * @param PageInterface $page
+     * @param bool          $isPrimary
      *
      * @return URLInterface
      */
@@ -33,7 +33,7 @@ interface URL
 
     /**
      * @param SiteInterface $site
-     * @param string $location
+     * @param string        $location
      *
      * @return URLInterface
      */

@@ -70,7 +70,7 @@ class RouterTest extends AbstractTestCase
     public function testRoutePageByPrimaryUri()
     {
         $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
-        
+
         Editor::shouldReceive('isDisabled')
             ->once()
             ->andReturn(true);
