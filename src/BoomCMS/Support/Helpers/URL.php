@@ -3,7 +3,7 @@
 namespace BoomCMS\Support\Helpers;
 
 use BoomCMS\Contracts\Models\Site;
-use Illuminate\Support\Facades\DB;
+use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -31,27 +31,6 @@ abstract class URL
         return static::makeUnique($url);
     }
 
-    /**
-     * Determine whether a URL is already being used by a page in the CMS.
-     *
-     * @param string $url
-     */
-    public static function isAvailable(Site $site, $url, $ignore_url = null)
-    {
-        $query = DB::table('page_urls')
-            ->select(DB::raw('1'))
-            ->where('site_id', '=', $site->getId())
-            ->where('location', '=', $url);
-
-        if ($ignore_url) {
-            $query->where('id', '!=', $ignore_url);
-        }
-
-        $result = $query->first();
-
-        return $result === null;
-    }
-
     public static function makeRelative($url)
     {
         return ($base = Request::getHttpHost()) ? str_replace(Request::getScheme().$base, '/', $url) : $url;
@@ -60,17 +39,20 @@ abstract class URL
     /**
      * Increments a numeric suffix until the URL is unique.
      *
+     * @param Site $site
      * @param string $url
+     *
+     * @return string
      */
     public static function makeUnique(Site $site, $url)
     {
         $append = 0;
-        $start_url = $url;
+        $startUrl = $url;
 
         do {
-            $url = ($append > 0) ? ($start_url.$append) : $start_url;
+            $url = ($append > 0) ? ($startUrl.$append) : $startUrl;
             $append++;
-        } while (!static::isAvailable($site, $url));
+        } while (!URLFacade::isAvailable($site, $url));
 
         return $url;
     }

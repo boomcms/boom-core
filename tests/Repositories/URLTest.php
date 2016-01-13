@@ -6,10 +6,9 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Repositories\URL as URLRepository;
+use BoomCMS\Support\Facades\URL as URLFacade;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\DB;
 use Mockery as m;
 
 class URLTest extends AbstractTestCase
@@ -34,13 +33,6 @@ class URLTest extends AbstractTestCase
 
     public function testCreate()
     {
-        $query = m::mock(Builder::class);
-        $query->shouldReceive('select')->andReturnSelf();
-        $query->shouldReceive('where')->andReturnSelf();
-        $query->shouldReceive('first')->andReturnNull();
-        DB::shouldReceive('table')->andReturn($query);
-        DB::shouldReceive('raw')->andReturnSelf();
-
         $site = new Site();
         $site->{Site::ATTR_ID} = 1;
 
@@ -66,6 +58,10 @@ class URLTest extends AbstractTestCase
                 URL::ATTR_SITE       => $site->getId(),
             ])
             ->andReturn($url);
+
+        URLFacade::shouldReceive('isAvailable')
+            ->once()
+            ->andReturn(true);
 
         $this->assertEquals($url, $this->repository->create($location, $page, $isPrimary));
     }
@@ -118,5 +114,34 @@ class URLTest extends AbstractTestCase
             ->andReturn($url);
 
         $this->assertEquals($url, $this->repository->findBySiteAndLocation($site, $location));
+    }
+
+    public function testIsAvailable()
+    {
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+        $location = 'test';
+
+        foreach ([true, false] as $exists) {
+            $this->model
+                ->shouldReceive('where')
+                ->once()
+                ->with(URL::ATTR_SITE, '=', $site->getId())
+                ->andReturnSelf();
+
+            $this->model
+                ->shouldReceive('where')
+                ->once()
+                ->with(URL::ATTR_LOCATION, '=', $location)
+                ->andReturnSelf();
+
+            $this->model
+                ->shouldReceive('exists')
+                ->once()
+                ->andReturn($exists);
+
+            $available = !$exists;
+            $this->assertEquals($available, $this->repository->isAvailable($site, $location));
+        }
     }
 }

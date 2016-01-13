@@ -40,6 +40,14 @@ interface URL
     public function findBySiteAndLocation(SiteInterface $site, $location);
 
     /**
+     * @param SiteInterface $site
+     * @param type $location
+     *
+     * @return bool
+     */
+    public function isAvailable(SiteInterface $site, $location);
+
+    /**
      * @param URLInterface $url
      *
      * @return URLInterface

@@ -34,7 +34,6 @@ class URL implements URLRepositoryInterface
     public function create($location, PageInterface $page, $isPrimary = false)
     {
         $site = $page->getSite();
-
         $unique = URLHelper::makeUnique($site, URLHelper::sanitise($location));
 
         return $this->model->create([
@@ -79,6 +78,22 @@ class URL implements URLRepositoryInterface
             ->where(Model::ATTR_SITE, '=', $site->getId())
             ->where(Model::ATTR_LOCATION, '=', URLHelper::sanitise($location))
             ->first();
+    }
+
+    /**
+     * Determine whether a URL is already being used by a page in the CMS.
+     *
+     * @param SiteInterface $site
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function isAvailable(SiteInterface $site, $path)
+    {
+        return !$this->model
+            ->where(Model::ATTR_SITE, '=', $site->getId())
+            ->where(Model::ATTR_LOCATION, '=', $path)
+            ->exists();
     }
 
     /**
