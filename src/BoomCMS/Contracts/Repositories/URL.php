@@ -41,7 +41,7 @@ interface URL
 
     /**
      * @param SiteInterface $site
-     * @param type $location
+     * @param type          $location
      *
      * @return bool
      */
