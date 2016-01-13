@@ -39,7 +39,7 @@ abstract class URL
     /**
      * Increments a numeric suffix until the URL is unique.
      *
-     * @param Site $site
+     * @param Site   $site
      * @param string $url
      *
      * @return string

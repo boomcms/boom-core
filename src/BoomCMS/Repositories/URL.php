@@ -84,7 +84,7 @@ class URL implements URLRepositoryInterface
      * Determine whether a URL is already being used by a page in the CMS.
      *
      * @param SiteInterface $site
-     * @param string $path
+     * @param string        $path
      *
      * @return bool
      */
