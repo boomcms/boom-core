@@ -4,11 +4,16 @@ namespace BoomCMS\Tests\Routing;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
+use BoomCMS\Database\Models\URL;
 use BoomCMS\Routing\Router;
+use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Site as SiteFacade;
+use BoomCMS\Support\Facades\URL as URLFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Foundation\Application;
 use Mockery as m;
+use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RouterTest extends AbstractTestCase
 {
@@ -23,6 +28,8 @@ class RouterTest extends AbstractTestCase
      * @var Router
      */
     protected $router;
+
+    protected $uri = '/test';
 
     public function setUp()
     {
@@ -62,22 +69,139 @@ class RouterTest extends AbstractTestCase
 
     public function testRoutePageByPrimaryUri()
     {
-        $this->markTestIncomplete();
+        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
+        
+        Editor::shouldReceive('isDisabled')
+            ->once()
+            ->andReturn(true);
+
+        $page = m::mock(Page::class);
+        $page
+            ->shouldReceive('isVisible')
+            ->once()
+            ->andReturn(true);
+
+        $url = m::mock(URL::class);
+        $url
+            ->shouldReceive('getPage')
+            ->once()
+            ->andReturn($page);
+
+        $url->shouldReceive('is')->andReturn(true);
+        $page->shouldReceive('url')->andReturn($url);
+
+        URLFacade::shouldReceive('findBySiteAndLocation')
+            ->with($this->router->getActiveSite(), $this->uri)
+            ->once()
+            ->andReturn($url);
+
+        $this->router
+            ->shouldReceive('setActivePage')
+            ->once()
+            ->with($page);
+
+        $this->router->routePage($this->uri);
     }
 
-    public function testRoutePageNotFound()
+    public function testRouteUrlDoesNotExist()
     {
-        $this->markTestIncomplete();
+        $this->setExpectedException(NotFoundHttpException::class);
+
+        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
+
+        URLFacade::shouldReceive('findBySiteAndLocation')
+            ->with($this->router->getActiveSite(), $this->uri)
+            ->once()
+            ->andReturnNull();
+
+        $this->router->routePage($this->uri);
+    }
+
+    public function testRouteInvisiblePageIsNotFoundWhenEditorDisabled()
+    {
+        $this->setExpectedException(NotFoundHttpException::class);
+
+        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
+
+        Editor::shouldReceive('isDisabled')
+            ->once()
+            ->andReturn(true);
+
+        $page = m::mock(Page::class);
+        $page
+            ->shouldReceive('isVisible')
+            ->once()
+            ->andReturn(false);
+
+        $url = m::mock(URL::class);
+        $url
+            ->shouldReceive('getPage')
+            ->once()
+            ->andReturn($page);
+
+        URLFacade::shouldReceive('findBySiteAndLocation')
+            ->with($this->router->getActiveSite(), $this->uri)
+            ->once()
+            ->andReturn($url);
+
+        $this->router->routePage($this->uri);
+    }
+
+    public function testRouteInvisiblePageIsFoundWhenEditorEnabled()
+    {
+        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
+
+        Editor::shouldReceive('isDisabled')
+            ->once()
+            ->andReturn(false);
+
+        $page = m::mock(Page::class);
+
+        $url = m::mock(URL::class);
+        $url
+            ->shouldReceive('getPage')
+            ->once()
+            ->andReturn($page);
+
+        $url
+            ->shouldReceive('is')
+            ->andReturn(true);
+
+        $page
+            ->shouldReceive('url')
+            ->andReturn($url);
+
+        URLFacade::shouldReceive('findBySiteAndLocation')
+            ->with($this->router->getActiveSite(), $this->uri)
+            ->once()
+            ->andReturn($url);
+
+        $this->router
+            ->shouldReceive('setActivePage')
+            ->once()
+            ->with($page);
+
+        $this->router->routePage($this->uri);
     }
 
     public function testRoutePageDeleted()
     {
-        $this->markTestIncomplete();
-    }
+        $this->setExpectedException(GoneHttpException::class);
 
-    public function testRoutePageSecondaryUrl()
-    {
-        $this->markTestIncomplete();
+        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
+
+        $url = m::mock(URL::class);
+        $url
+            ->shouldReceive('getPage')
+            ->once()
+            ->andReturnNull();
+
+        URLFacade::shouldReceive('findBySiteAndLocation')
+            ->with($this->router->getActiveSite(), $this->uri)
+            ->once()
+            ->andReturn($url);
+
+        $this->router->routePage($this->uri);
     }
 
     public function testRouteHostname()

@@ -4,9 +4,9 @@ namespace BoomCMS\Routing;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
+use BoomCMS\Database\Models\Page as PageModel;
 use BoomCMS\Database\Models\Site as SiteModel;
 use BoomCMS\Support\Facades\Editor;
-use BoomCMS\Support\Facades\Page;
 use BoomCMS\Support\Facades\Site;
 use BoomCMS\Support\Facades\URL;
 use Illuminate\Foundation\Application;
@@ -55,43 +55,43 @@ class Router
     }
 
     /**
-     * @param string $uri
+     * @param string $path
      *
      * @return mixed
      */
-    public function routePage($uri)
+    public function routePage($path)
     {
-        $this->page = Page::findByUri($uri);
+        $url = URL::findBySiteAndLocation($this->getActiveSite(), $path);
 
-        if (!$this->page) {
-            $url = URL::findByLocation($uri);
+        if ($url) {
+            $page = $url->getPage();
 
-            // The URL isn't in use or
-            // The URL is in use and has a page - the page must not be visible to the current user
-            //
-            // 404.
-            if (!$url || ($url->getPage() && !$url->getPage()->isVisible())) {
+            if (!$page) {
+                // The url is in use but doesn't have a page.
+                // The page must have been deleted.
+                throw new GoneHttpException();
+            }
+
+            if (Editor::isDisabled() && !$page->isVisible()) {
                 throw new NotFoundHttpException();
             }
 
-            // The url is in use but doesn't have a page.
-            // The page must have been deleted.
-            //
-            // 410.
-            throw new GoneHttpException();
-        }
+            if (!$page->url()->is($path)) {
+                return redirect((string) $page->url(), 301);
+            }
 
-        if (Editor::isDisabled() && !$this->page->isVisible()) {
-            throw new NotFoundHttpException();
-        }
+            $this->setActivePage($page);
 
-        if (!$this->page->url()->is($uri)) {
-            return redirect((string) $this->page->url(), 301);
-        }
+            return;
+        } 
+
+        throw new NotFoundHttpException();
     }
 
     /**
      * @param string $hostname
+     *
+     * @return $this
      */
     public function routeHostname($hostname)
     {
@@ -100,7 +100,20 @@ class Router
         $site = Site::findByHostname($hostname);
         $site = $site ?: Site::findDefault();
 
-        $this->setActiveSite($site);
+        return $this->setActiveSite($site);
+    }
+
+    /**
+     * @param PageInterface $page
+     *
+     * @return $this
+     */
+    public function setActivePage(PageInterface $page)
+    {
+        $this->page = $page;
+        $this->app->instance(PageModel::class, $page);
+
+        return $this;
     }
 
     /**
