@@ -17,6 +17,26 @@ class PageController extends Controller
 
     protected $viewPrefix = 'boomcms::editor.page.';
 
+    /**
+     * @var Page
+     */
+    protected $page;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+
+        /*
+         * Although no longer needed in this class, many classes extend this one
+         * which still assume that this property will be set.
+         * 
+         * This can be safely removed once all controllers are updated to use DI to get the page parameter.
+         * 
+         * @see https://github.com/boomcms/boom-core/issues/171
+         */
+        $this->page = $this->request->route()->getParameter('page');
+    }
+
     public function add(Request $request, Site $site, Page $page)
     {
         $this->authorize('add', $page);
