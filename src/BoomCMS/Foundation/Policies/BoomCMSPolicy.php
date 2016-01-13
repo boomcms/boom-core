@@ -4,6 +4,7 @@ namespace BoomCMS\Foundation\Policies;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
+use BoomCMS\Support\Facades\Router;
 use Illuminate\Support\Facades\DB;
 
 abstract class BoomCMSPolicy
@@ -13,6 +14,23 @@ abstract class BoomCMSPolicy
     public function __call($name, $arguments)
     {
         return $this->check($name, $arguments[0], $arguments[1]);
+    }
+
+    /**
+     * @param Person $person
+     * @param string $ability
+     *
+     * @return bool
+     */
+    public function before(Person $person, $ability)
+    {
+        if ($person->isSuperUser()) {
+            return true;
+        }
+
+        if (!$person->hasSite(Router::getActiveSite())) {
+            return false;
+        }
     }
 
     public function check($role, Person $person, $where)
