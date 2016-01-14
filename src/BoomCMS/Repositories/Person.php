@@ -84,7 +84,7 @@ class Person implements PersonRepositoryInterface, UserProvider
     /**
      * Retrieve a user by the given credentials.
      *
-     * @param  array  $credentials
+     * @param array $credentials
      *
      * @return null|Authenticatable
      */
@@ -93,7 +93,7 @@ class Person implements PersonRepositoryInterface, UserProvider
         $this->model->whereSite(Router::getActiveSite());
 
         foreach ($credentials as $key => $value) {
-            if (! Str::contains($key, 'password')) {
+            if (!Str::contains($key, 'password')) {
                 $this->model->where($key, '=', $value);
             }
         }
@@ -102,7 +102,7 @@ class Person implements PersonRepositoryInterface, UserProvider
     }
 
     /**
-     * @param  mixed  $id
+     * @param mixed $id
      *
      * @return null|Authenticatable
      */
@@ -112,8 +112,8 @@ class Person implements PersonRepositoryInterface, UserProvider
     }
 
     /**
-     * @param  mixed  $identifier
-     * @param  string  $token
+     * @param mixed  $identifier
+     * @param string $token
      *
      * @return null|Authenticatable
      */
@@ -137,7 +137,7 @@ class Person implements PersonRepositoryInterface, UserProvider
 
     /**
      * @param Authenticatable $person
-     * @param string $token
+     * @param string          $token
      */
     public function updateRememberToken(Authenticatable $person, $token)
     {
@@ -149,8 +149,8 @@ class Person implements PersonRepositoryInterface, UserProvider
     /**
      * Validate a user against the given credentials.
      *
-     * @param  Authenticatable  $person
-     * @param  array  $credentials
+     * @param Authenticatable $person
+     * @param array           $credentials
      *
      * @return bool
      */

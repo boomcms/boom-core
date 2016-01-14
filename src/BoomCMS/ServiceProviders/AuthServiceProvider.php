@@ -26,8 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
 
-        $this->app['auth']->extend('boomcms', function ()
-        {
+        $this->app['auth']->extend('boomcms', function () {
             return $this->app['boomcms.repositories.person'];
         });
     }

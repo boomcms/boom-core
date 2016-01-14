@@ -5,8 +5,8 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Person as PersonRepository;
-use BoomCMS\Tests\AbstractTestCase;
 use BoomCMS\Support\Facades\Router;
+use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
 class PersonTest extends AbstractTestCase
@@ -89,7 +89,6 @@ class PersonTest extends AbstractTestCase
             ->once()
             ->andReturn($person);
 
-
         $this->assertEquals($person, $this->repository->retrieveByCredentials($credentials));
     }
 
@@ -126,7 +125,7 @@ class PersonTest extends AbstractTestCase
             ->once()
             ->with($person->getKeyName(), '=', $personId)
             ->andReturnSelf();
-        
+
         $this->model
             ->shouldReceive('where')
             ->once()

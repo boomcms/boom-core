@@ -139,7 +139,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     }
 
     /**
-     * @param Builder $query
+     * @param Builder       $query
      * @param SiteInterface $site
      *
      * @return Buider
@@ -149,7 +149,6 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         return $query
             ->join('person_site', 'people.id', '=', 'person_site.person_id')
             ->where('person_site.site_id', '=', $site->getId());
-            
     }
 
     /**

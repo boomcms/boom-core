@@ -28,7 +28,7 @@ class PageTest extends AbstractTestCase
         $this->model = m::mock(Page::class);
         $this->repository = m::mock(PageRepository::class, [$this->model])->makePartial();
     }
-    
+
     public function testDelete()
     {
         $page = m::mock(Page::class);

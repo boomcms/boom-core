@@ -59,7 +59,6 @@ class SiteTest extends AbstractTestCase
             ->once()
             ->andReturn($collection);
 
-
         $this->assertEquals($collection, $this->repository->findAll());
     }
 

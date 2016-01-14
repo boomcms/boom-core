@@ -63,7 +63,7 @@ class Page
 
     /**
      * @param SiteInterface $site
-     * @param string $uri
+     * @param string        $uri
      *
      * @return null|Model
      */

@@ -69,6 +69,6 @@ trait MultipleSites
 
     public function sites()
     {
-       return $this->belongsToMany(SiteModel::class);
+        return $this->belongsToMany(SiteModel::class);
     }
 }

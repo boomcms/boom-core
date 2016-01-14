@@ -10,10 +10,10 @@ use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
 use BoomCMS\Support\Facades\Site as SiteFacade;
 use BoomCMS\Tests\AbstractTestCase;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Database\Eloquent\Collection;
 use Mockery as m;
 
 class PersonTest extends AbstractTestCase
