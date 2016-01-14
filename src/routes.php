@@ -49,8 +49,8 @@ Route::group(['middleware' => [
             });
 
             Route::group([
-                'namespace' => 'People',
-                'middleware' => [Middleware\PeopleManager::class]
+                'namespace'  => 'People',
+                'middleware' => [Middleware\PeopleManager::class],
             ], function () {
                 Route::get('people', 'PeopleManager@index');
 
