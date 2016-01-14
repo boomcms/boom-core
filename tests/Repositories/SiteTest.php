@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Tests\Repositories;
 
+use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site as SiteModel;
 use BoomCMS\Repositories\Site as SiteRepository;
 use BoomCMS\Tests\AbstractTestCase;
@@ -10,45 +11,56 @@ use Mockery as m;
 
 class SiteTest extends AbstractTestCase
 {
+    /**
+     * @var SiteModel
+     */
+    protected $model;
+
+    /**
+     * @var SiteRepository
+     */
+    protected $repository;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->model = m::mock(SiteModel::class);
+        $this->repository = new SiteRepository($this->model);
+    }
+
     public function testDelete()
     {
         $model = m::mock(SiteModel::class);
         $model->shouldReceive('delete')->once();
 
-        $repository = new SiteRepository($model);
-
-        $this->assertEquals($repository, $repository->delete($model));
+        $this->assertEquals($this->repository, $this->repository->delete($model));
     }
 
     public function testFind()
     {
         $id = 1;
 
-        $model = m::mock(SiteModel::class);
-        $model
+        $this->model
             ->shouldReceive('find')
             ->once()
             ->with($id)
             ->andReturnSelf();
 
-        $repository = new SiteRepository($model);
-
-        $this->assertEquals($model, $repository->find($id));
+        $this->assertEquals($this->model, $this->repository->find($id));
     }
 
     public function testFindAll()
     {
-        $collection = m::mock(Collection::class);
+        $collection = new Collection();
 
-        $model = m::mock(SiteModel::class);
-        $model
+        $this->model
             ->shouldReceive('all')
             ->once()
             ->andReturn($collection);
 
-        $repository = new SiteRepository($model);
 
-        $this->assertEquals($collection, $repository->findAll());
+        $this->assertEquals($collection, $this->repository->findAll());
     }
 
     public function testFindByHostname()
@@ -56,26 +68,50 @@ class SiteTest extends AbstractTestCase
         $hostname = 'test.com';
         $site = new SiteModel();
 
-        $model = m::mock(SiteModel::class);
-        $model
+        $this->model
             ->shouldReceive('where')
             ->once()
             ->with(SiteModel::ATTR_HOSTNAME, '=', $hostname)
             ->andReturnSelf();
 
-        $model
+        $this->model
             ->shouldReceive('first')
             ->once()
             ->andReturn($site);
 
-        $repository = new SiteRepository($model);
-
-        $this->assertEquals($site, $repository->findByHostname($hostname));
+        $this->assertEquals($site, $this->repository->findByHostname($hostname));
     }
 
     public function testFindByPerson()
     {
-        $this->markTestIncomplete();
+        $sites = [new SiteModel(), new SiteModel()];
+        $person = new Person();
+        $person->{Person::ATTR_ID} = 1;
+
+        $this->model
+            ->shouldReceive('join')
+            ->once()
+            ->with('person_site', 'person_site.site_id', '=', 'sites.id')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with('person_site.person_id', '=', $person->getId())
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with('name', 'asc')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('all')
+            ->once()
+            ->andReturn($sites);
+
+        $this->assertEquals($sites, $this->repository->findByPerson($person));
     }
 
     public function testFindDefault()

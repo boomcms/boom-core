@@ -6,6 +6,7 @@ use BoomCMS\Contracts\Models\Person as PersonModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Contracts\Repositories\Site as SiteRepositoryInterface;
 use BoomCMS\Database\Models\Site as Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class Site implements SiteRepositoryInterface
 {
@@ -68,10 +69,16 @@ class Site implements SiteRepositoryInterface
 
     /**
      * @param PersonModelInterface $person
+     *
+     * @return Collection
      */
     public function findByPerson(PersonModelInterface $person)
     {
-        ;
+        return $this->model
+            ->join('person_site', 'person_site.site_id', '=', 'sites.id')
+            ->where('person_site.person_id', '=', $person->getId())
+            ->orderBy('name', 'asc')
+            ->all();
     }
 
     /**

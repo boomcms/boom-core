@@ -4,6 +4,7 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
+use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
 class PersonTest extends AbstractModelTestCase
@@ -150,6 +151,28 @@ class PersonTest extends AbstractModelTestCase
             ->with($site);
 
         $this->assertEquals($person, $person->removeSite($site));
+    }
+
+    public function testScopeWhereSite()
+    {
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+        $person = new Person();
+        $query = m::mock(Builder::class);
+
+        $query
+            ->shouldReceive('join')
+            ->once()
+            ->with('person_site', 'people.id', '=', 'person_site.person_id')
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->with('person_site.site_id', '=', $site->getId())
+            ->andReturnSelf();
+
+        $this->assertEquals($query, $person->scopeWhereSite($query, $site));
     }
 
     public function testSetGetRememberLoginToken()

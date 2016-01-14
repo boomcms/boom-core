@@ -5,11 +5,13 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Auth\Hasher;
 use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
+use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Traits\MultipleSites;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
@@ -134,6 +136,20 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         $this->groups()->detach($group->getId());
 
         return $this;
+    }
+
+    /**
+     * @param Builder $query
+     * @param SiteInterface $site
+     *
+     * @return Buider
+     */
+    public function scopeWhereSite(Builder $query, SiteInterface $site)
+    {
+        return $query
+            ->join('person_site', 'people.id', '=', 'person_site.person_id')
+            ->where('person_site.site_id', '=', $site->getId());
+            
     }
 
     /**

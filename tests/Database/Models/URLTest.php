@@ -12,11 +12,6 @@ class URLTest extends AbstractModelTestCase
 {
     protected $model = URL::class;
 
-    public function testAsStringIncludesHostnameOfSite()
-    {
-        $this->markTestIncomplete();
-    }
-
     public function testIsPrimary()
     {
         $url = new URL();
