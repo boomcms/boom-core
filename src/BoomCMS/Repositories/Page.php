@@ -8,16 +8,6 @@ use BoomCMS\Database\Models\Page as Model;
 class Page
 {
     /**
-     * @var array
-     */
-    protected $cache = [
-        'id'            => [],
-        'uri'           => [],
-        'internal_name' => [],
-        'primary_uri'   => [],
-    ];
-
-    /**
      * @var Model
      */
     protected $model;
