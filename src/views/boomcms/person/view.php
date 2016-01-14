@@ -21,7 +21,7 @@
 					Status
 
 					<select name="enabled" id="person-status">
-						<option value="0"<?php if (!$person->isEnabled()): ?> selected="selected"<?php endif ?>>Disabled</option>
+						<option value=""<?php if (!$person->isEnabled()): ?> selected="selected"<?php endif ?>>Disabled</option>
 						<option value="1"<?php if ($person->isEnabled()): ?> selected="selected"<?php endif ?>>Enabled</option>
 					</select>
 				</label>
@@ -31,7 +31,7 @@
 						Superuser
 
 						<select name="superuser" id="person-superuser">
-							<option value="0"<?php if (!$person->isSuperuser()): ?> selected="selected"<?php endif ?>>No</option>
+							<option value=""<?php if (!$person->isSuperuser()): ?> selected="selected"<?php endif ?>>No</option>
 							<option value="1"<?php if ($person->isSuperuser()): ?> selected="selected"<?php endif ?>>Yes</option>
 						</select>
 					</label>

@@ -74,14 +74,12 @@ class Person extends PeopleManager
 
     public function update(Request $request, PersonModel $person)
     {
-        $superuser = $request->input('superuser');
-
         $person
             ->setName($request->input('name'))
-            ->setEnabled($request->input('enabled') == 1);
+            ->setEnabled($request->has('enabled'));
 
-        if ($superuser !== null && Auth::check('editSuperuser', $person)) {
-            $person->setSuperuser($superuser == 1);
+        if ($request->input('superuser') && Auth::check('editSuperuser', $person)) {
+            $person->setSuperuser($request->has('superuser'));
         }
 
         PersonFacade::save($person);

@@ -53,7 +53,7 @@
 
                     <select name="children_visible_in_nav_cms" id="children_visible_in_nav_cms">
                         <option value="1"<?php if ($page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                        <option value="0"<?php if (!$page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
+                        <option value=""<?php if (!$page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
                     </select>
                 </label>
 
