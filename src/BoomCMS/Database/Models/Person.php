@@ -11,10 +11,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 
 class Person extends Model implements PersonInterface, AuthenticatableContract, CanResetPassword
 {
     use Authenticatable;
+    use Authorizable;
     use Comparable;
     use SoftDeletes;
 
