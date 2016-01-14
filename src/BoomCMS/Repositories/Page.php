@@ -10,16 +10,6 @@ use BoomCMS\Support\Facades\Router;
 class Page
 {
     /**
-     * @var array
-     */
-    protected $cache = [
-        'id'            => [],
-        'uri'           => [],
-        'internal_name' => [],
-        'primary_uri'   => [],
-    ];
-
-    /**
      * @var Model
      */
     protected $model;
