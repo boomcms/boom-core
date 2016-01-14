@@ -48,7 +48,10 @@ Route::group(['middleware' => [
                 Route::get('tags/list/{assets}', 'Tags@listTags');
             });
 
-            Route::group(['namespace' => 'People', 'middleware' => [Middleware\PeopleManager::class]], function () {
+            Route::group([
+                'namespace' => 'People',
+                'middleware' => [Middleware\PeopleManager::class]
+            ], function () {
                 Route::get('people', 'PeopleManager@index');
 
                 Route::delete('person', 'Person@destroy');
@@ -56,11 +59,7 @@ Route::group(['middleware' => [
                 Route::delete('person/{person}/groups/{group}', 'Person@removeGroup');
                 Route::post('person/{person}/groups', 'Person@addGroups');
                 Route::resource('person', 'Person');
-            });
 
-            Route::group([
-                'middleware' => [Middleware\PeopleManager::class],
-            ], function () {
                 Route::get('group/{group}/roles', 'Group@roles');
                 Route::delete('group/{group}/roles', 'Group@removeRole');
                 Route::put('group/{group}/roles', 'Group@addRole');

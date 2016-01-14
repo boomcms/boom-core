@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\People;
 
-use BoomCMS\Database\Models\Group;
+use BoomCMS\Database\Models\Group as GroupModel;
 use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\Jobs\CreatePerson;
 use BoomCMS\Support\Facades\Group as GroupFacade;
@@ -45,7 +45,7 @@ class Person extends PeopleManager
         PersonFacade::deleteByIds($request->input('people'));
     }
 
-    public function removeGroup(PersonModel $person, Group $group)
+    public function removeGroup(PersonModel $person, GroupModel $group)
     {
         $person->removeGroup($group);
     }

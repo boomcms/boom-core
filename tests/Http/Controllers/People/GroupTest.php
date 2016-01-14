@@ -1,9 +1,9 @@
 <?php
 
-namespace BoomCMS\Tests\Http\Controllers;
+namespace BoomCMS\Tests\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Group;
-use BoomCMS\Http\Controllers\Group as Controller;
+use BoomCMS\Http\Controllers\People\Group as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;

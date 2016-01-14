@@ -1,9 +1,10 @@
 <?php
 
-namespace BoomCMS\Http\Controllers;
+namespace BoomCMS\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Group as GroupModel;
 use BoomCMS\Database\Models\Role;
+use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use Illuminate\Http\Request;
 
