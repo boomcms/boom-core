@@ -30,10 +30,12 @@ function boomPerson(person_id) {
 		return deferred;
 	};
 
-	boomPerson.prototype.addGroups = function() {
-		var url = this.baseUrl + '/' + this.id + '/groups',
-			deferred = new $.Deferred(),
-			dialog;
+	boomPerson.prototype.addGroups = function(groupIds) {
+		return $.post(this.baseUrl + '/' + this.id + '/groups', {'groups[]': groupIds});
+	}
+
+	boomPerson.prototype.getAddableGroups = function() {
+		return $.get(this.baseUrl + '/' + this.id + '/groups');
 
 		dialog = new boomDialog({
 			url: url,

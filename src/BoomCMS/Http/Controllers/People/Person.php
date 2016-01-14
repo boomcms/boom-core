@@ -41,12 +41,11 @@ class Person extends PeopleManager
         }
     }
 
-    public function availableGroups(PersonModel $person)
+    public function availableGroups(Site $site, PersonModel $person)
     {
-        return view("$this->viewPrefix.addgroup", [
-            'person' => $person,
-            'groups' => GroupFacade::allExcept($person->getGroupIds()),
-        ]);
+        $groups = GroupFacade::findBySite($site);
+
+        return $groups->diff($person->getGroups());
     }
 
     public function create()

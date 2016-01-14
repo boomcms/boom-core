@@ -28,8 +28,6 @@ interface Person
 
     public function getGroups();
 
-    public function getGroupIds();
-
     /**
      * @return int
      */

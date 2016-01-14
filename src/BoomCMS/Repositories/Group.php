@@ -6,6 +6,7 @@ use BoomCMS\Contracts\Models\Group as GroupModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Contracts\Repositories\Group as GroupRepositoryInterface;
 use BoomCMS\Database\Models\Group as Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class Group implements GroupRepositoryInterface
 {
@@ -19,19 +20,6 @@ class Group implements GroupRepositoryInterface
         $class = Model::class;
 
         $this->model = $model ?: new $class();
-    }
-
-    /**
-     * @param array $groupIds
-     *
-     * @return array
-     */
-    public function allExcept(array $groupIds)
-    {
-        return $this->model
-            ->whereNotIn(Model::ATTR_ID, $groupIds)
-            ->orderBy(Model::ATTR_NAME, 'asc')
-            ->get();
     }
 
     /**
@@ -67,9 +55,15 @@ class Group implements GroupRepositoryInterface
 
     /**
      * @param SiteInterface $site
+     *
+     * @return Collection
      */
     public function findBySite(SiteModelInterface $site)
     {
+        return $this->model
+            ->where(Model::ATTR_SITE, '=', $site->getId())
+            ->orderBy(Model::ATTR_NAME, 'asc')
+            ->get();
     }
 
     /**

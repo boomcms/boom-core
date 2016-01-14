@@ -34,11 +34,5 @@ interface Group
      */
     public function findBySite(SiteInterface $site);
 
-    /**
-     * @param SiteInterface $site
-     * @param array         $groupIds
-     */
-    public function findBySiteExcluding(SiteInterface $site, array $groupIds);
-
     public function save(GroupInterface $group);
 }

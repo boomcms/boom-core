@@ -13,6 +13,7 @@ use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Database\Eloquent\Collection;
 use Mockery as m;
 
 class PersonTest extends AbstractTestCase
@@ -81,13 +82,21 @@ class PersonTest extends AbstractTestCase
 
     public function testAvailableGroups()
     {
-        $groupIds = [1, 2];
+        $site = new Site();
+        $allGroups = new Collection([new Group(), new Group(), new Group()]);
+        $inGroups = new Collection([$allGroups[0], $allGroups[1]]);
+
         $person = m::mock(Person::class);
-        $person->shouldReceive('getGroupIds')->andReturn($groupIds);
+        $person->shouldReceive('getGroups')
+            ->once()
+            ->andReturn($inGroups);
 
-        GroupFacade::shouldReceive('allExcept')->with($groupIds);
+        GroupFacade::shouldReceive('findBySite')
+            ->once()
+            ->with($site)
+            ->andReturn($allGroups);
 
-        $this->controller->availableGroups($person);
+        $this->assertEquals($allGroups->diff($inGroups), $this->controller->availableGroups($site, $person));
     }
 
     public function testCreate()

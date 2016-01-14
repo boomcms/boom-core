@@ -81,7 +81,7 @@ class AddMultiSiteSupport extends Migration
             $table->unique(['asset_id', 'site_id']);
         });
 
-        Schema::create('people_site', function (Blueprint $table) {
+        Schema::create('person_site', function (Blueprint $table) {
             $table
                 ->integer('person_id')
                 ->unsigned()

@@ -79,14 +79,6 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     }
 
     /**
-     * @return array
-     */
-    public function getGroupIds()
-    {
-        return (array) $this->groups->lists('id');
-    }
-
-    /**
      * @return int
      */
     public function getId()
