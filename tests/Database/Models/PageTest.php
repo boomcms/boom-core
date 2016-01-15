@@ -84,7 +84,7 @@ class PageTest extends AbstractModelTestCase
         $values = [
             Page::ADD_PAGE_CHILD   => $page,
             Page::ADD_PAGE_SIBLING => $parent,
-            Page::ADD_PAGE_NONE  => $page,
+            Page::ADD_PAGE_NONE    => $page,
         ];
 
         $page->{Page::ATTR_ADD_BEHAVIOUR} = Page::ADD_PAGE_NONE;

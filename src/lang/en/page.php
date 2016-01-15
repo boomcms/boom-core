@@ -4,7 +4,7 @@ use BoomCMS\Database\Models\Page;
 
 return [
     'add-behaviour' => [
-        Page::ADD_PAGE_NONE  => 'Inherit',
+        Page::ADD_PAGE_NONE    => 'Inherit',
         Page::ADD_PAGE_CHILD   => 'Add a child page',
         Page::ADD_PAGE_SIBLING => 'Add a sibling page',
     ],
