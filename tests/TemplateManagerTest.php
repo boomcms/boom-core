@@ -37,7 +37,7 @@ class TemplateManagerTest extends AbstractTestCase
         $manager->createTemplateWithFilename($theme, $filename);
     }
 
-    public function testFindInstalledThemes()
+    public function testfindAvailableThemes()
     {
         $themes = [new Theme('test1'), new Theme('test2')];
 
@@ -49,7 +49,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->will($this->returnValue($themes));
 
         $manager = new Manager($filesystem, $this->getTemplateRepository(), false);
-        $this->assertEquals([new Theme($themes[0]), new Theme($themes[1])], $manager->findInstalledThemes());
+        $this->assertEquals([new Theme($themes[0]), new Theme($themes[1])], $manager->findAvailableThemes());
     }
 
     public function testFindNoInstalledThemes()
@@ -64,7 +64,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->will($this->returnValue(null));
 
         $manager = new Manager($filesystem, $this->getTemplateRepository(), false);
-        $this->assertEquals($themes, $manager->findInstalledThemes());
+        $this->assertEquals($themes, $manager->findAvailableThemes());
     }
 
     public function testAvailableTemplates()
