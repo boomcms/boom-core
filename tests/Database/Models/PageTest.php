@@ -20,10 +20,10 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals(Page::ADD_PAGE_CHILD, $page->getAddPageBehaviour());
     }
 
-    public function testGetAddPageBehaviourDefaultIsPrompt()
+    public function testGetAddPageBehaviourDefaultIsNone()
     {
         $page = new Page();
-        $this->assertEquals(Page::ADD_PAGE_PROMPT, $page->getAddPageBehaviour());
+        $this->assertEquals(Page::ADD_PAGE_NONE, $page->getAddPageBehaviour());
     }
 
     public function testGetChildAddPageBehaviour()
@@ -46,7 +46,7 @@ class PageTest extends AbstractModelTestCase
             ->twice()
             ->andReturn(true);
 
-        foreach ([Page::ADD_PAGE_CHILD, Page::ADD_PAGE_SIBLING, Page::ADD_PAGE_PROMPT] as $behaviour) {
+        foreach ([Page::ADD_PAGE_CHILD, Page::ADD_PAGE_SIBLING, Page::ADD_PAGE_NONE] as $behaviour) {
             $page->{Page::ATTR_ADD_BEHAVIOUR} = $behaviour;
 
             $this->assertEquals($page, $page->getAddPageParent());
@@ -84,10 +84,10 @@ class PageTest extends AbstractModelTestCase
         $values = [
             Page::ADD_PAGE_CHILD   => $page,
             Page::ADD_PAGE_SIBLING => $parent,
-            Page::ADD_PAGE_PROMPT  => $page,
+            Page::ADD_PAGE_NONE    => $page,
         ];
 
-        $page->{Page::ATTR_ADD_BEHAVIOUR} = Page::ADD_PAGE_PROMPT;
+        $page->{Page::ATTR_ADD_BEHAVIOUR} = Page::ADD_PAGE_NONE;
         $page
             ->shouldReceive('isRoot')
             ->andReturn(false);
@@ -103,10 +103,10 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
-    public function testGetChildAddPageBehaviourDefaultIsPrompt()
+    public function testGetChildAddPageBehaviourDefaultIsNone()
     {
         $page = new Page();
-        $this->assertEquals(Page::ADD_PAGE_PROMPT, $page->getChildAddPageBehaviour());
+        $this->assertEquals(Page::ADD_PAGE_NONE, $page->getChildAddPageBehaviour());
     }
 
     public function testGetChildOrderingPolicy()
@@ -301,63 +301,6 @@ class PageTest extends AbstractModelTestCase
             $page->setVisibleAtAnyTime($value);
 
             $this->assertEquals($expected, $page->isVisibleAtAnyTime());
-        }
-    }
-
-    public function testShouldPromptOnAddPageAndChildShouldPromptOnAddPage()
-    {
-        $values = [
-            Page::ADD_PAGE_PROMPT  => true,
-            Page::ADD_PAGE_CHILD   => false,
-            Page::ADD_PAGE_SIBLING => false,
-            // GetAddPageBehaviour should never return anything else
-            // But just incase it does anything else should trigger the add page prompt
-            null         => true,
-            0            => true,
-            'asflsdkjfl' => true,
-        ];
-
-        foreach ($values as $behaviour => $shouldPrompt) {
-            $page = new Page([
-                Page::ATTR_ADD_BEHAVIOUR       => $behaviour,
-                Page::ATTR_CHILD_ADD_BEHAVIOUR => $behaviour,
-            ]);
-
-            $this->assertEquals($shouldPrompt, $page->shouldPromptOnAddPage());
-            $this->assertEquals($shouldPrompt, $page->childShouldPromptOnAddPage());
-        }
-    }
-
-    /**
-     * If the page is set to prompt on add page but it has a parent page
-     * The page should return the value of shouldPromptOnAddPage of the parent.
-     */
-    public function testShouldPromptOnAddPageInheritsFromParent()
-    {
-        $parent = new Page();
-        $page = m::mock(Page::class.'[isRoot,getParent]');
-        $page->{Page::ATTR_ADD_BEHAVIOUR} = Page::ADD_PAGE_PROMPT;
-
-        $page
-            ->shouldReceive('isRoot')
-            ->times(3)
-            ->andReturn(false);
-
-        $page
-            ->shouldReceive('getParent')
-            ->times(3)
-            ->andReturn($parent);
-
-        $values = [
-            Page::ADD_PAGE_PROMPT,
-            Page::ADD_PAGE_CHILD,
-            Page::ADD_PAGE_SIBLING,
-        ];
-
-        foreach ($values as $v) {
-            $parent->{Page::ATTR_CHILD_ADD_BEHAVIOUR} = $v;
-
-            $this->assertEquals($parent->childShouldPromptOnAddPage(), $page->shouldPromptOnAddPage());
         }
     }
 

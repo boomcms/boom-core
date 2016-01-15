@@ -36,27 +36,19 @@ class PageController extends Controller
         $this->page = $this->request->route()->getParameter('page');
     }
 
-    public function add(Request $request, Page $page)
+    public function add(Page $page)
     {
         $this->authorize('add', $page);
 
-        if (!$request->input('noprompt') && $page->shouldPromptOnAddPage()) {
-            return [
-                'prompt' => view("{$this->viewPrefix}add", [
-                    'page' => $page,
-                ])->render(),
-            ];
-        } else {
-            $parent = $page->getAddPageParent();
-            $newPage = $this->dispatch(new CreatePage(auth()->user(), $parent));
+        $parent = $page->getAddPageParent();
+        $newPage = $this->dispatch(new CreatePage(auth()->user(), $parent));
 
-            Event::fire(new PageWasCreated($newPage, $page));
+        Event::fire(new PageWasCreated($newPage, $page));
 
-            return [
-                'url' => (string) $newPage->url(),
-                'id'  => $newPage->getId(),
-            ];
-        }
+        return [
+            'url' => (string) $newPage->url(),
+            'id'  => $newPage->getId(),
+        ];
     }
 
     public function discard(Page $page)
