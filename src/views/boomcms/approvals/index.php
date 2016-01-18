@@ -21,7 +21,7 @@
                 <?php foreach ($pages as $page): ?>
                     <?php $editedBy = $page->getCurrentVersion()->getEditedBy() ?>
 
-                    <?php if ($auth->loggedIn('publish', $page)): ?>
+                    <?php if ($auth->loggedIn('publish_page', $page)): ?>
                         <tr data-page-id="<?= $page->getId() ?>">
                             <td><a href="<?= $page->url() ?>"><?= $page->getTitle() ?></a></td>
                             <td><?= $editedBy ? $editedBy->getName() : '' ?> (<?= $editedBy ? $editedBy->getEmail() : '' ?>)</td>
