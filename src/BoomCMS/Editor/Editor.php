@@ -73,9 +73,9 @@ class Editor
     /**
      * @param int $state
      *
-     * @return $this
-     *
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function setState($state)
     {

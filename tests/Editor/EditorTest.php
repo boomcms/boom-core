@@ -59,7 +59,7 @@ class EditorTest extends AbstractTestCase
 
     public function testSetStatThrowsExceptionForInvalidStates()
     {
-        $editor  = new Editor();
+        $editor = new Editor();
         $invalidStates = [0, null, 4, 'invalid'];
 
         foreach ($invalidStates as $state) {
