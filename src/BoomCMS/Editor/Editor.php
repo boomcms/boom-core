@@ -4,6 +4,7 @@ namespace BoomCMS\Editor;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use InvalidArgumentException;
 
 class Editor
 {
@@ -20,6 +21,12 @@ class Editor
 
     protected $state;
     protected $statePersistenceKey = 'editor_state';
+
+    protected $validStates = [
+        self::EDIT,
+        self::DISABLED,
+        self::PREVIEW,
+    ];
 
     public function __construct()
     {
@@ -63,10 +70,23 @@ class Editor
         return $this->setState(static::PREVIEW);
     }
 
+    /**
+     * @param int $state
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException
+     */
     public function setState($state)
     {
+        if (!in_array($state, $this->validStates)) {
+            throw new InvalidArgumentException("Invalid editor state: $state");
+        }
+
         $this->state = $state;
 
-        return Session::put($this->statePersistenceKey, $state);
+        Session::put($this->statePersistenceKey, $state);
+
+        return $this;
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
-namespace BoomCMS\Tests;
+namespace BoomCMS\Tests\Editor;
 
 use BoomCMS\Editor\Editor;
+use BoomCMS\Tests\AbstractTestCase;
+use InvalidArgumentException;
 
 class EditorTest extends AbstractTestCase
 {
@@ -53,6 +55,17 @@ class EditorTest extends AbstractTestCase
             ->with($this->equalTo(Editor::DISABLED));
 
         $editor->disable();
+    }
+
+    public function testSetStatThrowsExceptionForInvalidStates()
+    {
+        $editor  = new Editor();
+        $invalidStates = [0, null, 4, 'invalid'];
+
+        foreach ($invalidStates as $state) {
+            $this->setExpectedException(InvalidArgumentException::class);
+            $editor->setState($state);
+        }
     }
 
     protected function getEditor($methods = null)

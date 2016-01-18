@@ -28,6 +28,8 @@ Route::group(['middleware' => [
             Route::controller('approvals', 'Approvals');
             Route::controller('settings', 'Settings');
             Route::controller('search', 'Search');
+            Route::post('editor/state', 'Editor@setState');
+            Route::get('editor/{page}/toolbar', 'Editor@getToolbar');
 
             Route::group([
                 'prefix'    => 'assets',
