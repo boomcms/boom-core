@@ -28,7 +28,6 @@ class RenameRoles extends Migration
         'manage_pages'                    => 'managePages',
         'manage_approvals'                => 'manageApprovals',
         'manage_robots'                   => 'manageRobotsTxt',
-        'p_edit_disable_delete'           => 'editDeletable',
         'manage_settings'                 => 'manageSettings',
     ];
 

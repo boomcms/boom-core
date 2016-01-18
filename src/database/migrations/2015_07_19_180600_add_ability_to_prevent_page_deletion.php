@@ -13,11 +13,6 @@ class AddAbilityToPreventPageDeletion extends Migration
      */
     public function up()
     {
-        Role::create([
-            'name'        => 'p_edit_disable_delete',
-            'description' => 'Edit whether a page can be deleted',
-        ]);
-
         Schema::table('pages', function ($table) {
             $table->boolean('disable_delete')->default(false);
         });
@@ -39,8 +34,5 @@ class AddAbilityToPreventPageDeletion extends Migration
         Schema::table('pages', function ($table) {
             $table->dropColumn('disable_delete');
         });
-
-        Role::where('name', '=', 'p_edit_disable_delete')
-            ->delete();
     }
 }
