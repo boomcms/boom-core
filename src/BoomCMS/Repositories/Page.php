@@ -2,10 +2,12 @@
 
 namespace BoomCMS\Repositories;
 
+use BoomCMS\Contracts\Models\Page as PageModelInterface;
+use BoomCMS\Contracts\Repositories\Page as PageRepositoryInterface;
 use BoomCMS\Core\Page\Finder;
 use BoomCMS\Database\Models\Page as Model;
 
-class Page
+class Page implements PageRepositoryInterface
 {
     /**
      * @var Model
@@ -22,7 +24,7 @@ class Page
         return Model::create($attrs);
     }
 
-    public function delete(Model $page)
+    public function delete(PageModelInterface $page)
     {
         $page->delete();
 
@@ -60,7 +62,7 @@ class Page
         return $page = $finder->find();
     }
 
-    public function save(Model $page)
+    public function save(PageModelInterface $page)
     {
         $page->save();
 
