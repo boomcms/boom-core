@@ -9,8 +9,6 @@
         <h1>Pages pending approval</h1>
 
         <?php if (count($pages)): ?>
-            <?php $editedBy = $page->getCurrentVersion()->getEditedBy() ?>
-
             <table id="b-items-view-list" class="b-table">
                 <tr>
                     <th>Page title</th>
@@ -21,6 +19,8 @@
                     <th></th>
                 </tr>
                 <?php foreach ($pages as $page): ?>
+                    <?php $editedBy = $page->getCurrentVersion()->getEditedBy() ?>
+
                     <?php if ($auth->loggedIn('publish', $page)): ?>
                         <tr data-page-id="<?= $page->getId() ?>">
                             <td><a href="<?= $page->url() ?>"><?= $page->getTitle() ?></a></td>
