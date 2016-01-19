@@ -5,6 +5,7 @@ namespace BoomCMS\Tests\Http\Controllers;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Editor\Editor as Editor;
 use BoomCMS\Http\Controllers\Editor as EditorController;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -44,8 +45,15 @@ class EditorTest extends AbstractTestCase
 
     public function testGetEditToolbar()
     {
+        $pageId = 1;
         $view = 'view contents';
         $page = new Page();
+        $request = new Request(['page_id' => $pageId]);
+
+        PageFacade::shouldReceive('find')
+            ->once()
+            ->with($pageId)
+            ->andReturn($page);
 
         $editor = m::mock(Editor::class);
         $editor->shouldReceive('isEnabled')->once()->andReturn(true);
@@ -59,13 +67,20 @@ class EditorTest extends AbstractTestCase
             ->with('boomcms::editor.toolbar', m::any(), m::any())
             ->andReturn($view);
 
-        $this->assertEquals($view, $this->controller->getToolbar($editor, $page));
+        $this->assertEquals($view, $this->controller->getToolbar($editor, $request));
     }
 
     public function testGetPreviewToolbar()
     {
+        $pageId = 1;
         $view = 'view contents';
         $page = new Page();
+        $request = new Request(['page_id' => $pageId]);
+
+        PageFacade::shouldReceive('find')
+            ->once()
+            ->with($pageId)
+            ->andReturn($page);
 
         $editor = m::mock(Editor::class);
         $editor->shouldReceive('isEnabled')->once()->andReturn(false);
@@ -79,6 +94,6 @@ class EditorTest extends AbstractTestCase
             ->with('boomcms::editor.toolbar_preview', m::any(), m::any())
             ->andReturn($view);
 
-        $this->assertEquals($view, $this->controller->getToolbar($editor, $page));
+        $this->assertEquals($view, $this->controller->getToolbar($editor, $request));
     }
 }

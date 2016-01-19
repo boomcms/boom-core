@@ -5,10 +5,24 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Repositories\Tag as TagRepository;
 use BoomCMS\Tests\AbstractTestCase;
+use InvalidArgumentException;
 use Mockery as m;
 
 class TagTest extends AbstractTestCase
 {
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testCreateNameCannotBeEmpty()
+    {
+        $model = m::mock(Tag::class);
+        $model->shouldReceive('create')->never();
+
+        $repository = new TagRepository($model);
+
+        $this->assertEquals($model, $repository->create('', ''));
+    }
+
     public function create()
     {
         $name = 'test name';

@@ -29,7 +29,7 @@ Route::group(['middleware' => [
             Route::controller('settings', 'Settings');
             Route::controller('search', 'Search');
             Route::post('editor/state', 'Editor@setState');
-            Route::get('editor/{page}/toolbar', 'Editor@getToolbar');
+            Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 
             Route::group([
                 'prefix'    => 'assets',
@@ -104,10 +104,10 @@ Route::group(['middleware' => [
             Route::post('page/{page}/urls/{url}/move', 'Page\Urls@postMove');
             Route::post('page/{page}/urls/{url}/delete/', 'Page\Urls@postDelete');
 
-            Route::group(['prefix' => 'page/tags'], function () {
-                Route::get('list/{page}', 'Page\Tags@listTags');
-                Route::post('add/{page}', 'Page\Tags@add');
-                Route::post('remove/{page}', 'Page\Tags@remove');
+            Route::group(['prefix' => 'page'], function () {
+                Route::get('{page}/tags', 'Page\Tags@view');
+                Route::post('{page}/tags', 'Page\Tags@add');
+                Route::delete('{page}/tags/{tag}', 'Page\Tags@remove');
             });
 
             Route::post('page/relations/add/{page}', 'Page\Relations@add');
