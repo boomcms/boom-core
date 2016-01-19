@@ -2,11 +2,9 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Core\Template\Manager as TemplateManager;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Support\Helpers;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response;
 
 class Templates extends Controller
@@ -17,9 +15,6 @@ class Templates extends Controller
 
     public function index()
     {
-        $manager = new TemplateManager(App::make('files'), TemplateFacade::getFacadeRoot());
-        $manager->findAndInstallNewTemplates();
-
         return view($this->viewPrefix.'index', [
             'templates' => TemplateFacade::findAll(),
         ]);
