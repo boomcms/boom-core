@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\Page\Settings;
 
-use Illuminate\Support\Facades\App;
+use BoomCMS\Support\Facades\Template;
 
 class View extends Settings
 {
@@ -21,8 +21,7 @@ class View extends Settings
 
         list($orderCol, $orderDirection) = $this->page->getChildOrderingPolicy();
 
-        $manager = App::getFacadeApplication()['boomcms.template.manager'];
-        $templates = $manager->getValidTemplates();
+        $templates = Template::findValid();
 
         // Create the main view with the basic settings
         $v = view("$this->viewPrefix/children", [
