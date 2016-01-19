@@ -43,7 +43,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.addTag = function(group, tag) {
-		return $.post(this.baseUrl + 'tags/add/' + this.id, {
+		return $.post(this.baseUrl + this.id + '/tags/add', {
 			group : group,
 			tag : tag
 		});
@@ -98,7 +98,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.removeTag = function(tagId) {
-		return $.post(this.baseUrl + 'tags/remove/' + this.id, {
+		return $.post(this.baseUrl + this.id + '/tags/' + this.id + '/remove/', {
 			tag : tagId
 		});
 	};

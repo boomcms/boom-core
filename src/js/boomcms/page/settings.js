@@ -13,11 +13,11 @@ $.widget('boom.pageSettings', {
 				pageSettings.show($(this).attr('data-b-page-setting'));
 			});
 	},
-	
+
 	close: function() {
 		if (typeof(this.options.close) === 'function') {
 			this.options.close();
-		} else {		
+		} else {
 			this.element.hide();
 		}
 	},
@@ -37,7 +37,7 @@ $.widget('boom.pageSettings', {
 			case 'relations':
 				return '/boomcms/page/relations/view/' + this.page.id;
 			case 'tags':
-				return '/boomcms/page/tags/list/' + this.page.id;
+				return '/boomcms/page/' + this.page.id + '/tags/list';
 			case 'template':
 				return '/boomcms/page/version/template/' + this.page.id;
 			case 'drafts':

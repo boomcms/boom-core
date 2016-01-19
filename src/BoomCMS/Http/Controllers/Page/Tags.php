@@ -2,41 +2,40 @@
 
 namespace BoomCMS\Http\Controllers\Page;
 
+use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Tag;
 use BoomCMS\Events\PageHadTagAdded;
 use BoomCMS\Events\PageHadTagRemoved;
 use BoomCMS\Http\Controllers\Controller;
-use BoomCMS\Support\Facades\Tag;
+use BoomCMS\Support\Facades\Tag as TagFacade;
 use BoomCMS\Support\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 
 class Tags extends Controller
 {
-    public function __construct(Request $request)
+    public function __construct(Page $page)
     {
-        $this->request = $request;
-        $this->page = $request->route()->getParameter('page');
-
-        $this->authorize('edit', $this->page);
+        $this->authorize('edit', $page);
     }
 
-    public function add()
+    public function add(Request $request, Page $page)
     {
-        $tag = Tag::findOrCreateByNameAndGroup(
-            $this->request->input('tag'),
-            $this->request->input('group')
-        );
+        $name = $request->input('name');
+        $group = $request->input('group');
+        $tag = TagFacade::findOrCreateByNameAndGroup($name, $group);
 
-        $this->page->addTag($tag);
-        Event::fire(new PageHadTagAdded($this->page, $tag));
+        $page->addTag($tag);
+
+        Event::fire(new PageHadTagAdded($page, $tag));
 
         return $tag->getId();
     }
 
-    public function listTags()
+    public function listTags(Page $page)
     {
         $grouped = [];
-        $tags = Helpers::getTags($this->page);
+        $tags = Helpers::getTags($page);
 
         foreach ($tags as $t) {
             $group = $t->getGroup() ?: '';
@@ -48,11 +47,10 @@ class Tags extends Controller
         ]);
     }
 
-    public function remove()
+    public function remove(Page $page, Tag $tag)
     {
-        $tag = Tag::find($this->request->input('tag'));
-        $this->page->removeTag($tag);
+        $page->removeTag($tag);
 
-        Event::fire(new PageHadTagRemoved($this->page, $tag));
+        Event::fire(new PageHadTagRemoved($page, $tag));
     }
 }
