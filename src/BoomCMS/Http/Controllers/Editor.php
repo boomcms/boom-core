@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Editor\Editor as EditorObject;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -21,13 +22,14 @@ class Editor extends Controller
      * Displays the CMS interface with buttons for add page, settings, etc.
      * Called from an iframe when logged into the CMS.
      */
-    public function getToolbar(EditorObject $editor, Page $page)
+    public function getToolbar(EditorObject $editor, Request $request)
     {
+        $page = PageFacade::find($request->input('page_id'));
         $toolbarFilename = ($editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
 
         View::share([
             'page'   => $page,
-            'editor' => $this->editor,
+            'editor' => $editor,
             'auth'   => auth(),
             'person' => auth()->user(),
         ]);
