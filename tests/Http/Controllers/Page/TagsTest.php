@@ -44,7 +44,7 @@ class TagsTest extends AbstractTestCase
             ->andReturn($tag);
 
         $request = new Request([
-            'tag'  => $name,
+            'tag'   => $name,
             'group' => $group,
         ]);
 
