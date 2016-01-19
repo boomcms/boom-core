@@ -37,7 +37,7 @@ $.widget('boom.pageSettings', {
 			case 'relations':
 				return '/boomcms/page/relations/view/' + this.page.id;
 			case 'tags':
-				return '/boomcms/page/' + this.page.id + '/tags/list';
+				return '/boomcms/page/' + this.page.id + '/tags';
 			case 'template':
 				return '/boomcms/page/version/template/' + this.page.id;
 			case 'drafts':

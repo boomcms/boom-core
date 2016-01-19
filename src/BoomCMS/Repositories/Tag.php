@@ -4,6 +4,7 @@ namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Database\Models\Tag as Model;
+use InvalidArgumentException;
 
 class Tag
 {
@@ -24,10 +25,16 @@ class Tag
      * @param string $name
      * @param string $group
      *
+     * @throws InvalidArgumentException
+     *
      * @return TagInterface
      */
     public function create($name, $group)
     {
+        if (empty($name)) {
+            throw new InvalidArgumentException('Tag name must not be empty');
+        }
+
         return $this->model->create([
             Model::ATTR_NAME  => $name,
             Model::ATTR_GROUP => $group,

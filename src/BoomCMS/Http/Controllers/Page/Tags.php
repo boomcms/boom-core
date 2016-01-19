@@ -21,7 +21,7 @@ class Tags extends Controller
 
     public function add(Request $request, Page $page)
     {
-        $name = $request->input('name');
+        $name = $request->input('tag');
         $group = $request->input('group');
         $tag = TagFacade::findOrCreateByNameAndGroup($name, $group);
 
@@ -32,7 +32,7 @@ class Tags extends Controller
         return $tag->getId();
     }
 
-    public function listTags(Page $page)
+    public function view(Page $page)
     {
         $grouped = [];
         $tags = Helpers::getTags($page);

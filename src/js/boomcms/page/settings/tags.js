@@ -1,6 +1,4 @@
 $.widget('boom.pageSettingsTags', {
-	baseUrl: '/boomcms/page/tags/',
-
 	addTag: function(group, tag, $el) {
 		this.page.addTag(group, tag).done(function(tagId) {
 			$el.find('a').attr('data-tag', tagId);
@@ -42,10 +40,6 @@ $.widget('boom.pageSettingsTags', {
 		this.bind();
 	},
 
-	getUrl: function(action) {
-		return this.baseUrl + action + '/' + this.page.id;
-	},
-
 	initTagList: function($list) {
 		var page = this.page,
 			pageTags = this;
@@ -63,6 +57,6 @@ $.widget('boom.pageSettingsTags', {
 	updateTagList: function() {
 		var tagEditor = this;
 
-		$.get(this.getUrl('list'));
+		$.get('/boomcms/page/' + this.page.id + '/tags');
 	}
 });

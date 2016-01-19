@@ -104,10 +104,10 @@ Route::group(['middleware' => [
             Route::post('page/{page}/urls/{url}/move', 'Page\Urls@postMove');
             Route::post('page/{page}/urls/{url}/delete/', 'Page\Urls@postDelete');
 
-            Route::group(['prefix' => 'page/tags'], function () {
-                Route::get('{page}/list', 'Page\Tags@listTags');
-                Route::post('{page}/add', 'Page\Tags@add');
-                Route::post('{page}/{tag}/remove', 'Page\Tags@remove');
+            Route::group(['prefix' => 'page'], function () {
+                Route::get('{page}/tags', 'Page\Tags@view');
+                Route::post('{page}/tags', 'Page\Tags@add');
+                Route::delete('{page}/tags/{tag}', 'Page\Tags@remove');
             });
 
             Route::post('page/relations/add/{page}', 'Page\Relations@add');

@@ -40375,7 +40375,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.addTag = function(group, tag) {
-		return $.post(this.baseUrl + this.id + '/tags/add', {
+		return $.post(this.baseUrl + this.id + '/tags', {
 			group : group,
 			tag : tag
 		});
@@ -40430,8 +40430,12 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.removeTag = function(tagId) {
-		return $.post(this.baseUrl + this.id + '/tags/' + this.id + '/remove/', {
-			tag : tagId
+		return $.ajax({
+			type: 'delete',
+			url: this.baseUrl + this.id + '/tags/' + this.id,
+			data: {
+				tag: tagId
+			}
 		});
 	};
 
@@ -40510,7 +40514,7 @@ function boomPage(page_id) {
 			case 'relations':
 				return '/boomcms/page/relations/view/' + this.page.id;
 			case 'tags':
-				return '/boomcms/page/' + this.page.id + '/tags/list';
+				return '/boomcms/page/' + this.page.id + '/tags';
 			case 'template':
 				return '/boomcms/page/version/template/' + this.page.id;
 			case 'drafts':
@@ -41674,8 +41678,6 @@ $.widget('boom.pageTree', {
 			});
 	}
 });;$.widget('boom.pageSettingsTags', {
-	baseUrl: '/boomcms/page/tags/',
-
 	addTag: function(group, tag, $el) {
 		this.page.addTag(group, tag).done(function(tagId) {
 			$el.find('a').attr('data-tag', tagId);
@@ -41717,10 +41719,6 @@ $.widget('boom.pageTree', {
 		this.bind();
 	},
 
-	getUrl: function(action) {
-		return this.baseUrl + action + '/' + this.page.id;
-	},
-
 	initTagList: function($list) {
 		var page = this.page,
 			pageTags = this;
@@ -41738,7 +41736,7 @@ $.widget('boom.pageTree', {
 	updateTagList: function() {
 		var tagEditor = this;
 
-		$.get(this.getUrl('list'));
+		$.get('/boomcms/page/' + this.page.id + '/tags');
 	}
 });;$.widget('boom.pageSettingsTemplate', {
 	_create: function() {
