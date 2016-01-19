@@ -31,7 +31,6 @@ class View extends Version
     {
         parent::template($manager);
 
-        $manager->findAndInstallNewTemplates();
         $templates = $manager->getValidTemplates();
 
         return ViewFacade::make("$this->viewPrefix.template", [
