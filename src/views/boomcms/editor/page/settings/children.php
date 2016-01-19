@@ -8,7 +8,7 @@
             <label>
                 <p><?= trans('boomcms::settings.children.template') ?></p>
 
-                <select name="children_template_id" id="children_template_id">
+                <select name="children_template_id" id="children_template_id" data-default="<?= $default_child_template ?>">
                     <?php foreach ($templates as $t): ?>
                       <option value="<?= $t->getId() ?>"<?php if ($t->getId() === $default_child_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
                     <?php endforeach ?>
