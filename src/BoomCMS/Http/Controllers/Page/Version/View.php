@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\Page\Version;
 
-use BoomCMS\Core\Template;
+use BoomCMS\Support\Facades\Template;
 use Illuminate\Support\Facades\View as ViewFacade;
 
 class View extends Version
@@ -27,15 +27,13 @@ class View extends Version
         ]);
     }
 
-    public function template(Template\Manager $manager)
+    public function template()
     {
-        parent::template($manager);
-
-        $templates = $manager->getValidTemplates();
+        parent::template();
 
         return ViewFacade::make("$this->viewPrefix.template", [
             'current'     => $this->page->getTemplate(),
-            'templates'   => $templates,
+            'templates'   => Template::findValid(),
         ]);
     }
 }

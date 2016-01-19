@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Http\Controllers\Page\Version;
 
-use BoomCMS\Core\Template;
 use BoomCMS\Events;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use DateTime;
@@ -42,9 +41,9 @@ class Save extends Version
         return $this->page->getCurrentVersion()->getStatus();
     }
 
-    public function template(Template\Manager $manager)
+    public function template()
     {
-        parent::template($manager);
+        parent::template();
 
         $template = TemplateFacade::find($this->request->input('template_id'));
         $this->page->setTemplate($template);

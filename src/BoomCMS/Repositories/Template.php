@@ -74,6 +74,23 @@ class Template
     }
 
     /**
+     * @return array
+     */
+    public function findValid()
+    {
+        $valid = [];
+        $templates = $this->findAll();
+
+        foreach ($templates as $template) {
+            if ($template->fileExists()) {
+                $valid[] = $template;
+            }
+        }
+
+        return $valid;
+    }
+
+    /**
      * @param TemplateInterface $model
      *
      * @return $this

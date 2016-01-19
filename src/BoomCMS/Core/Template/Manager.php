@@ -89,25 +89,6 @@ class Manager
         return $themes;
     }
 
-    public function getAllTemplates()
-    {
-        return $this->repository->findAll();
-    }
-
-    public function getValidTemplates()
-    {
-        $valid = [];
-        $templates = $this->getAllTemplates();
-
-        foreach ($templates as $template) {
-            if ($template->fileExists()) {
-                $valid[] = $template;
-            }
-        }
-
-        return $valid;
-    }
-
     public function templateIsInstalled($theme, $filename)
     {
         $template = $this->repository->findByThemeAndFilename($theme, $filename);
