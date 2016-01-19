@@ -74,7 +74,6 @@ class Template
     }
 
     /**
-     *
      * @return array
      */
     public function findValid()
