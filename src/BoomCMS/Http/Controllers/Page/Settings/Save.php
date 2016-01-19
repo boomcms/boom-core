@@ -52,11 +52,11 @@ class Save extends Settings
 
     public function delete()
     {
-        $redirect = $this->page->isRoot() ? '/' : $this->page->getParent()->url();
+        $redirect = $this->page->isRoot() ? '/' : (string) $this->page->getParent()->url();
 
         Bus::dispatch(new DeletePage($this->page, $this->request->input()));
 
-        return (string) $redirect;
+        return $redirect;
     }
 
     public function feature()
