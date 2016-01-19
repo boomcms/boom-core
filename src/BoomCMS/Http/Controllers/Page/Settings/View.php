@@ -66,6 +66,7 @@ class View extends Settings
     {
         return view("$this->viewPrefix/index", [
             'page' => $this->page,
+            'auth' => auth(),
         ]);
     }
 
