@@ -69,6 +69,8 @@ class Page extends Model implements PageInterface
     protected $casts = [
         self::ATTR_ADD_BEHAVIOUR       => 'integer',
         self::ATTR_CHILD_ADD_BEHAVIOUR => 'integer',
+        self::ATTR_CHILD_TEMPLATE      => 'integer',
+        self::ATTR_GRANDCHILD_TEMPLATE => 'integer',
     ];
 
     /**

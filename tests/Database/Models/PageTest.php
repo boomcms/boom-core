@@ -129,6 +129,15 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
+    public function testGetDefaultChildTemplateIdReturnsInt()
+    {
+        $page = new Page();
+        $page->{Page::ATTR_CHILD_TEMPLATE} = '1';
+
+        $this->assertEquals(1, $page->getDefaultChildTemplateId());
+        $this->assertInternalType('integer', $page->getDefaultChildTemplateId());
+    }
+
     /**
      * Give a page with no parent and no default child template ID.
      * 
@@ -141,6 +150,15 @@ class PageTest extends AbstractModelTestCase
         $page->shouldReceive('getTemplateId')->once()->andReturn(1);
 
         $this->assertEquals(1, $page->getDefaultChildTemplateId());
+    }
+
+    public function testGetGrandchildTemplateIdReturnsInt()
+    {
+        $page = new Page();
+        $page->{Page::ATTR_GRANDCHILD_TEMPLATE} = '1';
+
+        $this->assertEquals(1, $page->getGrandchildTemplateId());
+        $this->assertInternalType('integer', $page->getGrandchildTemplateId());
     }
 
     public function testHasFeatureImage()
