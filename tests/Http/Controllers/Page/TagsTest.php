@@ -1,8 +1,9 @@
 <?php
 
-namespace BoomCMS\Tests\Http\Controllers\Page;
+namespace BoomCMS\Tests\Http\Controllers;
 
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Http\Controllers\Page\Tags as Controller;
 use BoomCMS\Support\Facades\Tag as TagFacade;
@@ -26,40 +27,34 @@ class TagsTest extends AbstractTestCase
 
     public function testAdd()
     {
+        $site = new Site();
         $tag = new Tag();
         $tag->{Tag::ATTR_ID} = 1;
-
-        $name = 'test name';
-        $group = 'test group';
-
+        $name = 'test';
+        $group = 'group';
         $page = m::mock(Page::class);
-        $page
-            ->shouldReceive('addTag')
-            ->once()
-            ->with($tag);
-
-        TagFacade::shouldReceive('findOrCreateByNameAndGroup')
-            ->once()
-            ->with($name, $group)
-            ->andReturn($tag);
 
         $request = new Request([
             'tag'   => $name,
             'group' => $group,
         ]);
 
-        $this->assertEquals($tag->getId(), $this->controller->add($request, $page));
+        $page->shouldReceive('addTag')->with($tag);
+
+        TagFacade::shouldReceive('findOrCreate')
+            ->with($site, $name, $group)
+            ->andReturn($tag);
+
+        $this->assertEquals($tag->getId(), $this->controller->add($request, $site, $page));
     }
 
     public function testRemove()
     {
         $tag = new Tag();
+        $tag->{Tag::ATTR_ID} = 1;
 
         $page = m::mock(Page::class);
-        $page
-            ->shouldReceive('removeTag')
-            ->once()
-            ->with($tag);
+        $page->shouldReceive('removeTag')->with($tag);
 
         $this->controller->remove($page, $tag);
     }

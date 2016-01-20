@@ -3,6 +3,7 @@
 namespace BoomCMS\Tests\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Group;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\People\Group as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Tests\AbstractTestCase;
@@ -95,13 +96,16 @@ class GroupTest extends AbstractTestCase
         ]);
 
         $group = new Group();
-        $group->id = 1;
+        $group->{Group::ATTR_ID} = 1;
+
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
 
         GroupFacade::shouldReceive('create')
-            ->with(['name' => $name])
+            ->with($site, $name)
             ->andReturn($group);
 
-        $this->assertEquals($group->getId(), $this->controller->store($request));
+        $this->assertEquals($group->getId(), $this->controller->store($request, $site));
     }
 
     public function testUpdate()

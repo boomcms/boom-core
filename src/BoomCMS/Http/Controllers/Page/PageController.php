@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Contracts\Models\Site;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
@@ -36,14 +37,14 @@ class PageController extends Controller
         $this->page = $this->request->route()->getParameter('page');
     }
 
-    public function add(Page $page)
+    public function add(Request $request, Site $site, Page $page)
     {
         $this->authorize('add', $page);
 
         $parent = $page->getAddPageParent();
         $newPage = $this->dispatch(new CreatePage(auth()->user(), $parent));
 
-        Event::fire(new PageWasCreated($newPage, $page));
+        Event::fire(new PageWasCreated($newPage, $site, $page));
 
         return [
             'url' => (string) $newPage->url(),

@@ -3,8 +3,10 @@
 namespace BoomCMS\Http\Controllers\Assets;
 
 use BoomCMS\Database\Models\Asset;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
+use BoomCMS\Support\Facades\Site as SiteFacade;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
@@ -27,6 +29,16 @@ class AssetManager extends Controller
 
         if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
             $this->authorize('manageAssets', $request);
+        }
+    }
+
+    public function addSites(Request $request, Asset $asset)
+    {
+        $siteIds = $request->input('sites');
+
+        if ($siteIds) {
+            $sites = SiteFacade::find($siteIds);
+            $asset->addSites($sites);
         }
     }
 
@@ -118,6 +130,11 @@ class AssetManager extends Controller
         if (count($errors)) {
             return new JsonResponse($errors, 500);
         }
+    }
+
+    public function removeSite(Asset $asset, Site $site)
+    {
+        $asset->removeSite($site);
     }
 
     public function revert(Asset $asset)

@@ -5,6 +5,7 @@ namespace BoomCMS\Tests\Database\Models;
 use BoomCMS\Chunk\Text;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Support\Facades\Chunk;
 use Illuminate\Database\Eloquent\Builder;
@@ -233,6 +234,25 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
+    public function testGetSite()
+    {
+        $site = new Site();
+        $page = m::mock(Page::class.'[belongsTo,first]');
+
+        $page
+            ->shouldReceive('belongsTo')
+            ->once()
+            ->with(Site::class, 'site_id')
+            ->andReturnSelf();
+
+        $page
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($site);
+
+        $this->assertEquals($site, $page->getSite());
+    }
+
     public function testSetAddPageBehaviour()
     {
         $page = new Page();
@@ -303,6 +323,17 @@ class PageTest extends AbstractModelTestCase
         $page->setParent($page);
 
         $this->assertEquals(2, $page->getParentId());
+    }
+
+    public function testSetSite()
+    {
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        $page = new Page();
+        $page->setSite($site);
+
+        $this->assertEquals($site->getId(), $page->{Page::ATTR_SITE});
     }
 
     public function testSetVisibleAtAnyTime()

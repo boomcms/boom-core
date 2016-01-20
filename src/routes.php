@@ -176,7 +176,7 @@ Route::group(['middleware' => [
 
 Route::any('{location}.{format?}', [
     'middleware' => [
-        Middleware\Route::class,
+        Middleware\RoutePage::class,
         Middleware\InsertCMSToolbar::class,
     ],
     'uses' => 'BoomCMS\Http\Controllers\PageController@show',

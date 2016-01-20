@@ -5,6 +5,7 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\MultipleSites;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\View;
 class Asset extends Model implements AssetInterface
 {
     use Comparable;
+    use MultipleSites;
 
     const ATTR_ID = 'id';
     const ATTR_TITLE = 'title';
