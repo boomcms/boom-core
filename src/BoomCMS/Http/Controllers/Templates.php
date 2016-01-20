@@ -5,12 +5,12 @@ namespace BoomCMS\Http\Controllers;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Support\Helpers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
 class Templates extends Controller
 {
     protected $viewPrefix = 'boomcms::templates.';
-
     protected $role = 'manageTemplates';
 
     public function index()
@@ -23,11 +23,11 @@ class Templates extends Controller
     /**
      * Display a list of pages which use a given template.
      */
-    public function pages(Template $template)
+    public function pages(Request $request, Template $template)
     {
         $pages = Helpers::getPages(['template' => $template, 'order' => 'title asc']);
 
-        if ($this->request->route()->getParameter('format') !== 'csv') {
+        if ($request->route()->getParameter('format') !== 'csv') {
             return view($this->viewPrefix.'.pages', [
                 'pages'    => $pages,
                 'template' => $template,
@@ -60,17 +60,18 @@ class Templates extends Controller
         return Response::stream($callback, 200, $headers);
     }
 
-    public function save()
+    public function save(Request $request)
     {
-        $post = $this->request->input();
-        $templateIds = $post['templates'];
+        $post = $request->input();
+        $templates = TemplateFacade::find($post['templates']);
 
-        foreach ($templateIds as $templateId) {
-            $template = TemplateFacade::find($templateId);
+        foreach ($templates as $template) {
+            $id = $template->getId();
+
             $template
-                ->setName($post["name-$templateId"])
-                ->setFilename($post["filename-$templateId"])
-                ->setDescription($post["description-$templateId"]);
+                ->setName($post["name-$id"])
+                ->setFilename($post["filename-$id"])
+                ->setDescription($post["description-$id"]);
 
             TemplateFacade::save($template);
         }

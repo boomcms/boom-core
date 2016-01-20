@@ -15,9 +15,21 @@ interface Group
 
     public function getRoles();
 
+    /**
+     * @return Site
+     */
+    public function getSite();
+
     public function hasRole($roleId, $pageId = 0);
 
     public function removeRole($roleId);
 
     public function setName($name);
+
+    /**
+     * @param Site $site
+     *
+     * @return $this
+     */
+    public function setSite(Site $site);
 }

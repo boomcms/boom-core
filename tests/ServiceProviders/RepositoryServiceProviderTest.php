@@ -18,6 +18,7 @@ class RepositoryServiceProviderTest extends AbstractTestCase
             'boomcms.repositories.group'    => Repositories\Group::class,
             'boomcms.repositories.page'     => Repositories\Page::class,
             'boomcms.repositories.person'   => Repositories\Person::class,
+            Repositories\Site::class        => Repositories\Site::class,
             'boomcms.repositories.tag'      => Repositories\Tag::class,
             'boomcms.repositories.template' => Repositories\Template::class,
             'boomcms.repositories.url'      => Repositories\URL::class,

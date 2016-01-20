@@ -25,9 +25,21 @@ interface Tag
     public function getName();
 
     /**
+     * @return Site
+     */
+    public function getSite();
+
+    /**
      * @param string $name
      *
      * @return $this
      */
     public function setName($name);
+
+    /**
+     * @param Site $site
+     *
+     * @return $this
+     */
+    public function setSite(Site $site);
 }

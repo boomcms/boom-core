@@ -166,6 +166,13 @@ interface Page
     public function getParentId();
 
     /**
+     * Returns the site that the page belongs to.
+     *
+     * @return Site
+     */
+    public function getSite();
+
+    /**
      * @return Template
      */
     public function getTemplate();
@@ -415,6 +422,15 @@ interface Page
      * @return $this
      */
     public function setSequence($sequence);
+
+    /**
+     * Set the site that the page belongs to.
+     *
+     * @param Site $site
+     *
+     * @return $this
+     */
+    public function setSite(Site $site);
 
     /**
      * @param Template $template

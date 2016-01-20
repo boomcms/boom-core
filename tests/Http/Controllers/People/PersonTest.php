@@ -4,11 +4,16 @@ namespace BoomCMS\Tests\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\People\Person as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
+use BoomCMS\Support\Facades\Site as SiteFacade;
 use BoomCMS\Tests\AbstractTestCase;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Mockery as m;
 
 class PersonTest extends AbstractTestCase
@@ -23,6 +28,30 @@ class PersonTest extends AbstractTestCase
         parent::setUp();
 
         $this->controller = m::mock(Controller::class)->makePartial();
+    }
+
+    public function testAddSites()
+    {
+        $siteIds = [1, 2];
+        $sites = [new Site(), new Site()];
+        $request = new Request(['sites' => $siteIds]);
+        $person = m::mock(Person::class);
+
+        $person->shouldReceive('addSites')->once()->with($sites);
+
+        SiteFacade::shouldReceive('find')->with($siteIds)->andReturn($sites);
+
+        $this->controller->addSites($request, $person);
+    }
+
+    public function testAddSitesDoesNotQueryForSitesIfNoIdsGiven()
+    {
+        $request = new Request();
+        $person = m::mock(Person::class);
+
+        SiteFacade::shouldReceive('find')->never();
+
+        $this->controller->addSites($request, $person);
     }
 
     public function testAddGroups()
@@ -41,15 +70,33 @@ class PersonTest extends AbstractTestCase
         $this->controller->addGroups($request, $person);
     }
 
+    public function testAddGroupsDoesNotQueryForGroupsIfNoIdsGiven()
+    {
+        $request = new Request();
+        $person = m::mock(Person::class);
+
+        GroupFacade::shouldReceive('find')->never();
+
+        $this->controller->addGroups($request, $person);
+    }
+
     public function testAvailableGroups()
     {
-        $groupIds = [1, 2];
+        $site = new Site();
+        $allGroups = new Collection([new Group(), new Group(), new Group()]);
+        $inGroups = new Collection([$allGroups[0], $allGroups[1]]);
+
         $person = m::mock(Person::class);
-        $person->shouldReceive('getGroupIds')->andReturn($groupIds);
+        $person->shouldReceive('getGroups')
+            ->once()
+            ->andReturn($inGroups);
 
-        GroupFacade::shouldReceive('allExcept')->with($groupIds);
+        GroupFacade::shouldReceive('findBySite')
+            ->once()
+            ->with($site)
+            ->andReturn($allGroups);
 
-        $this->controller->availableGroups($person);
+        $this->assertEquals($allGroups->diff($inGroups), $this->controller->availableGroups($site, $person));
     }
 
     public function testCreate()
@@ -77,5 +124,45 @@ class PersonTest extends AbstractTestCase
         $person->shouldReceive('removeGroup')->with($group);
 
         $this->controller->removeGroup($person, $group);
+    }
+
+    public function testRemoveSite()
+    {
+        $site = new Site();
+        $person = m::mock(Person::class);
+
+        $person
+            ->shouldReceive('removeSite')
+            ->once()
+            ->with($site);
+
+        $this->controller->removeSite($person, $site);
+    }
+
+    public function testStoreAddsNewPersonToCurrentSite()
+    {
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        $person = m::mock(Person::class);
+        $person
+            ->shouldReceive('addSite')
+            ->once()
+            ->with($site);
+
+        PersonFacade::shouldReceive('create')
+            ->once()
+            ->andReturn($person);
+
+        Auth::shouldReceive('user')->andReturn(new Person());
+        Event::shouldReceive('fire');
+
+        $request = new Request([
+            'email' => 'support@uxblondon.com',
+            'name'  => 'Test user',
+        ]);
+
+        $this->controller->shouldReceive('addGroups');
+        $this->controller->store($request, $site);
     }
 }

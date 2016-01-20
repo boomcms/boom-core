@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Events\PageHadTagAdded;
 use BoomCMS\Events\PageHadTagRemoved;
@@ -14,16 +15,19 @@ use Illuminate\Support\Facades\Event;
 
 class Tags extends Controller
 {
-    public function __construct(Page $page)
-    {
-        $this->authorize('edit', $page);
-    }
+    protected $role = 'edit';
 
-    public function add(Request $request, Page $page)
+    /**
+     * @param Request $request
+     * @param Page    $page
+     *
+     * @return int
+     */
+    public function add(Request $request, Site $site, Page $page)
     {
         $name = $request->input('tag');
         $group = $request->input('group');
-        $tag = TagFacade::findOrCreateByNameAndGroup($name, $group);
+        $tag = TagFacade::findOrCreate($site, $name, $group);
 
         $page->addTag($tag);
 
@@ -32,6 +36,9 @@ class Tags extends Controller
         return $tag->getId();
     }
 
+    /**
+     * @param Page $page
+     */
     public function view(Page $page)
     {
         $grouped = [];
@@ -47,6 +54,10 @@ class Tags extends Controller
         ]);
     }
 
+    /**
+     * @param Page $page
+     * @param Tag  $tag
+     */
     public function remove(Page $page, Tag $tag)
     {
         $page->removeTag($tag);
