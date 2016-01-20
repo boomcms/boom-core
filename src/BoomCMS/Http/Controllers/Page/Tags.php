@@ -56,7 +56,7 @@ class Tags extends Controller
 
     /**
      * @param Page $page
-     * @param Tag $tag
+     * @param Tag  $tag
      */
     public function remove(Page $page, Tag $tag)
     {
