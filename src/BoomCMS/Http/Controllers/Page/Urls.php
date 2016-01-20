@@ -2,65 +2,55 @@
 
 namespace BoomCMS\Http\Controllers\Page;
 
-use BoomCMS\Contracts\Models\Page as PageInterface;
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
+use BoomCMS\Database\Models\URL;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\MakeURLPrimary;
 use BoomCMS\Jobs\ReassignURL;
-use BoomCMS\Support\Facades\URL;
+use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
 
 class Urls extends Controller
 {
-    /**
-     * @var string
-     */
     protected $viewPrefix = 'boomcms::editor.urls';
 
-    public $url;
-
-    /**
-     * @var PageInterface
-     */
-    public $page;
-
-    public function __construct(Request $request)
+    public function __construct(Page $page)
     {
-        $this->request = $request;
-        $this->page = $request->route()->getParameter('page');
-        $this->url = $request->route()->getParameter('url');
-
-        $this->authorize('editUrls', $this->page);
+        $this->authorize('editUrls', $page);
     }
 
-    public function getAdd()
+    public function getAdd(Page $page)
     {
         return view("$this->viewPrefix.add", [
-            'page' => $this->page,
+            'page' => $page,
         ]);
     }
 
-    public function getMove()
+    public function getMove(Page $page, URL $url)
     {
         return view("$this->viewPrefix.move", [
-            'url'     => $this->url,
-            'current' => $this->url->getPage(),
-            'page'    => $this->page,
+            'url'     => $url,
+            'current' => $url->getPage(),
+            'page'    => $page,
         ]);
     }
 
-    public function postAdd(Site $site)
+    public function postAdd(Request $request, Site $site, Page $page)
     {
-        $location = $this->request->input('location');
-        $this->url = URL::findBySiteAndLocation($site, $location);
+        $location = $request->input('location');
+        $url = URLFacade::findBySiteAndLocation($site, $location);
 
-        if ($this->url && !$this->url->isForPage($this->page)) {
+        if ($url && !$url->isForPage($page)) {
             // Url is being used for a different page.
             // Notify that the url is already in use so that the JS can load a prompt to move the url.
-            return ['existing_url_id' => $this->url->getId()];
-        } elseif (!$this->url) {
-            URL::create($location, $this->page);
+
+            return ['existing_url_id' => $url->getId()];
+        }
+
+        if (!$url) {
+            URLFacade::create($location, $page);
         }
     }
 
