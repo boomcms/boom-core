@@ -9,7 +9,7 @@ use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Mockery as m;
 
-class TemplatesTest extends AbstractTestCase
+class TempatesTest extends AbstractTestCase
 {
     /**
      * @var Controller
@@ -40,7 +40,7 @@ class TemplatesTest extends AbstractTestCase
             'filename-1'    => 'filename 1',
             'name-2'        => 'name 2',
             'description-2' => 'description 2',
-            'filename-2'    => 'filename 2'
+            'filename-2'    => 'filename 2',
         ];
 
         TemplateFacade::shouldReceive('find')
