@@ -30768,7 +30768,8 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
  * http://stackoverflow.com/q/4998908
  */
 
-/*global window, atob, Blob, ArrayBuffer, Uint8Array, define, module */
+/*jslint nomen: true, regexp: true */
+/*global window, atob, Blob, ArrayBuffer, Uint8Array, define */
 
 (function (window) {
     'use strict';
@@ -30857,8 +30858,6 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
         define(function () {
             return dataURLtoBlob;
         });
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = dataURLtoBlob;
     } else {
         window.dataURLtoBlob = dataURLtoBlob;
     }
@@ -40344,29 +40343,7 @@ function boomPage(page_id) {
 			page_id = this.id;
 
 		$.post(this.baseUrl + 'add/' + page_id, function(response) {
-			if (response.prompt) {
-				var dialog = new boomDialog({
-					msg: response.prompt,
-					cancelButton: false,
-					closeButton: false,
-					onLoad: function() {
-						dialog.contents.on('click', 'button', function() {
-							var parentId = $(this).attr('data-parent'),
-								parent = parentId === this.id ? this : new boomPage(parentId);
-
-							if (!parentId) {
-								dialog.cancel();
-							} else {
-								parent.addWithoutPrompt()
-									.done(function(response) {
-										promise.resolve(response);
-									});
-										
-							}
-						});
-					}
-				});
-			} else if (response.url) {
+			if (response.url) {
 				promise.resolve(response);
 			} else {
 				promise.reject(response);
@@ -45632,10 +45609,12 @@ function Row() {
 		return deferred;
 	};
 
-	boomPerson.prototype.addGroups = function() {
-		var url = this.baseUrl + '/' + this.id + '/groups',
-			deferred = new $.Deferred(),
-			dialog;
+	boomPerson.prototype.addGroups = function(groupIds) {
+		return $.post(this.baseUrl + '/' + this.id + '/groups', {'groups[]': groupIds});
+	}
+
+	boomPerson.prototype.getAddableGroups = function() {
+		return $.get(this.baseUrl + '/' + this.id + '/groups');
 
 		dialog = new boomDialog({
 			url: url,
@@ -45709,7 +45688,8 @@ function Row() {
 			data: data
 		});
 	};
-};;$.widget('boom.peopleManager', {
+};
+;$.widget('boom.peopleManager', {
 	homeUrl : '/boomcms/people',
 	selectedPeople : 0,
 
@@ -45796,25 +45776,56 @@ function Row() {
 		this.document.find('body').height(this.window.height());
 	},
 
-	currentPersonAddGroups : function() {
-		var person_id = this.getCurrentPersonId(),
-			person = new boomPerson(person_id),
+	currentPersonAddGroups: function() {
+		var personId = this.getCurrentPersonId(),
+			person = new boomPerson(personId),
 			peopleManager = this,
-			$group_list = this.element.find('#b-person-groups-list');
+			$groupList = this.element.find('#b-person-groups-list'),
+			$addGroup = this.element.find('#b-people-addgroup');
 
-		person.addGroups()
-			.done(function(new_groups) {
-				if (Object.keys(new_groups).length) {
-					var id, name;
+		person.getAddableGroups()
+			.done(function(groups) {
+				var groupsById = [];
+				$addGroup.find('option').remove();
 
-					for (id in new_groups) {
-						name = new_groups[id];
+				for (var i = 0; i < groups.length; i++) {
+					var $option = $('<option>')
+						.attr('value', groups[i].id)
+						.text(groups[i].name);
 
-						$group_list.append($("<li data-group-id=" + id +">" + name +"&nbsp;<a title='Remove user from group' class='b-person-group-delete' href='#'>x</a></li>"));
-					}
-
-					new boomNotification('This person has been added to the groups');
+					groupsById[groups[i].id] = groups[i].name;
+					$addGroup.find('select').append($option);
 				}
+
+				var dialog = new boomDialog({
+					msg: $addGroup.html(),
+					title: 'Add group',
+					closeButton: false,
+					saveButton: true
+				}).done(function() {
+					var groups = {};
+
+					dialog.contents.find('form select option:selected').each(function(i, el) {
+						var $el = $(el);
+						groups[$el.val()] = $el.text();
+					});
+
+					var groupIds = Object.keys(groups);
+
+					if (groupIds.length) {
+						person.addGroups(groupIds)
+							.done(function() {
+								for (var i =  0; i < groupIds.length; i++) {
+									var id = groupIds[i],
+										name = groupsById[id];
+
+									$groupList.append($("<li data-group-id=" + id +">" + name +"&nbsp;<a title='Remove user from group' class='b-person-group-delete' href='#'>x</a></li>"));
+								}
+
+								new boomNotification('This person has been added to the groups');	
+							});
+					}
+				});
 			});
 	},
 
@@ -46241,7 +46252,7 @@ function Row() {
 		$element.parents('tr').remove();
 	}
 });;/**
- * @license wysihtml v0.5.5
+ * @license wysihtml v0.5.4
  * https://github.com/Voog/wysihtml
  *
  * Author: Christopher Blum (https://github.com/tiff)
@@ -46252,7 +46263,7 @@ function Row() {
  *
  */
 var wysihtml5 = {
-  version: "0.5.5",
+  version: "0.5.4",
 
   // namespaces
   commands:   {},
@@ -53361,10 +53372,6 @@ wysihtml5.browser = (function() {
         return ("styleFloat" in document.createElement("div").style) ? "styleFloat" : "cssFloat";
       }
       return key;
-    },
-
-    usesControlRanges: function() {
-      return document.body && "createControlRange" in document.body;
     }
   };
 })();
@@ -54382,8 +54389,8 @@ wysihtml5.dom.copyAttributes = function(attributesToCopy) {
 
       transferContentTo: function(targetNode, removeOldWrapper) {
         if (node.nodeType === 1) {
-          if (wysihtml5.dom.domNode(targetNode).is.voidElement() || targetNode.nodeType === 3) {
-            while (node.lastChild) {
+          if (wysihtml5.dom.domNode(targetNode).is.voidElement()) {
+            while (node.firstChild) {
               targetNode.parentNode.insertBefore(node.lastChild, targetNode.nextSibling);
             }
           } else {
@@ -57982,14 +57989,6 @@ wysihtml5.quirks.ensureProperClearing = (function() {
       return ret;
   }
 
-  function getRangeNode(node, offset) {
-    if (node.nodeType === 3) {
-      return node;
-    } else {
-      return node.childNodes[offset] || node;
-    }
-  }
-
   function getWebkitSelectionFixNode(container) {
     var blankNode = document.createElement('span');
 
@@ -58060,7 +58059,7 @@ wysihtml5.quirks.ensureProperClearing = (function() {
     /** @scope wysihtml5.Selection.prototype */ {
     constructor: function(editor, contain, unselectableClass) {
       // Make sure that our external range library is initialized
-      rangy.init();
+      window.rangy.init();
 
       this.editor   = editor;
       this.composer = editor.composer;
@@ -58387,16 +58386,11 @@ wysihtml5.quirks.ensureProperClearing = (function() {
       range.deleteContents();
     },
 
-    getCaretNode: function () {
-      var selection = this.getSelection();
-      return (selection && selection.anchorNode) ? getRangeNode(selection.anchorNode, selection.anchorOffset) : null;
-    },
-
     getPreviousNode: function(node, ignoreEmpty) {
       var displayStyle;
       if (!node) {
         var selection = this.getSelection();
-        node = (selection && selection.anchorNode) ? getRangeNode(selection.anchorNode, selection.anchorOffset) : null;
+        node = selection.anchorNode;
       }
 
       if (node === this.contain) {
@@ -58516,24 +58510,15 @@ wysihtml5.quirks.ensureProperClearing = (function() {
       return (/^\s*$/).test(endtxt);
     },
 
-    caretIsFirstInSelection: function(includeLineBreaks) {
+    caretIsFirstInSelection: function() {
       var r = rangy.createRange(this.doc),
           s = this.getSelection(),
           range = this.getRange(),
-          startNode = getRangeNode(range.startContainer, range.startOffset);
+          startNode = range.startContainer;
       
       if (startNode) {
         if (startNode.nodeType === wysihtml5.TEXT_NODE) {
-          if (!startNode.parentNode) {
-            return false;
-          }
-          if (!this.isCollapsed() || (startNode.parentNode.firstChild !== startNode && !wysihtml5.dom.domNode(startNode.previousSibling).is.block())) {
-            return false;
-          }
-          var ws = this.win.getComputedStyle(startNode.parentNode).whiteSpace;
-          return (ws === "pre" || ws === "pre-wrap") ? range.startOffset === 0 : (/^\s*$/).test(startNode.data.substr(0,range.startOffset));
-        } else if (includeLineBreaks && wysihtml5.dom.domNode(startNode).is.lineBreak()) {
-          return true;
+          return this.isCollapsed() && (startNode.nodeType === wysihtml5.TEXT_NODE && (/^\s*$/).test(startNode.data.substr(0,range.startOffset)));
         } else {
           r.selectNodeContents(this.getRange().commonAncestorContainer);
           r.collapse(true);
@@ -63794,36 +63779,31 @@ wysihtml5.views.View = Base.extend(
       var selection = composer.selection,
           prevNode = selection.getPreviousNode();
 
-      if (selection.caretIsFirstInSelection(wysihtml5.browser.usesControlRanges()) && prevNode) {
-        if (prevNode.nodeType === 1 &&
-            wysihtml5.dom.domNode(prevNode).is.block() &&
-            !domNode(prevNode).test({
-              query: "ol, ul, table, tr, dl"
-            })
-        ) {
-          if ((/^\s*$/).test(prevNode.textContent || prevNode.innerText)) {
-            // If heading is empty remove the heading node
-            prevNode.parentNode.removeChild(prevNode);
-            return true;
-          } else {
-            if (prevNode.lastChild) {
-              var selNode = prevNode.lastChild,
-                  selectedNode = selection.getSelectedNode(),
-                  commonAncestorNode = domNode(prevNode).commonAncestor(selectedNode, composer.element),
-                  curNode = wysihtml5.dom.getParentElement(selectedNode, {
-                    query: "h1, h2, h3, h4, h5, h6, p, pre, div, blockquote"
-                  }, false, commonAncestorNode || composer.element);
+      if (selection.caretIsFirstInSelection() &&
+          prevNode &&
+          prevNode.nodeType === 1 &&
+          (/block/).test(composer.win.getComputedStyle(prevNode).display) &&
+          !domNode(prevNode).test({
+            query: "ol, ul, table, tr, dl"
+          })
+      ) {
+        if ((/^\s*$/).test(prevNode.textContent || prevNode.innerText)) {
+          // If heading is empty remove the heading node
+          prevNode.parentNode.removeChild(prevNode);
+          return true;
+        } else {
+          if (prevNode.lastChild) {
+            var selNode = prevNode.lastChild,
+                selectedNode = selection.getSelectedNode(),
+                commonAncestorNode = domNode(prevNode).commonAncestor(selectedNode, composer.element),
+                curNode = wysihtml5.dom.getParentElement(selectedNode, {
+                  query: "h1, h2, h3, h4, h5, h6, p, pre, div, blockquote"
+                }, false, commonAncestorNode || composer.element);
 
-              if (curNode) {
-                domNode(curNode).transferContentTo(prevNode, true);
-                selection.setAfter(selNode);
-                return true;
-              } else if (wysihtml5.browser.usesControlRanges()) {
-                selectedNode = selection.getCaretNode();
-                domNode(selectedNode).transferContentTo(prevNode, true);
-                selection.setAfter(selNode);
-                return true;
-              }
+            if (curNode) {
+              domNode(curNode).transferContentTo(prevNode, true);
+              selection.setAfter(selNode);
+              return true;
             }
           }
         }
@@ -63874,26 +63854,6 @@ wysihtml5.views.View = Base.extend(
       return false;
     },
     
-    fixDeleteInTheBeginningOfControlSelection: function(composer) {
-      var selection = composer.selection,
-          prevNode = selection.getPreviousNode(),
-          selectedNode = selection.getSelectedNode(),
-          afterCaretNode;
-
-      if (selection.caretIsFirstInSelection()) {
-        if (selectedNode.nodeType === 3) {
-          selectedNode = selectedNode.parentNode;
-        }
-        afterCaretNode = selectedNode.firstChild;
-        domNode(selectedNode).transferContentTo(prevNode, true);
-        if (afterCaretNode) {
-          composer.selection.setBefore(afterCaretNode);
-        }
-        return true;
-      }
-      return false;
-    },
-
     // Table management
     // If present enableObjectResizing and enableInlineTableEditing command should be called with false to prevent native table handlers
     initTableHandling: function() {
@@ -64005,12 +63965,6 @@ wysihtml5.views.View = Base.extend(
       if (actions.fixLastBrDeletionInTable(composer)) {
         event.preventDefault();
         return;
-      }
-      if (wysihtml5.browser.usesControlRanges()) {
-        if (actions.fixDeleteInTheBeginningOfControlSelection(composer)) {
-          event.preventDefault();
-          return;
-        }
       }
     } else {
       if (selection.containsUneditable()) {
@@ -64128,30 +64082,6 @@ wysihtml5.views.View = Base.extend(
         this.selection.selectNode(target);
       }
     }
-
-    // Saves mousedown position for IE controlSelect fix
-    if (wysihtml5.browser.usesControlRanges()) {
-      this.selection.lastMouseDownPos = {x: event.clientX, y: event.clientY};
-      setTimeout(function() {
-        delete this.selection.lastMouseDownPos;
-      }.bind(this), 0);
-    }
-  };
-
-  // IE has this madness of control selects of overflowed and some other elements (weird box around element on selection and second click selects text)
-  // This fix handles the second click problem by adding cursor to the right position under cursor inside when controlSelection is made
-  var handleIEControlSelect = function(event) {
-    var target = event.target,
-        pos = this.selection.lastMouseDownPos;
-    if (pos) {
-      var caretPosition = document.body.createTextRange();
-        setTimeout(function() {
-          try {
-            caretPosition.moveToPoint(pos.x, pos.y);
-            caretPosition.select();
-          } catch (e) {}
-        }.bind(this), 0);
-    }
   };
 
   var handleClick = function(event) {
@@ -64239,6 +64169,8 @@ wysihtml5.views.View = Base.extend(
       this.selection.getSelection().removeAllRanges();
     }).bind(this), 0);
   };
+
+  
   
   // Testing requires actions to be accessible from out of scope
   wysihtml5.views.Composer.prototype.observeActions = actions;
@@ -64281,11 +64213,6 @@ wysihtml5.views.View = Base.extend(
     this.element.addEventListener("drop",       handleDrop.bind(this), false);
     this.element.addEventListener("keyup",      handleKeyUp.bind(this), false);
     this.element.addEventListener("keydown",    handleKeyDown.bind(this), false);
-
-    // IE controlselect madness fix
-    if (wysihtml5.browser.usesControlRanges()) {
-      this.element.addEventListener('mscontrolselect', handleIEControlSelect.bind(this), false);
-    }
 
     this.element.addEventListener("dragenter", (function() {
       this.parent.fire("unset_placeholder");

@@ -34,7 +34,11 @@ class Controller extends BaseController
         $this->editor = $editor;
 
         if ($this->role) {
-            $this->authorize($this->role, $request);
+            if ($page = $request->route()->getParameter('page')) {
+                $this->authorize($this->role, $page);
+            } else {
+                $this->authorize($this->role, $request);
+            }
         }
     }
 }

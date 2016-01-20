@@ -38,6 +38,15 @@
 		<div id='b-people-content'>
 			<?= $content ?>
 		</div>
+    
+        <div id="b-people-addgroup">
+            <form>
+                <p>Select some groups to add from the list below.</p>
+                <p>You can select multiple groups to add the person to all selected groups.</p>
+
+                <select name="groups[]" multiple></select>
+            </form>
+        </div>
 	</div>
 
 	<?= $boomJS ?>

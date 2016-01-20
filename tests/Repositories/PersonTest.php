@@ -3,20 +3,37 @@
 namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Person as PersonRepository;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
 class PersonTest extends AbstractTestCase
 {
+    /**
+     * @var Person
+     */
+    protected $model;
+
+    /**
+     * @var PersonRepository
+     */
+    protected $repository;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->model = m::mock(Person::class.'[where,join,whereSite,destroy,orderBy,get]');
+        $this->repository = m::mock(PersonRepository::class, [$this->model])->makePartial();
+    }
+
     public function testDeleteByIds()
     {
-        $model = m::mock(Person::class);
-        $model->shouldReceive('destroy')->with([1, 2]);
+        $this->model->shouldReceive('destroy')->once()->with([1, 2]);
 
-        $repository = new PersonRepository($model);
-
-        $this->assertEquals($repository, $repository->deleteByIds([1, 2]));
+        $this->assertEquals($this->repository, $this->repository->deleteByIds([1, 2]));
     }
 
     /**
@@ -27,32 +44,100 @@ class PersonTest extends AbstractTestCase
         $email = 'test@test.com';
         $person = new Person(['id' => 1, 'email' => $email]);
 
-        $provider = $this->getMockBuilder(PersonRepository::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['findByEmail'])
-            ->getMock();
+        $this->repository
+            ->shouldReceive('findByEmail')
+            ->once()
+            ->with($email)
+            ->andReturn($person);
 
-        $provider
-            ->expects($this->once())
-            ->method('findByEmail')
-            ->with($this->equalTo($email))
-            ->will($this->returnValue($person));
-
-        $provider->create(['name' => 'test', 'email' => $email]);
+        $this->repository->create(['name' => 'test', 'email' => $email]);
     }
 
     public function testFindByGroupId()
     {
-        $model = m::mock(Person::class);
+        $this->model->shouldReceive('join')->with('group_person', 'people.id', '=', 'person_id')->andReturnSelf();
+        $this->model->shouldReceive('where')->with('group_id', '=', 1)->andReturnSelf();
+        $this->model->shouldReceive('orderBy')->with('name', 'asc')->andReturnSelf();
+        $this->model->shouldReceive('get')->andReturn([]);
 
-        $model->shouldReceive('join')->with('group_person', 'people.id', '=', 'person_id')->andReturnSelf();
-        $model->shouldReceive('where')->with('group_id', '=', 1)->andReturnSelf();
-        $model->shouldReceive('orderBy')->with('name', 'asc')->andReturnSelf();
-        $model->shouldReceive('get')->andReturn([]);
+        $this->assertEquals([], $this->repository->findByGroupId(1));
+    }
 
-        $repository = new PersonRepository($model);
+    public function testRetrieveByCredentials()
+    {
+        $person = new Person();
+        $credentials = [
+            'email' => 'test@test.com',
+        ];
+        $site = new Site();
+        Router::shouldReceive('getActiveSite')->once()->andReturn($site);
 
-        $this->assertEquals([], $repository->findByGroupId(1));
+        $this->model
+            ->shouldReceive('whereSite')
+            ->once()
+            ->with($site)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with(Person::ATTR_EMAIL, '=', $credentials['email'])
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($person);
+
+        $this->assertEquals($person, $this->repository->retrieveByCredentials($credentials));
+    }
+
+    public function testRetrieveById()
+    {
+        $id = 1;
+        $person = new Person();
+
+        $this->repository
+            ->shouldReceive('find')
+            ->once()
+            ->with($id)
+            ->andReturn($person);
+
+        $this->assertEquals($person, $this->repository->retrieveById($id));
+    }
+
+    public function testRetrieveByToken()
+    {
+        $person = new Person();
+        $personId = 1;
+        $token = 'test';
+        $site = new Site();
+        Router::shouldReceive('getActiveSite')->once()->andReturn($site);
+
+        $this->model
+            ->shouldReceive('whereSite')
+            ->once()
+            ->with($site)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with($person->getKeyName(), '=', $personId)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with($person->getRememberTokenName(), '=', $token)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($person);
+
+        $this->assertEquals($person, $this->repository->retrieveByToken($personId, $token));
     }
 
     public function testSave()

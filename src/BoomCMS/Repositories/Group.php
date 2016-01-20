@@ -3,8 +3,10 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Group as GroupModelInterface;
+use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Contracts\Repositories\Group as GroupRepositoryInterface;
 use BoomCMS\Database\Models\Group as Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class Group implements GroupRepositoryInterface
 {
@@ -21,21 +23,17 @@ class Group implements GroupRepositoryInterface
     }
 
     /**
-     * @param array $groupIds
+     * @param SiteModelInterface $site
+     * @param string             $name
      *
-     * @return array
+     * @return Model
      */
-    public function allExcept(array $groupIds)
+    public function create(SiteModelInterface $site, $name)
     {
-        return $this->model
-            ->whereNotIn(Model::ATTR_ID, $groupIds)
-            ->orderBy(Model::ATTR_NAME, 'asc')
-            ->get();
-    }
-
-    public function create(array $attributes)
-    {
-        return Model::create($attributes);
+        return $this->model->create([
+            Model::ATTR_SITE => $site->getId(),
+            Model::ATTR_NAME => $name,
+        ]);
     }
 
     public function delete(GroupModelInterface $group)
@@ -53,6 +51,28 @@ class Group implements GroupRepositoryInterface
     public function find($id)
     {
         return $this->model->find($id);
+    }
+
+    /**
+     * @param SiteInterface $site
+     *
+     * @return Collection
+     */
+    public function findBySite(SiteModelInterface $site)
+    {
+        return $this->model
+            ->where(Model::ATTR_SITE, '=', $site->getId())
+            ->orderBy(Model::ATTR_NAME, 'asc')
+            ->get();
+    }
+
+    /**
+     * @param SiteModelInterface $site
+     * @param array              $groupIds
+     */
+    public function findBySiteExcluding(SiteModelInterface $site, array $groupIds)
+    {
+        ;
     }
 
     public function save(GroupModelInterface $group)

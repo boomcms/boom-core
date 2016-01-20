@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Repositories;
 
+use BoomCMS\Contracts\Models\Page as PageInterface;
+use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
 use BoomCMS\Contracts\Repositories\URL as URLRepositoryInterface;
 use BoomCMS\Database\Models\URL as Model;
@@ -23,20 +25,22 @@ class URL implements URLRepositoryInterface
     }
 
     /**
-     * @param string $location
-     * @param int    $pageId
-     * @param bool   $isPrimary
+     * @param string        $location
+     * @param PageInterface $page
+     * @param bool          $isPrimary
      *
      * @return URLInterface
      */
-    public function create($location, $pageId, $isPrimary = false)
+    public function create($location, PageInterface $page, $isPrimary = false)
     {
-        $unique = URLHelper::makeUnique(URLHelper::sanitise($location));
+        $site = $page->getSite();
+        $unique = URLHelper::makeUnique($site, URLHelper::sanitise($location));
 
         return $this->model->create([
-            'location'   => $unique,
-            'page_id'    => $pageId,
-            'is_primary' => $isPrimary,
+            Model::ATTR_LOCATION   => $unique,
+            Model::ATTR_PAGE_ID    => $page->getId(),
+            Model::ATTR_IS_PRIMARY => $isPrimary,
+            Model::ATTR_SITE       => $site->getId(),
         ]);
     }
 
@@ -47,7 +51,7 @@ class URL implements URLRepositoryInterface
      */
     public function delete(URLInterface $url)
     {
-        $this->model->destroy($url->getId());
+        $url->delete();
 
         return $this;
     }
@@ -63,15 +67,33 @@ class URL implements URLRepositoryInterface
     }
 
     /**
-     * @param string $location
+     * @param SiteInterface $site
+     * @param string        $location
      *
      * @return URLInterface
      */
-    public function findByLocation($location)
+    public function findBySiteAndLocation(SiteInterface $site, $location)
     {
         return $this->model
-            ->where('location', '=', URLHelper::sanitise($location))
+            ->where(Model::ATTR_SITE, '=', $site->getId())
+            ->where(Model::ATTR_LOCATION, '=', URLHelper::sanitise($location))
             ->first();
+    }
+
+    /**
+     * Determine whether a URL is already being used by a page in the CMS.
+     *
+     * @param SiteInterface $site
+     * @param string        $path
+     *
+     * @return bool
+     */
+    public function isAvailable(SiteInterface $site, $path)
+    {
+        return !$this->model
+            ->where(Model::ATTR_SITE, '=', $site->getId())
+            ->where(Model::ATTR_LOCATION, '=', $path)
+            ->exists();
     }
 
     /**
