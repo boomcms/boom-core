@@ -50,16 +50,6 @@ $.widget('boom.textEditor', {
 			if (self.mode === 'block' && element.text() == element.html()) {
 				element.html($('<p></p>').text(element.text()));
 			}
-			
-			if (self.mode === 'inline') {
-				element[0].onpaste = function(e) {
-					var html = e.clipboardData.getData('text/plain'),
-						text = html.replace(/\n|\r|\n\r/g, '');
-
-					e.preventDefault();
-					top.document.execCommand("insertHTML", false, text);
-				};
-			}
 		} else {
 			element
 				.attr('contenteditable', true)

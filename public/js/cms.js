@@ -40344,29 +40344,7 @@ function boomPage(page_id) {
 			page_id = this.id;
 
 		$.post(this.baseUrl + 'add/' + page_id, function(response) {
-			if (response.prompt) {
-				var dialog = new boomDialog({
-					msg: response.prompt,
-					cancelButton: false,
-					closeButton: false,
-					onLoad: function() {
-						dialog.contents.on('click', 'button', function() {
-							var parentId = $(this).attr('data-parent'),
-								parent = parentId === this.id ? this : new boomPage(parentId);
-
-							if (!parentId) {
-								dialog.cancel();
-							} else {
-								parent.addWithoutPrompt()
-									.done(function(response) {
-										promise.resolve(response);
-									});
-										
-							}
-						});
-					}
-				});
-			} else if (response.url) {
+			if (response.url) {
 				promise.resolve(response);
 			} else {
 				promise.reject(response);
@@ -42046,16 +42024,6 @@ $.widget('boom.textEditor', {
 			// Ensures that default text is wrapped in a paragraph
 			if (self.mode === 'block' && element.text() == element.html()) {
 				element.html($('<p></p>').text(element.text()));
-			}
-			
-			if (self.mode === 'inline') {
-				element[0].onpaste = function(e) {
-					var html = e.clipboardData.getData('text/plain'),
-						text = html.replace(/\n|\r|\n\r/g, '');
-
-					e.preventDefault();
-					top.document.execCommand("insertHTML", false, text);
-				};
 			}
 		} else {
 			element
