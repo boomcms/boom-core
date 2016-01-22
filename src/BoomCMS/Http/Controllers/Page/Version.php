@@ -5,8 +5,8 @@ namespace BoomCMS\Http\Controllers\Page;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Template;
+use DateTime;
 use Illuminate\Http\Request;
-use \DateTime;
 
 class Version extends Controller
 {

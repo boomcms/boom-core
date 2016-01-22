@@ -4,7 +4,6 @@ namespace BoomCMS\Http\Controllers\Page\Version;
 
 use BoomCMS\Events;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
-use DateTime;
 use Illuminate\Support\Facades\Event;
 
 class Save extends Version

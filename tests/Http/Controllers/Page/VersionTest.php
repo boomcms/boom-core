@@ -6,10 +6,8 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Http\Controllers\Page\Version as Controller;
-use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
-use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\View;
 use Mockery as m;
 
@@ -46,7 +44,7 @@ class VersionTest extends BaseControllerTest
         View::shouldReceive('make')
             ->once()
             ->with('boomcms::editor.page.version.embargo', [
-                'version' => $this->version
+                'version' => $this->version,
             ], [])
             ->andReturn('view');
 
