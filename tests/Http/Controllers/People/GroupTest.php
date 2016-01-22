@@ -6,23 +6,16 @@ use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\People\Group as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
-use BoomCMS\Tests\AbstractTestCase;
+use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Http\Request;
 use Mockery as m;
 
-class GroupTest extends AbstractTestCase
+class GroupTest extends BaseControllerTest
 {
     /**
-     * @var Controller
+     * @var string
      */
-    protected $controller;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->controller = m::mock(Controller::class)->makePartial();
-    }
+    protected $className = Controller::class;
 
     public function testAddRole()
     {

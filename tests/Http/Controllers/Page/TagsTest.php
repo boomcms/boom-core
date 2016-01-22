@@ -7,23 +7,16 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Http\Controllers\Page\Tags as Controller;
 use BoomCMS\Support\Facades\Tag as TagFacade;
-use BoomCMS\Tests\AbstractTestCase;
+use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Http\Request;
 use Mockery as m;
 
-class TagsTest extends AbstractTestCase
+class TagsTest extends BaseControllerTest
 {
     /**
-     * @var Controller
+     * @var string
      */
-    protected $controller;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->controller = m::mock(Controller::class)->makePartial();
-    }
+    protected $className = Controller::class;
 
     public function testAdd()
     {

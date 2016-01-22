@@ -9,26 +9,19 @@ use BoomCMS\Http\Controllers\People\Person as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
 use BoomCMS\Support\Facades\Site as SiteFacade;
-use BoomCMS\Tests\AbstractTestCase;
+use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Mockery as m;
 
-class PersonTest extends AbstractTestCase
+class PersonTest extends BaseControllerTest
 {
     /**
-     * @var Controller
+     * @var string
      */
-    protected $controller;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->controller = m::mock(Controller::class)->makePartial();
-    }
+    protected $className = Controller::class;
 
     public function testAddSites()
     {

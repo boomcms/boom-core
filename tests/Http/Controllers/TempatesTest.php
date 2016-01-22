@@ -1,27 +1,19 @@
 <?php
 
-namespace BoomCMS\Tests\Controllers;
+namespace BoomCMS\Tests\Http\Controllers;
 
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Http\Controllers\Templates as Controller;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
-use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Mockery as m;
 
-class TempatesTest extends AbstractTestCase
+class TempatesTest extends BaseControllerTest
 {
     /**
-     * @var Controller
+     * @var string
      */
-    protected $controller;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->controller = m::mock(Controller::class)->makePartial();
-    }
+    protected $className = Controller::class;
 
     public function testSave()
     {
