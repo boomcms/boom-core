@@ -6,21 +6,13 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Editor\Editor as Editor;
 use BoomCMS\Http\Controllers\Editor as EditorController;
 use BoomCMS\Support\Facades\Page as PageFacade;
-use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Mockery as m;
 
-class EditorTest extends AbstractTestCase
+class EditorTest extends BaseControllerTest
 {
-    protected $controller;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->controller = m::mock(EditorController::class)->makePartial();
-    }
+    protected $className = EditorController::class;
 
     public function testState()
     {
