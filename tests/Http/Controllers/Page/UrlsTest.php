@@ -7,8 +7,6 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Url;
 use BoomCMS\Http\Controllers\Page\Urls as Controller;
 use BoomCMS\Support\Facades\URL as URLFacade;
-use BoomCMS\Tests\AbstractTestCase;
-use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Http\Request;
 use Mockery as m;
 

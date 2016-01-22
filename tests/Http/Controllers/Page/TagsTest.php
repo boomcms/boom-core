@@ -7,7 +7,6 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Http\Controllers\Page\Tags as Controller;
 use BoomCMS\Support\Facades\Tag as TagFacade;
-use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Http\Request;
 use Mockery as m;
 

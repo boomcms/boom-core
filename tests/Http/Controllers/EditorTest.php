@@ -14,7 +14,7 @@ class EditorTest extends BaseControllerTest
 {
     protected $className = EditorController::class;
 
-   public function testState()
+    public function testState()
     {
         $editor = m::mock(Editor::class);
         $states = [

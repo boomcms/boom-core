@@ -9,7 +9,7 @@ use Mockery as m;
 abstract class BaseControllerTest extends AbstractTestCase
 {
     protected $controller;
-    
+
     /**
      * @var string
      */
@@ -26,7 +26,7 @@ abstract class BaseControllerTest extends AbstractTestCase
 
     /**
      * @param string $role
-     * @param Page $page
+     * @param Page   $page
      */
     protected function requireRole($role, Page $page = null)
     {
