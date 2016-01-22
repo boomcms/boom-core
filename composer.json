@@ -7,7 +7,7 @@
 		"ext-imagick" : "*",
 		"mpratt/embera": "~1.0",
 		"genphrase/genphrase" : "1.0.*",
-		"hautelook/phpass": "dev-master",
+		"hautelook/phpass": "0.3.4",
 		"thujohn/rss": "dev-master",
 		"intervention/imagecache" : "2.*",
 		"laravel/framework": "~5.1",
