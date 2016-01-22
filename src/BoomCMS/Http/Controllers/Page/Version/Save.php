@@ -9,38 +9,6 @@ use Illuminate\Support\Facades\Event;
 
 class Save extends Version
 {
-    public function embargo()
-    {
-        parent::embargo();
-
-        $time = $this->request->input('embargoed_until') ?
-            strtotime($this->request->input('embargoed_until'))
-            : time();
-
-        $this->page->setEmbargoTime(new DateTime('@'.$time));
-
-        $version = $this->page->getCurrentVersion();
-
-        if ($version->isPublished()) {
-            Event::fire(new Events\PageWasPublished($this->page, auth()->user(), $version));
-        } elseif ($version->isEmbargoed()) {
-            Event::fire(new Events\PageWasEmbargoed($this->page, auth()->user(), $version));
-        }
-
-        return $this->page->getCurrentVersion()->getStatus();
-    }
-
-    public function request_approval()
-    {
-        parent::request_approval();
-
-        $this->page->markUpdatesAsPendingApproval();
-
-        Event::fire(new Events\PageApprovalRequested($this->page, $this->auth->user()));
-
-        return $this->page->getCurrentVersion()->getStatus();
-    }
-
     public function template()
     {
         parent::template();
