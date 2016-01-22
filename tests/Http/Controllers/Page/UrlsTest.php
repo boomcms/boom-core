@@ -7,16 +7,15 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Url;
 use BoomCMS\Http\Controllers\Page\Urls as Controller;
 use BoomCMS\Support\Facades\URL as URLFacade;
-use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Http\Request;
 use Mockery as m;
 
-class UrlsTest extends AbstractTestCase
+class UrlsTest extends BaseControllerTest
 {
     /**
-     * @var Controller
+     * @var string
      */
-    protected $controller;
+    protected $className = Controller::class;
 
     /**
      * @var Site
@@ -32,7 +31,6 @@ class UrlsTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->controller = m::mock(Controller::class)->makePartial();
         $this->page = m::mock(Page::class)->makePartial();
         $this->site = m::mock(Site::class)->makePartial();
 

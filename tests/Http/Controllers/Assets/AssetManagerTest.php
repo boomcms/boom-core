@@ -6,23 +6,16 @@ use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Assets\AssetManager as Controller;
 use BoomCMS\Support\Facades\Site as SiteFacade;
-use BoomCMS\Tests\AbstractTestCase;
+use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Http\Request;
 use Mockery as m;
 
-class AssetManagerTest extends AbstractTestCase
+class AssetManagerTest extends BaseControllerTest
 {
     /**
-     * @var Controller
+     * @var string
      */
-    protected $controller;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->controller = m::mock(Controller::class)->makePartial();
-    }
+    protected $className = Controller::class;
 
     public function testAddSites()
     {
