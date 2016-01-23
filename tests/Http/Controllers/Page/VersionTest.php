@@ -125,7 +125,7 @@ class VersionTest extends BaseControllerTest
         $this->page
             ->shouldReceive('setEmbargoTime')
             ->once()
-            ->with(m::on(function(\DateTime $value) use($now) {
+            ->with(m::on(function (\DateTime $value) use ($now) {
                 return $value->getTimestamp() === $now;
             }));
 

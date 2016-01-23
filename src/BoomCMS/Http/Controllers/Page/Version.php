@@ -17,7 +17,7 @@ class Version extends Controller
     protected $viewPrefix = 'boomcms::editor.page.version';
 
     /**
-     * Show a form to set an embargo time
+     * Show a form to set an embargo time.
      *
      * @param Page $page
      *
@@ -33,7 +33,7 @@ class Version extends Controller
     }
 
     /**
-     * Show the current status of the page
+     * Show the current status of the page.
      *
      * @param Page $page
      *
@@ -51,7 +51,7 @@ class Version extends Controller
     }
 
     /**
-     * Show a form to change the template of the page
+     * Show a form to change the template of the page.
      *
      * @param Page $page
      *
@@ -68,7 +68,7 @@ class Version extends Controller
     }
 
     /**
-     * Mark the page as requiring approval
+     * Mark the page as requiring approval.
      *
      * @param Page $page
      *
@@ -86,10 +86,10 @@ class Version extends Controller
     }
 
     /**
-     * Set an embargo time for the current drafts
+     * Set an embargo time for the current drafts.
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      *
      * @return string
      */
@@ -118,9 +118,9 @@ class Version extends Controller
     }
 
     /**
-     * Set the template of the page
+     * Set the template of the page.
      *
-     * @param Page $page
+     * @param Page     $page
      * @param Template $template
      *
      * @return string
@@ -137,10 +137,10 @@ class Version extends Controller
     }
 
     /**
-     * Set the title of the page
+     * Set the title of the page.
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      *
      * @return array
      */
