@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Repositories;
 
+use BoomCMS\Auth\Hasher;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
 use BoomCMS\Database\Models\Person as Model;
@@ -14,6 +15,11 @@ use Illuminate\Support\Str;
 class Person implements PersonRepositoryInterface, UserProvider
 {
     /**
+     * @var Hasher
+     */
+    protected $hasher;
+
+    /**
      * @var Model
      */
     protected $model;
@@ -23,6 +29,7 @@ class Person implements PersonRepositoryInterface, UserProvider
      */
     public function __construct(Model $model)
     {
+        $this->hasher = new Hasher();
         $this->model = $model;
     }
 
