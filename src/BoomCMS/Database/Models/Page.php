@@ -62,7 +62,7 @@ class Page extends Model implements PageInterface
 
     /**
      * Values for the 'add_behaviour' and 'child_add_behaviour' columns.
-     * 
+     *
      * These columns store the behaviour of the add page button when on the page / its children
      */
     const ADD_PAGE_NONE = 1;
@@ -116,28 +116,34 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
+    /**
+     * Adds a new version to the page.
+     *
+     * If the current version is embargoed then the new version is also embargoed.
+     * If the current version is published then the new version becomes a draft.
+     *
+     * @param array $attrs
+     *
+     * @return PageVersion
+     */
     public function addVersion(array $attrs = [])
     {
-        if ($currentVersion = $this->getCurrentVersion()) {
-            $attrs = array_merge($currentVersion->toArray(), $attrs);
+        if ($oldVersion = $this->getCurrentVersion()) {
+            $attrs = array_merge($oldVersion->toArray(), $attrs);
         }
 
-        $attrs = array_merge($attrs, [
-            'page_id'     => $this->getId(),
-            'edited_by'   => Auth::user()->getId(),
-            'edited_time' => time(),
-        ]);
+        $newVersion = PageVersion::create($attrs)
+            ->setPage($this)
+            ->setEditedAt(new DateTime('now'))
+            ->setEditedBy(Auth::user());
 
-        // If the embargo time of the new version is in the past, set the embargo time to null
-        // This means that if the old version was published, the new version will be a draft.
-        // If the embargo time is in the future don't change it.
-        if (!isset($attrs['embargoed_until']) || $attrs['embargoed_until'] < time()) {
-            $attrs['embargoed_until'] = null;
+        if ($newVersion->isPublished()) {
+            $newVersion->makeDraft();
         }
 
-        $this->currentVersion = PageVersion::create($attrs);
+        $this->setCurrentVersion($newVersion);
 
-        return $this->currentVersion;
+        return $this->getCurrentVersion();
     }
 
     public function allowsExternalIndexing()
@@ -548,6 +554,20 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
+    /**
+     * Set the current version of the page.
+     *
+     * @param PageVersion $version
+     *
+     * @return $this
+     */
+    public function setCurrentVersion(PageVersion $version)
+    {
+        $this->currentVersion = $version;
+
+        return $this;
+    }
+
     public function setDisableDelete($value)
     {
         $this->{self::ATTR_DISABLE_DELETE} = $value;
@@ -660,18 +680,23 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
+    /**
+     * Set an embargo time for any unpublished changes.
+     *
+     * If the time is in the past then the changes become published
+     *
+     * @param DateTime $time
+     *
+     * @return $this
+     */
     public function setEmbargoTime(DateTime $time)
     {
-        DB::table('page_versions')
-            ->where('page_id', '=', $this->getId())
-            ->where('embargoed_until', '>', time())
-            ->update(['published' => false]);
-
         $this->addVersion([
-            'pending_approval' => false,
-            'published'        => true,
-            'embargoed_until'  => $time->getTimestamp(),
+            PageVersion::ATTR_PENDING_APPROVAL => false,
+            PageVersion::ATTR_EMBARGOED_UNTIL  => $time->getTimestamp(),
         ]);
+
+        return $this;
     }
 
     /**

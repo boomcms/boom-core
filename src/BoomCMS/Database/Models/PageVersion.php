@@ -18,7 +18,6 @@ class PageVersion extends Model implements PageVersionInterface
     const ATTR_TITLE = 'title';
     const ATTR_EDITED_BY = 'edited_by';
     const ATTR_EDITED_AT = 'edited_time';
-    const ATTR_PUBLISHED = 'published';
     const ATTR_EMBARGOED_UNTIL = 'embargoed_until';
     const ATTR_PENDING_APPROVAL = 'pending_approval';
 
@@ -156,14 +155,68 @@ class PageVersion extends Model implements PageVersionInterface
         return $this->{self::ATTR_EMBARGOED_UNTIL} && $this->{self::ATTR_EMBARGOED_UNTIL} <= time();
     }
 
+    /**
+     * Unpublish the version and make it a draft.
+     *
+     * @return $this
+     */
+    public function makeDraft()
+    {
+        $this->{self::ATTR_EMBARGOED_UNTIL} = null;
+
+        return $this;
+    }
+
+    /**
+     * Set the time when the version was created.
+     *
+     * @param DateTime $time
+     *
+     * @return $this
+     */
+    public function setEditedAt(DateTime $time)
+    {
+        $this->{self::ATTR_EDITED_AT} = $time->getTimestamp();
+
+        return $this;
+    }
+
+    /**
+     * Set the user who created the page version.
+     *
+     * @param PersonInterface $person
+     *
+     * @return $this
+     */
+    public function setEditedBy(PersonInterface $person)
+    {
+        $this->{self::ATTR_EDITED_BY} = $person->getId();
+
+        return $this;
+    }
+
+    /**
+     * Set the page that the version belongs to.
+     *
+     * @param PageInterface $page
+     *
+     * @return $this
+     */
+    public function setPage(PageInterface $page)
+    {
+        $this->{self::ATTR_PAGE} = $page->getId();
+
+        return $this;
+    }
+
     public function scopeLastPublished($query)
     {
         // Get the published version with the most recent embargoed time.
         // Order by ID as well incase there's multiple versions with the same embargoed time.
         return $query
-            ->where(self::ATTR_PUBLISHED, '=', true)
+            ->whereNotNull(self::ATTR_EMBARGOED_UNTIL)
             ->where(self::ATTR_EMBARGOED_UNTIL, '<=', time())
-            ->orderBy(self::ATTR_EMBARGOED_UNTIL, 'desc')
+            ->orderBy(self::ATTR_EDITED_AT, 'desc')
             ->orderBy(self::ATTR_ID, 'desc');
     }
 

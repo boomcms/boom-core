@@ -137,7 +137,7 @@ class AddMultiSiteSupport extends Migration
         }
 
         DB::statement("insert into asset_site (asset_id, site_id) select id, '{$site->getId()}' from assets");
-        DB::statement("insert into people_site (person_id, site_id) select id, '{$site->getId()}' from people");
+        DB::statement("insert into person_site (person_id, site_id) select id, '{$site->getId()}' from people");
 
         Role::create([
             'name'        => 'manageSites',
