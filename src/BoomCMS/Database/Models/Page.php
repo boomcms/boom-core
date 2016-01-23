@@ -117,7 +117,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Adds a new version to the page
+     * Adds a new version to the page.
      *
      * If the current version is embargoed then the new version is also embargoed.
      * If the current version is published then the new version becomes a draft.
@@ -554,13 +554,13 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
-   /**
-    * Set the current version of the page
-    *
-    * @param PageVersion $version
-    *
-    * @return $this
-    */
+    /**
+     * Set the current version of the page.
+     *
+     * @param PageVersion $version
+     *
+     * @return $this
+     */
     public function setCurrentVersion(PageVersion $version)
     {
         $this->currentVersion = $version;

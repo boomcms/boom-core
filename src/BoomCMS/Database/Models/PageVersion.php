@@ -169,7 +169,8 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
-     * Set the time when the version was created
+     * Set the time when the version was created.
+     *
      * @param DateTime $time
      *
      * @return $this
@@ -182,7 +183,7 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
-     * Set the user who created the page version
+     * Set the user who created the page version.
      *
      * @param PersonInterface $person
      *
@@ -196,7 +197,7 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
-     * Set the page that the version belongs to
+     * Set the page that the version belongs to.
      *
      * @param PageInterface $page
      *
