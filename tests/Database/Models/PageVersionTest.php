@@ -2,7 +2,10 @@
 
 namespace BoomCMS\Tests\Database\Models;
 
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion as Version;
+use BoomCMS\Database\Models\Person;
+use DateTime;
 
 class PageVersionTest extends AbstractModelTestCase
 {
@@ -57,6 +60,18 @@ class PageVersionTest extends AbstractModelTestCase
         $this->assertEquals('embargoed', $version->status());
     }
 
+    /**
+     * @depends testIsPublishedIfEmbargoedTimeIsPast
+     */
+    public function testMakeDraft()
+    {
+        $version = new Version([Version::ATTR_EMBARGOED_UNTIL => time() - 10]);
+        $version->makeDraft();
+
+        $this->assertTrue($version->isDraft());
+        $this->assertFalse($version->isPublished());
+    }
+
     public function testNotEmbargoedIfEmbargoInPast()
     {
         $version = new Version(['embargoed_until' => time() - 10]);
@@ -75,6 +90,37 @@ class PageVersionTest extends AbstractModelTestCase
     {
         $version = new Version(['pending_approval' => true]);
         $this->assertTrue($version->isPendingApproval());
+    }
+
+    public function testSetEditedAt()
+    {
+        $version = new Version();
+        $time = new DateTime('now');
+
+        $this->assertEquals($version, $version->setEditedAt($time));
+        $this->assertEquals($time->getTimestamp(), $version->{Version::ATTR_EDITED_AT});
+    }
+
+    public function testSetEditedBy()
+    {
+        $version = new Version();
+
+        $person = new Person();
+        $person->{Person::ATTR_ID} = 1;
+
+        $this->assertEquals($version, $version->setEditedBy($person));
+        $this->assertEquals($person->getId(), $version->{Version::ATTR_EDITED_BY});
+    }
+
+    public function testSetPage()
+    {
+        $version = new Version();
+
+        $page = new Page();
+        $page->{Page::ATTR_ID} = 1;
+
+        $this->assertEquals($version, $version->setPage($page));
+        $this->assertEquals($page->getId(), $version->{Version::ATTR_PAGE});
     }
 
     /**

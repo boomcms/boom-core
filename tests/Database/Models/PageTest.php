@@ -5,6 +5,7 @@ namespace BoomCMS\Tests\Database\Models;
 use BoomCMS\Chunk\Text;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Support\Facades\Chunk;
@@ -141,7 +142,7 @@ class PageTest extends AbstractModelTestCase
 
     /**
      * Give a page with no parent and no default child template ID.
-     * 
+     *
      * getDefaultChildTemplateId should return the page's template ID
      */
     public function testGetDefaultChildTemplateIdAtRootPage()
@@ -292,9 +293,18 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
+    public function testSetCurrentVersion()
+    {
+        $page = new Page();
+        $version = new PageVersion();
+
+        $this->assertEquals($page, $page->setCurrentVersion($version));
+        $this->assertEquals($version, $page->getCurrentVersion());
+    }
+
     /**
      * A page internal name can contain lowercase letters, underscores, hyphens, or numbers.
-     * 
+     *
      * All other characters should be removed.
      */
     public function testSetInternalNameRemovesInvalidCharacters()
