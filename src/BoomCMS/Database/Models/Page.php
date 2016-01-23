@@ -681,7 +681,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Set an embargo time for any unpublished changes
+     * Set an embargo time for any unpublished changes.
      *
      * If the time is in the past then the changes become published
      *

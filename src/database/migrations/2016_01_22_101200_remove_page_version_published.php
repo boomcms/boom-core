@@ -12,7 +12,7 @@ class RemovePageVersionPublished extends Migration
      */
     public function up()
     {
-        Schema::table('page_versions', function(Blueprint $table) {
+        Schema::table('page_versions', function (Blueprint $table) {
             $table->dropColumn('published');
             $table->dropIndex('page_v_rid');
             $table->dropIndex('page_v_aduit_time_rid_deleted');
@@ -30,7 +30,7 @@ class RemovePageVersionPublished extends Migration
      */
     public function down()
     {
-        Schema::table('page_versions', function(Blueprint $table) {
+        Schema::table('page_versions', function (Blueprint $table) {
             $table->boolean('published');
         });
     }
