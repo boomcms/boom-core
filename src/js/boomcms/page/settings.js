@@ -43,7 +43,7 @@ $.widget('boom.pageSettings', {
 			case 'drafts':
 				return '/boomcms/page/version/status/' + this.page.id;
 			default:
-				return '/boomcms/page/settings/' + section + '/' + this.page.id;
+				return '/boomcms/page/' + this.page.id + '/settings/' + section;
 		}
 	},
 

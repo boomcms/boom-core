@@ -40456,11 +40456,11 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.saveSettings = function(section, data) {
-		return $.post(this.baseUrl + 'settings/' + section + '/' + this.id, data);
+		return $.post(this.baseUrl + '/' + this.id + '/settings/' + section, data);
 	};
 
 	boomPage.prototype.setFeatureImage = function(asset) {
-		return $.post(this.baseUrl + 'settings/feature/' + this.id, {
+		return $.post(this.baseUrl + '/' + this.id + '/settings/feature', {
 			feature_image_id : asset.getId()
 		});
 	};
@@ -40519,7 +40519,7 @@ function boomPage(page_id) {
 			case 'drafts':
 				return '/boomcms/page/version/status/' + this.page.id;
 			default:
-				return '/boomcms/page/settings/' + section + '/' + this.page.id;
+				return '/boomcms/page/' + this.page.id + '/settings/' + section;
 		}
 	},
 
@@ -41206,7 +41206,7 @@ $.widget('boom.pageTree', {
 			})
 			.on('click', '#b-page-settings-children-reorder', function(e) {
 				e.preventDefault();
-		
+
 				$.get('/boomcms/search/pages', {parent: page.id})
 					.done(function(pages) {
 						var sortDialog = new boomDialog({
@@ -41228,7 +41228,7 @@ $.widget('boom.pageTree', {
 										)
 										.appendTo($ul);
 								}
-										
+
 								$ul.sortable();
 							}
 						});
@@ -41263,7 +41263,7 @@ $.widget('boom.pageTree', {
 
 	_create: function() {
 		this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
-		this.sortUrl = '/boomcms/page/settings/sort_children/' + this.options.page.id;
+		this.sortUrl = '/boomcms/page/' + this.options.page.id + '/settings/sort_children';
 
 		this.bind();
 	}
@@ -41871,7 +41871,7 @@ $.widget('boom.pageTree', {
 	}
 });;$.widget('boom.pageSettingsVisibility', {
 	changed: false,
-	baseUrl: '/boomcms/page/settings/visibility/',
+	baseUrl: '/boomcms/page/{page}/settings/visibility',
 
 	bind: function() {
 		var pageVisibilityEditor = this;
@@ -41928,7 +41928,7 @@ $.widget('boom.pageTree', {
 		var visibilityEditor = this;
 
 		if (this.changed) {
-			$.post(this.baseUrl + this.options.page.id, this.element.find('form').serialize())
+			$.post(this.baseUrl.replace('{page}', this.options.page.id), this.element.find('form').serialize())
 				.done(function(response) {
 					new boomNotification('Page visibility saved');
 			

@@ -315,6 +315,20 @@ class Page extends Model implements PageInterface
     }
 
     /**
+     * If a default grandchild template ID is set then that is returned.
+     *
+     * Otherwise the current template ID of this page is returned.
+     *
+     * @return int
+     */
+    public function getDefaultGrandchildTemplateId()
+    {
+        $grandchildTemplateId = $this->getGrandchildTemplateId();
+
+        return $grandchildTemplateId !== 0 ?: $this->getTemplateId();
+    }
+
+    /**
      * @return AssetInterface
      */
     public function getFeatureImage()

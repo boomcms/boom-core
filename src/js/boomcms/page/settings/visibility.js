@@ -1,6 +1,6 @@
 $.widget('boom.pageSettingsVisibility', {
 	changed: false,
-	baseUrl: '/boomcms/page/settings/visibility/',
+	baseUrl: '/boomcms/page/{page}/settings/visibility',
 
 	bind: function() {
 		var pageVisibilityEditor = this;
@@ -57,7 +57,7 @@ $.widget('boom.pageSettingsVisibility', {
 		var visibilityEditor = this;
 
 		if (this.changed) {
-			$.post(this.baseUrl + this.options.page.id, this.element.find('form').serialize())
+			$.post(this.baseUrl.replace('{page}', this.options.page.id), this.element.find('form').serialize())
 				.done(function(response) {
 					new boomNotification('Page visibility saved');
 			
