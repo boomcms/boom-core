@@ -94,39 +94,37 @@ Route::group(['middleware' => [
                     Route::get('status/{page}', 'Version@getStatus');
                     Route::post('request_approval/{page}', 'Version@requestApproval');
                 });
-            });
 
-            Route::post('page/add/{page}', 'Page\PageController@add');
-            Route::get('page/{page}/urls', 'Page\PageController@urls');
-            Route::get('page/{page}/urls/add', 'Page\Urls@getAdd');
-            Route::get('page/{page}/urls/{url}/move', 'Page\Urls@getMove');
-            Route::post('page/{page}/urls/add', 'Page\Urls@postAdd');
-            Route::post('page/{page}/urls/{url}/make_primary', 'Page\Urls@postMakePrimary');
-            Route::post('page/{page}/urls/{url}/move', 'Page\Urls@postMove');
-            Route::post('page/{page}/urls/{url}/delete/', 'Page\Urls@postDelete');
+                Route::post('add/{page}', 'PageController@add');
+                Route::get('{page}/urls', 'PageController@urls');
+                Route::get('{page}/urls/add', 'Urls@getAdd');
+                Route::get('{page}/urls/{url}/move', 'Urls@getMove');
+                Route::post('{page}/urls/add', 'Urls@postAdd');
+                Route::post('{page}/urls/{url}/make_primary', 'Urls@postMakePrimary');
+                Route::post('{page}/urls/{url}/move', 'Urls@postMove');
+                Route::post('{page}/urls/{url}/delete/', 'Urls@postDelete');
 
-            Route::group(['prefix' => 'page'], function () {
-                Route::get('{page}/tags', 'Page\Tags@view');
-                Route::post('{page}/tags', 'Page\Tags@add');
-                Route::delete('{page}/tags/{tag}', 'Page\Tags@remove');
-            });
+                Route::get('{page}/tags', 'Tags@view');
+                Route::post('{page}/tags', 'Tags@add');
+                Route::delete('{page}/tags/{tag}', 'Tags@remove');
 
-            Route::post('page/relations/add/{page}', 'Page\Relations@add');
-            Route::post('page/relations/remove/{page}', 'Page\Relations@remove');
-            Route::get('page/relations/view/{page}', 'Page\Relations@view');
+                Route::post('relations/add/{page}', 'Relations@add');
+                Route::post('relations/remove/{page}', 'Relations@remove');
+                Route::get('relations/view/{page}', 'Relations@view');
 
-            Route::group(['prefix' => 'page/settings'], function () {
-                Route::get('{action}/{page}', [
-                    'uses' => function ($action) {
-                        return App::make('BoomCMS\Http\Controllers\Page\Settings\View')->$action();
-                    },
-                ]);
+                Route::group(['prefix' => 'settings'], function () {
+                    Route::get('{action}/{page}', [
+                        'uses' => function ($action) {
+                            return App::make('BoomCMS\Http\Controllers\Page\Settings\View')->$action();
+                        },
+                    ]);
 
-                Route::post('{action}/{page}', [
-                    'uses' => function ($action, $page) {
-                        return App::make('BoomCMS\Http\Controllers\Page\Settings\Save')->$action($page);
-                    },
-                ]);
+                    Route::post('{action}/{page}', [
+                        'uses' => function ($action, $page) {
+                            return App::make('BoomCMS\Http\Controllers\Page\Settings\Save')->$action($page);
+                        },
+                    ]);
+                });
             });
         });
     });
