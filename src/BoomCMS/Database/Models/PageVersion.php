@@ -156,6 +156,59 @@ class PageVersion extends Model implements PageVersionInterface
         return $this->{self::ATTR_EMBARGOED_UNTIL} && $this->{self::ATTR_EMBARGOED_UNTIL} <= time();
     }
 
+    /**
+     * Unpublish the version and make it a draft.
+     *
+     * @return $this
+     */
+    public function makeDraft()
+    {
+        $this->{self::ATTR_EMBARGOED_UNTIL} = null;
+
+        return $this;
+    }
+
+    /**
+     * Set the time when the version was created
+     * @param DateTime $time
+     *
+     * @return $this
+     */
+    public function setEditedAt(DateTime $time)
+    {
+        $this->{self::ATTR_EDITED_AT} = $time->getTimestamp();
+
+        return $this;
+    }
+
+    /**
+     * Set the user who created the page version
+     *
+     * @param PersonInterface $person
+     *
+     * @return $this
+     */
+    public function setEditedBy(PersonInterface $person)
+    {
+        $this->{self::ATTR_EDITED_BY} = $person->getId();
+
+        return $this;
+    }
+
+    /**
+     * Set the page that the version belongs to
+     *
+     * @param PageInterface $page
+     *
+     * @return $this
+     */
+    public function setPage(PageInterface $page)
+    {
+        $this->{self::ATTR_PAGE} = $page->getId();
+
+        return $this;
+    }
+
     public function scopeLastPublished($query)
     {
         // Get the published version with the most recent embargoed time.
