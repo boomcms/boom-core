@@ -680,18 +680,23 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
+    /**
+     * Set an embargo time for any unpublished changes.
+     *
+     * If the time is in the past then the changes become published
+     *
+     * @param DateTime $time
+     *
+     * @return $this
+     */
     public function setEmbargoTime(DateTime $time)
     {
-        DB::table('page_versions')
-            ->where('page_id', '=', $this->getId())
-            ->where('embargoed_until', '>', time())
-            ->update(['published' => false]);
-
         $this->addVersion([
-            'pending_approval' => false,
-            'published'        => true,
-            'embargoed_until'  => $time->getTimestamp(),
+            PageVersion::ATTR_PENDING_APPROVAL => false,
+            PageVersion::ATTR_EMBARGOED_UNTIL  => $time->getTimestamp(),
         ]);
+
+        return $this;
     }
 
     /**

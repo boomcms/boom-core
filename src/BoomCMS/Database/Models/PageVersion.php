@@ -18,7 +18,6 @@ class PageVersion extends Model implements PageVersionInterface
     const ATTR_TITLE = 'title';
     const ATTR_EDITED_BY = 'edited_by';
     const ATTR_EDITED_AT = 'edited_time';
-    const ATTR_PUBLISHED = 'published';
     const ATTR_EMBARGOED_UNTIL = 'embargoed_until';
     const ATTR_PENDING_APPROVAL = 'pending_approval';
 
@@ -215,9 +214,9 @@ class PageVersion extends Model implements PageVersionInterface
         // Get the published version with the most recent embargoed time.
         // Order by ID as well incase there's multiple versions with the same embargoed time.
         return $query
-            ->where(self::ATTR_PUBLISHED, '=', true)
+            ->whereNotNull(self::ATTR_EMBARGOED_UNTIL)
             ->where(self::ATTR_EMBARGOED_UNTIL, '<=', time())
-            ->orderBy(self::ATTR_EMBARGOED_UNTIL, 'desc')
+            ->orderBy(self::ATTR_EDITED_AT, 'desc')
             ->orderBy(self::ATTR_ID, 'desc');
     }
 
