@@ -85,13 +85,14 @@ Route::group(['middleware' => [
             Route::group(['prefix' => 'page', 'namespace' => 'Page'], function () {
                 Route::post('discard/{page}', 'PageController@discard');
 
-                Route::group(['prefix' => 'version', 'namespace' => 'Version'], function () {
-                    Route::get('template/{page}', 'View@template');
-                    Route::post('template/{page}', 'Save@template');
-                    Route::post('title/{page}', 'Save@title');
-                    Route::get('embargo/{page}', 'View@embargo');
-                    Route::post('embargo/{page}', 'Save@embargo');
-                    Route::get('status/{page}', 'View@status');
+                Route::group(['prefix' => 'version'], function () {
+                    Route::get('template/{page}', 'Version@getTemplate');
+                    Route::post('template/{page}/{template}', 'Version@saveTemplate');
+                    Route::post('title/{page}', 'Version@saveTitle');
+                    Route::get('embargo/{page}', 'Version@viewEmbargo');
+                    Route::post('embargo/{page}', 'Version@saveEmbargo');
+                    Route::get('status/{page}', 'Version@getStatus');
+                    Route::post('request_approval/{page}', 'Version@requestApproval');
                 });
             });
 
