@@ -300,6 +300,13 @@ interface Page
     public function setChildAddPageBehaviour($value);
 
     /**
+     * @param PageVersion $version
+     *
+     * @return $this
+     */
+    public function setCurrentVersion(PageVersion $version);
+
+    /**
      * @param bool $value
      *
      * @return $this
