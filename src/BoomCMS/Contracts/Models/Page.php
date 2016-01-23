@@ -111,6 +111,11 @@ interface Page
     public function getDefaultChildTemplateId();
 
     /**
+     * @return int
+     */
+    public function getDefaultGrandchildTemplateId();
+
+    /**
      * @return Asset
      */
     public function getFeatureImage();
