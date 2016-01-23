@@ -87,10 +87,10 @@ Route::group(['middleware' => [
 
                 Route::group(['prefix' => 'version'], function () {
                     Route::get('template/{page}', 'Version@getTemplate');
-                    Route::post('template/{page}/{template}', 'Version@saveTemplate');
-                    Route::post('title/{page}', 'Version@saveTitle');
+                    Route::post('template/{page}/{template}', 'Version@setTemplate');
+                    Route::post('title/{page}', 'Version@setTitle');
                     Route::get('embargo/{page}', 'Version@viewEmbargo');
-                    Route::post('embargo/{page}', 'Version@saveEmbargo');
+                    Route::post('embargo/{page}', 'Version@setEmbargo');
                     Route::get('status/{page}', 'Version@getStatus');
                     Route::post('request_approval/{page}', 'Version@requestApproval');
                 });
