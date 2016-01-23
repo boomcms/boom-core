@@ -139,8 +139,6 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.setTemplate = function(templateId) {
-		return $.post(this.baseUrl + 'version/template/' + this.id, {
-			template_id: templateId
-		});
+		return $.post(this.baseUrl + 'version/template/' + this.id + '/' + templateId);
 	};
 };
