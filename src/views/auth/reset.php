@@ -12,7 +12,7 @@
 
 			<form name="login-form" action="<?= URL::route('password'), "/$token" ?>" method="post">
                 <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
-
+                <input type="hidden" name="token" value="<?= $token ?>" />
 				<fieldset>
                     <legend>
                         <?= trans('boomcms::auth.reset.intro') ?>
