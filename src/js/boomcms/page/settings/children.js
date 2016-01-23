@@ -13,7 +13,7 @@ $.widget('boom.pageSettingsChildren', {
 			})
 			.on('click', '#b-page-settings-children-reorder', function(e) {
 				e.preventDefault();
-		
+
 				$.get('/boomcms/search/pages', {parent: page.id})
 					.done(function(pages) {
 						var sortDialog = new boomDialog({
@@ -35,7 +35,7 @@ $.widget('boom.pageSettingsChildren', {
 										)
 										.appendTo($ul);
 								}
-										
+
 								$ul.sortable();
 							}
 						});
@@ -70,7 +70,7 @@ $.widget('boom.pageSettingsChildren', {
 
 	_create: function() {
 		this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
-		this.sortUrl = '/boomcms/page/settings/sort_children/' + this.options.page.id;
+		this.sortUrl = '/boomcms/page/settings/' + this.options.page_id + '/sort_children';
 
 		this.bind();
 	}

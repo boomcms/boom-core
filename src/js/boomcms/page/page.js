@@ -123,11 +123,11 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.saveSettings = function(section, data) {
-		return $.post(this.baseUrl + 'settings/' + section + '/' + this.id, data);
+		return $.post(this.baseUrl + '/' + this.id + '/settings/' + section, data);
 	};
 
 	boomPage.prototype.setFeatureImage = function(asset) {
-		return $.post(this.baseUrl + 'settings/feature/' + this.id, {
+		return $.post(this.baseUrl + '/' + this.id + '/settings/feature', {
 			feature_image_id : asset.getId()
 		});
 	};

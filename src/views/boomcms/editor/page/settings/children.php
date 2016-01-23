@@ -35,7 +35,7 @@
             </label>
 		</section>
 
-		<?php if ($allowAdvanced): ?>
+		<?php if (auth()->check('editChildrenAdvanced', $page)): ?>
 			<section id="advanced">
                 <h2><?= trans('boomcms::settings.advanced') ?></h2>
 

@@ -95,6 +95,8 @@ Route::group(['middleware' => [
                     Route::post('request_approval/{page}', 'Version@requestApproval');
                 });
 
+                Route::controller('settings/{page}', 'Settings');
+
                 Route::post('add/{page}', 'PageController@add');
                 Route::get('{page}/urls', 'PageController@urls');
                 Route::get('{page}/urls/add', 'Urls@getAdd');
@@ -111,20 +113,6 @@ Route::group(['middleware' => [
                 Route::post('relations/add/{page}', 'Relations@add');
                 Route::post('relations/remove/{page}', 'Relations@remove');
                 Route::get('relations/view/{page}', 'Relations@view');
-
-                Route::group(['prefix' => 'settings'], function () {
-                    Route::get('{action}/{page}', [
-                        'uses' => function ($action) {
-                            return App::make('BoomCMS\Http\Controllers\Page\Settings\View')->$action();
-                        },
-                    ]);
-
-                    Route::post('{action}/{page}', [
-                        'uses' => function ($action, $page) {
-                            return App::make('BoomCMS\Http\Controllers\Page\Settings\Save')->$action($page);
-                        },
-                    ]);
-                });
             });
         });
     });

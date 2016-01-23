@@ -23,7 +23,7 @@
         </label>
     </section>
 
-    <?php if ($allowAdvanced): ?>
+    <?php if (auth()->check('editNavAdvanced', $page)): ?>
         <section id='advanced'>
             <h2><?= trans('boomcms::settings.navigation.parent') ?></h2>
 

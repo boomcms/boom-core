@@ -154,6 +154,24 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals(1, $page->getDefaultChildTemplateId());
     }
 
+    public function testGetDefaultGrandchildTemplateId()
+    {
+        $values = [
+            0    => 2,
+            1    => 1,
+        ];
+
+        $templateId = 2;
+        $page = m::mock(Page::class)->makePartial();
+        $page->shouldReceive('getTemplateId')->once()->andReturn($templateId);
+
+        foreach ($values as $grandchildTemplateId => $default) {
+            $page->{Page::ATTR_GRANDCHILD_TEMPLATE} = $grandchildTemplateId;
+
+            $this->assertEquals($default, $page->getDefaultGrandchildTemplateId());
+        }
+    }
+
     public function testGetGrandchildTemplateIdReturnsInt()
     {
         $page = new Page();
