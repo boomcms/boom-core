@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Events;
 use BoomCMS\Jobs\DeletePage;
 use BoomCMS\Jobs\ReorderChildPages;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -22,7 +21,7 @@ class Settings extends PageController
     protected $viewPrefix = 'boomcms::editor.page.settings';
 
     /**
-     * View the admin settings interface
+     * View the admin settings interface.
      *
      * @param Page $page
      *
@@ -55,7 +54,7 @@ class Settings extends PageController
     }
 
     /**
-     * Show the delete page confirmation
+     * Show the delete page confirmation.
      *
      * @param Page $page
      *
@@ -72,7 +71,7 @@ class Settings extends PageController
     }
 
     /**
-     * Show the feature image settings
+     * Show the feature image settings.
      *
      * @param Page $page
      *
@@ -88,13 +87,14 @@ class Settings extends PageController
     }
 
     /**
-     * Show the page settings menu
+     * Show the page settings menu.
      *
      * @param Page $page
      *
      * @return View
      */
-    public function getIndex(Page $page) {
+    public function getIndex(Page $page)
+    {
         return view("$this->viewPrefix.index", [
             'page' => $page,
             'auth' => auth(),
@@ -102,7 +102,7 @@ class Settings extends PageController
     }
 
     /**
-     * Show the page navigation settings
+     * Show the page navigation settings.
      *
      * @param Page $page
      *
@@ -127,7 +127,7 @@ class Settings extends PageController
     }
 
     /**
-     * Show the page visibility settings
+     * Show the page visibility settings.
      *
      * @param Page $page
      *
@@ -143,10 +143,10 @@ class Settings extends PageController
     }
 
     /**
-     * Save the page admin settings
+     * Save the page admin settings.
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      */
     public function postAdmin(Request $request, Page $page)
     {
@@ -162,10 +162,10 @@ class Settings extends PageController
     }
 
     /**
-     * Save the child page settings
+     * Save the child page settings.
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      */
     public function postChildren(Request $request, Page $page)
     {
@@ -202,10 +202,10 @@ class Settings extends PageController
     }
 
     /**
-     * Save the page feature image
+     * Save the page feature image.
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      */
     public function postFeature(Request $request, Page $page)
     {
@@ -217,10 +217,10 @@ class Settings extends PageController
     }
 
     /**
-     * Save the page navigation settings
+     * Save the page navigation settings.
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      */
     public function postNavigation(Request $request, Page $page)
     {
@@ -261,10 +261,10 @@ class Settings extends PageController
     }
 
     /**
-     * Save the order of child pages
+     * Save the order of child pages.
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      */
     public function postSortChildren(Request $request, Page $page)
     {
@@ -274,10 +274,10 @@ class Settings extends PageController
     }
 
     /**
-     * Save the page visibility settings
+     * Save the page visibility settings.
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      *
      * @return int
      */
