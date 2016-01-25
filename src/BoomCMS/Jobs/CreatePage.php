@@ -61,8 +61,6 @@ class CreatePage extends Command implements SelfHandling
         $page = PageFacade::create($attrs);
 
         $page->addVersion([
-            'edited_by'       => $this->createdBy->getId(),
-            'page_id'         => $page->getId(),
             'template_id'     => $this->parent ? $this->parent->getDefaultChildTemplateId() : null,
             'title'           => 'Untitled',
             'embargoed_until' => time(),
