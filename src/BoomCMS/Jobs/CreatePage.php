@@ -23,7 +23,7 @@ class CreatePage extends Command implements SelfHandling
 
     /**
      * The site to which to add the new page.
-     * 
+     *
      * @var Site
      */
     protected $site;
@@ -65,7 +65,6 @@ class CreatePage extends Command implements SelfHandling
             'page_id'         => $page->getId(),
             'template_id'     => $this->parent ? $this->parent->getDefaultChildTemplateId() : null,
             'title'           => 'Untitled',
-            'published'       => true,
             'embargoed_until' => time(),
         ]);
 

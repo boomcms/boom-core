@@ -906,9 +906,7 @@ class Page extends Model implements PageInterface
             ->groupBy('page_id');
 
         if (Editor::isDisabled()) {
-            $query
-                ->where('embargoed_until', '<=', time())
-                ->where('published', '=', 1);
+            $query->where('embargoed_until', '<=', time());
         }
 
         return $query;
