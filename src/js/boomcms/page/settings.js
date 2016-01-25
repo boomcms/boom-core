@@ -39,9 +39,9 @@ $.widget('boom.pageSettings', {
 			case 'tags':
 				return '/boomcms/page/' + this.page.id + '/tags';
 			case 'template':
-				return '/boomcms/page/version/template/' + this.page.id;
+				return '/boomcms/page/' + this.page.id + '/version/template';
 			case 'drafts':
-				return '/boomcms/page/version/status/' + this.page.id;
+				return '/boomcms/page/' + this.page.id + '/version/status';
 			default:
 				return '/boomcms/page/' + this.page.id + '/settings/' + section;
 		}

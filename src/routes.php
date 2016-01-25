@@ -82,39 +82,30 @@ Route::group(['middleware' => [
 
             Route::controller('chunk/{page}', 'Chunk');
 
-            Route::group(['prefix' => 'page', 'namespace' => 'Page'], function () {
-                Route::post('discard/{page}', 'PageController@discard');
+            Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
+                Route::controller('version', 'Version');
+                Route::controller('settings', 'Settings');
 
-                Route::group(['prefix' => 'version'], function () {
-                    Route::get('template/{page}', 'Version@getTemplate');
-                    Route::post('template/{page}/{template}', 'Version@setTemplate');
-                    Route::post('title/{page}', 'Version@setTitle');
-                    Route::get('embargo/{page}', 'Version@viewEmbargo');
-                    Route::post('embargo/{page}', 'Version@setEmbargo');
-                    Route::get('status/{page}', 'Version@getStatus');
-                    Route::post('request_approval/{page}', 'Version@requestApproval');
+                Route::group(['prefix' => 'urls'], function () {
+                    Route::get('', 'Urls@index');
+                    Route::get('create', 'Urls@create');
+                    Route::post('', 'Urls@store');
+                    Route::post('{url}/make-primary', 'Urls@makePrimary');
+                    Route::delete('{url}', 'Urls@destroy');
+                    Route::get('{url}/move', 'Urls@getMove');
+                    Route::post('{url}/move', 'Urls@postMove');
+                    Route::controller('', 'Urls');
                 });
 
-                Route::controller('{page}/settings', 'Settings');
+                Route::get('tags', 'Tags@view');
+                Route::post('tags', 'Tags@add');
+                Route::delete('tags/{tag}', 'Tags@remove');
 
-                Route::post('add/{page}', 'PageController@add');
+                Route::get('relations', 'Relations@index');
+                Route::post('relations/{related}', 'Relations@store');
+                Route::delete('relations/{related}', 'Relations@destroy');
 
-                Route::get('{page}/urls', 'Urls@index');
-                Route::get('{page}/urls/create', 'Urls@create');
-                Route::post('{page}/urls', 'Urls@store');
-                Route::post('{page}/urls/{url}/make-primary', 'Urls@makePrimary');
-                Route::delete('{page}/urls/{url}', 'Urls@destroy');
-                Route::get('{page}/urls/{url}/move', 'Urls@getMove');
-                Route::post('{page}/urls/{url}/move', 'Urls@postMove');
-                Route::controller('{page}/urls', 'Urls');
-
-                Route::get('{page}/tags', 'Tags@view');
-                Route::post('{page}/tags', 'Tags@add');
-                Route::delete('{page}/tags/{tag}', 'Tags@remove');
-
-                Route::get('{page}/relations', 'Relations@index');
-                Route::post('{page}/relations/{related}', 'Relations@store');
-                Route::delete('{page}/relations/{related}', 'Relations@destroy');
+                Route::controller('', 'PageController');
             });
         });
     });

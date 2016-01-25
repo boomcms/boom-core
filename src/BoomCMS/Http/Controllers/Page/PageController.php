@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\Page;
 
-use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Contracts\Models\Site;
+use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
@@ -37,14 +37,14 @@ class PageController extends Controller
         $this->page = $this->request->route()->getParameter('page');
     }
 
-    public function add(Site $site, Page $page)
+    public function postAdd(Site $site, Page $page)
     {
         $this->authorize('add', $page);
 
         $parent = $page->getAddPageParent();
-        $newPage = $this->dispatch(new CreatePage(auth()->user(), $parent));
+        $newPage = $this->dispatch(new CreatePage(auth()->user(), $site, $parent));
 
-        Event::fire(new PageWasCreated($newPage, $site, $page));
+        Event::fire(new PageWasCreated($newPage, $page));
 
         return [
             'url' => (string) $newPage->url(),
@@ -52,7 +52,7 @@ class PageController extends Controller
         ];
     }
 
-    public function discard(Page $page)
+    public function postDiscard(Page $page)
     {
         $this->authorize('edit', $page);
         $page->deleteDrafts();
