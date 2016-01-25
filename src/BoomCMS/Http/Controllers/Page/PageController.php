@@ -37,7 +37,7 @@ class PageController extends Controller
         $this->page = $this->request->route()->getParameter('page');
     }
 
-    public function add(Request $request, Site $site, Page $page)
+    public function add(Site $site, Page $page)
     {
         $this->authorize('add', $page);
 
