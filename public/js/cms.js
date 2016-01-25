@@ -40369,10 +40369,8 @@ function boomPage(page_id) {
 		return promise;
 	};
 
-	boomPage.prototype.addRelatedPage = function(page_id) {
-		return $.post(this.baseUrl + 'relations/add/' + this.id, {
-			related_page_id: page_id
-		});
+	boomPage.prototype.addRelatedPage = function(relatedPageId) {
+		return $.post(this.baseUrl + this.id + '/relations/' + relatedPageId);
 	};
 
 	boomPage.prototype.addTag = function(group, tag) {
@@ -40424,9 +40422,10 @@ function boomPage(page_id) {
 		return $.post(url);
 	};
 
-	boomPage.prototype.removeRelatedPage = function(page_id) {
-		return $.post(this.baseUrl + 'relations/remove/' + this.id, {
-			related_page_id: page_id
+	boomPage.prototype.removeRelatedPage = function(relatedPageId) {
+		return $.ajax({
+			type: 'delete',
+			url: this.baseUrl + this.id + '/relations/' + relatedPageId
 		});
 	};
 
@@ -40511,7 +40510,7 @@ function boomPage(page_id) {
 			case 'urls':
 				return '/boomcms/page/' + this.page.id + '/urls';
 			case 'relations':
-				return '/boomcms/page/relations/view/' + this.page.id;
+				return '/boomcms/page/' + this.page.id + '/relations';
 			case 'tags':
 				return '/boomcms/page/' + this.page.id + '/tags';
 			case 'template':

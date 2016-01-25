@@ -2,39 +2,43 @@
 
 namespace BoomCMS\Http\Controllers\Page;
 
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Http\Controllers\Controller;
-use BoomCMS\Support\Facades\Page as Page;
-use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class Relations extends Controller
 {
     /**
-     * @var Page\Page;
+     * @param Page $page
      */
-    protected $related;
-
-    public function __construct(Request $request)
+    public function __construct(Page $page)
     {
-        $this->request = $request;
-        $this->page = $request->route()->getParameter('page');
-
-        $this->authorize('edit', $this->page);
-
-        $this->related = Page::find($this->request->input('related_page_id'));
+        $this->authorize('edit', $page);
     }
 
-    public function add()
+    /**
+     * @param Page $page
+     * @param Page $related
+     */
+    public function destroy(Page $page, Page $related)
     {
-        $this->page->addRelation($this->related);
+        $page->removeRelation($related);
     }
 
-    public function remove()
-    {
-        $this->page->removeRelation($this->related);
-    }
-
-    public function view()
+    /**
+     * @return View
+     */
+    public function index()
     {
         return view('boomcms::editor.page.settings.relations');
+    }
+
+    /**
+     * @param Page $page
+     * @param Page $related
+     */
+    public function store(Page $page, Page $related)
+    {
+        $page->addRelation($related);
     }
 }

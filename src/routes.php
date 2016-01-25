@@ -108,9 +108,9 @@ Route::group(['middleware' => [
                 Route::post('{page}/tags', 'Tags@add');
                 Route::delete('{page}/tags/{tag}', 'Tags@remove');
 
-                Route::post('relations/add/{page}', 'Relations@add');
-                Route::post('relations/remove/{page}', 'Relations@remove');
-                Route::get('relations/view/{page}', 'Relations@view');
+                Route::get('{page}/relations', 'Relations@index');
+                Route::post('{page}/relations/{related}', 'Relations@store');
+                Route::delete('{page}/relations/{related}', 'Relations@destroy');
 
                 Route::group(['prefix' => 'settings'], function () {
                     Route::get('{action}/{page}', [

@@ -30,6 +30,8 @@ class RouteServiceProviderTest extends AbstractTestCase
             $router->shouldReceive('model')->once()->with($binding, $model);
         }
 
+        $route->shouldReceive('model')->once()->with('related', Models\Page::class);
+
         $sp = m::mock(RouteServiceProvider::class)->makePartial();
         $sp->boot($router);
     }
