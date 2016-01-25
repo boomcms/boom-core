@@ -114,7 +114,7 @@ class VersionTest extends BaseControllerTest
         $this->assertEquals($status, $this->controller->requestApproval($this->page));
     }
 
-    public function testSetEmbargoTime()
+    public function testPostEmbargoTime()
     {
         Auth::login(new Person());
         $this->requireRole('publish', $this->page);
@@ -133,10 +133,10 @@ class VersionTest extends BaseControllerTest
             ->shouldReceive('getStatus')
             ->andReturn('published');
 
-        $this->assertEquals('published', $this->controller->setEmbargo($request, $this->page));
+        $this->assertEquals('published', $this->controller->postEmbargo($request, $this->page));
     }
 
-    public function testSetTemplate()
+    public function testPostTemplate()
     {
         Auth::login(new Person());
         $this->requireRole('editTemplate', $this->page);
@@ -154,10 +154,10 @@ class VersionTest extends BaseControllerTest
             ->once()
             ->andReturn($status);
 
-        $this->assertEquals($status, $this->controller->setTemplate($this->page, $template));
+        $this->assertEquals($status, $this->controller->postTemplate($this->page, $template));
     }
 
-    public function testSetTitle()
+    public function testPostTitle()
     {
         Auth::login(new Person());
         $this->requireRole('editContent', $this->page);
@@ -183,7 +183,7 @@ class VersionTest extends BaseControllerTest
             ->shouldReceive('getStatus')
             ->andReturn($status);
 
-        $response = $this->controller->setTitle($request, $this->page);
+        $response = $this->controller->postTitle($request, $this->page);
 
         $this->assertEquals([
             'status'   => $status,

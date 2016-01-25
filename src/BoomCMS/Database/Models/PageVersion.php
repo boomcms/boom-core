@@ -225,8 +225,8 @@ class PageVersion extends Model implements PageVersionInterface
         if (Editor::isDisabled()) {
             return $this->scopeLastPublished($query);
         } else {
-            // For logged in users get the version with the highest ID.
-            return $query->orderBy(self::ATTR_ID, 'desc');
+            // For logged in users get the most recently created
+            return $query->orderBy(self::ATTR_EDITED_AT, 'desc');
         }
     }
 

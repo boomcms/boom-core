@@ -93,7 +93,7 @@ class Version extends Controller
      *
      * @return string
      */
-    public function setEmbargo(Request $request, Page $page)
+    public function postEmbargo(Request $request, Page $page)
     {
         $this->authorize('publish', $page);
 
@@ -125,7 +125,7 @@ class Version extends Controller
      *
      * @return string
      */
-    public function setTemplate(Page $page, Template $template)
+    public function postTemplate(Page $page, Template $template)
     {
         $this->authorize('editTemplate', $page);
 
@@ -144,7 +144,7 @@ class Version extends Controller
      *
      * @return array
      */
-    public function setTitle(Request $request, Page $page)
+    public function postTitle(Request $request, Page $page)
     {
         $this->authorize('editContent', $page);
 
