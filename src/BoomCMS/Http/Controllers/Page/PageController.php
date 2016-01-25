@@ -1,4 +1,4 @@
-]<?php
+<?php
 
 namespace BoomCMS\Http\Controllers\Page;
 
