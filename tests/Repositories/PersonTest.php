@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Person as PersonRepository;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
+use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
 class PersonTest extends AbstractTestCase
@@ -65,6 +66,7 @@ class PersonTest extends AbstractTestCase
 
     public function testRetrieveByCredentials()
     {
+        $query = m::mock(Builder::class);
         $person = new Person();
         $credentials = [
             'email' => 'test@test.com',
@@ -76,15 +78,15 @@ class PersonTest extends AbstractTestCase
             ->shouldReceive('whereSite')
             ->once()
             ->with($site)
-            ->andReturnSelf();
+            ->andReturn($query);
 
-        $this->model
+        $query
             ->shouldReceive('where')
             ->once()
             ->with(Person::ATTR_EMAIL, '=', $credentials['email'])
             ->andReturnSelf();
 
-        $this->model
+        $query
             ->shouldReceive('first')
             ->once()
             ->andReturn($person);

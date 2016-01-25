@@ -97,15 +97,15 @@ class Person implements PersonRepositoryInterface, UserProvider
      */
     public function retrieveByCredentials(array $credentials)
     {
-        $this->model->whereSite(Router::getActiveSite());
+        $query = $this->model->whereSite(Router::getActiveSite());
 
         foreach ($credentials as $key => $value) {
             if (!Str::contains($key, 'password')) {
-                $this->model->where($key, '=', $value);
+                $query->where($key, '=', $value);
             }
         }
 
-        return $this->model->first();
+        return $query->first();
     }
 
     /**
