@@ -96,13 +96,15 @@ Route::group(['middleware' => [
                 });
 
                 Route::post('add/{page}', 'PageController@add');
-                Route::get('{page}/urls', 'PageController@urls');
-                Route::get('{page}/urls/add', 'Urls@getAdd');
+
+                Route::get('{page}/urls', 'Urls@index');
+                Route::get('{page}/urls/create', 'Urls@create');
+                Route::post('{page}/urls', 'Urls@store');
+                Route::post('{page}/urls/{url}/make-primary', 'Urls@makePrimary');
+                Route::delete('{page}/urls/{url}', 'Urls@destroy');
                 Route::get('{page}/urls/{url}/move', 'Urls@getMove');
-                Route::post('{page}/urls/add', 'Urls@postAdd');
-                Route::post('{page}/urls/{url}/make_primary', 'Urls@postMakePrimary');
                 Route::post('{page}/urls/{url}/move', 'Urls@postMove');
-                Route::post('{page}/urls/{url}/delete/', 'Urls@postDelete');
+                Route::controller('{page}/urls', 'Urls');
 
                 Route::get('{page}/tags', 'Tags@view');
                 Route::post('{page}/tags', 'Tags@add');

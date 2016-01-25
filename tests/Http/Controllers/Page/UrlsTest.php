@@ -37,11 +37,11 @@ class UrlsTest extends BaseControllerTest
         $this->page->{Page::ATTR_ID} = 1;
     }
 
-    public function testGetAdd()
+    public function testCreate()
     {
         $response = view('boomcms::editor.urls.add', ['page' => $this->page])->render();
 
-        $this->assertEquals($response, $this->controller->getAdd($this->page));
+        $this->assertEquals($response, $this->controller->create($this->page));
     }
 
     public function testPostAddUrlIsUnique()
@@ -58,7 +58,7 @@ class UrlsTest extends BaseControllerTest
             ->once()
             ->with($location, $this->page);
 
-        $this->controller->postAdd($request, $this->site, $this->page);
+        $this->controller->store($request, $this->site, $this->page);
     }
 
     public function testPostAddUrlIsInUse()
@@ -84,6 +84,34 @@ class UrlsTest extends BaseControllerTest
 
         $expected = ['existing_url_id' => $url->getId()];
 
-        $this->assertEquals($expected, $this->controller->postAdd($request, $this->site, $this->page));
+        $this->assertEquals($expected, $this->controller->store($request, $this->site, $this->page));
+    }
+
+    public function testNonPrimaryUrlIsDeleted()
+    {
+        $url = m::mock(URL::class);
+
+        $url
+            ->shouldReceive('isPrimary')
+            ->once()
+            ->andReturn(false);
+
+        URLFacade::shouldReceive('delete')->once()->with($url);
+
+        $this->controller->destroy($this->page, $url);
+    }
+
+    public function testPrimaryUrlIsNotDeleted()
+    {
+        $url = m::mock(URL::class);
+
+        $url
+            ->shouldReceive('isPrimary')
+            ->once()
+            ->andReturn(true);
+
+        URLFacade::shouldReceive('delete')->never();
+
+        $this->controller->destroy($this->page, $url);
     }
 }
