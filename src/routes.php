@@ -86,7 +86,7 @@ Route::group(['middleware' => [
                 Route::controller('version', 'Version');
                 Route::controller('settings', 'Settings');
 
-                Route::group(['prefix' => 'urls'], function() {
+                Route::group(['prefix' => 'urls'], function () {
                     Route::get('', 'Urls@index');
                     Route::get('create', 'Urls@create');
                     Route::post('', 'Urls@store');
