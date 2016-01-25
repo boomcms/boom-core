@@ -10,7 +10,7 @@ function boomPage(page_id) {
 		var promise = new $.Deferred(),
 			page_id = this.id;
 
-		$.post(this.baseUrl + 'add/' + page_id, function(response) {
+		$.post(this.baseUrl + page_id + '/add', function(response) {
 			if (response.url) {
 				promise.resolve(response);
 			} else {
@@ -25,7 +25,7 @@ function boomPage(page_id) {
 		var promise = new $.Deferred(),
 			page_id = this.id;
 
-		$.post(this.baseUrl + 'add/' + page_id, {noprompt: 1}, function(response) {
+		$.post(this.baseUrl + page_id +  '/add/', {noprompt: 1}, function(response) {
 			if (response.url) {
 				promise.resolve(response);
 			} else {
@@ -48,12 +48,12 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.delete = function(options) {
-		return $.post(this.baseUrl + 'settings/delete/' + this.id, options);
+		return $.post(this.baseUrl + this.id + '/settings/delete', options);
 	};
 
 	boomPage.prototype.embargo = function() {
 		var page = this,
-			url = this.baseUrl + 'version/embargo/' + this.id,
+			url = this.baseUrl + this.id + '/version/embargo/' + this.id,
 			promise = new $.Deferred(),
 			dialog;
 
@@ -75,7 +75,7 @@ function boomPage(page_id) {
 	boomPage.prototype.publish = function() {
 		var promise = new $.Deferred();
 
-		$.post(this.baseUrl + 'version/embargo/' + this.id)
+		$.post(this.baseUrl + this.id + '/version/embargo/')
 			.done(function(response) {
 				promise.resolve(response);
 			});
@@ -84,7 +84,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.requestApproval = function() {
-		var url = this.baseUrl + 'version/request_approval/' + this.id;
+		var url = this.baseUrl + this.id + '/version/request_approval/';
 
 		return $.post(url);
 	};
@@ -112,7 +112,7 @@ function boomPage(page_id) {
 
 		new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
 			.done(function() {
-				$.post(page.baseUrl + 'discard/' + page.id)
+				$.post(page.baseUrl + this.id + '/discard')
 					.done(function() {
 						promise.resolve();
 					});
@@ -132,12 +132,12 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.setTitle = function(title) {
-		return $.post(this.baseUrl + 'version/title/' + this.id, {
+		return $.post(this.baseUrl + this.id + 'version/title', {
 			title : title
 		});
 	};
 
 	boomPage.prototype.setTemplate = function(templateId) {
-		return $.post(this.baseUrl + 'version/template/' + this.id + '/' + templateId);
+		return $.post(this.baseUrl + this.id + '/version/template/' + templateId);
 	};
 };
