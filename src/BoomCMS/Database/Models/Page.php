@@ -138,7 +138,7 @@ class Page extends Model implements PageInterface
             ->setEditedAt(new DateTime('now'))
             ->setEditedBy(Auth::user());
 
-        /**
+        /*
          * Only make the new version a draft if the old version is published.
          * When a new page is created we set the edited_at time to make the first version published
          */
