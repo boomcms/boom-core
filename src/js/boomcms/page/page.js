@@ -21,21 +21,6 @@ function boomPage(page_id) {
 		return promise;
 	};
 
-	boomPage.prototype.addWithoutPrompt = function() {
-		var promise = new $.Deferred(),
-			page_id = this.id;
-
-		$.post(this.baseUrl + page_id +  '/add/', {noprompt: 1}, function(response) {
-			if (response.url) {
-				promise.resolve(response);
-			} else {
-				promise.reject(response);
-			}
-		});
-
-		return promise;
-	};
-
 	boomPage.prototype.addRelatedPage = function(relatedPageId) {
 		return $.post(this.baseUrl + this.id + '/relations/' + relatedPageId);
 	};
