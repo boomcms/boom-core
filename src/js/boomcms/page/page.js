@@ -38,7 +38,7 @@ function boomPage(page_id) {
 
 	boomPage.prototype.embargo = function() {
 		var page = this,
-			url = this.baseUrl + this.id + '/version/embargo/' + this.id,
+			url = this.baseUrl + this.id + '/version/embargo',
 			promise = new $.Deferred(),
 			dialog;
 
@@ -60,7 +60,7 @@ function boomPage(page_id) {
 	boomPage.prototype.publish = function() {
 		var promise = new $.Deferred();
 
-		$.post(this.baseUrl + this.id + '/version/embargo/')
+		$.post(this.baseUrl + this.id + '/version/embargo')
 			.done(function(response) {
 				promise.resolve(response);
 			});
@@ -69,7 +69,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.requestApproval = function() {
-		var url = this.baseUrl + this.id + '/version/request_approval/';
+		var url = this.baseUrl + this.id + '/version/request_approval';
 
 		return $.post(url);
 	};
@@ -84,7 +84,7 @@ function boomPage(page_id) {
 	boomPage.prototype.removeTag = function(tagId) {
 		return $.ajax({
 			type: 'delete',
-			url: this.baseUrl + this.id + '/tags/' + this.id,
+			url: this.baseUrl + this.id + '/tags',
 			data: {
 				tag: tagId
 			}

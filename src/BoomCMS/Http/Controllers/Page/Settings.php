@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Events;
 use BoomCMS\Jobs\DeletePage;
 use BoomCMS\Jobs\ReorderChildPages;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -257,7 +258,7 @@ class Settings extends PageController
 
         PageFacade::save($page);
 
-        Event::fire(new PageSearchSettingsWereUpdated($page));
+        Event::fire(new Events\PageSearchSettingsWereUpdated($page));
     }
 
     /**
@@ -303,7 +304,7 @@ class Settings extends PageController
         PageFacade::save($page);
 
         if (!$wasVisible && $page->isVisible()) {
-            Event::fire(new PageWasMadeVisible($page, auth()->user()));
+            Event::fire(new Events\PageWasMadeVisible($page, auth()->user()));
         }
 
         return (int) $page->isVisible();
