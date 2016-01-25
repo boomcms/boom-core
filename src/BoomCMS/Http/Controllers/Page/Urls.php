@@ -21,10 +21,18 @@ class Urls extends Controller
         $this->authorize('editUrls', $page);
     }
 
-    public function getAdd(Page $page)
+    public function create(Page $page)
     {
         return view("$this->viewPrefix.add", [
             'page' => $page,
+        ]);
+    }
+
+    public function index(Page $page)
+    {
+        return view($this->viewPrefix.'.list', [
+            'page' => $page,
+            'urls' => $page->getUrls(),
         ]);
     }
 
@@ -37,7 +45,7 @@ class Urls extends Controller
         ]);
     }
 
-    public function postAdd(Request $request, Site $site, Page $page)
+    public function store(Request $request, Site $site, Page $page)
     {
         $location = $request->input('location');
         $url = URLFacade::findBySiteAndLocation($site, $location);
@@ -54,20 +62,20 @@ class Urls extends Controller
         }
     }
 
-    public function postDelete()
+    public function destroy(Page $page, URL $url)
     {
-        if (!$this->url->isPrimary()) {
-            URL::delete($this->url);
+        if (!$url->isPrimary()) {
+            URLFacade::delete($url);
         }
     }
 
-    public function postMakePrimary()
+    public function makePrimary(Page $page, URL $url)
     {
-        Bus::dispatch(new MakeURLPrimary($this->url));
+        Bus::dispatch(new MakeURLPrimary($url));
     }
 
-    public function postMove()
+    public function postMove(Page $page, URL $url)
     {
-        Bus::dispatch(new ReassignURL($this->url, $this->page));
+        Bus::dispatch(new ReassignURL($url, $page));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace BoomCMS\ServiceProviders;
 
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Routing\Router as BoomCMSRouter;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -26,6 +27,8 @@ class RouteServiceProvider extends ServiceProvider
 
             $router->model($binding, $className);
         }
+
+        $router->model('related', Page::class);
 
         require __DIR__.'/../../routes.php';
     }

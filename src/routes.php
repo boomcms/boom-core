@@ -98,21 +98,23 @@ Route::group(['middleware' => [
                 Route::controller('{page}/settings', 'Settings');
 
                 Route::post('add/{page}', 'PageController@add');
-                Route::get('{page}/urls', 'PageController@urls');
-                Route::get('{page}/urls/add', 'Urls@getAdd');
+
+                Route::get('{page}/urls', 'Urls@index');
+                Route::get('{page}/urls/create', 'Urls@create');
+                Route::post('{page}/urls', 'Urls@store');
+                Route::post('{page}/urls/{url}/make-primary', 'Urls@makePrimary');
+                Route::delete('{page}/urls/{url}', 'Urls@destroy');
                 Route::get('{page}/urls/{url}/move', 'Urls@getMove');
-                Route::post('{page}/urls/add', 'Urls@postAdd');
-                Route::post('{page}/urls/{url}/make_primary', 'Urls@postMakePrimary');
                 Route::post('{page}/urls/{url}/move', 'Urls@postMove');
-                Route::post('{page}/urls/{url}/delete/', 'Urls@postDelete');
+                Route::controller('{page}/urls', 'Urls');
 
                 Route::get('{page}/tags', 'Tags@view');
                 Route::post('{page}/tags', 'Tags@add');
                 Route::delete('{page}/tags/{tag}', 'Tags@remove');
 
-                Route::post('relations/add/{page}', 'Relations@add');
-                Route::post('relations/remove/{page}', 'Relations@remove');
-                Route::get('relations/view/{page}', 'Relations@view');
+                Route::get('{page}/relations', 'Relations@index');
+                Route::post('{page}/relations/{related}', 'Relations@store');
+                Route::delete('{page}/relations/{related}', 'Relations@destroy');
             });
         });
     });

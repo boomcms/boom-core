@@ -40369,10 +40369,8 @@ function boomPage(page_id) {
 		return promise;
 	};
 
-	boomPage.prototype.addRelatedPage = function(page_id) {
-		return $.post(this.baseUrl + 'relations/add/' + this.id, {
-			related_page_id: page_id
-		});
+	boomPage.prototype.addRelatedPage = function(relatedPageId) {
+		return $.post(this.baseUrl + this.id + '/relations/' + relatedPageId);
 	};
 
 	boomPage.prototype.addTag = function(group, tag) {
@@ -40424,9 +40422,10 @@ function boomPage(page_id) {
 		return $.post(url);
 	};
 
-	boomPage.prototype.removeRelatedPage = function(page_id) {
-		return $.post(this.baseUrl + 'relations/remove/' + this.id, {
-			related_page_id: page_id
+	boomPage.prototype.removeRelatedPage = function(relatedPageId) {
+		return $.ajax({
+			type: 'delete',
+			url: this.baseUrl + this.id + '/relations/' + relatedPageId
 		});
 	};
 
@@ -40511,7 +40510,7 @@ function boomPage(page_id) {
 			case 'urls':
 				return '/boomcms/page/' + this.page.id + '/urls';
 			case 'relations':
-				return '/boomcms/page/relations/view/' + this.page.id;
+				return '/boomcms/page/' + this.page.id + '/relations';
 			case 'tags':
 				return '/boomcms/page/' + this.page.id + '/tags';
 			case 'template':
@@ -41111,7 +41110,7 @@ $.widget('boom.pageTree', {
 			dialog;
 
 		dialog = new boomDialog({
-			url : '/boomcms/page/' + this.pageId + '/urls/add',
+			url : '/boomcms/page/' + this.pageId + '/urls/create',
 			title : 'Add URL',
 			closeButton: false,
 			saveButton: true,
@@ -41132,7 +41131,7 @@ $.widget('boom.pageTree', {
 		var deferred = new $.Deferred(),
 			pageId = this.pageId;
 
-		$.post('/boomcms/page/' + pageId + '/urls/add', {location : location})
+		$.post('/boomcms/page/' + pageId + '/urls', {location : location})
 			.done(function(response) {
 				if (response) {
 					if (typeof response.existing_url_id !== 'undefined') {
@@ -41157,7 +41156,10 @@ $.widget('boom.pageTree', {
 
 			confirmation
 			.done(function() {
-				$.post('/boomcms/page/' + url.pageId + '/urls/' + url.id + '/delete')
+				$.ajax({
+					type: 'delete',
+					url: '/boomcms/page/' + url.pageId + '/urls/' + url.id
+				})
 				.done(function() {
 					deferred.resolve();
 				});
@@ -41167,7 +41169,7 @@ $.widget('boom.pageTree', {
 	};
 
 	boomPageUrl.prototype.makePrimary = function(is_primary) {
-		return $.post('/boomcms/page/' + this.pageId + '/urls/' + this.id + '/make_primary');
+		return $.post('/boomcms/page/' + this.pageId + '/urls/' + this.id + '/make-primary');
 	};
 
 	boomPageUrl.prototype.move = function() {
