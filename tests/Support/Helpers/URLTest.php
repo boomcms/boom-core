@@ -9,6 +9,21 @@ use BoomCMS\Tests\AbstractTestCase;
 
 class URLTest extends AbstractTestCase
 {
+    public function testFromTitle()
+    {
+        $site = new Site();
+        $base = '/blog';
+        $title = 'Untitled';
+        $url = '/blog/untitled';
+
+        URLFacade::shouldReceive('isAvailable')
+            ->once()
+            ->with($site, $url)
+            ->andReturn(true);
+
+        $this->assertEquals($url, URL::fromTitle($site, $base, $title));
+    }
+
     public function testMakeUniqueWithUniqueUrl()
     {
         $site = new Site();

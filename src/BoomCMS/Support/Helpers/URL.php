@@ -17,7 +17,7 @@ abstract class URL
      * @param string $base
      * @param string $title
      */
-    public static function fromTitle($base, $title)
+    public static function fromTitle(Site $site, $base, $title)
     {
         $url = static::sanitise($title);
 
@@ -28,7 +28,7 @@ abstract class URL
 
         $url = ($base == '/') ? $url : $base.$url;
 
-        return static::makeUnique($url);
+        return static::makeUnique($site, $url);
     }
 
     public static function makeRelative($url)
