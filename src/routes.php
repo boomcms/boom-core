@@ -81,6 +81,7 @@ Route::group(['middleware' => [
             });
 
             Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
+                Route::post('version/template/{template}', 'Version@postTemplate');
                 Route::controller('version', 'Version');
                 Route::controller('settings', 'Settings');
                 Route::controller('chunk', 'Chunk');
