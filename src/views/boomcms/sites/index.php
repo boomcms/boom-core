@@ -26,7 +26,7 @@
                         <tr data-id="<?= $site->getId() ?>">
                             <td><?= $site->getName() ?></td>
                             <td><?= $site->getHostname() ?></td>
-                            <td><?= trans('boomcms::sites.default.' .(int) $site->isDefault()) ?></td>
+                            <td><?= trans('boomcms::sites.default.'.(int) $site->isDefault()) ?></td>
 
                             <td class="buttons">
                                 <?= $button('edit', 'edit', ['class' => 'b-sites-edit']) ?>

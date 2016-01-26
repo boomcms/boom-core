@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Http\Controllers\Sites;
 
-class SiteMAnager extends SiteManager
+class Site extends SiteManager
 {
-    
 }
