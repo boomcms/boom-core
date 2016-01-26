@@ -5,10 +5,12 @@
 		<?= $menuButton() ?>
 	</div>
 
-	<div id="b-pages">
-        <h1><?= trans('boomcms::pages.heading') ?></h1>
-		<ul class='boom-tree'></ul>
-	</div>
+    <main id="b-container">
+        <div id="b-pages">
+            <h1><?= trans('boomcms::pages.heading') ?></h1>
+            <ul class='boom-tree'></ul>
+        </div>
+    </main>
 
 	<?= $boomJS ?>
 	<script type="text/javascript">
