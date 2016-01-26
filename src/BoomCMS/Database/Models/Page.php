@@ -130,10 +130,11 @@ class Page extends Model implements PageInterface
     public function addVersion(array $attrs = [])
     {
         if ($oldVersion = $this->getCurrentVersion()) {
-            $attrs = array_merge($oldVersion->toArray(), $attrs);
+            $attrs += $oldVersion->toArray();
         }
 
-        $newVersion = PageVersion::create($attrs)
+        $newVersion = new PageVersion($attrs);
+        $newVersion
             ->setPage($this)
             ->setEditedAt(new DateTime('now'))
             ->setEditedBy(Auth::user());
@@ -145,6 +146,8 @@ class Page extends Model implements PageInterface
         if ($oldVersion->isPublished()) {
             $newVersion->makeDraft();
         }
+
+        $newVersion->save();
 
         $this->setCurrentVersion($newVersion);
 
