@@ -40440,11 +40440,11 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.saveSettings = function(section, data) {
-		return $.post(this.baseUrl + '/' + this.id + '/settings/' + section, data);
+		return $.post(this.baseUrl + this.id + '/settings/' + section, data);
 	};
 
 	boomPage.prototype.setFeatureImage = function(asset) {
-		return $.post(this.baseUrl + '/' + this.id + '/settings/feature', {
+		return $.post(this.baseUrl + this.id + '/settings/feature', {
 			feature_image_id : asset.getId()
 		});
 	};
