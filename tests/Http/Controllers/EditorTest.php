@@ -31,7 +31,7 @@ class EditorTest extends BaseControllerTest
 
             $request = new Request(['state' => $state]);
 
-            $this->controller->setState($request, $editor);
+            $this->controller->postState($request, $editor);
         }
     }
 
