@@ -40875,11 +40875,7 @@ $.widget( 'boom.pageToolbar', {
 
 		this.$settings
 			.pageSettings({
-				save: function() {
-					toolbar.$settings.pageSettings({
-						save: function() {}
-					});
-
+				draftsSave: function() {
 					toolbar.closePageSettings();
 				}
 			})
