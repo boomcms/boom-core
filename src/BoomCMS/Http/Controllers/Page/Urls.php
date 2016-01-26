@@ -10,7 +10,6 @@ use BoomCMS\Jobs\MakeURLPrimary;
 use BoomCMS\Jobs\ReassignURL;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Bus;
 
 class Urls extends Controller
 {
@@ -71,11 +70,11 @@ class Urls extends Controller
 
     public function makePrimary(Page $page, URL $url)
     {
-        Bus::dispatch(new MakeURLPrimary($url));
+        $this->dispatch(new MakeURLPrimary($url));
     }
 
     public function postMove(Page $page, URL $url)
     {
-        Bus::dispatch(new ReassignURL($url, $page));
+        $this->dispatch(new ReassignURL($url, $page));
     }
 }

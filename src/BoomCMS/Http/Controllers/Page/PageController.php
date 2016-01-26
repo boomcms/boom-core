@@ -7,14 +7,10 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
-use Illuminate\Foundation\Bus\DispatchesCommands;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 
 class PageController extends Controller
 {
-    use DispatchesCommands;
-
     protected $viewPrefix = 'boomcms::editor.page.';
 
     public function postAdd(Site $site, Page $page)
