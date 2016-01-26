@@ -111,7 +111,7 @@ class Settings extends PageController
      */
     public function getNavigation(Page $page)
     {
-        $this->authorize('editNavBasic', $this->page);
+        $this->authorize('editNavBasic', $page);
 
         return view("$this->viewPrefix.navigation", [
             'page' => $page,
