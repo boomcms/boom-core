@@ -2,6 +2,7 @@
 
 return [
     'accept-crop'      => 'Crop to selection',
+    'add-site'         => 'Add site',
     'add-tags'         => 'Add tags',
     'add-url'          => 'Add URL',
     'cancel'           => 'Cancel',
@@ -10,6 +11,7 @@ return [
     'crop'             => 'Crop',
     'delete'           => 'Delete',
     'download'         => 'Download',
+    'edit'             => 'Edit',
     'embargo'          => 'Set embargo time',
     'embargo-change'   => 'Change embargo time',
     'image-revert'     => 'Restore to original',

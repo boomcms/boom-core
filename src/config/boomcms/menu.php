@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'sites' => [
+        'url'      => '/boomcms/sites',
+        'role'     => 'manageSites',
+        'icon'     => 'globe',
+    ],
     'pages' => [
         'url'      => '/boomcms/pages',
         'role'     => 'managePages',

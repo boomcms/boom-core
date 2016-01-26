@@ -80,6 +80,11 @@ Route::group(['middleware' => [
                 Route::get('', 'Pages@index');
             });
 
+            Route::group(['namespace' => 'Sites'], function () {
+                Route::get('sites', 'SiteManager@index');
+                Route::resource('site', 'Site');
+            });
+
             Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
                 Route::post('version/template/{template}', 'Version@postTemplate');
                 Route::controller('version', 'Version');

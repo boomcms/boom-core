@@ -8,6 +8,7 @@ return [
     'logout'    => 'Logout',
     'pages'     => 'Pages',
     'people'    => 'People',
+    'sites'     => 'Manage sites',
     'settings'  => 'Settings',
     'templates' => 'Templates',
 ];

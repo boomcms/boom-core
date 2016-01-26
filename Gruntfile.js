@@ -109,6 +109,8 @@ module.exports = function(grunt) {
 					'src/js/boomcms/peopleManager.js',
 					'src/js/boomcms/imageEditor.js',
 					'src/js/boomcms/approvals.js',
+					'src/js/boomcms/site.js',
+					'src/js/boomcms/siteManager.js',
 					'bower_components/wysihtml/dist/wysihtml-toolbar.js',
 					'src/js/wysihtml5/parser_rules/full.js',
 					'src/js/wysihtml5/parser_rules/inline.js',

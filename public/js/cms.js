@@ -40331,7 +40331,7 @@ $(function() {
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
 	}
-});;	/**
+});;/**
 * @class
 * @name boomPage
 */
@@ -46220,6 +46220,57 @@ function Row() {
 
 	function boom_approvals_remove_row($element) {
 		$element.parents('tr').remove();
+	}
+});;function boomSite(siteId) {
+	this.id = siteId;
+	this.baseUrl = '/boomcms/sites/';
+
+	boomSite.prototype.edit = function() {
+		return new boomDialog({
+			url: this.baseUrl + this.id + '/edit'
+		});
+	};
+
+	boomSite.prototype.update = function(data) {
+		return $.ajax({
+			type: 'put',
+			url: this.baseUrl + this.id,
+			data: data
+		});
+	};
+};$.widget('boom.siteManager', {
+	bind : function() {
+		this.element
+			.on('click', '.b-sites-delete', function(e) {
+				e.preventDefault();
+
+				var $item = $(this).closest( "tr" ),
+					site = new boomSite($item.attr('data-id')),
+					confirmation = new boomConfirmation("Please confirm", "Are you sure you want to delete this site?");
+
+				confirmation
+					.done(function() {
+						site.delete().done(function() {
+							$item.fadeOut(600, function(){
+								$item.remove();
+							});
+						});
+					});
+			})
+			.on('click', '.b-sites-edit', function(e) {
+				e.preventDefault();
+
+				var $item = $(this).closest( "tr" ),
+					site = new boomSite($item.attr('data-id'));
+
+				site.edit().done(function(data) {
+					site.update(data);
+				});
+			});
+	},
+
+	_create : function() {
+		this.bind();
 	}
 });;/**
  * @license wysihtml v0.5.5
