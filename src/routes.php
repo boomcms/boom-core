@@ -80,11 +80,10 @@ Route::group(['middleware' => [
                 Route::get('', 'Pages@index');
             });
 
-            Route::controller('chunk/{page}', 'Chunk');
-
             Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
                 Route::controller('version', 'Version');
                 Route::controller('settings', 'Settings');
+                Route::controller('chunk', 'Chunk');
 
                 Route::group(['prefix' => 'urls'], function () {
                     Route::get('', 'Urls@index');
