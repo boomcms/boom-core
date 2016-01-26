@@ -40430,7 +40430,7 @@ function boomPage(page_id) {
 
 		new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
 			.done(function() {
-				$.post(page.baseUrl + this.id + '/discard')
+				$.post(page.baseUrl + page.id + '/discard')
 					.done(function() {
 						promise.resolve();
 					});
