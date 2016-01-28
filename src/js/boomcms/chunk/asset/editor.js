@@ -48,7 +48,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 		this.deferred = new $.Deferred();
 
 		this.dialog = new boomDialog({
-			url : '/boomcms/chunk/' + this.pageId + '/edit?slotname=' + this.slotname + '&type=asset',
+			url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=asset',
 			id : 'b-assets-chunk-editor',
 			width: 900,
 			closeButton: false,

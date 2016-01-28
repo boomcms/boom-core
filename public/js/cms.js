@@ -42735,7 +42735,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			data = this.getData();
 
 		this.dialog = new boomDialog({
-			url: '/boomcms/chunk/' + this.options.currentPage.id + '/edit?slotname=' + self.options.name + '&type=timestamp',
+			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?slotname=' + self.options.name + '&type=timestamp',
 			width: 400,
 			title: 'Edit date / time',
 			closeButton: false,
@@ -42796,7 +42796,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		var library = this;
 
 		this.dialog = new boomDialog({
-			url: '/boomcms/chunk/' + this.options.currentPage.id + '/edit?type=library&slotname=' + this.options.name,
+			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=library&slotname=' + this.options.name,
 			width: 700,
 			closeButton: false,
 			saveButton: true,
@@ -43009,7 +43009,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		this.deferred = new $.Deferred();
 
 		this.dialog = new boomDialog({
-			url : '/boomcms/chunk/' + this.page_id + '/edit?slotname=' + this.slotname + '&type=slideshow',
+			url : '/boomcms/page/' + this.page_id + '/chunk/edit?slotname=' + this.slotname + '&type=slideshow',
 			id : 'b-slideshow-editor',
 			width: 920,
 			closeButton: false,
@@ -43197,7 +43197,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		var linksetEditor = this;
 
 		this.dialog = new boomDialog({
-			url: '/boomcms/chunk/' + this.pageId + '/edit?slotname=' + this.slotname + '&type=linkset',
+			url: '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=linkset',
 			title: 'Edit linkset',
 			id: 'b-linkset-editor',
 			width: 900,
@@ -43290,7 +43290,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		this.deferred = new $.Deferred();
 
 		this.dialog = new boomDialog({
-			url : '/boomcms/chunk/' + this.pageId + '/edit?slotname=' + this.slotname + '&type=asset',
+			url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=asset',
 			id : 'b-assets-chunk-editor',
 			width: 900,
 			closeButton: false,
@@ -43532,7 +43532,7 @@ $.widget('ui.chunkPageVisibility', {
 		var locationEditor = this;
 
 		this.dialog = new boomDialog({
-			url : '/boomcms/chunk/' + this.page_id + '/edit?slotname=' + this.slotname + '&type=location',
+			url : '/boomcms/page/' + this.page_id + '/chunk/edit?slotname=' + this.slotname + '&type=location',
 			id : 'b-location-editor',
 			width: 920,
 			closeButton: false,
@@ -43595,7 +43595,7 @@ $.widget('ui.chunkPageVisibility', {
 			dialog;
 
 		dialog = new boomDialog({
-			url: '/boomcms/chunk/' + this.options.currentPage.id + '/edit?type=html&slotname=' + this.options.name,
+			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=html&slotname=' + this.options.name,
 			width: 600,
 			title: 'Edit HTML',
 			closeButton: false,

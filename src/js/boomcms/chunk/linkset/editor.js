@@ -165,7 +165,7 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 		var linksetEditor = this;
 
 		this.dialog = new boomDialog({
-			url: '/boomcms/chunk/' + this.pageId + '/edit?slotname=' + this.slotname + '&type=linkset',
+			url: '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=linkset',
 			title: 'Edit linkset',
 			id: 'b-linkset-editor',
 			width: 900,
