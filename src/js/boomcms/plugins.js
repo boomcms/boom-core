@@ -27,7 +27,11 @@
 				asset = new boomAsset($this.attr('data-asset')),
 				url  = asset.getUrl('thumb', $this.width(), $this.height()) + '?' + Math.floor(Date.now() / 1000);
 
-			$this.find('img').attr('src', url);
+			$this.find('img')
+				.attr('src', url)
+				.on('load', function() {
+					$(this).removeClass('loading');
+				});
 		});
 	};
 })( jQuery );

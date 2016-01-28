@@ -3,7 +3,14 @@
         <?php foreach ($assets as $asset): ?>
             <div style="height: 160px; width: <?= floor(160 * $asset->getAspectRatio()) ?>px" data-aspect-ratio="<?= $asset->getAspectRatio() ?>">
                 <a href="#" class="thumb" data-asset="<?= $asset->getId() ?>">
-                    <img />
+                    <img class="loading" />
+
+                    <div class="pace loading">
+                        <div>
+                            <span><?= trans('boomcms::asset.loading') ?></span>
+                            <div class="pace-activity"></div>
+                        </div>
+                    </div>
 
                     <div class="b-asset-details">
                         <h2><?= $asset->getTitle() ?></h2>

@@ -166,7 +166,7 @@ module.exports = function(grunt) {
 						'bower_components/jquery-ui/themes/base/autocomplete.css',
 						'bower_components/leaflet/dist/leaflet.css',
 						'bower_components/jcrop/css/Jcrop.css',
-						'bower_components/pace/themes/red/pace-theme-minimal.css',
+						'bower_components/pace/themes/red/pace-theme-flash.css',
 						'bower_components/jgrowl/jquery.jgrowl.css',
 						'src/css/libraries/jqpagination.css',
 						'public/css/cms.css'

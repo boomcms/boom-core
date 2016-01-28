@@ -28,4 +28,5 @@ return [
         'video'    => 'Video',
         'audio'    => 'Audio',
     ],
+    'loading'                => 'Loading thumbnail',
 ];
