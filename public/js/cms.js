@@ -40705,6 +40705,12 @@ $.widget( 'boom.pageToolbar', {
 			})
 			.on('click', '#b-page-version-status', function() {
 				self.showSettingsAndCloseOnSave('drafts');
+			})
+			.on('mouseup', '#b-menu a', function() {
+				// Clicking a link in the menu but opening in a new tab causes the menu to close.
+				// But without this the iframe doesn't minimise and the window can't scroll.
+
+				$(top.window).trigger('boom:dialog:close');
 			});
 
 		this.buttonBar = this.element.contents().find('#b-topbar');
