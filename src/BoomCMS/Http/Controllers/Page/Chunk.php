@@ -5,6 +5,7 @@ namespace BoomCMS\Http\Controllers\Page;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Events\ChunkWasCreated;
 use BoomCMS\Support\Facades\Chunk as ChunkFacade;
+use BoomCMS\Support\Facades\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
@@ -41,12 +42,7 @@ class Chunk extends PageController
             $chunk->template($template);
         }
 
-        // This is usually defined by the page controller.
-        // We need to define a variant of it incase the callback is used in teh chunk view.
-        View::share('chunk', function ($type, $slotname, $page = null) {
-            return ChunkFacade::get($type, $slotname, $page);
-        });
-
+        Router::setActivePage($page);
         View::share('page', $page);
 
         Event::fire(new ChunkWasCreated($page, $chunk));

@@ -8,6 +8,8 @@ use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Core\Asset;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Tag;
+use BoomCMS\Database\Models\Chunk;
+use BoomCMS\Support\Facades\Chunk as ChunkFacade;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\Settings;
 use Illuminate\Support\Facades\App;
@@ -15,6 +17,13 @@ use Illuminate\Support\Facades\View;
 
 abstract class Helpers
 {
+    /**
+     * Chunk cache
+     *
+     * @var array
+     */
+    protected static $chunks = [];
+
     /**
      * Returns the name of the theme used by the active page.
      *
@@ -77,6 +86,27 @@ abstract class Helpers
         }
 
         return $url;
+    }
+
+    /**
+     * Interest a chunk into a page
+     *
+     * @param string $type
+     * @param string $slotname
+     * @param PageInterface|null $page
+     *
+     * @return Chunk
+     */
+    public static function chunk($type, $slotname, $page = null) {
+        if ($page) {
+            return ChunkFacade::get($type, $slotname, $page);
+        }
+
+        if (!isset(self::$chunks[$type][$slotname])) {
+            self::$chunks[$type][$slotname] = ChunkFacade::edit($type, $slotname);
+        }
+
+        return self::$chunks[$type][$slotname];
     }
 
     /**

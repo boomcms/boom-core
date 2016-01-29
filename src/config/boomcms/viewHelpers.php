@@ -14,6 +14,9 @@ return [
         'assetURL' => function (array $params) {
             return Helpers::assetURL($params);
         },
+        'chunk' => function() {
+            return call_user_func_array([Helpers::class, 'chunk'], func_get_args());
+        },
         'countAssets' => function (array $params) {
             return Helpers::countAssets($params);
         },
