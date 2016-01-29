@@ -9,6 +9,7 @@ use BoomCMS\Policies\PagePolicy;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Mockery as m;
 
 class PagePolicyTest extends AbstractTestCase
@@ -42,8 +43,8 @@ class PagePolicyTest extends AbstractTestCase
         $site = new Site();
         Router::shouldReceive('getActiveSite')->andReturn($site);
 
-        Auth::shouldReceive('check')->once()->with('managePages', $site)->andReturn(true);
-        Auth::shouldReceive('check')->once()->with('managePages', $site)->andReturn(false);
+        Gate::shouldReceive('allows')->once()->with('managePages', $site)->andReturn(true);
+        Gate::shouldReceive('allows')->once()->with('managePages', $site)->andReturn(false);
 
         $person = m::mock(Person::class);
         $person->shouldReceive('hasSite')->andReturn(true);
