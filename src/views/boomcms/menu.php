@@ -20,4 +20,6 @@
             <a target='_top' href='/boomcms/logout' class="fa fa-sign-out"><?= trans('boomcms::menu.logout') ?></a>
         </li>
     </ul>
+
+    <p class="version"><a href="http://www.boomcms.net/" target="_blank">BoomCMS</a><br />v<?= BoomCMS::getVersion() ?></p>
 </nav>
