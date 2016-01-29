@@ -2,6 +2,7 @@
 
 namespace BoomCMS\ServiceProviders;
 
+use BoomCMS\BoomCMS;
 use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
 use BoomCMS\Support\Helpers\Asset;
@@ -15,6 +16,7 @@ class BoomCMSServiceProvider extends ServiceProvider
     protected $aliases = [
         'Asset'       => Facades\Asset::class,
         'AssetHelper' => Asset::class,
+        'BoomCMS'     => Facades\BoomCMS::class,
         'Settings'    => Facades\Settings::class,
         'Chunk'       => Facades\Chunk::class,
         'Page'        => Facades\Page::class,
@@ -61,6 +63,10 @@ class BoomCMSServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(BoomCMS::class, function () {
+            return new BoomCMS();
+        });
+
         $this->registerAliases();
         $this->registerServiceProviders();
 
