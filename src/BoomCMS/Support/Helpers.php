@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\View;
 abstract class Helpers
 {
     /**
-     * Chunk cache
+     * Chunk cache.
      *
      * @var array
      */
@@ -89,15 +89,16 @@ abstract class Helpers
     }
 
     /**
-     * Interest a chunk into a page
+     * Interest a chunk into a page.
      *
-     * @param string $type
-     * @param string $slotname
+     * @param string             $type
+     * @param string             $slotname
      * @param PageInterface|null $page
      *
      * @return Chunk
      */
-    public static function chunk($type, $slotname, $page = null) {
+    public static function chunk($type, $slotname, $page = null)
+    {
         if ($page) {
             return ChunkFacade::get($type, $slotname, $page);
         }
