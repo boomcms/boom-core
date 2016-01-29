@@ -8,8 +8,8 @@ use BoomCMS\Jobs\CreatePerson;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Gate;
 
 class Person extends PeopleManager
 {
@@ -78,7 +78,7 @@ class Person extends PeopleManager
             ->setName($request->input('name'))
             ->setEnabled($request->has('enabled'));
 
-        if ($request->input('superuser') && Auth::check('editSuperuser', $person)) {
+        if ($request->input('superuser') && Gate::allows('editSuperuser', $person)) {
             $person->setSuperuser($request->has('superuser'));
         }
 

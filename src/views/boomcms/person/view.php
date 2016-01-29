@@ -26,7 +26,7 @@
 					</select>
 				</label>
 
-				<?php if (Auth::check('editSuperuser', $person)): ?>
+				<?php if (Gate::allows('editSuperuser', $person)): ?>
 					<label for='person-superuser'>
 						Superuser
 

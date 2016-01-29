@@ -6,7 +6,7 @@
         <input type='text' name='internal_name' value='<?= $page->getInternalName() ?>' />
     </label>
 
-    <?php if (Auth::check('editDeletable', $page)): ?>
+    <?php if (Gate::allows('editDeletable', $page)): ?>
         <label>
             <p><?= trans('boomcms::settings.admin.disable-delete') ?></p>
 

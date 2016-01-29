@@ -4,14 +4,14 @@ namespace BoomCMS\Policies;
 
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Foundation\Policies\BoomCMSPolicy;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class PagePolicy extends BoomCMSPolicy
 {
     public function before(Person $person, $ability)
     {
-        if ($person->isSuperuser() || Auth::check('managePages', Request::instance())) {
+        if ($person->isSuperuser() || Gate::allows('managePages', Request::instance())) {
             return true;
         }
     }

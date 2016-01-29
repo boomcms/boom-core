@@ -3,7 +3,7 @@
 namespace BoomCMS\Http\Controllers\Page\Settings;
 
 use BoomCMS\Http\Controllers\Page\PageController;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 abstract class Settings extends PageController
 {
@@ -29,7 +29,7 @@ abstract class Settings extends PageController
     public function children()
     {
         $this->authorize('editChildrenBasic', $this->page);
-        $this->allowAdvanced = Auth::check('editChildrenAdvanced', $this->page);
+        $this->allowAdvanced = Gate::allows('editChildrenAdvanced', $this->page);
     }
 
     public function delete()
@@ -45,13 +45,13 @@ abstract class Settings extends PageController
     public function navigation()
     {
         $this->authorize('editNavBasic', $this->page);
-        $this->allowAdvanced = Auth::check('editNavAdvanced', $this->page);
+        $this->allowAdvanced = Gate::allows('editNavAdvanced', $this->page);
     }
 
     public function search()
     {
         $this->authorize('editSearchBasic', $this->page);
-        $this->allowAdvanced = Auth::check('editSearchAdvanced', $this->page);
+        $this->allowAdvanced = Gate::allows('editSearchAdvanced', $this->page);
     }
 
     public function visibility()

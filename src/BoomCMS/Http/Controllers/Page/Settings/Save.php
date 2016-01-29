@@ -11,6 +11,7 @@ use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 
 class Save extends Settings
 {
@@ -23,7 +24,7 @@ class Save extends Settings
             ->setAddPageBehaviour($this->request->input('add_behaviour'))
             ->setChildAddPageBehaviour($this->request->input('child_add_behaviour'));
 
-        if (Auth::check('editDeletable', $this->page)) {
+        if (Gate::allows('editDeletable', $this->page)) {
             $this->page->setDisableDelete($this->request->has('disable_delete'));
         }
 
