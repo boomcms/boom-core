@@ -63,7 +63,7 @@ class BoomCMSServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(BoomCMS::class, function() {
+        $this->app->singleton(BoomCMS::class, function () {
             return new BoomCMS();
         });
 

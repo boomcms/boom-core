@@ -5,14 +5,14 @@ namespace BoomCMS;
 class BoomCMS
 {
     /**
-     * The BoomCMS version
+     * The BoomCMS version.
      *
      * @var string
      */
     const VERSION = '4.3.0-Dev';
 
     /**
-     * Returns the BoomCMS version
+     * Returns the BoomCMS version.
      *
      * @return string
      */
