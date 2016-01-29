@@ -8,7 +8,6 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Policies\PagePolicy;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Mockery as m;
 
