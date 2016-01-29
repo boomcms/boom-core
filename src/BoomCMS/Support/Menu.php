@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Support;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Request;
 
@@ -14,7 +14,7 @@ abstract class Menu
         $items = Config::get('boomcms.menu');
 
         foreach ($items as $key => $item) {
-            if (isset($item['role']) && !Auth::check($item['role'], Request::instance())) {
+            if (isset($item['role']) && Gate::denies($item['role'], Request::instance())) {
                 unset($items[$key]);
                 continue;
             }

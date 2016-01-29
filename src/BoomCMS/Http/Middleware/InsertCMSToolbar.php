@@ -6,7 +6,7 @@ use BoomCMS\Support\Facades\Router;
 use Closure;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class InsertCMSToolbar
 {
@@ -32,7 +32,7 @@ class InsertCMSToolbar
     {
         $activePage = Router::getActivePage();
 
-        if ($activePage === null || !Auth::check('edit', $activePage)) {
+        if ($activePage === null || Gate::denies('edit', $activePage)) {
             return $next($request);
         }
 

@@ -5,7 +5,7 @@ namespace BoomCMS\Policies;
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Foundation\Policies\BoomCMSPolicy;
 use BoomCMS\Support\Facades\Router;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PagePolicy extends BoomCMSPolicy
 {
@@ -17,7 +17,7 @@ class PagePolicy extends BoomCMSPolicy
             return $result;
         }
 
-        if (Auth::check('managePages', Router::getActiveSite())) {
+        if (Gate::allows('managePages', Router::getActiveSite())) {
             return true;
         }
     }
