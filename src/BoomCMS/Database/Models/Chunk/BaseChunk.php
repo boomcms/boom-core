@@ -4,7 +4,6 @@ namespace BoomCMS\Database\Models\Chunk;
 
 use BoomCMS\Contracts\Models\PageVersion;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class BaseChunk extends Model
 {
