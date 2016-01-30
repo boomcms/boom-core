@@ -78,10 +78,10 @@ class Provider
     }
 
     /**
-     * Find a chunk by page version, type, and slotname
+     * Find a chunk by page version, type, and slotname.
      *
-     * @param string $type
-     * @param string $slotname
+     * @param string      $type
+     * @param string      $slotname
      * @param PageVersion $version
      *
      * @return null|BaseChunk
