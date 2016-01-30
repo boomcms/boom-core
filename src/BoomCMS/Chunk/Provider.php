@@ -77,40 +77,22 @@ class Provider
         return new $className($page, $attrs, $slotname, $this->allowedToEdit($page));
     }
 
+    /**
+     * Find a chunk by page version, type, and slotname
+     *
+     * @param string $type
+     * @param string $slotname
+     * @param PageVersion $version
+     *
+     * @return null|BaseChunk
+     */
     public function find($type, $slotname, PageVersion $version)
-    {
-        if (is_array($slotname)) {
-            return $this->findMany($type, $slotname, $version);
-        } else {
-            return $this->findOne($type, $slotname, $version);
-        }
-    }
-
-    public function findOne($type, $slotname, PageVersion $version)
     {
         $class = 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
 
         return $version->getId() ?
             $class::getSingleChunk($version, $slotname)->first()
             : null;
-    }
-
-    public function findMany($type, array $slotnames, PageVersion $version)
-    {
-        $chunks = [];
-
-        foreach ($slotnames as $slotname) {
-            $chunks[] = $this->findOne($type, $slotname, $version);
-        }
-
-        return $chunks;
-// TODO: fix loading multiple chunks in one go.
-        $class = 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
-
-        return $class::latestEdit($version)
-            ->where('c2.slotname', 'in', $slotnames)
-//            ->with('target')
-            ->get();
     }
 
     public function get($type, $slotname, Page $page)
@@ -121,30 +103,5 @@ class Provider
         $attrs = $chunk ? $chunk->toArray() : [];
 
         return new $className($page, $attrs, $slotname, false);
-    }
-
-    public function load(Page $page, $chunks)
-    {
-        foreach ($chunks as $type => $slotnames) {
-            $model = ucfirst($type);
-            $class = "\BoomCMS\Chunk\\".$model;
-
-            $models = $this->find($type, $slotnames, $page->getCurrentVersion());
-            $found = [];
-
-            foreach ($models as $m) {
-                if ($m) {
-                    $found[] = $m->slotname;
-                    $chunks[$type][$m->slotname] = new $class($page, $m->toArray(), $m->slotname, $this->allowedToEdit($page));
-                }
-            }
-
-            $not_found = array_diff($slotnames, $found);
-            foreach ($not_found as $slotname) {
-                $chunks[$type][$slotname] = new $class($page, [], $slotname, $this->allowedToEdit($page));
-            }
-        }
-
-        return $chunks;
     }
 }
