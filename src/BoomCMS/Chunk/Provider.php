@@ -24,7 +24,7 @@ class Provider
 
     /**
      * @param AuthManager $auth
-     * @param Store $cache
+     * @param Store       $cache
      */
     public function __construct(AuthManager $auth, Cache $cache)
     {
@@ -129,8 +129,8 @@ class Provider
     /**
      * Get the cache key for given chunk parameters.
      *
-     * @param type $type
-     * @param type $slotname
+     * @param type        $type
+     * @param type        $slotname
      * @param PageVersion $version
      *
      * @return string
@@ -167,8 +167,8 @@ class Provider
     /**
      * Get a chunk from the cache.
      *
-     * @param type $type
-     * @param type $slotname
+     * @param type        $type
+     * @param type        $slotname
      * @param PageVersion $version
      *
      * @return mixed
@@ -181,11 +181,11 @@ class Provider
     }
 
     /**
-     * Insert a chunk into a page
+     * Insert a chunk into a page.
      *
      * @param string $type
      * @param string $slotname
-     * @param Page $page
+     * @param Page   $page
      *
      * @return mixed
      */
@@ -201,9 +201,9 @@ class Provider
     /**
      * Save a chunk to the cache.
      *
-     * @param type $type
-     * @param type $slotname
-     * @param type $version
+     * @param type       $type
+     * @param type       $slotname
+     * @param type       $version
      * @param ChunkModel $chunk
      */
     public function saveToCache($type, $slotname, $version, ChunkModel $chunk)
