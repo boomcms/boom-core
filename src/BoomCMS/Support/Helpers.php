@@ -99,15 +99,7 @@ abstract class Helpers
      */
     public static function chunk($type, $slotname, $page = null)
     {
-        if ($page) {
-            return ChunkFacade::get($type, $slotname, $page);
-        }
-
-        if (!isset(self::$chunks[$type][$slotname])) {
-            self::$chunks[$type][$slotname] = ChunkFacade::edit($type, $slotname);
-        }
-
-        return self::$chunks[$type][$slotname];
+        return ChunkFacade::insert($type, $slotname, $page);
     }
 
     /**
