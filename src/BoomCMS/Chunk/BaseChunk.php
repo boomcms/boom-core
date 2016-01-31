@@ -139,6 +139,16 @@ abstract class BaseChunk
             : Lang::get("boomcms::chunks.{$this->getType()}.default");
     }
 
+    /**
+     * Returns the slotname for the chunk.
+     *
+     * @return string
+     */
+    public function getSlotname()
+    {
+        return $this->slotname;
+    }
+
     public function getType()
     {
         return strtolower(class_basename($this));

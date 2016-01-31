@@ -4,9 +4,11 @@ namespace BoomCMS\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\PageVersion;
+use BoomCMS\Database\Models\Chunk\BaseChunk as ChunkModel;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Router;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Cache\Repository as Cache;
 
 class Provider
 {
@@ -15,9 +17,19 @@ class Provider
      */
     protected $auth;
 
-    public function __construct(AuthManager $auth)
+    /**
+     * @var Cache
+     */
+    protected $cache;
+
+    /**
+     * @param AuthManager $auth
+     * @param Store       $cache
+     */
+    public function __construct(AuthManager $auth, Cache $cache)
     {
         $this->auth = $auth;
+        $this->cache = $cache;
     }
 
     public function create(Page $page, $attrs)
@@ -28,10 +40,12 @@ class Provider
         $type = $attrs['type'];
         unset($attrs['type']);
 
-        $modelName = 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
+        $modelName = $this->getModelName($type);
         $model = $modelName::create($attrs);
 
-        $className = 'BoomCMS\Chunk\\'.ucfirst($type);
+        $this->saveToCache($type, $attrs['slotname'], $version, $model);
+
+        $className = $this->getClassName($type);
         $attrs['id'] = $model->id;
 
         return new $className($page, $attrs, $attrs['slotname'], true);
@@ -62,13 +76,10 @@ class Provider
      */
     public function edit($type, $slotname, $page = null)
     {
-        $className = 'BoomCMS\Chunk\\'.ucfirst($type);
+        $className = $this->getClassName($type);
 
         if ($page === null) {
             $page = Router::getActivePage();
-        } elseif ($page === 0) {
-            // 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
-            $page = new Page();
         }
 
         $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
@@ -88,20 +99,117 @@ class Provider
      */
     public function find($type, $slotname, PageVersion $version)
     {
-        $class = 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
+        $cached = $this->getFromCache($type, $slotname, $version);
 
-        return $version->getId() ?
+        if ($cached !== false) {
+            return $cached;
+        }
+
+        $class = $this->getModelName($type);
+
+        $chunk = $version->getId() ?
             $class::getSingleChunk($version, $slotname)->first()
             : null;
+
+        $this->saveToCache($type, $slotname, $version, $chunk);
+
+        return $chunk;
     }
 
     public function get($type, $slotname, Page $page)
     {
-        $className = 'BoomCMS\Chunk\\'.ucfirst($type);
+        $className = $this->getClassName($type);
 
         $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
         $attrs = $chunk ? $chunk->toArray() : [];
 
         return new $className($page, $attrs, $slotname, false);
+    }
+
+    /**
+     * Get the cache key for given chunk parameters.
+     *
+     * @param type        $type
+     * @param type        $slotname
+     * @param PageVersion $version
+     *
+     * @return string
+     */
+    public function getCacheKey($type, $slotname, PageVersion $version)
+    {
+        return md5("$type-$slotname-{$version->getId()}");
+    }
+
+    /**
+     * Returns the classname for a given chunk type.
+     *
+     * @param string $type
+     *
+     * @return string
+     */
+    public function getClassName($type)
+    {
+        return 'BoomCMS\Chunk\\'.ucfirst($type);
+    }
+
+    /**
+     * Returns the classname for a model of the given chunk type.
+     *
+     * @param string $type
+     *
+     * @return string
+     */
+    public function getModelName($type)
+    {
+        return 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
+    }
+
+    /**
+     * Get a chunk from the cache.
+     *
+     * @param type        $type
+     * @param type        $slotname
+     * @param PageVersion $version
+     *
+     * @return mixed
+     */
+    public function getFromCache($type, $slotname, PageVersion $version)
+    {
+        $key = $this->getCacheKey($type, $slotname, $version);
+
+        return $this->cache->get($key, false);
+    }
+
+    /**
+     * Insert a chunk into a page.
+     *
+     * @param string $type
+     * @param string $slotname
+     * @param Page   $page
+     *
+     * @return mixed
+     */
+    public function insert($type, $slotname, $page = null)
+    {
+        if ($page) {
+            return $this->get($type, $slotname, $page);
+        }
+
+        return $this->edit($type, $slotname, $page);
+    }
+
+    /**
+     * Save a chunk to the cache.
+     *
+     * @param type       $type
+     * @param type       $slotname
+     * @param type       $version
+     * @param ChunkModel $chunk
+     */
+    public function saveToCache($type, $slotname, $version, ChunkModel $chunk)
+    {
+        $key = $this->getCacheKey($type, $slotname, $version);
+
+        $this->cache->forever($key, $chunk);
     }
 }

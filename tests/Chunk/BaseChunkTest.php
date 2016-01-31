@@ -6,6 +6,7 @@ use BoomCMS\Chunk\BaseChunk;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Lang;
+use Mockery as m;
 
 class BaseChunkTest extends AbstractTestCase
 {
@@ -149,5 +150,13 @@ class BaseChunkTest extends AbstractTestCase
             ->getMock();
 
         $this->assertEquals(strtolower(class_basename($chunk)), $chunk->getType());
+    }
+
+    public function testGetSlotname()
+    {
+        $slotname = 'test';
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], $slotname])->makePartial();
+
+        $this->assertEquals($slotname, $chunk->getSlotname());
     }
 }
