@@ -40,6 +40,13 @@ interface Site
     public function getName();
 
     /**
+     * Returns the HTTP scheme used by the site.
+     *
+     * @return string
+     */
+    public function getScheme();
+
+    /**
      * Returns whether this site is the default.
      *
      * @return bool
@@ -88,4 +95,13 @@ interface Site
      * @return $this
      */
     public function setName($name);
+
+    /**
+     * Set the HTTP scheme for the site.
+     *
+     * @param string $scheme
+     *
+     * @return $this
+     */
+    public function setScheme($scheme);
 }

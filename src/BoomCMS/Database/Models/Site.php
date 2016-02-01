@@ -18,6 +18,7 @@ class Site extends Model implements SiteInterface
     const ATTR_HOSTNAME = 'hostname';
     const ATTR_NAME = 'name';
     const ATTR_DEFAULT = 'default';
+    const ATTR_SCHEME = 'scheme';
 
     protected $casts = [
         self::ATTR_ID      => 'integer',
@@ -69,6 +70,14 @@ class Site extends Model implements SiteInterface
     public function getName()
     {
         return $this->{self::ATTR_NAME};
+    }
+
+    /**
+     * @return string
+     */
+    public function getScheme()
+    {
+        return $this->{self::ATTR_SCHEME};
     }
 
     /**
@@ -135,6 +144,18 @@ class Site extends Model implements SiteInterface
     public function setName($name)
     {
         $this->{self::ATTR_NAME} = $name;
+
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setScheme($scheme)
+    {
+        $this->{self::ATTR_SCHEME} = $scheme;
 
         return $this;
     }

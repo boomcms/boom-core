@@ -28,6 +28,7 @@ class AddMultiSiteSupport extends Migration
             $table->string(Site::ATTR_ADMIN_EMAIL, 250);
             $table->text(Site::ATTR_ANALYTICS)->nullable();
             $table->boolean(Site::ATTR_DEFAULT)->default(false);
+            $table->string(Site::ATTR_SCHEME, 10);
             $table->softDeletes();
         });
 

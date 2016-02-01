@@ -23,6 +23,7 @@ class SiteTest extends AbstractModelTestCase
             'ATTR_ADMIN_EMAIL' => 'admin_email',
             'ATTR_ANALYTICS'   => 'analytics',
             'ATTR_DEFAULT'     => 'default',
+            'ATTR_SCHEME'      => 'scheme',
         ];
 
         foreach ($values as $const => $col) {
@@ -30,7 +31,7 @@ class SiteTest extends AbstractModelTestCase
         }
     }
 
-    public function testGetSetName()
+    public function testGetName()
     {
         $site = new Site([Site::ATTR_NAME => 'test']);
         $this->assertEquals('test', $site->getName());
@@ -52,6 +53,12 @@ class SiteTest extends AbstractModelTestCase
     {
         $site = new Site([Site::ATTR_ANALYTICS => 'test']);
         $this->assertEquals('test', $site->getAnalytics());
+    }
+
+    public function testGetScheme()
+    {
+        $site = new Site([Site::ATTR_SCHEME => 'http']);
+        $this->assertEquals('http', $site->getScheme());
     }
 
     public function testIsDefault()
@@ -147,5 +154,13 @@ class SiteTest extends AbstractModelTestCase
         $site->setAnalytics('test');
 
         $this->assertEquals('test', $site->getAnalytics());
+    }
+
+    public function testSetScheme()
+    {
+        $site = new Site();
+        $site->setScheme('http');
+
+        $this->assertEquals('http', $site->getScheme());
     }
 }
