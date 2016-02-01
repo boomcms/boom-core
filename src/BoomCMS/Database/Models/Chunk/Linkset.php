@@ -38,6 +38,7 @@ class Linkset extends BaseChunk
             $link = new Linkset\Link($link);
         }
 
+        $this->attributes['links'] = $links;
         $this->links()->saveMany($links);
     }
 
