@@ -1,3 +1,12 @@
 public/js/* linguist-vendored
 public/css/* linguist-vendored
 src/views/* linguist-language=HTML
+
+src/css export-ignore
+src/js export-ignore
+tests export-ignore
+.travis.yml export-ignore
+Gruntfile.js export-ignore
+bower.json export-ignore
+package.json export-ignore
+phpunit.xml export-ignore
