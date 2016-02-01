@@ -10,3 +10,5 @@ Gruntfile.js export-ignore
 bower.json export-ignore
 package.json export-ignore
 phpunit.xml export-ignore
+composer.lock export-ignore
+.gitignore export-ignore
