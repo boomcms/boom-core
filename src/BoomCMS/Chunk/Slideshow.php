@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\View;
 
 class Slideshow extends BaseChunk
 {
-    protected $defaultTemplate = 'circles';
-
     public function __construct(Page $page, array $attrs, $slotname, $editable)
     {
         parent::__construct($page, $attrs, $slotname, $editable);
