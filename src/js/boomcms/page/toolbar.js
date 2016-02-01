@@ -95,11 +95,7 @@ $.widget( 'boom.pageToolbar', {
 					toolbar.closePageSettings();
 				},
 				draftsSave: function(event, data) {
-					if (data.action === 'revert') {
-						top.location.reload();
-					} else {
-						toolbar.status.set(data.status);
-					}
+					toolbar.draftsSaved(event, data);
 				},
 				featureSave: function(event, asset) {
 					top.$('.b-page-featureimage').each(function() {
@@ -167,6 +163,14 @@ $.widget( 'boom.pageToolbar', {
 		this._bindButtonEvents();
 	},
 
+	draftsSaved: function(event, data) {
+		if (data.action === 'revert') {
+			top.location.reload();
+		} else {
+			this.status.set(data.status);
+		}
+	},
+
 	findButtons : function() {
 		this.buttons = {
 			visible : this.element.contents().find('#b-page-visible'),
@@ -228,7 +232,8 @@ $.widget( 'boom.pageToolbar', {
 
 		this.$settings
 			.pageSettings({
-				draftsSave: function() {
+				draftsSave: function(evet, data) {
+					toolbar.draftsSaved(event, data);
 					toolbar.closePageSettings();
 				}
 			})
