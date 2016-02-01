@@ -46,6 +46,7 @@ class Slideshow extends BaseChunk
             $slide = new Slideshow\Slide($slide);
         }
 
+        $this->attributes['slides'] = $slides;
         $this->slides()->saveMany($slides);
     }
 
