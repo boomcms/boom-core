@@ -2,43 +2,39 @@
 
 namespace BoomCMS\Chunk;
 
-use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Contracts\Models\Asset as AssetContract;
 use BoomCMS\Link\Link;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Support\Facades\View;
 
 class Asset extends BaseChunk
 {
+    /**
+     * @var AssetContract
+     */
     protected $asset;
+
     protected $defaultTemplate = 'image';
 
     private $filterByType;
     private $link;
 
-    public function __construct(Page $page, array $attrs, $slotname, $editable = true)
-    {
-        parent::__construct($page, $attrs, $slotname, $editable);
-
-        if (isset($attrs['asset_id'])) {
-            $this->asset = AssetFacade::find($this->attrs['asset_id']);
-        }
-    }
-
     protected function show()
     {
-        $link = $this->getLink();
-
-        return View::make($this->viewPrefix."asset/$this->template", [
-            'asset'   => $this->getAsset(),
+        return View::make($this->viewPrefix."asset.$this->template", [
+            'assetId' => $this->getAssetId(),
             'caption' => $this->getCaption(),
             'title'   => $this->getTitle(),
-            'link'    => $link,
+            'link'    => $this->getLink(),
+            'asset'   => function() {
+                return $this->getAsset();
+            }
         ])->render();
     }
 
     protected function showDefault()
     {
-        return View::make($this->viewPrefix."default/asset/$this->template", [
+        return View::make($this->viewPrefix."default.asset.$this->template", [
             'placeholder' => $this->getPlaceholderText(),
         ])->render();
     }
@@ -51,9 +47,28 @@ class Asset extends BaseChunk
         ];
     }
 
+    /**
+     * Returns the associated asset.
+     *
+     * @return AssetContract
+     */
     public function getAsset()
     {
+        if ($this->asset === null) {
+            $this->asset = AssetFacade::find($this->getAssetId());
+        }
+
         return $this->asset;
+    }
+
+    /**
+     * Returns the associated asset ID.
+     *
+     * @return int
+     */
+    public function getAssetId()
+    {
+        return isset($this->attrs['asset_id']) ? $this->attrs['asset_id'] : 0;
     }
 
     public function getCaption()
@@ -75,9 +90,14 @@ class Asset extends BaseChunk
         return isset($this->attrs['title']) ? $this->attrs['title'] : '';
     }
 
+    /**
+     * Whether the chunk has content
+     *
+     * @return bool
+     */
     public function hasContent()
     {
-        return $this->asset !== null;
+        return $this->getAssetId() != 0;
     }
 
     /**
@@ -95,6 +115,6 @@ class Asset extends BaseChunk
 
     public function target()
     {
-        return $this->hasContent() ? $this->asset->getId() : 0;
+        return $this->hasContent() ? $this->getAssetId() : 0;
     }
 }
