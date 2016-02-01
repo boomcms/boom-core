@@ -39,7 +39,7 @@ class Slide
 
     public function getAssetId()
     {
-        return $this->getAsset()->getId();
+        return $this->attrs['asset_id'];
     }
 
     public function getCaption()
