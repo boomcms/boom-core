@@ -26,9 +26,9 @@ class Asset extends BaseChunk
             'caption' => $this->getCaption(),
             'title'   => $this->getTitle(),
             'link'    => $this->getLink(),
-            'asset'   => function() {
+            'asset'   => function () {
                 return $this->getAsset();
-            }
+            },
         ])->render();
     }
 
@@ -91,7 +91,7 @@ class Asset extends BaseChunk
     }
 
     /**
-     * Whether the chunk has content
+     * Whether the chunk has content.
      *
      * @return bool
      */
