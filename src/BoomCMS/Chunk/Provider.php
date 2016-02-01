@@ -201,10 +201,10 @@ class Provider
     /**
      * Save a chunk to the cache.
      *
-     * @param type       $type
-     * @param type       $slotname
-     * @param type       $version
-     * @param ChunkModel $chunk
+     * @param type            $type
+     * @param type            $slotname
+     * @param type            $version
+     * @param null|ChunkModel $chunk
      */
     public function saveToCache($type, $slotname, $version, ChunkModel $chunk = null)
     {
