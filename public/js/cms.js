@@ -42958,7 +42958,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			.done(function(asset) {
 				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
-					.attr('src', asset.getUrl('view', 300))
+					.attr('src', asset.getUrl('view', 300, 0))
 					.siblings('input')
 					.attr('data-asset', asset.getId());
 			});
@@ -42972,7 +42972,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			.find('form')
 			.show()
 			.find('img')
-			.attr('src', slide.asset.getUrl('view', 300))
+			.attr('src', slide.asset.getUrl('view', 300, 0))
 			.end()
 			.find('input[name=title]')
 			.val(slide.title)
