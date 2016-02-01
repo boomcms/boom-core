@@ -204,4 +204,24 @@ class ProviderTest extends AbstractTestCase
 
         $this->provider->saveToCache($type, $slotname, $version, $chunk);
     }
+
+    public function testSaveToCacheCanSaveNull()
+    {
+        $key = 'test';
+        $type = 'text';
+        $slotname = 'standfirst';
+        $version = new PageVersion();
+
+        $this->provider
+            ->shouldReceive('getCacheKey')
+            ->once()
+            ->andReturn($key);
+
+        $this->cache
+            ->shouldReceive('forever')
+            ->once()
+            ->with($key, null);
+
+        $this->provider->saveToCache($type, $slotname, $version, null);
+    }
 }

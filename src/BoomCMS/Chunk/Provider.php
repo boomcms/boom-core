@@ -206,7 +206,7 @@ class Provider
      * @param type       $version
      * @param ChunkModel $chunk
      */
-    public function saveToCache($type, $slotname, $version, ChunkModel $chunk)
+    public function saveToCache($type, $slotname, $version, ChunkModel $chunk = null)
     {
         $key = $this->getCacheKey($type, $slotname, $version);
 
