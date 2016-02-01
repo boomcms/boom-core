@@ -13,6 +13,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        Middleware\RouteSite::class,
         'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
         'Illuminate\Cookie\Middleware\EncryptCookies',
         'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
@@ -20,6 +21,5 @@ class Kernel extends HttpKernel
         'Illuminate\View\Middleware\ShareErrorsFromSession',
         'App\Http\Middleware\VerifyCsrfToken',
         Middleware\DefineGlobalViewSharedVariables::class,
-        Middleware\RouteSite::class,
     ];
 }
