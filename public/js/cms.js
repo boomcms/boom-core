@@ -40454,7 +40454,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.setTitle = function(title) {
-		return $.post(this.baseUrl + this.id + 'version/title', {
+		return $.post(this.baseUrl + this.id + '/version/title', {
 			title : title
 		});
 	};
