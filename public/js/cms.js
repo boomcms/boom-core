@@ -42038,6 +42038,12 @@ $.widget('boom.textEditor', {
 				if ( ! self.toolbar.is(':visible')) {
 					self.showToolbar();
 				}
+			})
+			.on('keyup', function(e) {
+				console.log(e.which, wysihtml5.ESCAPE_KEY);
+				if (e.which === wysihtml5.ESCAPE_KEY) {
+					self.cancel(self.element);
+				}	
 			});
 
 		this.enableAutoSave();
