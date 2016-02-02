@@ -41983,13 +41983,6 @@ $.widget('boom.textEditor', {
 	mode : 'block',
 
 	/**
-	@property options
-	@type object
-	*/
-	options : {
-	},
-
-	/**
 	* @function
 	@returns {Deferred}
 	*/
@@ -41998,21 +41991,22 @@ $.widget('boom.textEditor', {
 			element = this.element;
 
 		self.mode = element.is('div') ? 'block' : 'inline';
-		self.mode = (element.is(':header') ||  element.is('.standFirst') || element.is('.standfirst'))? 'text' : self.mode;
+		self.mode = (element.is(':header') || element.is('.standfirst'))? 'text' : self.mode;
 		self.original_html = element.html();
 
 		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone(true, true).appendTo('#wysihtml5-toolbar');
 
 		if (self.mode !== 'text') {
-			self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
-				toolbar : self.toolbar[0],
-				style : true,
-				parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
-				useLineBreaks : false,
-				contentEditableMode : true,
-				autoLink : false,
-				uneditableContainerClassname : 'b-asset-embed',
-				handleTables: (self.mode === 'block')
+			self.instance = new wysihtml5.Editor(element[0], {
+				toolbar: self.toolbar[0],
+				style: true,
+				parserRules:  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
+				useLineBreaks: false,
+				contentEditableMode: true,
+				autoLink: false,
+				uneditableContainerClassname: 'b-asset-embed',
+				handleTables: (self.mode === 'block'),
+				handleTabKey: false
 			});
 
 			// Ensures that default text is wrapped in a paragraph
