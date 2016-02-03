@@ -115,12 +115,7 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 
 			this.marker = null;
 
-			this.element
-				.find('.b-lat, .b-lng')
-				.css('visibility', 'hidden')
-				.end()
-				.find('#b-location-remove')
-				.hide();
+			this.element.find('#b-location-remove').hide();
 		}
 	};
 
