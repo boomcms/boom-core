@@ -53,9 +53,9 @@ class ChunkLocationTest extends AbstractTestCase
     }
 
     /**
-     * @param array $attrs
+     * @param array  $attrs
      * @param string $slotname
-     * @param bool $editable
+     * @param bool   $editable
      *
      * @return Location
      */

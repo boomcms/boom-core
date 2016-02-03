@@ -54,7 +54,7 @@ class Location extends BaseChunk
     }
 
     /**
-     * Returns the value for the address field
+     * Returns the value for the address field.
      *
      * @return string
      */
@@ -64,7 +64,7 @@ class Location extends BaseChunk
     }
 
     /**
-     * Returns the latitude portion of the location
+     * Returns the latitude portion of the location.
      *
      * @return float
      */
@@ -74,7 +74,7 @@ class Location extends BaseChunk
     }
 
     /**
-     * Returns the longitude portion of the location
+     * Returns the longitude portion of the location.
      *
      * @return float
      */
@@ -84,7 +84,7 @@ class Location extends BaseChunk
     }
 
     /**
-     * Returns a Lootils\Geo\Location object for the current lat/lng
+     * Returns a Lootils\Geo\Location object for the current lat/lng.
      *
      * @return GeoLocation
      */
@@ -98,7 +98,7 @@ class Location extends BaseChunk
     }
 
     /**
-     * Returns the value of the postcode field
+     * Returns the value of the postcode field.
      *
      * @return string
      */
@@ -108,7 +108,7 @@ class Location extends BaseChunk
     }
 
     /**
-     * Returns the value of the title field
+     * Returns the value of the title field.
      *
      * @return string
      */

@@ -30,7 +30,7 @@ return [
     'save-changes'          => 'Save changes',
     'select-asset'          => 'Select an asset',
     'set-location-postcode' => 'Set location from postcode',
-    'set-location-latlng'   => 'Set location from Lat / Long', 
+    'set-location-latlng'   => 'Set location from Lat / Long',
     'upload'                => 'Upload files',
     'view-edit'             => 'View / edit',
 ];
