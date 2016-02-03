@@ -32,5 +32,16 @@ return [
             'limit'       => 'Number of assets to show',
             'limit_about' => 'Set an (optional) limit on the number of results to be returned. Leave empty for no limit.',
         ],
+        'location' => [
+            'details'      => 'Location details',
+            'title'        => 'Title',
+            'address'      => 'Address',
+            'set-location' => 'Set location',
+            'postcode'     => 'Postcode',
+            'lat'          => 'Latitude',
+            'lng'          => 'Longitude',
+            'map'          => 'Map',
+            'map-desc'     => 'Set the location by click a point on the map.<br />Drag the pin to change the location.',
+        ],
     ],
 ];

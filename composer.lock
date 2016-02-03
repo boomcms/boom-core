@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a31f6b710d9b0f6dce17caead4f9a834",
-    "content-hash": "9f04a80d9e1c54b089d34f11d705eb6b",
+    "hash": "2444c7635115f73e3cbc9afbcd88e83b",
+    "content-hash": "f3286c4518718b66f71a4cf06581c5fa",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1277,6 +1277,51 @@
                 "storage"
             ],
             "time": "2015-12-19 20:16:43"
+        },
+        {
+            "name": "lootils/geo",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lootils/geo.git",
+                "reference": "e2d3237c3ac0addfc898dccccdf73e838a102e1c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lootils/geo/zipball/e2d3237c3ac0addfc898dccccdf73e838a102e1c",
+                "reference": "e2d3237c3ac0addfc898dccccdf73e838a102e1c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Lootils\\Geo": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Farina",
+                    "email": "matt@mattfarina.com",
+                    "homepage": "http://mattfarina.com"
+                }
+            ],
+            "description": "A simple library for dealing with Earth geo coordinate manipulations.",
+            "homepage": "https://github.com/lootils/geo",
+            "keywords": [
+                "coordinates",
+                "geo",
+                "geodetic",
+                "geolocation",
+                "math"
+            ],
+            "time": "2013-06-10 12:28:05"
         },
         {
             "name": "monolog/monolog",

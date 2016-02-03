@@ -1,7 +1,8 @@
 $.widget('ui.chunkLocation', $.ui.chunk, {
 	edit: function() {
 		var chunk = this,
-			editor = new boomChunkLocationEditor(this.options.page, this.options.name);
+			options = this.getOptions(),
+			editor = new boomChunkLocationEditor(this.options.page, this.options.name, options);
 
 		editor
 			.done(function(data) {
@@ -14,5 +15,12 @@ $.widget('ui.chunkLocation', $.ui.chunk, {
 			.always(function() {
 				chunk.bind();
 			});
+	},
+
+	getOptions: function() {
+		return {
+			address: this.element.attr('data-boom-address') === '1',
+			title: this.element.attr('data-boom-title') === '1'
+		};
 	}
 });
