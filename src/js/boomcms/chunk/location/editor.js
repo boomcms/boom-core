@@ -1,8 +1,9 @@
-function boomChunkLocationEditor(page_id, slotname) {
-	this.page_id = page_id;
+function boomChunkLocationEditor(pageId, slotname, options) {
+	this.pageId = pageId;
 	this.slotname = slotname;
 	this.deferred = new $.Deferred();
 	this.defaultLocation = [51.528837, -0.165653];
+	this.options = options;
 
 	boomChunkLocationEditor.prototype.bind = function() {
 		var locationEditor = this;
@@ -16,21 +17,23 @@ function boomChunkLocationEditor(page_id, slotname) {
 			this.setMapLocation(this.mapElement.attr('data-lat'), this.mapElement.attr('data-lng'));
 		}
 
+		this.map.on('click', function(e) {
+			locationEditor.setMapLocation(e.latlng.lat, e.latlng.lng);
+		});
+
 		this.element
 			.on('click', '#b-location-set', function(e) {
 				e.preventDefault();
 
-				locationEditor.setMapLocationFromAddress();
+				locationEditor.setMapLocationFromPostcode();
+			})
+			.on('click', '#b-location-latlng', function(e) {
+				e.preventDefault();
+
+				locationEditor.setMapLocationFromLatLng();
 			})
 			.on('click', '#b-location-remove', function() {
-				if (locationEditor.marker) {
-					locationEditor.map
-						.removeLayer(locationEditor.marker)
-						.setView(locationEditor.defaultLocation, 13);
-
-					locationEditor.marker = null;
-					locationEditor.element.find('#b-location-remove').hide();
-				}
+				locationEditor.removeLocation();
 			});
 	};
 
@@ -48,6 +51,10 @@ function boomChunkLocationEditor(page_id, slotname) {
 			lat: latLng.lat,
 			lng: latLng.lng
 		};
+	};
+
+	boomChunkLocationEditor.prototype.getDMS = function() {
+		return this.element.find('input[name=dms]').val();
 	};
 
 	boomChunkLocationEditor.prototype.getLocation = function() {
@@ -73,7 +80,7 @@ function boomChunkLocationEditor(page_id, slotname) {
 		var locationEditor = this;
 
 		this.dialog = new boomDialog({
-			url : '/boomcms/page/' + this.page_id + '/chunk/edit?slotname=' + this.slotname + '&type=location',
+			url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=location',
 			id : 'b-location-editor',
 			width: 920,
 			closeButton: false,
@@ -86,6 +93,7 @@ function boomChunkLocationEditor(page_id, slotname) {
 					.setView(locationEditor.defaultLocation, 13);
 
 				locationEditor.element = locationEditor.dialog.contents;
+				locationEditor.toggleElements(locationEditor.options);
 				locationEditor.bind();
 			}
 		})
@@ -99,33 +107,89 @@ function boomChunkLocationEditor(page_id, slotname) {
 		return this.deferred;
 	};
 
+	boomChunkLocationEditor.prototype.removeLocation = function() {
+		if (this.marker) {
+			this.map
+				.removeLayer(this.marker)
+				.setView(this.defaultLocation, 13);
+
+			this.marker = null;
+
+			this.element
+				.find('.b-lat, .b-lng')
+				.css('visibility', 'hidden')
+				.end()
+				.find('#b-location-remove')
+				.hide();
+		}
+	};
+
 	boomChunkLocationEditor.prototype.setMapLocation = function(lat, lng) {
+		var locationEditor = this,
+			marker;
+
 		L.Icon.Default.imagePath = '/vendor/boomcms/boom-core/images';
 
-		if ( ! this.marker) {
-			this.marker = L.marker([lat, lng], {
+		if (!this.marker) {
+			marker = this.marker = L.marker([lat, lng], {
 				draggable: true
-			}).addTo(this.map);
+			})
+			.addTo(this.map)
+			.on('dragend', function(e) {
+				var latlng = marker.getLatLng();
+
+				locationEditor.setMapLocation(latlng.lat, latlng.lng);
+			});
 		} else {
 			this.marker.setLatLng([lat, lng]);
 		}
 
 		this.map.setView([lat, lng], 16);
-		this.element.find('#b-location-remove').show();
+
+		this.element
+			.find('.b-lat input')
+			.val(parseFloat(lat).toFixed(6))
+			.end()
+			.find('.b-lng input')
+			.val(parseFloat(lng).toFixed(6))
+			.end()
+			.find('#b-location-remove')
+			.show();
 	};
 
-	boomChunkLocationEditor.prototype.setMapLocationFromAddress = function() {
+	boomChunkLocationEditor.prototype.setMapLocationFromLatLng = function() {
+		var lat = this.element.find('.b-lat input').val(),
+			lng = this.element.find('.b-lng input').val();
+
+		this.setMapLocation(Dms.parseDMS(lat), Dms.parseDMS(lng));
+	};
+
+	boomChunkLocationEditor.prototype.setMapLocationFromPostcode = function() {
 		var locationEditor = this,
-			address = this.getAddress(),
 			postcode = this.getPostcode(),
-			location = this.geocode(address + ', ' + postcode)
+			location = this.geocode(postcode)
 				.done(function(response) {
 					if (response.length) {
 						locationEditor.setMapLocation(response[0].lat, response[0].lon);
 					} else {
-						new boomAlert("No location was found matching the address supplied");
+						new boomAlert("No location was found matching the postcode supplied");
 					}
 				});
+	};
+
+	boomChunkLocationEditor.prototype.toggleElements = function(options) {
+		if (!options.title && !options.address) {
+			this.element.find('#b-location-details').hide();
+			return;
+		}
+
+		if (!options.title) {
+			this.element.find('.b-title').hide();
+		}
+
+		if (!options.address) {
+			this.element.find('.b-address').hide();
+		}
 	};
 
 	return this.open();

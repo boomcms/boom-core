@@ -1,5 +1,5 @@
 #b-location-editor {
-	section {
+	> * {
 		display: inline-block;
 		float: left;
 		width: 50%;
@@ -16,7 +16,16 @@
 	}
 
 	button {
-		margin-top: 2em;
+		margin-top: 1em;
+	}
+
+	#b-location-details {
+		margin-bottom: 2rem;
+	}
+
+	#b-location-set, #b-location-latlng {
+		margin-bottom: 2rem;
+		border: 1px solid @light-grey;
 	}
 
 	#b-location-map {

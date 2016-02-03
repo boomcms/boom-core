@@ -51,6 +51,7 @@ module.exports = function(grunt) {
 					'bower_components/caman/dist/caman.full.js',
 					'bower_components/jcrop/js/Jcrop.js',
 					'bower_components/pace/pace.js',
+					'node_modules/geodesy/dms.js',
 					'src/js/boomcms/plugins.js',
 					'src/js/boomcms/notification.js',
 					'src/js/boomcms/core.js',
