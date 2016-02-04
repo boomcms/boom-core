@@ -20,7 +20,8 @@
 	"require-dev": {
 		"phpunit/phpunit": "4.8.*",
 		"Mockery/Mockery": "^0.9.4",
-		"laravel/laravel": "~5.1"
+		"laravel/laravel": "~5.1",
+		"codeclimate/php-test-reporter": "dev-master"
 	},
 	"autoload": {
 		"psr-4": {"BoomCMS\\": "src/BoomCMS/"}

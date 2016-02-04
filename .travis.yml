@@ -4,6 +4,6 @@ php:
   - 5.5
   - 5.6
   - 7.0
-script: composer test
+script: phpunit --coverage-clover build/logs/clover.xml
 before_script:
   - composer install --ignore-platform-reqs

@@ -1,0 +1,30 @@
+---
+engines:
+  csslint:
+    enabled: false
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+      - php
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
+ratings:
+  paths:
+  - "**.css"
+  - "**.js"
+  - "**.php"
+exclude_paths:
+- tests/
+- public/
+- vendor/
+- src/config/
+- src/lang/
+- src/database/
