@@ -26,8 +26,11 @@ class TitleContains extends BaseFilter
             });
     }
 
+    /**
+     * @return bool
+     */
     public function shouldBeApplied()
     {
-        return $this->title == null ? false : true;
+        return !empty($this->title);
     }
 }

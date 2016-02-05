@@ -19,8 +19,11 @@ class TitleOrDescriptionContains extends BaseFilter
         return $query->where('title', 'like', "%{$this->title}%");
     }
 
+    /**
+     * @return bool
+     */
     public function shouldBeApplied()
     {
-        return $this->title == null ? false : true;
+        return !empty($this->title);
     }
 }
