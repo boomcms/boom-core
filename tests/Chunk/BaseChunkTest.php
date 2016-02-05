@@ -6,6 +6,7 @@ use BoomCMS\Chunk\BaseChunk;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\View\View;
 use Mockery as m;
 
 class BaseChunkTest extends AbstractTestCase
@@ -158,5 +159,32 @@ class BaseChunkTest extends AbstractTestCase
         $chunk = m::mock(BaseChunk::class, [new Page(), [], $slotname])->makePartial();
 
         $this->assertEquals($slotname, $chunk->getSlotname());
+    }
+
+    public function testParametersAreSetInView()
+    {
+        $params = ['key' => 'value'];
+        $view = m::mock(View::class);
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test'])
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $chunk
+            ->shouldReceive('hasContent')
+            ->once()
+            ->andReturn(true);
+
+        $chunk
+            ->shouldReceive('show')
+            ->once()
+            ->andReturn($view);
+
+        $view
+            ->shouldReceive('with')
+            ->once()
+            ->with($params);
+
+        $chunk->params($params);
+        $chunk->html();
     }
 }

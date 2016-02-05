@@ -6,6 +6,7 @@ use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Traits\Renderable;
 use Illuminate\Html\HtmlFacade as Html;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\View\View;
 
 abstract class BaseChunk
 {
@@ -216,9 +217,7 @@ abstract class BaseChunk
 
         // If the return data is a View then assign any parameters to it.
         if ($return instanceof View && !empty($this->viewParams)) {
-            foreach ($this->viewParams as $key => $value) {
-                $return->$key = $value;
-            }
+            $return->with($this->viewParams);
         }
 
         return (string) $return;
