@@ -40293,9 +40293,9 @@ function boomHistory() {
 
 		this.contents = $div.appendTo($(document).contents().find('body'));
 
-		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
 		this.options.closeButton && this.options.buttons.push(this.closeButton);
 		this.options.saveButton && this.options.buttons.push(this.saveButton);
+		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
 
 		if (this.options.url && this.options.url.length) {
 			if (this.contents.hasClass('ui-dialog-content')) {
