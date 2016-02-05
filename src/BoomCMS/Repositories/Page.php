@@ -77,14 +77,28 @@ class Page implements PageRepositoryInterface
             ->first();
     }
 
+    /**
+     * Find a page by URI.
+     *
+     * @param string $uri
+     *
+     * @return Page
+     */
     public function findByUri($uri)
     {
         $finder = new Finder\Finder();
         $finder->addFilter(new Finder\Uri($uri));
 
-        return $page = $finder->find();
+        return $finder->find();
     }
 
+    /**
+     * Save a page.
+     *
+     * @param PageModelInterface $page
+     *
+     * @return PageModelInterface
+     */
     public function save(PageModelInterface $page)
     {
         $page->save();

@@ -30,7 +30,7 @@ class CreatePagePrimaryUri extends Command implements SelfHandling
             : URLHelper::fromTitle($this->page->getSite(), $this->prefix, $this->page->getTitle());
 
         $this->page->setPrimaryUri($url);
-        $page = PageFacade::save($this->page);
+        PageFacade::save($this->page);
 
         $url = URLFacade::create($url, $this->page, true);
         Bus::dispatch(new MakeURLPrimary($url));

@@ -100,7 +100,7 @@ class Version extends Controller
         $embargoedUntil = new DateTime('@'.time());
 
         if ($time = $request->input('embargoed_until')) {
-            $timestamp = strtotime($request->input('embargoed_until'));
+            $timestamp = strtotime($time);
             $embargoedUntil->setTimestamp($timestamp);
         }
 
