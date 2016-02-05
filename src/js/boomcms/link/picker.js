@@ -170,6 +170,7 @@ function boomLinkPicker(link, options) {
 			msg : $('#b-linkpicker-container').html(),
 			id : 'b-linkpicker',
 			width : 600,
+			closeButton: this.options.external || this.options.asset,
 			onLoad : function(dialog) {
 				linkPicker.onLoad(dialog);
 			}

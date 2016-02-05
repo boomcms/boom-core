@@ -40330,6 +40330,7 @@ function boomHistory() {
 
 	boomDialog.prototype.saveButton = {
 		text: 'Save',
+		class: 'b-button-save',
 		click: function() {
 			var boomDialog = $(this).dialog('option', 'boomDialog');
 			boomDialog.close();
@@ -44370,6 +44371,7 @@ $.widget('ui.chunkPageVisibility', {
 			msg : $('#b-linkpicker-container').html(),
 			id : 'b-linkpicker',
 			width : 600,
+			closeButton: this.options.external || this.options.asset,
 			onLoad : function(dialog) {
 				linkPicker.onLoad(dialog);
 			}
