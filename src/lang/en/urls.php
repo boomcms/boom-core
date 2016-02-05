@@ -2,7 +2,6 @@
 
 return [
     'add' => [
-        'heading'     => 'Add URL',
         'pointers'    => 'Some points to remember when creating a URL',
         'lowercase'   => 'URLs should contain only lower-case letters, numbers, or hyphens eg /course-programe-news-august13',
         'nospaces'    => 'No spaces or punctuation should be used',

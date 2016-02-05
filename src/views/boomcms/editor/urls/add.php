@@ -1,5 +1,3 @@
-<h1><?= trans('boomcms::urls.add.heading') ?></h1>
-
 <h2><?= trans('boomcms::urls.add.pointers') ?></h2>
 
 <ul>
