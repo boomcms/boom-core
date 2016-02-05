@@ -203,24 +203,22 @@ abstract class BaseChunk
      */
     public function html()
     {
+        if (!$this->hasContent() && !$this->isEditable()) {
+            return '';
+        }
+
         if ($this->template === null) {
             $this->template = $this->defaultTemplate;
         }
 
-        if ($this->hasContent()) {
-            $return = $this->show();
-        } elseif ($this->isEditable()) {
-            $return = $this->showDefault();
-        } else {
-            return '';
-        }
+        $content = $this->hasContent() ? $this->show() : $this->showDefault();
 
         // If the return data is a View then assign any parameters to it.
-        if ($return instanceof View && !empty($this->viewParams)) {
-            $return->with($this->viewParams);
+        if ($content instanceof View && !empty($this->viewParams)) {
+            $content->with($this->viewParams);
         }
 
-        return (string) $return;
+        return (string) $content;
     }
 
     /**
