@@ -28,6 +28,6 @@ class PagePolicy extends BoomCMSPolicy
             return true;
         }
 
-//        return parent::check($role, $person, $page);
+        return parent::check($role, $person, $page);
     }
 }
