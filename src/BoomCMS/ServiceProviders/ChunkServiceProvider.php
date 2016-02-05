@@ -3,7 +3,6 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Chunk;
-use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\ServiceProvider;
 
 class ChunkServiceProvider extends ServiceProvider
