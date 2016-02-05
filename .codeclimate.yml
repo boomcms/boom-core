@@ -14,6 +14,7 @@ engines:
     enabled: true
   phpmd:
     enabled: true
+    rulesets: "unusedcode,codesize,naming,controversial,design,clean_code_custom.xml"
   phpcodesniffer:
     enabled: true
 ratings:
