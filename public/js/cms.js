@@ -40228,10 +40228,9 @@ function boomHistory() {
 	};
 
  	boomDialog.prototype.cancelButton = {
-		text : 'Cancel',
-		icons : { primary : 'b-button-icon-cancel b-button-icon' },
-		class : 'b-button',
-		click : function() {
+		text: 'Cancel',
+		class: 'b-button-cancel',
+		click: function() {
 			var boomDialog = $(this).dialog('option', 'boomDialog');
 			boomDialog.cancel();
 		}
@@ -40245,10 +40244,9 @@ function boomHistory() {
 	};
 
 	boomDialog.prototype.closeButton = {
-		text : 'Okay',
-		class : 'b-button',
-		icons : { primary : 'b-button-icon-accept b-button-icon' },
-		click : function() {
+		text: 'Okay',
+		class: 'b-button-close',
+		click: function() {
 			var boomDialog = $(this).dialog('option', 'boomDialog');
 			boomDialog.close();
 		}
@@ -40314,7 +40312,7 @@ function boomHistory() {
 						} else {
 							self.deferred.reject(response, xhr.status);
 						} 
-					})
+					});
 				}, 100);
 			}
 
@@ -40331,10 +40329,8 @@ function boomHistory() {
 	};
 
 	boomDialog.prototype.saveButton = {
-		text : 'Save',
-		class : 'b-button',
-		icons : { primary : 'b-button-icon-save b-button-icon' },
-		click : function() {
+		text: 'Save',
+		click: function() {
 			var boomDialog = $(this).dialog('option', 'boomDialog');
 			boomDialog.close();
 		}
