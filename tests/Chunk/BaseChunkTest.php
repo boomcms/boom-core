@@ -171,7 +171,6 @@ class BaseChunkTest extends AbstractTestCase
 
         $chunk
             ->shouldReceive('hasContent')
-            ->once()
             ->andReturn(true);
 
         $chunk
