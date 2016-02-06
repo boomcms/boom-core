@@ -19,7 +19,7 @@ class TemplateServiceProvider extends ServiceProvider
     {
         $manager = new TemplateManager($this->app['files'], $this->app['boomcms.repositories.template']);
 
-        $this->app->singleton('boomcms.template.manager', function ($app) use ($manager) {
+        $this->app->singleton('boomcms.template.manager', function () use ($manager) {
             return $manager;
         });
 
