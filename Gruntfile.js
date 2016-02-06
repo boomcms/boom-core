@@ -15,13 +15,6 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						flatten: true,
-						src: ['bower_components/fontawesome/fonts/*'],
-						dest: 'public/fonts/',
-						filter: 'isFile'
-					},
-					{
-						expand: true,
-						flatten: true,
 						src: ['bower_components/leaflet/dist/images/*'],
 						dest: 'public/images/',
 						filter: 'isFile'

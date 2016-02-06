@@ -1,18 +1,11 @@
-    <?= view('boomcms::header', ['title' => 'Assets']) ?>
+<?= view('boomcms::header', ['title' => 'Assets']) ?>
 
-    <?= $manager ?>
+<?= $manager ?>
 
-    <?= $boomJS ?>
-    <script type="text/javascript">
-        //<![CDATA[
-        (function ($) {
-            $.boom.init();
+<script type="text/javascript">
+    window.onload = function() {
+        $('body').assetManager();
+    };
+</script>
 
-            $('body')
-                .ui()
-                .assetManager();
-        })(jQuery);
-        //]]>
-    </script>
-</body>
-</html>
+<?= view('boomcms::footer') ?>

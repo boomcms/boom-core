@@ -1,27 +1,21 @@
-	<?= view('boomcms::header', ['title' => 'Pages']) ?>
-	<?= $menu() ?>
+<?= view('boomcms::header', ['title' => 'Pages']) ?>
+<?= $menu() ?>
 
-	<div id="b-topbar" class="b-toolbar">
-		<?= $menuButton() ?>
-	</div>
+<div id="b-topbar" class="b-toolbar">
+    <?= $menuButton() ?>
+</div>
 
-    <main id="b-container">
-        <div id="b-pages">
-            <h1><?= trans('boomcms::pages.heading') ?></h1>
-            <ul class='boom-tree'></ul>
-        </div>
-    </main>
+<main id="b-container">
+    <div id="b-pages">
+        <h1><?= trans('boomcms::pages.heading') ?></h1>
+        <ul class='boom-tree'></ul>
+    </div>
+</main>
 
-	<?= $boomJS ?>
-	<script type="text/javascript">
-		//<![CDATA[
-		window.onload = function () {
-			$.boom.init();
+<script type="text/javascript">
+    window.onload = function () {
+        $('#b-pages > .boom-tree').pageManager();
+    };
+</script>
 
-			$('body').ui();
-			$('#b-pages > .boom-tree').pageManager();
-		};
-		//]]>
-	</script>
-</body>
-</html>
+<?= $view('boomcms::footer') ?>
