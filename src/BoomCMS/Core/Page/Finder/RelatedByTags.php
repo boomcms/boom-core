@@ -37,9 +37,6 @@ class RelatedByTags extends Filter
             ->groupBy('pages.id');
     }
 
-    /**
-     * TODO: This should probably be in a \Boom\Page\Tags class.
-     */
     protected function getTagIds()
     {
         return DB::table('pages_tags')
