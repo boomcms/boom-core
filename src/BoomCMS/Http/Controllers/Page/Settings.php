@@ -139,7 +139,7 @@ class Settings extends PageController
         $this->authorize('edit', $page);
 
         return view("$this->viewPrefix.visibility", [
-            'page'        => $page
+            'page'        => $page,
         ]);
     }
 
