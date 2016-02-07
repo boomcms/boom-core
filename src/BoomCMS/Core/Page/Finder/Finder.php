@@ -18,7 +18,7 @@ class Finder extends BaseFinder
         $this->query = Model::currentVersion()->withUrl();
 
         if (Editor::isDisabled()) {
-            $this->query = $this->query->isVisible();
+            $this->query = $this->query->isVisibleAtTime(time());
         }
     }
 }

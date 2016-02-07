@@ -9,6 +9,7 @@ use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Support\Facades\Chunk;
+use \DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
@@ -253,6 +254,26 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
+    public function testIsVisibleWithVisibleToInFuture()
+    {
+        $values = [
+            0            => false,
+            null         => false,
+            1            => true,
+            time()       => true,
+            time() + 100 => false,
+        ];
+
+        foreach ($values as $visibleFrom => $isVisible) {
+            $page = new Page([
+                Page::ATTR_VISIBLE_FROM => $visibleFrom,
+                Page::ATTR_VISIBLE_TO   => time() + 100,
+            ]);
+
+            $this->assertEquals($isVisible, $page->isVisible(), $visibleFrom);
+        }
+    }
+
     public function testGetSite()
     {
         $site = new Site();
@@ -270,6 +291,27 @@ class PageTest extends AbstractModelTestCase
             ->andReturn($site);
 
         $this->assertEquals($site, $page->getSite());
+    }
+
+    public function testGetVisibleFromReturnsNullWhenPageIsNotVisible()
+    {
+        $values = [null, 0];
+
+        foreach ($values as $value) {
+            $page = new Page([Page::ATTR_VISIBLE_FROM => $value]);
+
+            $this->assertNull($page->getVisibleFrom());
+        }
+    }
+
+    public function testGetVisibleFromReturnsDateTimeWhenPageIsVisible()
+    {
+        $time = new DateTime('@'.time());
+        $page = new Page([Page::ATTR_VISIBLE_FROM => $time->getTimestamp()]);
+        $visibleFrom = $page->getVisibleFrom();
+
+        $this->assertTrue($visibleFrom instanceof DateTime);
+        $this->assertEquals($time->getTimestamp(), $visibleFrom->getTimestamp());
     }
 
     public function testSetAddPageBehaviour()
@@ -364,23 +406,6 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals($site->getId(), $page->{Page::ATTR_SITE});
     }
 
-    public function testSetVisibleAtAnyTime()
-    {
-        $values = [
-            1     => true,
-            true  => true,
-            0     => false,
-            false => false,
-        ];
-
-        foreach ($values as $value => $expected) {
-            $page = new Page();
-            $page->setVisibleAtAnyTime($value);
-
-            $this->assertEquals($expected, $page->isVisibleAtAnyTime());
-        }
-    }
-
     public function testHasChildrenReturnsFalseIfChildCountIs0()
     {
         $page = m::mock(Page::class)->makePartial();
@@ -412,22 +437,6 @@ class PageTest extends AbstractModelTestCase
 
         $this->assertTrue($parent->isParentOf($child), 'Child');
         $this->assertFalse($parent->isParentOf($notAChild), 'Not child');
-    }
-
-    public function testIsVisibleAtAnyTime()
-    {
-        $yes = [1, true];
-        $no = [0, false, null];
-
-        foreach ($yes as $y) {
-            $page = new Page([Page::ATTR_VISIBLE => $y]);
-            $this->assertTrue($page->isVisibleAtAnyTime(), $y);
-        }
-
-        foreach ($no as $n) {
-            $page = new Page([Page::ATTR_VISIBLE => $n]);
-            $this->assertFalse($page->isVisibleAtAnyTime(), $n);
-        }
     }
 
     public function testSetSequence()

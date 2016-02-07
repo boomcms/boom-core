@@ -28,7 +28,7 @@ $.widget('boom.pageSettingsVisibility', {
 		this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');
 		this.toggleVisibleTo(this.elements.visibleToToggle.is(':checked'));
 	},
-	
+
 	_create: function() {
 		this.findElements();
 		this.bind();
@@ -57,10 +57,14 @@ $.widget('boom.pageSettingsVisibility', {
 		var visibilityEditor = this;
 
 		if (this.changed) {
-			$.post(this.baseUrl.replace('{page}', this.options.page.id), this.element.find('form').serialize())
+			var data = this.element.find('#b-page-visible option:selected').val() === '1' ?
+				this.element.find('form').serialize() :
+				{'visible_from': 0};
+
+			$.post(this.baseUrl.replace('{page}', this.options.page.id), data)
 				.done(function(response) {
 					new boomNotification('Page visibility saved');
-			
+
 					visibilityEditor._trigger('done', null, response);
 				});
 		}

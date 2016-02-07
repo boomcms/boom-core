@@ -198,12 +198,12 @@ interface Page
     public function getUrls();
 
     /**
-     * @return DateTime
+     * @return null|DateTime
      */
     public function getVisibleFrom();
 
     /**
-     * @return DateTime
+     * @return null|DateTime
      */
     public function getVisibleTo();
 
@@ -244,11 +244,6 @@ interface Page
      * @return bool
      */
     public function isVisible();
-
-    /**
-     * @return bool
-     */
-    public function isVisibleAtAnyTime();
 
     /**
      * @param DateTime
@@ -459,13 +454,6 @@ interface Page
      * @return $this
      */
     public function setTitle($title);
-
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setVisibleAtAnyTime($visible);
 
     /**
      * @param DateTime $time

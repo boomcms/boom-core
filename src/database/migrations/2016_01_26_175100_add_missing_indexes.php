@@ -19,10 +19,6 @@ class AddMissingIndexes extends Migration
         Schema::table('search_texts', function (Blueprint $table) {
             $table->index(['page_id', 'embargoed_until']);
         });
-
-        Schema::table('pages', function (Blueprint $table) {
-            $table->index(['deleted_at', 'parent_id', 'visible']);
-        });
     }
 
     /**
@@ -38,10 +34,6 @@ class AddMissingIndexes extends Migration
 
         Schema::table('search_texts', function (Blueprint $table) {
             $table->dropIndex('search_texts_page_id_embargoed_until_index');
-        });
-
-        Schema::table('pages', function (Blueprint $table) {
-            $table->dropIndex('pages_deleted_at_parent_id_visible_index');
         });
     }
 }

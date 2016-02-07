@@ -27,7 +27,6 @@ class Page extends Model implements PageInterface
 
     const ATTR_ID = 'id';
     const ATTR_SEQUENCE = 'sequence';
-    const ATTR_VISIBLE = 'visible';
     const ATTR_VISIBLE_FROM = 'visible_from';
     const ATTR_VISIBLE_TO = 'visible_to';
     const ATTR_INTERNAL_NAME = 'internal_name';
@@ -437,13 +436,15 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @return DateTime
+     * @return null|DateTime
      */
     public function getVisibleFrom()
     {
-        $timestamp = $this->{self::ATTR_VISIBLE_FROM} ?: time();
+        if ($this->{self::ATTR_VISIBLE_FROM} < 1) {
+            return;
+        }
 
-        return new DateTime('@'.$timestamp);
+        return new DateTime('@'.$this->{self::ATTR_VISIBLE_FROM});
     }
 
     /**
@@ -494,11 +495,6 @@ class Page extends Model implements PageInterface
         return $this->isVisibleAtTime(new DateTime('now'));
     }
 
-    public function isVisibleAtAnyTime()
-    {
-        return $this->attributes[self::ATTR_VISIBLE] == true;
-    }
-
     /**
      * @param DateTime $time
      *
@@ -506,8 +502,8 @@ class Page extends Model implements PageInterface
      */
     public function isVisibleAtTime(DateTime $time)
     {
-        return $this->isVisibleAtAnyTime() &&
-            $this->getVisibleFrom()->getTimestamp() <= $time->getTimestamp() &&
+        return $this->{self::ATTR_VISIBLE_FROM} > 0 &&
+            $this->{self::ATTR_VISIBLE_FROM} <= $time->getTimestamp() &&
             ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $time->getTimestamp());
     }
 
@@ -810,18 +806,6 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setVisibleAtAnyTime($visible)
-    {
-        $this->attributes[self::ATTR_VISIBLE] = $visible;
-
-        return $this;
-    }
-
-    /**
      * @param DateTime $time
      *
      * @return $this
@@ -946,16 +930,10 @@ class Page extends Model implements PageInterface
             });
     }
 
-    public function scopeIsVisible($query)
-    {
-        return $this->scopeIsVisibleAtTime($query, time());
-    }
-
     public function scopeIsVisibleAtTime($query, $time)
     {
         return $query
-            ->where('visible', '=', true)
-            ->where('visible_from', '<=', $time)
+            ->where('visible_from', 'between', [1, $time])
             ->where(function ($query) use ($time) {
                 $query
                     ->where('visible_to', '>=', $time)

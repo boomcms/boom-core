@@ -139,7 +139,7 @@ class Settings extends PageController
         $this->authorize('edit', $page);
 
         return view("$this->viewPrefix.visibility", [
-            'page' => $page,
+            'page'        => $page
         ]);
     }
 
@@ -288,18 +288,14 @@ class Settings extends PageController
 
         $wasVisible = $page->isVisible();
 
-        $page->setVisibleAtAnyTime($request->has('visible'));
+        $visibleFrom = new DateTime('@'.$this->request->input('visible_from'));
+        $visibleTo = ($request->has('toggle_visible_to')) ?
+            new DateTime('@'.$request->input('visible_to'))
+            : null;
 
-        if ($page->isVisibleAtAnyTime()) {
-            $visibleFrom = new DateTime($this->request->input('visible_from'));
-            $visibleTo = ($request->has('toggle_visible_to')) ?
-                new DateTime($request->input('visible_to'))
-                : null;
-
-            $page
-                ->setVisibleFrom($visibleFrom)
-                ->setVisibleTo($visibleTo);
-        }
+        $page
+            ->setVisibleFrom($visibleFrom)
+            ->setVisibleTo($visibleTo);
 
         PageFacade::save($page);
 
