@@ -9,7 +9,7 @@ use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Support\Facades\Chunk;
-use \DateTime;
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
