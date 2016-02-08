@@ -127,6 +127,25 @@ abstract class Helpers
     }
 
     /**
+     * Reutrn the meta description for a page.
+     * 
+     * If no page is given then the active page is used.
+     *
+     * The page description property will be used, if that isn't set then the page standfirst is used.
+     *
+     * @param null|Page $page
+     *
+     * @return string
+     */
+    public static function description(PageInterface $page = null) {
+        $page = $page ?: Router::getActivePage();
+        $description = $page->getDescription() ?:
+            ChunkFacade::get('text', 'standfirst', $page)->text();
+
+        return strip_tags($description);
+    }
+
+    /**
      * Returns an array of Pages which match the given query parameters.
      *
      * @param array $params

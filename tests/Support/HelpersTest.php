@@ -2,8 +2,10 @@
 
 namespace BoomCMS\Tests\Support;
 
+use BoomCMS\Chunk\Text;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Template;
+use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\Settings;
 use BoomCMS\Support\Helpers;
@@ -27,6 +29,36 @@ class HelpersTest extends AbstractTestCase
         Settings::shouldReceive('get')->with('analytics')->andReturn('test');
 
         $this->assertEquals('', Helpers::analytics());
+    }
+
+    public function testDescriptionUsesActivePageIfNoneGiven()
+    {
+        $description = 'test';
+        $page = new Page([Page::ATTR_DESCRIPTION => $description]);
+
+        Router::shouldReceive('getActivePage')->once()->andReturn($page);
+
+        $this->assertEquals($description, Helpers::description());
+    }
+
+    public function testDescriptionReturnsPageDescriptionProperty()
+    {
+        $description = 'test';
+        $page = new Page([Page::ATTR_DESCRIPTION => $description]);
+
+        $this->assertEquals($description, Helpers::description($page));
+    }
+
+    public function testDescriptionUsesPageStandfirstAsFallback()
+    {
+        $page = new Page();
+
+        Chunk::shouldReceive('get')
+            ->once()
+            ->with('text', 'standfirst', $page)
+            ->andReturn(new Text($page, ['text' => 'test standfirst', 'site_text' => 'test standfirst'], 'standfirst', false));
+
+        $this->assertEquals('test standfirst', Helpers::description($page));
     }
 
     public function testViewWithNamespaceGiven()

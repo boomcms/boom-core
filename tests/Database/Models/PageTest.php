@@ -2,13 +2,11 @@
 
 namespace BoomCMS\Tests\Database\Models;
 
-use BoomCMS\Chunk\Text;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
-use BoomCMS\Support\Facades\Chunk;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
@@ -221,16 +219,10 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals('test', $page->getDescription());
     }
 
-    public function testGetDescriptionUsesPageStandfirstAsFallback()
+    public function testGetDescriptionReturnsStringIfEmpty()
     {
         $page = new Page();
-
-        Chunk::shouldReceive('get')
-            ->once()
-            ->with('text', 'standfirst', $page)
-            ->andReturn(new Text($page, ['text' => 'test standfirst', 'site_text' => 'test standfirst'], 'standfirst', false));
-
-        $this->assertEquals('test standfirst', $page->getDescription());
+        $this->assertEquals('', $page->getDescription());
     }
 
     public function testGetDescriptionRemovesHtml()

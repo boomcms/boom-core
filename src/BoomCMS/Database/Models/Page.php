@@ -8,7 +8,6 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
-use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Traits\Comparable;
@@ -73,6 +72,7 @@ class Page extends Model implements PageInterface
         self::ATTR_ADD_BEHAVIOUR       => 'integer',
         self::ATTR_CHILD_ADD_BEHAVIOUR => 'integer',
         self::ATTR_CHILD_TEMPLATE      => 'integer',
+        self::ATTR_DESCRIPTION         => 'string',
         self::ATTR_GRANDCHILD_TEMPLATE => 'integer',
     ];
 
@@ -295,18 +295,13 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Get a description for the page.
-     *
-     * If no description property is set then the standfirst is used instead.
+     * Get the description property for the page.
      *
      * @return string
      */
     public function getDescription()
     {
-        $description = $this->{self::ATTR_DESCRIPTION};
-        $description = ($description != null) ? $description : Chunk::get('text', 'standfirst', $this)->text();
-
-        return strip_tags($description);
+        return $this->{self::ATTR_DESCRIPTION};
     }
 
     public function getDefaultChildTemplateId()
@@ -944,6 +939,14 @@ class Page extends Model implements PageInterface
     public function scopeWithUrl($query)
     {
         return $query->whereNotNull('primary_uri');
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes[self::ATTR_DESCRIPTION] = strip_tags($value);
     }
 
     public function setInternalNameAttribute($value)

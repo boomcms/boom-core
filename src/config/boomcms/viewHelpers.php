@@ -23,6 +23,9 @@ return [
         'countPages' => function (array $params) {
             return Helpers::countPages($params);
         },
+        'description' => function($page = null) {
+            return Helpers::description($page);
+        },
         'getAssets' => function (array $params) {
             return Helpers::getAssets($params);
         },
