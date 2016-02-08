@@ -164,7 +164,7 @@ $.widget('boom.textEditor', {
 	@param {Object} element The element being edited.
 	*/
 	apply : function(element) {
-		var html = element.html();
+		var html = this.model === 'text' ? element.html() : this.instance.getValue();
 
 		$.boom.page.toolbar.minimise();
 		this.hideToolbar();
