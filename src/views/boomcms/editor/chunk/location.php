@@ -46,6 +46,8 @@
     <div id="b-location-map" data-lat="<?= $chunk->getLat() ?>" data-lng="<?= $chunk->getLng() ?>">
 
     </div>
-
-    <?= $button('trash-o', 'remove-location', ['id' => 'b-location-remove', 'class' => 'b-button-withtext']) ?>
 </section>
+
+<div class="buttons">
+    <?= $button('trash-o', 'remove-location', ['id' => 'b-location-remove', 'class' => 'b-button-withtext']) ?>
+</div>
