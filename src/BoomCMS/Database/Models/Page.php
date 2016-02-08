@@ -196,19 +196,6 @@ class Page extends Model implements PageInterface
         return $this->hasOne(Person::class, Person::ATTR_ID, self::ATTR_CREATED_BY);
     }
 
-    public function deleteDrafts()
-    {
-        DB::table('page_versions')
-            ->where('page_id', '=', $this->getId())
-            ->where(function ($query) {
-                $query
-                    ->whereNull('embargoed_until')
-                    ->orWhere('embargoed_until', '>', time());
-            })
-            ->where('edited_time', '>', $this->getLastPublishedTime()->getTimestamp())
-            ->delete();
-    }
-
     /**
      * @return int
      */

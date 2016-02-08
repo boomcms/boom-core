@@ -55,11 +55,6 @@ interface Page
     public function countChildren();
 
     /**
-     * @return $this
-     */
-    public function deleteDrafts();
-
-    /**
      * @return int
      */
     public function getAddPageBehaviour();

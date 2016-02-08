@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
+use BoomCMS\Support\Facades\PageVersion;
 use Illuminate\Support\Facades\Event;
 
 class PageController extends Controller
@@ -31,6 +32,7 @@ class PageController extends Controller
     public function postDiscard(Page $page)
     {
         $this->authorize('edit', $page);
-        $page->deleteDrafts();
+
+        PageVersion::deleteDrafts($page);
     }
 }

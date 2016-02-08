@@ -30,6 +30,10 @@ class RepositoryServiceProvider extends ServiceProvider
             return new Repositories\Page(new Models\Page());
         });
 
+        $this->app->singleton(Repositories\PageVersion::class, function () {
+            return new Repositories\PageVersion(new Models\PageVersion());
+        });
+
         $this->app->singleton('boomcms.repositories.person', function () {
             return new Repositories\Person(new Models\Person());
         });
