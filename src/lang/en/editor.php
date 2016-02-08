@@ -41,7 +41,7 @@ return [
             'lat'          => 'Latitude',
             'lng'          => 'Longitude',
             'map'          => 'Map',
-            'map-desc'     => 'Set the location by click a point on the map.<br />Drag the pin to change the location.',
+            'map-desc'     => 'Set the location by click a point on the map.<br />Drag the marker to change the location.',
         ],
     ],
 ];
