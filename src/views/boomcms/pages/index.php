@@ -18,4 +18,4 @@
     };
 </script>
 
-<?= $view('boomcms::footer') ?>
+<?= view('boomcms::footer') ?>
