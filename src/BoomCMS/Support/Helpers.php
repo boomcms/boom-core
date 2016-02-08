@@ -137,7 +137,8 @@ abstract class Helpers
      *
      * @return string
      */
-    public static function description(PageInterface $page = null) {
+    public static function description(PageInterface $page = null)
+    {
         $page = $page ?: Router::getActivePage();
         $description = $page->getDescription() ?:
             ChunkFacade::get('text', 'standfirst', $page)->text();
