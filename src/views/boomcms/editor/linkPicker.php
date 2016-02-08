@@ -54,5 +54,7 @@
 		</div>
 	</div>
 
-    <?= $button('trash-o', 'remove-link', ['id' => 'b-linkpicker-remove', 'class' => 'b-button-withtext']) ?>
+    <div class="buttons">
+        <?= $button('trash-o', 'remove-link', ['id' => 'b-linkpicker-remove', 'class' => 'b-button-withtext']) ?>
+    </div>
 </div>

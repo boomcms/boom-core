@@ -137,10 +137,7 @@ function boomLinkPicker(link, options) {
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
-		this.removeButton = dialog.contents
-			.find('#b-linkpicker-remove')
-			.appendTo(dialog.contents.parent().find('.ui-dialog-buttonset'))
-			.css('float', 'left');
+		this.removeButton = dialog.contents.find('#b-linkpicker-remove');
 
 		if (!this.options.remove) {
 			this.removeButton.hide();
