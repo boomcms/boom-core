@@ -42390,7 +42390,7 @@ $.widget('boom.textEditor', {
 	@param {Object} element The element being edited.
 	*/
 	apply : function(element) {
-		var html = element.html();
+		var html = this.model === 'text' ? element.html() : this.instance.getValue();
 
 		$.boom.page.toolbar.minimise();
 		this.hideToolbar();
@@ -44342,10 +44342,7 @@ $.widget('ui.chunkPageVisibility', {
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
-		this.removeButton = dialog.contents
-			.find('#b-linkpicker-remove')
-			.appendTo(dialog.contents.parent().find('.ui-dialog-buttonset'))
-			.css('float', 'left');
+		this.removeButton = dialog.contents.find('#b-linkpicker-remove');
 
 		if (!this.options.remove) {
 			this.removeButton.hide();
@@ -66952,44 +66949,15 @@ if (!console) {
 		this.addActionButtons(this.element.find('li'), {});
 	},
 
-	deletePage : function($el) {
-		var page = new boomPage($el.data('page-id')),
-			$settings = $('<div></div>');
-
-		$settings
-			.addClass('b-settings-container')
-			.appendTo($('#b-pages'))
-			.load('/boomcms/page/settings/index/' + page.id, function() {
-				$settings
-					.addClass('open')
-					.pageSettings({
-						page: page,
-						deleteSave: function() {
-							$el.remove();
-							$settings.remove();
-						}
-					})
-					.pageSettings('show', 'delete');
-			});
+	deletePage: function($el) {
+		this.showPageSettings($el, 'delete');
 	},
 
-	editSettings : function($el) {
-		var page = new boomPage($el.data('page-id')),
-			$el = $('<div></div>');
-
-		$el
-			.addClass('b-settings-container')
-			.appendTo($('#b-pages'))
-			.load('/boomcms/page/settings/index/' + page.id, function() {
-				$el
-					.addClass('open')
-					.pageSettings({
-						page: page
-					});
-			});
+	editSettings: function($el) {
+		this.showPageSettings($el);
 	},
 
-	_init : function() {
+	_init: function() {
 		var pageManager = this;
 
 		this.element
@@ -67007,6 +66975,30 @@ if (!console) {
 				e.preventDefault();
 
 				pageManager.editSettings($(this).closest('li'));
+			});
+	},
+
+	showPageSettings: function($el, section) {
+		var page = new boomPage($el.data('page-id')),
+			$settings = $('<div></div>');
+
+		$settings
+			.addClass('b-settings-container')
+			.appendTo($('#b-pages'))
+			.load('/boomcms/page/' + page.id + '/settings/index', function() {
+				$settings
+					.addClass('open')
+					.pageSettings({
+						page: page,
+						deleteSave: function() {
+							$el.remove();
+							$settings.remove();
+						}
+					});
+
+				if (section) {
+					$settings.pageSettings('show', 'delete');
+				}
 			});
 	}
 });
