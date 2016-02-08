@@ -34,10 +34,9 @@
 
 			new boomLinkPicker(link, {remove: link.getUrl() != ''})
 				.done(function(link) {
-					var url = link.getUrl(),
-						page_id = link.getPageId();
+					var url = link.getUrl();
 
-					if ( ! url) {
+					if (!url) {
 						return self.removeLink(composer);
 					}
 
@@ -48,14 +47,7 @@
 							.text($(existing_link).text().replace(existing_link.href, url));
 					} else {
 						composer.selection.setBookmark(bm);
-
-						if (page_id) {
-							composer.commands.exec("createLink", { href: url, rel: page_id, title: '', text: link.title});
-						} else {
-							var text = url.replace('mailto:', '').replace('tel:', '');
-
-							composer.commands.exec("createLink", { href: url, title: '', text: text});
-						}
+						composer.commands.exec("createLink", {href: url});
 					}
 				})
 				.always(function() {
