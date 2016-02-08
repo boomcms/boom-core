@@ -36,44 +36,15 @@ $.widget( 'boom.pageManager', {
 		this.addActionButtons(this.element.find('li'), {});
 	},
 
-	deletePage : function($el) {
-		var page = new boomPage($el.data('page-id')),
-			$settings = $('<div></div>');
-
-		$settings
-			.addClass('b-settings-container')
-			.appendTo($('#b-pages'))
-			.load('/boomcms/page/settings/index/' + page.id, function() {
-				$settings
-					.addClass('open')
-					.pageSettings({
-						page: page,
-						deleteSave: function() {
-							$el.remove();
-							$settings.remove();
-						}
-					})
-					.pageSettings('show', 'delete');
-			});
+	deletePage: function($el) {
+		this.showPageSettings($el, 'delete');
 	},
 
-	editSettings : function($el) {
-		var page = new boomPage($el.data('page-id')),
-			$el = $('<div></div>');
-
-		$el
-			.addClass('b-settings-container')
-			.appendTo($('#b-pages'))
-			.load('/boomcms/page/settings/index/' + page.id, function() {
-				$el
-					.addClass('open')
-					.pageSettings({
-						page: page
-					});
-			});
+	editSettings: function($el) {
+		this.showPageSettings($el);
 	},
 
-	_init : function() {
+	_init: function() {
 		var pageManager = this;
 
 		this.element
@@ -91,6 +62,30 @@ $.widget( 'boom.pageManager', {
 				e.preventDefault();
 
 				pageManager.editSettings($(this).closest('li'));
+			});
+	},
+
+	showPageSettings: function($el, section) {
+		var page = new boomPage($el.data('page-id')),
+			$settings = $('<div></div>');
+
+		$settings
+			.addClass('b-settings-container')
+			.appendTo($('#b-pages'))
+			.load('/boomcms/page/' + page.id + '/settings/index', function() {
+				$settings
+					.addClass('open')
+					.pageSettings({
+						page: page,
+						deleteSave: function() {
+							$el.remove();
+							$settings.remove();
+						}
+					});
+
+				if (section) {
+					$settings.pageSettings('show', 'delete');
+				}
 			});
 	}
 });
