@@ -20,7 +20,7 @@ class PageVersion implements PageVersionRepositoryInterface
     }
 
     /**
-     * Delete the draft versions for a page
+     * Delete the draft versions for a page.
      *
      * @param PageModelInterface $page
      *

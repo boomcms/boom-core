@@ -62,7 +62,7 @@ class PageVersionTest extends AbstractTestCase
 
         $this->model->shouldReceive('where')
             ->once()
-            ->andReturnUsing(function($callback) use($query) {
+            ->andReturnUsing(function ($callback) use ($query) {
                 $callback($query);
 
                 return $this->model;
