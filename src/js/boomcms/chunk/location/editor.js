@@ -4,6 +4,7 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 	this.deferred = new $.Deferred();
 	this.defaultLocation = [51.528837, -0.165653];
 	this.options = options;
+	this.title = 'Edit location';
 
 	boomChunkLocationEditor.prototype.bind = function() {
 		var locationEditor = this;
@@ -85,7 +86,7 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 			width: 920,
 			closeButton: false,
 			saveButton: true,
-			title: 'Location Chunk Editor',
+			title: this.title,
 			open : function() {
 				locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');
 
