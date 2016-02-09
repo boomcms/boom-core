@@ -42,7 +42,8 @@ $.widget('ui.chunk',
 						self.edit();
 					break;
 				}
-			});
+			})
+			.attr('tabindex', 0);
 	},
 
 	_create : function() {
