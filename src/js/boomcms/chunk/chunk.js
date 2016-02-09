@@ -26,21 +26,12 @@ $.widget('ui.chunk',
 		this.element
 			.addClass('b-editable')
 			.unbind('click')
-			.on('click', function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-
-				self.unbind();
-
-				self.edit();
-
-				return false;
+			.on('click', function(e) {
+				self.triggerEdit(e);
 			})
-			.on('keydown', function(event) {
-				switch(event.which) {
-					case 13:
-						self.edit();
-					break;
+			.on('keydown', function(e) {
+				if (e.which === 13) {
+					self.triggerEdit(e);
 				}
 			})
 			.attr('tabindex', 0);
@@ -104,9 +95,18 @@ $.widget('ui.chunk',
 			});
 	},
 
+	triggerEdit: function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		this.unbind();
+		this.edit();
+	},
+
 	unbind : function() {
 		this.element
 			.unbind('click')
+			.unbind('keydown')
 			.removeClass('b-editable');
 	}
 });
