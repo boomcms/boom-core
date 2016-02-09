@@ -40214,8 +40214,8 @@ function boomHistory() {
 		autoOpen: true,
 		modal: true,
 		resizable: false,
-		draggable: true,
-		closeOnEscape: true,
+		draggable: false,
+		closeOnEscape: false,
 		buttons : [],
 		dialogClass : 'b-dialog',
 		boomDialog: this
@@ -40239,8 +40239,14 @@ function boomHistory() {
 	boomDialog.prototype.cancel = function() {
 		this.deferred.rejectWith(this.dialog);
 
-		this.contents.remove();
-		this.contents = null;
+		this.cleanup();
+	};
+
+	boomDialog.prototype.cleanup = function() {
+		if (this.contents) {
+			this.contents.remove();
+			this.contents = null;
+		}
 	};
 
 	boomDialog.prototype.closeButton = {
@@ -40255,8 +40261,7 @@ function boomHistory() {
 	boomDialog.prototype.close = function() {
 		this.deferred.resolveWith(this.dialog);
 		
-		this.contents.remove();
-		this.contents = null;
+		this.cleanup();
 	};
 
 	boomDialog.prototype.done = function(callback) {
@@ -40274,13 +40279,19 @@ function boomHistory() {
 	boomDialog.prototype.init = function() {
 		var boomDialog = this;
 
-		$(top.window)
-			.trigger('boom:dialog:open');
+		$(top.window).trigger('boom:dialog:open');
 
 		this
 			.contents
 			.dialog(this.options)
 			.ui();
+
+		$(document).on('keydown', function(e) {
+			if (e.which === $.ui.keyCode.ESCAPE) {
+				boomDialog.cancel();
+				e.stopPropagation();
+			}
+		});
 	};
 
 	boomDialog.prototype.open = function() {
