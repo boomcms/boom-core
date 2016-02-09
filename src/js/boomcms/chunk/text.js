@@ -69,9 +69,5 @@ $.widget('ui.chunkText', $.ui.chunk,
 		this.originalContent = this.element.html();
 	},
 
-	unbind : function() {
-		this.element.unbind('click');
-	},
-
 	_update_html : function() {}
 });

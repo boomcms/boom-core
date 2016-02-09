@@ -99,11 +99,11 @@ $.widget('ui.chunk',
 		e.preventDefault();
 		e.stopPropagation();
 
-		this.unbind();
 		this.edit();
+		this.unbind();
 	},
 
-	unbind : function() {
+	unbind: function() {
 		this.element
 			.unbind('click')
 			.unbind('keydown')
