@@ -71,8 +71,7 @@ $.widget('boom.textEditor', {
 				}
 			})
 			.on('keyup', function(e) {
-				console.log(e.which, wysihtml5.ESCAPE_KEY);
-				if (e.which === wysihtml5.ESCAPE_KEY) {
+ 				if (e.which === wysihtml5.ESCAPE_KEY) {
 					self.cancel(self.element);
 				}	
 			});
