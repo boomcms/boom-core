@@ -29,10 +29,18 @@
 
 		button {
 			border: 0;
+			padding: 1rem 2rem;
+			margin: 0;
+
+			+ button {
+				margin-left: 1rem;
+			}
+		}
+
+		.b-button-close, .b-button-save {
 			border-radius: 5px;
 			background: @dark-green;
 			color: @white;
-			padding: 1rem 2rem;
 			transition: all 0.5s;
 
 			&:hover, &:focus {
@@ -40,18 +48,14 @@
 				color: @black;
 				transition: all 0.5s;
 			}
+		}
 
-			+ button {
-				margin-left: 1rem;
-			}
+		.b-button-cancel {
+			background: none;
+			color: @black;
 
-			&.b-button-cancel {
-				background: none;
-				color: @black;
-
-				&:hover, &:focus {
-					text-decoration: underline;
-				}
+			&:hover, &:focus {
+				text-decoration: underline;
 			}
 		}
 	}
