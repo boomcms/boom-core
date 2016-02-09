@@ -38,6 +38,8 @@ $.widget('ui.chunkText', $.ui.chunk,
 					self._save();
 					self.setOriginalContent();
 				}
+
+				$.ui.chunk.prototype.bind.call(self);
 			}
 		});
 	},
