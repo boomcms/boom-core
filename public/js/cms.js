@@ -42308,8 +42308,7 @@ $.widget('boom.textEditor', {
 				}
 			})
 			.on('keyup', function(e) {
-				console.log(e.which, wysihtml5.ESCAPE_KEY);
-				if (e.which === wysihtml5.ESCAPE_KEY) {
+ 				if (e.which === wysihtml5.ESCAPE_KEY) {
 					self.cancel(self.element);
 				}	
 			});
@@ -42606,11 +42605,11 @@ $.widget('ui.chunk',
 		e.preventDefault();
 		e.stopPropagation();
 
-		this.unbind();
 		this.edit();
+		this.unbind();
 	},
 
-	unbind : function() {
+	unbind: function() {
 		this.element
 			.unbind('click')
 			.unbind('keydown')
@@ -42685,10 +42684,6 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	setOriginalContent: function() {
 		this.originalContent = this.element.html();
-	},
-
-	unbind : function() {
-		this.element.unbind('click');
 	},
 
 	_update_html : function() {}
