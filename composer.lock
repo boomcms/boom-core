@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e335317e855ba38997de2c34d56eaacf",
-    "content-hash": "93170f8cbffa2fe6c6032d73f82d8949",
+    "hash": "a48e2fbf65f1b98270ca47f935f90a31",
+    "content-hash": "5fb4c03d4378307e8e6380deb9337b6c",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1595,16 +1595,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "1.1.6",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0"
+                "reference": "b0e69d10852716b2ccbdff69c75c477637220790"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/e6f80ab77885151908d0ec743689ca700886e8b0",
-                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/b0e69d10852716b2ccbdff69c75c477637220790",
+                "reference": "b0e69d10852716b2ccbdff69c75c477637220790",
                 "shasum": ""
             },
             "require": {
@@ -1639,7 +1639,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-01-29 16:19:52"
+            "time": "2016-02-06 03:52:05"
         },
         {
             "name": "psr/http-message",
@@ -2722,7 +2722,7 @@
         },
         {
             "name": "thujohn/rss",
-            "version": "dev-master",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thujohn/rss-l4.git",
@@ -4288,7 +4288,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "thujohn/rss": 20,
         "codeclimate/php-test-reporter": 20
     },
     "prefer-stable": true,

@@ -8,7 +8,7 @@
 		"mpratt/embera": "~1.0",
 		"genphrase/genphrase" : "1.0.*",
 		"hautelook/phpass": "0.3.4",
-		"thujohn/rss": "dev-master",
+		"thujohn/rss": "~1.0",
 		"intervention/imagecache" : "2.*",
 		"laravel/framework": "5.1.*",
 		"symfony/http-kernel": "2.*",
