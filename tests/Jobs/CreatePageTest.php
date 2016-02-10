@@ -75,7 +75,7 @@ class CreatePageTest extends AbstractTestCase
 
         PageFacade::shouldReceive('create')
             ->once()
-            ->with(m::on(function(array $attrs) {
+            ->with(m::on(function (array $attrs) {
                 return !isset($attrs['visible_from']);
             }))
             ->andReturn($newPage);
