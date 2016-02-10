@@ -42,7 +42,6 @@ class CreatePage extends Command implements SelfHandling
     public function handle()
     {
         $attrs = [
-            'visible_from' => time(),
             'created_by'   => $this->createdBy->getId(),
             'site_id'      => $this->site->getId(),
         ];

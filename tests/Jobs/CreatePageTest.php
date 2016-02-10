@@ -57,4 +57,30 @@ class CreatePageTest extends AbstractTestCase
         $job = new CreatePage(new Person(), $site, $parent);
         $job->handle();
     }
+
+    public function testNewPageShouldNotHaveVisibleFromSetToBeInvisible()
+    {
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+
+        $parent = new Page([
+            Page::ATTR_CHILDREN_VISIBLE_IN_NAV     => true,
+            Page::ATTR_CHILDREN_VISIBLE_IN_NAV_CMS => true,
+            Page::ATTR_CHILD_TEMPLATE              => 1,
+        ]);
+        $parent->{Page::ATTR_ID} = 1;
+
+        $newPage = m::mock(Page::class.'[addVersion]');
+        $newPage->shouldReceive('addVersion');
+
+        PageFacade::shouldReceive('create')
+            ->once()
+            ->with(m::on(function(array $attrs) {
+                return !isset($attrs['visible_from']);
+            }))
+            ->andReturn($newPage);
+
+        $job = new CreatePage(new Person(), $site, $parent);
+        $job->handle();
+    }
 }
