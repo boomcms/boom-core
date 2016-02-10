@@ -9,9 +9,10 @@ return [
     'metadata'                => 'Metadata',
     'none'                    => 'No assets found',
     'search'                  => [
-        'sort' => 'Sort assets by',
-        'tag'  => 'Filter by tag',
-        'type' => 'Filter by asset type',
+        'sort'            => 'Sort assets by',
+        'tag'             => 'Filter by tag',
+        'tag-placeholder' => 'Type a tag name',
+        'type'            => 'Filter by asset type',
     ],
     'sort' => [
         'last_modified desc' => 'Most recent',
