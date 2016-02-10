@@ -23,8 +23,7 @@
 			</button>
 		</span>
 
-		<input type='text' class="b-filter-input" id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
-
+        <?= view('boomcms::assets.search.title') ?>
         <?= view('boomcms::assets.search.type') ?>
         <?= view('boomcms::assets.search.tag') ?>
         <?= view('boomcms::assets.search.sort') ?>

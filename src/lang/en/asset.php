@@ -22,6 +22,7 @@ return [
         'filesize desc'      => 'Size (largest)',
         'downloads desc'     => 'Most downloaded',
     ],
+    'title'                   => 'Search by asset name',
     'type'                    => [
         'image'    => 'Image',
         'doc'      => 'Document',

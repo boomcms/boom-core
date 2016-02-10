@@ -45180,17 +45180,6 @@ $.widget('ui.chunkPageVisibility', {
 		};
 
 		this.element.autocomplete(this.options);
-		this.element
-			.on('focus', function() {
-				if (element.val() === element.attr('placeholder')) {
-					element.val('');
-				}
-			})
-			.on('blur', function() {
-				if (element.val() === '') {
-					element.val(element.attr('placeholder'));
-				}
-			});
 	}
 });;$.widget('boom.assetUploader', {
 	uploaderOptions: {

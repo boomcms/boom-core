@@ -22,8 +22,8 @@
             <?= $button('accept', 'All assets', ['id' => 'b-assets-picker-all', 'class' => 'b-button-textonly']) ?>
 
             <div>
-                <h2>Search by asset name</h2>
-                <input type='text' id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
+                <h2><?= trans('boomcms::asset.title') ?></h2>
+                <?= view('boomcms::assets.search.title') ?>
             </div>
 
             <div>
