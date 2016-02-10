@@ -45150,7 +45150,7 @@ $.widget('ui.chunkPageVisibility', {
 };;$.widget('boom.assetTitleFilter', {
 	options : {
 		delay: 400,
-		minLength: 1
+		minLength: 3
 	},
 
 	_create : function() {
