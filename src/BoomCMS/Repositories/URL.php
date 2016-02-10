@@ -97,6 +97,21 @@ class URL implements URLRepositoryInterface
     }
 
     /**
+     * Returns the primary URL for the given page.
+     *
+     * @param PageInterface $page
+     *
+     * @return URLInterface
+     */
+    public function page(PageInterface $page)
+    {
+        return $this->model
+            ->where(Model::ATTR_PAGE_ID, '=', $page->getId())
+            ->where(Model::ATTR_IS_PRIMARY, '=', true)
+            ->first();
+    }
+
+    /**
      * @param URLInterface $url
      *
      * @return URLInterface

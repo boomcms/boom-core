@@ -48,6 +48,15 @@ interface URL
     public function isAvailable(SiteInterface $site, $location);
 
     /**
+     * Returns the primary URL for the give page.
+     *
+     * @param PageInterface $page
+     *
+     * @return URLInterface
+     */
+    public function page(PageInterface $page);
+
+    /**
      * @param URLInterface $url
      *
      * @return URLInterface

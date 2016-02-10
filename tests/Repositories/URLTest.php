@@ -144,4 +144,30 @@ class URLTest extends AbstractTestCase
             $this->assertEquals($available, $this->repository->isAvailable($site, $location));
         }
     }
+
+    public function testPage()
+    {
+        $url = new URL();
+        $page = new Page();
+        $page->{Page::ATTR_ID} = 1;
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with(URL::ATTR_PAGE_ID, '=', $page->getId())
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with(URL::ATTR_IS_PRIMARY, '=', true)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($url);
+
+        $this->assertEquals($url, $this->repository->page($page));
+    }
 }
