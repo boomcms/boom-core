@@ -42794,7 +42794,8 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		var featureEditor = this;
 
 		new boomLinkPicker(new boomLink(null, this.options.currentPage.id), {
-				external: false
+				external: false,
+				asset: false
 			})
 			.done(function(link) {
 				if (typeof(featureEditor.confirmation) !== 'undefined') {
