@@ -3,7 +3,6 @@
 namespace BoomCMS\Jobs;
 
 use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use Illuminate\Console\Command;
@@ -28,9 +27,6 @@ class CreatePagePrimaryUri extends Command implements SelfHandling
         $url = ($this->location !== null) ?
             $this->location
             : URLHelper::fromTitle($this->page->getSite(), $this->prefix, $this->page->getTitle());
-
-        $this->page->setPrimaryUri($url);
-        PageFacade::save($this->page);
 
         $url = URLFacade::create($url, $this->page, true);
         Bus::dispatch(new MakeURLPrimary($url));
