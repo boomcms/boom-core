@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
+use BoomCMS\Support\Helpers\URL as URLHelper;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
@@ -385,6 +386,15 @@ class PageTest extends AbstractModelTestCase
         $page->setParent($page);
 
         $this->assertEquals(2, $page->getParentId());
+    }
+
+    public function testSetPrimaryUriIsSantized()
+    {
+        $url = '% not /// a good URL.';
+        $page = new Page();
+        $page->{Page::ATTR_PRIMARY_URI} = $url;
+
+        $this->assertEquals(URLHelper::sanitise($url), $page->getAttribute(Page::ATTR_PRIMARY_URI));
     }
 
     public function testSetSite()

@@ -943,8 +943,11 @@ class Page extends Model implements PageInterface
         $this->attributes[self::ATTR_INTERNAL_NAME] = $value ? $value : null;
     }
 
+    /**
+     * @param string $value
+     */
     public function setPrimaryUriAttribute($value)
     {
-        $this->{self::ATTR_PRIMARY_URI} = URLHelper::sanitise($value);
+        $this->attributes[self::ATTR_PRIMARY_URI] = URLHelper::sanitise($value);
     }
 }
