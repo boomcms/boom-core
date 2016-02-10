@@ -201,9 +201,6 @@ $.widget('boom.assetManager', {
 
 		this.element.find('#b-assets-types').val(0);
 
-		var $title = this.element.find('#b-assets-filter-title');
-		$title.val($title.attr('placeholder'));
-
 		this.getAssets();
 	},
 
