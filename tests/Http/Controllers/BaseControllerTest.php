@@ -20,7 +20,9 @@ abstract class BaseControllerTest extends AbstractTestCase
         parent::setUp();
 
         if ($this->className) {
-            $this->controller = m::mock($this->className)->makePartial();
+            $this->controller = m::mock($this->className)
+                ->makePartial()
+                ->shouldAllowMockingProtectedMethods();
         }
     }
 

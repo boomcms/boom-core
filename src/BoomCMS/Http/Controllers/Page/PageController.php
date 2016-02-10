@@ -8,6 +8,7 @@ use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\PageVersion;
+use BoomCMS\Support\Facades\URL;
 use Illuminate\Support\Facades\Event;
 
 class PageController extends Controller
@@ -23,8 +24,10 @@ class PageController extends Controller
 
         Event::fire(new PageWasCreated($newPage, $page));
 
+        $url = URL::page($newPage);
+
         return [
-            'url' => (string) $newPage->url(),
+            'url' => (string) $url,
             'id'  => $newPage->getId(),
         ];
     }
