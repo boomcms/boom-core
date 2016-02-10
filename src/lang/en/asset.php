@@ -12,6 +12,7 @@ return [
         'sort'            => 'Sort assets by',
         'tag'             => 'Filter by tag',
         'tag-placeholder' => 'Type a tag name',
+        'title'           => 'Search by asset name',
         'type'            => 'Filter by asset type',
     ],
     'sort' => [
@@ -23,7 +24,6 @@ return [
         'filesize desc'      => 'Size (largest)',
         'downloads desc'     => 'Most downloaded',
     ],
-    'title'                   => 'Search by asset name',
     'type'                    => [
         'image'    => 'Image',
         'doc'      => 'Document',

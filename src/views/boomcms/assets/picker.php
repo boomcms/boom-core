@@ -22,7 +22,7 @@
             <?= $button('accept', 'All assets', ['id' => 'b-assets-picker-all', 'class' => 'b-button-textonly']) ?>
 
             <div>
-                <h2><?= trans('boomcms::asset.title') ?></h2>
+                <h2><?= trans('boomcms::asset.search.title') ?></h2>
                 <?= view('boomcms::assets.search.title') ?>
             </div>
 
