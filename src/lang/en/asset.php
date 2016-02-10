@@ -8,6 +8,11 @@ return [
     'aspect-ratio'            => 'Aspect ratio',
     'metadata'                => 'Metadata',
     'none'                    => 'No assets found',
+    'picker'                  => [
+        'current' => 'Current Asset',
+        'upload'  => 'Upload Asset',
+        'filter'  => 'Filter Assets',
+    ],
     'search'                  => [
         'sort'            => 'Sort assets by',
         'tag'             => 'Filter by tag',

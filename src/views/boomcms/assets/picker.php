@@ -3,7 +3,7 @@
 
     <section id="b-assets-picker-sidebar">
         <section id="b-assets-picker-current">
-            <h1>Current Asset</h1>
+            <h1><?= trans('boomcms::asset.picker.current') ?></h1>
             <img src="" />
 
             <?= $button('trash-o', 'Remove current asset', ['id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext']) ?>
@@ -11,13 +11,13 @@
 
         <?php if (Gate::allows('manageAssets', $request)): ?>
             <section id="b-assets-picker-upload">
-                <h1>Upload Asset</h1>
+                <h1><?= trans('boomcms::asset.picker.upload') ?></h1>
                 <?= view('boomcms::assets.upload') ?>
             </section>
         <?php endif ?>
 
         <section id="b-assets-picker-filter" class="ui-front">
-            <h1>Filter Assets</h1>
+            <h1><?= trans('boomcms::asset.picker.filter') ?></h1>
 
             <?= $button('accept', 'All assets', ['id' => 'b-assets-picker-all', 'class' => 'b-button-textonly']) ?>
 
