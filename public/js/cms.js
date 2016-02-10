@@ -44294,7 +44294,7 @@ $.widget('ui.chunkPageVisibility', {
 						var action = linkPicker.asset.find('option:selected').val();
 
 						linkPicker.externalUrl.val(asset.getUrl(action));
-						linkPicker.asset.find('img').attr('src', asset.getUrl());
+						linkPicker.setAssetPreview(asset);
 					});
 			})
 			.on('focus', '#b-linkpicker-add-asset select', function() {
@@ -44401,12 +44401,15 @@ $.widget('ui.chunkPageVisibility', {
 		this.deferred.resolve(link);
 	};
 
+	boomLinkPicker.prototype.setAssetPreview = function(asset) {
+		this.asset.find('img').attr('src', asset.getUrl('thumb'));
+	};
+
 	boomLinkPicker.prototype.setupAssetLink = function() {
 		if (this.link.isAsset()) {
+			this.setAssetPreview(this.link.getAsset());
+
 			this.asset
-				.find('img')
-				.attr('src', this.link.getAsset().getUrl())
-				.end()
 				.find('select')
 				.find('option')
 				.removeAttr('selected')
