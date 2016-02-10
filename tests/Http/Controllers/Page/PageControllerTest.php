@@ -31,7 +31,7 @@ class PageControllerTest extends BaseControllerTest
 
         $page = new Page();
         $page->{Page::ATTR_ID} = 1;
-        
+
         $this->requireRole('add', $parent);
 
         $parent
