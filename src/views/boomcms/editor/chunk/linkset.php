@@ -1,10 +1,10 @@
+<label id="b-linkset-title">
+    <span>Linkset title</span>
+    <input type="text" name="title" placeholder="Linkset title" value="<?= $chunk->getTitle() ?>" />
+</label>
+
 <div class="container">
     <section>
-        <label id="b-linkset-title">
-                <p>Linkset title</p>
-                <input type="text" name="title" value="<?= $chunk->getTitle() ?>" />
-        </label>
-
         <div id="b-linkset-links">
             <h1>All links</h1>
 

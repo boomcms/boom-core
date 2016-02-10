@@ -2,10 +2,28 @@
 	padding-bottom: 0;
 	overflow: visible;
 
+	#b-linkset-title {
+		overflow: hidden;
+		margin: 1.5rem auto;
+		width: 50%;
+
+		span {
+			position: absolute;
+			top: -100%;
+		}
+
+		input {
+			width: 100%;
+			text-align: center;
+		}
+	}
+
 	.container {
 		width: 100%;
 		overflow: hidden;
 		padding: 1em 0 0 0;
+		display: table;
+		margin-bottom: 1.5rem;
 	}
 
 	section {
@@ -24,23 +42,6 @@
 		&:nth-of-type(2) {
 			padding-left: 1em;
 			border-left: 1px solid @darkest-grey;
-		}
-	}
-
-	#b-linkset-title {
-		margin-top: 0;
-		overflow: hidden;
-		padding-right: 0;
-
-		p {
-			width: 7em;
-			float: left;
-			margin: 5px 0 0 0;
-		}
-
-		input {
-			width: 18em;
-			float: right;
 		}
 	}
 
