@@ -44382,7 +44382,7 @@ $.widget('ui.chunkPageVisibility', {
 			msg : $('#b-linkpicker-container').html(),
 			id : 'b-linkpicker',
 			width : 600,
-			closeButton: this.options.external || this.options.text,
+			closeButton: this.options.external || this.options.text || this.options.asset,
 			onLoad : function(dialog) {
 				linkPicker.onLoad(dialog);
 			}
