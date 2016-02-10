@@ -60,18 +60,15 @@
 			}
 
 			&:nth-of-type(odd) a {
-				background: @white;
-			}
-
-			&:nth-of-type(even) a {
 				background: @lightest-grey;
 			}
 
 			a {
-
+				background: @white;
 				display: block;
 				text-decoration: none;
 				padding: 1rem;
+				border-bottom: 1px solid @lightest-grey;
 
 				&:hover, &:focus {
 					color: @red;

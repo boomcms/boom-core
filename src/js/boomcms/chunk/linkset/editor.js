@@ -9,7 +9,7 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			var $this = $(this);
 
 			if ( ! $this.find('.delete').length) {
-				var $delete = $('<a class="delete fa fa=trash-o" href="#"></a>').appendTo($this);
+				var $delete = $('<a class="delete fa fa-trash-o" href="#"></a>').appendTo($this);
 			}
 		});
 	};
