@@ -42608,8 +42608,7 @@ $.widget('ui.chunk',
 	unbind: function() {
 		this.element
 			.unbind('click')
-			.unbind('keydown')
-			.removeClass('b-editable');
+			.unbind('keydown');
 	}
 });;/**
 Editable text slots
