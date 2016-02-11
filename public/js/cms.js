@@ -41515,7 +41515,7 @@ $.widget('boom.pageTree', {
 
 	_create: function() {
 		this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
-		this.sortUrl = '/boomcms/page/' + this.options.page.id + '/settings/sort_children';
+		this.sortUrl = '/boomcms/page/' + this.options.page.id + '/settings/sort-children';
 
 		this.bind();
 	}
