@@ -2,6 +2,7 @@
 	background-color: @white;
 	color: @darkest-grey;
 	max-height: 100%;
+	max-width: 100%;
 	overflow: hidden;
 	z-index: 10002;
 	outline: 0;
@@ -29,8 +30,12 @@
 
 		button {
 			border: 0;
-			padding: 1rem 2rem;
+			padding: 1rem 1rem;
 			margin: 0;
+
+			&.b-button-textonly {
+				margin-left: 0;
+			}
 
 			+ button {
 				margin-left: 1rem;
@@ -42,6 +47,7 @@
 			background: @dark-green;
 			color: @white;
 			transition: all 0.5s;
+			padding: 1rem 2rem;
 
 			&:hover, &:focus {
 				background: @light-green;
