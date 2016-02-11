@@ -40935,15 +40935,13 @@ $.widget( 'boom.pageToolbar', {
 					});
 			})
 			.on('click', '.b-page-visibility', function() {
-				self.$settings.pageSettings('show', 'visibility');
-				self.openPageSettings();
+ 				self.showSettings('visibility');
 			})
 			.on('click', '.b-button-preview', function() {
 				$.boom.editor.state($(this).attr('data-preview'));
 			})
 			.on('click', '#b-page-template', function() {
-				self.$settings.pageSettings('show', 'template');
-				self.openPageSettings();
+				self.showSettings('template');
 			})
 			.on('click', '#b-menu-button', function() {
 				var $body = $('body');
@@ -40955,10 +40953,10 @@ $.widget( 'boom.pageToolbar', {
 				}
 			})
 			.on('click', '#b-page-settings', function() {
-					self.openPageSettings();
+				self.settingsAreOpen() ? self.closePageSettings() : self.showSettings();
 			})
 			.on('click', '#b-page-version-status', function() {
-				self.showSettingsAndCloseOnSave('drafts');
+				self.settingsAreOpen() ? self.showSettings('drafts') : self.showSettingsAndCloseOnSave('drafts');
 			})
 			.on('mouseup', '#b-menu a', function() {
 				// Clicking a link in the menu but opening in a new tab causes the menu to close.
@@ -40973,10 +40971,7 @@ $.widget( 'boom.pageToolbar', {
 	closePageSettings: function() {
 		var toolbar = this;
 
-		this.element
-			.contents()
-			.find('#b-page-settings-toolbar')
-			.removeClass('open');
+		this.$settingsContainer.removeClass('open');
 
 		setTimeout(function() {
 			toolbar.minimise();
@@ -40996,9 +40991,10 @@ $.widget( 'boom.pageToolbar', {
 				publishable : this.options.publishable
 			})
 			.data('boom-pageStatus');
+	
+		this.$settingsContainer = this.element.contents().find('#b-page-settings-toolbar');
 
-		this.$settings = this.element
-			.contents()
+		this.$settings = this.$settingsContainer
 			.find('.b-page-settings')
 			.pageSettings({
 				page: toolbar.options.page,
@@ -41116,10 +41112,7 @@ $.widget( 'boom.pageToolbar', {
 		this.closeSettingsOnPublish = false;
 		this.maximise();
 
-		this.element
-			.contents()
-			.find('#b-page-settings-toolbar')
-			.addClass('open');
+		this.$settingsContainer.addClass('open');
 
 		$(top.window).trigger('boom:dialog:open');
 	},
@@ -41131,6 +41124,10 @@ $.widget( 'boom.pageToolbar', {
 		this.buttonBar.css('z-index', 1);
 	},
 
+	settingsAreOpen: function() {
+		return this.$settingsContainer.hasClass('open');
+	},
+
 	/**
 	@function
 	*/
@@ -41138,23 +41135,32 @@ $.widget( 'boom.pageToolbar', {
 		this.buttonBar.css('z-index', 10000);
 	},
 
-	showSettingsAndCloseOnSave: function(settingsGroup) {
+	showSettings: function(section) {
+		if (!this.settingsAreOpen()) {
+			this.openPageSettings();
+		}
+
+		if (section) {
+			this.$settings.pageSettings('show', section);
+		}
+	},
+
+	showSettingsAndCloseOnSave: function(section) {
 		var toolbar = this;
 
 		this.$settings
 			.pageSettings({
-				draftsSave: function(evet, data) {
+				draftsSave: function(event, data) {
 					toolbar.draftsSaved(event, data);
 					toolbar.closePageSettings();
 				}
-			})
-			.pageSettings('show', settingsGroup);
+			});
 
-		this.openPageSettings();
+		this.showSettings(section);
 	},
 
 	_toggle_view_live_button : function() {
-		if (this.buttons.visible.css('display') == 'none') {
+		if (this.buttons.visible.css('display') === 'none') {
 			this.buttons.viewLive
 				.attr('title', 'You cannot view a live version of this page as it is currently hidden from the live site')
 				.prop('disabled', true);
