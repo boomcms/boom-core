@@ -24,13 +24,13 @@ class TemplateManagerTest extends AbstractTestCase
     public function testCreateTemplateWithFilename()
     {
         $theme = 'test';
-        $filename = 'test_template';
+        $filename = 'test_temp-late';
 
         $repository = $this->getTemplateRepository();
         $repository->shouldReceive('create')->with([
-            'name'     => 'Test Template',
-            'theme'    => 'test',
-            'filename' => 'test_template',
+            'name'     => 'Test Temp Late',
+            'theme'    => $theme,
+            'filename' => $filename,
         ]);
 
         $manager = new Manager($this->getFilesystem(), $repository);

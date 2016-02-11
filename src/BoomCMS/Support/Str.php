@@ -27,6 +27,20 @@ abstract class Str extends BaseStr
     }
 
     /**
+     * Convert a filename to a name.
+     *
+     * Used for getting the name of a template from a filename.
+     *
+     * @param string $filename
+     *
+     * @return string
+     */
+    public static function filenameToTitle($filename)
+    {
+        return ucwords(str_replace(['_', '-'], ' ', $filename));
+    }
+
+    /**
      * Make links which include the current HTTP host relative, even if the scheme doens't match.
      *
      * Internal links within text are stored as relative links so that if a site moves host
