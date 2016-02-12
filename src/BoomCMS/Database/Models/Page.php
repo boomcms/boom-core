@@ -943,16 +943,6 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @param Builder $query
-     *
-     * @return Builder
-     */
-    public function scopeWithUrl(Builder $query)
-    {
-        return $query->whereNotNull('primary_uri');
-    }
-
-    /**
      * @param string $value
      */
     public function setDescriptionAttribute($value)

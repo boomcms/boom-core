@@ -15,7 +15,7 @@ class Finder extends BaseFinder
 
     public function __construct()
     {
-        $this->query = Model::currentVersion()->withUrl();
+        $this->query = Model::currentVersion();
 
         if (Editor::isDisabled()) {
             $this->query = $this->query->isVisibleAtTime(time());
