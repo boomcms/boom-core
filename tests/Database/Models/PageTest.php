@@ -307,6 +307,40 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals($time->getTimestamp(), $visibleFrom->getTimestamp());
     }
 
+    public function testScopeIsVisibleAtTime()
+    {
+        $time = time();
+        $query = m::mock(Builder::class);
+
+        $query
+            ->shouldReceive('whereBetween')
+            ->once()
+            ->with(Page::ATTR_VISIBLE_FROM, [1, $time])
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->andReturnUsing(function($callback) use ($query) {
+                return $callback($query);
+            });
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->with(Page::ATTR_VISIBLE_TO, '>=', $time)
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('orWhere')
+            ->once()
+            ->with(Page::ATTR_VISIBLE_TO, '=', 0)
+            ->andReturnSelf();
+
+        $page = new Page();
+        $page->scopeIsVisibleAtTime($query, $time);
+    }
+
     public function testSetAddPageBehaviour()
     {
         $page = new Page();

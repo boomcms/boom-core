@@ -915,7 +915,7 @@ class Page extends Model implements PageInterface
     public function scopeIsVisibleAtTime($query, $time)
     {
         return $query
-            ->where('visible_from', 'between', [1, $time])
+            ->whereBetween('visible_from', [1, $time])
             ->where(function ($query) use ($time) {
                 $query
                     ->where('visible_to', '>=', $time)
