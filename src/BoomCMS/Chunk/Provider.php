@@ -183,19 +183,19 @@ class Provider
     /**
      * Insert a chunk into a page.
      *
-     * @param string $type
-     * @param string $slotname
-     * @param Page   $page
+     * @param string    $type
+     * @param string    $slotname
+     * @param null|Page $page
      *
      * @return mixed
      */
     public function insert($type, $slotname, $page = null)
     {
-        if ($page) {
-            return $this->get($type, $slotname, $page);
+        if ($page === null || $page === Router::getActivePage()) {
+            return $this->edit($type, $slotname, $page);
         }
 
-        return $this->edit($type, $slotname, $page);
+        return $this->get($type, $slotname, $page);
     }
 
     /**

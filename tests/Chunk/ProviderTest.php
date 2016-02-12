@@ -8,6 +8,7 @@ use BoomCMS\Database\Models\Chunk\BaseChunk as ChunkModel;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Support\Facades\Editor;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Cache\Repository as Cache;
@@ -160,8 +161,28 @@ class ProviderTest extends AbstractTestCase
         $slotname = 'standfirst';
         $chunk = m::mock(BaseChunk::class);
 
+        Router::shouldReceive('getActivePage')->once()->andReturn(new Page());
+
         $this->provider
             ->shouldReceive('get')
+            ->once()
+            ->with($type, $slotname, $page)
+            ->andReturn($chunk);
+
+        $this->assertEquals($chunk, $this->provider->insert($type, $slotname, $page));
+    }
+
+    public function testInsertWithActivePage()
+    {
+        $page = new Page();
+        $type = 'text';
+        $slotname = 'standfirst';
+        $chunk = m::mock(BaseChunk::class);
+
+        Router::shouldReceive('getActivePage')->once()->andReturn($page);
+
+        $this->provider
+            ->shouldReceive('edit')
             ->once()
             ->with($type, $slotname, $page)
             ->andReturn($chunk);
