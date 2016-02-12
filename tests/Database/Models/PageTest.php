@@ -321,7 +321,7 @@ class PageTest extends AbstractModelTestCase
         $query
             ->shouldReceive('where')
             ->once()
-            ->andReturnUsing(function($callback) use ($query) {
+            ->andReturnUsing(function ($callback) use ($query) {
                 return $callback($query);
             });
 
