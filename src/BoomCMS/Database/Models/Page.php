@@ -888,8 +888,8 @@ class Page extends Model implements PageInterface
 
     /**
      * @param Builder $query
-     * @param string $title
-     * @param int $limit
+     * @param string  $title
+     * @param int     $limit
      *
      * @return Builder
      */
@@ -927,7 +927,7 @@ class Page extends Model implements PageInterface
 
     /**
      * @param Builder $query
-     * @param int $time
+     * @param int     $time
      *
      * @return Builder
      */
