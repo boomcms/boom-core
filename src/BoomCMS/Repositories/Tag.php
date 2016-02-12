@@ -39,7 +39,7 @@ class Tag implements TagRepositoryInterface
         }
 
         return $this->model->create([
-            Model::ATTR_SITE  => $site,
+            Model::ATTR_SITE  => $site->getId(),
             Model::ATTR_NAME  => $name,
             Model::ATTR_GROUP => $group,
         ]);

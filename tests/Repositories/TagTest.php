@@ -37,13 +37,20 @@ class TagTest extends AbstractTestCase
         $this->assertEquals($model, $repository->create($this->site, '', ''));
     }
 
-    public function create()
+    public function testCreate()
     {
         $name = 'test name';
         $group = 'test group';
 
         $model = m::mock(Tag::class);
-        $model->shouldReceive('create')->with($this->site, $name, $group)->andReturn($model);
+        $model
+            ->shouldReceive('create')
+            ->with([
+                Tag::ATTR_SITE  => $this->site->getId(),
+                Tag::ATTR_NAME  => $name,
+                Tag::ATTR_GROUP => $group,
+            ])
+            ->andReturn($model);
 
         $repository = new TagRepository($model);
 
