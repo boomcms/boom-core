@@ -13,6 +13,7 @@ use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -885,7 +886,14 @@ class Page extends Model implements PageInterface
         return $query;
     }
 
-    public function scopeAutocompleteTitle($query, $title, $limit)
+    /**
+     * @param Builder $query
+     * @param string $title
+     * @param int $limit
+     *
+     * @return Builder
+     */
+    public function scopeAutocompleteTitle(Builder $query, $title, $limit)
     {
         return $query
             ->currentVersion()
@@ -895,7 +903,12 @@ class Page extends Model implements PageInterface
             ->orderBy(DB::raw('length(title)'), 'asc');
     }
 
-    public function scopeCurrentVersion($query)
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeCurrentVersion(Builder $query)
     {
         $subquery = $this->getCurrentVersionQuery();
 
@@ -912,7 +925,13 @@ class Page extends Model implements PageInterface
             });
     }
 
-    public function scopeIsVisibleAtTime($query, $time)
+    /**
+     * @param Builder $query
+     * @param int $time
+     *
+     * @return Builder
+     */
+    public function scopeIsVisibleAtTime(Builder $query, $time)
     {
         return $query
             ->whereBetween('visible_from', [1, $time])
@@ -923,7 +942,12 @@ class Page extends Model implements PageInterface
             });
     }
 
-    public function scopeWithUrl($query)
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeWithUrl(Builder $query)
     {
         return $query->whereNotNull('primary_uri');
     }
