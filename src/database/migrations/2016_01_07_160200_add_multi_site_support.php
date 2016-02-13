@@ -116,19 +116,14 @@ class AddMultiSiteSupport extends Migration
 
         if (file_exists($filename)) {
             $settings = (array) json_decode(file_get_contents($filename));
-        } else {
-            $settings = [
-                'site.name'        => '',
-                'site.admin.email' => '',
-            ];
-        }
 
-        $site = Site::create([
-            Site::ATTR_DEFAULT     => true,
-            Site::ATTR_NAME        => $settings['site.name'],
-            Site::ATTR_ADMIN_EMAIL => $settings['site.admin.email'],
-            Site::ATTR_HOSTNAME    => '',
-        ]);
+            $site = Site::create([
+                Site::ATTR_DEFAULT     => true,
+                Site::ATTR_NAME        => $settings['site.name'],
+                Site::ATTR_ADMIN_EMAIL => $settings['site.admin.email'],
+                Site::ATTR_HOSTNAME    => '',
+            ]);
+        }
 
         foreach (['pages', 'page_urls', 'groups', 'tags'] as $table) {
             DB::table($table)
