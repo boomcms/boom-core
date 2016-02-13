@@ -58,7 +58,7 @@
                 <div>
                     <p><?= trans('boomcms::settings.delete.urls.redirect') ?></p>
                     <p><?= trans('boomcms::settings.delete.urls.redirect-explanation') ?></p>
-                    
+
                     <p class="target">
                         <?= trans('boomcms::settings.delete.urls.redirect-target') ?>
                         <span></span>

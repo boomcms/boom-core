@@ -3,11 +3,11 @@
         <?= $button('rotate-left', 'rotate-left', ['id' => 'b-imageeditor-rotate-left', 'class' => 'b-button-withtext']) ?>
         <?= $button('rotate-right', 'rotate-right', ['id' => 'b-imageeditor-rotate-right', 'class' => 'b-button-withtext']) ?>
         <?= $button('crop', 'crop', ['id' => 'b-imageeditor-crop', 'class' => 'b-button-withtext']) ?>
-        
+
         <div class="crop-tools">
             <label class="aspect-ratio">
                 <p><?= trans('boomcms::asset.aspect-ratio') ?></p>
-               
+
                 <select>
                     <option value="">Fluid</option>
                     <option value="1">1/1</option>
@@ -21,7 +21,7 @@
             <?= $button('check', 'accept-crop', ['id' => 'b-imageeditor-crop-accept', 'class' => 'b-button-withtext']) ?>
             <?= $button('times', 'cancel', ['id' => 'b-imageeditor-crop-cancel', 'class' => 'b-button-withtext']) ?>
          </div>
-        
+
         <?= $button('refresh', 'image-revert', ['id' => 'b-imageeditor-revert', 'class' => 'b-button-withtext']) ?>
     </div>
 
