@@ -19,7 +19,7 @@ class TitleContains extends BaseFilter
         $text = $this->title;
 
         return $query
-            ->whereNested(function ($query) use ($text) {
+            ->whereNested(function (Builder $query) use ($text) {
                 return $query
                     ->where('title', 'like', "%$text%")
                     ->orWhere('description', 'like', "%$text%");

@@ -13,7 +13,7 @@ class WithoutTag extends Tag
             $alias = "pt_without-$i";
 
             $query
-                ->leftJoin("pages_tags as $alias", function ($q) use ($tag, $alias) {
+                ->leftJoin("pages_tags as $alias", function (Builder $q) use ($tag, $alias) {
                     $q
                         ->on('pages.id', '=', "$alias.page_id")
                         ->on("$alias.tag_id", '=', DB::raw($tag->getId()));

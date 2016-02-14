@@ -7,6 +7,7 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Traits\MultipleSites;
 use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
@@ -419,12 +420,12 @@ class Asset extends Model implements AssetInterface
         return $this;
     }
 
-    public function scopeWithLatestVersion($query)
+    public function scopeWithLatestVersion(Builder $query)
     {
         return $query
             ->select('assets.*')
             ->join('asset_versions as version', 'assets.id', '=', 'version.asset_id')
-            ->leftJoin('asset_versions as av2', function ($query) {
+            ->leftJoin('asset_versions as av2', function (Builder $query) {
                 $query
                     ->on('av2.asset_id', '=', 'version.asset_id')
                     ->on('av2.id', '>', 'version.id');
