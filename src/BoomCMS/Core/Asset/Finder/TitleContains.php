@@ -4,6 +4,7 @@ namespace BoomCMS\Core\Asset\Finder;
 
 use BoomCMS\Foundation\Finder\Filter as BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class TitleContains extends BaseFilter
 {
@@ -19,7 +20,7 @@ class TitleContains extends BaseFilter
         $text = $this->title;
 
         return $query
-            ->whereNested(function (Builder $query) use ($text) {
+            ->whereNested(function (QueryBuilder $query) use ($text) {
                 return $query
                     ->where('title', 'like', "%$text%")
                     ->orWhere('description', 'like', "%$text%");
