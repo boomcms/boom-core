@@ -13,8 +13,8 @@ use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Mockery as m;
 
 class PersonTest extends BaseControllerTest
@@ -163,7 +163,7 @@ class PersonTest extends BaseControllerTest
     public function testUpdatingSuperuser()
     {
         $person = m::mock(Person::class)->makePartial();
-        
+
         $person
             ->shouldReceive('setSuperuser')
             ->once()
@@ -185,7 +185,7 @@ class PersonTest extends BaseControllerTest
 
         $enable = new Request(['superuser' => 1]);
         $disable = new Request();
-        
+
         $this->controller->update($disable, $person);
         $this->controller->update($enable, $person);
     }
