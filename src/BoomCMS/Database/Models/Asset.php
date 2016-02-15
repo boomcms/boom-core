@@ -9,6 +9,7 @@ use BoomCMS\Support\Traits\MultipleSites;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
@@ -425,7 +426,7 @@ class Asset extends Model implements AssetInterface
         return $query
             ->select('assets.*')
             ->join('asset_versions as version', 'assets.id', '=', 'version.asset_id')
-            ->leftJoin('asset_versions as av2', function (Builder $query) {
+            ->leftJoin('asset_versions as av2', function (JoinClause $query) {
                 $query
                     ->on('av2.asset_id', '=', 'version.asset_id')
                     ->on('av2.id', '>', 'version.id');
