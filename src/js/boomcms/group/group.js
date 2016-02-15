@@ -28,23 +28,18 @@ function boomGroup(group_id) {
 		var deferred = new $.Deferred(),
 			group = this;
 
-		group.removeRole(role_id, page_id)
-			.done(function() {
-				$.ajax({
-					type: 'put',
-					url: group.base_url + '/' + group.id + '/roles',
-					data: {
-						role_id : role_id,
-						allowed : allowed,
-						page_id: page_id
-					}
-				})
-				.done(function(response) {
-					deferred.resolve(response);
-				});
-			});
-
-		return deferred;
+		return $.ajax({
+			type: 'put',
+			url: group.base_url + '/' + group.id + '/roles',
+			data: {
+				role_id : role_id,
+				allowed : allowed,
+				page_id: page_id
+			}
+		})
+		.done(function(response) {
+			deferred.resolve(response);
+		});
 	};
 
 	boomGroup.prototype.addWithName = function(name) {

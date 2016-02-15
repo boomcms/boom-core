@@ -55,9 +55,15 @@ $.widget('boom.groupPermissionsEditor', {
 		});
 	},
 
-	_change: function(role_id, allowed, page_id) {
-		this.group.addRole(role_id, allowed, page_id)
+	_change: function(roleId, allowed, pageId) {
+		var group = this.group;
+
+		group.removeRole(roleId, pageId)
 			.done(function() {
+				if (allowed >= 0) {
+					group.addRole(roleId, allowed, pageId);
+				}
+
 				new boomNotification('Permissions updated');
 			});
 	},
