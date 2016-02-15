@@ -26,6 +26,8 @@ class RelationsTest extends BaseControllerTest
 
         $this->page = m::mock(Page::class)->makePartial();
         $this->related = new Page();
+
+        $this->requireRole('edit', $this->page);
     }
 
     public function testDestroy()

@@ -45,6 +45,8 @@ class UrlsTest extends BaseControllerTest
 
         $this->page->{Page::ATTR_ID} = 1;
         $this->url->{URL::ATTR_ID} = 2;
+
+        $this->requireRole('editUrls', $this->page);
     }
 
     public function testCreate()

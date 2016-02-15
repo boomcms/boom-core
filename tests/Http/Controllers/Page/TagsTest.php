@@ -17,37 +17,52 @@ class TagsTest extends BaseControllerTest
      */
     protected $className = Controller::class;
 
+    /**
+     * @var Page
+     */
+    protected $page;
+
+    /**
+     * @var Tag
+     */
+    protected $tag;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->tag = new Tag();
+        $this->tag->{Tag::ATTR_ID} = 1;
+
+        $this->page = m::mock(Page::class);
+
+        $this->requireRole('edit', $this->page);
+    }
+
     public function testAdd()
     {
         $site = new Site();
-        $tag = new Tag();
-        $tag->{Tag::ATTR_ID} = 1;
         $name = 'test';
         $group = 'group';
-        $page = m::mock(Page::class);
 
         $request = new Request([
             'tag'   => $name,
             'group' => $group,
         ]);
 
-        $page->shouldReceive('addTag')->with($tag);
+        $this->page->shouldReceive('addTag')->with($this->tag);
 
         TagFacade::shouldReceive('findOrCreate')
             ->with($site, $name, $group)
-            ->andReturn($tag);
+            ->andReturn($this->tag);
 
-        $this->assertEquals($tag->getId(), $this->controller->add($request, $site, $page));
+        $this->assertEquals($this->tag->getId(), $this->controller->add($request, $site, $this->page));
     }
 
     public function testRemove()
     {
-        $tag = new Tag();
-        $tag->{Tag::ATTR_ID} = 1;
+        $this->page->shouldReceive('removeTag')->with($this->tag);
 
-        $page = m::mock(Page::class);
-        $page->shouldReceive('removeTag')->with($tag);
-
-        $this->controller->remove($page, $tag);
+        $this->controller->remove($this->page, $this->tag);
     }
 }

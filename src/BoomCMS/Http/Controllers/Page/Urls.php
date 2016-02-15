@@ -55,6 +55,8 @@ class Urls extends Controller
 
     public function store(Request $request, Site $site, Page $page)
     {
+        $this->auth($page);
+
         $location = $request->input('location');
         $url = URLFacade::findBySiteAndLocation($site, $location);
 
@@ -72,6 +74,8 @@ class Urls extends Controller
 
     public function destroy(Page $page, URL $url)
     {
+        $this->auth($page);
+
         if (!$url->isPrimary()) {
             URLFacade::delete($url);
         }
@@ -79,11 +83,15 @@ class Urls extends Controller
 
     public function makePrimary(Page $page, URL $url)
     {
+        $this->auth($page);
+
         $this->dispatch(new MakeURLPrimary($url));
     }
 
     public function postMove(Page $page, URL $url)
     {
+        $this->auth($page);
+
         $this->dispatch(new ReassignURL($url, $page));
     }
 }
