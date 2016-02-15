@@ -4,12 +4,12 @@ namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Policies\PagePolicy;
 use BoomCMS\Policies\PersonPolicy;
 use BoomCMS\Policies\SitePolicy;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Request::class => SitePolicy::class,
+        Site::class => SitePolicy::class,
         Page::class    => PagePolicy::class,
         Person::class  => PersonPolicy::class,
     ];

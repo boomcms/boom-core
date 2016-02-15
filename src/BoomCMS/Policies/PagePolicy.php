@@ -17,7 +17,7 @@ class PagePolicy extends BoomCMSPolicy
             return $result;
         }
 
-        if (Gate::allows('managePages', Router::getActiveSite())) {
+        if (Gate::allows('managePages', Router::getActiveSite()) === true) {
             return true;
         }
     }

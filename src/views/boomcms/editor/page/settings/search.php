@@ -16,7 +16,7 @@
             </label>
 		</section>
 
-		<?php if (auth()->check('editSearchAdvanced', $page)): ?>
+		<?php if (Gate::allows('editSearchAdvanced', $page)): ?>
 			<section id="advanced">
                 <h2><?= trans('boomcms::settings.advanced') ?></h2>
 

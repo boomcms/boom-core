@@ -1,6 +1,6 @@
 <div class='b-page-settings'>
     <ul class="b-page-settings-menu">
-        <?php if ($auth->check('editTemplate', $page)): ?>
+        <?php if (Gate::allows('editTemplate', $page)): ?>
             <li>
                 <a href="#" class="fa fa-file-text-o" data-b-page-setting="template">
                     <?= trans('boomcms::settings.menu.template') ?>
@@ -8,7 +8,7 @@
             </li>
         <?php endif ?>
 
-        <?php if ($auth->check('editNavBasic', $page)): ?>
+        <?php if (Gate::allows('editNavBasic', $page)): ?>
             <li>
                 <a href="#" class="fa fa-sitemap" data-b-page-setting="navigation">
                     <?= trans('boomcms::settings.menu.navigation') ?>
@@ -16,7 +16,7 @@
             </li>
         <?php endif ?>
 
-        <?php if ($auth->check('editUrls', $page)): ?>
+        <?php if (Gate::allows('editUrls', $page)): ?>
             <li>
                 <a href="#" class="fa fa-link" data-b-page-setting="urls">
                     <?= trans('boomcms::settings.menu.urls') ?>
@@ -24,7 +24,7 @@
             </li>
         <?php endif ?>
 
-        <?php if ($auth->check('editSearchBasic', $page)): ?>
+        <?php if (Gate::allows('editSearchBasic', $page)): ?>
             <li>
                 <a href="#" class="fa fa-search" data-b-page-setting="search">
                     <?= trans('boomcms::settings.menu.search') ?>
@@ -44,7 +44,7 @@
             </a>
         </li>
 
-        <?php if ($auth->check('editChildrenBasic', $page)): ?>
+        <?php if (Gate::allows('editChildrenBasic', $page)): ?>
             <li>
                 <a href="#" class="fa fa-child" data-b-page-setting="children">
                     <?= trans('boomcms::settings.menu.children') ?>
@@ -52,7 +52,7 @@
             </li>
         <?php endif ?>
 
-        <?php if ($auth->check('editAdmin', $page)): ?>
+        <?php if (Gate::allows('editAdmin', $page)): ?>
             <li>
                 <a href="#" class="fa fa-lock" data-b-page-setting="admin">
                     <?= trans('boomcms::settings.menu.admin') ?>
@@ -60,7 +60,7 @@
             </li>
         <?php endif ?>
 
-        <?php if ($auth->check('editFeature', $page)): ?>
+        <?php if (Gate::allows('editFeature', $page)): ?>
             <li>
                 <a href="#" class="fa fa-image" data-b-page-setting="feature">
                     <?= trans('boomcms::settings.menu.feature') ?>
@@ -69,7 +69,7 @@
         <?php endif ?>
 
         <div class="group">
-            <?php if ($auth->check('edit', $page)): ?>
+            <?php if (Gate::allows('edit', $page)): ?>
                 <li>
                     <a href="#" class="fa fa-eye" data-b-page-setting="visibility">
                         <?= trans('boomcms::settings.menu.visibility') ?>
@@ -84,7 +84,7 @@
             </li>
         </div>
 
-        <?php if ($auth->check('delete', $page)): ?>
+        <?php if (Gate::allows('delete', $page)): ?>
             <li>
                 <a href="#" class="fa fa-trash-o" data-b-page-setting="delete">
                     <?= trans('boomcms::settings.menu.delete') ?>

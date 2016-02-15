@@ -11,6 +11,7 @@ use BoomCMS\Support\Facades\Template as TemplateFacade;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
 use Illuminate\View\View;
 
@@ -98,7 +99,6 @@ class Settings extends PageController
     {
         return view("$this->viewPrefix.index", [
             'page' => $page,
-            'auth' => auth(),
         ]);
     }
 
@@ -176,7 +176,7 @@ class Settings extends PageController
 
         $page->setChildTemplateId($request->input('children_template_id'));
 
-        if (auth()->check('editChildrenAdvanced', $page)) {
+        if (Gate::allows('editChildrenAdvanced', $page)) {
             $page
                 ->setChildrenUrlPrefix($request->input('children_url_prefix'))
                 ->setChildrenVisibleInNav($request->has('children_visible_in_nav'))
@@ -227,7 +227,7 @@ class Settings extends PageController
     {
         $this->authorize('editNavigationBasic', $page);
 
-        if (auth()->check('editNavigationAdvanced', $page)) {
+        if (Gate::allows('editNavigationAdvanced', $page)) {
             $parent = Page::find($request->input('parent_id'));
 
             if ($parent) {
@@ -250,7 +250,7 @@ class Settings extends PageController
             ->setDescription($request->input('description'))
             ->setKeywords($request->input('keywords'));
 
-        if (auth()->check('editSearchAdvanced', $page)) {
+        if (Gate::allows('editSearchAdvanced', $page)) {
             $page
                 ->setExternalIndexing($request->has('external_indexing'))
                 ->setInternalIndexing($request->has('internal_indexing'));

@@ -11,7 +11,7 @@ class Relations extends Controller
     /**
      * @param Page $page
      */
-    public function __construct(Page $page)
+    protected function auth(Page $page)
     {
         $this->authorize('edit', $page);
     }
@@ -22,14 +22,16 @@ class Relations extends Controller
      */
     public function destroy(Page $page, Page $related)
     {
+        $this->auth($page);
         $page->removeRelation($related);
     }
 
     /**
      * @return View
      */
-    public function index()
+    public function index(Page $page)
     {
+        $this->auth($page);
         return view('boomcms::editor.page.settings.relations');
     }
 
@@ -39,6 +41,7 @@ class Relations extends Controller
      */
     public function store(Page $page, Page $related)
     {
+        $this->auth($page);
         $page->addRelation($related);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Http\Controllers;
 
+use BoomCMS\Support\Facades\Router;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class Controller extends BaseController
         $this->request = $request;
 
         if ($this->role) {
-            $this->authorize($this->role, $request);
+            $this->authorize($this->role, Router::getActiveSite());
         }
     }
 }

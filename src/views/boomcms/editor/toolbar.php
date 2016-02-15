@@ -5,17 +5,17 @@
 	<?= $menu() ?>
 
 	<div id="b-topbar-page-buttons">
-		<?php if ($auth->check('add', $page)): ?>
+		<?php if (Gate::allows('add', $page)): ?>
 			<?= $button('plus', trans('Add a new page as a child of the current page'), ['id' => 'b-page-addpage']) ?>
 		<?php endif ?>
 
-		<?php if ($auth->check('edit', $page)): ?>
+		<?php if (Gate::allows('edit', $page)): ?>
 			<div id="b-page-settings-menu">
 				<?= $button('cog', trans('Page settings which apply whichever version is published'), ['id' => 'b-page-settings']) ?>
 			</div>
 		<?php endif ?>
 
-		<?php if ($auth->check('editContent', $page)): ?>
+		<?php if (Gate::allows('editContent', $page)): ?>
 			<div id="b-page-publish-menu">
 				<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
 					<?= $page->getCurrentVersion()->status() ?>
@@ -23,12 +23,12 @@
 			</div>
 		<?php endif ?>
 
-		<?php if ($auth->check('edit', $page)): ?>
+		<?php if (Gate::allows('edit', $page)): ?>
 			<?= $button('eye', trans('This page is visible. The content displayed will depend on which version of the page is published'), ['id' => 'b-page-visible', 'class' => $page->isVisible() ? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden']) ?>
 			<?= $button('eye-slash', trans('This page is hidden regardless of whether there is a published version'), ['id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility']) ?>
 		<?php endif ?>
 
-		<?php if ($auth->check('delete', $page)) : ?>
+		<?php if (Gate::allows('delete', $page)) : ?>
             <?php if ($page->canBeDeleted()): ?>
     			<?= $button('trash-o', trans('Delete this page'), ['id' => 'b-page-delete']) ?>
             <?php else: ?>

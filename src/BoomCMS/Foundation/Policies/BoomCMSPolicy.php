@@ -53,7 +53,8 @@ abstract class BoomCMSPolicy
             }
 
             $result = $query->first();
-            $this->cache[$hash] = (isset($result->allowed)) ? (bool) $result->allowed : null;
+
+            $this->cache[$hash] = (isset($result->allowed)) ? $result->allowed === '1' : null;
         }
 
         return $this->cache[$hash];

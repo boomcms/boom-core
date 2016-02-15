@@ -6,6 +6,7 @@ use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\Site as SiteFacade;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
@@ -28,7 +29,7 @@ class AssetManager extends Controller
         $this->request = $request;
 
         if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
-            $this->authorize('manageAssets', $request);
+            $this->authorize('manageAssets', Router::getActiveSite());
         }
     }
 

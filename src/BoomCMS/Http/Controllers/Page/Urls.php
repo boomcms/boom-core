@@ -15,13 +15,18 @@ class Urls extends Controller
 {
     protected $viewPrefix = 'boomcms::editor.urls';
 
-    public function __construct(Page $page)
+    /**
+     * @param Page $page
+     */
+    protected function auth(Page $page)
     {
         $this->authorize('editUrls', $page);
     }
 
     public function create(Page $page)
     {
+        $this->auth($page);
+
         return view("$this->viewPrefix.add", [
             'page' => $page,
         ]);
@@ -29,6 +34,8 @@ class Urls extends Controller
 
     public function index(Page $page)
     {
+        $this->auth($page);
+
         return view($this->viewPrefix.'.list', [
             'page' => $page,
             'urls' => $page->getUrls(),
@@ -37,6 +44,8 @@ class Urls extends Controller
 
     public function getMove(Page $page, URL $url)
     {
+        $this->auth($page);
+
         return view("$this->viewPrefix.move", [
             'url'     => $url,
             'current' => $url->getPage(),

@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Event;
 
 class Tags extends Controller
 {
-    protected $role = 'edit';
-
     /**
      * @param Request $request
      * @param Page    $page
@@ -25,6 +23,8 @@ class Tags extends Controller
      */
     public function add(Request $request, Site $site, Page $page)
     {
+        $this->auth($page);
+
         $name = $request->input('tag');
         $group = $request->input('group');
         $tag = TagFacade::findOrCreate($site, $name, $group);
@@ -39,8 +39,18 @@ class Tags extends Controller
     /**
      * @param Page $page
      */
+    protected function auth(Page $page)
+    {
+        $this->authorize('edit', $page);
+    }
+
+    /**
+     * @param Page $page
+     */
     public function view(Page $page)
     {
+        $this->auth($page);
+
         $grouped = [];
         $tags = Helpers::getTags($page);
 
@@ -60,6 +70,8 @@ class Tags extends Controller
      */
     public function remove(Page $page, Tag $tag)
     {
+        $this->auth($page);
+
         $page->removeTag($tag);
 
         Event::fire(new PageHadTagRemoved($page, $tag));
