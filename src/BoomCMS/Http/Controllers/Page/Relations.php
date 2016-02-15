@@ -32,6 +32,7 @@ class Relations extends Controller
     public function index(Page $page)
     {
         $this->auth($page);
+
         return view('boomcms::editor.page.settings.relations');
     }
 

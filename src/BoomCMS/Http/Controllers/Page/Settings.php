@@ -11,8 +11,8 @@ use BoomCMS\Support\Facades\Template as TemplateFacade;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class Settings extends PageController
