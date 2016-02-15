@@ -52,7 +52,7 @@
 </main>
 
 <script type="text/javascript">
-    window.addEventListener(function() {
+    window.addEventListener('load', function() {
         $('body').peopleManager();
     });
 </script>
