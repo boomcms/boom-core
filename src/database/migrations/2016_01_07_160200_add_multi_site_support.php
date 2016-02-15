@@ -123,17 +123,17 @@ class AddMultiSiteSupport extends Migration
                 Site::ATTR_ADMIN_EMAIL => $settings['site.admin.email'],
                 Site::ATTR_HOSTNAME    => '',
             ]);
-        }
 
-        foreach (['pages', 'page_urls', 'groups', 'tags'] as $table) {
-            DB::table($table)
-                ->update([
-                    'site_id' => $site->getId(),
-                ]);
-        }
+            foreach (['pages', 'page_urls', 'groups', 'tags'] as $table) {
+                DB::table($table)
+                    ->update([
+                        'site_id' => $site->getId(),
+                    ]);
+            }
 
-        DB::statement("insert into asset_site (asset_id, site_id) select id, '{$site->getId()}' from assets");
-        DB::statement("insert into person_site (person_id, site_id) select id, '{$site->getId()}' from people");
+            DB::statement("insert into asset_site (asset_id, site_id) select id, '{$site->getId()}' from assets");
+            DB::statement("insert into person_site (person_id, site_id) select id, '{$site->getId()}' from people");
+        }
 
         Role::create([
             'name'        => 'manageSites',
