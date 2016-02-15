@@ -52,9 +52,9 @@
 </main>
 
 <script type="text/javascript">
-    window.onload = function() {
+    window.addEventListener(function() {
         $('body').peopleManager();
-    };
+    });
 </script>
 
 <?= view('boomcms::footer') ?>
