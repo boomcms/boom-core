@@ -13,6 +13,7 @@ use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
 use Mockery as m;
 
@@ -157,5 +158,54 @@ class PersonTest extends BaseControllerTest
 
         $this->controller->shouldReceive('addGroups');
         $this->controller->store($request, $site);
+    }
+
+    public function testUpdatingSuperuser()
+    {
+        $person = m::mock(Person::class)->makePartial();
+        
+        $person
+            ->shouldReceive('setSuperuser')
+            ->once()
+            ->with(false);
+
+        $person
+            ->shouldReceive('setSuperuser')
+            ->once()
+            ->with(true);
+
+        Gate::shouldReceive('allows')
+            ->times(2)
+            ->with('editSuperuser', $person)
+            ->andReturn(true);
+
+        PersonFacade::shouldReceive('save')
+            ->times(2)
+            ->with($person);
+
+        $enable = new Request(['superuser' => 1]);
+        $disable = new Request();
+        
+        $this->controller->update($disable, $person);
+        $this->controller->update($enable, $person);
+    }
+
+    public function testSuperuserIsNotChangedIfNotAllowed()
+    {
+        $person = m::mock(Person::class)->makePartial();
+        $person
+            ->shouldReceive('setSuperuser')
+            ->never();
+
+        Gate::shouldReceive('allows')
+            ->once()
+            ->with('editSuperuser', $person)
+            ->andReturn(false);
+
+        PersonFacade::shouldReceive('save')
+            ->once()
+            ->with($person);
+
+        $this->controller->update(new Request(), $person);
     }
 }
