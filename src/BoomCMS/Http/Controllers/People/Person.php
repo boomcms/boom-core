@@ -94,7 +94,7 @@ class Person extends PeopleManager
             ->setName($request->input('name'))
             ->setEnabled($request->has('enabled'));
 
-        if ($request->input('superuser') && Gate::allows('editSuperuser', $person)) {
+        if (Gate::allows('editSuperuser', $person)) {
             $person->setSuperuser($request->has('superuser'));
         }
 
