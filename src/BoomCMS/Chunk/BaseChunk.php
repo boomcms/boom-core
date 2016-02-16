@@ -20,6 +20,11 @@ abstract class BaseChunk
     protected $attrs;
 
     /**
+     * @var mixed
+     */
+    protected $before;
+
+    /**
      * @var string
      */
     protected $defaultTemplate;
@@ -91,6 +96,23 @@ abstract class BaseChunk
     public function attributes()
     {
         return [];
+    }
+
+    /**
+     * Set content which should be added before the chunk.
+     *
+     * The content is added either when the chunk has content in the site view.
+     * Or when the editor is enabled and default content is being displayed.
+     *
+     * @param mixed $content
+     *
+     * @return $this
+     */
+    public function before($content)
+    {
+        $this->before = $content;
+
+        return $this;
     }
 
     /**
@@ -186,7 +208,7 @@ abstract class BaseChunk
             $html = $this->addAttributesToHtml($html);
         }
 
-        return $html;
+        return empty($html) ? $html : $this->before.$html;
     }
 
     /**

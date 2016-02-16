@@ -186,4 +186,39 @@ class BaseChunkTest extends AbstractTestCase
         $chunk->params($params);
         $chunk->html();
     }
+
+    public function testBeforeDoesNotPrependWhenChunkHasNoHtml()
+    {
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test'])
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $chunk
+            ->shouldReceive('html')
+            ->once()
+            ->andReturn('');
+
+        $chunk->before('some content before');
+
+        $this->assertEquals('', $chunk->render());
+    }
+
+    public function testBeforePrependsWhenChunkHasHtml()
+    {
+        $before = 'some content before';
+        $html = 'some content';
+
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test'])
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $chunk
+            ->shouldReceive('html')
+            ->once()
+            ->andReturn($html);
+
+        $chunk->before($before);
+
+        $this->assertEquals($before.$html, $chunk->render());
+    }
 }
