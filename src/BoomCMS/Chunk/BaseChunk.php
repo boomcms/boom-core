@@ -266,17 +266,17 @@ abstract class BaseChunk
     }
 
     /**
-     * Getter / setter method for template parameters.
+     * Set parameters to be passed to the chunk view.
+     *
+     * @param array $params
+     *
+     * @return $this
      */
-    public function params($params = null)
+    public function params(array $params)
     {
-        if ($params === null) {
-            return $this->viewParams;
-        } else {
-            $this->viewParams = $params;
+        $this->viewParams = $params;
 
-            return $this;
-        }
+        return $this;
     }
 
     public function setPlaceholderText($text)
