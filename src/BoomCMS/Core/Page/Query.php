@@ -24,6 +24,7 @@ class Query extends BaseQuery
         'search'              => Finder\Search::class,
         'relatedto'           => Finder\RelatedTo::class,
         'withouttag'          => Finder\WithoutTag::class,
+        'year'                => Finder\Year::class,
     ];
 
     public function count()
