@@ -179,9 +179,11 @@ abstract class BaseChunk
             return $this->placeholderText;
         }
 
-        return (Lang::has("boomcms::chunks.{$this->getType()}.{$this->slotname}")) ?
-            Lang::get("boomcms::chunks.{$this->getType()}.{$this->slotname}")
-            : Lang::get("boomcms::chunks.{$this->getType()}.default");
+        $prefix = "boomcms::chunks.{$this->getType()}";
+
+        return (Lang::has("$prefix.{$this->slotname}")) ?
+            Lang::get("$prefix.{$this->slotname}")
+            : Lang::get("$prefix.default");
     }
 
     /**
