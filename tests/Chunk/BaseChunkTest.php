@@ -187,11 +187,40 @@ class BaseChunkTest extends AbstractTestCase
         $chunk->html();
     }
 
+    public function testAfterDoesNotAppendWhenChunkHasNoHtml()
+    {
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test'])->makePartial();
+
+        $chunk
+            ->shouldReceive('html')
+            ->once()
+            ->andReturn('');
+
+        $chunk->after('some content after');
+
+        $this->assertEquals('', $chunk->render());
+    }
+
+    public function testAfterAppendsWhenChunkHasHtml()
+    {
+        $after = 'some content after';
+        $html = 'some content';
+
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test'])->makePartial();
+
+        $chunk
+            ->shouldReceive('html')
+            ->once()
+            ->andReturn($html);
+
+        $chunk->after($after);
+
+        $this->assertEquals($html.$after, $chunk->render());
+    }
+
     public function testBeforeDoesNotPrependWhenChunkHasNoHtml()
     {
-        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test'])
-            ->makePartial()
-            ->shouldAllowMockingProtectedMethods();
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test'])->makePartial();
 
         $chunk
             ->shouldReceive('html')
@@ -208,9 +237,7 @@ class BaseChunkTest extends AbstractTestCase
         $before = 'some content before';
         $html = 'some content';
 
-        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test'])
-            ->makePartial()
-            ->shouldAllowMockingProtectedMethods();
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test'])->makePartial();
 
         $chunk
             ->shouldReceive('html')

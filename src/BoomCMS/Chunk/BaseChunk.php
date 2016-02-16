@@ -15,6 +15,11 @@ abstract class BaseChunk
     protected $attributePrefix = 'data-boom-';
 
     /**
+     * @var mixed
+     */
+    protected $after;
+
+    /**
      * @var array
      */
     protected $attrs;
@@ -85,6 +90,23 @@ abstract class BaseChunk
      * @return View
      */
     abstract protected function showDefault();
+
+    /**
+     * Set content which should be added after the chunk.
+     *
+     * The content is added either when the chunk has content in the site view.
+     * Or when the editor is enabled and default content is being displayed.
+     *
+     * @param mixed $content
+     *
+     * @return $this
+     */
+    public function after($content)
+    {
+        $this->after = $content;
+
+        return $this;
+    }
 
     /**
      * Attributes to be added to the chunk HTML.
@@ -208,7 +230,7 @@ abstract class BaseChunk
             $html = $this->addAttributesToHtml($html);
         }
 
-        return empty($html) ? $html : $this->before.$html;
+        return empty($html) ? $html : $this->before.$html.$this->after;
     }
 
     /**
