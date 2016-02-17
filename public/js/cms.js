@@ -40054,7 +40054,483 @@ if (String.prototype.trim === undefined) {
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 if (typeof module != 'undefined' && module.exports) module.exports = Dms; // CommonJS (Node)
 if (typeof define == 'function' && define.amd) define([], function() { return Dms; }); // AMD
-;/**
+;function boomAsset(assetId) {
+	this.id = assetId;
+	
+	boomAsset.prototype.getId = function() {
+		return this.id;
+	};
+
+	boomAsset.prototype.getEmbedCode = function() {
+		return $.get(this.getUrl('embed'));
+	};
+	
+	boomAsset.prototype.getUrl = function(action, width, height) {
+		var url = '/asset/' + this.getId();
+
+		if ((!action || action === 'view') && !(width || height)) {
+			return url;
+		}
+
+		if (!action && (width || height)) {
+			action = 'view';
+		}
+
+		url = url + '/' + action;
+
+		if (width || height) {
+			url = url + '/' + width + '/' + height;
+		}
+
+		return url;
+	};
+};
+;function boomChunk(page_id, type, slotname) {
+	this.page_id = page_id;
+	this.slotname = slotname;
+	this.type = type;
+	this.urlPrefix = '/boomcms/page/' + this.page_id + '/chunk/';
+
+	/**
+	 * To remove a chunk save it with no data.
+	 *
+	 * @param string template
+	 * @returns {jqXHR}
+	 */
+	boomChunk.prototype.delete = function(template) {
+		return this.save({
+			'template': template
+		});
+	};
+
+	boomChunk.prototype.save = function(data) {
+		data.slotname = this.slotname;
+		data.type = this.type;
+
+		return $.post(this.urlPrefix + 'save', data);
+	};
+};function boomGroup(group_id) {
+	this.id = group_id;
+
+	boomGroup.prototype.base_url = '/boomcms/group';
+
+	boomGroup.prototype.add = function() {
+		var group = this,
+			deferred = new $.Deferred(),
+			dialog;
+
+		dialog = new boomDialog({
+			url: this.base_url + '/create',
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
+		})
+		.done(function() {
+			group.addWithName(dialog.contents.find('input[type=text]').val())
+				.done(function(response) {
+					deferred.resolve(response);
+				});
+		});
+
+		return deferred;
+	};
+
+	boomGroup.prototype.addRole = function(role_id, allowed, page_id) {
+		var deferred = new $.Deferred(),
+			group = this;
+
+		return $.ajax({
+			type: 'put',
+			url: group.base_url + '/' + group.id + '/roles',
+			data: {
+				role_id : role_id,
+				allowed : allowed,
+				page_id: page_id
+			}
+		})
+		.done(function(response) {
+			deferred.resolve(response);
+		});
+	};
+
+	boomGroup.prototype.addWithName = function(name) {
+		return $.post(this.base_url, {name: name});
+	};
+
+	boomGroup.prototype.getRoles = function(page_id) {
+		return $.getJSON(this.base_url + '/' + this.id + '/roles?page_id=' + page_id);
+	};
+
+	boomGroup.prototype.remove = function() {
+		var group = this,
+			deferred = new $.Deferred(),
+			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
+
+		confirmation
+			.done(function() {
+				$.ajax({
+					url: group.base_url + '/' + group.id,
+					type: 'delete'
+				})
+				.done(function(response) {
+					deferred.resolve(response);
+				});
+			});
+
+		return deferred;
+	};
+
+	boomGroup.prototype.removeRole = function(role_id, page_id) {
+		return $.ajax({
+			type: 'delete',
+			url: this.base_url + '/' + this.id + '/roles',
+			data: {
+				role_id : role_id,
+				page_id : page_id
+			}
+		});
+	},
+
+	boomGroup.prototype.save = function(data) {
+		return $.ajax({
+			type: 'put',
+			url: this.base_url + '/' + this.id,
+			data: data
+		});
+	};
+};;	/**
+* @class
+* @name boomPage
+*/
+function boomPage(page_id) {
+	this.id = page_id;
+	this.baseUrl = '/boomcms/page/';
+
+	boomPage.prototype.add = function() {
+		var promise = new $.Deferred(),
+			page_id = this.id;
+
+		$.post(this.baseUrl + page_id + '/add', function(response) {
+			if (response.url) {
+				promise.resolve(response);
+			} else {
+				promise.reject(response);
+			}
+		});
+
+		return promise;
+	};
+
+	boomPage.prototype.addRelatedPage = function(relatedPageId) {
+		return $.post(this.baseUrl + this.id + '/relations/' + relatedPageId);
+	};
+
+	boomPage.prototype.addTag = function(group, tag) {
+		return $.post(this.baseUrl + this.id + '/tags', {
+			group : group,
+			tag : tag
+		});
+	};
+
+	boomPage.prototype.delete = function(options) {
+		return $.post(this.baseUrl + this.id + '/settings/delete', options);
+	};
+
+	boomPage.prototype.embargo = function() {
+		var page = this,
+			url = this.baseUrl + this.id + '/version/embargo',
+			promise = new $.Deferred(),
+			dialog;
+
+		dialog = new boomDialog({
+			url: url,
+			title: 'Page embargo',
+			width: 440
+		}).done(function() {
+			$.post(url, dialog.contents.find('form').serialize())
+			.done(function(response) {
+				new boomNotification("Page embargo saved.");
+				promise.resolve(response);
+			});
+		});
+
+		return promise;
+	},
+
+	boomPage.prototype.publish = function() {
+		var promise = new $.Deferred();
+
+		$.post(this.baseUrl + this.id + '/version/embargo')
+			.done(function(response) {
+				promise.resolve(response);
+			});
+
+		return promise;
+	};
+
+	boomPage.prototype.requestApproval = function() {
+		var url = this.baseUrl + this.id + '/version/request_approval';
+
+		return $.post(url);
+	};
+
+	boomPage.prototype.removeRelatedPage = function(relatedPageId) {
+		return $.ajax({
+			type: 'delete',
+			url: this.baseUrl + this.id + '/relations/' + relatedPageId
+		});
+	};
+
+	boomPage.prototype.removeTag = function(tagId) {
+		return $.ajax({
+			type: 'delete',
+			url: this.baseUrl + this.id + '/tags',
+			data: {
+				tag: tagId
+			}
+		});
+	};
+
+	boomPage.prototype.revertToPublished = function() {
+		var	promise = new $.Deferred(),
+			page = this;
+
+		new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
+			.done(function() {
+				$.post(page.baseUrl + page.id + '/discard')
+					.done(function() {
+						promise.resolve();
+					});
+			});
+
+		return promise;
+	};
+
+	boomPage.prototype.saveSettings = function(section, data) {
+		return $.post(this.baseUrl + this.id + '/settings/' + section, data);
+	};
+
+	boomPage.prototype.setFeatureImage = function(asset) {
+		return $.post(this.baseUrl + this.id + '/settings/feature', {
+			feature_image_id : asset.getId()
+		});
+	};
+
+	boomPage.prototype.setTitle = function(title) {
+		return $.post(this.baseUrl + this.id + '/version/title', {
+			title : title
+		});
+	};
+
+	boomPage.prototype.setTemplate = function(templateId) {
+		return $.post(this.baseUrl + this.id + '/version/template/' + templateId);
+	};
+};;function boomPerson(person_id) {
+	this.id = person_id;
+
+	boomPerson.prototype.baseUrl = '/boomcms/person';
+
+	boomPerson.prototype.add = function() {
+		var deferred = new $.Deferred(),
+			person = this,
+			dialog;
+
+		dialog = new boomDialog({
+			url : this.baseUrl + '/create',
+			width: '600px',
+			title : 'Create new person',
+			closeButton: false,
+			saveButton: true
+		})
+		.done(function() {
+			var data = dialog.contents.find('form').serialize();
+
+			person.addWithData(data)
+				.done(function(response) {
+					deferred.resolve();
+				})
+				.fail(function() {
+					deferred.reject();
+				});
+		});
+
+		return deferred;
+	};
+
+	boomPerson.prototype.addGroups = function(groupIds) {
+		return $.post(this.baseUrl + '/' + this.id + '/groups', {'groups[]': groupIds});
+	}
+
+	boomPerson.prototype.getAddableGroups = function() {
+		return $.get(this.baseUrl + '/' + this.id + '/groups');
+
+		dialog = new boomDialog({
+			url: url,
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
+		}).done(function() {
+			var groups = {};
+
+			dialog.contents.find('form select option:selected').each(function(i, el) {
+				var $el = $(el);
+				groups[$el.val()] = $el.text();
+			});
+
+			var groupIds = Object.keys(groups);
+
+			if (groupIds.length) {
+				$.post(url, {'groups[]' : groupIds})
+					.done(function() {
+						deferred.resolve(groups);
+					});
+			} else {
+				deferred.resolve([]);
+			}
+		});
+
+		return deferred;
+	};
+
+	boomPerson.prototype.addWithData = function(data) {
+		return $.post(this.baseUrl, data);
+	};
+
+	boomPerson.prototype.delete = function() {
+		var deferred = new $.Deferred(),
+			person = this,
+			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to delete this person?');
+
+			confirmation
+				.done(function() {
+					person.deleteMultiple([person.id])
+					.done(function() {
+						deferred.resolve();
+					});
+				});
+
+		return deferred;
+	};
+
+	boomPerson.prototype.deleteMultiple = function(peopleIds) {
+		return 	$.ajax({
+			type: 'delete',
+			url: this.baseUrl,
+			data: {
+				'people[]': peopleIds
+			}
+		});
+	};
+
+	boomPerson.prototype.removeGroup = function(groupId) {
+		return $.ajax({
+			type: 'delete',
+			url: this.baseUrl + '/' + this.id + '/groups/' + groupId
+		});
+	};
+
+	boomPerson.prototype.save = function(data) {
+		return $.ajax({
+			type: 'put',
+			url: this.baseUrl + '/' + this.id,
+			data: data
+		});
+	};
+};
+;function boomPageUrl(id, pageId) {
+	this.id = id;
+	this.pageId = pageId;
+
+	boomPageUrl.prototype.add = function() {
+		var url = this,
+			deferred = new $.Deferred(),
+			dialog;
+
+		dialog = new boomDialog({
+			url : '/boomcms/page/' + this.pageId + '/urls/create',
+			title : 'Add URL',
+			closeButton: false,
+			saveButton: true,
+			width : 700
+		}).done(function() {
+			var location = dialog.contents.find('input[name=url]').val();
+
+			url.addWithLocation(location)
+				.done(function() {
+					deferred.resolve();
+				});
+		});
+
+		return deferred;
+	};
+
+	boomPageUrl.prototype.addWithLocation = function(location) {
+		var deferred = new $.Deferred(),
+			pageId = this.pageId;
+
+		$.post('/boomcms/page/' + pageId + '/urls', {location : location})
+			.done(function(response) {
+				if (response) {
+					if (typeof response.existing_url_id !== 'undefined') {
+						var url = new boomPageUrl(response.existing_url_id, pageId);
+						url.move()
+							.done(function() {
+								deferred.resolve();
+							});
+					}
+				} else {
+					deferred.resolve();
+				}
+			});
+
+		return deferred;
+	};
+
+	boomPageUrl.prototype.delete = function() {
+		var url = this,
+			deferred = new $.Deferred(),
+			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!');
+
+			confirmation
+			.done(function() {
+				$.ajax({
+					type: 'delete',
+					url: '/boomcms/page/' + url.pageId + '/urls/' + url.id
+				})
+				.done(function() {
+					deferred.resolve();
+				});
+			});
+
+		return deferred;
+	};
+
+	boomPageUrl.prototype.makePrimary = function(is_primary) {
+		return $.post('/boomcms/page/' + this.pageId + '/urls/' + this.id + '/make-primary');
+	};
+
+	boomPageUrl.prototype.move = function() {
+		var deferred = new $.Deferred(),
+			move_dialog,
+			form_url = '/boomcms/page/' + this.pageId + '/urls/' + this.id + '/move',
+			dialog;
+
+		dialog = new boomDialog({
+			url : form_url,
+			title : 'Move url',
+			deferred: deferred,
+			width : '500px'
+		});
+		dialog.done(function() {
+			$.post(form_url)
+				.done(function(response) {
+					deferred.resolve(response);
+				});
+		});
+
+		return deferred;
+	};
+};/**
 @fileOverview jQuery plugins written specifically for Boom.
 */
 
@@ -40589,134 +41065,7 @@ $(function() {
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
 	}
-});;	/**
-* @class
-* @name boomPage
-*/
-function boomPage(page_id) {
-	this.id = page_id;
-	this.baseUrl = '/boomcms/page/';
-
-	boomPage.prototype.add = function() {
-		var promise = new $.Deferred(),
-			page_id = this.id;
-
-		$.post(this.baseUrl + page_id + '/add', function(response) {
-			if (response.url) {
-				promise.resolve(response);
-			} else {
-				promise.reject(response);
-			}
-		});
-
-		return promise;
-	};
-
-	boomPage.prototype.addRelatedPage = function(relatedPageId) {
-		return $.post(this.baseUrl + this.id + '/relations/' + relatedPageId);
-	};
-
-	boomPage.prototype.addTag = function(group, tag) {
-		return $.post(this.baseUrl + this.id + '/tags', {
-			group : group,
-			tag : tag
-		});
-	};
-
-	boomPage.prototype.delete = function(options) {
-		return $.post(this.baseUrl + this.id + '/settings/delete', options);
-	};
-
-	boomPage.prototype.embargo = function() {
-		var page = this,
-			url = this.baseUrl + this.id + '/version/embargo',
-			promise = new $.Deferred(),
-			dialog;
-
-		dialog = new boomDialog({
-			url: url,
-			title: 'Page embargo',
-			width: 440
-		}).done(function() {
-			$.post(url, dialog.contents.find('form').serialize())
-			.done(function(response) {
-				new boomNotification("Page embargo saved.");
-				promise.resolve(response);
-			});
-		});
-
-		return promise;
-	},
-
-	boomPage.prototype.publish = function() {
-		var promise = new $.Deferred();
-
-		$.post(this.baseUrl + this.id + '/version/embargo')
-			.done(function(response) {
-				promise.resolve(response);
-			});
-
-		return promise;
-	};
-
-	boomPage.prototype.requestApproval = function() {
-		var url = this.baseUrl + this.id + '/version/request_approval';
-
-		return $.post(url);
-	};
-
-	boomPage.prototype.removeRelatedPage = function(relatedPageId) {
-		return $.ajax({
-			type: 'delete',
-			url: this.baseUrl + this.id + '/relations/' + relatedPageId
-		});
-	};
-
-	boomPage.prototype.removeTag = function(tagId) {
-		return $.ajax({
-			type: 'delete',
-			url: this.baseUrl + this.id + '/tags',
-			data: {
-				tag: tagId
-			}
-		});
-	};
-
-	boomPage.prototype.revertToPublished = function() {
-		var	promise = new $.Deferred(),
-			page = this;
-
-		new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
-			.done(function() {
-				$.post(page.baseUrl + page.id + '/discard')
-					.done(function() {
-						promise.resolve();
-					});
-			});
-
-		return promise;
-	};
-
-	boomPage.prototype.saveSettings = function(section, data) {
-		return $.post(this.baseUrl + this.id + '/settings/' + section, data);
-	};
-
-	boomPage.prototype.setFeatureImage = function(asset) {
-		return $.post(this.baseUrl + this.id + '/settings/feature', {
-			feature_image_id : asset.getId()
-		});
-	};
-
-	boomPage.prototype.setTitle = function(title) {
-		return $.post(this.baseUrl + this.id + '/version/title', {
-			title : title
-		});
-	};
-
-	boomPage.prototype.setTemplate = function(templateId) {
-		return $.post(this.baseUrl + this.id + '/version/template/' + templateId);
-	};
-};;$.widget('boom.pageSettings', {
+});;$.widget('boom.pageSettings', {
 	bind: function() {
 		var pageSettings = this;
 
@@ -41356,100 +41705,7 @@ $.widget('boom.pageTree', {
 			});
 		}
 	}
-});;function boomPageUrl(id, pageId) {
-	this.id = id;
-	this.pageId = pageId;
-
-	boomPageUrl.prototype.add = function() {
-		var url = this,
-			deferred = new $.Deferred(),
-			dialog;
-
-		dialog = new boomDialog({
-			url : '/boomcms/page/' + this.pageId + '/urls/create',
-			title : 'Add URL',
-			closeButton: false,
-			saveButton: true,
-			width : 700
-		}).done(function() {
-			var location = dialog.contents.find('input[name=url]').val();
-
-			url.addWithLocation(location)
-				.done(function() {
-					deferred.resolve();
-				});
-		});
-
-		return deferred;
-	};
-
-	boomPageUrl.prototype.addWithLocation = function(location) {
-		var deferred = new $.Deferred(),
-			pageId = this.pageId;
-
-		$.post('/boomcms/page/' + pageId + '/urls', {location : location})
-			.done(function(response) {
-				if (response) {
-					if (typeof response.existing_url_id !== 'undefined') {
-						var url = new boomPageUrl(response.existing_url_id, pageId);
-						url.move()
-							.done(function() {
-								deferred.resolve();
-							});
-					}
-				} else {
-					deferred.resolve();
-				}
-			});
-
-		return deferred;
-	};
-
-	boomPageUrl.prototype.delete = function() {
-		var url = this,
-			deferred = new $.Deferred(),
-			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!');
-
-			confirmation
-			.done(function() {
-				$.ajax({
-					type: 'delete',
-					url: '/boomcms/page/' + url.pageId + '/urls/' + url.id
-				})
-				.done(function() {
-					deferred.resolve();
-				});
-			});
-
-		return deferred;
-	};
-
-	boomPageUrl.prototype.makePrimary = function(is_primary) {
-		return $.post('/boomcms/page/' + this.pageId + '/urls/' + this.id + '/make-primary');
-	};
-
-	boomPageUrl.prototype.move = function() {
-		var deferred = new $.Deferred(),
-			move_dialog,
-			form_url = '/boomcms/page/' + this.pageId + '/urls/' + this.id + '/move',
-			dialog;
-
-		dialog = new boomDialog({
-			url : form_url,
-			title : 'Move url',
-			deferred: deferred,
-			width : '500px'
-		});
-		dialog.done(function() {
-			$.post(form_url)
-				.done(function(response) {
-					deferred.resolve(response);
-				});
-		});
-
-		return deferred;
-	};
-};$.widget('boom.pageSettingsChildren', {
+});;$.widget('boom.pageSettingsChildren', {
 	bind: function() {
 		var settingsEditor = this,
 			page = this.options.page;
@@ -42476,31 +42732,7 @@ $.widget('boom.textEditor', {
 		this.toolbar.show();
 		$('#wysihtml5-toolbar').show().children().not(this.toolbar).hide();
 	}
-});;function boomChunk(page_id, type, slotname) {
-	this.page_id = page_id;
-	this.slotname = slotname;
-	this.type = type;
-	this.urlPrefix = '/boomcms/page/' + this.page_id + '/chunk/';
-
-	/**
-	 * To remove a chunk save it with no data.
-	 *
-	 * @param string template
-	 * @returns {jqXHR}
-	 */
-	boomChunk.prototype.delete = function(template) {
-		return this.save({
-			'template': template
-		});
-	};
-
-	boomChunk.prototype.save = function(data) {
-		data.slotname = this.slotname;
-		data.type = this.type;
-
-		return $.post(this.urlPrefix + 'save', data);
-	};
-};/**
+});;/**
 @fileOverview jQuery UI widgets for editable slots.
 */
 /**
@@ -44508,38 +44740,7 @@ $.widget('ui.chunkPageVisibility', {
 				}
 			});
 	}
-});;function boomAsset(assetId) {
-	this.id = assetId;
-	
-	boomAsset.prototype.getId = function() {
-		return this.id;
-	};
-
-	boomAsset.prototype.getEmbedCode = function() {
-		return $.get(this.getUrl('embed'));
-	};
-	
-	boomAsset.prototype.getUrl = function(action, width, height) {
-		var url = '/asset/' + this.getId();
-
-		if ((!action || action === 'view') && !(width || height)) {
-			return url;
-		}
-
-		if (!action && (width || height)) {
-			action = 'view';
-		}
-
-		url = url + '/' + action;
-
-		if (width || height) {
-			url = url + '/' + width + '/' + height;
-		}
-
-		return url;
-	};
-};
-;function boomAssetEditor(asset, uploader) {
+});;function boomAssetEditor(asset, uploader) {
     this.asset = asset;
     this.uploader = uploader;
 	this.selection = new boomAssetSelection([this.asset.id]);
@@ -45691,95 +45892,6 @@ function Row() {
 			}
 		});
 	};
-};;function boomGroup(group_id) {
-	this.id = group_id;
-
-	boomGroup.prototype.base_url = '/boomcms/group';
-
-	boomGroup.prototype.add = function() {
-		var group = this,
-			deferred = new $.Deferred(),
-			dialog;
-
-		dialog = new boomDialog({
-			url: this.base_url + '/create',
-			title: 'Add group',
-			closeButton: false,
-			saveButton: true
-		})
-		.done(function() {
-			group.addWithName(dialog.contents.find('input[type=text]').val())
-				.done(function(response) {
-					deferred.resolve(response);
-				});
-		});
-
-		return deferred;
-	};
-
-	boomGroup.prototype.addRole = function(role_id, allowed, page_id) {
-		var deferred = new $.Deferred(),
-			group = this;
-
-		return $.ajax({
-			type: 'put',
-			url: group.base_url + '/' + group.id + '/roles',
-			data: {
-				role_id : role_id,
-				allowed : allowed,
-				page_id: page_id
-			}
-		})
-		.done(function(response) {
-			deferred.resolve(response);
-		});
-	};
-
-	boomGroup.prototype.addWithName = function(name) {
-		return $.post(this.base_url, {name: name});
-	};
-
-	boomGroup.prototype.getRoles = function(page_id) {
-		return $.getJSON(this.base_url + '/' + this.id + '/roles?page_id=' + page_id);
-	};
-
-	boomGroup.prototype.remove = function() {
-		var group = this,
-			deferred = new $.Deferred(),
-			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
-
-		confirmation
-			.done(function() {
-				$.ajax({
-					url: group.base_url + '/' + group.id,
-					type: 'delete'
-				})
-				.done(function(response) {
-					deferred.resolve(response);
-				});
-			});
-
-		return deferred;
-	};
-
-	boomGroup.prototype.removeRole = function(role_id, page_id) {
-		return $.ajax({
-			type: 'delete',
-			url: this.base_url + '/' + this.id + '/roles',
-			data: {
-				role_id : role_id,
-				page_id : page_id
-			}
-		});
-	},
-
-	boomGroup.prototype.save = function(data) {
-		return $.ajax({
-			type: 'put',
-			url: this.base_url + '/' + this.id,
-			data: data
-		});
-	};
 };;$.widget('boom.groupPermissionsEditor', {
 	group : null,
 
@@ -45881,119 +45993,7 @@ function Row() {
 				}
 			});
 	}
-});;function boomPerson(person_id) {
-	this.id = person_id;
-
-	boomPerson.prototype.baseUrl = '/boomcms/person';
-
-	boomPerson.prototype.add = function() {
-		var deferred = new $.Deferred(),
-			person = this,
-			dialog;
-
-		dialog = new boomDialog({
-			url : this.baseUrl + '/create',
-			width: '600px',
-			title : 'Create new person',
-			closeButton: false,
-			saveButton: true
-		})
-		.done(function() {
-			var data = dialog.contents.find('form').serialize();
-
-			person.addWithData(data)
-				.done(function(response) {
-					deferred.resolve();
-				})
-				.fail(function() {
-					deferred.reject();
-				});
-		});
-
-		return deferred;
-	};
-
-	boomPerson.prototype.addGroups = function(groupIds) {
-		return $.post(this.baseUrl + '/' + this.id + '/groups', {'groups[]': groupIds});
-	}
-
-	boomPerson.prototype.getAddableGroups = function() {
-		return $.get(this.baseUrl + '/' + this.id + '/groups');
-
-		dialog = new boomDialog({
-			url: url,
-			title: 'Add group',
-			closeButton: false,
-			saveButton: true
-		}).done(function() {
-			var groups = {};
-
-			dialog.contents.find('form select option:selected').each(function(i, el) {
-				var $el = $(el);
-				groups[$el.val()] = $el.text();
-			});
-
-			var groupIds = Object.keys(groups);
-
-			if (groupIds.length) {
-				$.post(url, {'groups[]' : groupIds})
-					.done(function() {
-						deferred.resolve(groups);
-					});
-			} else {
-				deferred.resolve([]);
-			}
-		});
-
-		return deferred;
-	};
-
-	boomPerson.prototype.addWithData = function(data) {
-		return $.post(this.baseUrl, data);
-	};
-
-	boomPerson.prototype.delete = function() {
-		var deferred = new $.Deferred(),
-			person = this,
-			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to delete this person?');
-
-			confirmation
-				.done(function() {
-					person.deleteMultiple([person.id])
-					.done(function() {
-						deferred.resolve();
-					});
-				});
-
-		return deferred;
-	};
-
-	boomPerson.prototype.deleteMultiple = function(peopleIds) {
-		return 	$.ajax({
-			type: 'delete',
-			url: this.baseUrl,
-			data: {
-				'people[]': peopleIds
-			}
-		});
-	};
-
-	boomPerson.prototype.removeGroup = function(groupId) {
-		return $.ajax({
-			type: 'delete',
-			url: this.baseUrl + '/' + this.id + '/groups/' + groupId
-		});
-	};
-
-	boomPerson.prototype.save = function(data) {
-		return $.ajax({
-			type: 'put',
-			url: this.baseUrl + '/' + this.id,
-			data: data
-		});
-	};
-};
-;$.widget('boom.peopleManager', {
+});;$.widget('boom.peopleManager', {
 	homeUrl : '/boomcms/people',
 	selectedPeople : 0,
 
