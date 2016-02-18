@@ -31,31 +31,10 @@ class TemplateServiceProvider extends ServiceProvider
 
         foreach ($this->themes as $theme) {
             $views = $theme->getViewDirectory();
-            $authViews = $views.DIRECTORY_SEPARATOR.'auth';
-            $public = $theme->getPublicDirectory();
             $init = $theme->getDirectory().DIRECTORY_SEPARATOR.'init.php';
-            $migrations = $theme->getDirectory().'/migrations/';
 
             $this->loadViewsFrom($views, $theme->getName());
             $this->loadViewsFrom($views.'/chunks', 'boomcms.chunks');
-
-            if (file_exists($authViews)) {
-                $this->publishes([
-                    $authViews => base_path('resources/views/auth'),
-                ], 'boomcms');
-            }
-
-            if (file_exists($public)) {
-                $this->publishes([
-                    $public => public_path('vendor/boomcms/themes/'.$theme),
-                ], $theme->getName());
-            }
-
-            if (file_exists($migrations)) {
-                $this->publishes([
-                    $migrations => base_path('/migrations/boomcms'),
-                ], $theme->getName());
-            }
 
             if (file_exists($init)) {
                 include $init;
