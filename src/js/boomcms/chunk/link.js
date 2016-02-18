@@ -4,15 +4,15 @@ $.widget('ui.chunkLink', $.ui.chunk, {
 			link = new boomLink(this.getUrl(), this.getTargetPageId(), this.getText());
 		
 		new boomLinkPicker(link, {
-			text: true,
-			remove: link.getUrl() != ''
+			text: this.textIsEditable(),
+			remove: link.getUrl() !== ''
 		})
-			.done(function(link) {
-				chunkLink.insert(link);
-			})
-			.fail(function() {
-				chunkLink.destroy();	
-			});
+		.done(function(link) {
+			chunkLink.insert(link);
+		})
+		.fail(function() {
+			chunkLink.destroy();	
+		});
 	},
 	
 	getTargetPageId : function() {
@@ -39,5 +39,9 @@ $.widget('ui.chunkLink', $.ui.chunk, {
 				}]
 			});
 		}
+	},
+
+	textIsEditable: function() {
+		return this.element.attr('data-boom-edittext') === '1';
 	}
 });

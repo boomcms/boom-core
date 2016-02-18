@@ -13,6 +13,13 @@ class Link extends Linkset
 
     protected $defaultHtml = "<a href='{url}'>{text}</a>";
 
+    /**
+     * Whether the 'link text' option should be visible in the link picker.
+     *
+     * @var bool
+     */
+    protected $editableText = true;
+
     protected $link;
 
     public function addContentToHtml($url, $text)
@@ -28,6 +35,7 @@ class Link extends Linkset
             $this->attributePrefix.'text'           => $this->getText(),
             $this->attributePrefix.'url'            => (string) $this->getUrl(),
             $this->attributePrefix.'target_page_id' => $this->getTargetPageId(),
+            $this->attributePrefix.'edittext'       => (int) $this->editableText,
         ];
     }
 
@@ -72,5 +80,17 @@ class Link extends Linkset
     public function hasContent()
     {
         return $this->getLink() !== null;
+    }
+
+    /**
+     * Removes the link text option from the link picker.
+     *
+     * @return $this
+     */
+    public function noText()
+    {
+        $this->editableText = false;
+
+        return $this;
     }
 }
