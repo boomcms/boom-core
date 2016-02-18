@@ -103,4 +103,4 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 	};
 
 	return this.open();
-};
+}

@@ -109,4 +109,4 @@ function boomPerson(person_id) {
 			data: data
 		});
 	};
-};
+}

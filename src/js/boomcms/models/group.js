@@ -87,4 +87,4 @@ function boomGroup(group_id) {
 			data: data
 		});
 	};
-};
+}

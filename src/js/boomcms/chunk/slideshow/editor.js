@@ -196,4 +196,4 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 	};
 
 	return this.open();
-};
+}

@@ -189,4 +189,4 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 	};
 
 	return this.open();
-};
+}

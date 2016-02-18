@@ -125,4 +125,4 @@ function boomPage(page_id) {
 	boomPage.prototype.setTemplate = function(templateId) {
 		return $.post(this.baseUrl + this.id + '/version/template/' + templateId);
 	};
-};
+}

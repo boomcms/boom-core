@@ -28,4 +28,4 @@ function boomAsset(assetId) {
 
 		return url;
 	};
-};
+}

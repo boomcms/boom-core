@@ -208,4 +208,4 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 	};
 
 	return this.open();
-};
+}

@@ -40084,7 +40084,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
 		return url;
 	};
-};
+}
 ;function boomChunk(page_id, type, slotname) {
 	this.page_id = page_id;
 	this.slotname = slotname;
@@ -40109,7 +40109,8 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
 		return $.post(this.urlPrefix + 'save', data);
 	};
-};function boomGroup(group_id) {
+}
+;function boomGroup(group_id) {
 	this.id = group_id;
 
 	boomGroup.prototype.base_url = '/boomcms/group';
@@ -40198,7 +40199,8 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 			data: data
 		});
 	};
-};;	/**
+}
+;	/**
 * @class
 * @name boomPage
 */
@@ -40325,7 +40327,8 @@ function boomPage(page_id) {
 	boomPage.prototype.setTemplate = function(templateId) {
 		return $.post(this.baseUrl + this.id + '/version/template/' + templateId);
 	};
-};;function boomPerson(person_id) {
+}
+;function boomPerson(person_id) {
 	this.id = person_id;
 
 	boomPerson.prototype.baseUrl = '/boomcms/person';
@@ -40436,7 +40439,7 @@ function boomPage(page_id) {
 			data: data
 		});
 	};
-};
+}
 ;function boomPageUrl(id, pageId) {
 	this.id = id;
 	this.pageId = pageId;
@@ -40530,7 +40533,8 @@ function boomPage(page_id) {
 
 		return deferred;
 	};
-};/**
+}
+;/**
 @fileOverview jQuery plugins written specifically for Boom.
 */
 
@@ -43159,7 +43163,8 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		this._save(data);
 		this.destroy();
 	}
-});;/**
+});
+;/**
 @class
 @name chunkSlideshow
 @extends $.ui.chunk
@@ -43535,7 +43540,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	};
 
 	return this.open();
-};
+}
 ;function boomChunkLinksetEditor(pageId, slotname, options) {
 	this.pageId = pageId;
 	this.slotname = slotname;
@@ -43746,7 +43751,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	};
 
 	return this.open();
-};;function boomChunkAssetEditor(pageId, slotname, visibleElements) {
+}
+;function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 	this.pageId = pageId;
 	this.slotname = slotname;
 	this.visibleElements = visibleElements;
@@ -43851,7 +43857,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	};
 
 	return this.open();
-};;/**
+}
+;/**
  * Enables opening the page tag editor by clicking on a list of tags in the page.
  */
 $.widget('ui.chunkPageTags', {
@@ -44166,7 +44173,7 @@ $.widget('ui.chunkPageVisibility', {
 	};
 
 	return this.open();
-};
+}
 ;$.widget('ui.chunkHtml', $.ui.chunk, {
 	edit: function() {
 		var self = this,
