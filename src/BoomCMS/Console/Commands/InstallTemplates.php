@@ -32,17 +32,17 @@ class InstallTemplates extends Command
         try {
             $installed = $manager->findAndInstallNewTemplates();
 
-            if (count($installed)) {
-                foreach ($installed as $i) {
-                    list($theme, $template) = $i;
-
-                    $this->info("Installed $template in theme $theme");
-                }
-
-                $this->call('boomcms:publish', ['--force']);
-            } else {
-                $this->info('No templates to install');
+            if (!count($installed)) {
+                return $this->info('No templates to install');
             }
+            
+            foreach ($installed as $i) {
+                list($theme, $template) = $i;
+
+                $this->info("Installed $template in theme $theme");
+            }
+
+            $this->call('boomcms:publish', ['--force']);
         } catch (PDOException $e) {
             $this->info('Unable to install templates: '.$e->getMessage());
         }
