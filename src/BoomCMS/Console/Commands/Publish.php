@@ -53,8 +53,8 @@ class Publish extends VendorPublishCommand
         foreach ($themes as $theme) {
             $directories = [
                 $theme->getViewDirectory().DIRECTORY_SEPARATOR.'auth' => base_path('resources/views/auth'),
-                $theme->getPublicDirectory() => public_path('vendor/boomcms/themes/'.$theme->getName()),
-                $theme->getDirectory().'/migrations/' => base_path('/migrations/boomcms'),
+                $theme->getPublicDirectory()                          => public_path('vendor/boomcms/themes/'.$theme->getName()),
+                $theme->getDirectory().'/migrations/'                 => base_path('/migrations/boomcms'),
             ];
 
             foreach ($directories as $from => $to) {
