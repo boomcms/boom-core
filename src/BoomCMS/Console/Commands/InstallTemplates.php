@@ -35,7 +35,7 @@ class InstallTemplates extends Command
             if (!count($installed)) {
                 return $this->info('No templates to install');
             }
-            
+
             foreach ($installed as $i) {
                 list($theme, $template) = $i;
 
