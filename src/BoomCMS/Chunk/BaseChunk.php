@@ -58,7 +58,6 @@ abstract class BaseChunk
 
     /**
      * The slotname used to find the chunk.
-     * This has to be stored seperately to $this->_chunk so that for default chunks where $this->_chunk isn't loaded we know the slotname where the chunk belongs.
      *
      * @var string
      */
