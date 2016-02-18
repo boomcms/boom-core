@@ -3,7 +3,7 @@
  */
 $.widget('ui.chunkPageTags', {
 
-	_create : function() {
+	_create: function() {
 		var chunkPageTags = this;
 
 		this.element

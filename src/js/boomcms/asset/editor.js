@@ -74,7 +74,7 @@ function boomAssetEditor(asset, uploader) {
 			url : '/boomcms/assets/view/' + assetEditor.asset.id,
 			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
 			closeButton: false,
-			onLoad : function() {
+			onLoad: function() {
                 assetEditor.bind(assetEditor.dialog);
 
 				assetEditor.dialog.contents

@@ -7,7 +7,7 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
 		$el.find('input[type=text]').val('');
 	},
 
-	edit : function() {
+	edit: function() {
 		var library = this;
 
 		this.dialog = new boomDialog({

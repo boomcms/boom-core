@@ -1,5 +1,5 @@
 $.widget('ui.chunkLinkset', $.ui.chunk, {
-	edit : function() {
+	edit: function() {
 		var chunkLinkset = this;
 
 		new boomChunkLinksetEditor(this.options.currentPage.id, this.options.name, {
@@ -14,7 +14,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 			});
 	},
 
-	insert : function(links) {
+	insert: function(links) {
 		if (typeof(links) === 'undefined' || links.length === 0) {
 			this.remove();
 		} else {

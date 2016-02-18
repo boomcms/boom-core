@@ -87,7 +87,7 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 			closeButton: false,
 			saveButton: true,
 			title: this.title,
-			open : function() {
+			open: function() {
 				locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');
 
 				locationEditor.map = L.map(locationEditor.mapElement[0])

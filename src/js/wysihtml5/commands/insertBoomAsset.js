@@ -40,7 +40,7 @@
 		@function
 		@returns {Deferred}
 		*/
-		_select_asset : function(composer) {
+		_select_asset: function(composer) {
 			var self = this,
 				asset_embed = new $.Deferred();
 

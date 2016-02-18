@@ -1,7 +1,7 @@
 $.widget('boom.pageTagAutocomplete', $.boom.tagAutocomplete,  {
 	url : '/boomcms/autocomplete/page-tags',
 
-	tagSelected : function(tag) {
+	tagSelected: function(tag) {
 		if (typeof(tag) === 'object') {
 			// A tag which already exists has been selected - we have a tag ID.
 			this._trigger('complete', null, {

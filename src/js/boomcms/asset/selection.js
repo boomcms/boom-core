@@ -114,10 +114,10 @@ function boomAssetSelection(assetIds) {
 			cancelButton : false,
 			onLoad: function() {
 				dialog.contents.find('#b-tags').assetTagSearch({
-					addTag : function(e, tag) {
+					addTag: function(e, tag) {
 						assetSelection.addTag(tag);
 					},
-					removeTag : function(e, tag) {
+					removeTag: function(e, tag) {
 						assetSelection.removeTag(tag);
 					}
 				});

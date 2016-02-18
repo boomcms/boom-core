@@ -1,5 +1,5 @@
 $.widget('ui.chunkLink', $.ui.chunk, {
-	edit : function() {
+	edit: function() {
 		var chunkLink = this,
 			link = new boomLink(this.getUrl(), this.getTargetPageId(), this.getText());
 		
@@ -15,19 +15,19 @@ $.widget('ui.chunkLink', $.ui.chunk, {
 		});
 	},
 	
-	getTargetPageId : function() {
+	getTargetPageId: function() {
 		return this.element.attr('data-boom-target_page_id');
 	},
 	
-	getText : function() {
+	getText: function() {
 		return this.element.attr('data-boom-text');
 	},
 	
-	getUrl : function() {
+	getUrl: function() {
 		return this.element.attr('data-boom-url');
 	},
 
-	insert : function(link) {
+	insert: function(link) {
 		if (typeof(link) === 'undefined' || link.getUrl() === '') {
 			this.remove();
 		} else {

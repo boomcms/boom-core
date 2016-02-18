@@ -10,12 +10,12 @@ $.widget('boom.assetManager', {
 
 	selection: new boomAssetSelection(),
 
-	addFilter : function(type, value) {
+	addFilter: function(type, value) {
 		this.postData.page = 1;
 		this.postData[type] = value;
 	},
 
-	assetsUploaded : function() {
+	assetsUploaded: function() {
 		var assetManager = this;
 
 		assetManager.getAssets();
@@ -23,7 +23,7 @@ $.widget('boom.assetManager', {
 		assetManager.uploader.assetUploader('close');
 	},
 
-	bind : function() {
+	bind: function() {
 		var assetManager = this;
 
 		this.bindContentArea();
@@ -47,7 +47,7 @@ $.widget('boom.assetManager', {
 			});
 	},
 
-	bindContentArea : function() {
+	bindContentArea: function() {
 		var assetManager = this;
 
 		this.element
@@ -77,11 +77,11 @@ $.widget('boom.assetManager', {
 		this.titleFilter = this.element
 			.find('#b-assets-filter-title')
 			.assetTitleFilter({
-				search : function(event, ui) {
+				search: function(event, ui) {
 					assetManager.addFilter('title', $(this).val());
 					assetManager.getAssets();
 				},
-				select : function(event, ui) {
+				select: function(event, ui) {
 					assetManager.addFilter('title', ui.item.value);
 					assetManager.getAssets();
 				}
@@ -89,13 +89,13 @@ $.widget('boom.assetManager', {
 
 		this.element.find('#b-tags-search')
 			.assetTagSearch({
-				update : function(e, data) {
+				update: function(e, data) {
 					assetManager.updateTagFilters(data.tags);
 				}
 			});
 	},
 
-	bindMenuButtons : function() {
+	bindMenuButtons: function() {
 		var assetManager = this;
 
 		this.menu
@@ -131,7 +131,7 @@ $.widget('boom.assetManager', {
 			});
 	},
 
-	clearSelection : function() {
+	clearSelection: function() {
 		this.selection.clear();
 		this.toggleButtons();
 
@@ -167,14 +167,14 @@ $.widget('boom.assetManager', {
 			});
 	},
 
-	getPage : function(page) {
+	getPage: function(page) {
 		if (this.postData.page !== page) {
 			this.postData.page = page;
 			this.getAssets();
 		}
 	},
 
-	initPagination : function(total) {
+	initPagination: function(total) {
 		var assetManager = this,
 			$el = assetManager.element.find('.b-pagination');
 
@@ -192,7 +192,7 @@ $.widget('boom.assetManager', {
 		});
 	},
 
-	removeFilters : function() {
+	removeFilters: function() {
 		this.postData = {
 			page: 1,
 			limit: 30,
@@ -221,32 +221,32 @@ $.widget('boom.assetManager', {
 		this.toggleButtons();
 	},
 
-	sortBy : function(sort) {
+	sortBy: function(sort) {
 		this.postData['order'] = sort;
 		this.getAssets();
 	},
 
-	toggleButtons : function() {
+	toggleButtons: function() {
 		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
 		$('#b-button-multiaction-edit').prop('disabled', this.selection.length() == 1 ? false : true);
 		buttons.prop('disabled', this.selection.length() ? false : true);
 	},
 
-	updateContentAreaMargin : function() {
+	updateContentAreaMargin: function() {
 		// The filters bar will now be higher so move the content box down.
 		// Filters bar is position: fixed so this won't happen automatically.
 		var $filters = this.element.find('#b-assets-filters');
 		this.element.find('#b-assets-content').css('padding-top', $filters.outerHeight() + ($filters.offset().top) + 'px');
 	},
 
-	updateTagFilters : function(tags) {
+	updateTagFilters: function(tags) {
 		var assetManager = this;
 
 		this.addFilter('tag', tags);
 		this.getAssets();
 	},
 
-	viewAsset : function() {
+	viewAsset: function() {
 		var assetManager = this;
 
 		new boomAssetEditor(new boomAsset(this.selection.index(0)), assetManager.uploader)

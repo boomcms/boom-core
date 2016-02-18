@@ -181,7 +181,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			width: 920,
 			closeButton: false,
 			saveButton: true,
-			open : function() {
+			open: function() {
 				slideshowEditor.bind();
 			}
 		})

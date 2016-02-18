@@ -14,14 +14,14 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	content : '',
 
-	_create : function() {
+	_create: function() {
 		var element = this.element.find('.chunk-text');
 		this.element = (element.length)? $(element[0]) : this.element;
 
 		$.ui.chunk.prototype._create.call(this);
 	},
 
-	bind : function() {
+	bind: function() {
 		var element = this.element,
 			self = this;
 
@@ -44,12 +44,12 @@ $.widget('ui.chunkText', $.ui.chunk,
 		});
 	},
 
-	edit : function() {},
+	edit: function() {},
 
 	/**
 	Get the chunk HTML, escaped and cleaned.
 	*/
-	getData : function(){
+	getData: function(){
 		var $content = this.element.find('.slot-content');
 
 		this.content = ($content.length)? $content.html() : this.element.html();
@@ -59,7 +59,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 		};
 	},
 
-	hasContent : function() {
+	hasContent: function() {
 		return this.element.text() !== '' || this.element.find('img').length > 0;
 	},
 
@@ -71,5 +71,5 @@ $.widget('ui.chunkText', $.ui.chunk,
 		this.originalContent = this.element.html();
 	},
 
-	_update_html : function() {}
+	_update_html: function() {}
 });

@@ -2,7 +2,7 @@
  * Enables opening the page visibility editor by clicking on an element in the page.
  */
 $.widget('ui.chunkPageVisibility', {
-	bind : function() {
+	bind: function() {
 		var chunkPageVisibility = this;
 
 		this.element
@@ -24,7 +24,7 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 	}
 });

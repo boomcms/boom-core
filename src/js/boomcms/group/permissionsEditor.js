@@ -1,7 +1,7 @@
 $.widget('boom.groupPermissionsEditor', {
 	group : null,
 
-	bind : function() {
+	bind: function() {
 		var self = this, selected_page;
 
 		this.element
@@ -34,7 +34,7 @@ $.widget('boom.groupPermissionsEditor', {
 		var page_tree = this.element.find('#b-group-roles-pages .boom-tree');
 
 		page_tree.pageTree({
-			onPageSelect : function(link) {
+			onPageSelect: function(link) {
 				$('#b-group-roles-pages .b-group-roles').show();
 
 				selected_page = link.getPageId();
@@ -77,7 +77,7 @@ $.widget('boom.groupPermissionsEditor', {
 			.prop('checked', true);
 	},
 
-	_create : function() {
+	_create: function() {
 		this.group = this.options.group;
 		this.element.ui();
 		this.bind();
@@ -86,7 +86,7 @@ $.widget('boom.groupPermissionsEditor', {
 		this._show_permissions(0);
 	},
 
-	_show_permissions : function(page_id) {
+	_show_permissions: function(page_id) {
 		var self = this,
 			i;
 

@@ -10,7 +10,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	*/
 	{
 
-	_bind : function() {
+	_bind: function() {
 		var featureChunk = this;
 
 		if (this.options.id > 0) {
@@ -35,7 +35,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		}
 	},
 
-	edit : function() {
+	edit: function() {
 		var featureEditor = this;
 
 		if (this.options.id > 0 && this.getTargetUrl()) {
@@ -48,7 +48,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 					{
 						text : 'Visit page',
 						class : 'b-button b-button-textonly',
-						click : function() {
+						click: function() {
 							featureEditor.viewTarget();
 						}
 					},
@@ -63,7 +63,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 					{
 						text : 'Change the featured page',
 						class : 'b-button b-button-textonly',
-						click : function() {
+						click: function() {
 							featureEditor.editTarget();
 						}
 					}
@@ -77,7 +77,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		}
 	},
 
-	editTarget : function() {
+	editTarget: function() {
 		var featureEditor = this;
 
 		new boomLinkPicker(new boomLink(null, this.options.currentPage.id), {
@@ -100,7 +100,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		return {target_page_id : this.options.id};
 	},
 
-	getTargetUrl : function() {
+	getTargetUrl: function() {
 		return this.element.is('a')? this.element.attr('href') : this.element.find('a').attr('href');
 	},
 
@@ -108,13 +108,13 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	Insert the selected page into the DOM as a feature box.
 	@param {Int} rid Page RID
 	*/
-	insert : function(rid){
+	insert: function(rid){
 		this.options.id = rid;
 
 		return this._save();
 	},
 
-	viewTarget : function() {
+	viewTarget: function() {
 		top.window.location = this.getTargetUrl();
 	}
 });

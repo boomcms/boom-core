@@ -40649,7 +40649,7 @@ $.extend({
 		},
 
 		editor: {
-			state : function(state, url) {
+			state: function(state, url) {
 
 				$.post('/boomcms/editor/state', {state: state}, function() {
 					if (url) {
@@ -40963,7 +40963,7 @@ $(function() {
 	url : '',
 	ignoreTags : [],
 
-	bind : function() {
+	bind: function() {
 		var self = this;
 
 		this.element
@@ -40988,7 +40988,7 @@ $(function() {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		var self = this;
 
 		this.group = this.options.group;
@@ -40997,15 +40997,15 @@ $(function() {
 
 		this.element.autocomplete({
 			delay: 200,
-			source : function(request, response) {
+			source: function(request, response) {
 				self._autocompleteSource(request, response);
 			},
-			focus : function(event, ui) {
+			focus: function(event, ui) {
 				event.preventDefault();
 
 				self.element.val(ui.item.label);
 			},
-			select : function(event, ui) {
+			select: function(event, ui) {
 				event.preventDefault();
 
 				self.element.val('');
@@ -41016,7 +41016,7 @@ $(function() {
 		this.bind();
 	},
 
-	_autocompleteSource : function(request, response) {
+	_autocompleteSource: function(request, response) {
 		$.ajax({
 			url: this.url,
 			dataType: 'json',
@@ -41031,22 +41031,22 @@ $(function() {
 		});
 	},
 
-	setIgnoreTags : function(tags) {
+	setIgnoreTags: function(tags) {
 		this.ignoreTags = tags;
 	},
 
-	tagSelected : function(tag) {
+	tagSelected: function(tag) {
 		this._trigger('complete', null, {tag : tag});
 	}
 });;$.widget('boom.pageStatus', {
 
 	menu : $('#b-page-publish-menu'),
 
-	_create : function() {
+	_create: function() {
 		this.set(this.element.text().trim());
 	},
 
-	_get_abbreviated_status : function(status) {
+	_get_abbreviated_status: function(status) {
 		switch(status) {
 			case 'published':
 				return "pub'd";
@@ -41059,7 +41059,7 @@ $(function() {
 		}
 	},
 
-	set : function(status) {
+	set: function(status) {
 		this.element
 			.text(this._get_abbreviated_status(status))
 			.attr('data-status', status)
@@ -41158,7 +41158,7 @@ $(function() {
 		editable : false
 	},
 
-	_create : function() {
+	_create: function() {
 		var self = this;
 
 		this.page = new boomPage(this.options.page_id);
@@ -41180,7 +41180,7 @@ $(function() {
 		}
 	},
 
-	createChunks : function() {
+	createChunks: function() {
 		var self = this;
 
 		this.document.contents()
@@ -41234,7 +41234,7 @@ $(function() {
 			});
 	},
 
-	watchForDialogs : function() {
+	watchForDialogs: function() {
 		var editor = this,
 			toolbar = this.page.toolbar;
 
@@ -41266,7 +41266,7 @@ $(function() {
 $.widget( 'boom.pageToolbar', {
 	buttons : {},
 
-	_bindButtonEvents : function() {
+	_bindButtonEvents: function() {
 		var self = this;
 
 		this.element.contents()
@@ -41328,7 +41328,7 @@ $.widget( 'boom.pageToolbar', {
 		}, 1000);
 	},
 
-	_create : function() {
+	_create: function() {
 		var toolbar = this;
 
 		this.findButtons();
@@ -41427,7 +41427,7 @@ $.widget( 'boom.pageToolbar', {
 		}
 	},
 
-	findButtons : function() {
+	findButtons: function() {
 		this.buttons = {
 			visible : this.element.contents().find('#b-page-visible'),
 			invisible : this.element.contents().find('#b-page-invisible'),
@@ -41439,7 +41439,7 @@ $.widget( 'boom.pageToolbar', {
 	* extend the toolbar to cover the entire window
 	* @function
 	*/
-	maximise : function() {
+	maximise: function() {
 		this.element.css({
 			width : '100%',
 			'z-index' : 100002
@@ -41450,7 +41450,7 @@ $.widget( 'boom.pageToolbar', {
 	* minimise the toolbar to allow clicking on the underlying page
 	* @function
 	*/
-	minimise : function() {
+	minimise: function() {
 		this.element.css({
 			width : '60px',
 			'z-index' : 10000
@@ -41469,7 +41469,7 @@ $.widget( 'boom.pageToolbar', {
 	/**
 	@function
 	*/
-	hide : function() {
+	hide: function() {
 		this.buttonBar.css('z-index', 1);
 	},
 
@@ -41480,7 +41480,7 @@ $.widget( 'boom.pageToolbar', {
 	/**
 	@function
 	*/
-	show : function() {
+	show: function() {
 		this.buttonBar.css('z-index', 10000);
 	},
 
@@ -41508,7 +41508,7 @@ $.widget( 'boom.pageToolbar', {
 		this.showSettings(section);
 	},
 
-	_toggle_view_live_button : function() {
+	_toggle_view_live_button: function() {
 		if (this.buttons.visible.css('display') === 'none') {
 			this.buttons.viewLive
 				.attr('title', 'You cannot view a live version of this page as it is currently hidden from the live site')
@@ -41525,7 +41525,7 @@ Create a tree widget for selecting pages.
 */
 $.widget('boom.pageTree', {
 	options : {
-		onPageSelect : function() {}
+		onPageSelect: function() {}
 	},
 
 	bind: function() {
@@ -41552,16 +41552,16 @@ $.widget('boom.pageTree', {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 		this.getChildren(null, this.element);
 	},
 
-	itemClick : function($node) {
+	itemClick: function($node) {
 		this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('data-page-id'), $node.text()));
 	},
 
-	getChildren : function(pageId, $ul) {
+	getChildren: function(pageId, $ul) {
 		var pageTree = this;
 
 		$.get('/boomcms/search/pages', {parent: pageId})
@@ -41624,7 +41624,7 @@ $.widget('boom.pageTree', {
 });;$.widget('boom.pageTagSearch',  {
 	tags : [],
 
-	addTag : function(tag) {
+	addTag: function(tag) {
 		this.tags.push(tag.id);
 
 		var $el = $('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag.id + '"></a></li>')
@@ -41639,13 +41639,13 @@ $.widget('boom.pageTree', {
 		this.update();
 	},
 
-	bind : function() {
+	bind: function() {
 		var tagSearch = this;
 
 		this.input
 			.pageTagAutocomplete({
 				group : this.group,
-				complete : function(e, tag) {
+				complete: function(e, tag) {
 					tagSearch.addTag(tag);
 				}
 			});
@@ -41665,7 +41665,7 @@ $.widget('boom.pageTree', {
 		});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.tagList = this.element.is('ul') ? this.element : this.element.find('ul');
 		this.input = this.element.find('input');
 		this.group = this.element.attr('data-group');
@@ -41673,7 +41673,7 @@ $.widget('boom.pageTree', {
 		this.bind();
 	},
 
-	removeTag : function($a) {
+	removeTag: function($a) {
 		var tag = $a.attr('data-tag');
 
 		$a.parent().remove();
@@ -41683,14 +41683,14 @@ $.widget('boom.pageTree', {
 		this.update();
 	},
 
-	update : function() {
+	update: function() {
 		this.input.pageTagAutocomplete('setIgnoreTags', this.tags);
 		this._trigger('update', null, {tags : this.tags});
 	}
 });;$.widget('boom.pageTagAutocomplete', $.boom.tagAutocomplete,  {
 	url : '/boomcms/autocomplete/page-tags',
 
-	tagSelected : function(tag) {
+	tagSelected: function(tag) {
 		if (typeof(tag) === 'object') {
 			// A tag which already exists has been selected - we have a tag ID.
 			this._trigger('complete', null, {
@@ -42102,7 +42102,7 @@ $.widget('boom.pageTree', {
 
 		$el.find('.boom-tree').pageTree({
 			active: $el.find('input[name=parent_id]').val(),
-			onPageSelect : function(page) {
+			onPageSelect: function(page) {
 				$el.find('input[name=parent_id]').val(page.pageId);
 			}
 		});
@@ -42651,7 +42651,7 @@ $.widget('boom.textEditor', {
 	* @function
 	@param {Object} element The element being edited.
 	*/
-	apply : function(element) {
+	apply: function(element) {
 		var html = this.model === 'block' ? this.instance.getValue() : element.html();
 
 		$.boom.page.toolbar.minimise();
@@ -42665,7 +42665,7 @@ $.widget('boom.textEditor', {
 		this._trigger('edit', html);
 	},
 
-	blur : function(element) {
+	blur: function(element) {
 		this.apply(element);
 	},
 
@@ -42673,7 +42673,7 @@ $.widget('boom.textEditor', {
 	* @function
 	@param {Object} element The element being edited.
 	*/
-	cancel : function() {
+	cancel: function() {
 		var textEditor = this;
 
 		this.disableAutoSave();
@@ -42698,11 +42698,11 @@ $.widget('boom.textEditor', {
 		}
 	},
 
-	disableAutoSave : function() {
+	disableAutoSave: function() {
 		this.element.unbind('blur');
 	},
 
-	enableAutoSave : function() {
+	enableAutoSave: function() {
 		var editor = this;
 
 		this.element.on('blur', function() {
@@ -42712,7 +42712,7 @@ $.widget('boom.textEditor', {
 		});
 	},
 
-	hasBeenEdited : function() {
+	hasBeenEdited: function() {
 		return this.element.html() !== this.original_html;
 	},
 	
@@ -42724,11 +42724,11 @@ $.widget('boom.textEditor', {
 		$('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
 	},
 
-	hideToolbar : function() {
+	hideToolbar: function() {
 		$('#wysihtml5-toolbar').hide().children('[data-buttonset]').hide();
 	},
 
-	showToolbar : function() {
+	showToolbar: function() {
 		this.toolbar.show();
 		$('#wysihtml5-toolbar').show().children().not(this.toolbar).hide();
 	}
@@ -42754,7 +42754,7 @@ $.widget('ui.chunk',
 
 	edited : false,
 
-	bind : function() {
+	bind: function() {
 		var self = this;
 
 		this.element
@@ -42771,11 +42771,11 @@ $.widget('ui.chunk',
 			.attr('tabindex', 0);
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 	},
 
-	destroy : function() {
+	destroy: function() {
 		this.bind();
 	},
 
@@ -42783,7 +42783,7 @@ $.widget('ui.chunk',
 	Insert edited chunk content back into the page.
 	@function
 	*/
-	_update_html : function(html) {
+	_update_html: function(html) {
 		var $html = $(html);
 
 		this.element.replaceWith($html);
@@ -42802,7 +42802,7 @@ $.widget('ui.chunk',
 		});
 	},
 
-	remove : function() {
+	remove: function() {
 		var self = this,
 			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name);
 
@@ -42814,7 +42814,7 @@ $.widget('ui.chunk',
 			});
 	},
 
-	_save : function(data) {
+	_save: function(data) {
 		var self = this,
 			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name),
 			data = data? data : this.getData();
@@ -42858,14 +42858,14 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	content : '',
 
-	_create : function() {
+	_create: function() {
 		var element = this.element.find('.chunk-text');
 		this.element = (element.length)? $(element[0]) : this.element;
 
 		$.ui.chunk.prototype._create.call(this);
 	},
 
-	bind : function() {
+	bind: function() {
 		var element = this.element,
 			self = this;
 
@@ -42888,12 +42888,12 @@ $.widget('ui.chunkText', $.ui.chunk,
 		});
 	},
 
-	edit : function() {},
+	edit: function() {},
 
 	/**
 	Get the chunk HTML, escaped and cleaned.
 	*/
-	getData : function(){
+	getData: function(){
 		var $content = this.element.find('.slot-content');
 
 		this.content = ($content.length)? $content.html() : this.element.html();
@@ -42903,7 +42903,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 		};
 	},
 
-	hasContent : function() {
+	hasContent: function() {
 		return this.element.text() !== '' || this.element.find('img').length > 0;
 	},
 
@@ -42915,9 +42915,9 @@ $.widget('ui.chunkText', $.ui.chunk,
 		this.originalContent = this.element.html();
 	},
 
-	_update_html : function() {}
+	_update_html: function() {}
 });;$.widget('ui.chunkLinkset', $.ui.chunk, {
-	edit : function() {
+	edit: function() {
 		var chunkLinkset = this;
 
 		new boomChunkLinksetEditor(this.options.currentPage.id, this.options.name, {
@@ -42932,7 +42932,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 			});
 	},
 
-	insert : function(links) {
+	insert: function(links) {
 		if (typeof(links) === 'undefined' || links.length === 0) {
 			this.remove();
 		} else {
@@ -42951,7 +42951,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	*/
 	{
 
-	_bind : function() {
+	_bind: function() {
 		var featureChunk = this;
 
 		if (this.options.id > 0) {
@@ -42976,7 +42976,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		}
 	},
 
-	edit : function() {
+	edit: function() {
 		var featureEditor = this;
 
 		if (this.options.id > 0 && this.getTargetUrl()) {
@@ -42989,7 +42989,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 					{
 						text : 'Visit page',
 						class : 'b-button b-button-textonly',
-						click : function() {
+						click: function() {
 							featureEditor.viewTarget();
 						}
 					},
@@ -43004,7 +43004,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 					{
 						text : 'Change the featured page',
 						class : 'b-button b-button-textonly',
-						click : function() {
+						click: function() {
 							featureEditor.editTarget();
 						}
 					}
@@ -43018,7 +43018,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		}
 	},
 
-	editTarget : function() {
+	editTarget: function() {
 		var featureEditor = this;
 
 		new boomLinkPicker(new boomLink(null, this.options.currentPage.id), {
@@ -43041,7 +43041,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		return {target_page_id : this.options.id};
 	},
 
-	getTargetUrl : function() {
+	getTargetUrl: function() {
 		return this.element.is('a')? this.element.attr('href') : this.element.find('a').attr('href');
 	},
 
@@ -43049,17 +43049,17 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	Insert the selected page into the DOM as a feature box.
 	@param {Int} rid Page RID
 	*/
-	insert : function(rid){
+	insert: function(rid){
 		this.options.id = rid;
 
 		return this._save();
 	},
 
-	viewTarget : function() {
+	viewTarget: function() {
 		top.window.location = this.getTargetUrl();
 	}
 });;$.widget('ui.chunkAsset', $.ui.chunk, {
-	editAssetOnly : function() {
+	editAssetOnly: function() {
 		var chunkAsset = this;
 
 		new boomAssetPicker(this.asset, this.getPickerFilters())
@@ -43079,7 +43079,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		});
 	},
 
-	editAllElements : function() {
+	editAllElements: function() {
 		var chunkAsset = this;
 
 		new boomChunkAssetEditor(this.options.page, this.options.name, {
@@ -43132,7 +43132,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		return elements;
 	 },
 
-	edit : function() {
+	edit: function() {
 		this.elements = this.getElements();
 		this.asset = new boomAsset(this.element.attr('data-boom-target'));
 
@@ -43143,7 +43143,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		}
 	},
 
-	 getPickerFilters : function() {
+	 getPickerFilters: function() {
 		 if (this.element.attr('data-boom-filterbytype')) {
 			 return {
 				 type : this.element.attr('data-boom-filterByType')
@@ -43151,11 +43151,11 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		 }
 	 },
 
-	hasMetadata : function() {
+	hasMetadata: function() {
 		return (this.elements.caption.length || this.elements.link.length || this.elements.title.length);
 	},
 
-	save : function(data) {
+	save: function(data) {
 		this._save(data);
 		this.destroy();
 	}
@@ -43199,7 +43199,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			});
 	},
 
-	hasClass : function(c) {
+	hasClass: function(c) {
 		return this.element.hasClass(c) || this.element.find('.' + c).length > 0;
 	},
 
@@ -43228,7 +43228,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
 	timestamp : '',
 
-	_create : function() {
+	_create: function() {
 		this.format = this.element.attr('data-boom-format');
 		this.timestamp = this.element.attr('data-boom-timestamp');
 		this.formatIsEditable = (this.element.attr('data-boom-formatIsEditable') === '1');
@@ -43236,7 +43236,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		$.ui.chunk.prototype._create.call(this);
 	},
 
-	edit : function() {
+	edit: function() {
 		var self = this,
 			data = this.getData();
 
@@ -43246,7 +43246,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			title: 'Edit date / time',
 			closeButton: false,
 			saveButton: true,
-			onLoad : function() {
+			onLoad: function() {
 				if (self.formatIsEditable) {
 					data.format && $('#format').val(data.format);
 				} else {
@@ -43273,7 +43273,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		});
 	},
 
-	insert : function(format, timestamp) {
+	insert: function(format, timestamp) {
 		if (this.formatIsEditable) {
 			this.format = format;
 		}
@@ -43298,7 +43298,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		$el.find('input[type=text]').val('');
 	},
 
-	edit : function() {
+	edit: function() {
 		var library = this;
 
 		this.dialog = new boomDialog({
@@ -43520,7 +43520,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			width: 920,
 			closeButton: false,
 			saveButton: true,
-			open : function() {
+			open: function() {
 				slideshowEditor.bind();
 			}
 		})
@@ -43801,7 +43801,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			width: 900,
 			closeButton: false,
 			saveButton: true,
-			open : function() {
+			open: function() {
 				chunkAssetEditor.dialogOpened();
 			}
 		})
@@ -43856,7 +43856,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
  */
 $.widget('ui.chunkPageTags', {
 
-	_create : function() {
+	_create: function() {
 		var chunkPageTags = this;
 
 		this.element
@@ -43878,7 +43878,7 @@ $.widget('ui.chunkPageTags', {
  * Enables opening the page visibility editor by clicking on an element in the page.
  */
 $.widget('ui.chunkPageVisibility', {
-	bind : function() {
+	bind: function() {
 		var chunkPageVisibility = this;
 
 		this.element
@@ -43900,11 +43900,11 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 	}
 });;$.widget('ui.chunkLink', $.ui.chunk, {
-	edit : function() {
+	edit: function() {
 		var chunkLink = this,
 			link = new boomLink(this.getUrl(), this.getTargetPageId(), this.getText());
 		
@@ -43920,19 +43920,19 @@ $.widget('ui.chunkPageVisibility', {
 		});
 	},
 	
-	getTargetPageId : function() {
+	getTargetPageId: function() {
 		return this.element.attr('data-boom-target_page_id');
 	},
 	
-	getText : function() {
+	getText: function() {
 		return this.element.attr('data-boom-text');
 	},
 	
-	getUrl : function() {
+	getUrl: function() {
 		return this.element.attr('data-boom-url');
 	},
 
-	insert : function(link) {
+	insert: function(link) {
 		if (typeof(link) === 'undefined' || link.getUrl() === '') {
 			this.remove();
 		} else {
@@ -44064,7 +44064,7 @@ $.widget('ui.chunkPageVisibility', {
 			closeButton: false,
 			saveButton: true,
 			title: this.title,
-			open : function() {
+			open: function() {
 				locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');
 
 				locationEditor.map = L.map(locationEditor.mapElement[0])
@@ -44168,7 +44168,7 @@ $.widget('ui.chunkPageVisibility', {
 	return this.open();
 };
 ;$.widget('ui.chunkHtml', $.ui.chunk, {
-	edit : function() {
+	edit: function() {
 		var self = this,
 			dialog;
 
@@ -44199,7 +44199,7 @@ $.widget('ui.chunkPageVisibility', {
 	/**
 	@param {Int} id Tag ID
 	*/
-	insert : function(html) {
+	insert: function(html) {
 		this.html = html;
 
 		return this._save();
@@ -44215,7 +44215,7 @@ $.widget('ui.chunkPageVisibility', {
 
 	saveOnBlur: false,
 
-	bind : function() {
+	bind: function() {
 		$.ui.chunk.prototype.bind.call(this);
 
 		var self = this,
@@ -44223,7 +44223,7 @@ $.widget('ui.chunkPageVisibility', {
 			old_text = this.getTitle();
 
 		this.element.textEditor({
-			edit : function() {
+			edit: function() {
 				var title = self.getTitle();
 
 				if (title != '' && title != old_text && title.length <= self.hardLimit) {
@@ -44257,7 +44257,7 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	_create_length_counter : function() {
+	_create_length_counter: function() {
 		var $counter = $('<div id="b-title-length"><span></span></div>');
 
 		$(top.document)
@@ -44293,9 +44293,9 @@ $.widget('ui.chunkPageVisibility', {
 		this._update_length_counter(this.getLength());
 	},
 
-	edit : function() {},
+	edit: function() {},
 
-	_get_counter_color_for_length : function(length) {
+	_get_counter_color_for_length: function(length) {
 		if (length >= this.softLimit) {
 			return 'red';
 		} else if (length >= this.softLimit * 0.9) {
@@ -44315,11 +44315,11 @@ $.widget('ui.chunkPageVisibility', {
 		return this.element.text().trim();
 	},
 
-	isUntitled : function() {
+	isUntitled: function() {
 		return this.getTitle() === 'Untitled';
 	},
 
-	openHelp : function() {
+	openHelp: function() {
 		var title = this;
 
 		new boomDialog({
@@ -44337,7 +44337,7 @@ $.widget('ui.chunkPageVisibility', {
 		$(top.document).find('#b-title-length').remove();
 	},
 
-	_save : function(title, old_title) {
+	_save: function(title, old_title) {
 		this.options.currentPage.setTitle(title)
 			.done(function(data) {
 				if (data.location !== top.window.location) {
@@ -44364,11 +44364,11 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	updatePageTitle : function(oldTitle, newTitle) {
+	updatePageTitle: function(oldTitle, newTitle) {
 		top.document.title = top.document.title.replace(oldTitle, newTitle);
 	},
 
-	_update_length_counter : function(length) {
+	_update_length_counter: function(length) {
 		$(top.document).find('#b-title-length')
 			.find('span')
 			.text(length)
@@ -44382,7 +44382,7 @@ $.widget('ui.chunkPageVisibility', {
 			.css('opacity', opacity);
 	},
 
-	unbind : function() {}
+	unbind: function() {}
 });;function boomLink(url, pageId, title) {
 	this.url = url? url : "";
 	this.pageId = pageId? pageId : 0;
@@ -44499,7 +44499,7 @@ $.widget('ui.chunkPageVisibility', {
 					}
 				}
 			},
-			select : function(event, ui) {
+			select: function(event, ui) {
 				event.preventDefault();
 
 				linkPicker.externalUrl.val(ui.item.value);
@@ -44507,7 +44507,7 @@ $.widget('ui.chunkPageVisibility', {
 		});
 
 		this.dialog.contents.find('.boom-tree').pageTree({
-			onPageSelect : function(link) {
+			onPageSelect: function(link) {
 				linkPicker.pick(link);
 				linkPicker.dialog.cancel();
 			}
@@ -44616,7 +44616,7 @@ $.widget('ui.chunkPageVisibility', {
 			id : 'b-linkpicker',
 			width : 600,
 			closeButton: this.options.external || this.options.text || this.options.asset,
-			onLoad : function(dialog) {
+			onLoad: function(dialog) {
 				linkPicker.onLoad(dialog);
 			}
 		})
@@ -44697,7 +44697,7 @@ $.widget('ui.chunkPageVisibility', {
 	return this.open();
 };
 ;$.widget('boom.templateManager', {
-	bind : function() {
+	bind: function() {
 		this.element
 			.on('click', '.b-templates-delete', function(e) {
 				e.preventDefault();
@@ -44727,7 +44727,7 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 
 		this.element.find('table')
@@ -44820,7 +44820,7 @@ $.widget('ui.chunkPageVisibility', {
 			url : '/boomcms/assets/view/' + assetEditor.asset.id,
 			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
 			closeButton: false,
-			onLoad : function() {
+			onLoad: function() {
                 assetEditor.bind(assetEditor.dialog);
 
 				assetEditor.dialog.contents
@@ -44887,12 +44887,12 @@ $.widget('ui.chunkPageVisibility', {
 
 	selection: new boomAssetSelection(),
 
-	addFilter : function(type, value) {
+	addFilter: function(type, value) {
 		this.postData.page = 1;
 		this.postData[type] = value;
 	},
 
-	assetsUploaded : function() {
+	assetsUploaded: function() {
 		var assetManager = this;
 
 		assetManager.getAssets();
@@ -44900,7 +44900,7 @@ $.widget('ui.chunkPageVisibility', {
 		assetManager.uploader.assetUploader('close');
 	},
 
-	bind : function() {
+	bind: function() {
 		var assetManager = this;
 
 		this.bindContentArea();
@@ -44924,7 +44924,7 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	bindContentArea : function() {
+	bindContentArea: function() {
 		var assetManager = this;
 
 		this.element
@@ -44954,11 +44954,11 @@ $.widget('ui.chunkPageVisibility', {
 		this.titleFilter = this.element
 			.find('#b-assets-filter-title')
 			.assetTitleFilter({
-				search : function(event, ui) {
+				search: function(event, ui) {
 					assetManager.addFilter('title', $(this).val());
 					assetManager.getAssets();
 				},
-				select : function(event, ui) {
+				select: function(event, ui) {
 					assetManager.addFilter('title', ui.item.value);
 					assetManager.getAssets();
 				}
@@ -44966,13 +44966,13 @@ $.widget('ui.chunkPageVisibility', {
 
 		this.element.find('#b-tags-search')
 			.assetTagSearch({
-				update : function(e, data) {
+				update: function(e, data) {
 					assetManager.updateTagFilters(data.tags);
 				}
 			});
 	},
 
-	bindMenuButtons : function() {
+	bindMenuButtons: function() {
 		var assetManager = this;
 
 		this.menu
@@ -45008,7 +45008,7 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	clearSelection : function() {
+	clearSelection: function() {
 		this.selection.clear();
 		this.toggleButtons();
 
@@ -45044,14 +45044,14 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	getPage : function(page) {
+	getPage: function(page) {
 		if (this.postData.page !== page) {
 			this.postData.page = page;
 			this.getAssets();
 		}
 	},
 
-	initPagination : function(total) {
+	initPagination: function(total) {
 		var assetManager = this,
 			$el = assetManager.element.find('.b-pagination');
 
@@ -45069,7 +45069,7 @@ $.widget('ui.chunkPageVisibility', {
 		});
 	},
 
-	removeFilters : function() {
+	removeFilters: function() {
 		this.postData = {
 			page: 1,
 			limit: 30,
@@ -45098,32 +45098,32 @@ $.widget('ui.chunkPageVisibility', {
 		this.toggleButtons();
 	},
 
-	sortBy : function(sort) {
+	sortBy: function(sort) {
 		this.postData['order'] = sort;
 		this.getAssets();
 	},
 
-	toggleButtons : function() {
+	toggleButtons: function() {
 		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
 		$('#b-button-multiaction-edit').prop('disabled', this.selection.length() == 1 ? false : true);
 		buttons.prop('disabled', this.selection.length() ? false : true);
 	},
 
-	updateContentAreaMargin : function() {
+	updateContentAreaMargin: function() {
 		// The filters bar will now be higher so move the content box down.
 		// Filters bar is position: fixed so this won't happen automatically.
 		var $filters = this.element.find('#b-assets-filters');
 		this.element.find('#b-assets-content').css('padding-top', $filters.outerHeight() + ($filters.offset().top) + 'px');
 	},
 
-	updateTagFilters : function(tags) {
+	updateTagFilters: function(tags) {
 		var assetManager = this;
 
 		this.addFilter('tag', tags);
 		this.getAssets();
 	},
 
-	viewAsset : function() {
+	viewAsset: function() {
 		var assetManager = this;
 
 		new boomAssetEditor(new boomAsset(this.selection.index(0)), assetManager.uploader)
@@ -45161,11 +45161,11 @@ $.widget('ui.chunkPageVisibility', {
 		var assetPicker = this;
 
 		this.titleFilter.assetTitleFilter({
-			search : function(event, ui) {
+			search: function(event, ui) {
 				assetPicker.addFilter('title', assetPicker.titleFilter.val());
 				assetPicker.getAssets();
 			},
-			select : function(event, ui) {
+			select: function(event, ui) {
 				assetPicker.addFilter('title', ui.item.value);
 				assetPicker.getAssets();
 			}
@@ -45173,7 +45173,7 @@ $.widget('ui.chunkPageVisibility', {
 
 		this.tagFilter
 			.assetTagSearch({
-				update : function(e, data) {
+				update: function(e, data) {
 					assetPicker.addFilter('tag', data.tags);
 					assetPicker.getAssets();
 				}
@@ -45290,7 +45290,7 @@ $.widget('ui.chunkPageVisibility', {
 
 		this.dialog = new boomDialog({
 			url : this.url,
-			onLoad : function() {
+			onLoad: function() {
 				assetPicker.dialog.contents.parent().css({
 					position: 'fixed',
 					height: '100vh',
@@ -45361,7 +45361,7 @@ $.widget('ui.chunkPageVisibility', {
 		minLength: 3
 	},
 
-	_create : function() {
+	_create: function() {
 		var element = this.element;
 
 		this.options.source = function(request, response) {
@@ -45461,7 +45461,7 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	notify : function(message) {
+	notify: function(message) {
 		if ( ! message) {
 			message = this.originalMessage;
 		}
@@ -45482,7 +45482,7 @@ $.widget('ui.chunkPageVisibility', {
 		});
 	},
 
-	resizeDropArea : function() {
+	resizeDropArea: function() {
 		this.options.dropAreaHeight && this.dropArea.height(this.options.dropAreaHeight);
 	},
 
@@ -45499,13 +45499,13 @@ $.widget('ui.chunkPageVisibility', {
 		this.initUploader();
 	},
 
-	updateProgressBar : function(e, percentComplete) {
+	updateProgressBar: function(e, percentComplete) {
 		this.progressBar.progressbar('value', percentComplete);
 
 		this._trigger('uploadProgress', e, [percentComplete]);
 	},
 
-	uploadFailed : function(e, data) {
+	uploadFailed: function(e, data) {
 		var message = 'Errors occurred during file upload:<br />',
 			errors = $.parseJSON(data.jqXHR.responseText),
 			i;
@@ -45524,7 +45524,7 @@ $.widget('ui.chunkPageVisibility', {
 		this._trigger('uploadFinished', e, data);
 	},
 
-	uploadStarted : function(e, data) {
+	uploadStarted: function(e, data) {
 		this.progressBar
 			.css('display', 'block')
 			.progressbar();
@@ -45541,21 +45541,21 @@ $.widget('ui.chunkPageVisibility', {
 	targetRightOffset : null,
 	windowWidth : null,
 
-	_create : function() {
+	_create: function() {
 		this.$el = $(this.element);
 
 		this._setDimensions();
 		this.justify();
 	},
 
-	_getOffset : function($el) {
+	_getOffset: function($el) {
 		var offset = $el.offset();
 		offset.right = this.windowWidth - (offset.left + $el.outerWidth(true));
 
 		return offset;
 	},
 
-	justify : function() {
+	justify: function() {
 		var currentRow = new Row(),
 			prevRow,
 			self = this,
@@ -45592,7 +45592,7 @@ $.widget('ui.chunkPageVisibility', {
 		}
 	},
 
-	_setDimensions : function() {
+	_setDimensions: function() {
 		this.windowWidth = $(window).width();
 		this.targetRightOffset = (this.windowWidth - (this.$el.offset().left + this.$el.innerWidth()));
 	}
@@ -45702,7 +45702,7 @@ function Row() {
 };$.widget('boom.assetTagAutocomplete', $.boom.tagAutocomplete,  {
 	url : '/boomcms/autocomplete/asset-tags',
 
-	tagSelected : function(tag) {
+	tagSelected: function(tag) {
 		if (typeof(tag) === 'object') {
 			this._trigger('complete', null, {tag : tag.label});
 		} else {
@@ -45712,7 +45712,7 @@ function Row() {
 });;$.widget('boom.assetTagSearch',  {
 	tags : [],
 
-	addTag : function(tag) {
+	addTag: function(tag) {
 		this.tags.push(tag);
 
 		var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag + '"></a></li>');
@@ -45727,12 +45727,12 @@ function Row() {
 		this.update();
 	},
 
-	bind : function() {
+	bind: function() {
 		var tagSearch = this;
 
 		this.input
 			.assetTagAutocomplete({
-				complete : function(e, data) {
+				complete: function(e, data) {
 					tagSearch.addTag(data.tag);
 				}
 			});
@@ -45749,14 +45749,14 @@ function Row() {
 		});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.tagList = this.element.find('ul');
 		this.input = this.element.find('input');
 
 		this.bind();
 	},
 
-	removeTag : function($a) {
+	removeTag: function($a) {
 		var tag = $a.attr('data-tag');
 
 		$a.parent().remove();
@@ -45766,7 +45766,7 @@ function Row() {
 		this.update();
 	},
 
-	update : function() {
+	update: function() {
 		this.input.assetTagAutocomplete('setIgnoreTags', this.tags);
 		this._trigger('update', null, {tags : this.tags});
 	}
@@ -45886,10 +45886,10 @@ function Row() {
 			cancelButton : false,
 			onLoad: function() {
 				dialog.contents.find('#b-tags').assetTagSearch({
-					addTag : function(e, tag) {
+					addTag: function(e, tag) {
 						assetSelection.addTag(tag);
 					},
-					removeTag : function(e, tag) {
+					removeTag: function(e, tag) {
 						assetSelection.removeTag(tag);
 					}
 				});
@@ -45899,7 +45899,7 @@ function Row() {
 };;$.widget('boom.groupPermissionsEditor', {
 	group : null,
 
-	bind : function() {
+	bind: function() {
 		var self = this, selected_page;
 
 		this.element
@@ -45932,7 +45932,7 @@ function Row() {
 		var page_tree = this.element.find('#b-group-roles-pages .boom-tree');
 
 		page_tree.pageTree({
-			onPageSelect : function(link) {
+			onPageSelect: function(link) {
 				$('#b-group-roles-pages .b-group-roles').show();
 
 				selected_page = link.getPageId();
@@ -45975,7 +45975,7 @@ function Row() {
 			.prop('checked', true);
 	},
 
-	_create : function() {
+	_create: function() {
 		this.group = this.options.group;
 		this.element.ui();
 		this.bind();
@@ -45984,7 +45984,7 @@ function Row() {
 		this._show_permissions(0);
 	},
 
-	_show_permissions : function(page_id) {
+	_show_permissions: function(page_id) {
 		var self = this,
 			i;
 
@@ -46001,7 +46001,7 @@ function Row() {
 	homeUrl : '/boomcms/people',
 	selectedPeople : 0,
 
-	bind : function() {
+	bind: function() {
 		var peopleManager = this;
 
 		this.element
@@ -46049,7 +46049,7 @@ function Row() {
 			});
 	},
 
-	addGroup : function() {
+	addGroup: function() {
 		var group = new boomGroup();
 
 		group.add()
@@ -46062,7 +46062,7 @@ function Row() {
 			});
 	},
 
-	addPerson : function() {
+	addPerson: function() {
 		var person = new boomPerson();
 
 		person.add()
@@ -46078,7 +46078,7 @@ function Row() {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 
 		this.document.find('body').height(this.window.height());
@@ -46137,7 +46137,7 @@ function Row() {
 			});
 	},
 
-	currentPersonDelete : function() {
+	currentPersonDelete: function() {
 		var person_id = this.getCurrentPersonId(),
 			person = new boomPerson(person_id),
 			peopleManager = this;
@@ -46152,7 +46152,7 @@ function Row() {
 			});
 	},
 
-	currentPersonRemoveGroup : function($group) {
+	currentPersonRemoveGroup: function($group) {
 		var person_id = this.getCurrentPersonId(),
 			person = new boomPerson(person_id),
 			peopleManager = this,
@@ -46165,7 +46165,7 @@ function Row() {
 			});
 	},
 
-	currentPersonSave : function() {
+	currentPersonSave: function() {
 		var person_id = this.getCurrentPersonId(),
 			person = new boomPerson(person_id),
 			peopleManager = this;
@@ -46176,7 +46176,7 @@ function Row() {
 			});
 	},
 
-	deleteSelectedPeople : function() {
+	deleteSelectedPeople: function() {
 		var selected = this.getSelectedPeople(),
 			person = new boomPerson(selected.join('-')),
 			peopleManager = this,
@@ -46193,11 +46193,11 @@ function Row() {
 				});
 	},
 
-	getCurrentPersonId : function() {
+	getCurrentPersonId: function() {
 		return this.element.find('.b-person-view').data('person-id');
 	},
 
-	getSelectedPeople : function() {
+	getSelectedPeople: function() {
 		return $('#b-items-view-list input[type=checkbox]:checked')
 			.map(function() {
 				return $(this).parents('tr').data('person-id');
@@ -46205,7 +46205,7 @@ function Row() {
 			.get();
 	},
 
-	removeGroup : function($el) {
+	removeGroup: function($el) {
 		var group = new boomGroup($el.data('group-id'));
 
 		group.remove()
@@ -46215,7 +46215,7 @@ function Row() {
 			});
 	},
 
-	removePeopleFromList : function(person_ids) {
+	removePeopleFromList: function(person_ids) {
 		$('#b-items-view-list tr').each(function(index, el) {
 			var $el = $(el),
 				i = person_ids.indexOf($el.data('person-id'));
@@ -46231,7 +46231,7 @@ function Row() {
 		});
 	},
 
-	saveOpenGroup : function() {
+	saveOpenGroup: function() {
 		var $form = this.element.find('#b-group-edit form'),
 			group_id = $form.data('group-id'),
 			group = new boomGroup(group_id),
@@ -46244,7 +46244,7 @@ function Row() {
 			});
 	},
 
-	togglePersonCheckbox : function($el) {
+	togglePersonCheckbox: function($el) {
 		if ($el.is(":checked")) {
 			this.selectedPeople++;
 		} else {
@@ -46252,7 +46252,7 @@ function Row() {
 		}
 	},
 
-	togglePersonDeleteButton : function() {
+	togglePersonDeleteButton: function() {
 		var button = this.element.find('#b-people-multi-delete');
 
 		(this.selectedPeople > 0)? button.prop('disabled', false) : button.prop('disabled', true);
@@ -66381,7 +66381,7 @@ wysihtml5.views.View = Base.extend(
 		@function
 		@returns {Deferred}
 		*/
-		_select_asset : function(composer) {
+		_select_asset: function(composer) {
 			var self = this,
 				asset_embed = new $.Deferred();
 
@@ -66425,7 +66425,7 @@ wysihtml5.views.View = Base.extend(
 			return wysihtml5.commands.formatInline.state(composer, this, "A");
 		},
 
-		_select_link : function(composer) {
+		_select_link: function(composer) {
 			var self = this,
 				 existing_link = this.state(composer)[0],
 				opts = {},
@@ -66913,7 +66913,7 @@ if (!console) {
 
 }
 ;$.widget( 'boom.pageManager', {
-	addActionButtons : function($elements, children) {
+	addActionButtons: function($elements, children) {
 		var pageManager = this,
 			elementsById = {};
 
@@ -66925,7 +66925,7 @@ if (!console) {
 		});
 	},
 
-	addPage : function($el) {
+	addPage: function($el) {
 		var page = new boomPage($el.data('page-id'));
 
 		page.add()
@@ -66934,15 +66934,15 @@ if (!console) {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		var pageManager = this;
 
 		this.element
 			.pageTree({
-				load : function(e, data) {
+				load: function(e, data) {
 					pageManager.addActionButtons(data.elements, data.children);
 				},
-				onPageSelect : function(link) {
+				onPageSelect: function(link) {
 					window.open(link.getUrl());
 				}
 			});

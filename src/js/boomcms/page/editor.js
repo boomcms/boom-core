@@ -7,7 +7,7 @@ $.widget( 'boom.pageEditor', {
 		editable : false
 	},
 
-	_create : function() {
+	_create: function() {
 		var self = this;
 
 		this.page = new boomPage(this.options.page_id);
@@ -29,7 +29,7 @@ $.widget( 'boom.pageEditor', {
 		}
 	},
 
-	createChunks : function() {
+	createChunks: function() {
 		var self = this;
 
 		this.document.contents()
@@ -83,7 +83,7 @@ $.widget( 'boom.pageEditor', {
 			});
 	},
 
-	watchForDialogs : function() {
+	watchForDialogs: function() {
 		var editor = this,
 			toolbar = this.page.toolbar;
 

@@ -1,5 +1,5 @@
 $.widget( 'boom.pageManager', {
-	addActionButtons : function($elements, children) {
+	addActionButtons: function($elements, children) {
 		var pageManager = this,
 			elementsById = {};
 
@@ -11,7 +11,7 @@ $.widget( 'boom.pageManager', {
 		});
 	},
 
-	addPage : function($el) {
+	addPage: function($el) {
 		var page = new boomPage($el.data('page-id'));
 
 		page.add()
@@ -20,15 +20,15 @@ $.widget( 'boom.pageManager', {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		var pageManager = this;
 
 		this.element
 			.pageTree({
-				load : function(e, data) {
+				load: function(e, data) {
 					pageManager.addActionButtons(data.elements, data.children);
 				},
-				onPageSelect : function(link) {
+				onPageSelect: function(link) {
 					window.open(link.getUrl());
 				}
 			});

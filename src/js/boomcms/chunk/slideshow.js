@@ -38,7 +38,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			});
 	},
 
-	hasClass : function(c) {
+	hasClass: function(c) {
 		return this.element.hasClass(c) || this.element.find('.' + c).length > 0;
 	},
 

@@ -2,7 +2,7 @@ $.widget('boom.tagAutocomplete',  {
 	url : '',
 	ignoreTags : [],
 
-	bind : function() {
+	bind: function() {
 		var self = this;
 
 		this.element
@@ -27,7 +27,7 @@ $.widget('boom.tagAutocomplete',  {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		var self = this;
 
 		this.group = this.options.group;
@@ -36,15 +36,15 @@ $.widget('boom.tagAutocomplete',  {
 
 		this.element.autocomplete({
 			delay: 200,
-			source : function(request, response) {
+			source: function(request, response) {
 				self._autocompleteSource(request, response);
 			},
-			focus : function(event, ui) {
+			focus: function(event, ui) {
 				event.preventDefault();
 
 				self.element.val(ui.item.label);
 			},
-			select : function(event, ui) {
+			select: function(event, ui) {
 				event.preventDefault();
 
 				self.element.val('');
@@ -55,7 +55,7 @@ $.widget('boom.tagAutocomplete',  {
 		this.bind();
 	},
 
-	_autocompleteSource : function(request, response) {
+	_autocompleteSource: function(request, response) {
 		$.ajax({
 			url: this.url,
 			dataType: 'json',
@@ -70,11 +70,11 @@ $.widget('boom.tagAutocomplete',  {
 		});
 	},
 
-	setIgnoreTags : function(tags) {
+	setIgnoreTags: function(tags) {
 		this.ignoreTags = tags;
 	},
 
-	tagSelected : function(tag) {
+	tagSelected: function(tag) {
 		this._trigger('complete', null, {tag : tag});
 	}
 });

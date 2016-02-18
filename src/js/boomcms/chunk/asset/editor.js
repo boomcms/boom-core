@@ -53,7 +53,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 			width: 900,
 			closeButton: false,
 			saveButton: true,
-			open : function() {
+			open: function() {
 				chunkAssetEditor.dialogOpened();
 			}
 		})

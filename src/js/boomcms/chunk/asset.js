@@ -1,5 +1,5 @@
 $.widget('ui.chunkAsset', $.ui.chunk, {
-	editAssetOnly : function() {
+	editAssetOnly: function() {
 		var chunkAsset = this;
 
 		new boomAssetPicker(this.asset, this.getPickerFilters())
@@ -19,7 +19,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		});
 	},
 
-	editAllElements : function() {
+	editAllElements: function() {
 		var chunkAsset = this;
 
 		new boomChunkAssetEditor(this.options.page, this.options.name, {
@@ -72,7 +72,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		return elements;
 	 },
 
-	edit : function() {
+	edit: function() {
 		this.elements = this.getElements();
 		this.asset = new boomAsset(this.element.attr('data-boom-target'));
 
@@ -83,7 +83,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		}
 	},
 
-	 getPickerFilters : function() {
+	 getPickerFilters: function() {
 		 if (this.element.attr('data-boom-filterbytype')) {
 			 return {
 				 type : this.element.attr('data-boom-filterByType')
@@ -91,11 +91,11 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		 }
 	 },
 
-	hasMetadata : function() {
+	hasMetadata: function() {
 		return (this.elements.caption.length || this.elements.link.length || this.elements.title.length);
 	},
 
-	save : function(data) {
+	save: function(data) {
 		this._save(data);
 		this.destroy();
 	}

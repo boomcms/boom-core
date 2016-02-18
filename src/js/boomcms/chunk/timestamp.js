@@ -16,7 +16,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
 	timestamp : '',
 
-	_create : function() {
+	_create: function() {
 		this.format = this.element.attr('data-boom-format');
 		this.timestamp = this.element.attr('data-boom-timestamp');
 		this.formatIsEditable = (this.element.attr('data-boom-formatIsEditable') === '1');
@@ -24,7 +24,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		$.ui.chunk.prototype._create.call(this);
 	},
 
-	edit : function() {
+	edit: function() {
 		var self = this,
 			data = this.getData();
 
@@ -34,7 +34,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			title: 'Edit date / time',
 			closeButton: false,
 			saveButton: true,
-			onLoad : function() {
+			onLoad: function() {
 				if (self.formatIsEditable) {
 					data.format && $('#format').val(data.format);
 				} else {
@@ -61,7 +61,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		});
 	},
 
-	insert : function(format, timestamp) {
+	insert: function(format, timestamp) {
 		if (this.formatIsEditable) {
 			this.format = format;
 		}

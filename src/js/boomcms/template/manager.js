@@ -1,5 +1,5 @@
 $.widget('boom.templateManager', {
-	bind : function() {
+	bind: function() {
 		this.element
 			.on('click', '.b-templates-delete', function(e) {
 				e.preventDefault();
@@ -29,7 +29,7 @@ $.widget('boom.templateManager', {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 
 		this.element.find('table')

@@ -37,7 +37,7 @@ $.extend({
 		},
 
 		editor: {
-			state : function(state, url) {
+			state: function(state, url) {
 
 				$.post('/boomcms/editor/state', {state: state}, function() {
 					if (url) {

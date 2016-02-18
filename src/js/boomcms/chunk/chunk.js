@@ -20,7 +20,7 @@ $.widget('ui.chunk',
 
 	edited : false,
 
-	bind : function() {
+	bind: function() {
 		var self = this;
 
 		this.element
@@ -37,11 +37,11 @@ $.widget('ui.chunk',
 			.attr('tabindex', 0);
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 	},
 
-	destroy : function() {
+	destroy: function() {
 		this.bind();
 	},
 
@@ -49,7 +49,7 @@ $.widget('ui.chunk',
 	Insert edited chunk content back into the page.
 	@function
 	*/
-	_update_html : function(html) {
+	_update_html: function(html) {
 		var $html = $(html);
 
 		this.element.replaceWith($html);
@@ -68,7 +68,7 @@ $.widget('ui.chunk',
 		});
 	},
 
-	remove : function() {
+	remove: function() {
 		var self = this,
 			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name);
 
@@ -80,7 +80,7 @@ $.widget('ui.chunk',
 			});
 	},
 
-	_save : function(data) {
+	_save: function(data) {
 		var self = this,
 			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name),
 			data = data? data : this.getData();

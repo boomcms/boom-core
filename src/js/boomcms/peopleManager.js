@@ -2,7 +2,7 @@ $.widget('boom.peopleManager', {
 	homeUrl : '/boomcms/people',
 	selectedPeople : 0,
 
-	bind : function() {
+	bind: function() {
 		var peopleManager = this;
 
 		this.element
@@ -50,7 +50,7 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	addGroup : function() {
+	addGroup: function() {
 		var group = new boomGroup();
 
 		group.add()
@@ -63,7 +63,7 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	addPerson : function() {
+	addPerson: function() {
 		var person = new boomPerson();
 
 		person.add()
@@ -79,7 +79,7 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 
 		this.document.find('body').height(this.window.height());
@@ -138,7 +138,7 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	currentPersonDelete : function() {
+	currentPersonDelete: function() {
 		var person_id = this.getCurrentPersonId(),
 			person = new boomPerson(person_id),
 			peopleManager = this;
@@ -153,7 +153,7 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	currentPersonRemoveGroup : function($group) {
+	currentPersonRemoveGroup: function($group) {
 		var person_id = this.getCurrentPersonId(),
 			person = new boomPerson(person_id),
 			peopleManager = this,
@@ -166,7 +166,7 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	currentPersonSave : function() {
+	currentPersonSave: function() {
 		var person_id = this.getCurrentPersonId(),
 			person = new boomPerson(person_id),
 			peopleManager = this;
@@ -177,7 +177,7 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	deleteSelectedPeople : function() {
+	deleteSelectedPeople: function() {
 		var selected = this.getSelectedPeople(),
 			person = new boomPerson(selected.join('-')),
 			peopleManager = this,
@@ -194,11 +194,11 @@ $.widget('boom.peopleManager', {
 				});
 	},
 
-	getCurrentPersonId : function() {
+	getCurrentPersonId: function() {
 		return this.element.find('.b-person-view').data('person-id');
 	},
 
-	getSelectedPeople : function() {
+	getSelectedPeople: function() {
 		return $('#b-items-view-list input[type=checkbox]:checked')
 			.map(function() {
 				return $(this).parents('tr').data('person-id');
@@ -206,7 +206,7 @@ $.widget('boom.peopleManager', {
 			.get();
 	},
 
-	removeGroup : function($el) {
+	removeGroup: function($el) {
 		var group = new boomGroup($el.data('group-id'));
 
 		group.remove()
@@ -216,7 +216,7 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	removePeopleFromList : function(person_ids) {
+	removePeopleFromList: function(person_ids) {
 		$('#b-items-view-list tr').each(function(index, el) {
 			var $el = $(el),
 				i = person_ids.indexOf($el.data('person-id'));
@@ -232,7 +232,7 @@ $.widget('boom.peopleManager', {
 		});
 	},
 
-	saveOpenGroup : function() {
+	saveOpenGroup: function() {
 		var $form = this.element.find('#b-group-edit form'),
 			group_id = $form.data('group-id'),
 			group = new boomGroup(group_id),
@@ -245,7 +245,7 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	togglePersonCheckbox : function($el) {
+	togglePersonCheckbox: function($el) {
 		if ($el.is(":checked")) {
 			this.selectedPeople++;
 		} else {
@@ -253,7 +253,7 @@ $.widget('boom.peopleManager', {
 		}
 	},
 
-	togglePersonDeleteButton : function() {
+	togglePersonDeleteButton: function() {
 		var button = this.element.find('#b-people-multi-delete');
 
 		(this.selectedPeople > 0)? button.prop('disabled', false) : button.prop('disabled', true);

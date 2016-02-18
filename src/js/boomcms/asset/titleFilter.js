@@ -4,7 +4,7 @@ $.widget('boom.assetTitleFilter', {
 		minLength: 3
 	},
 
-	_create : function() {
+	_create: function() {
 		var element = this.element;
 
 		this.options.source = function(request, response) {

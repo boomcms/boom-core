@@ -27,11 +27,11 @@ function boomAssetPicker(currentAsset, filters) {
 		var assetPicker = this;
 
 		this.titleFilter.assetTitleFilter({
-			search : function(event, ui) {
+			search: function(event, ui) {
 				assetPicker.addFilter('title', assetPicker.titleFilter.val());
 				assetPicker.getAssets();
 			},
-			select : function(event, ui) {
+			select: function(event, ui) {
 				assetPicker.addFilter('title', ui.item.value);
 				assetPicker.getAssets();
 			}
@@ -39,7 +39,7 @@ function boomAssetPicker(currentAsset, filters) {
 
 		this.tagFilter
 			.assetTagSearch({
-				update : function(e, data) {
+				update: function(e, data) {
 					assetPicker.addFilter('tag', data.tags);
 					assetPicker.getAssets();
 				}
@@ -156,7 +156,7 @@ function boomAssetPicker(currentAsset, filters) {
 
 		this.dialog = new boomDialog({
 			url : this.url,
-			onLoad : function() {
+			onLoad: function() {
 				assetPicker.dialog.contents.parent().css({
 					position: 'fixed',
 					height: '100vh',

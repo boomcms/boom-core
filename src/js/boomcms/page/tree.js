@@ -3,7 +3,7 @@ Create a tree widget for selecting pages.
 */
 $.widget('boom.pageTree', {
 	options : {
-		onPageSelect : function() {}
+		onPageSelect: function() {}
 	},
 
 	bind: function() {
@@ -30,16 +30,16 @@ $.widget('boom.pageTree', {
 			});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.bind();
 		this.getChildren(null, this.element);
 	},
 
-	itemClick : function($node) {
+	itemClick: function($node) {
 		this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('data-page-id'), $node.text()));
 	},
 
-	getChildren : function(pageId, $ul) {
+	getChildren: function(pageId, $ul) {
 		var pageTree = this;
 
 		$.get('/boomcms/search/pages', {parent: pageId})

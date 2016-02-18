@@ -1,7 +1,7 @@
 $.widget('boom.pageTagSearch',  {
 	tags : [],
 
-	addTag : function(tag) {
+	addTag: function(tag) {
 		this.tags.push(tag.id);
 
 		var $el = $('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag.id + '"></a></li>')
@@ -16,13 +16,13 @@ $.widget('boom.pageTagSearch',  {
 		this.update();
 	},
 
-	bind : function() {
+	bind: function() {
 		var tagSearch = this;
 
 		this.input
 			.pageTagAutocomplete({
 				group : this.group,
-				complete : function(e, tag) {
+				complete: function(e, tag) {
 					tagSearch.addTag(tag);
 				}
 			});
@@ -42,7 +42,7 @@ $.widget('boom.pageTagSearch',  {
 		});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.tagList = this.element.is('ul') ? this.element : this.element.find('ul');
 		this.input = this.element.find('input');
 		this.group = this.element.attr('data-group');
@@ -50,7 +50,7 @@ $.widget('boom.pageTagSearch',  {
 		this.bind();
 	},
 
-	removeTag : function($a) {
+	removeTag: function($a) {
 		var tag = $a.attr('data-tag');
 
 		$a.parent().remove();
@@ -60,7 +60,7 @@ $.widget('boom.pageTagSearch',  {
 		this.update();
 	},
 
-	update : function() {
+	update: function() {
 		this.input.pageTagAutocomplete('setIgnoreTags', this.tags);
 		this._trigger('update', null, {tags : this.tags});
 	}

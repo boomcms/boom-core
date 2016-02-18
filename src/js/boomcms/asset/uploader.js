@@ -80,7 +80,7 @@ $.widget('boom.assetUploader', {
 			});
 	},
 
-	notify : function(message) {
+	notify: function(message) {
 		if ( ! message) {
 			message = this.originalMessage;
 		}
@@ -101,7 +101,7 @@ $.widget('boom.assetUploader', {
 		});
 	},
 
-	resizeDropArea : function() {
+	resizeDropArea: function() {
 		this.options.dropAreaHeight && this.dropArea.height(this.options.dropAreaHeight);
 	},
 
@@ -118,13 +118,13 @@ $.widget('boom.assetUploader', {
 		this.initUploader();
 	},
 
-	updateProgressBar : function(e, percentComplete) {
+	updateProgressBar: function(e, percentComplete) {
 		this.progressBar.progressbar('value', percentComplete);
 
 		this._trigger('uploadProgress', e, [percentComplete]);
 	},
 
-	uploadFailed : function(e, data) {
+	uploadFailed: function(e, data) {
 		var message = 'Errors occurred during file upload:<br />',
 			errors = $.parseJSON(data.jqXHR.responseText),
 			i;
@@ -143,7 +143,7 @@ $.widget('boom.assetUploader', {
 		this._trigger('uploadFinished', e, data);
 	},
 
-	uploadStarted : function(e, data) {
+	uploadStarted: function(e, data) {
 		this.progressBar
 			.css('display', 'block')
 			.progressbar();

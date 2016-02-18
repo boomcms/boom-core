@@ -46,7 +46,7 @@ $.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
 
 		$el.find('.boom-tree').pageTree({
 			active: $el.find('input[name=parent_id]').val(),
-			onPageSelect : function(page) {
+			onPageSelect: function(page) {
 				$el.find('input[name=parent_id]').val(page.pageId);
 			}
 		});

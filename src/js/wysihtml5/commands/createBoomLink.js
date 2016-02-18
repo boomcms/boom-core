@@ -16,7 +16,7 @@
 			return wysihtml5.commands.formatInline.state(composer, this, "A");
 		},
 
-		_select_link : function(composer) {
+		_select_link: function(composer) {
 			var self = this,
 				 existing_link = this.state(composer)[0],
 				opts = {},

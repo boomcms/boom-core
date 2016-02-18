@@ -1,7 +1,7 @@
 $.widget('boom.assetTagSearch',  {
 	tags : [],
 
-	addTag : function(tag) {
+	addTag: function(tag) {
 		this.tags.push(tag);
 
 		var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag + '"></a></li>');
@@ -16,12 +16,12 @@ $.widget('boom.assetTagSearch',  {
 		this.update();
 	},
 
-	bind : function() {
+	bind: function() {
 		var tagSearch = this;
 
 		this.input
 			.assetTagAutocomplete({
-				complete : function(e, data) {
+				complete: function(e, data) {
 					tagSearch.addTag(data.tag);
 				}
 			});
@@ -38,14 +38,14 @@ $.widget('boom.assetTagSearch',  {
 		});
 	},
 
-	_create : function() {
+	_create: function() {
 		this.tagList = this.element.find('ul');
 		this.input = this.element.find('input');
 
 		this.bind();
 	},
 
-	removeTag : function($a) {
+	removeTag: function($a) {
 		var tag = $a.attr('data-tag');
 
 		$a.parent().remove();
@@ -55,7 +55,7 @@ $.widget('boom.assetTagSearch',  {
 		this.update();
 	},
 
-	update : function() {
+	update: function() {
 		this.input.assetTagAutocomplete('setIgnoreTags', this.tags);
 		this._trigger('update', null, {tags : this.tags});
 	}

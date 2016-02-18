@@ -6,7 +6,7 @@
 $.widget( 'boom.pageToolbar', {
 	buttons : {},
 
-	_bindButtonEvents : function() {
+	_bindButtonEvents: function() {
 		var self = this;
 
 		this.element.contents()
@@ -68,7 +68,7 @@ $.widget( 'boom.pageToolbar', {
 		}, 1000);
 	},
 
-	_create : function() {
+	_create: function() {
 		var toolbar = this;
 
 		this.findButtons();
@@ -167,7 +167,7 @@ $.widget( 'boom.pageToolbar', {
 		}
 	},
 
-	findButtons : function() {
+	findButtons: function() {
 		this.buttons = {
 			visible : this.element.contents().find('#b-page-visible'),
 			invisible : this.element.contents().find('#b-page-invisible'),
@@ -179,7 +179,7 @@ $.widget( 'boom.pageToolbar', {
 	* extend the toolbar to cover the entire window
 	* @function
 	*/
-	maximise : function() {
+	maximise: function() {
 		this.element.css({
 			width : '100%',
 			'z-index' : 100002
@@ -190,7 +190,7 @@ $.widget( 'boom.pageToolbar', {
 	* minimise the toolbar to allow clicking on the underlying page
 	* @function
 	*/
-	minimise : function() {
+	minimise: function() {
 		this.element.css({
 			width : '60px',
 			'z-index' : 10000
@@ -209,7 +209,7 @@ $.widget( 'boom.pageToolbar', {
 	/**
 	@function
 	*/
-	hide : function() {
+	hide: function() {
 		this.buttonBar.css('z-index', 1);
 	},
 
@@ -220,7 +220,7 @@ $.widget( 'boom.pageToolbar', {
 	/**
 	@function
 	*/
-	show : function() {
+	show: function() {
 		this.buttonBar.css('z-index', 10000);
 	},
 
@@ -248,7 +248,7 @@ $.widget( 'boom.pageToolbar', {
 		this.showSettings(section);
 	},
 
-	_toggle_view_live_button : function() {
+	_toggle_view_live_button: function() {
 		if (this.buttons.visible.css('display') === 'none') {
 			this.buttons.viewLive
 				.attr('title', 'You cannot view a live version of this page as it is currently hidden from the live site')

@@ -3,21 +3,21 @@ $.widget('boom.justifyAssets', {
 	targetRightOffset : null,
 	windowWidth : null,
 
-	_create : function() {
+	_create: function() {
 		this.$el = $(this.element);
 
 		this._setDimensions();
 		this.justify();
 	},
 
-	_getOffset : function($el) {
+	_getOffset: function($el) {
 		var offset = $el.offset();
 		offset.right = this.windowWidth - (offset.left + $el.outerWidth(true));
 
 		return offset;
 	},
 
-	justify : function() {
+	justify: function() {
 		var currentRow = new Row(),
 			prevRow,
 			self = this,
@@ -54,7 +54,7 @@ $.widget('boom.justifyAssets', {
 		}
 	},
 
-	_setDimensions : function() {
+	_setDimensions: function() {
 		this.windowWidth = $(window).width();
 		this.targetRightOffset = (this.windowWidth - (this.$el.offset().left + this.$el.innerWidth()));
 	}

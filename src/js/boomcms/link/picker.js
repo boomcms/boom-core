@@ -51,7 +51,7 @@ function boomLinkPicker(link, options) {
 					}
 				}
 			},
-			select : function(event, ui) {
+			select: function(event, ui) {
 				event.preventDefault();
 
 				linkPicker.externalUrl.val(ui.item.value);
@@ -59,7 +59,7 @@ function boomLinkPicker(link, options) {
 		});
 
 		this.dialog.contents.find('.boom-tree').pageTree({
-			onPageSelect : function(link) {
+			onPageSelect: function(link) {
 				linkPicker.pick(link);
 				linkPicker.dialog.cancel();
 			}
@@ -168,7 +168,7 @@ function boomLinkPicker(link, options) {
 			id : 'b-linkpicker',
 			width : 600,
 			closeButton: this.options.external || this.options.text || this.options.asset,
-			onLoad : function(dialog) {
+			onLoad: function(dialog) {
 				linkPicker.onLoad(dialog);
 			}
 		})

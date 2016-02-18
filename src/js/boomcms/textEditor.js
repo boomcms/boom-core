@@ -162,7 +162,7 @@ $.widget('boom.textEditor', {
 	* @function
 	@param {Object} element The element being edited.
 	*/
-	apply : function(element) {
+	apply: function(element) {
 		var html = this.model === 'block' ? this.instance.getValue() : element.html();
 
 		$.boom.page.toolbar.minimise();
@@ -176,7 +176,7 @@ $.widget('boom.textEditor', {
 		this._trigger('edit', html);
 	},
 
-	blur : function(element) {
+	blur: function(element) {
 		this.apply(element);
 	},
 
@@ -184,7 +184,7 @@ $.widget('boom.textEditor', {
 	* @function
 	@param {Object} element The element being edited.
 	*/
-	cancel : function() {
+	cancel: function() {
 		var textEditor = this;
 
 		this.disableAutoSave();
@@ -209,11 +209,11 @@ $.widget('boom.textEditor', {
 		}
 	},
 
-	disableAutoSave : function() {
+	disableAutoSave: function() {
 		this.element.unbind('blur');
 	},
 
-	enableAutoSave : function() {
+	enableAutoSave: function() {
 		var editor = this;
 
 		this.element.on('blur', function() {
@@ -223,7 +223,7 @@ $.widget('boom.textEditor', {
 		});
 	},
 
-	hasBeenEdited : function() {
+	hasBeenEdited: function() {
 		return this.element.html() !== this.original_html;
 	},
 	
@@ -235,11 +235,11 @@ $.widget('boom.textEditor', {
 		$('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
 	},
 
-	hideToolbar : function() {
+	hideToolbar: function() {
 		$('#wysihtml5-toolbar').hide().children('[data-buttonset]').hide();
 	},
 
-	showToolbar : function() {
+	showToolbar: function() {
 		this.toolbar.show();
 		$('#wysihtml5-toolbar').show().children().not(this.toolbar).hide();
 	}

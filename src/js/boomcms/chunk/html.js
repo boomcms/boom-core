@@ -1,5 +1,5 @@
 $.widget('ui.chunkHtml', $.ui.chunk, {
-	edit : function() {
+	edit: function() {
 		var self = this,
 			dialog;
 
@@ -30,7 +30,7 @@ $.widget('ui.chunkHtml', $.ui.chunk, {
 	/**
 	@param {Int} id Tag ID
 	*/
-	insert : function(html) {
+	insert: function(html) {
 		this.html = html;
 
 		return this._save();

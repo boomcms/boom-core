@@ -9,7 +9,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	saveOnBlur: false,
 
-	bind : function() {
+	bind: function() {
 		$.ui.chunk.prototype.bind.call(this);
 
 		var self = this,
@@ -17,7 +17,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			old_text = this.getTitle();
 
 		this.element.textEditor({
-			edit : function() {
+			edit: function() {
 				var title = self.getTitle();
 
 				if (title != '' && title != old_text && title.length <= self.hardLimit) {
@@ -51,7 +51,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			});
 	},
 
-	_create_length_counter : function() {
+	_create_length_counter: function() {
 		var $counter = $('<div id="b-title-length"><span></span></div>');
 
 		$(top.document)
@@ -87,9 +87,9 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this._update_length_counter(this.getLength());
 	},
 
-	edit : function() {},
+	edit: function() {},
 
-	_get_counter_color_for_length : function(length) {
+	_get_counter_color_for_length: function(length) {
 		if (length >= this.softLimit) {
 			return 'red';
 		} else if (length >= this.softLimit * 0.9) {
@@ -109,11 +109,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		return this.element.text().trim();
 	},
 
-	isUntitled : function() {
+	isUntitled: function() {
 		return this.getTitle() === 'Untitled';
 	},
 
-	openHelp : function() {
+	openHelp: function() {
 		var title = this;
 
 		new boomDialog({
@@ -131,7 +131,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		$(top.document).find('#b-title-length').remove();
 	},
 
-	_save : function(title, old_title) {
+	_save: function(title, old_title) {
 		this.options.currentPage.setTitle(title)
 			.done(function(data) {
 				if (data.location !== top.window.location) {
@@ -158,11 +158,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			});
 	},
 
-	updatePageTitle : function(oldTitle, newTitle) {
+	updatePageTitle: function(oldTitle, newTitle) {
 		top.document.title = top.document.title.replace(oldTitle, newTitle);
 	},
 
-	_update_length_counter : function(length) {
+	_update_length_counter: function(length) {
 		$(top.document).find('#b-title-length')
 			.find('span')
 			.text(length)
@@ -176,5 +176,5 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.css('opacity', opacity);
 	},
 
-	unbind : function() {}
+	unbind: function() {}
 });
