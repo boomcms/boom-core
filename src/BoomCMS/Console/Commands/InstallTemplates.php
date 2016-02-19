@@ -41,8 +41,6 @@ class InstallTemplates extends Command
 
                 $this->info("Installed $template in theme $theme");
             }
-
-            $this->call('boomcms:publish', ['--force']);
         } catch (PDOException $e) {
             $this->info('Unable to install templates: '.$e->getMessage());
         }

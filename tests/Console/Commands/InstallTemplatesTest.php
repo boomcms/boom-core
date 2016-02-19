@@ -41,10 +41,6 @@ class InstallTemplatesTest extends AbstractTestCase
             ->method('info')
             ->with($this->equalTo('Installed testTemplate in theme testTheme'));
 
-        $command->expects($this->once())
-            ->method('call')
-            ->with($this->equalTo('boomcms:publish'));
-
         $command->fire($this->manager);
     }
 
