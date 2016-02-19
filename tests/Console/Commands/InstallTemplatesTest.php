@@ -20,7 +20,7 @@ class InstallTemplatesTest extends AbstractTestCase
     public function setUp()
     {
         parent::setUp();
-        
+
         $repository = m::mock(TemplateRepository::class);
         $filesystem = m::mock(Filesystem::class);
         $cache = m::mock(Cache::class)->makePartial();

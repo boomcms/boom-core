@@ -173,7 +173,7 @@ class TemplateManagerTest extends AbstractTestCase
         $manager = m::mock(Manager::class, [
             $this->getFilesystem(),
             $this->getTemplateRepository(),
-            $this->cache
+            $this->cache,
         ])->makePartial();
 
         $manager
@@ -196,7 +196,7 @@ class TemplateManagerTest extends AbstractTestCase
         $manager = m::mock(Manager::class, [
             $this->getFilesystem(),
             $this->getTemplateRepository(),
-            $this->cache
+            $this->cache,
         ])->makePartial();
 
         $manager
