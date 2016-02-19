@@ -191,7 +191,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->shouldReceive('get')
             ->once()
             ->with('installedThemes')
-            ->andReturn(false);
+            ->andReturn(null);
 
         $manager = m::mock(Manager::class, [
             $this->getFilesystem(),

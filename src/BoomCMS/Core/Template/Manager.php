@@ -119,7 +119,7 @@ class Manager
     {
         $installed = $this->cache->get($this->cacheKey);
 
-        if ($installed !== false) {
+        if ($installed !== null) {
             return $installed;
         }
 
