@@ -18,9 +18,7 @@ class CreatePeopleTable extends Migration
             $table->string('email')->unique('people_email');
             $table->boolean('enabled')->nullable()->default(1);
             $table->string('password', 60)->nullable();
-            $table->boolean('failed_logins')->nullable()->default(0);
-            $table->integer('locked_until')->unsigned()->nullable()->default(0);
-            $table->integer('avatar_id')->unsigned()->nullable();
+            $table->boolean('superuser')->default(false);
         });
     }
 

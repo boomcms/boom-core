@@ -12,7 +12,7 @@ class CreateGroupRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('group_roles', function (Blueprint $table) {
+        Schema::create('group_role', function (Blueprint $table) {
             $table->smallInteger('group_id')->unsigned();
             $table->integer('page_id')->unsigned()->default(0);
             $table->smallInteger('role_id')->unsigned()->index('role_id');
@@ -29,6 +29,6 @@ class CreateGroupRolesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('group_roles');
+        Schema::drop('group_role');
     }
 }

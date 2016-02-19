@@ -12,7 +12,7 @@ class CreatePeopleGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('people_groups', function (Blueprint $table) {
+        Schema::create('group_person', function (Blueprint $table) {
             $table->integer('person_id')->unsigned();
             $table->smallInteger('group_id')->unsigned()->index('group_id');
             $table->unique(['person_id', 'group_id'], 'person_group_person_id_group_id');
@@ -26,6 +26,6 @@ class CreatePeopleGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('people_groups');
+        Schema::drop('group_person');
     }
 }

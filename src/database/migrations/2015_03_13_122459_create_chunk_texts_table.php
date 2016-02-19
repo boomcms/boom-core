@@ -17,7 +17,6 @@ class CreateChunkTextsTable extends Migration
             $table->increments('id');
             $table->string('slotname', 50)->nullable();
             $table->integer('page_vid')->unsigned()->nullable()->index('page_vid');
-            $table->boolean('is_block')->nullable()->default(0);
             $table->text('site_text', 65535)->nullable();
             $table->unique(['slotname', 'page_vid'], 'slotname');
         });

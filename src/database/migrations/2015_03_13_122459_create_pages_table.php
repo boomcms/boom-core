@@ -38,6 +38,8 @@ class CreatePagesTable extends Migration
             $table->integer('feature_image_id')->unsigned()->nullable()->index('pages_feature_image_id');
             $table->index(['deleted', 'visible', 'visible_from', 'visible_to', 'visible_in_nav'], 'pages_sitelist');
             $table->index(['deleted', 'visible_in_nav_cms', 'visible_from'], 'pages_cmslist');
+            $table->integer('parent_id')->unsigned()->nullable();
+            $table->foreign('parent_id')->references('id')->on('pages')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

@@ -19,7 +19,6 @@ class CreateAssetsTable extends Migration
             $table->smallInteger('width')->unsigned()->nullable();
             $table->smallInteger('height')->unsigned()->nullable();
             $table->string('filename', 150);
-            $table->integer('visible_from')->unsigned()->nullable()->default(0)->index('asset_v_deleted_visible_from_status');
             $table->string('type', 100)->nullable()->index('asset_v_type');
             $table->integer('filesize')->unsigned()->nullable()->default(0)->index('asset_v_deleted_filesize_desc');
             $table->integer('duration')->unsigned()->nullable();
