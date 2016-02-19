@@ -5,10 +5,23 @@ namespace BoomCMS\Core\Template;
 use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Support\Str;
+use Illuminate\Cache\Repository as Cache;
 use Illuminate\Filesystem\Filesystem;
 
 class Manager
 {
+    /**
+     * @var Cache
+     */
+    protected $cache;
+
+    /**
+     * Cache key for the installed themes.
+     *
+     * @var string
+     */
+    protected $cacheKey = 'installedThemes';
+
     /**
      * @var Filesystem
      */
@@ -19,10 +32,11 @@ class Manager
      */
     protected $repository;
 
-    public function __construct(Filesystem $filesystem, TemplateRepository $repository)
+    public function __construct(Filesystem $filesystem, TemplateRepository $repository, Cache $cache)
     {
         $this->filesystem = $filesystem;
         $this->repository = $repository;
+        $this->cache = $cache;
     }
 
     public function createTemplateWithFilename($theme, $filename)
@@ -38,7 +52,7 @@ class Manager
     {
         $installed = [];
 
-        foreach ($this->findAvailableThemes() as $theme) {
+        foreach ($this->getInstalledThemes() as $theme) {
             foreach ($this->findAvailableTemplates($theme) as $template) {
                 if (!$this->templateIsInstalled($theme, $template)) {
                     $installed[] = [$theme, $template];
@@ -72,9 +86,11 @@ class Manager
     }
 
     /**
+     * Create a cache of the themes which are available on the filesystem.
+     *
      * @return array
      */
-    public function findAvailableThemes()
+    public function findAndInstallThemes()
     {
         $theme = new Theme();
         $directories = $this->filesystem->directories($theme->getThemesDirectory());
@@ -87,7 +103,27 @@ class Manager
             }
         }
 
+        $this->cache->forever($this->cacheKey, $themes);
+
         return $themes;
+    }
+
+    /**
+     * Retrives the installed themes from the cache.
+     *
+     * If the cahce entry doesn't exist then it is created.
+     *
+     * @return array
+     */
+    public function getInstalledThemes()
+    {
+        $installed = $this->cache->get($this->cacheKey);
+
+        if ($installed !== false) {
+            return $installed;
+        }
+
+        return $this->findAndInstallThemes();
     }
 
     public function templateIsInstalled($theme, $filename)

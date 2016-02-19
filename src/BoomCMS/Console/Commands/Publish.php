@@ -48,7 +48,7 @@ class Publish extends VendorPublishCommand
      */
     public function fire()
     {
-        $themes = $this->manager->findAvailableThemes();
+        $themes = $this->manager->findAndInstallThemes();
 
         foreach ($themes as $theme) {
             $directories = [
