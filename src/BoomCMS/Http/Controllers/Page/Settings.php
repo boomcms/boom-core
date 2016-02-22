@@ -288,7 +288,9 @@ class Settings extends PageController
 
         $wasVisible = $page->isVisible();
 
-        $visibleFrom = new DateTime($this->request->input('visible_from'));
+        $visibleFrom = $request->input('visible_from');
+        $visibleFrom = $visibleFrom ? new DateTime($visibleFrom) : null;
+
         $visibleTo = ($request->has('toggle_visible_to')) ?
             new DateTime('@'.$request->input('visible_to'))
             : null;

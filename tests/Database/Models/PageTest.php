@@ -442,6 +442,18 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals($site->getId(), $page->{Page::ATTR_SITE});
     }
 
+    public function testSetVisibleFrom()
+    {
+        $page = new Page();
+        $time = new DateTime('now');
+
+        $page->setVisibleFrom($time);
+        $this->assertEquals($time->getTimestamp(), $page->{Page::ATTR_VISIBLE_FROM});
+
+        $page->setVisibleFrom(null);
+        $this->assertNull($page->{Page::ATTR_VISIBLE_FROM});
+    }
+
     public function testHasChildrenReturnsFalseIfChildCountIs0()
     {
         $page = m::mock(Page::class)->makePartial();
