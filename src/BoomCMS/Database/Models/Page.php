@@ -795,7 +795,7 @@ class Page extends Model implements PageInterface
      */
     public function setVisibleFrom(DateTime $time = null)
     {
-        $this->{self::ATTR_VISIBLE_FROM} = $time ? $time->getTimestamp() : null;
+        $this->{self::ATTR_VISIBLE_FROM} = ($time === null ? null : $time->getTimestamp());
 
         return $this;
     }
