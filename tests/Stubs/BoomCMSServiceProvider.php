@@ -10,7 +10,7 @@ use BoomCMS\ServiceProviders\EventServiceProvider;
 use BoomCMS\ServiceProviders\RepositoryServiceProvider;
 use BoomCMS\ServiceProviders\RouteServiceProvider;
 use BoomCMS\ServiceProviders\SettingsServiceProvider;
-use Illuminate\Html\HtmlServiceProvider;
+use Collective\Html\HtmlServiceProvider;
 
 class BoomCMSServiceProvider extends BaseServiceProvider
 {

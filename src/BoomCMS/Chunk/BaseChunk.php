@@ -4,7 +4,7 @@ namespace BoomCMS\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Traits\Renderable;
-use Illuminate\Html\HtmlFacade as Html;
+use Collective\Html\HtmlFacade as Html;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\View\View;
 
