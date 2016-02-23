@@ -53,7 +53,6 @@ class BoomCMSServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../../lang/framework'      => base_path('resources/lang'),
-            __DIR__.'/../../views/auth'          => base_path('resources/views/auth'),
             __DIR__.'/../../../public'           => public_path('vendor/boomcms/boom-core'),
             __DIR__.'/../../database/migrations' => base_path('/migrations/boomcms'),
         ], 'boomcms');

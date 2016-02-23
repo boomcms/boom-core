@@ -1,13 +1,28 @@
 <?php
 
 return [
-    'driver'   => 'boomcms',
-    'model'    => BoomCMS\Database\Models\Person::class,
-    'table'    => 'people',
-    'password' => [
-        'email'  => 'boomcms::email.password',
-        'table'  => 'password_resets',
-        'expire' => 60,
+    'defaults' => [
+        'guard'     => 'boomcms',
+        'passwords' => 'boomcms',
     ],
-
+    'guards' => [
+        'boomcms' => [
+            'driver'   => 'session',
+            'provider' => 'boomcms',
+        ],
+    ],
+    'providers' => [
+        'boomcms' => [
+            'driver' => 'boomcms',
+            'model' => BoomCMS\Database\Models\Person::class,
+        ],
+    ],
+    'passwords' => [
+        'boomcms' => [
+            'provider' => 'boomcms',
+            'email' => 'boomcms::email.password',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+    ],
 ];
