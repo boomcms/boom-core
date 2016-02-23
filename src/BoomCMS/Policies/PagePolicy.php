@@ -33,7 +33,7 @@ class PagePolicy extends BoomCMSPolicy
         if ($page->wasCreatedBy($person)) {
             return true;
         }
-    
+
         return $this->check('editContent', $person, $page);
     }
 
@@ -70,6 +70,6 @@ class PagePolicy extends BoomCMSPolicy
      */
     protected function managesPages()
     {
-        return (Gate::allows('managePages', Router::getActiveSite()) === true);
+        return Gate::allows('managePages', Router::getActiveSite()) === true;
     }
 }
