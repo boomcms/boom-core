@@ -3,7 +3,7 @@
 namespace BoomCMS\Http\Middleware;
 
 use Closure;
-use Illuminate\Auth\Guard as Auth;
+use Illuminate\Contracts\Auth\Guard as Auth;
 use Illuminate\Http\RedirectResponse;
 
 class RequireLogin

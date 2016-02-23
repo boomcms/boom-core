@@ -7,9 +7,8 @@ use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Contracts\Models\Site;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Bus\SelfHandling;
 
-class CreatePage extends Command implements SelfHandling
+class CreatePage extends Command
 {
     /**
      * @var Person

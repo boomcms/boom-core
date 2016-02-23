@@ -34,6 +34,8 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
 
     public $table = 'people';
 
+    protected $guard = 'boomcms';
+
     public $guarded = [
         self::ATTR_ID,
     ];

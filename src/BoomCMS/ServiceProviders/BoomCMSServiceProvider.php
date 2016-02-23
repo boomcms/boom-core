@@ -7,8 +7,8 @@ use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
 use BoomCMS\Support\Helpers\Asset;
 use BoomCMS\Support\Str;
+use Collective\Html\HtmlServiceProvider;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class BoomCMSServiceProvider extends ServiceProvider
@@ -53,7 +53,6 @@ class BoomCMSServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../../lang/framework'      => base_path('resources/lang'),
-            __DIR__.'/../../views/auth'          => base_path('resources/views/auth'),
             __DIR__.'/../../../public'           => public_path('vendor/boomcms/boom-core'),
             __DIR__.'/../../database/migrations' => base_path('/migrations/boomcms'),
         ], 'boomcms');

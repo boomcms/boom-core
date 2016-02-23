@@ -5,10 +5,9 @@ namespace BoomCMS\Jobs;
 use BoomCMS\Contracts\Models\URL as URL;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\DB;
 
-class MakeURLPrimary extends Command implements SelfHandling
+class MakeURLPrimary extends Command
 {
     /**
      * @var URL

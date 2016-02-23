@@ -6,9 +6,8 @@ use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\URL;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Bus\SelfHandling;
 
-class ReassignURL extends Command implements SelfHandling
+class ReassignURL extends Command
 {
     /**
      * @var Page

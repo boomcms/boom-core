@@ -8,11 +8,10 @@ use BoomCMS\Events\AccountCreated;
 use BoomCMS\Exceptions\DuplicateEmailException;
 use BoomCMS\Support\Facades\Person;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 
-class CreatePerson extends Command implements SelfHandling
+class CreatePerson extends Command
 {
     /**
      * @var string

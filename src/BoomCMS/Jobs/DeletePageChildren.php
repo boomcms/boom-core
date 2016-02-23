@@ -5,10 +5,9 @@ namespace BoomCMS\Jobs;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Bus;
 
-class DeletePageChildren extends Command implements SelfHandling
+class DeletePageChildren extends Command
 {
     /**
      * @var Page

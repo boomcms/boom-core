@@ -6,11 +6,10 @@ use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Events\PageWasDeleted;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 
-class DeletePage extends Command implements SelfHandling
+class DeletePage extends Command
 {
     /**
      * @var Page

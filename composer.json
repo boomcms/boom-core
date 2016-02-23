@@ -10,10 +10,10 @@
 		"hautelook/phpass": "0.3.4",
 		"thujohn/rss": "~1.0",
 		"intervention/imagecache" : "2.*",
-		"laravel/framework": "5.1.*",
+		"laravel/framework": "5.2.*",
 		"symfony/http-kernel": "2.*",
 		"rych/bytesize": "1.0.*",
-		"illuminate/html": "5.*",
+		"laravelcollective/html": "5.2.*",
 		"doctrine/dbal": "~2.3",
 		"lootils/geo": "^0.1.1"
 	},

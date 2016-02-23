@@ -6,10 +6,9 @@ use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Bus;
 
-class CreatePagePrimaryUri extends Command implements SelfHandling
+class CreatePagePrimaryUri extends Command
 {
     protected $location;
     protected $page;
