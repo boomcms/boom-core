@@ -14,6 +14,7 @@ class PasswordReset extends Controller
     use ValidatesRequests;
 
     protected $subject = 'BoomCMS Password Reset';
+    protected $linkRequestView = 'boomcms::auth.password';
     protected $resetView = 'boomcms::auth.reset';
 
     /**
