@@ -37,21 +37,22 @@ class PagePolicyTest extends AbstractTestCase
         $this->assertTrue($policy->before($super, ''));
     }
 
-    public function testBeforeReturnsTrueIfTheyCanManagePages()
+    public function testCanAddDeleteAndEditIfTheyCanManagePages()
     {
         $site = new Site();
         Router::shouldReceive('getActiveSite')->andReturn($site);
 
-        Gate::shouldReceive('allows')->once()->with('managePages', $site)->andReturn(true);
-        Gate::shouldReceive('allows')->once()->with('managePages', $site)->andReturn(false);
+        Gate::shouldReceive('allows')->times(3)->with('managePages', $site)->andReturn(true);
 
-        $person = m::mock(Person::class);
-        $person->shouldReceive('hasSite')->andReturn(true);
-        $person->shouldReceive('isSuperuser')->andReturn(false);
+        $page = m::mock(Page::class);
+        $page->shouldReceive('wasCreatedBy')->andReturn(false);
+
+        $person = new Person();
         $policy = new PagePolicy();
 
-        $this->assertTrue($policy->before($person, ''));
-        $this->assertNull($policy->before($person, ''));
+        $this->assertTrue($policy->add($person, $page));
+        $this->assertTrue($policy->delete($person, $page));
+        $this->assertTrue($policy->edit($person, $page));
     }
 
     public function testCertainRolesCanBePerformedIfUserCreatedPage()

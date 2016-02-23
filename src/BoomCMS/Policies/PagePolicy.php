@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Policies;
 
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Foundation\Policies\BoomCMSPolicy;
 use BoomCMS\Support\Facades\Router;
@@ -9,25 +10,44 @@ use Illuminate\Support\Facades\Gate;
 
 class PagePolicy extends BoomCMSPolicy
 {
-    public function before(Person $person, $ability)
+    public function add(Person $person, Page $page)
     {
-        $result = parent::before($person, $ability);
-
-        if ($result !== null) {
-            return $result;
-        }
-
-        if (Gate::allows('managePages', Router::getActiveSite()) === true) {
+        if ($this->managesPages()) {
             return true;
         }
+
+        return $this->check('add', $person, $page);
+    }
+
+    public function edit(Person $person, Page $page)
+    {
+        if ($page->wasCreatedBy($person) || $this->managesPages()) {
+            return true;
+        }
+
+        return $this->check('edit', $person, $page);
+    }
+
+    public function editContent(Person $person, Page $page)
+    {
+        if ($page->wasCreatedBy($person)) {
+            return true;
+        }
+    
+        return $this->check('editContent', $person, $page);
+    }
+
+    public function delete(Person $person, Page $page)
+    {
+        if ($page->wasCreatedBy($person) || $this->managesPages()) {
+            return true;
+        }
+
+        return $this->check('delete', $person, $page);
     }
 
     public function check($role, Person $person, $page)
     {
-        if (in_array($role, ['edit', 'delete', 'editContent']) && $page->wasCreatedBy($person)) {
-            return true;
-        }
-
         do {
             $result = parent::check($role, $person, $page);
 
@@ -41,5 +61,15 @@ class PagePolicy extends BoomCMSPolicy
         } while ($result === null && $page !== null);
 
         return (bool) $result;
+    }
+
+    /**
+     * Whether the user has the 'managePages' role.
+     *
+     * @return bool
+     */
+    protected function managesPages()
+    {
+        return (Gate::allows('managePages', Router::getActiveSite()) === true);
     }
 }
