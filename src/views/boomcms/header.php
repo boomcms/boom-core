@@ -6,7 +6,10 @@
         <meta http-equiv="Content-Style-Type" content="text/css" />
         <meta name="csrf-token" content="<?= csrf_token() ?>" />
 
+        <?= view('boomcms::fontawesome') ?>
         <link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
+
+        <?= $boomJS ?>
     </head>
     <body>
         <?= view('boomcms::editor.linkPicker') ?>
