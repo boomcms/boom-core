@@ -1,6 +1,3 @@
-    <script type="text/javascript" src="/vendor/boomcms/boom-core/js/cms.js"></script>
-    <?= view('boomcms::fontawesome') ?>
-
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
