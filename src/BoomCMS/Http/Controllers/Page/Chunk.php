@@ -12,13 +12,10 @@ use Illuminate\Support\Facades\View;
 
 class Chunk extends PageController
 {
-    public function __construct(Page $page)
-    {
-        $this->authorize('editContent', $page);
-    }
-
     public function getEdit(Request $request, Page $page)
     {
+        $this->authorize('editContent', $page);
+
         $type = $request->input('type');
         $chunk = ChunkFacade::get($type, $request->input('slotname'), $page);
 
@@ -29,6 +26,8 @@ class Chunk extends PageController
 
     public function postSave(Request $request, Page $page)
     {
+        $this->authorize('editContent', $page);
+
         $input = $request->input();
 
         if (isset($input['template'])) {
