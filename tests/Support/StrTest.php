@@ -36,7 +36,7 @@ class StrTest extends AbstractTestCase
         ];
 
         foreach ($replacements as $original => $after) {
-            $this->AssertEquals($after, Str::makeInternalLinksRelative($original));
+            $this->assertEquals($after, Str::makeInternalLinksRelative($original));
         }
     }
 
@@ -49,7 +49,19 @@ class StrTest extends AbstractTestCase
         ];
 
         foreach ($replacements as $original => $after) {
-            $this->AssertEquals($after, Str::OEmbed($original));
+            $this->assertEquals($after, Str::OEmbed($original));
+        }
+    }
+
+    public function testnl2paragraph()
+    {
+        $replacements = [
+            'text'       => '<p>text</p>',
+            "text\ntext" => '<p>text</p><p>text</p>',
+        ];
+
+        foreach ($replacements as $original => $after) {
+            $this->assertEquals($after, Str::nl2paragraph($original));
         }
     }
 }

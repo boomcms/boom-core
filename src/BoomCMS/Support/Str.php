@@ -61,6 +61,24 @@ abstract class Str extends BaseStr
     }
 
     /**
+     * Adds paragraph HTML tags to text treating each new line as a paragraph break.
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    public static function nl2paragraph($text)
+    {
+        $paragraphs = explode("\n", $text);
+
+        foreach ($paragraphs as &$paragraph) {
+            $paragraph = "<p>$paragraph</p>";
+        }
+
+        return implode('', $paragraphs);
+    }
+
+    /**
      * Replace embeddable URLs with the embed code.
      *
      * @param string $text
