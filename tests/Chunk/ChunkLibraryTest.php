@@ -120,7 +120,7 @@ class ChunkLibraryTest extends AbstractTestCase
 
     /**
      * A library doesn't have content if the params only contain a sort order or limit.
-     * 
+     *
      * There most be a filter parameter as well.
      */
     public function testHasContentIsFalseIfParamsDontContainFilters()

@@ -128,7 +128,7 @@ abstract class Helpers
 
     /**
      * Reutrn the meta description for a page.
-     * 
+     *
      * If no page is given then the active page is used.
      *
      * The page description property will be used, if that isn't set then the page standfirst is used.
