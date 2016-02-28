@@ -21,6 +21,11 @@ class FileTest extends AbstractTestCase
         }
     }
 
+    public function testExtensionIsCaseInsensitive()
+    {
+        $this->assertEquals('txt', File::extension('test.TXT', ''));
+    }
+
     public function testExtensionFromMimetype()
     {
         $config = include __DIR__.'/../../src/config/boomcms/assets.php';

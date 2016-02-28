@@ -47,10 +47,10 @@ abstract class File
      */
     public static function extension($filename, $mimetype)
     {
-        preg_match('|\.([a-z]+)$|', $filename, $extension);
+        preg_match('|\.([a-zA-Z]+)$|', $filename, $extension);
 
         if (isset($extension[1])) {
-            $extension = $extension[1];
+            $extension = strtolower($extension[1]);
         } else {
             $extension = static::extensionFromMimetype($mimetype);
         }
