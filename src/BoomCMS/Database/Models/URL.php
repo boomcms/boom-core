@@ -111,7 +111,7 @@ class URL extends Model implements URLInterface
 
     /**
      * Get the URL using a given scheme.
-     * 
+     *
      * @param string $scheme
      *
      * @return string
