@@ -16,7 +16,7 @@ class Text extends BaseChunk
             $siteText = $text = strip_tags($text);
         } else {
             $text = Str::makeInternalLinksRelative($text);
-            $siteText = Str::StorifyEmbed(Str::OEmbed($text));
+            $siteText = Str::StorifyEmbed(Str::oEmbed($text));
         }
 
         $this->attributes['text'] = $text;

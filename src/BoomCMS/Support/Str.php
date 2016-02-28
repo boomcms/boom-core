@@ -85,7 +85,7 @@ abstract class Str extends BaseStr
      *
      * @return string
      */
-    public static function OEmbed($text)
+    public static function oEmbed($text)
     {
         $embera = new Embera();
 
@@ -107,7 +107,7 @@ abstract class Str extends BaseStr
     }
 
     /**
-     * Embed storify links (doesn't use OEmbed).
+     * Embed storify links (doesn't use oEmbed).
      *
      * @param string $text
      *

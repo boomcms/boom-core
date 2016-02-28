@@ -40,7 +40,7 @@ class StrTest extends AbstractTestCase
         }
     }
 
-    public function testOembed()
+    public function testoEmbed()
     {
         $replacements = [
             'https://www.youtube.com/watch?v=5omxorBHiv8'                             => '<iframe width="459" height="344" src="https://www.youtube.com/embed/5omxorBHiv8?feature=oembed" frameborder="0" allowfullscreen></iframe>',
@@ -49,7 +49,7 @@ class StrTest extends AbstractTestCase
         ];
 
         foreach ($replacements as $original => $after) {
-            $this->assertEquals($after, Str::OEmbed($original));
+            $this->assertEquals($after, Str::oEmbed($original));
         }
     }
 
