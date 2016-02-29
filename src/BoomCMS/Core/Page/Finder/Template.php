@@ -13,7 +13,7 @@ class Template extends Filter
      */
     protected $template;
 
-    public function __construct(TemplateInterface $template)
+    public function __construct(TemplateInterface $template = null)
     {
         $this->template = $template;
     }
@@ -21,5 +21,10 @@ class Template extends Filter
     public function build(Builder $query)
     {
         return $query->where('template_id', '=', $this->template->getId());
+    }
+
+    public function shouldBeApplied()
+    {
+        return $this->template instanceof TemplateInterface;
     }
 }
