@@ -22,6 +22,7 @@ class RouteServiceProviderTest extends AbstractTestCase
             Models\Page::class,
             Models\Person::class,
             Models\Site::class,
+            Models\Tag::class,
             Models\Template::class,
             Models\URL::class,
         ] as $model) {

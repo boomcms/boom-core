@@ -41260,10 +41260,7 @@ function boomPage(page_id) {
 	boomPage.prototype.removeTag = function(tagId) {
 		return $.ajax({
 			type: 'delete',
-			url: this.baseUrl + this.id + '/tags',
-			data: {
-				tag: tagId
-			}
+			url: this.baseUrl + this.id + '/tags/' + tagId
 		});
 	};
 
