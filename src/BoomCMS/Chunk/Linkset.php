@@ -30,13 +30,6 @@ class Linkset extends BaseChunk
         ]);
     }
 
-    public function showDefault()
-    {
-        return View::make($this->viewPrefix."default.linkset.$this->template", [
-            'placeholder' => $this->getPlaceholderText(),
-        ]);
-    }
-
     public function getLinks()
     {
         if ($this->links === null) {

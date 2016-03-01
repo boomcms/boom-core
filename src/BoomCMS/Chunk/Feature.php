@@ -37,13 +37,6 @@ class Feature extends BaseChunk
         }
     }
 
-    public function showDefault()
-    {
-        return View::make($this->viewPrefix."default.feature.$this->template", [
-            'placeholder' => $this->getPlaceholderText(),
-        ]);
-    }
-
     public function attributes()
     {
         return [

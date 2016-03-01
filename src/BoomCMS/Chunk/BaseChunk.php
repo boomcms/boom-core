@@ -6,6 +6,7 @@ use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Traits\Renderable;
 use Collective\Html\HtmlFacade as Html;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View;
 
 abstract class BaseChunk
@@ -82,13 +83,6 @@ abstract class BaseChunk
      * Displays the chunk when chunk data has been set.
      */
     abstract protected function show();
-
-    /**
-     * Displays default chunk HTML.
-     *
-     * @return View
-     */
-    abstract protected function showDefault();
 
     /**
      * Set content which should be added after the chunk.
@@ -232,6 +226,18 @@ abstract class BaseChunk
         }
 
         return empty($html) ? $html : $this->before.$html.$this->after;
+    }
+
+    /**
+     * Displays default chunk HTML.
+     *
+     * @return View
+     */
+    protected function showDefault()
+    {
+        return ViewFacade::make($this->viewPrefix."default.{$this->getType()}.$this->template", [
+            'placeholder' => $this->getPlaceholderText(),
+        ]);
     }
 
     /**

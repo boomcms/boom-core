@@ -122,11 +122,4 @@ class Library extends BaseChunk
             },
         ]);
     }
-
-    protected function showDefault()
-    {
-        return View::make($this->viewPrefix."default.library.$this->template", [
-            'placeholder' => $this->getPlaceholderText(),
-        ]);
-    }
 }

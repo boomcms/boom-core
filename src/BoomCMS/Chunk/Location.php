@@ -140,13 +140,6 @@ class Location extends BaseChunk
         ]);
     }
 
-    public function showDefault()
-    {
-        return View::make($this->viewPrefix."default.location.$this->template", [
-            'placeholder' => $this->getPlaceholderText(),
-        ]);
-    }
-
     /**
      * Enable the title section.
      *

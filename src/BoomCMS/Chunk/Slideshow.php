@@ -26,13 +26,6 @@ class Slideshow extends BaseChunk
         ])->render();
     }
 
-    public function showDefault()
-    {
-        return View::make($this->viewPrefix."default.slideshow.$this->template", [
-            'placeholder' => $this->getPlaceholderText(),
-        ])->render();
-    }
-
     public function hasContent()
     {
         return count($this->getSlides()) > 0;
