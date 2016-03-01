@@ -9,7 +9,7 @@ abstract class Asset
 {
     /**
      * Return the controller to be used to display an asset.
-     * 
+     *
      * @param Asset $asset
      *
      * @return string
