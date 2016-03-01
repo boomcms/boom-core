@@ -26,7 +26,6 @@ class Calendar extends BaseChunk
     }
 
     /**
-     * 
      * @return bool
      */
     public function hasContent()
