@@ -15,6 +15,7 @@ class RouteServiceProvider extends ServiceProvider
         'Page',
         'Person',
         'Site',
+        'Tag',
         'Template',
         'URL',
     ];

@@ -30770,99 +30770,101 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
 
 /*global window, atob, Blob, ArrayBuffer, Uint8Array, define, module */
 
-(function (window) {
-    'use strict';
-    var CanvasPrototype = window.HTMLCanvasElement &&
-            window.HTMLCanvasElement.prototype,
-        hasBlobConstructor = window.Blob && (function () {
-            try {
-                return Boolean(new Blob());
-            } catch (e) {
-                return false;
-            }
-        }()),
-        hasArrayBufferViewSupport = hasBlobConstructor && window.Uint8Array &&
-            (function () {
-                try {
-                    return new Blob([new Uint8Array(100)]).size === 100;
-                } catch (e) {
-                    return false;
-                }
-            }()),
-        BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
-            window.MozBlobBuilder || window.MSBlobBuilder,
-        dataURIPattern = /^data:((.*?)(;charset=.*?)?)(;base64)?,/,
-        dataURLtoBlob = (hasBlobConstructor || BlobBuilder) && window.atob &&
-            window.ArrayBuffer && window.Uint8Array && function (dataURI) {
-                var matches,
-                    mediaType,
-                    isBase64,
-                    dataString,
-                    byteString,
-                    arrayBuffer,
-                    intArray,
-                    i,
-                    bb;
-                // Parse the dataURI components as per RFC 2397
-                matches = dataURI.match(dataURIPattern);
-                if (!matches) {
-                    throw new Error('invalid data URI');
-                }
-                // Default to text/plain;charset=US-ASCII
-                mediaType = matches[2] ?
-                    matches[1] :
-                    'text/plain' + (matches[3] || ';charset=US-ASCII');
-                isBase64 = !!matches[4];
-                dataString = dataURI.slice(matches[0].length);
-                if (isBase64) {
-                    // Convert base64 to raw binary data held in a string:
-                    byteString = atob(dataString);
-                } else {
-                    // Convert base64/URLEncoded data component to raw binary:
-                    byteString = decodeURIComponent(dataString);
-                }
-                // Write the bytes of the string to an ArrayBuffer:
-                arrayBuffer = new ArrayBuffer(byteString.length);
-                intArray = new Uint8Array(arrayBuffer);
-                for (i = 0; i < byteString.length; i += 1) {
-                    intArray[i] = byteString.charCodeAt(i);
-                }
-                // Write the ArrayBuffer (or ArrayBufferView) to a blob:
-                if (hasBlobConstructor) {
-                    return new Blob(
-                        [hasArrayBufferViewSupport ? intArray : arrayBuffer],
-                        {type: mediaType}
-                    );
-                }
-                bb = new BlobBuilder();
-                bb.append(arrayBuffer);
-                return bb.getBlob(mediaType);
-            };
-    if (window.HTMLCanvasElement && !CanvasPrototype.toBlob) {
-        if (CanvasPrototype.mozGetAsFile) {
-            CanvasPrototype.toBlob = function (callback, type, quality) {
-                if (quality && CanvasPrototype.toDataURL && dataURLtoBlob) {
-                    callback(dataURLtoBlob(this.toDataURL(type, quality)));
-                } else {
-                    callback(this.mozGetAsFile('blob', type));
-                }
-            };
-        } else if (CanvasPrototype.toDataURL && dataURLtoBlob) {
-            CanvasPrototype.toBlob = function (callback, type, quality) {
-                callback(dataURLtoBlob(this.toDataURL(type, quality)));
-            };
+;(function (window) {
+  'use strict'
+
+  var CanvasPrototype = window.HTMLCanvasElement &&
+                          window.HTMLCanvasElement.prototype
+  var hasBlobConstructor = window.Blob && (function () {
+    try {
+      return Boolean(new Blob())
+    } catch (e) {
+      return false
+    }
+  }())
+  var hasArrayBufferViewSupport = hasBlobConstructor && window.Uint8Array &&
+    (function () {
+      try {
+        return new Blob([new Uint8Array(100)]).size === 100
+      } catch (e) {
+        return false
+      }
+    }())
+  var BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
+                      window.MozBlobBuilder || window.MSBlobBuilder
+  var dataURIPattern = /^data:((.*?)(;charset=.*?)?)(;base64)?,/
+  var dataURLtoBlob = (hasBlobConstructor || BlobBuilder) && window.atob &&
+    window.ArrayBuffer && window.Uint8Array &&
+    function (dataURI) {
+      var matches,
+        mediaType,
+        isBase64,
+        dataString,
+        byteString,
+        arrayBuffer,
+        intArray,
+        i,
+        bb
+      // Parse the dataURI components as per RFC 2397
+      matches = dataURI.match(dataURIPattern)
+      if (!matches) {
+        throw new Error('invalid data URI')
+      }
+      // Default to text/plain;charset=US-ASCII
+      mediaType = matches[2]
+        ? matches[1]
+        : 'text/plain' + (matches[3] || ';charset=US-ASCII')
+      isBase64 = !!matches[4]
+      dataString = dataURI.slice(matches[0].length)
+      if (isBase64) {
+        // Convert base64 to raw binary data held in a string:
+        byteString = atob(dataString)
+      } else {
+        // Convert base64/URLEncoded data component to raw binary:
+        byteString = decodeURIComponent(dataString)
+      }
+      // Write the bytes of the string to an ArrayBuffer:
+      arrayBuffer = new ArrayBuffer(byteString.length)
+      intArray = new Uint8Array(arrayBuffer)
+      for (i = 0; i < byteString.length; i += 1) {
+        intArray[i] = byteString.charCodeAt(i)
+      }
+      // Write the ArrayBuffer (or ArrayBufferView) to a blob:
+      if (hasBlobConstructor) {
+        return new Blob(
+          [hasArrayBufferViewSupport ? intArray : arrayBuffer],
+          {type: mediaType}
+        )
+      }
+      bb = new BlobBuilder()
+      bb.append(arrayBuffer)
+      return bb.getBlob(mediaType)
+    }
+  if (window.HTMLCanvasElement && !CanvasPrototype.toBlob) {
+    if (CanvasPrototype.mozGetAsFile) {
+      CanvasPrototype.toBlob = function (callback, type, quality) {
+        if (quality && CanvasPrototype.toDataURL && dataURLtoBlob) {
+          callback(dataURLtoBlob(this.toDataURL(type, quality)))
+        } else {
+          callback(this.mozGetAsFile('blob', type))
         }
+      }
+    } else if (CanvasPrototype.toDataURL && dataURLtoBlob) {
+      CanvasPrototype.toBlob = function (callback, type, quality) {
+        callback(dataURLtoBlob(this.toDataURL(type, quality)))
+      }
     }
-    if (typeof define === 'function' && define.amd) {
-        define(function () {
-            return dataURLtoBlob;
-        });
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = dataURLtoBlob;
-    } else {
-        window.dataURLtoBlob = dataURLtoBlob;
-    }
-}(window));
+  }
+  if (typeof define === 'function' && define.amd) {
+    define(function () {
+      return dataURLtoBlob
+    })
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = dataURLtoBlob
+  } else {
+    window.dataURLtoBlob = dataURLtoBlob
+  }
+}(window))
 ;/*
  * jQuery File Upload Plugin 5.42.3
  * https://github.com/blueimp/jQuery-File-Upload
@@ -36003,8 +36005,8 @@ case"touchend":return this.addPointerListenerEnd(t,e,i,n);case"touchmove":return
   });
 
 }).call(this);
-;/*! Jcrop.js v2.0.4 - build: 20151117
- *  @copyright 2008-2015 Tapmodo Interactive LLC
+;/*! Jcrop.js v2.0.0 - build: 20141025
+ *  @copyright 2008-2014 Tapmodo Interactive LLC
  *  @license Free software under MIT License
  *  @website http://jcrop.org/
  **/
@@ -36040,6 +36042,30 @@ case"touchend":return this.addPointerListenerEnd(t,e,i,n);case"touchmove":return
       this.opt.dragEventTarget = document.body;
   };
 
+
+  // Jcrop component storage
+  /*
+  Jcrop.component = {
+    Animator: CropAnimator,
+    DragState: DragState,
+    EventManager: EventManager,
+    ImageLoader: ImageLoader,
+    StageManager: StageManager,
+    Selection: Selection,
+    Keyboard: KeyWatcher,
+    Thumbnailer: Thumbnailer,
+    CanvasAnimator: CanvasAnimator,
+    Touch: JcropTouch
+  };
+
+  // Jcrop stage constructors
+  Jcrop.stage = {
+    Block: AbstractStage,
+    Image: ImageStage,
+    Canvas: CanvasStage,
+    Transform: TransformStage
+  };
+  */
 
   // Jcrop static functions
   $.extend(Jcrop,{
@@ -36263,7 +36289,9 @@ $.extend(CanvasStage.prototype,{
     this.canvas = document.createElement('canvas');
     this.canvas.width = w;
     this.canvas.height = h;
-    this.$canvas = $(this.canvas).width('100%').height('100%');
+    this.$canvas = $(this.canvas)
+      .width(w)
+      .height(h);
     this.context = this.canvas.getContext('2d');
     this.fillstyle = "rgb(0,0,0)";
     this.element = this.$canvas.wrap('<div />').parent().width(w).height(h);
@@ -37300,7 +37328,7 @@ Jcrop.registerStageType('Canvas',CanvasStage);
         t.filter = t.core.getDefaultFilters();
 
         t.element = $('<div />').addClass(o.css_selection).data({ selection: t });
-        t.frame = $('<button />').addClass(o.css_button).data('ord','move').attr('type','button');
+        t.frame = $('<button />').addClass(o.css_button).data('ord','move');
         t.element.append(t.frame).appendTo(t.core.container);
 
         // IE background/draggable hack
@@ -38124,8 +38152,7 @@ Jcrop.registerStageType('Canvas',CanvasStage);
           this.newSelection();
 
         // Use these values to update the current selection
-        this.setSelect(this.opt.setSelect);
-
+        this.ui.multi[0].update(Jcrop.wrapFromXywh(this.opt.setSelect));
         // Set to null so it doesn't get called again
         this.opt.setSelect = null;
       }
@@ -38139,7 +38166,7 @@ Jcrop.registerStageType('Canvas',CanvasStage);
       if (this.opt.imgsrc) {
         this.container.before(this.opt.imgsrc);
         this.container.remove();
-        $(this.opt.imgsrc).removeData('Jcrop').show();
+        $(this.opt.imgsrc).removeData('Jcrop');
       } else {
         // @todo: more elegant destroy() process for non-image containers
         this.container.remove();
@@ -38334,7 +38361,7 @@ Jcrop.registerStageType('Canvas',CanvasStage);
     deleteSelection: function(){
       if (this.ui.selection) {
         this.removeSelection(this.ui.selection);
-        if (this.ui.multi.length) this.ui.multi[0].focus();
+        this.ui.multi[0].focus();
         this.ui.selection.refresh();
       }
     },
@@ -38407,7 +38434,6 @@ Jcrop.registerStageType('Canvas',CanvasStage);
 
   // Jcrop jQuery plugin function
   $.fn.Jcrop = function(options,callback){
-    options = options || {};
 
     var first = this.eq(0).data('Jcrop');
     var args = Array.prototype.slice.call(arguments);
@@ -38440,25 +38466,15 @@ Jcrop.registerStageType('Canvas',CanvasStage);
         exists.setOptions(options);
 
       else {
-
-        if (!options.stageConstructor)
-          options.stageConstructor = $.Jcrop.stageConstructor;
+        if (!options.stageConstructor) options.stageConstructor = $.Jcrop.stageConstructor;
 
         options.stageConstructor(this,options,function(stage,options){
-          var selection = options.setSelect;
-          if (selection) delete(options.setSelect);
-
           var obj = $.Jcrop.attach(stage.element,options);
 
           if (typeof stage.attach == 'function')
             stage.attach(obj);
 
           $t.data('Jcrop',obj);
-
-          if (selection) {
-            obj.newSelection();
-            obj.setSelect(selection);
-          }
 
           if (typeof callback == 'function')
             callback.call(obj);
@@ -40675,10 +40691,7 @@ function boomPage(page_id) {
 	boomPage.prototype.removeTag = function(tagId) {
 		return $.ajax({
 			type: 'delete',
-			url: this.baseUrl + this.id + '/tags',
-			data: {
-				tag: tagId
-			}
+			url: this.baseUrl + this.id + '/tags/' + tagId
 		});
 	};
 
