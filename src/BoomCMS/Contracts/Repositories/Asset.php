@@ -13,7 +13,7 @@ interface Asset
 
     /**
      * Add an asset version to an asset from an uploaded file.
-     * 
+     *
      * @param AssetInterface $asset
      * @param UploadedFile   $file
      */
@@ -21,7 +21,7 @@ interface Asset
 
     /**
      * Retrive an asset by ID.
-     * 
+     *
      * @param int $id
      */
     public function find($id);

@@ -8,7 +8,7 @@ abstract class Config
 {
     /**
      * Recursively merges a file into the boomcms config group.
-     * 
+     *
      * @param string $file
      */
     public static function merge($file)

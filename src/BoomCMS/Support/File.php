@@ -10,7 +10,7 @@ abstract class File
 {
     /**
      * Returns an array of 'interesting' exif data for a filepath.
-     * 
+     *
      * If the file at the given path isn't supported then an empt array is returned.
      *
      * @param string $path
