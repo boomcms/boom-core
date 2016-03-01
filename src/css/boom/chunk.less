@@ -29,4 +29,45 @@
 			margin: 0 -0.25em;
 		}
 	}
+
+	&-calendar {
+		overflow: hidden;
+
+		.calendar, .content {
+			display: inline-block;
+			float: left;
+			width: 50%;
+		}
+
+		.ui-datepicker-calendar {
+			td a.ui-state-active {
+				border-color: @red;
+				color: @black;
+			}
+
+			td a {
+				text-align: center;
+				border: 1px solid @white;
+			}
+
+			.hastext a {
+				background: @red;
+				color: @white;
+				border-color: @red;
+			}
+		}
+
+		.content {
+			visibility: hidden;
+		}
+
+		textarea {
+			height: 18rem;
+			width: 100%;
+
+			&[name=dates] {
+				display: none;
+			}
+		}
+	}
 }

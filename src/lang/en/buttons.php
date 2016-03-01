@@ -21,6 +21,7 @@ return [
     'reparent'              => 'Change parent',
     'replace'               => 'Replace',
     'request-approval'      => 'Request approval',
+    'remove-date'           => 'Remove date',
     'remove-location'       => 'Remove location',
     'reset'                 => 'Reset',
     'resize'                => 'Resize',

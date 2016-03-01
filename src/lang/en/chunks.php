@@ -6,6 +6,9 @@ return [
         'standfirst' => 'Insert standfirst here - a single sentence of around 15 words introducing the page',
         'bodycopy'   => 'Insert the main content of the page here',
     ],
+    'calendar' => [
+        'default' => 'Edit calendar',
+    ],
     'feature' => [
        'default' => 'Feature a page here',
     ],
