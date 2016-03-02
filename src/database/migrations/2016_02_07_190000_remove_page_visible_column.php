@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
 class RemovePageVisibleColumn extends Migration
 {
@@ -12,6 +13,12 @@ class RemovePageVisibleColumn extends Migration
      */
     public function up()
     {
+        DB::table('pages')
+            ->where('visible', '=', 0)
+            ->update([
+                'visible_from' => null,
+            ]);
+
         Schema::table('pages', function (Blueprint $table) {
             $table->dropColumn('visible');
             $table->index(['deleted_at', 'visible_from', 'visible_to', 'parent_id']);
