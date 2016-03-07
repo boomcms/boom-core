@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CheckAssetETag
@@ -32,7 +33,7 @@ class CheckAssetETag
 
         $response = $next($request);
 
-        if ($response instanceof StreamedResponse) {
+        if ($response instanceof StreamedResponse || $response instanceof BinaryFileResponse) {
             return $response;
         }
 
