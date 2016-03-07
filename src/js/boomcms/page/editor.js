@@ -23,9 +23,10 @@ $.widget( 'boom.pageEditor', {
 			})
 			.data('boom-pageToolbar');
 
+		this.watchForDialogs();
+
 		if (this.options.editable) {
 			this.createChunks();
-			this.watchForDialogs();
 		}
 	},
 
