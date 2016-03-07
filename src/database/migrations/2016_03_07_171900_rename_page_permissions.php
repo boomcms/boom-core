@@ -2,7 +2,6 @@
 
 use BoomCMS\Database\Models\Role;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 
 class RenamePagePermissions extends Migration
 {
@@ -43,5 +42,6 @@ class RenamePagePermissions extends Migration
             ->update([
                 'name'        => 'edit',
                 'description' => 'Page - edit',
-            ]);    }
+            ]);
+    }
 }
