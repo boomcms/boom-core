@@ -28,15 +28,6 @@ class PagePolicy extends BoomCMSPolicy
         return $this->check('edit', $person, $page);
     }
 
-    public function editContent(Person $person, Page $page)
-    {
-        if ($page->wasCreatedBy($person)) {
-            return true;
-        }
-
-        return $this->check('editContent', $person, $page);
-    }
-
     public function delete(Person $person, Page $page)
     {
         if ($page->wasCreatedBy($person) || $this->managesPages()) {

@@ -5,7 +5,7 @@
 
             $('body').pageEditor({
                 page_id : <?= $page->getId() ?>,
-                editable : <?= (int) ($editor->isEnabled() && ($auth->check('editContent', $page) || $page->wasCreatedBy($person))) ?>,
+                editable : <?= (int) ($editor->isEnabled() && Gate::allows('edit', $page)) ?>,
             });
         });
         //]]>

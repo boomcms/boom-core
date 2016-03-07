@@ -69,7 +69,7 @@
         <?php endif ?>
 
         <div class="group">
-            <?php if (Gate::allows('edit', $page)): ?>
+            <?php if (Gate::allows('publish', $page)): ?>
                 <li>
                     <a href="#" class="fa fa-eye" data-b-page-setting="visibility">
                         <?= trans('boomcms::settings.menu.visibility') ?>

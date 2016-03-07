@@ -14,7 +14,7 @@ class Chunk extends PageController
 {
     public function getEdit(Request $request, Page $page)
     {
-        $this->authorize('editContent', $page);
+        $this->authorize('edit', $page);
 
         $type = $request->input('type');
         $chunk = ChunkFacade::get($type, $request->input('slotname'), $page);
@@ -26,7 +26,7 @@ class Chunk extends PageController
 
     public function postSave(Request $request, Page $page)
     {
-        $this->authorize('editContent', $page);
+        $this->authorize('edit', $page);
 
         $input = $request->input();
 

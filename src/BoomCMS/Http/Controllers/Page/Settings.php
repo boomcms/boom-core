@@ -136,7 +136,7 @@ class Settings extends PageController
      */
     public function getVisibility(Page $page)
     {
-        $this->authorize('edit', $page);
+        $this->authorize('publish', $page);
 
         return view("$this->viewPrefix.visibility", [
             'page'        => $page,
@@ -284,7 +284,7 @@ class Settings extends PageController
      */
     public function postVisibility(Request $request, Page $page)
     {
-        $this->authorize('editContent', $page);
+        $this->authorize('publish', $page);
 
         $wasVisible = $page->isVisible();
 

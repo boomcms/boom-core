@@ -13,9 +13,7 @@
 			<div id="b-page-settings-menu">
 				<?= $button('cog', trans('Page settings which apply whichever version is published'), ['id' => 'b-page-settings']) ?>
 			</div>
-		<?php endif ?>
 
-		<?php if (Gate::allows('editContent', $page)): ?>
 			<div id="b-page-publish-menu">
 				<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
 					<?= $page->getCurrentVersion()->status() ?>
@@ -23,7 +21,7 @@
 			</div>
 		<?php endif ?>
 
-		<?php if (Gate::allows('edit', $page)): ?>
+		<?php if (Gate::allows('publish', $page)): ?>
 			<?= $button('eye', trans('This page is visible. The content displayed will depend on which version of the page is published'), ['id' => 'b-page-visible', 'class' => $page->isVisible() ? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden']) ?>
 			<?= $button('eye-slash', trans('This page is hidden regardless of whether there is a published version'), ['id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility']) ?>
 		<?php endif ?>

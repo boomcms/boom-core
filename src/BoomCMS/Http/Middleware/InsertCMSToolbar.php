@@ -32,7 +32,7 @@ class InsertCMSToolbar
     {
         $activePage = Router::getActivePage();
 
-        if ($activePage === null || Gate::denies('edit', $activePage)) {
+        if ($activePage === null || Gate::denies('toolbar', $activePage)) {
             return $next($request);
         }
 

@@ -26,7 +26,7 @@ class SettingsTest extends BaseControllerTest
 
     public function testPostVisiblityMakesPageInvisible()
     {
-        $this->requireRole('editContent', $this->page);
+        $this->requireRole('publish', $this->page);
 
         $request = new Request(['visible_from' => 0]);
 

@@ -56,7 +56,7 @@ class VersionTest extends BaseControllerTest
 
     public function testGetStatus()
     {
-        $this->requireRole('editContent', $this->page);
+        $this->requireRole('edit', $this->page);
 
         View::shouldReceive('make')
             ->once()
@@ -97,7 +97,7 @@ class VersionTest extends BaseControllerTest
     public function testRequestApproval()
     {
         Auth::login(new Person());
-        $this->requireRole('editContent', $this->page);
+        $this->requireRole('edit', $this->page);
 
         $status = 'pending approval';
 
@@ -160,7 +160,7 @@ class VersionTest extends BaseControllerTest
     public function testPostTitle()
     {
         Auth::login(new Person());
-        $this->requireRole('editContent', $this->page);
+        $this->requireRole('edit', $this->page);
 
         $title = 'test';
         $status = 'draft';

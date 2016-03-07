@@ -41,7 +41,7 @@ class Version extends Controller
      */
     public function getStatus(Page $page)
     {
-        $this->authorize('editContent', $page);
+        $this->authorize('edit', $page);
 
         return view("$this->viewPrefix.status", [
             'page'    => $page,
@@ -76,7 +76,7 @@ class Version extends Controller
      */
     public function requestApproval(Page $page)
     {
-        $this->authorize('editContent', $page);
+        $this->authorize('edit', $page);
 
         $page->markUpdatesAsPendingApproval();
 
@@ -146,7 +146,7 @@ class Version extends Controller
      */
     public function postTitle(Request $request, Page $page)
     {
-        $this->authorize('editContent', $page);
+        $this->authorize('edit', $page);
 
         $oldTitle = $page->getTitle();
         $page->setTitle($request->input('title'));

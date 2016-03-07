@@ -61,13 +61,13 @@ class PagePolicyTest extends AbstractTestCase
         $page = m::mock(Page::class);
         $page
             ->shouldReceive('wasCreatedBy')
-            ->times(3)
+            ->times(2)
             ->with($person)
             ->andReturn(true);
 
         $policy = new PagePolicy();
 
-        foreach (['edit', 'editContent', 'delete'] as $role) {
+        foreach (['edit', 'delete'] as $role) {
             $this->assertTrue($policy->$role($person, $page));
         }
     }
