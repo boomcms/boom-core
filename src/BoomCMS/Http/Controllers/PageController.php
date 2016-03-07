@@ -5,17 +5,18 @@ namespace BoomCMS\Http\Controllers;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Core\Page\RssFeed;
 use BoomCMS\Support\Facades\Router;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
         $page = Router::getActivePage();
         $format = $this->request->format();
 
-        if ($this->request->route()->getParameter('format')) {
-            $format = $this->request->route()->getParameter('format');
+        if ($request->route() && $request->route()->getParameter('format')) {
+            $format = $request->route()->getParameter('format');
         }
 
         $method = 'as'.ucfirst($format);
