@@ -44,7 +44,7 @@
 
                     <select name="children_visible_in_nav" id="children_visible_in_nav">
                         <option value="1"<?php if ($page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                        <option value="0"<?php if (!$page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
+                        <option value=""<?php if (!$page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
                     </select>
                 </label>
 
