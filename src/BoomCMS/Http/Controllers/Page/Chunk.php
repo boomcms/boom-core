@@ -28,16 +28,9 @@ class Chunk extends PageController
     {
         $this->authorize('edit', $page);
 
-        $input = $request->input();
+        $chunk = ChunkFacade::create($page, $request->except('template'));
 
-        if (isset($input['template'])) {
-            $template = $input['template'];
-            unset($input['template']);
-        }
-
-        $chunk = ChunkFacade::create($page, $input);
-
-        if (isset($template)) {
+        if ($template = $request->input('template')) {
             $chunk->template($template);
         }
 
