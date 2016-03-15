@@ -50,7 +50,7 @@ class RssFeed
 
     public function getFeedItems()
     {
-        return PageFacade::findByParentId($this->page->getId());
+        return Helpers::getPages(['parentId' => $this->page->getId()]);
     }
 
     public function render()
