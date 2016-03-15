@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Page;
 
 use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Helpers;
 use Thujohn\Rss\Rss;
 
