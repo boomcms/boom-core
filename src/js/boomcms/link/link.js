@@ -48,7 +48,7 @@ function boomLink(url, pageId, title) {
 			return this.getTelUrl();
 		}
 
-		return (this.url == 'http://') ? '' : this.makeUrlRelative();
+		return (this.url === 'http://') ? '' : this.makeUrlRelative();
 	};
 
 	boomLink.prototype.getPageId = function() {
