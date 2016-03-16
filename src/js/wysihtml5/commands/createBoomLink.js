@@ -43,7 +43,6 @@
 					if (existing_link) {
 						$(existing_link)
 							.attr('href', link.getUrl())
-							.attr('title', '')
 							.text($(existing_link).text().replace(existing_link.href, url));
 					} else {
 						composer.selection.setBookmark(bm);

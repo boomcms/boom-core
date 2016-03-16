@@ -36977,8 +36977,8 @@ case"touchend":return this.addPointerListenerEnd(t,e,i,n);case"touchmove":return
   });
 
 }).call(this);
-;/*! Jcrop.js v2.0.4 - build: 20151117
- *  @copyright 2008-2015 Tapmodo Interactive LLC
+;/*! Jcrop.js v2.0.0 - build: 20141025
+ *  @copyright 2008-2014 Tapmodo Interactive LLC
  *  @license Free software under MIT License
  *  @website http://jcrop.org/
  **/
@@ -37014,6 +37014,30 @@ case"touchend":return this.addPointerListenerEnd(t,e,i,n);case"touchmove":return
       this.opt.dragEventTarget = document.body;
   };
 
+
+  // Jcrop component storage
+  /*
+  Jcrop.component = {
+    Animator: CropAnimator,
+    DragState: DragState,
+    EventManager: EventManager,
+    ImageLoader: ImageLoader,
+    StageManager: StageManager,
+    Selection: Selection,
+    Keyboard: KeyWatcher,
+    Thumbnailer: Thumbnailer,
+    CanvasAnimator: CanvasAnimator,
+    Touch: JcropTouch
+  };
+
+  // Jcrop stage constructors
+  Jcrop.stage = {
+    Block: AbstractStage,
+    Image: ImageStage,
+    Canvas: CanvasStage,
+    Transform: TransformStage
+  };
+  */
 
   // Jcrop static functions
   $.extend(Jcrop,{
@@ -37237,7 +37261,9 @@ $.extend(CanvasStage.prototype,{
     this.canvas = document.createElement('canvas');
     this.canvas.width = w;
     this.canvas.height = h;
-    this.$canvas = $(this.canvas).width('100%').height('100%');
+    this.$canvas = $(this.canvas)
+      .width(w)
+      .height(h);
     this.context = this.canvas.getContext('2d');
     this.fillstyle = "rgb(0,0,0)";
     this.element = this.$canvas.wrap('<div />').parent().width(w).height(h);
@@ -38274,7 +38300,7 @@ Jcrop.registerStageType('Canvas',CanvasStage);
         t.filter = t.core.getDefaultFilters();
 
         t.element = $('<div />').addClass(o.css_selection).data({ selection: t });
-        t.frame = $('<button />').addClass(o.css_button).data('ord','move').attr('type','button');
+        t.frame = $('<button />').addClass(o.css_button).data('ord','move');
         t.element.append(t.frame).appendTo(t.core.container);
 
         // IE background/draggable hack
@@ -39098,8 +39124,7 @@ Jcrop.registerStageType('Canvas',CanvasStage);
           this.newSelection();
 
         // Use these values to update the current selection
-        this.setSelect(this.opt.setSelect);
-
+        this.ui.multi[0].update(Jcrop.wrapFromXywh(this.opt.setSelect));
         // Set to null so it doesn't get called again
         this.opt.setSelect = null;
       }
@@ -39113,7 +39138,7 @@ Jcrop.registerStageType('Canvas',CanvasStage);
       if (this.opt.imgsrc) {
         this.container.before(this.opt.imgsrc);
         this.container.remove();
-        $(this.opt.imgsrc).removeData('Jcrop').show();
+        $(this.opt.imgsrc).removeData('Jcrop');
       } else {
         // @todo: more elegant destroy() process for non-image containers
         this.container.remove();
@@ -39308,7 +39333,7 @@ Jcrop.registerStageType('Canvas',CanvasStage);
     deleteSelection: function(){
       if (this.ui.selection) {
         this.removeSelection(this.ui.selection);
-        if (this.ui.multi.length) this.ui.multi[0].focus();
+        this.ui.multi[0].focus();
         this.ui.selection.refresh();
       }
     },
@@ -39381,7 +39406,6 @@ Jcrop.registerStageType('Canvas',CanvasStage);
 
   // Jcrop jQuery plugin function
   $.fn.Jcrop = function(options,callback){
-    options = options || {};
 
     var first = this.eq(0).data('Jcrop');
     var args = Array.prototype.slice.call(arguments);
@@ -39414,25 +39438,15 @@ Jcrop.registerStageType('Canvas',CanvasStage);
         exists.setOptions(options);
 
       else {
-
-        if (!options.stageConstructor)
-          options.stageConstructor = $.Jcrop.stageConstructor;
+        if (!options.stageConstructor) options.stageConstructor = $.Jcrop.stageConstructor;
 
         options.stageConstructor(this,options,function(stage,options){
-          var selection = options.setSelect;
-          if (selection) delete(options.setSelect);
-
           var obj = $.Jcrop.attach(stage.element,options);
 
           if (typeof stage.attach == 'function')
             stage.attach(obj);
 
           $t.data('Jcrop',obj);
-
-          if (selection) {
-            obj.newSelection();
-            obj.setSelect(selection);
-          }
 
           if (typeof callback == 'function')
             callback.call(obj);
@@ -45492,11 +45506,19 @@ $.widget('ui.chunkPageVisibility', {
 	};
 
 	boomLink.prototype.getUrl = function() {
-		return (this.url == 'http://') ? '' : this.makeUrlRelative();
+		if (this.isTel()) {
+			return this.getTelUrl();
+		}
+
+		return (this.url === 'http://') ? '' : this.makeUrlRelative();
 	};
 
 	boomLink.prototype.getPageId = function() {
 		return this.pageId;
+	};
+
+	boomLink.prototype.getTelUrl = function() {
+		return 'tel:' + this.url.replace(/[^+\d]+/g, '');
 	};
 
 	boomLink.prototype.getTitle = function() {
@@ -67515,7 +67537,6 @@ wysihtml5.views.View = Base.extend(
 					if (existing_link) {
 						$(existing_link)
 							.attr('href', link.getUrl())
-							.attr('title', '')
 							.text($(existing_link).text().replace(existing_link.href, url));
 					} else {
 						composer.selection.setBookmark(bm);
