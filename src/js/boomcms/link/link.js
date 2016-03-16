@@ -44,11 +44,19 @@ function boomLink(url, pageId, title) {
 	};
 
 	boomLink.prototype.getUrl = function() {
+		if (this.isTel()) {
+			return this.getTelUrl();
+		}
+
 		return (this.url == 'http://') ? '' : this.makeUrlRelative();
 	};
 
 	boomLink.prototype.getPageId = function() {
 		return this.pageId;
+	};
+
+	boomLink.prototype.getTelUrl = function() {
+		return 'tel:' + this.url.replace(/[^+\d]+/g, '');
 	};
 
 	boomLink.prototype.getTitle = function() {
