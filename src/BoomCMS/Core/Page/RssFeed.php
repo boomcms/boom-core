@@ -42,7 +42,7 @@ class RssFeed
             'title'             => $page->getTitle(),
             'description|cdata' => $page->getDescription(),
             'link'              => $page->url(),
-            'pubDate'           => $page->getVisibleFrom()->format('r'),
+            'pubDate'           => $page->isVisible() ? $page->getVisibleFrom()->format('r') : null,
             'author|cdata'      => empty($authors) ? null : implode(',', $authors),
         ]);
     }
