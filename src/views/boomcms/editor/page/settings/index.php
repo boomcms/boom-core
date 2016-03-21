@@ -88,7 +88,8 @@
             <?php endif ?>
 
             <li>
-                <a href="#" class="fa fa-pencil" data-b-page-setting="drafts">
+                <a href="#" data-b-page-setting="drafts">
+                    <span class="fa fa-pencil"></span>
                     <?= trans('boomcms::settings.menu.drafts') ?>
                 </a>
             </li>
