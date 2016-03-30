@@ -1,5 +1,6 @@
 <?php
 
+use BoomCMS\Database\Models\AssetVersion;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -35,6 +36,10 @@ class CreateAssetVersionsTable extends Migration
                 ->on('assets')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
+
+            $table->string('extension', 10);
+            $table->string('mimetype', 255);
+            $table->text(AssetVersion::ATTR_METADATA)->nullable();
         });
 
         DB::statement('insert into asset_versions (id, asset_id, width, height, filename, filesize, edited_at, edited_by) select id, id, width, height, filename, filesize, uploaded_time, uploaded_by from assets');

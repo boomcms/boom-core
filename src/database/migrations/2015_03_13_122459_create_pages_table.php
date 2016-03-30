@@ -40,6 +40,7 @@ class CreatePagesTable extends Migration
             $table->index(['deleted', 'visible_in_nav_cms', 'visible_from'], 'pages_cmslist');
             $table->integer('parent_id')->unsigned()->nullable();
             $table->foreign('parent_id')->references('id')->on('pages')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->boolean('disable_delete')->default(false);
         });
     }
 
