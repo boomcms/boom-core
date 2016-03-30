@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "jquery": "~2.1.3",
-    "datetimepicker": "2.4.5",
+    "datetimepicker": "~2.5",
     "jquery-ui": "~1.11.4",
     "jquery-file-upload": "~9.9.3",
     "jgrowl": "~1.4.2",
