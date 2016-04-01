@@ -12,12 +12,10 @@ class CreatePasswordTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('password_tokens', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('person_id')->unsigned()->index('password_tokens_person_id');
-            $table->string('token', 40)->unique('uniq_token');
-            $table->integer('created')->unsigned();
-            $table->integer('expires')->unsigned()->index('password_tokens_expires');
+        Schema::create('password_resets', function (Blueprint $table) {
+            $table->string('email')->index();
+            $table->string('token')->index();
+            $table->timestamp('created_at');
         });
     }
 
@@ -28,6 +26,6 @@ class CreatePasswordTokensTable extends Migration
      */
     public function down()
     {
-        Schema::drop('password_tokens');
+        Schema::drop('password_resets');
     }
 }

@@ -15,10 +15,12 @@ class CreatePeopleTable extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->integer('id', true, true);
             $table->string('name')->nullable();
-            $table->string('email')->unique('people_email');
+            $table->string('email');
             $table->boolean('enabled')->nullable()->default(1);
             $table->string('password', 60)->nullable();
             $table->boolean('superuser')->default(false);
+            $table->rememberToken();
+            $table->unique('email', 'deleted_at');
         });
     }
 

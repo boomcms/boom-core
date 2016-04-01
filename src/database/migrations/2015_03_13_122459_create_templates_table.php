@@ -19,6 +19,7 @@ class CreateTemplatesTable extends Migration
             $table->string('filename', 25);
             $table->string('theme', 100);
             $table->unique(['theme', 'filename']);
+            $table->index(['theme', 'name']);
         });
     }
 
