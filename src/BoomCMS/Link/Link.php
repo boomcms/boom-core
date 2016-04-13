@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Link;
 
-use Illuminate\Support\Facades\Request;
+use BoomCMS\Support\Helpers\URL;
 
 abstract class Link
 {
@@ -13,7 +13,7 @@ abstract class Link
 
     public static function factory($link)
     {
-        $link = preg_replace('|^https?://'.Request::getHttpHost().'|', '', $link);
+        $link = URL::makeRelative($link);
 
         if (is_int($link) || ctype_digit($link) || substr($link, 0, 1) == '/') {
             $internal = new Internal($link);
