@@ -33,7 +33,7 @@ abstract class URL
 
     public static function makeRelative($url)
     {
-        return ($base = Request::getHttpHost()) ? str_replace(Request::getScheme().$base, '/', $url) : $url;
+        return preg_replace('|^https?://'.Request::getHttpHost().'|', '', $url);
     }
 
     /**
