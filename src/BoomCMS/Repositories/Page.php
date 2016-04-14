@@ -86,10 +86,26 @@ class Page implements PageRepositoryInterface
      */
     public function findByUri($uri)
     {
-        $finder = new Finder\Finder();
-        $finder->addFilter(new Finder\Uri($uri));
+        $site = Router::getActiveSite();
 
-        return $finder->find();
+        return $this->findBySiteAndUri($site, $uri);
+    }
+
+    /**
+     * Find a page by site and URI
+     *
+     * @param SiteInterface $site
+     * @param string $uri
+     *
+     * @return null|Model
+     */
+    public function findBySiteAndUri(SiteInterface $site, $uri)
+    {
+        return $this->model
+            ->join('page_urls', 'page_urls.page_id', '=', 'pages.id')
+            ->where('location', '=', $uri)
+            ->where('pages.'.Model::ATTR_SITE, '=', $site->getId())
+            ->first();
     }
 
     /**

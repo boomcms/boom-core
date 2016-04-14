@@ -3,6 +3,7 @@
 namespace BoomCMS\Support\Helpers;
 
 use BoomCMS\Contracts\Models\Site;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Support\Facades\Request;
 
@@ -29,6 +30,43 @@ abstract class URL
         $url = ($base == '/') ? $url : $base.$url;
 
         return static::makeUnique($site, $url);
+    }
+
+    /**
+     * Returns a path which can be used to query the database of internal URLs
+     * 
+     * Removes the leading forward slash for non-root URLs
+     * And removes everything except the path portion of the URL
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    public static function getInternalPath($url)
+    {
+        $path = parse_url($url, PHP_URL_PATH);
+
+        return ($path === '/') ? $path : ltrim($path, '/');
+    }
+
+    /**
+     * Determine whether a path is valid internal path
+     *
+     * @param string $url
+     *
+     * @return bool
+     */
+    public static function isInternal($url)
+    {
+        $relative = static::makeRelative($url);
+
+        if (substr($relative, 0, 1) !== '/') {
+            return false;
+        }
+
+        $path = static::getInternalPath($relative);
+
+        return !URLFacade::isAvailable(Router::getActiveSite(), $path);
     }
 
     public static function makeRelative($url)

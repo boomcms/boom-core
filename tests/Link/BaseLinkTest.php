@@ -2,13 +2,29 @@
 
 namespace BoomCMS\Tests\Link;
 
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Link;
 use BoomCMS\Support\Facades\Page;
+use BoomCMS\Support\Facades\Router;
+use BoomCMS\Support\Facades\URL;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
 class BaseLinkTest extends AbstractTestCase
 {
+    /**
+     * @var Site
+     */
+    protected $site;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->site = new Site([Site::ATTR_HOSTNAME => $this->baseUrl]);
+        Router::shouldReceive('getActiveSite')->andReturn($this->site);
+    }
+
     public function testFactoryReturnsInternalLink()
     {
         $internalLinks = [
@@ -24,6 +40,11 @@ class BaseLinkTest extends AbstractTestCase
         Page::shouldReceive('find')
             ->with(m::any(1, '1'))
             ->andReturn($this->validPage());
+
+        URL::shouldReceive('isAvailable')
+            ->times(5)
+            ->with($this->site, 'test')
+            ->andReturn(false);
 
         Page::shouldReceive('findByUri')
             ->with('test')
@@ -41,9 +62,10 @@ class BaseLinkTest extends AbstractTestCase
             'http://www.google.com/test',
         ];
 
-        Page::shouldReceive('findByUri')
-            ->with('test')
-            ->andReturn($this->invalidPage());
+        URL::shouldReceive('isAvailable')
+            ->once()
+            ->with($this->site, 'test')
+            ->andReturn(true);
 
         foreach ($internalLinks as $link) {
             $this->assertInstanceOf(Link\External::class, Link\Link::factory($link), $link);

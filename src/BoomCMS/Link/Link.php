@@ -13,16 +13,8 @@ abstract class Link
 
     public static function factory($link)
     {
-        $link = URL::makeRelative($link);
-
-        if (is_int($link) || ctype_digit($link) || substr($link, 0, 1) == '/') {
-            $internal = new Internal($link);
-
-            // If it's not a valid CMS URL then it's a relative URL which isn't CMS managed so treat it as an external URL.
-            return ($internal->isValidPage()) ? $internal : new External($link);
-        } else {
-            return new External($link);
-        }
+        return (is_int($link) || ctype_digit($link) || URL::isInternal($link)) ?
+            new Internal($link) : new External($link);
     }
 
     public function isExternal()
