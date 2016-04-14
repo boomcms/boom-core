@@ -92,10 +92,10 @@ class Page implements PageRepositoryInterface
     }
 
     /**
-     * Find a page by site and URI
+     * Find a page by site and URI.
      *
      * @param SiteInterface $site
-     * @param string $uri
+     * @param string        $uri
      *
      * @return null|Model
      */

@@ -27,7 +27,6 @@ class PageTest extends AbstractTestCase
     protected $repository;
 
     /**
-     *
      * @var type @var Site
      */
     protected $site;
@@ -102,7 +101,6 @@ class PageTest extends AbstractTestCase
 
         $this->assertEquals($this->page, $this->repository->findByUri($uri));
     }
-
 
     public function testFindBySiteAndUri()
     {
