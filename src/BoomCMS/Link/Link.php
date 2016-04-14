@@ -13,7 +13,7 @@ abstract class Link
 
     public static function factory($link)
     {
-        return (is_int($link) || ctype_digit($link) || URL::isInternal($link)) ?
+        return (is_numeric($link) || URL::isInternal($link)) ?
             new Internal($link) : new External($link);
     }
 

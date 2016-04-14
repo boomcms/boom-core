@@ -28,7 +28,7 @@ class Internal extends Link
 
     public function __construct($link)
     {
-        if (is_int($link) || ctype_digit($link)) {
+        if (is_numeric($link)) {
             $this->page = Page::find($link);
         } else {
             // Extract the query string and fragement
