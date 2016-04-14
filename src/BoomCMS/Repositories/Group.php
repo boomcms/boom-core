@@ -72,7 +72,6 @@ class Group implements GroupRepositoryInterface
      */
     public function findBySiteExcluding(SiteModelInterface $site, array $groupIds)
     {
-        ;
     }
 
     public function save(GroupModelInterface $group)

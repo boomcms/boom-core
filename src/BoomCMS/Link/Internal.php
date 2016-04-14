@@ -3,6 +3,7 @@
 namespace BoomCMS\Link;
 
 use BoomCMS\Support\Facades\Page;
+use BoomCMS\Support\Helpers\URL;
 
 class Internal extends Link
 {
@@ -30,14 +31,12 @@ class Internal extends Link
         if (is_int($link) || ctype_digit($link)) {
             $this->page = Page::find($link);
         } else {
-            $location = ($link === '/') ? $link : ltrim($link, '/');
-
             // Extract the query string and fragement
             $this->queryString = parse_url($link, PHP_URL_QUERY);
             $this->urlFragment = parse_url($link, PHP_URL_FRAGMENT);
 
-            // Only get the path of the URL to ensure that if there's a query string it's ignored.
-            $this->page = Page::findByUri(parse_url($location, PHP_URL_PATH));
+            $path = URL::getInternalPath($link);
+            $this->page = Page::findByUri($path);
         }
     }
 
@@ -49,11 +48,6 @@ class Internal extends Link
     public function getTitle()
     {
         return $this->page->getTitle();
-    }
-
-    public function isValidPage()
-    {
-        return $this->page && $this->page->getId();
     }
 
     public function url()

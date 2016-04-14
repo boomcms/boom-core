@@ -17,7 +17,7 @@ class Chunk extends PageController
         $this->authorize('edit', $page);
 
         $type = $request->input('type');
-        $chunk = ChunkFacade::get($type, $request->input('slotname'), $page);
+        $chunk = ChunkFacade::edit($type, $request->input('slotname'), $page);
 
         return view('boomcms::editor.chunk.'.$type, [
             'chunk' => $chunk,
