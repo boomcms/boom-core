@@ -33,8 +33,8 @@ abstract class URL
     }
 
     /**
-     * Returns a path which can be used to query the database of internal URLs
-     * 
+     * Returns a path which can be used to query the database of internal URLs.
+     *
      * Removes the leading forward slash for non-root URLs
      * And removes everything except the path portion of the URL
      *
@@ -50,7 +50,7 @@ abstract class URL
     }
 
     /**
-     * Determine whether a path is valid internal path
+     * Determine whether a path is valid internal path.
      *
      * @param string $url
      *

@@ -65,7 +65,7 @@ class URLTest extends AbstractTestCase
             '/test'                        => 'test',
             "http://{$this->baseUrl}/"     => '/',
             "https://{$this->baseUrl}/"    => '/',
-            "http://{$this->baseUrl}/test" => 'test'
+            "http://{$this->baseUrl}/test" => 'test',
         ];
 
         foreach ($urls as $url => $path) {
@@ -146,9 +146,9 @@ class URLTest extends AbstractTestCase
             "http://{$this->baseUrl}/test"    => '/test',
             "https://{$this->baseUrl}/"       => '/',
             "http://{$this->baseUrl}/"        => '/',
-            'http://other.com/test'  => 'http://other.com/test',
-            'https://other.com/test' => 'https://other.com/test',
-            '/test'                  => '/test',
+            'http://other.com/test'           => 'http://other.com/test',
+            'https://other.com/test'          => 'https://other.com/test',
+            '/test'                           => '/test',
         ];
 
         foreach ($urls as $original => $after) {
