@@ -79,34 +79,6 @@ abstract class Str extends BaseStr
     }
 
     /**
-     * Replace embeddable URLs with the embed code.
-     *
-     * @param string $text
-     *
-     * @return string
-     */
-    public static function oEmbed($text)
-    {
-        $embera = new Embera();
-
-        if ($data = $embera->getUrlInfo($text)) {
-            $table = [];
-
-            foreach ($data as $url => $service) {
-                if (!empty($service['html'])) {
-                    $table[$url] = $service['html'];
-                }
-            }
-
-            foreach ($table as $url => $replacement) {
-                $text = preg_replace('~(?<![\'\"])'.preg_quote($url).'(?![\'\"])(?!\</a\>)~', $replacement, $text);
-            }
-        }
-
-        return $text;
-    }
-
-    /**
      * Embed storify links (doesn't use oEmbed).
      *
      * @param string $text

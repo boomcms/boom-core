@@ -3,6 +3,7 @@
 namespace BoomCMS\Database\Models\Chunk;
 
 use BoomCMS\Support\Str;
+use Embera\Embera;
 
 class Text extends BaseChunk
 {
@@ -16,7 +17,7 @@ class Text extends BaseChunk
             $siteText = $text = strip_tags($text);
         } else {
             $text = Str::makeInternalLinksRelative($text);
-            $siteText = Str::StorifyEmbed(Str::oEmbed($text));
+            $siteText = Str::StorifyEmbed(Embera::autoEmbed($text));
         }
 
         $this->attributes['text'] = $text;

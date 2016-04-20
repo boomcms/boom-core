@@ -40,19 +40,6 @@ class StrTest extends AbstractTestCase
         }
     }
 
-    public function testoEmbed()
-    {
-        $replacements = [
-            'https://www.youtube.com/watch?v=5omxorBHiv8'                             => '<iframe width="459" height="344" src="https://www.youtube.com/embed/5omxorBHiv8?feature=oembed" frameborder="0" allowfullscreen></iframe>',
-            'https://youtu.be/5omxorBHiv8'                                            => '<iframe width="459" height="344" src="https://www.youtube.com/embed/5omxorBHiv8?feature=oembed" frameborder="0" allowfullscreen></iframe>',
-            '<a href="https://youtu.be/5omxorBHiv8">https://youtu.be/5omxorBHiv8</a>' => '<a href="https://youtu.be/5omxorBHiv8">https://youtu.be/5omxorBHiv8</a>',
-        ];
-
-        foreach ($replacements as $original => $after) {
-            $this->assertEquals($after, Str::oEmbed($original));
-        }
-    }
-
     public function testnl2paragraph()
     {
         $replacements = [
