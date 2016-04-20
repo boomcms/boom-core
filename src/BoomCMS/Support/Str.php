@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Support;
 
-use Embera\Embera;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str as BaseStr;
 use Rych\ByteSize;
