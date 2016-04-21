@@ -3,6 +3,7 @@
 namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
+use BoomCMS\Contracts\Models\Site as SiteInterface;
 
 interface Page
 {
@@ -54,6 +55,14 @@ interface Page
      * @return PageInterface
      */
     public function findByUri($uri);
+
+    /**
+     * @param SiteInterface $site
+     * @param string        $uri
+     *
+     * @return PageInterface
+     */
+    public function findBySiteAndUri(SiteInterface $site, $uri);
 
     /**
      * @param PageInterface $page
