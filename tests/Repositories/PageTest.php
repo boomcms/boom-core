@@ -125,6 +125,12 @@ class PageTest extends AbstractTestCase
             ->andReturnSelf();
 
         $this->model
+            ->shouldReceive('select')
+            ->once()
+            ->with('pages.*')
+            ->andReturnSelf();
+
+        $this->model
             ->shouldReceive('first')
             ->once()
             ->andReturn($this->page);
