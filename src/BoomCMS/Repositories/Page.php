@@ -105,6 +105,7 @@ class Page implements PageRepositoryInterface
             ->join('page_urls', 'page_urls.page_id', '=', 'pages.id')
             ->where('location', '=', $uri)
             ->where('pages.'.Model::ATTR_SITE, '=', $site->getId())
+            ->select('pages.*')
             ->first();
     }
 
