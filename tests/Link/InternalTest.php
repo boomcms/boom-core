@@ -61,4 +61,15 @@ class InternalTest extends AbstractTestCase
 
         $this->assertEquals('test', $link->getTitle());
     }
+
+    public function testOriginalLinkIsReturnedIfPageNotFound()
+    {
+        $pageId = 1;
+
+        PageFacade::shouldReceive('find')->with($pageId)->andReturn(null);
+
+        $link = new Link($pageId);
+
+        $this->assertEquals($pageId, $link->url());
+    }
 }

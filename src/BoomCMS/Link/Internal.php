@@ -8,6 +8,11 @@ use BoomCMS\Support\Helpers\URL;
 class Internal extends Link
 {
     /**
+     * @var string
+     */
+    protected $link;
+
+    /**
      * @var Page\Page
      */
     protected $page;
@@ -28,6 +33,8 @@ class Internal extends Link
 
     public function __construct($link)
     {
+        $this->link = $link;
+
         if (is_int($link) || ctype_digit($link)) {
             $this->page = Page::find($link);
         } else {
@@ -52,6 +59,10 @@ class Internal extends Link
 
     public function url()
     {
+        if (!$this->page) {
+            return $this->link;
+        }
+
         // Return the URL of the page and append the fragment and query string if provided.
         $url = (string) $this->page->url();
 
