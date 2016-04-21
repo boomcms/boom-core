@@ -5,6 +5,7 @@ namespace BoomCMS\Chunk;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Traits\Renderable;
 use Collective\Html\HtmlFacade as Html;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View;
@@ -219,13 +220,19 @@ abstract class BaseChunk
      */
     public function render()
     {
-        $html = $this->html();
+        try {
+            $html = $this->html();
 
-        if ($this->editable === true) {
-            $html = $this->addAttributesToHtml($html);
+            if ($this->editable === true) {
+                $html = $this->addAttributesToHtml($html);
+            }
+
+            return empty($html) ? $html : $this->before.$html.$this->after;
+        } catch (\Exception $e) {
+            if (App::environment() === 'local') {
+                throw $e;
+            }
         }
-
-        return empty($html) ? $html : $this->before.$html.$this->after;
     }
 
     /**
