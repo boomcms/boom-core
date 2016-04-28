@@ -54,7 +54,7 @@ class CreatePerson extends Command
 
             return $person;
         } else {
-            return Person::findByEmail($this->credentials['email']);
+            return Person::findByEmail($this->email);
         }
     }
 }
