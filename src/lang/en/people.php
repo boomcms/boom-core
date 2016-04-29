@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'heading' => 'Manage people and groups',
+    'heading'   => 'Manage people and groups',
     'details'   => 'User details',
     'name'      => 'Name',
     'email'     => 'Email',
