@@ -3,7 +3,8 @@
 	<head>
 		<title>BoomCMS | <?= trans('boomcms::auth.reset.title') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
-		<link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
 	</head>
 
 	<body id='b-login'>
