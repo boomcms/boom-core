@@ -70,11 +70,20 @@ class Page extends Model implements PageInterface
     const ADD_PAGE_SIBLING = 3;
 
     protected $casts = [
-        self::ATTR_ADD_BEHAVIOUR       => 'integer',
-        self::ATTR_CHILD_ADD_BEHAVIOUR => 'integer',
-        self::ATTR_CHILD_TEMPLATE      => 'integer',
-        self::ATTR_DESCRIPTION         => 'string',
-        self::ATTR_GRANDCHILD_TEMPLATE => 'integer',
+        self::ATTR_ADD_BEHAVIOUR               => 'integer',
+        self::ATTR_CHILD_ADD_BEHAVIOUR         => 'integer',
+        self::ATTR_CHILD_TEMPLATE              => 'integer',
+        self::ATTR_CHILDREN_VISIBLE_IN_NAV     => 'boolean',
+        self::ATTR_CHILDREN_VISIBLE_IN_NAV_CMS => 'boolean',
+        self::ATTR_DESCRIPTION                 => 'string',
+        self::ATTR_DISABLE_DELETE              => 'boolean',
+        self::ATTR_EXTERNAL_INDEXING           => 'boolean',
+        self::ATTR_GRANDCHILD_TEMPLATE         => 'integer',
+        self::ATTR_ID                          => 'integer',
+        self::ATTR_INTERNAL_INDEXING           => 'boolean',
+        self::ATTR_PARENT                      => 'integer',
+        self::ATTR_VISIBLE_IN_NAV              => 'boolean',
+        self::ATTR_VISIBLE_IN_NAV_CMS          => 'boolean',
     ];
 
     /**
@@ -154,19 +163,28 @@ class Page extends Model implements PageInterface
         return $this->getCurrentVersion();
     }
 
+    /**
+     * @return bool
+     */
     public function allowsExternalIndexing()
     {
-        return (bool) $this->{self::ATTR_EXTERNAL_INDEXING} === true;
+        return $this->{self::ATTR_EXTERNAL_INDEXING};
     }
 
+    /**
+     * @return bool
+     */
     public function allowsInternalIndexing()
     {
-        return (bool) $this->{self::ATTR_INTERNAL_INDEXING} === true;
+        return $this->{self::ATTR_INTERNAL_INDEXING};
     }
 
+    /**
+     * @return bool
+     */
     public function canBeDeleted()
     {
-        return (bool) $this->{self::ATTR_DISABLE_DELETE} === false;
+        return $this->{self::ATTR_DISABLE_DELETE};
     }
 
     public function children()
@@ -174,14 +192,20 @@ class Page extends Model implements PageInterface
         return $this->hasMany(self::class, 'parent_id');
     }
 
+    /**
+     * @return bool
+     */
     public function childrenAreVisibleInNav()
     {
-        return (bool) $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV} === true;
+        return $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV};
     }
 
+    /**
+     * @return bool
+     */
     public function childrenAreVisibleInCmsNav()
     {
-        return (bool) $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV_CMS} === true;
+        return $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV_CMS};
     }
 
     /**
@@ -344,7 +368,7 @@ class Page extends Model implements PageInterface
      */
     public function getId()
     {
-        return  (int) $this->{self::ATTR_ID};
+        return  $this->{self::ATTR_ID};
     }
 
     public function getInternalName()
@@ -390,9 +414,12 @@ class Page extends Model implements PageInterface
         return $this->parent;
     }
 
+    /**
+     * @return int
+     */
     public function getParentId()
     {
-        return (int) $this->{self::ATTR_PARENT};
+        return $this->{self::ATTR_PARENT};
     }
 
     /**
@@ -490,14 +517,20 @@ class Page extends Model implements PageInterface
             ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $time->getTimestamp());
     }
 
+    /**
+     * @return bool
+     */
     public function isVisibleInCmsNav()
     {
-        return $this->{self::ATTR_VISIBLE_IN_NAV_CMS} == true;
+        return $this->{self::ATTR_VISIBLE_IN_NAV_CMS};
     }
 
+    /**
+     * @return bool
+     */
     public function isVisibleInNav()
     {
-        return $this->{self::ATTR_VISIBLE_IN_NAV} == true;
+        return $this->{self::ATTR_VISIBLE_IN_NAV};
     }
 
     public function markUpdatesAsPendingApproval()
