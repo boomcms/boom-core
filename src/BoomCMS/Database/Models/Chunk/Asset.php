@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Database\Models\Chunk;
 
-use BoomCMS\Link\Link;
+use BoomCMS\Link\Link as LinkObject;
 
 class Asset extends BaseChunk
 {
@@ -20,7 +20,7 @@ class Asset extends BaseChunk
 
     public function setUrlAttribute($value)
     {
-        $link = Link::factory($value);
+        $link = LinkObject::factory($value);
 
         $this->attributes['url'] = $link->isInternal() ?
             $link->getPage()->getId() :
