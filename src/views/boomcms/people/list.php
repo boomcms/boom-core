@@ -6,6 +6,7 @@
                 <th>Name</th>
                 <th>Email address</th>
                 <th>Groups</th>
+                <th>Last login</th>
             </tr>
         </thead>
 
@@ -30,6 +31,10 @@
                                 <a rel=​'ajax' name='<?= $group->getId() ?>' href='/boomcms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?> &raquo;</a>
                             <?php endforeach ?>​
                         </span>
+                    </td>
+
+                    <td>
+                        <?= $person->hasLoggedIn() ? $person->getLastLogin()->diffForHumans() : 'Never' ?>
                     </td>
                 </tr>
             <?php endforeach ?>

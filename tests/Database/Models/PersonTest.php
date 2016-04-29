@@ -4,6 +4,7 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
@@ -66,6 +67,16 @@ class PersonTest extends AbstractModelTestCase
         $this->assertEquals($email, $person->getEmail());
     }
 
+    public function testGetLastLogin()
+    {
+        $time = Carbon::now();
+
+        $person = new Person();
+        $person->{Person::ATTR_LAST_LOGIN} = $time;
+
+        $this->assertEquals($time, $person->getLastLogin());
+    }
+
     public function testGetRememberTokenName()
     {
         $person = new Person();
@@ -92,6 +103,17 @@ class PersonTest extends AbstractModelTestCase
             ->andReturn($sites);
 
         $this->assertEquals($sites, $person->getSites());
+    }
+
+    public function testHasLoggedIn()
+    {
+        $person = new Person();
+
+        $this->assertFalse($person->hasLoggedIn());
+
+        
+        $person->{Person::ATTR_LAST_LOGIN} = time();
+        $this->assertTrue($person->hasLoggedIn());
     }
 
     public function testHasSite()

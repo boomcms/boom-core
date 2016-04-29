@@ -4,6 +4,7 @@ namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Events;
 use BoomCMS\Listeners;
+use Illuminate\Auth\Events\Login as LoginEvent;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -33,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         Events\PageWasEmbargoed::class => [
             Listeners\SaveSearchText::class,
+        ],
+        LoginEvent::class => [
+            Listeners\LogSuccessfulLogin::class,
         ],
     ];
 }

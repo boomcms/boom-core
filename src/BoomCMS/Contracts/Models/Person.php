@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Contracts\Models;
 
+use Carbon\Carbon;
+
 interface Person
 {
     public function addGroup(Group $group);
@@ -33,6 +35,11 @@ interface Person
      */
     public function getId();
 
+    /**
+     * @return Carbon
+     */
+    public function getLastLogin();
+
     public function getName();
 
     public function getPassword();
@@ -43,6 +50,11 @@ interface Person
      * @return array
      */
     public function getSites();
+
+    /**
+     * @return bool
+     */
+    public function hasLoggedIn();
 
     /**
      * @param Site $site
@@ -63,6 +75,15 @@ interface Person
      * @return $this
      */
     public function removeSite(Site $site);
+
+    /**
+     * Set the time of last login
+     *
+     * @param Carbon $time
+     *
+     * @return $this
+     */
+    public function setLastLogin(Carbon $time);
 
     public function setEmail($email);
 

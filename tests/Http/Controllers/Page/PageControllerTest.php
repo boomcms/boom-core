@@ -23,7 +23,7 @@ class PageControllerTest extends BaseControllerTest
 
     public function testPostAdd()
     {
-        auth()->login(new Person());
+        $this->login();
 
         $site = new Site();
         $url = new URL([URL::ATTR_LOCATION => 'test']);

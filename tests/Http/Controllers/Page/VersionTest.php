@@ -4,13 +4,11 @@ namespace BoomCMS\Tests\Http\Controllers;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion;
-use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Http\Controllers\Page\Version as Controller;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Mockery as m;
 
@@ -96,7 +94,6 @@ class VersionTest extends BaseControllerTest
 
     public function testRequestApproval()
     {
-        Auth::login(new Person());
         $this->requireRole('edit', $this->page);
 
         $status = 'pending approval';
@@ -116,8 +113,7 @@ class VersionTest extends BaseControllerTest
 
     public function testPostEmbargoTime()
     {
-        Auth::login(new Person());
-        $this->requireRole('publish', $this->page);
+       $this->requireRole('publish', $this->page);
 
         $now = time();
         $request = new Request(['embargo_until' => $now]);
@@ -138,7 +134,6 @@ class VersionTest extends BaseControllerTest
 
     public function testPostTemplate()
     {
-        Auth::login(new Person());
         $this->requireRole('editTemplate', $this->page);
 
         $template = new Template();
@@ -159,7 +154,6 @@ class VersionTest extends BaseControllerTest
 
     public function testPostTitle()
     {
-        Auth::login(new Person());
         $this->requireRole('edit', $this->page);
 
         $title = 'test';

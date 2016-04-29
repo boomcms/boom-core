@@ -8,6 +8,7 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Traits\MultipleSites;
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -31,6 +32,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     const ATTR_PASSWORD = 'password';
     const ATTR_SUPERUSER = 'superuser';
     const ATTR_REMEMBER_TOKEN = 'remember_token';
+    const ATTR_LAST_LOGIN = 'last_login';
 
     public $table = 'people';
 
@@ -38,6 +40,11 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
 
     public $guarded = [
         self::ATTR_ID,
+        self::ATTR_LAST_LOGIN,
+    ];
+
+    protected $casts = [
+        self::ATTR_LAST_LOGIN => 'datetime',
     ];
 
     public $timestamps = false;
@@ -92,6 +99,16 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         return  (int) $this->{self::ATTR_ID};
     }
 
+    /**
+     * Returns the time of the user's last login.
+     *
+     * @return null|Carbon
+     */
+    public function getLastLogin()
+    {
+        return $this->{self::ATTR_LAST_LOGIN};
+    }
+
     public function getLogin()
     {
         return $this->getEmail();
@@ -110,6 +127,16 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     public function groups()
     {
         return $this->belongsToMany(Group::class);
+    }
+
+    /**
+     * Whether the person has ever logged in.
+     *
+     * @return bool
+     */
+    public function hasLoggedIn()
+    {
+        return $this->{self::ATTR_LAST_LOGIN} !== null;
     }
 
     /**
@@ -190,6 +217,20 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     public function setEncryptedPassword($password)
     {
         $this->{self::ATTR_PASSWORD} = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set the time the user last logged in
+     *
+     * @param Carbon $time
+     *
+     * @return $this
+     */
+    public function setLastLogin(Carbon $time)
+    {
+        $this->{self::ATTR_LAST_LOGIN} = $time;
 
         return $this;
     }
