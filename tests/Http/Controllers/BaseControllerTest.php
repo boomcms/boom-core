@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Tests\Http\Controllers;
 
-use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Person;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Auth;
 use Mockery as m;

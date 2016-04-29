@@ -111,7 +111,6 @@ class PersonTest extends AbstractModelTestCase
 
         $this->assertFalse($person->hasLoggedIn());
 
-        
         $person->{Person::ATTR_LAST_LOGIN} = time();
         $this->assertTrue($person->hasLoggedIn());
     }

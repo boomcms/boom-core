@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Http\Controllers;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Events\PageWasCreated;
