@@ -225,9 +225,9 @@ class Settings extends PageController
      */
     public function postNavigation(Request $request, Page $page)
     {
-        $this->authorize('editNavigationBasic', $page);
+        $this->authorize('editNavBasic', $page);
 
-        if (Gate::allows('editNavigationAdvanced', $page)) {
+        if (Gate::allows('editNavAdvanced', $page)) {
             $parent = Page::find($request->input('parent_id'));
 
             if ($parent) {
