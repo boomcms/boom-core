@@ -1,20 +1,22 @@
 <div class="b-person-view" data-person-id='<?= $person->getId() ?>'>
     <section>
-        <h2>User details</h2>
+        <h2><?= trans('boomcms::people.details') ?></h2>
 
         <form>
             <label>
-                Name
+                <?= trans('boomcms::people.name') ?>
+
                 <input type="text" name="name" value="<?= $person->getName() ?>" />
             </label>
 
             <label for="person-email">
-                Email
+                <?= trans('boomcms::people.email') ?>
+
                 <input type="text" name="email" disabled="disabled" value="<?= $person->getEmail() ?>" />
             </label>
 
             <label for='person-status'>
-                Status
+                <?= trans('boomcms::people.status') ?>
 
                 <select name="enabled" id="person-status">
                     <option value=""<?php if (!$person->isEnabled()): ?> selected="selected"<?php endif ?>>Disabled</option>
@@ -24,7 +26,7 @@
 
             <?php if (Gate::allows('editSuperuser', $person)): ?>
                 <label for='person-superuser'>
-                    Superuser
+                    <?= trans('boomcms::people.superuser') ?>
 
                     <select name="superuser" id="person-superuser">
                         <option value=""<?php if (!$person->isSuperuser()): ?> selected="selected"<?php endif ?>>No</option>
@@ -34,21 +36,19 @@
             <?php endif ?>
 
             <div>
-                <?= $button('save', trans('Save'), ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
-                <?= $button('trash-o', trans('Delete'), ['id' => 'b-person-delete']) ?>
+                <?= $button('save', 'save', ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
+                <?= $button('trash-o', 'delete', ['id' => 'b-person-delete']) ?>
             </div>
         </form>
     </section>
 
     <section>
-        <h2>Groups</h2>
+        <h2><?= trans('boomcms::people.groups') ?></h2>
 
-        <p><?= $person->getName() ?>
-
-        <?php if (count($groups) == 0): ?>
-            is not a member of any groups.</p>
+        <?php if (!count($groups)): ?>
+            <p><?= trans('boomcms::people.nogroups', ['name' => $person->getName()]) ?></p>
         <?php else: ?>
-            is a member of these groups:</p>
+            <p><?= trans('boomcms::people.hasgroups', ['name' => $person->getName()]) ?></p>
 
             <ul id='b-person-groups-list'>
                  <?php foreach ($groups as $group): ?>
@@ -59,6 +59,6 @@
             </ul>
         <?php endif ?>
 
-        <?= $button('plus', trans('Add group'), ['class' => 'b-person-addgroups', 'rel' => $person->getId()]) ?>
+        <?= $button('plus', 'add-group', ['class' => 'b-person-addgroups', 'rel' => $person->getId()]) ?>
     </section>
 </div>

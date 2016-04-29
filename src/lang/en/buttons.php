@@ -2,6 +2,7 @@
 
 return [
     'accept-crop'           => 'Crop to selection',
+    'add-group'             => 'Add group',
     'add-tags'              => 'Add tags',
     'add-url'               => 'Add URL',
     'cancel'                => 'Cancel',
