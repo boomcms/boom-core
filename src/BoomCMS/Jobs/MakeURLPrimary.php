@@ -27,7 +27,7 @@ class MakeURLPrimary extends Command
             ->where('is_primary', '=', true)
             ->update(['is_primary' => false]);
 
-        $this->url->setIsPrimary(true);
+        $this->url->setPrimary(true);
         URLFacade::save($this->url);
 
         DB::table('pages')

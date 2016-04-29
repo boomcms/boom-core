@@ -128,19 +128,19 @@ class URL extends Model implements URLInterface
     }
 
     /**
-     * @param bool $isPrimary
+     * @param bool $primary
      *
      * @throws InvalidArgumentException
      *
      * @return $this
      */
-    public function setIsPrimary($isPrimary)
+    public function setPrimary($primary)
     {
-        if (!is_bool($isPrimary)) {
+        if (!is_bool($primary)) {
             throw new InvalidArgumentException(__CLASS__.'::'.__METHOD__.' must only be called with a boolean argument');
         }
 
-        $this->{self::ATTR_IS_PRIMARY} = $isPrimary;
+        $this->{self::ATTR_IS_PRIMARY} = $primary;
 
         return $this;
     }

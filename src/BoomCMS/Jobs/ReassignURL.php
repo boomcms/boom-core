@@ -29,7 +29,7 @@ class ReassignURL extends Command
     {
         $this->url
             ->setPageId($this->page->getId())
-            ->setIsPrimary(false);
+            ->setPrimary(false);
 
         URLFacade::save($this->url);
     }

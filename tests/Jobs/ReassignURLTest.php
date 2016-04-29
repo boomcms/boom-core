@@ -21,7 +21,7 @@ class ReassignURLTest extends AbstractTestCase
             ->andReturnSelf();
 
         $url
-            ->shouldReceive('setIsPrimary')
+            ->shouldReceive('setPrimary')
             ->with(false)
             ->andReturnSelf();
 

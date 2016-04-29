@@ -97,10 +97,10 @@ class URLTest extends AbstractModelTestCase
         $this->assertEquals($site->getId(), $url->{URL::ATTR_SITE});
     }
 
-    public function testSetIsPrimary()
+    public function testsetPrimary()
     {
         $url = new URL(['is_primary' => true]);
-        $url->setIsPrimary(false);
+        $url->setPrimary(false);
 
         $this->assertFalse($url->isPrimary());
     }
@@ -111,7 +111,7 @@ class URLTest extends AbstractModelTestCase
     public function testIsPrimaryWithInvalidArgument()
     {
         $url = new URL(['is_primary' => true]);
-        $url->setIsPrimary('maybe');
+        $url->setPrimary('maybe');
     }
 
     public function testScheme()

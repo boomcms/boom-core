@@ -60,7 +60,7 @@ interface URL
      *
      * @return $this
      */
-    public function setIsPrimary($isPrimary);
+    public function setPrimary($primary);
 
     /**
      * @param int $id
