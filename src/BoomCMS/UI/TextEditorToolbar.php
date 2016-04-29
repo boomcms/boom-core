@@ -7,15 +7,15 @@ use Illuminate\Support\Facades\View;
 
 class TextEditorToolbar extends AbstractUIElement
 {
-    protected $_buttonSet = 'text';
-    protected $_config;
-    protected $_htmlBefore = '<div data-buttonset="{buttonset}">';
-    protected $_htmlAfter = '</div>';
+    protected $buttonSet = 'text';
+    protected $config;
+    protected $htmlBefore = '<div data-buttonset="{buttonset}">';
+    protected $htmlAfter = '</div>';
 
     public function __construct($button_set = null)
     {
-        $button_set && $this->_buttonSet = $button_set;
-        $this->_config = Config::get('boomcms.text_editor_toolbar');
+        $button_set && $this->buttonSet = $button_set;
+        $this->config = Config::get('boomcms.text_editor_toolbar');
     }
 
     public static function getAvailableButtonSets()
@@ -27,25 +27,25 @@ class TextEditorToolbar extends AbstractUIElement
 
     public function getButton($type)
     {
-        return $this->_config['buttons'][$type];
+        return $this->config['buttons'][$type];
     }
 
     public function getButtons()
     {
-        return $this->_config['button_sets'][$this->_buttonSet];
+        return $this->config['button_sets'][$this->buttonSet];
     }
 
     public function getHtmlBefore()
     {
-        return str_replace('{buttonset}', $this->_buttonSet, $this->_htmlBefore);
+        return str_replace('{buttonset}', $this->buttonSet, $this->htmlBefore);
     }
 
     public function render()
     {
-        return $this->getHtmlBefore().$this->_showButtons().$this->_htmlAfter;
+        return $this->getHtmlBefore().$this->showButtons().$this->htmlAfter;
     }
 
-    protected function _showButtons()
+    protected function showButtons()
     {
         $buttons = '';
 
@@ -60,7 +60,7 @@ class TextEditorToolbar extends AbstractUIElement
             $buttons .= '</div>';
         }
 
-        if ($this->_buttonSet === 'block') {
+        if ($this->buttonSet === 'block') {
             $buttons .= View::make('boomcms::editor.table_buttons')->render();
         }
 

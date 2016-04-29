@@ -3,7 +3,7 @@
 use BoomCMS\Database\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 
-class removeEditDeletableRole extends Migration
+class RemoveEditDeletableRole extends Migration
 {
     /**
      * Run the migrations.
