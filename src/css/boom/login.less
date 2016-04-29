@@ -49,8 +49,9 @@ body#b-login {
 			margin: 0 auto 3rem auto;
 		}
 
-		> p {
+		legend, p {
 			text-align: center;
+			margin-bottom: 2rem;
 		}
 
 		form, > p {
@@ -65,46 +66,90 @@ body#b-login {
 			p {
 				overflow: hidden;
 				position: relative;
-				margin-top: 1em;
 
-				label {
-					position: absolute;
-					top: -200%;
-					line-height: 2em;
+				.b-remember-me-label {
+					position: static;
+					width: 100%;
+					margin-top: 1.5rem;
 
-					&.b-remember-me-label {
-						position: static;
-						width: 100%;
-						line-height: 1em;
-						margin-top: 1em;
-						padding: 0 1em;
-
-						input {
-							width: auto;
-							margin-right: 1em;
-						}
+					input {
+						width: auto;
+						margin: 0 1.5rem 0 0;
 					}
 				}
 			}
+		}
+
+		.input {
+			position: relative;
+			display: block;
+			padding-top: 2rem;
+
+			+ .input {
+				margin-top: 2.5rem;
+			}
+
+			.fa {
+				position: absolute;
+				top: 50%;
+				left: 0rem;
+				transform: translateY(-50%);
+				margin-top: 1rem;
+				transition: all 0.5s;
+			}
 
 			input[type=email],
-			input[type=password],
-			input[type=submit] {
-				height: 3em;
-				line-height: 3em;
-				padding: 0 1.5em;
-				display: block;
-			}
-
-			input[type=submit] {
-				width: auto;
-				min-width: 10em;
-				margin: 4rem auto;
-			}
-
-			fieldset {
+			input[type=password] {
+				background: transparent;
 				border: 0;
+				border-bottom: 2px solid @red;
+				padding: 1rem 1.5rem 1rem 2rem;
+				height: auto;
+
+				&:-webkit-autofill {
+					-webkit-box-shadow: 0 0 0px 1000px @lightest-grey inset;
+				}
+
+				&:focus {
+					background: transparent;
+					outline: 0;
+
+					+ label + .fa {
+						color: @red;
+						transition: all 0.5s;
+					}
+				}
+
+				+ label {
+					position: absolute;
+					left: 0;
+					top: 0;
+					width: 100%;
+					margin: 0;
+					font-weight: bold;
+				}
 			}
+		}
+
+		input[type=submit] {
+			padding: 1.5rem;
+			display: block;
+			height: auto;
+			width: auto;
+			min-width: 10em;
+			margin: 4rem auto;
+			transition: background,color 0.5s;
+
+			&:hover, &:focus {
+				background: @red;
+				color: @white;
+				transition: background,color 0.5s;
+				cursor: pointer;
+			}
+		}
+
+		fieldset {
+			border: 0;
 		}
 	}
 }

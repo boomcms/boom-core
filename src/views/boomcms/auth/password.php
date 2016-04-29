@@ -5,7 +5,8 @@
 		<meta name="robots" content="noindex, nofollow" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
-	</head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    </head>
 
 	<body id='b-login'>
 		<div>
@@ -24,18 +25,18 @@
 
                         <p>
                             <?= trans('boomcms::auth.reset.enter-email') ?>
-                        </p>
-
-                        <p>
                             <?= trans('boomcms::auth.reset.what-will-happen') ?>
                         </p>
 
-                        <p>
+                        <span class="input">
+                            <input type="email" name="email" required id="email" autofocus />
+
                             <label for="email">
-                                <?= trans('boomcms::auth.reset.email') ?>
+                                <span><?= trans('boomcms::auth.reset.email') ?></span>
                             </label>
-                            <input type="email" placeholder='<?= trans('boomcms::auth.reset.email') ?>' name="email" required id="email" />
-                        </p>
+
+                            <span class="fa fa-at"></span>
+                        </span>
 
                         <input type='submit' value='<?= trans('boomcms::auth.reset.send-link') ?>' />
                     </fieldset>

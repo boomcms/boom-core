@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'login'  => [
+        'email'    => 'Email address',
+        'password' => 'Password',
+    ],
     'reset'  => [
         'title'            => 'Password reset',
         'intro'            => 'To reset your password please confirm your email address and enter a new password below.',
