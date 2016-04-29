@@ -222,7 +222,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     }
 
     /**
-     * Set the time the user last logged in
+     * Set the time the user last logged in.
      *
      * @param Carbon $time
      *

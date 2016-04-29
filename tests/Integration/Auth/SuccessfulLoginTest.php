@@ -17,7 +17,7 @@ class SuccessfulLoginTest extends AbstractTestCase
         $person
             ->shouldReceive('setLastLogin')
             ->once()
-            ->with(m::on(function(Carbon $time) {
+            ->with(m::on(function (Carbon $time) {
                 return $time->getTimestamp() === time();
             }));
 

@@ -77,7 +77,7 @@ interface Person
     public function removeSite(Site $site);
 
     /**
-     * Set the time of last login
+     * Set the time of last login.
      *
      * @param Carbon $time
      *

@@ -113,7 +113,7 @@ class VersionTest extends BaseControllerTest
 
     public function testPostEmbargoTime()
     {
-       $this->requireRole('publish', $this->page);
+        $this->requireRole('publish', $this->page);
 
         $now = time();
         $request = new Request(['embargo_until' => $now]);
