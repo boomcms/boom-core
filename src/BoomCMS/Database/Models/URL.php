@@ -31,6 +31,12 @@ class URL extends Model implements URLInterface
         self::ATTR_ID,
     ];
 
+    protected $casts = [
+        self::ATTR_ID         => 'integer',
+        self::ATTR_IS_PRIMARY => 'boolean',
+        self::ATTR_PAGE_ID    => 'integer',
+    ];
+
     public $timestamps = false;
 
     public function __toString()
@@ -48,7 +54,7 @@ class URL extends Model implements URLInterface
      */
     public function getId()
     {
-        return (int) $this->{self::ATTR_ID};
+        return $this->{self::ATTR_ID};
     }
 
     /**
@@ -76,7 +82,7 @@ class URL extends Model implements URLInterface
      */
     public function getPageId()
     {
-        return (int) $this->{self::ATTR_PAGE_ID};
+        return $this->{self::ATTR_PAGE_ID};
     }
 
     /**
@@ -106,7 +112,7 @@ class URL extends Model implements URLInterface
      */
     public function isPrimary()
     {
-        return $this->{self::ATTR_IS_PRIMARY} == true;
+        return $this->{self::ATTR_IS_PRIMARY} === true;
     }
 
     /**
