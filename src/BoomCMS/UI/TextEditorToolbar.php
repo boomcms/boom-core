@@ -12,9 +12,9 @@ class TextEditorToolbar extends AbstractUIElement
     protected $htmlBefore = '<div data-buttonset="{buttonset}">';
     protected $htmlAfter = '</div>';
 
-    public function __construct($button_set = null)
+    public function __construct($buttonSet = null)
     {
-        $button_set && $this->buttonSet = $button_set;
+        $buttonSet && $this->buttonSet = $buttonSet;
         $this->config = Config::get('boomcms.text_editor_toolbar');
     }
 
