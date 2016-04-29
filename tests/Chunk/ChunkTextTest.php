@@ -28,7 +28,7 @@ class ChunkTextTest extends AbstractTestCase
             '',
             ' ',
         ];
-    
+
         foreach ($content as $text) {
             $chunk = new Text($this->page, ['text' => $text], 'test', false);
 
