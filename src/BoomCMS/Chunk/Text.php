@@ -59,7 +59,7 @@ class Text extends BaseChunk
     public function hasContent()
     {
         return isset($this->attrs['text'])
-            && trim($this->attrs['text']) != null
+            && !empty(trim($this->attrs['text']))
             && strcmp(strip_tags(trim($this->attrs['text'])), $this->getPlaceholderText()) !== 0;
     }
 
