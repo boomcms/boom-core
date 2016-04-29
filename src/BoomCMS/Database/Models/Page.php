@@ -497,7 +497,7 @@ class Page extends Model implements PageInterface
 
     public function isRoot()
     {
-        return $this->getParentId() == null;
+        return $this->getParentId() === null;
     }
 
     public function isVisible()
