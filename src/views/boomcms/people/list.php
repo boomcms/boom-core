@@ -26,11 +26,11 @@
                     </td>
 
                     <td>
-                        <span class='tags'>
+                        <ul class='groups'>
                             <?php foreach ($person->getGroups() as $group): ?>
-                                <a rel=​'ajax' name='<?= $group->getId() ?>' href='/boomcms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?> &raquo;</a>
+                                <li><a href='/boomcms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?></a></li>
                             <?php endforeach ?>​
-                        </span>
+                        </ul>
                     </td>
 
                     <td>

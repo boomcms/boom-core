@@ -19,6 +19,21 @@
 
 	#b-items-view-list {
 		width: 100%;
+
+		.groups {
+			li {
+				list-style-type: none;
+				display: inline-block;
+
+				&:after {
+					content: ', ';
+				}
+
+				&:last-of-type:after {
+					content: '';
+				}
+			}
+		}
 	}
 
 	#b-people-addgroup {
