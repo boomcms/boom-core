@@ -14,7 +14,9 @@ engines:
     enabled: true
   phpmd:
     enabled: true
-    rulesets: "unusedcode,codesize,naming,controversial,design,clean_code_custom.xml"
+    checks:
+      CleanCode/StaticAccess:
+        enabled: false
   phpcodesniffer:
     enabled: true
 ratings:
