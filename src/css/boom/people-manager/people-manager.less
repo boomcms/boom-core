@@ -17,6 +17,27 @@
 		margin-left: 2em;
 	}
 
+	section {
+		background: @lightest-grey;
+		padding: 1.5rem;
+
+		+ section {
+			margin-top: 5rem;
+		}
+
+		h2 {
+			font-weight: bold;
+		}
+
+		button {
+			color: @dark-grey;
+
+			&:hover, &:focus {
+				color: @red;
+			}
+		}
+	}
+
 	#b-items-view-list {
 		width: 100%;
 
