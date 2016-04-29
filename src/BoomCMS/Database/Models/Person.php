@@ -44,7 +44,10 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     ];
 
     protected $casts = [
+        self::ATTR_ENABLED    => 'boolean',
+        self::ATTR_ID         => 'integer',
         self::ATTR_LAST_LOGIN => 'datetime',
+        self::ATTR_SUPERUSER  => 'boolean',
     ];
 
     public $timestamps = false;
@@ -96,7 +99,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
      */
     public function getId()
     {
-        return  (int) $this->{self::ATTR_ID};
+        return $this->{self::ATTR_ID};
     }
 
     /**
@@ -144,7 +147,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
      */
     public function isEnabled()
     {
-        return $this->{self::ATTR_ENABLED} == true;
+        return $this->{self::ATTR_ENABLED} === true;
     }
 
     /**
@@ -152,7 +155,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
      */
     public function isSuperuser()
     {
-        return $this->{self::ATTR_SUPERUSER} == true;
+        return $this->{self::ATTR_SUPERUSER} === true;
     }
 
     /**
