@@ -10,8 +10,8 @@ class PersonGroups extends PeopleManager
     /**
      * Add the user to a group.
      *
-     * @param Person $person
-     * @param GroupModel  $group
+     * @param Person     $person
+     * @param GroupModel $group
      */
     public function store(Person $person, GroupModel $group)
     {
@@ -21,8 +21,8 @@ class PersonGroups extends PeopleManager
     /**
      * Remove the user from a group.
      *
-     * @param Person $person
-     * @param GroupModel  $group
+     * @param Person     $person
+     * @param GroupModel $group
      */
     public function destroy(Person $person, GroupModel $group)
     {
