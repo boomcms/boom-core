@@ -41,13 +41,6 @@ class Person extends PeopleManager
         }
     }
 
-    public function availableGroups(Site $site, PersonModel $person)
-    {
-        $groups = GroupFacade::findBySite($site);
-
-        return $groups->diff($person->getGroups());
-    }
-
     public function create()
     {
         return view("$this->viewPrefix.new", [
@@ -70,12 +63,13 @@ class Person extends PeopleManager
         $person->removeSite($site);
     }
 
-    public function show(Request $request, PersonModel $person)
+    public function show(Site $site, Request $request, PersonModel $person)
     {
         return view($this->viewPrefix.'view', [
-            'person'  => $person,
-            'request' => $request,
-            'groups'  => $person->getGroups(),
+            'person'    => $person,
+            'request'   => $request,
+            'groups'    => GroupFacade::findBySite($site),
+            'hasGroups' => $person->getGroups(),
         ]);
     }
 

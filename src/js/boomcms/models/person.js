@@ -32,37 +32,6 @@ function boomPerson(person_id) {
 
 	boomPerson.prototype.addGroups = function(groupIds) {
 		return $.post(this.baseUrl + '/' + this.id + '/groups', {'groups[]': groupIds});
-	}
-
-	boomPerson.prototype.getAddableGroups = function() {
-		return $.get(this.baseUrl + '/' + this.id + '/groups');
-
-		dialog = new boomDialog({
-			url: url,
-			title: 'Add group',
-			closeButton: false,
-			saveButton: true
-		}).done(function() {
-			var groups = {};
-
-			dialog.contents.find('form select option:selected').each(function(i, el) {
-				var $el = $(el);
-				groups[$el.val()] = $el.text();
-			});
-
-			var groupIds = Object.keys(groups);
-
-			if (groupIds.length) {
-				$.post(url, {'groups[]' : groupIds})
-					.done(function() {
-						deferred.resolve(groups);
-					});
-			} else {
-				deferred.resolve([]);
-			}
-		});
-
-		return deferred;
 	};
 
 	boomPerson.prototype.addWithData = function(data) {

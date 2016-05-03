@@ -43,22 +43,15 @@
     </section>
 
     <section>
-        <h2><?= trans('boomcms::people.groups') ?></h2>
+        <h2><?= trans('boomcms::people.groups-heading') ?></h2>
+        <p><?= trans('boomcms::people.groups', ['name' => $person->getName()]) ?></p>
 
-        <?php if (!count($groups)): ?>
-            <p><?= trans('boomcms::people.nogroups', ['name' => $person->getName()]) ?></p>
-        <?php else: ?>
-            <p><?= trans('boomcms::people.hasgroups', ['name' => $person->getName()]) ?></p>
-
-            <ul id='b-person-groups-list'>
-                 <?php foreach ($groups as $group): ?>
-                     <li data-group-id='<?= $group->getId() ?>'>
-                         <?= $group->getName() ?>&nbsp;<a title='Remove user from group' class='b-person-group-delete' href='#'>x</a>
-                     </li>
-                 <?php endforeach ?>
-            </ul>
-        <?php endif ?>
-
-        <?= $button('plus', 'add-group', ['class' => 'b-person-addgroups', 'rel' => $person->getId()]) ?>
+        <select class='b-person-groups' multiple>
+            <?php foreach ($groups as $group): ?>
+                <option value='<?= $group->getId() ?>'<?php if ($hasGroups->contains($group)): ?> selected<?php endif ?>>
+                    <?= $group->getName() ?>
+                </option>
+            <?php endforeach ?>
+        </select>
     </section>
 </div>

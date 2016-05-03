@@ -10,7 +10,7 @@
     </label>
 
     <label for="create-group">
-        Group
+        Groups
 
         <select name="groups[]" multiple>
             <?php foreach ($groups as $group): ?>

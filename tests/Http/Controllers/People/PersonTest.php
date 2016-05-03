@@ -74,25 +74,6 @@ class PersonTest extends BaseControllerTest
         $this->controller->addGroups($request, $person);
     }
 
-    public function testAvailableGroups()
-    {
-        $site = new Site();
-        $allGroups = new Collection([new Group(), new Group(), new Group()]);
-        $inGroups = new Collection([$allGroups[0], $allGroups[1]]);
-
-        $person = m::mock(Person::class);
-        $person->shouldReceive('getGroups')
-            ->once()
-            ->andReturn($inGroups);
-
-        GroupFacade::shouldReceive('findBySite')
-            ->once()
-            ->with($site)
-            ->andReturn($allGroups);
-
-        $this->assertEquals($allGroups->diff($inGroups), $this->controller->availableGroups($site, $person));
-    }
-
     public function testCreate()
     {
         GroupFacade::shouldReceive('findAll');

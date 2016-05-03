@@ -45,6 +45,7 @@ module.exports = function(grunt) {
 					'bower_components/jcrop/js/Jcrop.js',
 					'bower_components/pace/pace.js',
 					'node_modules/geodesy/dms.js',
+					'bower_components/chosen/chosen.jquery.js',
 					'src/js/boomcms/models/*.js',
 					'src/js/boomcms/plugins.js',
 					'src/js/boomcms/notification.js',
@@ -160,6 +161,7 @@ module.exports = function(grunt) {
 						'bower_components/pace/themes/red/pace-theme-flash.css',
 						'bower_components/jgrowl/jquery.jgrowl.css',
 						'src/css/libraries/jqpagination.css',
+						'bower_components/chosen/chosen.css',
 						'public/css/cms.css'
 					 ]
 				}

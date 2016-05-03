@@ -1,0 +1,29 @@
+/* BoomCMS overrides for the chosen library to make it fit with the BoomCMS style */
+html.boom .chosen-container {
+	.text-normal;
+
+	.chosen-choices {
+		li.search-choice {
+			.text-normal;
+			color: @darkest-grey;
+			padding-right: 30px;
+
+			.search-choice-close {
+				.text-normal;
+				background: none;
+				font-family: FontAwesome;
+				right: 8px;
+
+				&:before {
+					content: "\f00d";
+					display: inline-block;
+				}
+			}
+		}
+
+		li.search-field input[type=text] {
+			.text-normal;
+			margin: 6px 0;
+		}
+	}
+}

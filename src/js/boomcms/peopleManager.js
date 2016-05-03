@@ -37,14 +37,6 @@ $.widget('boom.peopleManager', {
 				e.preventDefault();
 				peopleManager.currentPersonDelete();
 			})
-			.on('click', '.b-person-addgroups', function(e) {
-				e.preventDefault();
-				peopleManager.currentPersonAddGroups();
-			})
-			.on('click', '.b-person-group-delete', function(e) {
-				e.preventDefault();
-				peopleManager.currentPersonRemoveGroup($(this).parents('li'));
-			})
 			.on('click', '#b-people-all', function() {
 				window.location = peopleManager.homeUrl;
 			});
@@ -80,61 +72,31 @@ $.widget('boom.peopleManager', {
 	},
 
 	_create: function() {
+		var peopleManager = this;
+
 		this.bind();
 
-		this.document.find('body').height(this.window.height());
-	},
-
-	currentPersonAddGroups: function() {
-		var personId = this.getCurrentPersonId(),
-			person = new boomPerson(personId),
-			peopleManager = this,
-			$groupList = this.element.find('#b-person-groups-list'),
-			$addGroup = this.element.find('#b-people-addgroup');
-
-		person.getAddableGroups()
-			.done(function(groups) {
-				var groupsById = [];
-				$addGroup.find('option').remove();
-
-				for (var i = 0; i < groups.length; i++) {
-					var $option = $('<option>')
-						.attr('value', groups[i].id)
-						.text(groups[i].name);
-
-					groupsById[groups[i].id] = groups[i].name;
-					$addGroup.find('select').append($option);
+		this.element.find('.b-person-groups')
+			.chosen()
+			.change(function(event, data) {
+				if (typeof(data.selected) !== 'undefined') {
+					peopleManager.currentPersonAddGroup(data.selected);
 				}
 
-				var dialog = new boomDialog({
-					msg: $addGroup.html(),
-					title: 'Add group',
-					closeButton: false,
-					saveButton: true
-				}).done(function() {
-					var groups = {};
+				if (typeof(data.deselected) !== 'undefined') {
+					peopleManager.currentPersonRemoveGroup(data.deselected);
+				}
+			});
+	},
 
-					dialog.contents.find('form select option:selected').each(function(i, el) {
-						var $el = $(el);
-						groups[$el.val()] = $el.text();
-					});
+	currentPersonAddGroup: function(groupId) {
+		var person_id = this.getCurrentPersonId(),
+			person = new boomPerson(person_id),
+			peopleManager = this;
 
-					var groupIds = Object.keys(groups);
-
-					if (groupIds.length) {
-						person.addGroups(groupIds)
-							.done(function() {
-								for (var i =  0; i < groupIds.length; i++) {
-									var id = groupIds[i],
-										name = groupsById[id];
-
-									$groupList.append($("<li data-group-id=" + id +">" + name +"&nbsp;<a title='Remove user from group' class='b-person-group-delete' href='#'>x</a></li>"));
-								}
-
-								new boomNotification('This person has been added to the groups');	
-							});
-					}
-				});
+		person.addGroups([groupId])
+			.done(function() {
+				new boomNotification('This person has been added to the group');
 			});
 	},
 
@@ -153,16 +115,14 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	currentPersonRemoveGroup: function($group) {
+	currentPersonRemoveGroup: function(groupId) {
 		var person_id = this.getCurrentPersonId(),
 			person = new boomPerson(person_id),
-			peopleManager = this,
-			group_id = $group.data('group-id');
+			peopleManager = this;
 
-		person.removeGroup(group_id)
+		person.removeGroup(groupId)
 			.done(function() {
 				new boomNotification('This person has been removed from the group');
-				$group.remove();
 			});
 	},
 
