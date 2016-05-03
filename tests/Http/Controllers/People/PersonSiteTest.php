@@ -8,7 +8,7 @@ use BoomCMS\Http\Controllers\People\PersonSite as Controller;
 use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Mockery as m;
 
-class PersonSitesTest extends BaseControllerTest
+class PersonSiteTest extends BaseControllerTest
 {
     /**
      * @var string
