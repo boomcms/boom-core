@@ -139,7 +139,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 					if (history.isSupported()) {
 						history.replaceState({}, title, data.location);
-						new boomNotification('Page title saved.');
+						new boomNotification('Page title saved').show();
 						$.boom.page.toolbar.status.set(data.status);
 					} else {
 						var confirmation = new boomConfirmation('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.");
@@ -149,7 +149,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 							});
 					}
 				} else {
-					new boomNotification('Page title saved.');
+					new boomNotification('Page title saved').show();
 					$.boom.page.toolbar.status.set(data);
 				}
 

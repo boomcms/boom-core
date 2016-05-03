@@ -21,7 +21,7 @@ $.widget('boom.templateManager', {
 				var data = $('#b-templates').serialize();
 
 				$.post('/boomcms/templates/save', data, function(){
-					new boomNotification('Templates successfully saved.');
+					new boomNotification('Templates successfully saved').show();
 				});
 			})
 			.on('click', '#b-template-pages-download', function() {

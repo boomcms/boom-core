@@ -148,7 +148,7 @@ $.widget( 'boom.pageToolbar', {
 					);
 				},
 				deleteSave: function(event, response) {
-					new boomNotification('Page deleted, redirecting to parent');
+					new boomNotification('Page deleted, redirecting to parent').show();
 
 					setTimeout(function() {
 						top.location = response;

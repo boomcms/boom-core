@@ -53,7 +53,7 @@ function boomAssetEditor(asset, uploader) {
 				assetEditor.selection
 					.save(assetEditor.dialog.contents.find('form').serialize())
 					.done(function() {
-						new boomNotification("Asset details saved");
+						new boomNotification("Asset details saved").show();
 					});
 			})
 			.on('focus', '#thumbnail', function() {
@@ -122,7 +122,7 @@ function boomAssetEditor(asset, uploader) {
 
         this.selection.revertToVersion(versionId)
             .done(function() {
-                new boomNotification("This asset has been reverted to the previous version");
+                new boomNotification("This asset has been reverted to the previous version").show();
                 assetEditor.reloadPreviewImage();
             });
     };

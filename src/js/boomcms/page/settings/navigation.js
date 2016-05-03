@@ -14,7 +14,7 @@ $.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
 
 				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
 					.done(function() {
-						new boomNotification('Page settings saved');
+						new boomNotification('Page settings saved').show();
 					});
 			})
 			.on('click', '.b-navigation-reparent', function(e) {

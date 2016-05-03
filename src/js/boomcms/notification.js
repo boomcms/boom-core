@@ -1,11 +1,14 @@
 function boomNotification(message) {
+	this.message = message;
+
 	boomNotification.prototype.$document = $(top.document);
 
-	boomNotification.prototype.open = function(message) {
+	boomNotification.prototype.show = function() {
 		var notified = false,
 			waitingApproval = false,
 			timer,
-			notification = this;
+			notification = this,
+			message = this.message;
 
 		if ("Notification" in window && Notification.permission !== 'denied') {
 			waitingApproval = true;
@@ -40,6 +43,4 @@ function boomNotification(message) {
 	boomNotification.prototype.showFallback = function(message) {
 		$.jGrowl(message);
 	};
-
-	this.open(message);
 };

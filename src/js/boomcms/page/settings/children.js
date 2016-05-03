@@ -47,7 +47,7 @@ $.widget('boom.pageSettingsChildren', {
 
 							$.post(settingsEditor.sortUrl, {sequences: sequences})
 								.done(function() {
-									new boomNotification('Child page ordering saved');
+									new boomNotification('Child page ordering saved').show();
 								});
 						});
 					});
@@ -63,7 +63,7 @@ $.widget('boom.pageSettingsChildren', {
 				page
 					.saveSettings('children', settingsEditor.element.find('form').serialize())
 					.done(function() {
-						new boomNotification('Child page settings saved');
+						new boomNotification('Child page settings saved').show();
 					});
 			});;
 	},

@@ -42637,7 +42637,7 @@ function boomPage(page_id) {
 		}).done(function() {
 			$.post(url, dialog.contents.find('form').serialize())
 			.done(function(response) {
-				new boomNotification("Page embargo saved.");
+				new boomNotification("Page embargo saved").show();
 				promise.resolve(response);
 			});
 		});
@@ -42926,13 +42926,16 @@ function boomPage(page_id) {
 		});
 	};
 })( jQuery );;function boomNotification(message) {
+	this.message = message;
+
 	boomNotification.prototype.$document = $(top.document);
 
-	boomNotification.prototype.open = function(message) {
+	boomNotification.prototype.show = function() {
 		var notified = false,
 			waitingApproval = false,
 			timer,
-			notification = this;
+			notification = this,
+			message = this.message;
 
 		if ("Notification" in window && Notification.permission !== 'denied') {
 			waitingApproval = true;
@@ -42967,8 +42970,6 @@ function boomPage(page_id) {
 	boomNotification.prototype.showFallback = function(message) {
 		$.jGrowl(message);
 	};
-
-	this.open(message);
 };;/**
 @fileOverview Core CMS functionality.
 */
@@ -43768,7 +43769,7 @@ $.widget( 'boom.pageToolbar', {
 					);
 				},
 				deleteSave: function(event, response) {
-					new boomNotification('Page deleted, redirecting to parent');
+					new boomNotification('Page deleted, redirecting to parent').show();
 
 					setTimeout(function() {
 						top.location = response;
@@ -44114,7 +44115,7 @@ $.widget('boom.pageTree', {
 
 							$.post(settingsEditor.sortUrl, {sequences: sequences})
 								.done(function() {
-									new boomNotification('Child page ordering saved');
+									new boomNotification('Child page ordering saved').show();
 								});
 						});
 					});
@@ -44130,7 +44131,7 @@ $.widget('boom.pageTree', {
 				page
 					.saveSettings('children', settingsEditor.element.find('form').serialize())
 					.done(function() {
-						new boomNotification('Child page settings saved');
+						new boomNotification('Child page settings saved').show();
 					});
 			});;
 	},
@@ -44157,7 +44158,7 @@ $.widget('boom.pageTree', {
 
 				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
 					.done(function() {
-						new boomNotification('Page settings saved');
+						new boomNotification('Page settings saved').show();
 					});
 			});
 	},
@@ -44391,7 +44392,7 @@ $.widget('boom.pageTree', {
 		if (this.changed) {
 			pageFeatureEditor.options.page.setFeatureImage(this.currentImage)
 				.done(function(response) {
-					new boomNotification('Page feature image saved');
+					new boomNotification('Page feature image saved').show();
 			
 					pageFeatureEditor._trigger('done', null, pageFeatureEditor.currentImage);
 				});
@@ -44430,7 +44431,7 @@ $.widget('boom.pageTree', {
 
 				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
 					.done(function() {
-						new boomNotification('Page settings saved');
+						new boomNotification('Page settings saved').show();
 					});
 			})
 			.on('click', '.b-navigation-reparent', function(e) {
@@ -44642,7 +44643,7 @@ $.widget('boom.pageTree', {
 		if (templateId) {
 			this.options.page.setTemplate(templateId)
 				.done(function() {
-					new boomNotification('Page template updated');
+					new boomNotification('Page template updated').show();
 
 					templateEditor._trigger('done');
 				});
@@ -44675,7 +44676,7 @@ $.widget('boom.pageTree', {
 
 		url.add()
 			.done(function(response) {
-				new boomNotification('Url added.');
+				new boomNotification('Url added').show();
 
 				urlEditor.element.load(urlEditor.list_url);
 			});
@@ -44722,7 +44723,7 @@ $.widget('boom.pageTree', {
 			.done(function() {
 				$li.remove();
 
-				new boomNotification("The specified URL has been deleted.");
+				new boomNotification("The specified URL has been deleted").show();
 			});
 	},
 
@@ -44740,7 +44741,7 @@ $.widget('boom.pageTree', {
 					.parent()
 					.addClass('b-page-urls-primary');
 
-				new boomNotification("The primary URL of the page has been updated.");
+				new boomNotification("The primary URL of the page has been updated").show();
 			});
 	}
 });;$.widget('boom.pageSettingsVisibility', {
@@ -44808,7 +44809,7 @@ $.widget('boom.pageTree', {
 
 			$.post(this.baseUrl.replace('{page}', this.options.page.id), data)
 				.done(function(response) {
-					new boomNotification('Page visibility saved');
+					new boomNotification('Page visibility saved').show();
 
 					visibilityEditor._trigger('done', null, response);
 				});
@@ -45170,7 +45171,7 @@ $.widget('ui.chunk',
 			.done(function(data) {
 				self._update_html(data.html);
 				$.boom.page.toolbar.status.set(data.status);
-				new boomNotification("Page content saved");
+				new boomNotification("Page content saved").show();
 			});
 	},
 
@@ -45185,7 +45186,7 @@ $.widget('ui.chunk',
 			.done(function(data) {
 				self._update_html(data.html);
 				$.boom.page.toolbar.status.set(data.status);
-				new boomNotification("Page content saved");
+				new boomNotification("Page content saved").show();
 			});
 	},
 
@@ -46792,7 +46793,7 @@ $.widget('ui.chunkPageVisibility', {
 
 					if (history.isSupported()) {
 						history.replaceState({}, title, data.location);
-						new boomNotification('Page title saved.');
+						new boomNotification('Page title saved').show();
 						$.boom.page.toolbar.status.set(data.status);
 					} else {
 						var confirmation = new boomConfirmation('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.");
@@ -46802,7 +46803,7 @@ $.widget('ui.chunkPageVisibility', {
 							});
 					}
 				} else {
-					new boomNotification('Page title saved.');
+					new boomNotification('Page title saved').show();
 					$.boom.page.toolbar.status.set(data);
 				}
 
@@ -47174,7 +47175,7 @@ $.widget('ui.chunkPageVisibility', {
 				var data = $('#b-templates').serialize();
 
 				$.post('/boomcms/templates/save', data, function(){
-					new boomNotification('Templates successfully saved.');
+					new boomNotification('Templates successfully saved').show();
 				});
 			})
 			.on('click', '#b-template-pages-download', function() {
@@ -47254,7 +47255,7 @@ $.widget('ui.chunkPageVisibility', {
 				assetEditor.selection
 					.save(assetEditor.dialog.contents.find('form').serialize())
 					.done(function() {
-						new boomNotification("Asset details saved");
+						new boomNotification("Asset details saved").show();
 					});
 			})
 			.on('focus', '#thumbnail', function() {
@@ -47323,7 +47324,7 @@ $.widget('ui.chunkPageVisibility', {
 
         this.selection.revertToVersion(versionId)
             .done(function() {
-                new boomNotification("This asset has been reverted to the previous version");
+                new boomNotification("This asset has been reverted to the previous version").show();
                 assetEditor.reloadPreviewImage();
             });
     };
@@ -48417,7 +48418,7 @@ function Row() {
 					group.addRole(roleId, allowed, pageId);
 				}
 
-				new boomNotification('Permissions updated');
+				new boomNotification('Permissions updated').show();
 			});
 	},
 
@@ -48501,7 +48502,7 @@ function Row() {
 
 		group.add()
 			.done(function() {
-				new boomNotification('Group successfully saved, reloading.');
+				new boomNotification('Group successfully saved, reloading').show();
 
 				window.setTimeout(function() {
 					top.location.reload();
@@ -48514,14 +48515,14 @@ function Row() {
 
 		person.add()
 			.done(function() {
-				new boomNotification('Success');
+				new boomNotification('Success').show();
 
 				setTimeout(function() {
 					top.location.reload();
 				}, 300);
 			})
 			.fail(function() {
-				new boomNotification('Failure');
+				new boomNotification('Failure').show();
 			});
 	},
 
@@ -48550,7 +48551,7 @@ function Row() {
 
 		person.addGroup(groupId)
 			.done(function() {
-				new boomNotification('This person has been added to the group');
+				new boomNotification('This person has been added to the group').show();
 			});
 	},
 
@@ -48561,7 +48562,7 @@ function Row() {
 
 		person.delete()
 			.done(function() {
-				new boomNotification('This person has been deleted.');
+				new boomNotification('This person has been deleted').show();
 
 				setTimeout(function() {
 					top.location = peopleManager.homeUrl;
@@ -48576,7 +48577,7 @@ function Row() {
 
 		person.removeGroup(groupId)
 			.done(function() {
-				new boomNotification('This person has been removed from the group');
+				new boomNotification('This person has been removed from the group').show();
 			});
 	},
 
@@ -48587,7 +48588,7 @@ function Row() {
 
 		person.save(this.element.find('.b-person-view form').serialize())
 			.done(function() {
-				new boomNotification('The new details for this person have been saved.');
+				new boomNotification('The new details for this person have been saved').show();
 			});
 	},
 
@@ -48603,7 +48604,7 @@ function Row() {
 						.done(function() {
 							peopleManager.removePeopleFromList(selected);
 
-							new boomNotification('The selected people have been deleted.');
+							new boomNotification('The selected people have been deleted').show();
 						});
 				});
 	},
@@ -48626,7 +48627,7 @@ function Row() {
 		group.remove()
 			.done(function() {
 				$el.remove();
-				new boomNotification('Group successfully removed.');
+				new boomNotification('Group successfully removed').show();
 			});
 	},
 
@@ -48654,7 +48655,7 @@ function Row() {
 
 		group.save($form.serialize())
 			.done(function() {
-				new boomNotification('Group name updated');
+				new boomNotification('Group name updated').show();
 				$('#b-groups-list li[data-group-id='+ group_id + '] .b-groups-item').html(new_name);
 			});
 	},
@@ -48948,7 +48949,7 @@ function Row() {
 		var $this = $(this), page = boom_approvals_get_page($this);
 		page.publish();
 
-		new boomNotification('All changes to this page are now published');
+		new boomNotification('All changes to this page are now published').show();
 		boom_approvals_remove_row($this);
 	});
 
@@ -48960,7 +48961,7 @@ function Row() {
 		page
 			.revertToPublished()
 			.done(function() {
-				new boomNotification("This page has been reverted to it's most recent published version.");
+				new boomNotification("This page has been reverted to it's most recent published version.").show();
 				boom_approvals_remove_row($this);
 			});
 	});

@@ -76,7 +76,7 @@ $.widget('ui.chunk',
 			.done(function(data) {
 				self._update_html(data.html);
 				$.boom.page.toolbar.status.set(data.status);
-				new boomNotification("Page content saved");
+				new boomNotification("Page content saved").show();
 			});
 	},
 
@@ -91,7 +91,7 @@ $.widget('ui.chunk',
 			.done(function(data) {
 				self._update_html(data.html);
 				$.boom.page.toolbar.status.set(data.status);
-				new boomNotification("Page content saved");
+				new boomNotification("Page content saved").show();
 			});
 	},
 

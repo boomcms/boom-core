@@ -49,7 +49,7 @@ function boomPage(page_id) {
 		}).done(function() {
 			$.post(url, dialog.contents.find('form').serialize())
 			.done(function(response) {
-				new boomNotification("Page embargo saved.");
+				new boomNotification("Page embargo saved").show();
 				promise.resolve(response);
 			});
 		});

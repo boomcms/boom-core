@@ -7,7 +7,7 @@ $.widget('boom.pageSettingsUrls', {
 
 		url.add()
 			.done(function(response) {
-				new boomNotification('Url added.');
+				new boomNotification('Url added').show();
 
 				urlEditor.element.load(urlEditor.list_url);
 			});
@@ -54,7 +54,7 @@ $.widget('boom.pageSettingsUrls', {
 			.done(function() {
 				$li.remove();
 
-				new boomNotification("The specified URL has been deleted.");
+				new boomNotification("The specified URL has been deleted").show();
 			});
 	},
 
@@ -72,7 +72,7 @@ $.widget('boom.pageSettingsUrls', {
 					.parent()
 					.addClass('b-page-urls-primary');
 
-				new boomNotification("The primary URL of the page has been updated.");
+				new boomNotification("The primary URL of the page has been updated").show();
 			});
 	}
 });

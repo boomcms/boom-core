@@ -74,7 +74,7 @@ $.widget('boom.pageSettingsFeature', {
 		if (this.changed) {
 			pageFeatureEditor.options.page.setFeatureImage(this.currentImage)
 				.done(function(response) {
-					new boomNotification('Page feature image saved');
+					new boomNotification('Page feature image saved').show();
 			
 					pageFeatureEditor._trigger('done', null, pageFeatureEditor.currentImage);
 				});

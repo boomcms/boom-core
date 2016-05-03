@@ -5,7 +5,7 @@ $(document).ready(function() {
 		var $this = $(this), page = boom_approvals_get_page($this);
 		page.publish();
 
-		new boomNotification('All changes to this page are now published');
+		new boomNotification('All changes to this page are now published').show();
 		boom_approvals_remove_row($this);
 	});
 
@@ -17,7 +17,7 @@ $(document).ready(function() {
 		page
 			.revertToPublished()
 			.done(function() {
-				new boomNotification("This page has been reverted to it's most recent published version.");
+				new boomNotification("This page has been reverted to it's most recent published version.").show();
 				boom_approvals_remove_row($this);
 			});
 	});

@@ -63,7 +63,7 @@ $.widget('boom.pageSettingsVisibility', {
 
 			$.post(this.baseUrl.replace('{page}', this.options.page.id), data)
 				.done(function(response) {
-					new boomNotification('Page visibility saved');
+					new boomNotification('Page visibility saved').show();
 
 					visibilityEditor._trigger('done', null, response);
 				});

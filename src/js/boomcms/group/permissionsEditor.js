@@ -64,7 +64,7 @@ $.widget('boom.groupPermissionsEditor', {
 					group.addRole(roleId, allowed, pageId);
 				}
 
-				new boomNotification('Permissions updated');
+				new boomNotification('Permissions updated').show();
 			});
 	},
 
