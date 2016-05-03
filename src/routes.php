@@ -58,6 +58,7 @@ Route::group(['middleware' => [
 
                 Route::delete('person', 'Person@destroy');
                 Route::get('person/{person}/groups', 'Person@availableGroups');
+                Route::put('person/{person}/groups/{group}', 'Person@addGroup');
                 Route::delete('person/{person}/groups/{group}', 'Person@removeGroup');
                 Route::post('person/{person}/groups', 'Person@addGroups');
                 Route::resource('person', 'Person');

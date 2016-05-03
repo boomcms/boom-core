@@ -30,8 +30,11 @@ function boomPerson(person_id) {
 		return deferred;
 	};
 
-	boomPerson.prototype.addGroups = function(groupIds) {
-		return $.post(this.baseUrl + '/' + this.id + '/groups', {'groups[]': groupIds});
+	boomPerson.prototype.addGroup = function(groupId) {
+		return $.ajax({
+			url: this.baseUrl + '/' + this.id + '/groups/' + groupId,
+			type: 'put'
+		});
 	};
 
 	boomPerson.prototype.addWithData = function(data) {

@@ -94,7 +94,7 @@ $.widget('boom.peopleManager', {
 			person = new boomPerson(person_id),
 			peopleManager = this;
 
-		person.addGroups([groupId])
+		person.addGroup(groupId)
 			.done(function() {
 				new boomNotification('This person has been added to the group');
 			});

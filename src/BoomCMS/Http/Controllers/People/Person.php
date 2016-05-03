@@ -18,17 +18,15 @@ class Person extends PeopleManager
     protected $viewPrefix = 'boomcms::person.';
     protected $role = 'managePeople';
 
-    public function addGroups(Request $request, PersonModel $person)
+    /**
+     * Add the user to a group
+     *
+     * @param PersonModel $person
+     * @param GroupModel $group
+     */
+    public function addGroup(PersonModel $person, GroupModel $group)
     {
-        $groupIds = $request->input('groups');
-
-        if ($groupIds) {
-            $groups = GroupFacade::find($groupIds);
-
-            foreach ($groups as $group) {
-                $person->addGroup($group);
-            }
-        }
+        $person->addGroup($group);
     }
 
     public function addSites(Request $request, PersonModel $person)

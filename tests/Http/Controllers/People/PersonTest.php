@@ -47,30 +47,14 @@ class PersonTest extends BaseControllerTest
         $this->controller->addSites($request, $person);
     }
 
-    public function testAddGroups()
+    public function testAddGroup()
     {
-        $groupIds = [1, 2];
-        $groups = [new Group(), new Group()];
-        $request = new Request(['groups' => $groupIds]);
+        $group = new Group();
+
         $person = m::mock(Person::class);
+        $person->shouldReceive('addGroup')->once()->with($group);
 
-        foreach ($groups as $group) {
-            $person->shouldReceive('addGroup')->once()->with($group);
-        }
-
-        GroupFacade::shouldReceive('find')->with($groupIds)->andReturn($groups);
-
-        $this->controller->addGroups($request, $person);
-    }
-
-    public function testAddGroupsDoesNotQueryForGroupsIfNoIdsGiven()
-    {
-        $request = new Request();
-        $person = m::mock(Person::class);
-
-        GroupFacade::shouldReceive('find')->never();
-
-        $this->controller->addGroups($request, $person);
+        $this->controller->addGroup($person, $group);
     }
 
     public function testCreate()
