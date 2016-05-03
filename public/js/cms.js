@@ -48461,16 +48461,16 @@ function Row() {
 		var peopleManager = this;
 
 		this.element
-			.on('click', '.b-people-group-add', function(e) {
+			.on('click', 'button', function(e) {
 				e.preventDefault();
+			})
+			.on('click', '.b-people-group-add', function() {
 				peopleManager.addGroup();
 			})
-			.on('click', '#b-people-create', function(e) {
-				e.preventDefault();
+			.on('click', '#b-people-create', function() {
 				peopleManager.addPerson();
 			})
-			.on('click', '.b-group-delete', function(e) {
-				e.preventDefault();
+			.on('click', '.b-group-delete', function() {
 				peopleManager.removeGroup($(this).parents('li'));
 			})
 			.on('change', '#b-items-view-list input[type=checkbox]', function() {
@@ -48480,16 +48480,13 @@ function Row() {
 			.on('click', '#b-people-multi-delete', function() {
 				peopleManager.deleteSelectedPeople();
 			})
-			.on('click', '#b-people-group-save', function(e) {
-				e.preventDefault();
+			.on('click', '#b-people-group-save', function() {
 				peopleManager.saveOpenGroup();
 			})
-			.on('click', '#b-person-save', function(e) {
-				e.preventDefault();
+			.on('click', '#b-person-save', function() {
 				peopleManager.currentPersonSave();
 			})
-			.on('click', '#b-person-delete', function(e) {
-				e.preventDefault();
+			.on('click', '#b-person-delete', function() {
 				peopleManager.currentPersonDelete();
 			})
 			.on('click', '#b-people-all', function() {
