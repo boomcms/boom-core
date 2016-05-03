@@ -54,4 +54,19 @@
             <?php endforeach ?>
         </select>
     </section>
+
+    <?php if (Gate::allows('manageSites', Router::getActiveSite())): ?>
+        <section>
+            <h2><?= trans('boomcms::people.sites-heading') ?></h2>
+            <p><?= trans('boomcms::people.sites', ['name' => $person->getName()]) ?></p>
+
+            <select class='b-person-sites' multiple>
+                <?php foreach ($sites as $site): ?>
+                    <option value='<?= $site->getId() ?>'<?php if ($hasSites->contains($site)): ?> selected<?php endif ?>>
+                        <?= $site->getName() ?>
+                    </option>
+                <?php endforeach ?>
+            </select>
+        </section>
+    <?php endif ?>
 </div>

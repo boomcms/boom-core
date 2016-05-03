@@ -69,31 +69,44 @@ $.widget('boom.peopleManager', {
 	},
 
 	_create: function() {
-		var peopleManager = this;
+		var peopleManager = this,
+			person = this.getCurrentPerson();
 
 		this.bind();
 
-		this.element.find('.b-person-groups')
+		this.element
+			.find('.b-person-groups')
 			.chosen()
 			.change(function(event, data) {
-				peopleManager.currentPersonUpdateGroups(data);
+				if (typeof(data.selected) !== 'undefined') {
+					return peopleManager.addPersonToGroup(person, data.selected);
+				}
+
+				return peopleManager.removePersonFromGroup(person, data.deselected);
+			})
+			.end()
+			.find('.b-person-sites')
+			.chosen()
+			.change(function(event, data) {
+				if (typeof(data.selected) !== 'undefined') {
+					return peopleManager.addPersonToSite(person, data.selected);
+				}
+
+				return peopleManager.removePersonFromSite(person, data.deselected);
 			});
-	},
-
-	currentPersonUpdateGroups: function(data) {
-		var person = this.getCurrentPerson();
-
-		if (typeof(data.selected) !== 'undefined') {
-			return this.addPersonToGroup(person, data.selected);
-		}
-
-		return this.removePersonFromGroup(person, data.deselected);
 	},
 
 	addPersonToGroup: function(person, groupId) {
 		person.addGroup(groupId)
 			.done(function() {
 				new boomNotification('This person has been added to the group').show();
+			});
+	},
+
+	addPersonToSite: function(person, siteId) {
+		person.addSite(siteId)
+			.done(function() {
+				new boomNotification('This person has been added to the site').show();
 			});
 	},
 
@@ -114,6 +127,13 @@ $.widget('boom.peopleManager', {
 		person.removeGroup(groupId)
 			.done(function() {
 				new boomNotification('This person has been removed from the group').show();
+			});
+	},
+
+	removePersonFromSite: function(person, siteId) {
+		person.removeSite(siteId)
+			.done(function() {
+				new boomNotification('This person has been removed from the site').show();
 			});
 	},
 

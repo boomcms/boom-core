@@ -50,6 +50,8 @@ class Person extends PeopleManager
             'request'   => $request,
             'groups'    => GroupFacade::findBySite($site),
             'hasGroups' => $person->getGroups(),
+            'sites'     => SiteFacade::findAll(),
+            'hasSites'  => $person->getSites(),
         ]);
     }
 

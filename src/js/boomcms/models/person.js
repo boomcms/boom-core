@@ -37,6 +37,13 @@ function boomPerson(person_id) {
 		});
 	};
 
+	boomPerson.prototype.addSite = function(siteId) {
+		return $.ajax({
+			url: this.baseUrl + '/' + this.id + '/sites/' + siteId,
+			type: 'put'
+		});
+	};
+
 	boomPerson.prototype.addWithData = function(data) {
 		return $.post(this.baseUrl, data);
 	};
@@ -71,6 +78,13 @@ function boomPerson(person_id) {
 		return $.ajax({
 			type: 'delete',
 			url: this.baseUrl + '/' + this.id + '/groups/' + groupId
+		});
+	};
+
+	boomPerson.prototype.removeSite = function(siteId) {
+		return $.ajax({
+			type: 'delete',
+			url: this.baseUrl + '/' + this.id + '/sites/' + siteId
 		});
 	};
 

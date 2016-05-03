@@ -9,4 +9,6 @@ return [
     'superuser'      => 'Superuser',
     'groups-heading' => 'Groups',
     'groups'         => 'Set which groups :name is a member of. Changes will be saved immediately.',
+    'sites-heading'  => 'Sites',
+    'sites'          => 'Set which sites :name has access to.',
 ];

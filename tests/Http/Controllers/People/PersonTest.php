@@ -7,7 +7,6 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\People\Person as Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
-use BoomCMS\Support\Facades\Site as SiteFacade;
 use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,30 +20,6 @@ class PersonTest extends BaseControllerTest
      * @var string
      */
     protected $className = Controller::class;
-
-    public function testAddSites()
-    {
-        $siteIds = [1, 2];
-        $sites = [new Site(), new Site()];
-        $request = new Request(['sites' => $siteIds]);
-        $person = m::mock(Person::class);
-
-        $person->shouldReceive('addSites')->once()->with($sites);
-
-        SiteFacade::shouldReceive('find')->with($siteIds)->andReturn($sites);
-
-        $this->controller->addSites($request, $person);
-    }
-
-    public function testAddSitesDoesNotQueryForSitesIfNoIdsGiven()
-    {
-        $request = new Request();
-        $person = m::mock(Person::class);
-
-        SiteFacade::shouldReceive('find')->never();
-
-        $this->controller->addSites($request, $person);
-    }
 
     public function testCreate()
     {
@@ -61,19 +36,6 @@ class PersonTest extends BaseControllerTest
         PersonFacade::shouldReceive('deleteByIds')->with($peopleIds);
 
         $this->controller->destroy($request);
-    }
-
-    public function testRemoveSite()
-    {
-        $site = new Site();
-        $person = m::mock(Person::class);
-
-        $person
-            ->shouldReceive('removeSite')
-            ->once()
-            ->with($site);
-
-        $this->controller->removeSite($person, $site);
     }
 
     public function testStoreAddsNewPersonToCurrentSite()
