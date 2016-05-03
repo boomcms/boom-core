@@ -76,18 +76,22 @@ $.widget('boom.peopleManager', {
 		this.element.find('.b-person-groups')
 			.chosen()
 			.change(function(event, data) {
-				if (typeof(data.selected) !== 'undefined') {
-					peopleManager.currentPersonAddGroup(data.selected);
-				}
-
-				if (typeof(data.deselected) !== 'undefined') {
-					peopleManager.currentPersonRemoveGroup(data.deselected);
-				}
+				peopleManager.currentPersonUpdateGroups(data);
 			});
 	},
 
-	currentPersonAddGroup: function(groupId) {
-		this.getCurrentPerson().addGroup(groupId)
+	currentPersonUpdateGroups: function(data) {
+		var person = this.getCurrentPerson();
+
+		if (typeof(data.selected) !== 'undefined') {
+			return this.addPersonToGroup(person, data.selected);
+		}
+
+		return this.removePersonFromGroup(person, data.deselected);
+	},
+
+	addPersonToGroup: function(person, groupId) {
+		person.addGroup(groupId)
 			.done(function() {
 				new boomNotification('This person has been added to the group').show();
 			});
@@ -106,8 +110,8 @@ $.widget('boom.peopleManager', {
 			});
 	},
 
-	currentPersonRemoveGroup: function(groupId) {
-		this.getCurrentPerson().removeGroup(groupId)
+	removePersonFromGroup: function(person, groupId) {
+		person.removeGroup(groupId)
 			.done(function() {
 				new boomNotification('This person has been removed from the group').show();
 			});
