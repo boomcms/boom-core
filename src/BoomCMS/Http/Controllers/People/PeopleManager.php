@@ -8,7 +8,6 @@ use BoomCMS\Support\Facades\Person;
 class PeopleManager extends Controller
 {
     protected $viewPrefix = 'boomcms::people.';
-
     protected $role = 'managePeople';
 
     public function index()

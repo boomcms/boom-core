@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Http\Controllers\People;
 
-use BoomCMS\Database\Models\Group as GroupModel;
 use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Jobs\CreatePerson;
@@ -16,18 +15,6 @@ use Illuminate\Support\Facades\Gate;
 class Person extends PeopleManager
 {
     protected $viewPrefix = 'boomcms::person.';
-    protected $role = 'managePeople';
-
-    /**
-     * Add the user to a group
-     *
-     * @param PersonModel $person
-     * @param GroupModel $group
-     */
-    public function addGroup(PersonModel $person, GroupModel $group)
-    {
-        $person->addGroup($group);
-    }
 
     public function addSites(Request $request, PersonModel $person)
     {
@@ -49,11 +36,6 @@ class Person extends PeopleManager
     public function destroy(Request $request)
     {
         PersonFacade::deleteByIds($request->input('people'));
-    }
-
-    public function removeGroup(PersonModel $person, GroupModel $group)
-    {
-        $person->removeGroup($group);
     }
 
     public function removeSite(PersonModel $person, Site $site)

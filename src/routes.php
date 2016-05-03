@@ -56,11 +56,12 @@ Route::group(['middleware' => [
             ], function () {
                 Route::get('people', 'PeopleManager@index');
 
-                Route::delete('person', 'Person@destroy');
-                Route::get('person/{person}/groups', 'Person@availableGroups');
-                Route::put('person/{person}/groups/{group}', 'Person@addGroup');
-                Route::delete('person/{person}/groups/{group}', 'Person@removeGroup');
-                Route::post('person/{person}/groups', 'Person@addGroups');
+                Route::group(['prefix' => 'person'], function() {
+                    Route::delete('', 'Person@destroy');
+                    Route::put('{person}/groups/{group}', 'PersonGroups@store');
+                    Route::delete('{person}/groups/{group}', 'PersonGroups@destroy');
+                });
+
                 Route::resource('person', 'Person');
 
                 Route::get('group/{group}/roles', 'Group@roles');

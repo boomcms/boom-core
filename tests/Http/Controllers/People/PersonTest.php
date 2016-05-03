@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Tests\Http\Controllers\People;
 
-use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\People\Person as Controller;
@@ -47,16 +46,6 @@ class PersonTest extends BaseControllerTest
         $this->controller->addSites($request, $person);
     }
 
-    public function testAddGroup()
-    {
-        $group = new Group();
-
-        $person = m::mock(Person::class);
-        $person->shouldReceive('addGroup')->once()->with($group);
-
-        $this->controller->addGroup($person, $group);
-    }
-
     public function testCreate()
     {
         GroupFacade::shouldReceive('findAll');
@@ -72,16 +61,6 @@ class PersonTest extends BaseControllerTest
         PersonFacade::shouldReceive('deleteByIds')->with($peopleIds);
 
         $this->controller->destroy($request);
-    }
-
-    public function testRemoveGroup()
-    {
-        $group = new Group();
-        $person = m::mock(Person::class);
-
-        $person->shouldReceive('removeGroup')->with($group);
-
-        $this->controller->removeGroup($person, $group);
     }
 
     public function testRemoveSite()
