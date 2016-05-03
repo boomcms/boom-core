@@ -56,7 +56,7 @@ Route::group(['middleware' => [
             ], function () {
                 Route::get('people', 'PeopleManager@index');
 
-                Route::group(['prefix' => 'person'], function() {
+                Route::group(['prefix' => 'person'], function () {
                     Route::delete('', 'Person@destroy');
                     Route::put('{person}/groups/{group}', 'PersonGroups@store');
                     Route::delete('{person}/groups/{group}', 'PersonGroups@destroy');

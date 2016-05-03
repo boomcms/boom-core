@@ -8,10 +8,10 @@ use BoomCMS\Database\Models\Person as PersonModel;
 class PersonGroups extends PeopleManager
 {
     /**
-     * Add the user to a group
+     * Add the user to a group.
      *
      * @param PersonModel $person
-     * @param GroupModel $group
+     * @param GroupModel  $group
      */
     public function store(PersonModel $person, GroupModel $group)
     {
@@ -19,10 +19,10 @@ class PersonGroups extends PeopleManager
     }
 
     /**
-     * Remove the user from a group
+     * Remove the user from a group.
      *
      * @param PersonModel $person
-     * @param GroupModel $group
+     * @param GroupModel  $group
      */
     public function destroy(PersonModel $person, GroupModel $group)
     {
