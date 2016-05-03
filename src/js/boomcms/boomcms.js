@@ -1,7 +1,9 @@
-(function($, window, top) {
+(function($) {
 	'use strict';
 
 	function BoomCMS() {
+		this.View = {};
+
 		BoomCMS.prototype.init = function() {
 			if (typeof(top.$) === 'undefined') {
 				top.$ = $;
@@ -32,4 +34,4 @@
 	}
 
 	window.BoomCMS = top.BoomCMS = new BoomCMS();
-})(jQuery, window, top);
+})(jQuery);

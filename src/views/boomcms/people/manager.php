@@ -18,38 +18,43 @@
 
         <div id="b-groups">
             <div id="b-groups-header">
-                <?= $button('plus', trans('Add group'), ['class' => 'b-people-group-add']) ?>
                 <h2>
                     <?= trans('Groups') ?>
                 </h2>
             </div>
 
             <ul id="b-groups-list">
-                <?php foreach ($groups as $group): ?>
+                <?php /*foreach ($groups as $group): ?>
                     <li data-group-id="<?= $group->getId() ?>"<?php if ($group->getId() == $request->input('group')): ?> class='current'<?php endif ?>>
                         <a class='b-groups-item' href='/boomcms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?></a>
 
                         <a href='/boomcms/group/<?= $group->getId() ?>/edit' title="Edit" class="fa fa-edit"></a>
                         <a href='#' title="Delete" class="fa fa-trash-o b-group-delete"></a>
                     </li>
-                <?php endforeach ?>
+                <?php endforeach*/ ?>
             </ul>
+
+            <form id="b-groups-new">
+                <input type="text" placeholder="New group" name="name" />
+                <input type="submit" value="Submit" />
+            </form>
+            
         </div>
 
         <div id='b-people-content'>
             <?= $content ?>
         </div>
-
-        <div id="b-people-addgroup">
-            <form>
-                <p>Select some groups to add from the list below.</p>
-                <p>You can select multiple groups to add the person to all selected groups.</p>
-
-                <select name="groups[]" multiple></select>
-            </form>
-        </div>
     </div>
 </main>
+
+<script type="text/template" id="b-group-list-item">
+    <div>
+        <a class='b-groups-item' href='#'><%= name %></a>
+
+        <a href='#' title="Edit" class="fa fa-edit"></a>
+        <a href='#' title="Delete" class="fa fa-trash-o b-group-delete"></a>
+    </div>
+</script>
 
 <script type="text/javascript">
     window.addEventListener('load', function() {

@@ -1,4 +1,6 @@
-	<script type="text/javascript">
+    <?= $boomJS ?>
+
+    <script type="text/javascript">
 		//<![CDATA[
 		(function ($) {
 			window.BoomCMS.init();

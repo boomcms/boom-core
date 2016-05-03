@@ -107,7 +107,7 @@
 <script type='text/javascript'>
 	window.onload = function () {
 		$('#b-group-edit').groupPermissionsEditor({
-			group : new boomGroup(<?= $group->getId() ?>)
+			group : new window.BoomCMS.Group({id: <?= $group->getId() ?>})
 		});
 	};
 </script>

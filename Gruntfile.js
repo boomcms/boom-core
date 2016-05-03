@@ -46,10 +46,12 @@ module.exports = function(grunt) {
 					'bower_components/pace/pace.js',
 					'node_modules/geodesy/dms.js',
 					'bower_components/chosen/chosen.jquery.js',
+					'bower_components/underscore/underscore.js',
+					'bower_components/backbone/backbone.js',
+					'src/js/boomcms/boomcms.js',
 					'src/js/boomcms/models/*.js',
 					'src/js/boomcms/plugins.js',
 					'src/js/boomcms/notification.js',
-					'src/js/boomcms/boomcms.js',
 					'src/js/boomcms/history.js',
 					'src/js/boomcms/dialog.js',
 					'src/js/boomcms/alert.js',
@@ -109,7 +111,8 @@ module.exports = function(grunt) {
 					'src/js/wysihtml5/commands/insertSuperscript.js',
 					'src/js/wysihtml5/commands/insertSubscript.js',
 					'src/js/jquery/jqpagination.js',
-					'src/js/boomcms/page/manager.js'
+					'src/js/boomcms/page/manager.js',
+					'src/js/boomcms/view/*.js',
 				],
 				dest: 'public/js/cms.js'
 			}

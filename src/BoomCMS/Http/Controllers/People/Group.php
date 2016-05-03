@@ -29,13 +29,23 @@ class Group extends Controller
         GroupFacade::delete($group);
     }
 
-    public function edit(GroupModel $group)
+    public function show(GroupModel $group)
     {
         return view("$this->viewPrefix.edit", [
             'group'         => $group,
             'general_roles' => Role::getGeneralRoles(),
             'page_roles'    => Role::getPageRoles(),
         ]);
+    }
+
+    /**
+     * @param Site $site
+     *
+     * @return array
+     */
+    public function index(Site $site)
+    {
+        return GroupFacade::findBySite($site);
     }
 
     public function removeRole(Request $request, GroupModel $group)
