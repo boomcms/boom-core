@@ -48545,48 +48545,34 @@ function Row() {
 	},
 
 	currentPersonAddGroup: function(groupId) {
-		var person_id = this.getCurrentPersonId(),
-			person = new boomPerson(person_id),
-			peopleManager = this;
-
-		person.addGroup(groupId)
+		this.getCurrentPerson().addGroup(groupId)
 			.done(function() {
 				new boomNotification('This person has been added to the group').show();
 			});
 	},
 
 	currentPersonDelete: function() {
-		var person_id = this.getCurrentPersonId(),
-			person = new boomPerson(person_id),
-			peopleManager = this;
+		var url = this.homeUrl;
 
-		person.delete()
+		this.getCurrentPerson().delete()
 			.done(function() {
 				new boomNotification('This person has been deleted').show();
 
 				setTimeout(function() {
-					top.location = peopleManager.homeUrl;
+					top.location = url;
 				}, 300);
 			});
 	},
 
 	currentPersonRemoveGroup: function(groupId) {
-		var person_id = this.getCurrentPersonId(),
-			person = new boomPerson(person_id),
-			peopleManager = this;
-
-		person.removeGroup(groupId)
+		this.getCurrentPerson().removeGroup(groupId)
 			.done(function() {
 				new boomNotification('This person has been removed from the group').show();
 			});
 	},
 
 	currentPersonSave: function() {
-		var person_id = this.getCurrentPersonId(),
-			person = new boomPerson(person_id),
-			peopleManager = this;
-
-		person.save(this.element.find('.b-person-view form').serialize())
+		this.getCurrentPerson().save(this.element.find('.b-person-view form').serialize())
 			.done(function() {
 				new boomNotification('The new details for this person have been saved').show();
 			});
@@ -48609,8 +48595,10 @@ function Row() {
 				});
 	},
 
-	getCurrentPersonId: function() {
-		return this.element.find('.b-person-view').data('person-id');
+	getCurrentPerson: function() {
+		var personId = this.element.find('.b-person-view').data('person-id');
+
+		return new boomPerson(personId);
 	},
 
 	getSelectedPeople: function() {
