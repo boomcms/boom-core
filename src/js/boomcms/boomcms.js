@@ -1,30 +1,11 @@
-/**
-@fileOverview Core CMS functionality.
-*/
-/**
-@namespace
-@name $
-*/
-$.extend({
-	/**
-	Namespace for core boom classes and functions.
-	@static
-	@class
-	@name $.boom
-	*/
-	boom :
-		/** @lends $.boom */
-		{
-		/**
-		Initialise boom classes. Create top bar and UI.
-		*/
-		init: function() {
+(function($, window, top) {
+	'use strict';
+
+	function BoomCMS() {
+		BoomCMS.prototype.init = function() {
 			if (typeof(top.$) === 'undefined') {
 				top.$ = $;
 			}
-
-			// reference boom from the site window too.
-			top.$.boom = $.boom;
 
 			$.ajaxSetup({
 				cache: false, // Fix for IE9 - prevent caching of all AJAX requests.
@@ -34,9 +15,9 @@ $.extend({
 			});
 
 			$('#b-topbar, body').ui();
-		},
+		};
 
-		editor: {
+		BoomCMS.prototype.editor = {
 			state: function(state, url) {
 
 				$.post('/boomcms/editor/state', {state: state}, function() {
@@ -47,6 +28,8 @@ $.extend({
 					}
 				});
 			}
-		}
+		};
 	}
-});
+
+	window.BoomCMS = top.BoomCMS = new BoomCMS();
+})(jQuery, window, top);

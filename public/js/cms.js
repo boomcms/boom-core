@@ -42986,33 +42986,14 @@ function boomPage(page_id) {
 	boomNotification.prototype.showFallback = function(message) {
 		$.jGrowl(message);
 	};
-};;/**
-@fileOverview Core CMS functionality.
-*/
-/**
-@namespace
-@name $
-*/
-$.extend({
-	/**
-	Namespace for core boom classes and functions.
-	@static
-	@class
-	@name $.boom
-	*/
-	boom :
-		/** @lends $.boom */
-		{
-		/**
-		Initialise boom classes. Create top bar and UI.
-		*/
-		init: function() {
+};;(function($, window, top) {
+	'use strict';
+
+	function BoomCMS() {
+		BoomCMS.prototype.init = function() {
 			if (typeof(top.$) === 'undefined') {
 				top.$ = $;
 			}
-
-			// reference boom from the site window too.
-			top.$.boom = $.boom;
 
 			$.ajaxSetup({
 				cache: false, // Fix for IE9 - prevent caching of all AJAX requests.
@@ -43022,9 +43003,9 @@ $.extend({
 			});
 
 			$('#b-topbar, body').ui();
-		},
+		};
 
-		editor: {
+		BoomCMS.prototype.editor = {
 			state: function(state, url) {
 
 				$.post('/boomcms/editor/state', {state: state}, function() {
@@ -43035,9 +43016,11 @@ $.extend({
 					}
 				});
 			}
-		}
+		};
 	}
-});;/* 
+
+	window.BoomCMS = top.BoomCMS = new BoomCMS();
+})(jQuery, window, top);;/* 
  * Boom history class.
  * Eventuall replacement to history.js
  *
@@ -43538,7 +43521,7 @@ $(function() {
 		var self = this;
 
 		this.page = new boomPage(this.options.page_id);
-		$.boom.page = this.page;
+		window.BoomCMS.page = this.page;
 
 		this.document = $(top.document);
 
@@ -43606,7 +43589,7 @@ $(function() {
 					.on('click', function(e) {
 						e.preventDefault();
 
-						$.boom.page.toolbar.showSettingsAndCloseOnSave('feature');
+						window.BoomCMS.page.toolbar.showSettingsAndCloseOnSave('feature');
 					});
 			});
 	},
@@ -43664,7 +43647,7 @@ $.widget( 'boom.pageToolbar', {
  				self.showSettings('visibility');
 			})
 			.on('click', '.b-button-preview', function() {
-				$.boom.editor.state($(this).attr('data-preview'));
+				window.BoomCMS.editor.state($(this).attr('data-preview'));
 			})
 			.on('click', '#b-page-template', function() {
 				self.showSettings('template');
@@ -44320,7 +44303,7 @@ $.widget('boom.pageTree', {
 					});
 			})
 			.on('click', '.b-page-preview', function() {
-				$.boom.editor.state('preview', $(this).attr('data-url'));
+				window.BoomCMS.editor.state('preview', $(this).attr('data-url'));
 			});
 	},
 
@@ -44784,7 +44767,7 @@ $.widget('boom.pageTree', {
 				pageVisibilityEditor.save();
 			})
 			.on('click', '.b-visibility-preview', function() {
-				$.boom.editor.state('preview');
+				window.BoomCMS.editor.state('preview');
 			});
 
 		this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');
@@ -44870,7 +44853,7 @@ $.widget('boom.pageTree', {
 /**
 * Interface for the wysihtml5 editor.
 * @class
-* @name $.boom.textEditor
+* @name window.BoomCMS.textEditor
 */
 $.widget('boom.textEditor', {
 	/**
@@ -44965,7 +44948,7 @@ $.widget('boom.textEditor', {
 					}
 				})
 				.on('tableselect:composer', function(e) {
-					$.boom.page.toolbar.element.width('160px');
+					window.BoomCMS.page.toolbar.element.width('160px');
 					self.toolbar.parents('#b-topbar').width('160px');
 					top.$('body').first().animate({'margin-left': '160px'}, 500);
 
@@ -45031,7 +45014,7 @@ $.widget('boom.textEditor', {
 	apply: function(element) {
 		var html = this.model === 'block' ? this.instance.getValue() : element.html();
 
-		$.boom.page.toolbar.minimise();
+		window.BoomCMS.page.toolbar.minimise();
 		this.hideToolbar();
 
 		if (this.mode !== 'block') {
@@ -45094,7 +45077,7 @@ $.widget('boom.textEditor', {
 	},
 	
 	hideTableButtons: function() {
-		$.boom.page.toolbar.element.width('60px');
+		window.BoomCMS.page.toolbar.element.width('60px');
 		this.toolbar.parents('#b-topbar').width('60px');
 		top.$('body').first().animate({'margin-left': '60px'}, 500);
 		$('#wysihtml5-toolbar').width('60px');
@@ -45186,7 +45169,7 @@ $.widget('ui.chunk',
 		return chunk.delete(this.options.template)
 			.done(function(data) {
 				self._update_html(data.html);
-				$.boom.page.toolbar.status.set(data.status);
+				window.BoomCMS.page.toolbar.status.set(data.status);
 				new boomNotification("Page content saved").show();
 			});
 	},
@@ -45201,7 +45184,7 @@ $.widget('ui.chunk',
 		return chunk.save(data)
 			.done(function(data) {
 				self._update_html(data.html);
-				$.boom.page.toolbar.status.set(data.status);
+				window.BoomCMS.page.toolbar.status.set(data.status);
 				new boomNotification("Page content saved").show();
 			});
 	},
@@ -45742,7 +45725,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		this.dialog.contents
 			.on('click', '#b-slideshow-editor-delete', function() {
 				slideshowEditor.deferred.resolveWith({});
-				$.boom.dialog.destroy(slideshowEditor.dialog);
+
+				slideshowEditor.dialog.close();
 			})
 			.on('change', '#b-slideshow-editor-slides input[type=radio]', function() {
 				var slide = slideshowEditor._getSlideDetails($(this));
@@ -46810,7 +46794,7 @@ $.widget('ui.chunkPageVisibility', {
 					if (history.isSupported()) {
 						history.replaceState({}, title, data.location);
 						new boomNotification('Page title saved').show();
-						$.boom.page.toolbar.status.set(data.status);
+						window.BoomCMS.page.toolbar.status.set(data.status);
 					} else {
 						var confirmation = new boomConfirmation('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.");
 						confirmation
@@ -46820,7 +46804,7 @@ $.widget('ui.chunkPageVisibility', {
 					}
 				} else {
 					new boomNotification('Page title saved').show();
-					$.boom.page.toolbar.status.set(data);
+					window.BoomCMS.page.toolbar.status.set(data);
 				}
 
 				var page_title = top.$('title').text().replace(old_title, title);

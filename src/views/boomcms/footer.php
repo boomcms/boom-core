@@ -1,7 +1,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function ($) {
-			$.boom.init();
+			window.BoomCMS.init();
             $('body').ui();
 		})(jQuery);
 		//]]>

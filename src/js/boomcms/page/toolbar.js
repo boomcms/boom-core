@@ -27,7 +27,7 @@ $.widget( 'boom.pageToolbar', {
  				self.showSettings('visibility');
 			})
 			.on('click', '.b-button-preview', function() {
-				$.boom.editor.state($(this).attr('data-preview'));
+				window.BoomCMS.editor.state($(this).attr('data-preview'));
 			})
 			.on('click', '#b-page-template', function() {
 				self.showSettings('template');

@@ -11,7 +11,7 @@ $.widget( 'boom.pageEditor', {
 		var self = this;
 
 		this.page = new boomPage(this.options.page_id);
-		$.boom.page = this.page;
+		window.BoomCMS.page = this.page;
 
 		this.document = $(top.document);
 
@@ -79,7 +79,7 @@ $.widget( 'boom.pageEditor', {
 					.on('click', function(e) {
 						e.preventDefault();
 
-						$.boom.page.toolbar.showSettingsAndCloseOnSave('feature');
+						window.BoomCMS.page.toolbar.showSettingsAndCloseOnSave('feature');
 					});
 			});
 	},
