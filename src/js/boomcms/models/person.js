@@ -31,17 +31,18 @@ function boomPerson(person_id) {
 	};
 
 	boomPerson.prototype.addGroup = function(groupId) {
+		return this.addRelationship('group', groupId);
+	};
+
+	boomPerson.prototype.addRelationship = function(type, id) {
 		return $.ajax({
-			url: this.baseUrl + '/' + this.id + '/groups/' + groupId,
+			url: this.baseUrl + '/' + this.id + '/' + type + '/' + id,
 			type: 'put'
 		});
 	};
 
 	boomPerson.prototype.addSite = function(siteId) {
-		return $.ajax({
-			url: this.baseUrl + '/' + this.id + '/sites/' + siteId,
-			type: 'put'
-		});
+		return this.addRelationship('site', siteId);
 	};
 
 	boomPerson.prototype.addWithData = function(data) {
@@ -75,17 +76,18 @@ function boomPerson(person_id) {
 	};
 
 	boomPerson.prototype.removeGroup = function(groupId) {
+		return this.removeRelationship('group', groupId);
+	};
+
+	boomPerson.prototype.removeRelationship = function(type, id) {
 		return $.ajax({
 			type: 'delete',
-			url: this.baseUrl + '/' + this.id + '/groups/' + groupId
+			url: this.baseUrl + '/' + this.id + '/' + type + '/' + id
 		});
 	};
 
 	boomPerson.prototype.removeSite = function(siteId) {
-		return $.ajax({
-			type: 'delete',
-			url: this.baseUrl + '/' + this.id + '/sites/' + siteId
-		});
+		return this.removeRelationship('site', siteId);
 	};
 
 	boomPerson.prototype.save = function(data) {

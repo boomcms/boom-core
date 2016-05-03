@@ -5,7 +5,7 @@ namespace BoomCMS\Http\Controllers\People;
 use BoomCMS\Database\Models\Group as GroupModel;
 use BoomCMS\Database\Models\Person;
 
-class PersonGroups extends PeopleManager
+class PersonGroup extends PeopleManager
 {
     /**
      * Add the user to a group.
@@ -13,7 +13,7 @@ class PersonGroups extends PeopleManager
      * @param Person     $person
      * @param GroupModel $group
      */
-    public function store(Person $person, GroupModel $group)
+    public function update(Person $person, GroupModel $group)
     {
         $person->addGroup($group);
     }

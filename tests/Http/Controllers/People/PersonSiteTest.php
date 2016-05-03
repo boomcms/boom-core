@@ -4,7 +4,7 @@ namespace BoomCMS\Tests\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
-use BoomCMS\Http\Controllers\People\PersonSites as Controller;
+use BoomCMS\Http\Controllers\People\PersonSite as Controller;
 use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Mockery as m;
 
@@ -15,14 +15,14 @@ class PersonSitesTest extends BaseControllerTest
      */
     protected $className = Controller::class;
 
-    public function store()
+    public function testUpdate()
     {
         $site = new Site();
 
         $person = m::mock(Person::class);
         $person->shouldReceive('addSite')->once()->with($site);
 
-        $this->controller->addGroup($person, $site);
+        $this->controller->update($person, $site);
     }
 
     public function testDestroy()
