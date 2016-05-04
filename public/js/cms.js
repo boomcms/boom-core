@@ -52472,7 +52472,7 @@ function Row() {
 		template: _.template($('#b-group-edit').html()),
 
 		events: {
-			'click .b-group-delete': 'deleteGroup'
+			'click #b-people-group-save': 'saveGroupName'
 		},
 
 		initialize: function() {
@@ -52485,7 +52485,10 @@ function Row() {
 			return this;
 		},
 
-		saveGroup: function() {
+		saveGroupName: function(e) {
+			e.preventDefault();
+
+			this.model.set('name', this.$el.find('#b-people-group-name').val());
 			this.model.save();
 		}
 	});
