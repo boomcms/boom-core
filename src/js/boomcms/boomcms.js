@@ -3,6 +3,7 @@
 
 	function BoomCMS() {
 		this.View = {};
+		this.urlRoot = '/boomcms/';
 
 		BoomCMS.prototype.init = function() {
 			if (typeof(top.$) === 'undefined') {

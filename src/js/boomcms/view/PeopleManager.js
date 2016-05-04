@@ -13,23 +13,27 @@
 
 			var groups = Backbone.Collection.extend({
 				model: BoomCMS.Group,
-				url: '/boomcms/group'
+				url: '/boomcms/group',
+				comparator: 'name'
 			});
 
 			this.groups = new groups();
 
 			this.listenTo(this.groups, 'add', this.addGroup);
-			this.listenTo(this.groups, 'all', this.render);
+			this.listenTo(this.groups, 'all sort', this.render);	
 			this.groups.fetch();
 		},
 
 		createGroup: function(e) {
 			e.preventDefault();
 
-			this.groups.add({
-				id: null,
-				name: $('#b-groups-new input[type=text]').val()
-			});
+			var $el = $(e.target).find('input[type=text]'),
+				group = this.groups.create({
+					id: null,
+					name: $el.val()
+				});
+
+			$el.val('');
 		},
 
 		addGroup: function(group) {
@@ -39,6 +43,10 @@
 		},
 
 		render: function() {
+			this.$groupList.empty();
+			this.groups.each(this.addGroup, this);
+
+			return this;
 		}
 	});
 })(jQuery, Backbone, window.BoomCMS);

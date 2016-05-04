@@ -23,22 +23,15 @@
                 </h2>
             </div>
 
-            <ul id="b-groups-list">
-                <?php /*foreach ($groups as $group): ?>
-                    <li data-group-id="<?= $group->getId() ?>"<?php if ($group->getId() == $request->input('group')): ?> class='current'<?php endif ?>>
-                        <a class='b-groups-item' href='/boomcms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?></a>
-
-                        <a href='/boomcms/group/<?= $group->getId() ?>/edit' title="Edit" class="fa fa-edit"></a>
-                        <a href='#' title="Delete" class="fa fa-trash-o b-group-delete"></a>
-                    </li>
-                <?php endforeach*/ ?>
-            </ul>
+            <ul id="b-groups-list"></ul>
 
             <form id="b-groups-new">
-                <input type="text" placeholder="New group" name="name" />
-                <input type="submit" value="Submit" />
+                <input type="text" placeholder="New group" required name="name" />
+
+                <button>
+                    <span class="fa fa-plus-circle"></span>
+                </button>
             </form>
-            
         </div>
 
         <div id='b-people-content'>

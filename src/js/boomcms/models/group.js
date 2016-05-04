@@ -2,34 +2,32 @@
 	'use strict';
 
 	BoomCMS.Group = Backbone.Model.extend({
-		urlRoot: '/boomcms/group',
+		urlRoot: BoomCMS.urlRoot + 'group',
+
+		initialize: function() {
+			var roles = Backbone.Collection.extend({
+				url: this.url() + '/roles'
+			});
+
+			this.roles = new roles();
+		},
 
 		addRole: function(roleId, allowed, pageId) {
-			var deferred = $.Deferred(),
-				group = this;
-
-			return $.ajax({
-				type: 'put',
-				url: group.urlRoot + '/' + group.id + '/roles',
-				data: {
-					role_id : roleId,
-					allowed : allowed,
-					page_id: pageId
-				}
-			})
-			.done(function(response) {
-				deferred.resolve(response);
+			return this.roles.create({
+				role_id : roleId,
+				allowed: allowed,
+				page_id: pageId
 			});
 		},
 
 		getRoles: function(pageId) {
-			return $.getJSON(this.urlRoot + '/' + this.id + '/roles?page_id=' + pageId);
+			return this.roles.fetch({data: {page_id: pageId}});
 		},
 
 		removeRole: function(roleId, pageId) {
 			return $.ajax({
 				type: 'delete',
-				url: this.urlRoot + '/' + this.id + '/roles',
+				url: this.roles.url,
 				data: {
 					role_id : roleId,
 					page_id : pageId

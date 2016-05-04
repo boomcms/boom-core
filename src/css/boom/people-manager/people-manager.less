@@ -131,6 +131,39 @@
 				}
 			}
 		}
+
+		&-new {
+			overflow: hidden;
+			margin-top: 2rem;
+
+			input[type=text] {
+				width: calc(~"100% - 4rem");
+				float: left;
+				display: inline-block;
+			}
+
+			button {
+				float: right;
+				background: none;
+				border: 0;
+				padding: 0;
+				width: 4rem;
+				cursor: pointer;
+
+				&:hover, &:focus {
+					.fa {
+						color: @blue;
+					}
+				}
+
+				.fa {
+					color: @red;
+					font-size: 2rem;
+					line-height: 3.2rem;
+					text-align: center;
+				}
+			}
+		}
 	}
 
 	.b-group-roles {

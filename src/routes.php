@@ -66,7 +66,7 @@ Route::group(['middleware' => [
 
                 Route::get('group/{group}/roles', 'Group@roles');
                 Route::delete('group/{group}/roles', 'Group@removeRole');
-                Route::put('group/{group}/roles', 'Group@addRole');
+                Route::post('group/{group}/roles', 'Group@addRole');
                 Route::resource('group', 'Group');
             });
 

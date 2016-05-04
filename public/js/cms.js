@@ -45913,6 +45913,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
 	function BoomCMS() {
 		this.View = {};
+		this.urlRoot = '/boomcms/';
 
 		BoomCMS.prototype.init = function() {
 			if (typeof(top.$) === 'undefined') {
@@ -46004,34 +46005,32 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 	'use strict';
 
 	BoomCMS.Group = Backbone.Model.extend({
-		urlRoot: '/boomcms/group',
+		urlRoot: BoomCMS.urlRoot + 'group',
+
+		initialize: function() {
+			var roles = Backbone.Collection.extend({
+				url: this.url() + '/roles'
+			});
+
+			this.roles = new roles();
+		},
 
 		addRole: function(roleId, allowed, pageId) {
-			var deferred = $.Deferred(),
-				group = this;
-
-			return $.ajax({
-				type: 'put',
-				url: group.urlRoot + '/' + group.id + '/roles',
-				data: {
-					role_id : roleId,
-					allowed : allowed,
-					page_id: pageId
-				}
-			})
-			.done(function(response) {
-				deferred.resolve(response);
+			return this.roles.create({
+				role_id : roleId,
+				allowed: allowed,
+				page_id: pageId
 			});
 		},
 
 		getRoles: function(pageId) {
-			return $.getJSON(this.urlRoot + '/' + this.id + '/roles?page_id=' + pageId);
+			return this.roles.fetch({data: {page_id: pageId}});
 		},
 
 		removeRole: function(roleId, pageId) {
 			return $.ajax({
 				type: 'delete',
-				url: this.urlRoot + '/' + this.id + '/roles',
+				url: this.roles.url,
 				data: {
 					role_id : roleId,
 					page_id : pageId
@@ -51884,7 +51883,7 @@ function Row() {
 			var peopleManager = this;
 
 			this.element
-				.on('click', 'button', function(e) {
+				.on('click', '.b-button', function(e) {
 					e.preventDefault();
 				})
 				.on('click', '#b-people-create', function() {
@@ -72869,23 +72868,27 @@ if (!console) {
 
 			var groups = Backbone.Collection.extend({
 				model: BoomCMS.Group,
-				url: '/boomcms/group'
+				url: '/boomcms/group',
+				comparator: 'name'
 			});
 
 			this.groups = new groups();
 
 			this.listenTo(this.groups, 'add', this.addGroup);
-			this.listenTo(this.groups, 'all', this.render);
+			this.listenTo(this.groups, 'all sort', this.render);	
 			this.groups.fetch();
 		},
 
 		createGroup: function(e) {
 			e.preventDefault();
 
-			this.groups.add({
-				id: null,
-				name: $('#b-groups-new input[type=text]').val()
-			});
+			var $el = $(e.target).find('input[type=text]'),
+				group = this.groups.create({
+					id: null,
+					name: $el.val()
+				});
+
+			$el.val('');
 		},
 
 		addGroup: function(group) {
@@ -72895,6 +72898,10 @@ if (!console) {
 		},
 
 		render: function() {
+			this.$groupList.empty();
+			this.groups.each(this.addGroup, this);
+
+			return this;
 		}
 	});
 })(jQuery, Backbone, window.BoomCMS);

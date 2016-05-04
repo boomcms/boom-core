@@ -60,9 +60,7 @@ class Group extends Controller
 
     public function store(Request $request, Site $site)
     {
-        $group = GroupFacade::create($site, $request->input('name'));
-
-        return $group->getId();
+        return GroupFacade::create($site, $request->input('name'));
     }
 
     public function update(Request $request, GroupModel $group)

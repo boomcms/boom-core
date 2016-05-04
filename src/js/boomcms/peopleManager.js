@@ -9,7 +9,7 @@
 			var peopleManager = this;
 
 			this.element
-				.on('click', 'button', function(e) {
+				.on('click', '.b-button', function(e) {
 					e.preventDefault();
 				})
 				.on('click', '#b-people-create', function() {
