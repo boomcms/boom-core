@@ -102,6 +102,8 @@ module.exports = function(grunt) {
 					'src/js/boomcms/peopleManager.js',
 					'src/js/boomcms/imageEditor.js',
 					'src/js/boomcms/approvals.js',
+					'src/js/boomcms/people-manager/PeopleManager.js',
+					'src/js/boomcms/people-manager/components/*.js',
 					'bower_components/wysihtml/dist/wysihtml-toolbar.js',
 					'src/js/wysihtml5/parser_rules/full.js',
 					'src/js/wysihtml5/parser_rules/inline.js',
@@ -111,8 +113,7 @@ module.exports = function(grunt) {
 					'src/js/wysihtml5/commands/insertSuperscript.js',
 					'src/js/wysihtml5/commands/insertSubscript.js',
 					'src/js/jquery/jqpagination.js',
-					'src/js/boomcms/page/manager.js',
-					'src/js/boomcms/view/*.js',
+					'src/js/boomcms/page/manager.js'
 				],
 				dest: 'public/js/cms.js'
 			}

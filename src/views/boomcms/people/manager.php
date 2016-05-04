@@ -44,9 +44,13 @@
     <div>
         <a class='b-groups-item' href='#'><%= name %></a>
 
-        <a href='#' title="Edit" class="fa fa-edit"></a>
-        <a href='#' title="Delete" class="fa fa-trash-o b-group-delete"></a>
+        <a href='#' class="fa fa-edit edit"></a>
+        <a href='#' class="fa fa-trash-o delete"></a>
     </div>
+</script>
+
+<script type="text/template" id="b-group-edit">
+    <?= view('boomcms::groups.edit') ?>
 </script>
 
 <script type="text/javascript">

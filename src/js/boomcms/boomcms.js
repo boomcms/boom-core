@@ -2,7 +2,6 @@
 	'use strict';
 
 	function BoomCMS() {
-		this.View = {};
 		this.urlRoot = '/boomcms/';
 
 		BoomCMS.prototype.init = function() {
@@ -19,6 +18,10 @@
 
 			$('#b-topbar, body').ui();
 		};
+
+		BoomCMS.prototype.confirm = function(title, message) {
+			return new boomConfirmation(title, message);
+		},
 
 		BoomCMS.prototype.editor = {
 			state: function(state, url) {

@@ -1,15 +1,17 @@
 (function($, Backbone, BoomCMS) {
 	'use strict';
 
-	BoomCMS.View.PeopleManager = Backbone.View.extend({
+	BoomCMS.PeopleManager = Backbone.View.extend({
 		el: $('#b-people-manager'),
 
 		events: {
-			'submit #b-groups-new': 'createGroup'
+			'submit #b-groups-new': 'createGroup',
+			'click .b-groups-list .edit': 'editGroup'
 		},
 
 		initialize: function() {
 			this.$groupList = this.$('#b-groups-list');
+			this.$content = this.$('#b-people-content');
 
 			var groups = Backbone.Collection.extend({
 				model: BoomCMS.Group,
@@ -19,9 +21,16 @@
 
 			this.groups = new groups();
 
+			this.listenTo(this.groups, 'edit create', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
 			this.listenTo(this.groups, 'all sort', this.render);	
 			this.groups.fetch();
+		},
+
+		addGroup: function(group) {
+			var view = new BoomCMS.PeopleManager.GroupListItem({model: group});
+
+			this.$groupList.append(view.render().el);
 		},
 
 		createGroup: function(e) {
@@ -36,10 +45,11 @@
 			$el.val('');
 		},
 
-		addGroup: function(group) {
-			var view = new BoomCMS.View.GroupListItem({model: group});
+		editGroup: function(group) {
+			var view = new BoomCMS.PeopleManager.GroupView({model: group}); 
 
-			this.$groupList.append(view.render().el);
+			this.$content.html(view.render().el);
+			view.$el.groupPermissionsEditor({group: group});
 		},
 
 		render: function() {

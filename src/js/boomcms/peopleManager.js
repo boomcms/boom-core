@@ -22,9 +22,6 @@
 				.on('click', '#b-people-multi-delete', function() {
 					peopleManager.deleteSelectedPeople();
 				})
-				.on('click', '#b-people-group-save', function() {
-					peopleManager.saveOpenGroup();
-				})
 				.on('click', '#b-person-save', function() {
 					peopleManager.currentPersonSave();
 				})
@@ -58,7 +55,7 @@
 
 			this.bind();
 
-			new BoomCMS.View.PeopleManager();
+			new BoomCMS.PeopleManager();
 
 			this.element
 				.find('.b-person-groups')
@@ -175,19 +172,6 @@
 					}
 				}
 			});
-		},
-
-		saveOpenGroup: function() {
-			var $form = this.element.find('#b-group-edit form'),
-				group_id = $form.data('group-id'),
-				group = new BoomCMS.Group({id: group_id}),
-				new_name = $form.find('input[name=name]').val();
-
-			group.save({name: new_name})
-				.done(function() {
-					new boomNotification('Group name updated').show();
-					$('#b-groups-list li[data-group-id='+ group_id + '] .b-groups-item').html(new_name);
-				});
 		},
 
 		togglePersonCheckbox: function($el) {

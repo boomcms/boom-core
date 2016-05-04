@@ -45912,7 +45912,6 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 	'use strict';
 
 	function BoomCMS() {
-		this.View = {};
 		this.urlRoot = '/boomcms/';
 
 		BoomCMS.prototype.init = function() {
@@ -45929,6 +45928,10 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
 			$('#b-topbar, body').ui();
 		};
+
+		BoomCMS.prototype.confirm = function(title, message) {
+			return new boomConfirmation(title, message);
+		},
 
 		BoomCMS.prototype.editor = {
 			state: function(state, url) {
@@ -51896,9 +51899,6 @@ function Row() {
 				.on('click', '#b-people-multi-delete', function() {
 					peopleManager.deleteSelectedPeople();
 				})
-				.on('click', '#b-people-group-save', function() {
-					peopleManager.saveOpenGroup();
-				})
 				.on('click', '#b-person-save', function() {
 					peopleManager.currentPersonSave();
 				})
@@ -51932,7 +51932,7 @@ function Row() {
 
 			this.bind();
 
-			new BoomCMS.View.PeopleManager();
+			new BoomCMS.PeopleManager();
 
 			this.element
 				.find('.b-person-groups')
@@ -52049,19 +52049,6 @@ function Row() {
 					}
 				}
 			});
-		},
-
-		saveOpenGroup: function() {
-			var $form = this.element.find('#b-group-edit form'),
-				group_id = $form.data('group-id'),
-				group = new BoomCMS.Group({id: group_id}),
-				new_name = $form.find('input[name=name]').val();
-
-			group.save({name: new_name})
-				.done(function() {
-					new boomNotification('Group name updated').show();
-					$('#b-groups-list li[data-group-id='+ group_id + '] .b-groups-item').html(new_name);
-				});
 		},
 
 		togglePersonCheckbox: function($el) {
@@ -52380,7 +52367,129 @@ function Row() {
 	function boom_approvals_remove_row($element) {
 		$element.parents('tr').remove();
 	}
-});;/**
+});;(function($, Backbone, BoomCMS) {
+	'use strict';
+
+	BoomCMS.PeopleManager = Backbone.View.extend({
+		el: $('#b-people-manager'),
+
+		events: {
+			'submit #b-groups-new': 'createGroup',
+			'click .b-groups-list .edit': 'editGroup'
+		},
+
+		initialize: function() {
+			this.$groupList = this.$('#b-groups-list');
+			this.$content = this.$('#b-people-content');
+
+			var groups = Backbone.Collection.extend({
+				model: BoomCMS.Group,
+				url: '/boomcms/group',
+				comparator: 'name'
+			});
+
+			this.groups = new groups();
+
+			this.listenTo(this.groups, 'edit create', this.editGroup);
+			this.listenTo(this.groups, 'add', this.addGroup);
+			this.listenTo(this.groups, 'all sort', this.render);	
+			this.groups.fetch();
+		},
+
+		addGroup: function(group) {
+			var view = new BoomCMS.PeopleManager.GroupListItem({model: group});
+
+			this.$groupList.append(view.render().el);
+		},
+
+		createGroup: function(e) {
+			e.preventDefault();
+
+			var $el = $(e.target).find('input[type=text]'),
+				group = this.groups.create({
+					id: null,
+					name: $el.val()
+				});
+
+			$el.val('');
+		},
+
+		editGroup: function(group) {
+			var view = new BoomCMS.PeopleManager.GroupView({model: group}); 
+
+			this.$content.html(view.render().el);
+			view.$el.groupPermissionsEditor({group: group});
+		},
+
+		render: function() {
+			this.$groupList.empty();
+			this.groups.each(this.addGroup, this);
+
+			return this;
+		}
+	});
+})(jQuery, Backbone, window.BoomCMS);;(function($, Backbone, BoomCMS) {
+	'use strict';
+
+	BoomCMS.PeopleManager.GroupListItem = Backbone.View.extend({
+		tagName: 'li',
+		template: _.template($('#b-group-list-item').html()),
+
+		events: {
+			'click .delete': 'deleteGroup',
+			'click .edit': 'editGroup'
+		},
+
+		initialize: function() {
+			this.listenTo(this.model, 'change', this.render);
+			this.listenTo(this.model, 'destroy', this.remove);
+		},
+
+		render: function() {
+			this.$el.html(this.template(this.model.toJSON()));
+
+			return this;
+		},
+
+		deleteGroup: function() {
+			var group = this.model,
+				confirmation = BoomCMS.confirm('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
+
+			confirmation.done(function() {
+				group.destroy();
+			});
+		},
+
+		editGroup: function() {
+			this.model.trigger('edit', this.model);
+		}
+	});
+})(jQuery, Backbone, window.BoomCMS);;(function($, Backbone, BoomCMS) {
+	'use strict';
+
+	BoomCMS.PeopleManager.GroupView = Backbone.View.extend({
+		tagName: 'div',
+		template: _.template($('#b-group-edit').html()),
+
+		events: {
+			'click .b-group-delete': 'deleteGroup'
+		},
+
+		initialize: function() {
+			this.listenTo(this.model, 'change', this.render);
+		},
+
+		render: function() {
+			this.$el.html(this.template(this.model.toJSON()));
+
+			return this;
+		},
+
+		saveGroup: function() {
+			this.model.save();
+		}
+	});
+})(jQuery, Backbone, window.BoomCMS);;/**
  * @license wysihtml v0.5.5
  * https://github.com/Voog/wysihtml
  *
@@ -72822,86 +72931,4 @@ if (!console) {
 				}
 			});
 	}
-});;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.View.GroupListItem = Backbone.View.extend({
-		tagName: 'li',
-		template: _.template($('#b-group-list-item').html()),
-
-		events: {
-			'click .b-group-delete': 'deleteGroup'
-		},
-
-		initialize: function() {
-			this.listenTo(this.model, 'change', this.render);
-			this.listenTo(this.model, 'destroy', this.remove);
-		},
-
-		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
-
-			return this;
-		},
-
-		deleteGroup: function() {
-			var group = this.model,
-				confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
-
-			confirmation.done(function() {
-				group.destroy();
-			});
-		}
-	});
-})(jQuery, Backbone, window.BoomCMS);;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.View.PeopleManager = Backbone.View.extend({
-		el: $('#b-people-manager'),
-
-		events: {
-			'submit #b-groups-new': 'createGroup'
-		},
-
-		initialize: function() {
-			this.$groupList = this.$('#b-groups-list');
-
-			var groups = Backbone.Collection.extend({
-				model: BoomCMS.Group,
-				url: '/boomcms/group',
-				comparator: 'name'
-			});
-
-			this.groups = new groups();
-
-			this.listenTo(this.groups, 'add', this.addGroup);
-			this.listenTo(this.groups, 'all sort', this.render);	
-			this.groups.fetch();
-		},
-
-		createGroup: function(e) {
-			e.preventDefault();
-
-			var $el = $(e.target).find('input[type=text]'),
-				group = this.groups.create({
-					id: null,
-					name: $el.val()
-				});
-
-			$el.val('');
-		},
-
-		addGroup: function(group) {
-			var view = new BoomCMS.View.GroupListItem({model: group});
-
-			this.$groupList.append(view.render().el);
-		},
-
-		render: function() {
-			this.$groupList.empty();
-			this.groups.each(this.addGroup, this);
-
-			return this;
-		}
-	});
-})(jQuery, Backbone, window.BoomCMS);
+});
