@@ -11,6 +11,5 @@ class PeopleManager extends Controller
 
     public function index()
     {
-
     }
 }
