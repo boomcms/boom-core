@@ -188,4 +188,4 @@
 			(this.selectedPeople > 0)? button.prop('disabled', false) : button.prop('disabled', true);
 		}
 	});
-})(jQuery, window.BoomCMS);
+}(jQuery, window.BoomCMS));

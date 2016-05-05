@@ -20,8 +20,8 @@
 		};
 
 		BoomCMS.prototype.confirm = function(title, message) {
-			return new boomConfirmation(title, message);
-		},
+			return new boomConfirmation(title, message).open();
+		};
 
 		BoomCMS.prototype.editor = {
 			state: function(state, url) {
@@ -38,4 +38,4 @@
 	}
 
 	window.BoomCMS = top.BoomCMS = new BoomCMS();
-})(jQuery);
+}(jQuery));

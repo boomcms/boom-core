@@ -35,4 +35,4 @@
 			});
 		}
 	});
-})(window.BoomCMS, Backbone);
+}(window.BoomCMS, Backbone));

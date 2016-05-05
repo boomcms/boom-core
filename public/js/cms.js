@@ -45930,8 +45930,8 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 		};
 
 		BoomCMS.prototype.confirm = function(title, message) {
-			return new boomConfirmation(title, message);
-		},
+			return new boomConfirmation(title, message).open();
+		};
 
 		BoomCMS.prototype.editor = {
 			state: function(state, url) {
@@ -45948,7 +45948,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 	}
 
 	window.BoomCMS = top.BoomCMS = new BoomCMS();
-})(jQuery);;function boomAsset(assetId) {
+}(jQuery));;function boomAsset(assetId) {
 	this.id = assetId;
 	
 	boomAsset.prototype.getId = function() {
@@ -46041,7 +46041,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 			});
 		}
 	});
-})(window.BoomCMS, Backbone);
+}(window.BoomCMS, Backbone));
 ;	/**
 * @class
 * @name boomPage
@@ -52065,7 +52065,7 @@ function Row() {
 			(this.selectedPeople > 0)? button.prop('disabled', false) : button.prop('disabled', true);
 		}
 	});
-})(jQuery, window.BoomCMS);;function boomImageEditor(imageUrl) {
+}(jQuery, window.BoomCMS));;function boomImageEditor(imageUrl) {
 	this.imageUrl = imageUrl;
 	this.imageSelector = '#b-imageeditor-image';
 	this.cropButtonSelector = '#b-imageeditor-crop';
@@ -52428,7 +52428,7 @@ function Row() {
 			return this;
 		}
 	});
-})(jQuery, Backbone, window.BoomCMS);;(function($, Backbone, BoomCMS) {
+}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
 	'use strict';
 
 	BoomCMS.PeopleManager.GroupListItem = Backbone.View.extend({
@@ -52464,7 +52464,7 @@ function Row() {
 			this.model.trigger('edit', this.model);
 		}
 	});
-})(jQuery, Backbone, window.BoomCMS);;(function($, Backbone, BoomCMS) {
+}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
 	'use strict';
 
 	BoomCMS.PeopleManager.GroupView = Backbone.View.extend({
@@ -52492,7 +52492,7 @@ function Row() {
 			this.model.save();
 		}
 	});
-})(jQuery, Backbone, window.BoomCMS);;/**
+}(jQuery, Backbone, window.BoomCMS));;/**
  * @license wysihtml v0.5.5
  * https://github.com/Voog/wysihtml
  *

@@ -26,4 +26,4 @@
 			this.model.save();
 		}
 	});
-})(jQuery, Backbone, window.BoomCMS);
+}(jQuery, Backbone, window.BoomCMS));
