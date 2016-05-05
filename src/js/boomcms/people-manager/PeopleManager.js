@@ -21,7 +21,7 @@
 
 			this.groups = new groups();
 
-			this.listenTo(this.groups, 'edit add', this.editGroup);
+			this.listenTo(this.groups, 'edit created', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
 			this.listenTo(this.groups, 'all sort', this.render);	
 			this.groups.fetch();
@@ -41,6 +41,8 @@
 					id: null,
 					name: $el.val()
 				});
+
+			this.groups.trigger('created', group);
 
 			$el.val('');
 		},
