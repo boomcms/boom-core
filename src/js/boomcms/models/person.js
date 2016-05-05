@@ -1,100 +1,74 @@
-function boomPerson(person_id) {
-	this.id = person_id;
+(function(BoomCMS, Backbone) {
+	'use strict';
 
-	boomPerson.prototype.baseUrl = '/boomcms/person';
+	BoomCMS.Person = Backbone.Model.extend({
+		urlRoot: BoomCMS.urlRoot + 'person',
 
-	boomPerson.prototype.add = function() {
-		var deferred = new $.Deferred(),
-			person = this,
-			dialog;
+		add: function() {
+			var deferred = $.Deferred(),
+				person = this,
+				dialog;
 
-		dialog = new boomDialog({
-			url : this.baseUrl + '/create',
-			width: '600px',
-			title : 'Create new person',
-			closeButton: false,
-			saveButton: true
-		})
-		.done(function() {
-			var data = dialog.contents.find('form').serialize();
+			dialog = new boomDialog({
+				url : this.urlRoot + '/create',
+				width: '600px',
+				title : 'Create new person',
+				closeButton: false,
+				saveButton: true
+			})
+			.done(function() {
+				var data = dialog.contents.find('form').serialize();
 
-			person.addWithData(data)
-				.done(function(response) {
-					deferred.resolve();
-				})
-				.fail(function() {
-					deferred.reject();
-				});
-		});
-
-		return deferred;
-	};
-
-	boomPerson.prototype.addGroup = function(groupId) {
-		return this.addRelationship('group', groupId);
-	};
-
-	boomPerson.prototype.addRelationship = function(type, id) {
-		return $.ajax({
-			url: this.baseUrl + '/' + this.id + '/' + type + '/' + id,
-			type: 'put'
-		});
-	};
-
-	boomPerson.prototype.addSite = function(siteId) {
-		return this.addRelationship('site', siteId);
-	};
-
-	boomPerson.prototype.addWithData = function(data) {
-		return $.post(this.baseUrl, data);
-	};
-
-	boomPerson.prototype.delete = function() {
-		var deferred = new $.Deferred(),
-			person = this,
-			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to delete this person?');
-
-			confirmation
-				.done(function() {
-					person.deleteMultiple([person.id])
-					.done(function() {
+				person.create(data)
+					.done(function(response) {
 						deferred.resolve();
+					})
+					.fail(function() {
+						deferred.reject();
 					});
-				});
+			});
 
-		return deferred;
-	};
+			return deferred;
+		},
 
-	boomPerson.prototype.deleteMultiple = function(peopleIds) {
-		return 	$.ajax({
-			type: 'delete',
-			url: this.baseUrl,
-			data: {
-				'people[]': peopleIds
-			}
-		});
-	};
+		addGroup: function(groupId) {
+			return this.addRelationship('group', groupId);
+		},
 
-	boomPerson.prototype.removeGroup = function(groupId) {
-		return this.removeRelationship('group', groupId);
-	};
+		addRelationship: function(type, id) {
+			return $.ajax({
+				url: this.urlRoot + '/' + this.id + '/' + type + '/' + id,
+				type: 'put'
+			});
+		},
 
-	boomPerson.prototype.removeRelationship = function(type, id) {
-		return $.ajax({
-			type: 'delete',
-			url: this.baseUrl + '/' + this.id + '/' + type + '/' + id
-		});
-	};
+		addSite: function(siteId) {
+			return this.addRelationship('site', siteId);
+		},
 
-	boomPerson.prototype.removeSite = function(siteId) {
-		return this.removeRelationship('site', siteId);
-	};
+		deleteMultiple: function(peopleIds) {
+			return 	$.ajax({
+				type: 'delete',
+				url: this.urlRoot,
+				data: {
+					'people[]': peopleIds
+				}
+			});
+		},
 
-	boomPerson.prototype.save = function(data) {
-		return $.ajax({
-			type: 'put',
-			url: this.baseUrl + '/' + this.id,
-			data: data
-		});
-	};
-}
+		removeGroup: function(groupId) {
+			return this.removeRelationship('group', groupId);
+		},
+
+		removeRelationship: function(type, id) {
+			return $.ajax({
+				type: 'delete',
+				url: this.urlRoot + '/' + this.id + '/' + type + '/' + id
+			});
+		},
+
+		removeSite: function(siteId) {
+			return this.removeRelationship('site', siteId);
+		}
+	});
+}(window.BoomCMS, Backbone));

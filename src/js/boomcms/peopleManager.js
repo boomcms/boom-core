@@ -34,7 +34,7 @@
 		},
 
 		addPerson: function() {
-			var person = new boomPerson();
+			var person = new BoomCMS.Person();
 
 			person.add()
 				.done(function() {
@@ -129,7 +129,7 @@
 
 		deleteSelectedPeople: function() {
 			var selected = this.getSelectedPeople(),
-				person = new boomPerson(selected.join('-')),
+				person = new BoomCMS.Person({id: selected.join('-')}),
 				peopleManager = this,
 				confirmation = new boomConfirmation('Confirm deletion', 'Are you sure you want to remove the selected people?');
 
@@ -147,7 +147,7 @@
 		getCurrentPerson: function() {
 			var personId = this.element.find('.b-person-view').data('person-id');
 
-			return new boomPerson(personId);
+			return new BoomCMS.Person({id: personId});
 		},
 
 		getSelectedPeople: function() {
