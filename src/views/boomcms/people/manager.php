@@ -53,6 +53,73 @@
     <?= view('boomcms::groups.edit') ?>
 </script>
 
+<script type="text/template" id="b-people-table">
+    <table class="b-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Email address</th>
+                <th>Groups</th>
+                <th>Last login</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        </tbody>
+    </table>
+</script>
+
+<script type="text/template" id="b-people-table-item">
+    <td width="10">
+        <input type="checkbox" class="b-people-select" />
+    </td>
+
+    <td>
+        <a href="<%= id %>"><%= name %></a>
+    </td>
+
+    <td>
+        <%= email %>
+    </td>
+
+    <td>
+        <ul class='groups'>
+
+        </ul>
+    </td>
+
+    <td>
+    </td>    
+</script>
+
+<script type="text/template" id="b-person-view">
+    <?= view('boomcms::person.view') ?>
+</script>
+
+<script type="text/template" id="b-person-create-form">
+    <form method="post" action="/boomcms/people/add">
+        <label>
+            Name
+            <input type="text" name="name" />
+        </label>
+
+        <label for="create-email">
+            Email
+            <input type="text" id="create-email" name="email" />
+        </label>
+
+        <label for="create-group">
+            Groups
+
+            <select name="groups[]" multiple>
+
+            </select>
+        </label>
+    </form>
+</script>
+
 <script type="text/javascript">
     window.addEventListener('load', function() {
         $('body').peopleManager();

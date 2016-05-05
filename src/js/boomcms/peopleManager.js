@@ -12,9 +12,6 @@
 				.on('click', '.b-button', function(e) {
 					e.preventDefault();
 				})
-				.on('click', '#b-people-create', function() {
-					peopleManager.addPerson();
-				})
 				.on('change', '#b-items-view-list input[type=checkbox]', function() {
 					peopleManager.togglePersonCheckbox($(this));
 					peopleManager.togglePersonDeleteButton();
@@ -27,25 +24,6 @@
 				})
 				.on('click', '#b-person-delete', function() {
 					peopleManager.currentPersonDelete();
-				})
-				.on('click', '#b-people-all', function() {
-					window.location = peopleManager.homeUrl;
-				});
-		},
-
-		addPerson: function() {
-			var person = new BoomCMS.Person();
-
-			person.add()
-				.done(function() {
-					new boomNotification('Success').show();
-
-					setTimeout(function() {
-						top.location.reload();
-					}, 300);
-				})
-				.fail(function() {
-					new boomNotification('Failure').show();
 				});
 		},
 

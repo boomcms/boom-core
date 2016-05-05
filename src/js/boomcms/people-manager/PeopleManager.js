@@ -2,11 +2,12 @@
 	'use strict';
 
 	BoomCMS.PeopleManager = Backbone.View.extend({
-		el: $('#b-people-manager'),
+		el: $('body'),
 
 		events: {
 			'submit #b-groups-new': 'createGroup',
-			'click .b-groups-list .edit': 'editGroup'
+			'click .b-groups-list .edit': 'editGroup',
+			'click #b-people-create': 'createPerson'
 		},
 
 		initialize: function() {
@@ -45,6 +46,12 @@
 			this.groups.trigger('created', group);
 
 			$el.val('');
+		},
+
+		createPerson: function(e) {
+			e.preventDefault();
+
+			this.$content.html(this.$el.find('#b-person-create-form').html());
 		},
 
 		editGroup: function(group) {

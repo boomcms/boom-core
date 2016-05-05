@@ -51863,9 +51863,6 @@ function Row() {
 				.on('click', '.b-button', function(e) {
 					e.preventDefault();
 				})
-				.on('click', '#b-people-create', function() {
-					peopleManager.addPerson();
-				})
 				.on('change', '#b-items-view-list input[type=checkbox]', function() {
 					peopleManager.togglePersonCheckbox($(this));
 					peopleManager.togglePersonDeleteButton();
@@ -51878,25 +51875,6 @@ function Row() {
 				})
 				.on('click', '#b-person-delete', function() {
 					peopleManager.currentPersonDelete();
-				})
-				.on('click', '#b-people-all', function() {
-					window.location = peopleManager.homeUrl;
-				});
-		},
-
-		addPerson: function() {
-			var person = new BoomCMS.Person();
-
-			person.add()
-				.done(function() {
-					new boomNotification('Success').show();
-
-					setTimeout(function() {
-						top.location.reload();
-					}, 300);
-				})
-				.fail(function() {
-					new boomNotification('Failure').show();
 				});
 		},
 
@@ -52345,11 +52323,12 @@ function Row() {
 	'use strict';
 
 	BoomCMS.PeopleManager = Backbone.View.extend({
-		el: $('#b-people-manager'),
+		el: $('body'),
 
 		events: {
 			'submit #b-groups-new': 'createGroup',
-			'click .b-groups-list .edit': 'editGroup'
+			'click .b-groups-list .edit': 'editGroup',
+			'click #b-people-create': 'createPerson'
 		},
 
 		initialize: function() {
@@ -52390,6 +52369,12 @@ function Row() {
 			$el.val('');
 		},
 
+		createPerson: function(e) {
+			e.preventDefault();
+
+			this.$content.html(this.$el.find('#b-person-create-form').html());
+		},
+
 		editGroup: function(group) {
 			var view = new BoomCMS.PeopleManager.GroupView({model: group}); 
 
@@ -52402,6 +52387,30 @@ function Row() {
 			this.groups.each(this.addGroup, this);
 
 			return this;
+		}
+	});
+}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
+	'use strict';
+
+	BoomCMS.PeopleManager.CreatePerson = Backbone.View.extend({
+		tagName: 'div',
+		template: _.template($('#b-person-create-form').html()),
+
+		events: {
+			'click #b-people-group-save': 'saveGroupName'
+		},
+
+		render: function() {
+			this.$el.html(this.template(this.model.toJSON()));
+
+			return this;
+		},
+
+		saveGroupName: function(e) {
+			e.preventDefault();
+
+			this.model.set('name', this.$el.find('#b-people-group-name').val());
+			this.model.save();
 		}
 	});
 }(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
@@ -52463,6 +52472,25 @@ function Row() {
 			this.model.set('name', this.$el.find('#b-people-group-name').val());
 			this.model.save();
 		}
+	});
+}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
+	'use strict';
+
+	BoomCMS.PeopleManager.PeopleTableItem = Backbone.View.extend({
+		tagName: 'tr',
+		template: _.template($('#b-people-table-item').html()),
+
+		initialize: function() {
+			this.listenTo(this.model, 'change', this.render);
+			this.listenTo(this.model, 'destroy', this.remove);
+		}
+	});
+}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
+	'use strict';
+
+	BoomCMS.PeopleManager.PersonView = Backbone.View.extend({
+		tagName: 'div',
+		template: _.template($('#b-person-view').html())
 	});
 }(jQuery, Backbone, window.BoomCMS));;/**
  * @license wysihtml v0.5.5
