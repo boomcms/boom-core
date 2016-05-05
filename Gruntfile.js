@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 					'src/js/string.js',
 					'bower_components/jgrowl/jquery.jgrowl.js',
 					'bower_components/tablesorter/jquery.tablesorter.js',
-					'bower_components/datetimepicker/build/jquery.datetimepicker.full.js',
+					'bower_components/datetimepicker/jquery.datetimepicker.js',
 					'bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js',
 					'bower_components/jquery-file-upload/js/jquery.fileupload.js',
 					'bower_components/leaflet/dist/leaflet.js',
