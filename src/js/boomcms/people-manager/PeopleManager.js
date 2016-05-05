@@ -21,7 +21,7 @@
 
 			this.groups = new groups();
 
-			this.listenTo(this.groups, 'edit create', this.editGroup);
+			this.listenTo(this.groups, 'edit add', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
 			this.listenTo(this.groups, 'all sort', this.render);	
 			this.groups.fetch();

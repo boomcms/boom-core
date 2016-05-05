@@ -20,7 +20,7 @@
 		};
 
 		BoomCMS.prototype.confirm = function(title, message) {
-			return new boomConfirmation(title, message).open();
+			return new boomConfirmation(title, message);
 		};
 
 		BoomCMS.prototype.editor = {

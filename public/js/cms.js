@@ -45930,7 +45930,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 		};
 
 		BoomCMS.prototype.confirm = function(title, message) {
-			return new boomConfirmation(title, message).open();
+			return new boomConfirmation(title, message);
 		};
 
 		BoomCMS.prototype.editor = {
@@ -52364,7 +52364,7 @@ function Row() {
 
 			this.groups = new groups();
 
-			this.listenTo(this.groups, 'edit create', this.editGroup);
+			this.listenTo(this.groups, 'edit add', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
 			this.listenTo(this.groups, 'all sort', this.render);	
 			this.groups.fetch();
