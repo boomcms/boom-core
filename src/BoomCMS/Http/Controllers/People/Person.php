@@ -53,7 +53,10 @@ class Person extends PeopleManager
         $job = new CreatePerson($request->input('email'), $request->input('name'));
         $person = Bus::dispatch($job);
 
-        $this->addGroups($request, $person);
+		foreach ($request->input('groups') as $groupId) {
+			$person->addGroup(GroupFacade::find($groupId));
+		}
+
         $person->addSite($site);
 
 		return $person;
