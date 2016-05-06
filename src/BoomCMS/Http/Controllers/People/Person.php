@@ -59,7 +59,7 @@ class Person extends PeopleManager
 
         $person->addSite($site);
 
-		return $person;
+        return $person;
     }
 
     public function update(Request $request, PersonModel $person)
