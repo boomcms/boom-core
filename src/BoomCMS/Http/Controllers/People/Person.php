@@ -56,7 +56,7 @@ class Person extends PeopleManager
         $this->addGroups($request, $person);
         $person->addSite($site);
 
-		return $person;
+        return $person;
     }
 
     public function update(Request $request, PersonModel $person)
