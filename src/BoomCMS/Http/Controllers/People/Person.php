@@ -26,13 +26,6 @@ class Person extends PeopleManager
         }
     }
 
-    public function create()
-    {
-        return view("$this->viewPrefix.new", [
-            'groups' => GroupFacade::findAll(),
-        ]);
-    }
-
     public function destroy(Request $request)
     {
         PersonFacade::deleteByIds($request->input('people'));
@@ -62,6 +55,8 @@ class Person extends PeopleManager
 
         $this->addGroups($request, $person);
         $person->addSite($site);
+
+		return $person;
     }
 
     public function update(Request $request, PersonModel $person)

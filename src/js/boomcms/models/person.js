@@ -4,33 +4,6 @@
 	BoomCMS.Person = Backbone.Model.extend({
 		urlRoot: BoomCMS.urlRoot + 'person',
 
-		add: function() {
-			var deferred = $.Deferred(),
-				person = this,
-				dialog;
-
-			dialog = new boomDialog({
-				url : this.urlRoot + '/create',
-				width: '600px',
-				title : 'Create new person',
-				closeButton: false,
-				saveButton: true
-			})
-			.done(function() {
-				var data = dialog.contents.find('form').serialize();
-
-				person.create(data)
-					.done(function(response) {
-						deferred.resolve();
-					})
-					.fail(function() {
-						deferred.reject();
-					});
-			});
-
-			return deferred;
-		},
-
 		addGroup: function(groupId) {
 			return this.addRelationship('group', groupId);
 		},

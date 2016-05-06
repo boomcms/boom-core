@@ -14,13 +14,8 @@
 			this.$groupList = this.$('#b-groups-list');
 			this.$content = this.$('#b-people-content');
 
-			var groups = Backbone.Collection.extend({
-				model: BoomCMS.Group,
-				url: '/boomcms/group',
-				comparator: 'name'
-			});
-
-			this.groups = new groups();
+			this.groups = new BoomCMS.Collections.Groups();
+			this.people = new BoomCMS.Collections.People();
 
 			this.listenTo(this.groups, 'edit created', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
@@ -51,7 +46,12 @@
 		createPerson: function(e) {
 			e.preventDefault();
 
-			this.$content.html(this.$el.find('#b-person-create-form').html());
+			var view = new BoomCMS.PeopleManager.CreatePerson({
+				groups: this.groups.models,
+				people: this.people,
+			});
+
+			this.$content.html(view.render().el);
 		},
 
 		editGroup: function(group) {

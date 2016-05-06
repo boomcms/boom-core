@@ -99,25 +99,34 @@
 </script>
 
 <script type="text/template" id="b-person-create-form">
-    <form method="post" action="/boomcms/people/add">
-        <label>
-            Name
-            <input type="text" name="name" />
-        </label>
+	<section>
+		<h2><?= trans('boomcms::people.create-heading') ?></h2>
 
-        <label for="create-email">
-            Email
-            <input type="text" id="create-email" name="email" />
-        </label>
+	    <form method="post" action="/boomcms/people/add" class="new-person">
+			<label>
+				Name
+				<input type="text" required name="name" />
+			</label>
 
-        <label for="create-group">
-            Groups
+			<label>
+				Email
+				<input type="email" required id="create-email" name="email" />
+			</label>
 
-            <select name="groups[]" multiple>
+			<label class="groups">
+				Groups
 
-            </select>
-        </label>
-    </form>
+				<select name="groups[]" multiple>
+					<% for (var i in groups) { %>
+						<option value="<%= groups[i].id %>"><%= groups[i].get('name') %></option>
+					<% } %>
+
+				</select>
+			</label>
+
+			<?= $button('save', 'save', ['class' => 'b-button-withtext']) ?>
+		</form>
+	</section>
 </script>
 
 <script type="text/javascript">

@@ -3,6 +3,7 @@
 
 	function BoomCMS() {
 		this.urlRoot = '/boomcms/';
+		this.Collections = {};
 
 		BoomCMS.prototype.init = function() {
 			if (typeof(top.$) === 'undefined') {

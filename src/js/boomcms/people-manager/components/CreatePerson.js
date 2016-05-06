@@ -5,21 +5,27 @@
 		tagName: 'div',
 		template: _.template($('#b-person-create-form').html()),
 
+		initialize: function(options) {
+			this.groups = options.groups;
+			this.people = options.people;
+		},
+
 		events: {
-			'click #b-people-group-save': 'saveGroupName'
+			'click button': 'createPerson'
+		},
+
+		createPerson: function(e) {
+			e.preventDefault();
+
+			this.people.create(this.$('form').serializeJSON());
 		},
 
 		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
+			this.$el.html(this.template({groups: this.groups}));
+
+			this.$('select').chosen();
 
 			return this;
-		},
-
-		saveGroupName: function(e) {
-			e.preventDefault();
-
-			this.model.set('name', this.$el.find('#b-people-group-name').val());
-			this.model.save();
 		}
 	});
 }(jQuery, Backbone, window.BoomCMS));
