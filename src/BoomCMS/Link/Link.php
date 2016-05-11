@@ -37,8 +37,6 @@ abstract class Link
             new Internal($link) : new External($link);
     }
 
-    abstract public function getTitle();
-
     /**
      * Returns the hostname for the link target.
      *
@@ -78,6 +76,8 @@ abstract class Link
 
         return $this->query;
     }
+
+    abstract public function getTitle();
 
     public function isExternal()
     {
