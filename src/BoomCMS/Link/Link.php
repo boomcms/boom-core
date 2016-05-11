@@ -7,7 +7,7 @@ use BoomCMS\Support\Helpers\URL;
 abstract class Link
 {
     /**
-     * Array of query string parameters in the link
+     * Array of query string parameters in the link.
      *
      * @var null|mixed
      */
@@ -40,7 +40,7 @@ abstract class Link
     abstract public function getTitle();
 
     /**
-     * Returns the hostname for the link target
+     * Returns the hostname for the link target.
      *
      * @return string
      */
@@ -50,7 +50,7 @@ abstract class Link
     }
 
     /**
-     * Returns a query string parameter for a given key
+     * Returns a query string parameter for a given key.
      *
      * @param string $key
      *
