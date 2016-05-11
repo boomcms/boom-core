@@ -48,7 +48,7 @@ abstract class Link
     }
 
     /**
-     * Returns the path portion of the link target
+     * Returns the path portion of the link target.
      *
      * @return string
      */
