@@ -88,6 +88,19 @@ class BaseLinkTest extends AbstractTestCase
         }
     }
 
+    public function testGetPath()
+    {
+        $url = "http://$this->baseUrl/test";
+        $link = m::mock(Link\Link::class)->makePartial();
+
+        $link
+            ->shouldReceive('url')
+            ->once()
+            ->andReturn($url);
+
+        $this->assertEquals('/test', $link->getPath());
+    }
+
     public function testGetParameterReturnsValueOrNull()
     {
         $query = '?a=b&c=d';

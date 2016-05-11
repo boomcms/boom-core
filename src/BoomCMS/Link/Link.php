@@ -48,6 +48,16 @@ abstract class Link
     }
 
     /**
+     * Returns the path portion of the link target
+     *
+     * @return string
+     */
+    public function getPath()
+    {
+        return parse_url($this->url(), PHP_URL_PATH);
+    }
+
+    /**
      * Returns a query string parameter for a given key.
      *
      * @param string $key
