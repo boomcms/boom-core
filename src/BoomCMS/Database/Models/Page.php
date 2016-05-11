@@ -184,7 +184,7 @@ class Page extends Model implements PageInterface
      */
     public function canBeDeleted()
     {
-        return $this->{self::ATTR_DISABLE_DELETE};
+        return $this->{self::ATTR_DISABLE_DELETE} === false;
     }
 
     public function children()
