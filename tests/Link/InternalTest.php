@@ -2,10 +2,11 @@
 
 namespace BoomCMS\Tests\Link;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Link\Internal as Link;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Tests\AbstractTestCase;
+use Mockery as m;
 
 class InternalTest extends AbstractTestCase
 {
@@ -35,10 +36,10 @@ class InternalTest extends AbstractTestCase
             '/test#test?test=test',
         ];
 
-        $page = $this->getMock(Page::class, ['url']);
-        $page->expects($this->any())
-            ->method('url')
-            ->will($this->returnValue("http://{$this->baseUrl}/test"));
+        $page = m::mock(Page::class.'[url]');
+        $page
+            ->shouldReceive('url')
+            ->andReturn("http://{$this->baseUrl}/test");
 
         PageFacade::shouldReceive('findByUri')->with('test')->andReturn($page);
 
@@ -47,6 +48,8 @@ class InternalTest extends AbstractTestCase
 
             $this->assertEquals("http://{$this->baseUrl}{$l}", $link->url());
         }
+
+        return $page;
     }
 
     public function testGetTitleReturnsPageTitle()
@@ -71,5 +74,17 @@ class InternalTest extends AbstractTestCase
         $link = new Link($pageId);
 
         $this->assertEquals($pageId, $link->url());
+    }
+
+    /**
+     * @depends testUrlReturnsCorrectUrl
+     */
+    public function testGetHostnameReturnsTheHostnameOfTheCurrentSite($page)
+    {
+        PageFacade::shouldReceive('findByUri')->with('test')->andReturn($page);
+
+        $link = new Link('/test');
+
+        $this->assertEquals($this->baseUrl, $link->getHostname());
     }
 }
