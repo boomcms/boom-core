@@ -33,6 +33,15 @@ $.extend({
 				}
 			});
 
+			// Used in the login / password reset forms. To be extended to other forms.
+			$('.input input')
+				.on('keypress', function() {
+					var $this = $(this),
+						className = 'has-content';
+
+					$this.val() ? $this.addClass(className) : $this.removeClass(className);
+				}).keypress();
+
 			$('#b-topbar, body').ui();
 		},
 
