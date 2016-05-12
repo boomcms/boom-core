@@ -4,6 +4,7 @@ namespace BoomCMS\Repositories;
 
 use BoomCMS\Auth\Hasher;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
+use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
 use BoomCMS\Database\Models\Person as Model;
 use BoomCMS\Exceptions\DuplicateEmailException;
@@ -64,6 +65,11 @@ class Person implements PersonRepositoryInterface, UserProvider
     public function findAll()
     {
         return $this->model->all();
+    }
+
+    public function findBySite(SiteInterface $site)
+    {
+        return $this->model->whereSite($site)->get();
     }
 
     /**

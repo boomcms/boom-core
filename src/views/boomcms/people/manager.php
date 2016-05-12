@@ -42,9 +42,9 @@
 
 <script type="text/template" id="b-group-list-item">
     <div>
-        <a class='b-groups-item' href='#'><%= name %></a>
+        <a class='b-groups-item' href='#group/<%= id %>'><%= name %></a>
 
-        <a href='#' class="fa fa-edit edit"></a>
+        <a href='#group/<%= id %>/edit' class="fa fa-edit edit"></a>
         <a href='#' class="fa fa-trash-o delete"></a>
     </div>
 </script>

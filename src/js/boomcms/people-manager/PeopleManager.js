@@ -6,27 +6,41 @@
 
 		events: {
 			'submit #b-groups-new': 'createGroup',
-			'click .b-groups-list .edit': 'editGroup',
 			'click #b-people-create': 'createPerson'
 		},
 
 		initialize: function() {
 			this.$groupList = this.$('#b-groups-list');
+			this.$peopleTable = this.$('#b-people-table table');
 			this.$content = this.$('#b-people-content');
+			this.router = new BoomCMS.PeopleManager.Router();
 
 			this.groups = new BoomCMS.Collections.Groups();
 			this.people = new BoomCMS.Collections.People();
 
 			this.listenTo(this.groups, 'edit created', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
-			this.listenTo(this.groups, 'all sort', this.render);	
+			this.listenTo(this.groups, 'all sort', this.renderGroups);
+			this.listenTo(this.people, 'all sort', this.renderPeople);
+
 			this.groups.fetch();
+			this.people.fetch();
+
+			this.showAllPeople();
+
+			Backbone.history.start();
 		},
 
 		addGroup: function(group) {
 			var view = new BoomCMS.PeopleManager.GroupListItem({model: group});
 
 			this.$groupList.append(view.render().el);
+		},
+
+		addPersonToTable: function(person) {
+			var view = new BoomCMS.PeopleManager.PeopleTableItem({model: person});
+
+			this.$peopleTable.find('tbody').append(view.render().el);
 		},
 
 		createGroup: function(e) {
@@ -61,11 +75,22 @@
 			view.$el.groupPermissionsEditor({group: group});
 		},
 
-		render: function() {
+		renderGroups: function() {
 			this.$groupList.empty();
 			this.groups.each(this.addGroup, this);
 
 			return this;
+		},
+
+		renderPeople: function() {
+			this.$peopleTable.find('tbody').empty();
+			this.people.each(this.addPersonToTable, this);
+
+			return this;
+		},
+
+		showAllPeople: function() {
+			this.$content.html(this.$('#b-people-table').html());
 		}
 	});
 }(jQuery, Backbone, window.BoomCMS));

@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Jobs\CreatePerson;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\Site as SiteFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
@@ -29,6 +30,11 @@ class Person extends PeopleManager
     public function destroy(Request $request)
     {
         PersonFacade::deleteByIds($request->input('people'));
+    }
+
+    public function index()
+    {
+        return PersonFacade::findBySite(Router::getActiveSite());
     }
 
     public function removeSite(PersonModel $person, Site $site)

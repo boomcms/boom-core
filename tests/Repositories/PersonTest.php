@@ -64,6 +64,26 @@ class PersonTest extends AbstractTestCase
         $this->assertEquals([], $this->repository->findByGroupId(1));
     }
 
+    public function testFindBySite()
+    {
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+        $people = [new Person(), new Person()];
+
+        $this->model
+            ->shouldReceive('whereSite')
+            ->once()
+            ->with($site)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn($people);
+
+        $this->assertEquals($people, $this->repository->findBySite($site));
+    }
+
     public function testRetrieveByCredentials()
     {
         $query = m::mock(Builder::class);
