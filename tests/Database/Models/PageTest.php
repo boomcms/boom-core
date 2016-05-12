@@ -196,15 +196,6 @@ class PageTest extends AbstractModelTestCase
         $this->assertInternalType('integer', $page->getGrandchildTemplateId());
     }
 
-    public function testHasFeatureImage()
-    {
-        $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
-        $this->assertTrue($page->hasFeatureImage());
-
-        $page = new Page();
-        $this->assertFalse($page->hasFeatureImage());
-    }
-
     public function testGetFeatureImageId()
     {
         $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
@@ -247,41 +238,6 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals('description', $page->getDescription());
     }
 
-    public function testIsDeleted()
-    {
-        $values = [
-            0      => false,
-            null   => false,
-            time() => true,
-        ];
-
-        foreach ($values as $deletedAt => $isDeleted) {
-            $page = new Page(['deleted_at' => $deletedAt]);
-
-            $this->assertEquals($isDeleted, $page->isDeleted());
-        }
-    }
-
-    public function testIsVisibleWithVisibleToInFuture()
-    {
-        $values = [
-            0            => false,
-            null         => false,
-            1            => true,
-            time()       => true,
-            time() + 100 => false,
-        ];
-
-        foreach ($values as $visibleFrom => $isVisible) {
-            $page = new Page([
-                Page::ATTR_VISIBLE_FROM => $visibleFrom,
-                Page::ATTR_VISIBLE_TO   => time() + 100,
-            ]);
-
-            $this->assertEquals($isVisible, $page->isVisible(), $visibleFrom);
-        }
-    }
-
     public function testGetSite()
     {
         $site = new Site();
@@ -320,6 +276,50 @@ class PageTest extends AbstractModelTestCase
 
         $this->assertTrue($visibleFrom instanceof DateTime);
         $this->assertEquals($time->getTimestamp(), $visibleFrom->getTimestamp());
+    }
+
+    public function testHasFeatureImage()
+    {
+        $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
+        $this->assertTrue($page->hasFeatureImage());
+
+        $page = new Page();
+        $this->assertFalse($page->hasFeatureImage());
+    }
+
+    public function testIsDeleted()
+    {
+        $values = [
+            0      => false,
+            null   => false,
+            time() => true,
+        ];
+
+        foreach ($values as $deletedAt => $isDeleted) {
+            $page = new Page(['deleted_at' => $deletedAt]);
+
+            $this->assertEquals($isDeleted, $page->isDeleted());
+        }
+    }
+
+    public function testIsVisibleWithVisibleToInFuture()
+    {
+        $values = [
+            0            => false,
+            null         => false,
+            1            => true,
+            time()       => true,
+            time() + 100 => false,
+        ];
+
+        foreach ($values as $visibleFrom => $isVisible) {
+            $page = new Page([
+                Page::ATTR_VISIBLE_FROM => $visibleFrom,
+                Page::ATTR_VISIBLE_TO   => time() + 100,
+            ]);
+
+            $this->assertEquals($isVisible, $page->isVisible(), $visibleFrom);
+        }
     }
 
     public function testScopeIsVisibleAtTime()
