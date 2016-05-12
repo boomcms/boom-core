@@ -87,7 +87,7 @@
     </td>
 
     <td>
-        <%= last_login %>
+        <time datetime='<%= last_login %>'></time>
     </td>    
 </script>
 

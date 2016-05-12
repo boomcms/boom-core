@@ -49,6 +49,7 @@ module.exports = function(grunt) {
 					'bower_components/chosen/chosen.jquery.js',
 					'bower_components/underscore/underscore.js',
 					'bower_components/backbone/backbone.js',
+					'bower_components/jquery-timeago/jquery.timeago.js',
 					'src/js/boomcms/boomcms.js',
 					'src/js/boomcms/models/*.js',
 					'src/js/boomcms/collections/*.js',
