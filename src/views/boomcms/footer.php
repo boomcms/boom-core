@@ -1,10 +1,10 @@
-	<script type="text/javascript">
-		//<![CDATA[
-		(function ($) {
-			$.boom.init();
+    <script type="text/javascript">
+        //<![CDATA[
+        (function ($) {
+            $.boom.init();
             $('body').ui();
-		})(jQuery);
-		//]]>
-	</script>
+        })(jQuery);
+        //]]>
+    </script>
 </body>
 </html>

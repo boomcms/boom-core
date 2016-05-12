@@ -1,6 +1,6 @@
 <head>
     <title><?= $title ?></title>
-    
+
     <meta name="robots" content="noindex, nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -15,7 +15,7 @@
             ajax: true,
             startOnPageLoad: false,
             restartOnRequestAfter: 100
-        }; 
+        };
     </script>
 
     <?= $boomJS ?>
