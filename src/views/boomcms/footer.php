@@ -1,12 +1,12 @@
     <?= $boomJS ?>
 
     <script type="text/javascript">
-		//<![CDATA[
-		(function ($) {
-			window.BoomCMS.init();
+        //<![CDATA[
+        (function ($) {
+            $.boom.init();
             $('body').ui();
-		})(jQuery);
-		//]]>
-	</script>
+        })(jQuery);
+        //]]>
+    </script>
 </body>
 </html>
