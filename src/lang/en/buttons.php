@@ -33,6 +33,15 @@ return [
     'select-asset'          => 'Select an asset',
     'set-location-postcode' => 'Set location from postcode',
     'set-location-latlng'   => 'Set location from Lat / Long',
+    'toolbar'               => [
+        'add' => 'Add a new page as a child of the current page',
+        'delete' => 'Delete this page',
+        'live' => 'View the page as it appears on the live site',
+        'invisible' => 'This page is hidden regardless of whether there is a published version',
+        'nodelete'  => 'Page delete has been disabled for this page',
+        'settings' => 'Page settings which apply whichever version is published',
+        'visible' => 'This page is visible. The content displayed will depend on which version of the page is published',
+    ],
     'upload'                => 'Upload files',
     'view-edit'             => 'View / edit',
 ];
