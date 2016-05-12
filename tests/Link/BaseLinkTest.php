@@ -71,4 +71,44 @@ class BaseLinkTest extends AbstractTestCase
             $this->assertInstanceOf(Link\External::class, Link\Link::factory($link), $link);
         }
     }
+
+    public function testGetQueryReturnsArray()
+    {
+        $queries = [
+            ''         => [],
+            '?'        => [],
+            '?a=b&c=d' => ['a' => 'b', 'c' => 'd'],
+        ];
+
+        foreach ($queries as $string => $array) {
+            $url = "$this->baseUrl/test$string";
+            $link = m::mock(Link\Link::class, [$url])->makePartial();
+
+            $this->assertEquals($array, $link->getQuery());
+        }
+    }
+
+    public function testGetPath()
+    {
+        $url = "http://$this->baseUrl/test";
+        $link = m::mock(Link\Link::class)->makePartial();
+
+        $link
+            ->shouldReceive('url')
+            ->once()
+            ->andReturn($url);
+
+        $this->assertEquals('/test', $link->getPath());
+    }
+
+    public function testGetParameterReturnsValueOrNull()
+    {
+        $query = '?a=b&c=d';
+
+        $url = "$this->baseUrl/test$query";
+        $link = m::mock(Link\Link::class, [$url])->makePartial();
+
+        $this->assertNull($link->getParameter('invalid'));
+        $this->assertEquals('b', $link->getParameter('a'));
+    }
 }

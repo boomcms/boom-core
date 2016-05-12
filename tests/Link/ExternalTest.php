@@ -36,4 +36,12 @@ class ExternalTest extends AbstractTestCase
             $this->assertEquals($l, $link->getTitle());
         }
     }
+
+    public function testGetHostnameReturnsTheHostname()
+    {
+        $url = 'http://www.boomcms.net/hello';
+        $link = new Link($url);
+
+        $this->assertEquals(parse_url($url, PHP_URL_HOST), $link->getHostname());
+    }
 }

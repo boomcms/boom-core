@@ -16,6 +16,21 @@ class PageTest extends AbstractModelTestCase
 {
     protected $model = Page::class;
 
+    public function testCanBeDeleted()
+    {
+        $values = [
+            true  => false,
+            false => true,
+            null  => true,
+        ];
+
+        foreach ($values as $disableDelete => $canBeDeleted) {
+            $page = new Page([Page::ATTR_DISABLE_DELETE => $disableDelete]);
+
+            $this->assertEquals($canBeDeleted, $page->canBeDeleted());
+        }
+    }
+
     public function testGetAddPageBehaviour()
     {
         $page = new Page([Page::ATTR_ADD_BEHAVIOUR => Page::ADD_PAGE_CHILD]);
