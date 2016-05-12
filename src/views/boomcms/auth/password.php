@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-gb" class="boom">
-	<head>
-		<title>BoomCMS | <?= trans('boomcms::auth.reset.title') ?></title>
-		<meta name="robots" content="noindex, nofollow" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    </head>
+    <?= view('boomcms::head', ['title' => trans('boomcms::auth.reset.title')]) ?>
 
 	<body id='b-login'>
 		<div>
@@ -43,5 +37,5 @@
                 </form>
             <?php endif ?>
 		</div>
-	</body>
-</html>
+
+        <?= view('boomcms::footer') ?>

@@ -83,7 +83,8 @@ body#b-login {
 		.input {
 			position: relative;
 			display: block;
-			padding-top: 2rem;
+			border: 1px solid @white;
+			border-radius: 2px;
 
 			+ .input {
 				margin-top: 2.5rem;
@@ -91,20 +92,39 @@ body#b-login {
 
 			.fa {
 				position: absolute;
-				top: 50%;
-				left: 0rem;
-				transform: translateY(-50%);
-				margin-top: 1rem;
-				transition: all 0.5s;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				width: 4rem;
+				background: @white;
+				color: @red;
+				text-align: center;
+				line-height: 6rem;
+				z-index: 3;
 			}
 
 			input[type=email],
 			input[type=password] {
 				background: transparent;
 				border: 0;
-				border-bottom: 2px solid @red;
-				padding: 1rem 1.5rem 1rem 2rem;
-				height: auto;
+				padding: 1rem 1.5rem 0 5rem;
+				height: 6rem;
+				opacity: 0;
+				position: relative;
+				z-index: 2;
+
+				&.has-content, &:-webkit-autofill, &:focus {
+					padding-top: 2rem;
+					opacity: 1;
+
+					+ label {
+						.text-small;
+						transform: none;
+						top: 1rem;
+						transition: all 0.5s;
+						z-index: 3;
+					}
+				}
 
 				&:-webkit-autofill {
 					-webkit-box-shadow: 0 0 0px 1000px @lightest-grey inset;
@@ -113,20 +133,18 @@ body#b-login {
 				&:focus {
 					background: transparent;
 					outline: 0;
-
-					+ label + .fa {
-						color: @red;
-						transition: all 0.5s;
-					}
 				}
 
 				+ label {
 					position: absolute;
 					left: 0;
-					top: 0;
+					top: 50%;
+					transform: translateY(-50%);
 					width: 100%;
 					margin: 0;
 					font-weight: bold;
+					padding-left: 5rem;
+					transition: all 0.5s;
 				}
 			}
 		}

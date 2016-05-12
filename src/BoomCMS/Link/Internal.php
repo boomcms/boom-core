@@ -8,11 +8,6 @@ use BoomCMS\Support\Helpers\URL;
 class Internal extends Link
 {
     /**
-     * @var string
-     */
-    protected $link;
-
-    /**
      * @var Page\Page
      */
     protected $page;
@@ -33,7 +28,7 @@ class Internal extends Link
 
     public function __construct($link)
     {
-        $this->link = $link;
+        parent::__construct($link);
 
         if (is_numeric($link)) {
             $this->page = Page::find($link);
