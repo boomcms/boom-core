@@ -51568,12 +51568,13 @@ function Row() {
 
 		events: {
 			'submit #b-groups-new': 'createGroup',
-			'click #b-people-create': 'createPerson'
+			'click #b-people-create': 'createPerson',
+			'click #b-people-all': 'showAllPeople',
 		},
 
 		initialize: function() {
 			this.$groupList = this.$('#b-groups-list');
-			this.$peopleTable = this.$('#b-people-table table');
+			this.$peopleTable = this.$('#b-people-table');
 			this.$content = this.$('#b-people-content');
 			this.router = new BoomCMS.PeopleManager.Router();
 
@@ -51652,7 +51653,9 @@ function Row() {
 		},
 
 		showAllPeople: function() {
-			this.$content.html(this.$('#b-people-table').html());
+			this.$content.html(this.$peopleTable);
+
+			return this;
 		}
 	});
 }(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {

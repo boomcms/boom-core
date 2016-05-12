@@ -35,7 +35,21 @@
         </div>
 
         <div id='b-people-content'>
-            <?= $content ?>
+			<table id="b-people-table" class="b-table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>Email address</th>
+						<th>Groups</th>
+						<th>Last login</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+				</tbody>
+			</table>
         </div>
     </div>
 </main>
@@ -51,24 +65,6 @@
 
 <script type="text/template" id="b-group-edit">
     <?= view('boomcms::groups.edit') ?>
-</script>
-
-<script type="text/template" id="b-people-table">
-    <table class="b-table">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Email address</th>
-                <th>Groups</th>
-                <th>Last login</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-        </tbody>
-    </table>
 </script>
 
 <script type="text/template" id="b-people-table-item">
@@ -91,6 +87,7 @@
     </td>
 
     <td>
+        <%= last_login %>
     </td>    
 </script>
 
