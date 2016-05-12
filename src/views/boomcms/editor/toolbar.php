@@ -37,6 +37,13 @@
 		<div class="b-page-container">
 			<?= $button('view-live', 'toolbar.live', ['id' => 'b-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled']) ?>
 		</div>
+
+        <div class="b-page-container">
+            <?= $button('question', 'toolbar.help', [
+                'id'         => 'b-gethelp',
+                'data-email' => Settings::get('site.support.email')
+            ]) ?>
+        </div>
 	</div>
 
     <div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-text">

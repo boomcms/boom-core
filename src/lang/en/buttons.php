@@ -36,6 +36,7 @@ return [
     'toolbar'               => [
         'add' => 'Add a new page as a child of the current page',
         'delete' => 'Delete this page',
+        'help'  => 'Send a support request',
         'live' => 'View the page as it appears on the live site',
         'invisible' => 'This page is hidden regardless of whether there is a published version',
         'nodelete'  => 'Page delete has been disabled for this page',

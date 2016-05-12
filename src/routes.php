@@ -28,6 +28,7 @@ Route::group(['middleware' => [
             Route::controller('approvals', 'Approvals');
             Route::controller('settings', 'Settings');
             Route::controller('search', 'Search');
+            Route::controller('support', 'Support');
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 

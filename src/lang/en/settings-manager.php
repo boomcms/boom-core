@@ -17,5 +17,11 @@ return [
         'name' => [
             '_label' => 'Site name',
         ],
+        'support' => [
+            'email' => [
+                '_label' => 'Site support email',
+                '_info'  => 'Email address that support queries will be sent to',
+            ],
+        ],
     ],
 ];

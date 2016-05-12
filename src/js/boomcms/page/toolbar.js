@@ -52,6 +52,9 @@ $.widget( 'boom.pageToolbar', {
 				// But without this the iframe doesn't minimise and the window can't scroll.
 
 				$(top.window).trigger('boom:dialog:close');
+			})
+			.on('click', '#b-gethelp', function() {
+				self.supportRequest();
 			});
 
 		this.buttonBar = this.element.contents().find('#b-topbar');
@@ -246,6 +249,35 @@ $.widget( 'boom.pageToolbar', {
 			});
 
 		this.showSettings(section);
+	},
+
+	supportRequest: function() {
+		var url = '/boomcms/support', dialog;
+
+		dialog = new boomDialog({
+			url: url,
+			title: 'Submit support request',
+			width: 600,
+			onLoad: function() {
+				dialog.contents
+					.find('input[name=browser]')
+					.val(navigator.platform + ' - ' + navigator.userAgent)
+					.end()
+					.find('input[name=viewport-width]')
+					.val(document.documentElement.clientWidth)
+					.end()
+					.find('input[name=viewport-height]')
+					.val(document.documentElement.clientHeight)
+					.end()
+					.find('input[name=location]')
+					.val(top.location.href);
+			}
+		})
+		.done(function() {
+			$.post(url, dialog.contents.find('form').serialize());
+
+			new boomNotification('Your message has been sent').show();
+		});
 	},
 
 	_toggle_view_live_button: function() {
