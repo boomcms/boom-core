@@ -2,7 +2,7 @@
 
 <div style="text-align: left">
     <h2>Hello,</h2>
-    <p>A support request has been submitted via the BoomCMS toolbar. The details are below:</p>
+    <p><?= trans('boomcms::support.intro') ?></p>
 
     <h3 style="font-size: 14px; margin: 0"><?= trans('boomcms::support.form.subject') ?></h3>
     <p style="margin: 5px 0 10px 0"><?= $request->input('subject') ?></p>
