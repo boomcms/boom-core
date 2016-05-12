@@ -27,7 +27,7 @@ class Support extends Controller
         Mail::send('boomcms::email.support', [
             'request' => $request,
             'person'  => $person,
-        ], function(Message $message) use($email, $person, $request) {
+        ], function (Message $message) use ($email, $person,$request) {
             $message
                 ->to($email)
                 ->from($email, SettingsFacade::get('site.name'))
