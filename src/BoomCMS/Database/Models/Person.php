@@ -189,10 +189,10 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
             ->where('person_site.site_id', '=', $site->getId());
     }
 
-	protected function serializeDate(DateTime $date)
-	{
-		return $date->format('c');
-	}
+    protected function serializeDate(DateTime $date)
+    {
+        return $date->format('c');
+    }
 
     /**
      * @param string $email
