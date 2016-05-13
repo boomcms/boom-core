@@ -142,6 +142,18 @@ class PersonTest extends AbstractModelTestCase
         $this->assertTrue($person->hasSite($site));
     }
 
+    public function testImportantFieldsAreHiddenFromArray()
+    {
+        $hidden = [
+            Person::ATTR_PASSWORD       => '',
+            Person::ATTR_REMEMBER_TOKEN => '',
+        ];
+
+        $person = new Person($hidden);
+
+        $this->assertEquals([], $person->toArray());
+    }
+
     public function testIsSuperuserDefaultFalse()
     {
         $person = new Person([]);

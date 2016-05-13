@@ -113,9 +113,10 @@ body#b-login {
 				position: relative;
 				z-index: 2;
 
-				&.has-content, &:-webkit-autofill, &:focus {
+				&.has-content, &:focus {
 					padding-top: 2rem;
 					opacity: 1;
+					outline: 0;
 
 					+ label {
 						.text-small;
@@ -128,11 +129,6 @@ body#b-login {
 
 				&:-webkit-autofill {
 					-webkit-box-shadow: 0 0 0px 1000px @lightest-grey inset;
-				}
-
-				&:focus {
-					background: transparent;
-					outline: 0;
 				}
 
 				+ label {

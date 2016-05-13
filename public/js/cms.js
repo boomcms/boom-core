@@ -41931,12 +41931,12 @@ $.extend({
 
 			// Used in the login / password reset forms. To be extended to other forms.
 			$('.input input')
-				.on('keypress', function() {
+				.on('input paste change keyup', function() {
 					var $this = $(this),
 						className = 'has-content';
 
 					$this.val() ? $this.addClass(className) : $this.removeClass(className);
-				}).keypress();
+				}).trigger('input');
 
 			$('#b-topbar, body').ui();
 		},

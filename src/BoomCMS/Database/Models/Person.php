@@ -50,6 +50,11 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         self::ATTR_SUPERUSER  => 'boolean',
     ];
 
+    protected $hidden = [
+        self::ATTR_PASSWORD,
+        self::ATTR_REMEMBER_TOKEN,
+    ];
+
     public $timestamps = false;
 
     /**
