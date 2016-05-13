@@ -53,7 +53,6 @@ Route::group(['middleware' => [
 
             Route::group([
                 'namespace'  => 'People',
-                'middleware' => [Middleware\PeopleManager::class],
             ], function () {
                 Route::get('people-manager', [
                     'uses' => 'PeopleManager@index',
