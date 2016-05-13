@@ -30,13 +30,15 @@ class PersonTest extends AbstractTestCase
         $this->repository = m::mock(PersonRepository::class, [$this->model])->makePartial();
     }
 
-    public function testDeleteByIds()
+    public function testDelete()
     {
-        $this->model->shouldReceive('destroy')->once()->with([1, 2]);
+        $model = m::mock(Person::class);
+        $model->shouldReceive('delete')->once();
 
-        $this->assertEquals($this->repository, $this->repository->deleteByIds([1, 2]));
+        $repository = new PersonRepository($model);
+
+        $this->assertEquals($repository, $repository->delete($model));
     }
-
     /**
      * @expectedException BoomCMS\Exceptions\DuplicateEmailException
      */

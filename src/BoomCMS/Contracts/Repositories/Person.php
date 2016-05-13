@@ -14,11 +14,11 @@ interface Person
     public function create(array $credentials);
 
     /**
-     * @param array $ids
+     * @param PersonInterface $person
      *
      * @return $this
      */
-    public function deleteByIds(array $ids);
+    public function delete(PersonInterface $person);
 
     public function findAll();
 

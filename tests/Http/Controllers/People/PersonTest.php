@@ -30,12 +30,10 @@ class PersonTest extends BaseControllerTest
 
     public function testDestroy()
     {
-        $peopleIds = [1, 2];
-        $request = new Request(['people' => $peopleIds]);
+        $person = new Person();
+        PersonFacade::shouldReceive('delete')->with($person);
 
-        PersonFacade::shouldReceive('deleteByIds')->with($peopleIds);
-
-        $this->controller->destroy($request);
+        $this->controller->destroy($person);
     }
 
     public function testStoreAddsNewPersonToCurrentSite()

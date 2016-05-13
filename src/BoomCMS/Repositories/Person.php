@@ -46,13 +46,13 @@ class Person implements PersonRepositoryInterface, UserProvider
     }
 
     /**
-     * @param array $ids
+     * @param PersonInterface $person
      *
      * @return $this
      */
-    public function deleteByIds(array $ids)
+    public function delete(PersonInterface $person)
     {
-        $this->model->destroy($ids);
+        $person->delete();
 
         return $this;
     }

@@ -5,7 +5,6 @@
 
     <?= $menuButton() ?>
     <?= $button('plus', trans('New person'), ['id' => 'b-people-create']) ?>
-    <?= $button('trash-o', trans('Delete'), ['id' => 'b-people-multi-delete', 'disabled' => 'disabled']) ?>
 
     <button id="b-people-all" class="b-button">
         <?= trans('All people') ?>
@@ -38,11 +37,11 @@
 			<table id="b-people-table" class="b-table">
 				<thead>
 					<tr>
-						<th></th>
 						<th>Name</th>
 						<th>Email address</th>
 						<th>Groups</th>
 						<th>Last login</th>
+						<th></th>
 					</tr>
 				</thead>
 
@@ -68,10 +67,6 @@
 </script>
 
 <script type="text/template" id="b-people-table-item">
-    <td width="10">
-        <input type="checkbox" class="b-people-select" />
-    </td>
-
     <td>
         <a href="#person/<%= id %>"><%= name %></a>
     </td>
@@ -88,7 +83,11 @@
 
     <td>
         <time datetime='<%= last_login %>'></time>
-    </td>    
+    </td>
+
+    <td>
+         <a href='#' class="fa fa-trash-o delete"></a>
+    </td>
 </script>
 
 <script type="text/template" id="b-person-view">

@@ -19,14 +19,8 @@
 			return this.addRelationship('site', siteId);
 		},
 
-		deleteMultiple: function(peopleIds) {
-			return 	$.ajax({
-				type: 'delete',
-				url: this.urlRoot,
-				data: {
-					'people[]': peopleIds
-				}
-			});
+		getName: function() {
+			return this.get('name');
 		},
 
 		removeGroup: function(groupId) {

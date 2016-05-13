@@ -58,7 +58,6 @@ Route::group(['middleware' => [
                 Route::get('people', 'PeopleManager@index');
 
                 Route::group(['prefix' => 'person'], function () {
-                    Route::delete('', 'Person@destroy');
                     Route::resource('{person}/group', 'PersonGroups');
                     Route::resource('{person}/site', 'PersonSites');
                 });

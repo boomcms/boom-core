@@ -27,9 +27,9 @@ class Person extends PeopleManager
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy(PersonModel $person)
     {
-        PersonFacade::deleteByIds($request->input('people'));
+        PersonFacade::delete($person);
     }
 
     public function index()
