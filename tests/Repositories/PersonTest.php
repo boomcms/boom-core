@@ -39,6 +39,7 @@ class PersonTest extends AbstractTestCase
 
         $this->assertEquals($repository, $repository->delete($model));
     }
+
     /**
      * @expectedException BoomCMS\Exceptions\DuplicateEmailException
      */
