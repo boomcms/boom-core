@@ -55,7 +55,10 @@ Route::group(['middleware' => [
                 'namespace'  => 'People',
                 'middleware' => [Middleware\PeopleManager::class],
             ], function () {
-                Route::get('people', 'PeopleManager@index');
+                Route::get('people-manager', [
+                    'uses' => 'PeopleManager@index',
+                    'as'   => 'people-manager',
+                ]);
 
                 Route::group(['prefix' => 'person'], function () {
                     Route::resource('{person}/group', 'PersonGroups');

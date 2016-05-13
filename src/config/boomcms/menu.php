@@ -22,7 +22,7 @@ return [
         'icon'     => 'picture-o',
     ],
     'people' => [
-        'url'      => '/boomcms/people',
+        'url'      => route('people-manager'),
         'role'     => 'managePeople',
         'icon'     => 'users',
     ],
