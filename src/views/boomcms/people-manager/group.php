@@ -20,7 +20,7 @@
 
 		<div id="b-group-roles-general">
 			<p>Edit permissions related to the CMS as a whole rather than particular pages in the site tree.</p>
-			<?= view('boomcms::groups.roles', [
+			<?= view('boomcms::people-manager.roles', [
                 'roles' => BoomCMS\Database\Models\Role::getGeneralRoles(),
             ]) ?>
 
@@ -64,7 +64,7 @@
 					<ul class="boom-tree"></ul>
 				</div>
 				<div>
-					<?= view('boomcms::groups.roles', [
+					<?= view('boomcms::people-manager.roles', [
                         'roles' => BoomCMS\Database\Models\Role::getPageRoles(),
                     ]) ?>
 				</div>

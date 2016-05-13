@@ -2,8 +2,6 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use BoomCMS\Support\Facades\Group;
-use BoomCMS\Support\Facades\Router;
 use Closure;
 use Illuminate\Support\Facades\View;
 
@@ -22,8 +20,7 @@ class PeopleManager
         $response = $next($request);
 
         if (!$request->ajax()) {
-            $v = View::make('boomcms::people.manager', [
-                'groups'  => Group::findBySite(Router::getActiveSite()),
+            $v = View::make('boomcms::people-manager.index', [
                 'content' => $response->getContent(),
             ]);
 

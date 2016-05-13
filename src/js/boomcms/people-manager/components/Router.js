@@ -3,17 +3,32 @@
 
 	BoomCMS.PeopleManager.Router = Backbone.Router.extend({
 		routes: {
-			'#group/:group/edit': 'editGroup',
-			'#group/:group': 'viewGroup'
+			'group/:group/edit': 'editGroup',
+			'group/:group': 'viewGroup',
+			'person/:person': 'editPerson'
 		},
 
-		editGroup: function(group) {
-			console.log('edit');
-			group.trigger('edit');
+		initialize: function(options) {
+			this.groups = options.groups;
+			this.people = options.people;
 		},
 
-		viewGroup: function(group) {
-			group.trigger('view');
+		editGroup: function(id) {
+			var group = this.groups.get(id);
+
+			group.trigger('edit', group);
+		},
+
+		viewGroup: function(id) {
+			var group = this.groups.get(id);
+
+			group.trigger('view', group);
+		},
+
+		editPerson: function(id) {
+			var person = this.people.get(id);
+
+			person.trigger('edit', person);
 		}
 	});
-}(jQuery, Backbone, window.BoomCMS));
+}(jQuery, Backbone, BoomCMS));

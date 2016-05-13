@@ -34,4 +34,4 @@
 			this.model.trigger('edit', this.model);
 		}
 	});
-}(jQuery, Backbone, window.BoomCMS));
+}(jQuery, Backbone, BoomCMS));

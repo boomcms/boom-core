@@ -45344,7 +45344,113 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   document.createElement("abbr");
   document.createElement("time");
 }));
-;(function($) {
+;/*! Pushy - v0.9.2 - 2014-9-13
+* Pushy is a responsive off-canvas navigation menu using CSS transforms & transitions.
+* https://github.com/christophery/pushy/
+* by Christopher Yee */
+
+$(function() {
+	var pushy = $('.pushy'), //menu css class
+		body = $('body'),
+		container = $('#container'), //container css class
+		push = $('.push'), //css class to add pushy capability
+		siteOverlay = $('.site-overlay'), //site overlay
+		pushyClass = "pushy-left pushy-open", //menu position & menu open class
+		pushyActiveClass = "pushy-active", //css class to toggle site overlay
+		containerClass = "container-push", //container open class
+		pushClass = "push-push", //css class to add pushy capability
+		menuBtn = $('.menu-btn, .pushy a'), //css classes to toggle the menu
+		menuSpeed = 200, //jQuery fallback menu speed
+		menuWidth = pushy.width() + "px"; //jQuery fallback menu width
+
+	function togglePushy(){
+		body.toggleClass(pushyActiveClass); //toggle site overlay
+		pushy.toggleClass(pushyClass);
+		container.toggleClass(containerClass);
+		push.toggleClass(pushClass); //css class to add pushy capability
+	}
+
+	function openPushyFallback(){
+		body.addClass(pushyActiveClass);
+		pushy.animate({left: "0px"}, menuSpeed);
+		container.animate({left: menuWidth}, menuSpeed);
+		push.animate({left: menuWidth}, menuSpeed); //css class to add pushy capability
+	}
+
+	function closePushyFallback(){
+		body.removeClass(pushyActiveClass);
+		pushy.animate({left: "-" + menuWidth}, menuSpeed);
+		container.animate({left: "0px"}, menuSpeed);
+		push.animate({left: "0px"}, menuSpeed); //css class to add pushy capability
+	}
+
+	//checks if 3d transforms are supported removing the modernizr dependency
+	cssTransforms3d = (function csstransforms3d(){
+		var el = document.createElement('p'),
+		supported = false,
+		transforms = {
+		    'webkitTransform':'-webkit-transform',
+		    'OTransform':'-o-transform',
+		    'msTransform':'-ms-transform',
+		    'MozTransform':'-moz-transform',
+		    'transform':'transform'
+		};
+
+		// Add it to the body to get the computed style
+		document.body.insertBefore(el, null);
+
+		for(var t in transforms){
+		    if( el.style[t] !== undefined ){
+		        el.style[t] = 'translate3d(1px,1px,1px)';
+		        supported = window.getComputedStyle(el).getPropertyValue(transforms[t]);
+		    }
+		}
+
+		document.body.removeChild(el);
+
+		return (supported !== undefined && supported.length > 0 && supported !== "none");
+	})();
+
+	if(cssTransforms3d){
+		//toggle menu
+		menuBtn.click(function() {
+			togglePushy();
+		});
+		//close menu when clicking site overlay
+		siteOverlay.click(function(){ 
+			togglePushy();
+		});
+	}else{
+		//jQuery fallback
+		pushy.css({left: "-" + menuWidth}); //hide menu by default
+		container.css({"overflow-x": "hidden"}); //fixes IE scrollbar issue
+
+		//keep track of menu state (open/close)
+		var state = true;
+
+		//toggle menu
+		menuBtn.click(function() {
+			if (state) {
+				openPushyFallback();
+				state = false;
+			} else {
+				closePushyFallback();
+				state = true;
+			}
+		});
+
+		//close menu when clicking site overlay
+		siteOverlay.click(function(){ 
+			if (state) {
+				openPushyFallback();
+				state = false;
+			} else {
+				closePushyFallback();
+				state = true;
+			}
+		});
+	}
+});;(function($) {
 	'use strict';
 
 	function BoomCMS() {
@@ -45789,8 +45895,6 @@ function boomPage(page_id) {
 			format: 'd F Y H:i'
 		});
 
-		this.find('.b-fuzzydate').timeago();
-
 		return this;
 	};
 
@@ -46044,113 +46148,7 @@ function boomHistory() {
 	};
 
 	return this.open();
-};/*! Pushy - v0.9.2 - 2014-9-13
-* Pushy is a responsive off-canvas navigation menu using CSS transforms & transitions.
-* https://github.com/christophery/pushy/
-* by Christopher Yee */
-
-$(function() {
-	var pushy = $('.pushy'), //menu css class
-		body = $('body'),
-		container = $('#container'), //container css class
-		push = $('.push'), //css class to add pushy capability
-		siteOverlay = $('.site-overlay'), //site overlay
-		pushyClass = "pushy-left pushy-open", //menu position & menu open class
-		pushyActiveClass = "pushy-active", //css class to toggle site overlay
-		containerClass = "container-push", //container open class
-		pushClass = "push-push", //css class to add pushy capability
-		menuBtn = $('.menu-btn, .pushy a'), //css classes to toggle the menu
-		menuSpeed = 200, //jQuery fallback menu speed
-		menuWidth = pushy.width() + "px"; //jQuery fallback menu width
-
-	function togglePushy(){
-		body.toggleClass(pushyActiveClass); //toggle site overlay
-		pushy.toggleClass(pushyClass);
-		container.toggleClass(containerClass);
-		push.toggleClass(pushClass); //css class to add pushy capability
-	}
-
-	function openPushyFallback(){
-		body.addClass(pushyActiveClass);
-		pushy.animate({left: "0px"}, menuSpeed);
-		container.animate({left: menuWidth}, menuSpeed);
-		push.animate({left: menuWidth}, menuSpeed); //css class to add pushy capability
-	}
-
-	function closePushyFallback(){
-		body.removeClass(pushyActiveClass);
-		pushy.animate({left: "-" + menuWidth}, menuSpeed);
-		container.animate({left: "0px"}, menuSpeed);
-		push.animate({left: "0px"}, menuSpeed); //css class to add pushy capability
-	}
-
-	//checks if 3d transforms are supported removing the modernizr dependency
-	cssTransforms3d = (function csstransforms3d(){
-		var el = document.createElement('p'),
-		supported = false,
-		transforms = {
-		    'webkitTransform':'-webkit-transform',
-		    'OTransform':'-o-transform',
-		    'msTransform':'-ms-transform',
-		    'MozTransform':'-moz-transform',
-		    'transform':'transform'
-		};
-
-		// Add it to the body to get the computed style
-		document.body.insertBefore(el, null);
-
-		for(var t in transforms){
-		    if( el.style[t] !== undefined ){
-		        el.style[t] = 'translate3d(1px,1px,1px)';
-		        supported = window.getComputedStyle(el).getPropertyValue(transforms[t]);
-		    }
-		}
-
-		document.body.removeChild(el);
-
-		return (supported !== undefined && supported.length > 0 && supported !== "none");
-	})();
-
-	if(cssTransforms3d){
-		//toggle menu
-		menuBtn.click(function() {
-			togglePushy();
-		});
-		//close menu when clicking site overlay
-		siteOverlay.click(function(){ 
-			togglePushy();
-		});
-	}else{
-		//jQuery fallback
-		pushy.css({left: "-" + menuWidth}); //hide menu by default
-		container.css({"overflow-x": "hidden"}); //fixes IE scrollbar issue
-
-		//keep track of menu state (open/close)
-		var state = true;
-
-		//toggle menu
-		menuBtn.click(function() {
-			if (state) {
-				openPushyFallback();
-				state = false;
-			} else {
-				closePushyFallback();
-				state = true;
-			}
-		});
-
-		//close menu when clicking site overlay
-		siteOverlay.click(function(){ 
-			if (state) {
-				openPushyFallback();
-				state = false;
-			} else {
-				closePushyFallback();
-				state = true;
-			}
-		});
-	}
-});;$.widget('boom.tagAutocomplete',  {
+};$.widget('boom.tagAutocomplete',  {
 	url : '',
 	ignoreTags : [],
 
@@ -51317,175 +51315,7 @@ function Row() {
 				}
 			});
 	}
-});;(function($, BoomCMS) {
-	'use strict';
-
-	$.widget('boom.peopleManager', {
-		homeUrl : '/boomcms/people',
-		selectedPeople : 0,
-
-		bind: function() {
-			var peopleManager = this;
-
-			this.element
-				.on('click', '.b-button', function(e) {
-					e.preventDefault();
-				})
-				.on('change', '#b-items-view-list input[type=checkbox]', function() {
-					peopleManager.togglePersonCheckbox($(this));
-					peopleManager.togglePersonDeleteButton();
-				})
-				.on('click', '#b-people-multi-delete', function() {
-					peopleManager.deleteSelectedPeople();
-				})
-				.on('click', '#b-person-save', function() {
-					peopleManager.currentPersonSave();
-				})
-				.on('click', '#b-person-delete', function() {
-					peopleManager.currentPersonDelete();
-				});
-		},
-
-		_create: function() {
-			var peopleManager = this,
-				person = this.getCurrentPerson();
-
-			this.bind();
-
-			new BoomCMS.PeopleManager();
-
-			this.element
-				.find('.b-person-groups')
-				.chosen()
-				.change(function(event, data) {
-					if (typeof(data.selected) !== 'undefined') {
-						return peopleManager.addPersonToGroup(person, data.selected);
-					}
-
-					return peopleManager.removePersonFromGroup(person, data.deselected);
-				})
-				.end()
-				.find('.b-person-sites')
-				.chosen()
-				.change(function(event, data) {
-					if (typeof(data.selected) !== 'undefined') {
-						return peopleManager.addPersonToSite(person, data.selected);
-					}
-
-					return peopleManager.removePersonFromSite(person, data.deselected);
-				});
-		},
-
-		addPersonToGroup: function(person, groupId) {
-			person.addGroup(groupId)
-				.done(function() {
-					new boomNotification('This person has been added to the group').show();
-				});
-		},
-
-		addPersonToSite: function(person, siteId) {
-			person.addSite(siteId)
-				.done(function() {
-					new boomNotification('This person has been added to the site').show();
-				});
-		},
-
-		currentPersonDelete: function() {
-			var url = this.homeUrl;
-
-			this.getCurrentPerson().delete()
-				.done(function() {
-					new boomNotification('This person has been deleted').show();
-
-					setTimeout(function() {
-						top.location = url;
-					}, 300);
-				});
-		},
-
-		removePersonFromGroup: function(person, groupId) {
-			person.removeGroup(groupId)
-				.done(function() {
-					new boomNotification('This person has been removed from the group').show();
-				});
-		},
-
-		removePersonFromSite: function(person, siteId) {
-			person.removeSite(siteId)
-				.done(function() {
-					new boomNotification('This person has been removed from the site').show();
-				});
-		},
-
-		currentPersonSave: function() {
-			this.getCurrentPerson().save(this.element.find('.b-person-view form').serialize())
-				.done(function() {
-					new boomNotification('The new details for this person have been saved').show();
-				});
-		},
-
-		deleteSelectedPeople: function() {
-			var selected = this.getSelectedPeople(),
-				person = new BoomCMS.Person({id: selected.join('-')}),
-				peopleManager = this,
-				confirmation = new boomConfirmation('Confirm deletion', 'Are you sure you want to remove the selected people?');
-
-				confirmation
-					.done(function() {
-						person.deleteMultiple(selected)
-							.done(function() {
-								peopleManager.removePeopleFromList(selected);
-
-								new boomNotification('The selected people have been deleted').show();
-							});
-					});
-		},
-
-		getCurrentPerson: function() {
-			var personId = this.element.find('.b-person-view').data('person-id');
-
-			return new BoomCMS.Person({id: personId});
-		},
-
-		getSelectedPeople: function() {
-			return $('#b-items-view-list input[type=checkbox]:checked')
-				.map(function() {
-					return $(this).parents('tr').data('person-id');
-				})
-				.get();
-		},
-
-		removePeopleFromList: function(person_ids) {
-			$('#b-items-view-list tr').each(function(index, el) {
-				var $el = $(el),
-					i = person_ids.indexOf($el.data('person-id'));
-
-				if (i >= 0) {
-					$el.remove();
-					person_ids.splice(i, 1);
-
-					if (person_ids.length === 0) {
-						return false;
-					}
-				}
-			});
-		},
-
-		togglePersonCheckbox: function($el) {
-			if ($el.is(":checked")) {
-				this.selectedPeople++;
-			} else {
-				this.selectedPeople--;
-			}
-		},
-
-		togglePersonDeleteButton: function() {
-			var button = this.element.find('#b-people-multi-delete');
-
-			(this.selectedPeople > 0)? button.prop('disabled', false) : button.prop('disabled', true);
-		}
-	});
-}(jQuery, window.BoomCMS));;function boomImageEditor(imageUrl) {
+});;function boomImageEditor(imageUrl) {
 	this.imageUrl = imageUrl;
 	this.imageSelector = '#b-imageeditor-image';
 	this.cropButtonSelector = '#b-imageeditor-crop';
@@ -51787,242 +51617,7 @@ function Row() {
 	function boom_approvals_remove_row($element) {
 		$element.parents('tr').remove();
 	}
-});;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.PeopleManager = Backbone.View.extend({
-		el: $('body'),
-
-		events: {
-			'submit #b-groups-new': 'createGroup',
-			'click #b-people-create': 'createPerson',
-			'click #b-people-all': 'showAllPeople',
-		},
-
-		initialize: function() {
-			this.$groupList = this.$('#b-groups-list');
-			this.$peopleTable = this.$('#b-people-table');
-			this.$content = this.$('#b-people-content');
-			this.router = new BoomCMS.PeopleManager.Router();
-
-			this.groups = new BoomCMS.Collections.Groups();
-			this.people = new BoomCMS.Collections.People();
-
-			this.listenTo(this.groups, 'edit created', this.editGroup);
-			this.listenTo(this.groups, 'add', this.addGroup);
-			this.listenTo(this.groups, 'all sort', this.renderGroups);
-			this.listenTo(this.people, 'all sort', this.renderPeople);
-
-			this.groups.fetch();
-			this.people.fetch();
-
-			this.showAllPeople();
-
-			Backbone.history.start();
-		},
-
-		addGroup: function(group) {
-			var view = new BoomCMS.PeopleManager.GroupListItem({model: group});
-
-			this.$groupList.append(view.render().el);
-		},
-
-		addPersonToTable: function(person) {
-			var view = new BoomCMS.PeopleManager.PeopleTableItem({model: person});
-
-			this.$peopleTable.find('tbody').append(view.render().el);
-		},
-
-		createGroup: function(e) {
-			e.preventDefault();
-
-			var $el = $(e.target).find('input[type=text]'),
-				group = this.groups.create({
-					id: null,
-					name: $el.val()
-				});
-
-			this.groups.trigger('created', group);
-
-			$el.val('');
-		},
-
-		createPerson: function(e) {
-			e.preventDefault();
-
-			var view = new BoomCMS.PeopleManager.CreatePerson({
-				groups: this.groups.models,
-				people: this.people,
-			});
-
-			this.$content.html(view.render().el);
-		},
-
-		editGroup: function(group) {
-			var view = new BoomCMS.PeopleManager.GroupView({model: group}); 
-
-			this.$content.html(view.render().el);
-			view.$el.groupPermissionsEditor({group: group});
-		},
-
-		renderGroups: function() {
-			this.$groupList.empty();
-			this.groups.each(this.addGroup, this);
-
-			return this;
-		},
-
-		renderPeople: function() {
-			this.$peopleTable.find('tbody').empty();
-			this.people.each(this.addPersonToTable, this);
-
-			return this;
-		},
-
-		showAllPeople: function() {
-			this.$content.html(this.$peopleTable);
-
-			return this;
-		}
-	});
-}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.PeopleManager.CreatePerson = Backbone.View.extend({
-		tagName: 'div',
-		template: _.template($('#b-person-create-form').html()),
-
-		initialize: function(options) {
-			this.groups = options.groups;
-			this.people = options.people;
-		},
-
-		events: {
-			'click button': 'createPerson'
-		},
-
-		createPerson: function(e) {
-			e.preventDefault();
-
-			this.people.create(this.$('form').serializeJSON());
-		},
-
-		render: function() {
-			this.$el.html(this.template({groups: this.groups}));
-
-			this.$('select').chosen();
-
-			return this;
-		}
-	});
-}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.PeopleManager.GroupListItem = Backbone.View.extend({
-		tagName: 'li',
-		template: _.template($('#b-group-list-item').html()),
-
-		events: {
-			'click .delete': 'deleteGroup',
-			'click .edit': 'editGroup'
-		},
-
-		initialize: function() {
-			this.listenTo(this.model, 'change', this.render);
-			this.listenTo(this.model, 'destroy', this.remove);
-		},
-
-		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
-
-			return this;
-		},
-
-		deleteGroup: function() {
-			var group = this.model,
-				confirmation = BoomCMS.confirm('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
-
-			confirmation.done(function() {
-				group.destroy();
-			});
-		},
-
-		editGroup: function() {
-			this.model.trigger('edit', this.model);
-		}
-	});
-}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.PeopleManager.GroupView = Backbone.View.extend({
-		tagName: 'div',
-		template: _.template($('#b-group-edit').html()),
-
-		events: {
-			'click #b-people-group-save': 'saveGroupName'
-		},
-
-		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
-
-			return this;
-		},
-
-		saveGroupName: function(e) {
-			e.preventDefault();
-
-			this.model.set('name', this.$el.find('#b-people-group-name').val());
-			this.model.save();
-		}
-	});
-}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.PeopleManager.PeopleTableItem = Backbone.View.extend({
-		tagName: 'tr',
-		template: _.template($('#b-people-table-item').html()),
-
-		initialize: function() {
-			this.listenTo(this.model, 'change', this.render);
-			this.listenTo(this.model, 'destroy', this.remove);
-		},
-
-		render: function() {
-			this.$el
-				.html(this.template(this.model.toJSON()))
-				.find('time')
-				.timeago();
-
-			return this;
-		}
-	});
-}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.PeopleManager.PersonView = Backbone.View.extend({
-		tagName: 'div',
-		template: _.template($('#b-person-view').html())
-	});
-}(jQuery, Backbone, window.BoomCMS));;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.PeopleManager.Router = Backbone.Router.extend({
-		routes: {
-			'#group/:group/edit': 'editGroup',
-			'#group/:group': 'viewGroup'
-		},
-
-		editGroup: function(group) {
-			console.log('edit');
-			group.trigger('edit');
-		},
-
-		viewGroup: function(group) {
-			group.trigger('view');
-		}
-	});
-}(jQuery, Backbone, window.BoomCMS));
-;/**
+});;/**
  * @license wysihtml v0.5.5
  * https://github.com/Voog/wysihtml
  *

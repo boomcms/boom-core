@@ -1,31 +1,31 @@
 <section>
-    <h2><?= trans('boomcms::people.details') ?></h2>
+    <h2><?= trans('boomcms::people-manager.details') ?></h2>
 
     <form>
         <label>
-            <?= trans('boomcms::people.name') ?>
+            <?= trans('boomcms::people-manager.name') ?>
 
             <input type="text" name="name" value="<%= name %>" />
         </label>
 
         <label for="person-email">
-            <?= trans('boomcms::people.email') ?>
+            <?= trans('boomcms::people-manager.email') ?>
 
             <input type="text" name="email" disabled="disabled" value="<%= email %>" />
         </label>
 
         <label for='person-status'>
-            <?= trans('boomcms::people.status') ?>
+            <?= trans('boomcms::people-manager.status') ?>
 
             <select name="enabled" id="person-status">
                 <option value="">Disabled</option>
-                <option value="1">>Enabled</option>
+                <option value="1">Enabled</option>
             </select>
         </label>
 
         <?php /*if (Gate::allows('editSuperuser', $person)): ?>
             <label for='person-superuser'>
-                <?= trans('boomcms::people.superuser') ?>
+                <?= trans('boomcms::people-manager.superuser') ?>
 
                 <select name="superuser" id="person-superuser">
                     <option value="">No</option>
@@ -42,8 +42,8 @@
 </section>
 
 <section>
-    <h2><?= trans('boomcms::people.groups-heading') ?></h2>
-    <p><?= trans('boomcms::people.groups') ?></p>
+    <h2><?= trans('boomcms::people-manager.groups-heading') ?></h2>
+    <p><?= trans('boomcms::people-manager.groups') ?></p>
 
     <select class='b-person-groups' multiple>
 
@@ -52,8 +52,8 @@
 
 <?php if (Gate::allows('manageSites', Router::getActiveSite())): ?>
     <section>
-        <h2><?= trans('boomcms::people.sites-heading') ?></h2>
-        <p><?= trans('boomcms::people.sites') ?></p>
+        <h2><?= trans('boomcms::people-manager.sites-heading') ?></h2>
+        <p><?= trans('boomcms::people-manager.sites') ?></p>
 
         <select class='b-person-sites' multiple>
 

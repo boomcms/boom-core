@@ -17,4 +17,6 @@
             restartOnRequestAfter: 100
         };
     </script>
+
+    <?= $boomJS ?>
 </head>

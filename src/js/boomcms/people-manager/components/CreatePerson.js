@@ -28,4 +28,4 @@
 			return this;
 		}
 	});
-}(jQuery, Backbone, window.BoomCMS));
+}(jQuery, Backbone, BoomCMS));

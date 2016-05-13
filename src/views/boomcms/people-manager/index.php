@@ -14,7 +14,7 @@
 
 <main id="b-container">
     <div id="b-people-manager">
-        <h1><?= trans('boomcms::people.heading') ?></h1>
+        <h1><?= trans('boomcms::people-manager.heading') ?></h1>
 
         <div id="b-groups">
             <div id="b-groups-header">
@@ -64,7 +64,7 @@
 </script>
 
 <script type="text/template" id="b-group-edit">
-    <?= view('boomcms::groups.edit') ?>
+    <?= view('boomcms::people-manager.group') ?>
 </script>
 
 <script type="text/template" id="b-people-table-item">
@@ -73,7 +73,7 @@
     </td>
 
     <td>
-        <a href="<%= id %>"><%= name %></a>
+        <a href="#person/<%= id %>"><%= name %></a>
     </td>
 
     <td>
@@ -92,12 +92,12 @@
 </script>
 
 <script type="text/template" id="b-person-view">
-    <?= view('boomcms::person.view') ?>
+    <?= view('boomcms::people-manager.person') ?>
 </script>
 
 <script type="text/template" id="b-person-create-form">
 	<section>
-		<h2><?= trans('boomcms::people.create-heading') ?></h2>
+		<h2><?= trans('boomcms::people-manager.create-heading') ?></h2>
 
 	    <form method="post" action="/boomcms/people/add" class="new-person">
 			<label>
@@ -126,9 +126,14 @@
 	</section>
 </script>
 
+<script type="text/javascript" src="/vendor/boomcms/boom-core/js/people-manager.js"></script>
+
 <script type="text/javascript">
     window.addEventListener('load', function() {
-        $('body').peopleManager();
+        new BoomCMS.PeopleManager({
+            groups: <?= Group::findBySite(Router::getActiveSite())->toJson() ?>,
+            people: <?= Person::findBySite(Router::getActiveSite())->toJson() ?>
+        });
     });
 </script>
 

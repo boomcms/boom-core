@@ -7,27 +7,31 @@
 		events: {
 			'submit #b-groups-new': 'createGroup',
 			'click #b-people-create': 'createPerson',
-			'click #b-people-all': 'showAllPeople',
+			'click #b-people-all': 'showAllPeople'
 		},
 
-		initialize: function() {
+		initialize: function(options) {
 			this.$groupList = this.$('#b-groups-list');
 			this.$peopleTable = this.$('#b-people-table');
 			this.$content = this.$('#b-people-content');
-			this.router = new BoomCMS.PeopleManager.Router();
 
-			this.groups = new BoomCMS.Collections.Groups();
-			this.people = new BoomCMS.Collections.People();
+			this.groups = new BoomCMS.Collections.Groups(options.groups);
+			this.people = new BoomCMS.Collections.People(options.people);
+			this.router = new BoomCMS.PeopleManager.Router({
+				groups: this.groups,
+				people: this.people
+			});
 
 			this.listenTo(this.groups, 'edit created', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
+			this.listenTo(this.groups, 'change created', this.sortGroups);
 			this.listenTo(this.groups, 'all sort', this.renderGroups);
-			this.listenTo(this.people, 'all sort', this.renderPeople);
-
-			this.groups.fetch();
-			this.people.fetch();
+			this.listenTo(this.people, 'all sort filter', this.renderPeople);
+			this.listenTo(this.people, 'edit created', this.editPerson);
 
 			this.showAllPeople();
+			this.people.sort();
+			this.groups.sort();
 
 			Backbone.history.start();
 		},
@@ -63,16 +67,22 @@
 
 			var view = new BoomCMS.PeopleManager.CreatePerson({
 				groups: this.groups.models,
-				people: this.people,
+				people: this.people
 			});
 
-			this.$content.html(view.render().el);
+			this.show(view);
+		},
+
+		editPerson: function(person) {
+			var view = new BoomCMS.PeopleManager.PersonView({model: person}); 
+
+			this.show(view);
 		},
 
 		editGroup: function(group) {
 			var view = new BoomCMS.PeopleManager.GroupView({model: group}); 
 
-			this.$content.html(view.render().el);
+			this.show(view);
 			view.$el.groupPermissionsEditor({group: group});
 		},
 
@@ -90,10 +100,18 @@
 			return this;
 		},
 
+		show: function(view) {
+			this.$content.html(view.render().el);
+		},
+
 		showAllPeople: function() {
 			this.$content.html(this.$peopleTable);
 
 			return this;
+		},
+
+		sortGroups: function() {
+			this.groups.sort();
 		}
 	});
-}(jQuery, Backbone, window.BoomCMS));
+}(jQuery, Backbone, BoomCMS));
