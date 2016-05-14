@@ -11,6 +11,6 @@ class PeopleManager extends Controller
 
     public function index()
     {
-		return view($this->viewPrefix."index");
+        return view($this->viewPrefix.'index');
     }
 }
