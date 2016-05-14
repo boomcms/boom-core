@@ -68,7 +68,7 @@
 
 <script type="text/template" id="b-people-table-item">
     <td>
-        <a href="#person/<%= id %>"><%= name %></a>
+        <a href="#person/<%= id ? id : 0 %>"><%= name %></a>
     </td>
 
     <td>
@@ -82,7 +82,7 @@
     </td>
 
     <td>
-        <time datetime='<%= last_login %>'></time>
+        <time datetime='<%= last_login ? last_login : null %>'></time>
     </td>
 
     <td>
@@ -114,7 +114,7 @@
 
 				<select name="groups[]" multiple>
 					<% for (var i in groups) { %>
-						<option value="<%= groups[i].id %>"><%= groups[i].get('name') %></option>
+						<option value="<%= groups[i].id %>"><%= groups[i].getName() %></option>
 					<% } %>
 
 				</select>

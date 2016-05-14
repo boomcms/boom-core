@@ -20,6 +20,10 @@
 			});
 		},
 
+		getName: function() {
+			return this.get('name');
+		},
+
 		getRoles: function(pageId) {
 			return this.roles.fetch({data: {page_id: pageId}});
 		},
