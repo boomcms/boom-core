@@ -5,14 +5,16 @@
 
 <p class="email"><%= person.getEmail() %></p>
 
+<?= $button('trash-o', 'delete', ['id' => 'b-person-delete', 'class' => 'dark']) ?>
+
 <section>
 	<form>
-		<label for='person-status'>
+		<label>
 			<?= trans('boomcms::people-manager.status') ?>
 
-			<select name="enabled" id="person-status">
-				<option value="">Disabled</option>
-				<option value="1">Enabled</option>
+			<select name="enabled">
+				<option value=""<%= !person.isEnabled() ? ' selected' : ''%>>Disabled</option>
+				<option value="1"<%= person.isEnabled() ? ' selected' : ''%>>Enabled</option>
 			</select>
 		</label>
 
@@ -26,16 +28,11 @@
 				</select>
 			</label>
 		<?php endif*/ ?>
-
-		<div>
-			<?= $button('save', 'save', ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
-			<?= $button('trash-o', 'delete', ['id' => 'b-person-delete']) ?>
-		</div>
 	</form>
 </section>
 
 <section>
-    <h2><?= trans('boomcms::people-manager.groups-heading') ?></h2>
+    <h3><?= trans('boomcms::people-manager.groups-heading') ?></h3>
     <p><?= trans('boomcms::people-manager.groups') ?></p>
 
     <?= view('boomcms::people-manager.group-select') ?>
@@ -43,7 +40,7 @@
 
 <?php if (Gate::allows('manageSites', Router::getActiveSite())): ?>
     <section>
-        <h2><?= trans('boomcms::people-manager.sites-heading') ?></h2>
+        <h3><?= trans('boomcms::people-manager.sites-heading') ?></h3>
         <p><?= trans('boomcms::people-manager.sites') ?></p>
 
         <select class='b-person-sites' multiple>

@@ -45564,6 +45564,10 @@ $(function() {
 	BoomCMS.Group = Backbone.Model.extend({
 		urlRoot: BoomCMS.urlRoot + 'group',
 
+		defaults: {
+			id: null
+		},
+
 		initialize: function() {
 			var roles = Backbone.Collection.extend({
 				url: this.url() + '/roles'
@@ -45578,6 +45582,10 @@ $(function() {
 				allowed: allowed,
 				page_id: pageId
 			});
+		},
+
+		getId: function() {
+			return this.id;
 		},
 
 		getName: function() {
@@ -45755,8 +45763,16 @@ function boomPage(page_id) {
 			return this.get('email');
 		},
 
+		getId: function() {
+			return this.id;
+		},
+
 		getName: function() {
 			return this.get('name');
+		},
+
+		isEnabled: function() {
+			return this.get('enabled') === true;
 		},
 
 		removeGroup: function(groupId) {

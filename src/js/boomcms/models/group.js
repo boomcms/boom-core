@@ -4,6 +4,10 @@
 	BoomCMS.Group = Backbone.Model.extend({
 		urlRoot: BoomCMS.urlRoot + 'group',
 
+		defaults: {
+			id: null
+		},
+
 		initialize: function() {
 			var roles = Backbone.Collection.extend({
 				url: this.url() + '/roles'
@@ -18,6 +22,10 @@
 				allowed: allowed,
 				page_id: pageId
 			});
+		},
+
+		getId: function() {
+			return this.id;
 		},
 
 		getName: function() {

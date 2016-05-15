@@ -17,41 +17,14 @@ class Person extends PeopleManager
 {
     protected $viewPrefix = 'boomcms::person.';
 
-    public function addSites(Request $request, PersonModel $person)
-    {
-        $siteIds = $request->input('sites');
-
-        if ($siteIds) {
-            $sites = SiteFacade::find($siteIds);
-            $person->addSites($sites);
-        }
-    }
-
     public function destroy(PersonModel $person)
     {
-        PersonFacade::delete($person);
+//        PersonFacade::delete($person);
     }
 
     public function index()
     {
         return PersonFacade::findBySite(Router::getActiveSite());
-    }
-
-    public function removeSite(PersonModel $person, Site $site)
-    {
-        $person->removeSite($site);
-    }
-
-    public function show(Site $site, Request $request, PersonModel $person)
-    {
-        return view($this->viewPrefix.'view', [
-            'person'    => $person,
-            'request'   => $request,
-            'groups'    => GroupFacade::findBySite($site),
-            'hasGroups' => $person->getGroups(),
-            'sites'     => SiteFacade::findAll(),
-            'hasSites'  => $person->getSites(),
-        ]);
     }
 
     public function store(Request $request, Site $site)

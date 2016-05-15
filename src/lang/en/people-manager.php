@@ -5,8 +5,8 @@ return [
     'status'         => 'Status',
     'superuser'      => 'Superuser',
     'groups-heading' => 'Groups',
-    'groups'         => 'Set which groups <%= name %> is a member of.',
+    'groups'         => 'Set which groups <%= person.getName() %> is a member of.',
     'sites-heading'  => 'Sites',
-    'sites'          => 'Set which sites <%= name %> has access to.',
+    'sites'          => 'Set which sites <%= person.getName() %> has access to.',
     'create-heading' => 'Add new person',
 ];

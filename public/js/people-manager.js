@@ -22,17 +22,14 @@
 				people: this.people
 			});
 
-			this.listenTo(this.groups, 'edit created', this.editGroup);
+			this.listenTo(this.groups, 'edit', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
-			this.listenTo(this.groups, 'change created', this.sortGroups);
+			this.listenTo(this.groups, 'change:name', this.sortGroups);
 			this.listenTo(this.groups, 'all sort', this.renderGroups);
+			this.listenTo(this.people, 'change:name', this.sortPeople);
 			this.listenTo(this.people, 'all sort filter', this.renderPeople);
-			this.listenTo(this.people, 'edit created', this.editPerson);
-			this.listenTo(this.people, 'created', this.showAllPeople);
-
-			this.showAllPeople();
-			this.people.sort();
-			this.groups.sort();
+			this.listenTo(this.people, 'edit', this.editPerson);
+			this.listenTo(this.router, 'home', this.showAllPeople);
 
 			Backbone.history.start();
 		},
@@ -52,13 +49,11 @@
 		createGroup: function(e) {
 			e.preventDefault();
 
-			var $el = $(e.target).find('input[type=text]'),
-				group = this.groups.create({
-					id: null,
-					name: $el.val()
-				});
-
-			this.groups.trigger('created', group);
+			var $el = $(e.target).find('input[type=text]');
+			
+			this.groups.create({
+				name: $el.val()
+			});
 
 			$el.val('');
 		},
@@ -78,7 +73,7 @@
 			var view = new BoomCMS.PeopleManager.PersonView({
 				model: person,
 				groups: this.groups.models
-			}); 
+			});
 
 			this.show(view);
 		},
@@ -116,6 +111,10 @@
 
 		sortGroups: function() {
 			this.groups.sort();
+		},
+
+		sortPeople: function() {
+			this.people.sort();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
@@ -138,8 +137,6 @@
 			e.preventDefault();
 
 			var person = this.people.create(this.$('form').serializeJSON());
-
-			this.people.trigger('created', person);
 		},
 
 		render: function() {
@@ -173,7 +170,9 @@
 			return this;
 		},
 
-		deleteGroup: function() {
+		deleteGroup: function(e) {
+			e.preventDefault();
+
 			var group = this.model,
 				confirmation = BoomCMS.confirm('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
 
@@ -182,7 +181,9 @@
 			});
 		},
 
-		editGroup: function() {
+		editGroup: function(e) {
+			e.preventDefault();
+
 			this.model.trigger('edit', this.model);
 		}
 	});
@@ -269,11 +270,27 @@
 
 		events: {
 			'click .name, .name + a': 'editName',
-			'blur h2': 'saveName'
+			'click #b-person-delete': 'deletePerson',
+			'blur h2': 'saveName',
+			'change select[name=enabled]': 'toggleEnabled'
 		},
 
 		initialize: function(options) {
 			this.groups = options.groups;
+
+			this.listenTo(this.model, 'destroy', this.remove);
+		},
+
+		editName: function(e) {
+			e.preventDefault();
+
+			this.$name
+				.removeClass(BoomCMS.editableClass)
+				.focus();
+		},
+
+		deletePerson: function() {
+			this.model.destroy();
 		},
 
 		render: function() {
@@ -288,19 +305,17 @@
 			return this;
 		},
 
-		editName: function(e) {
-			e.preventDefault();
-
-			this.$name
-				.removeClass(BoomCMS.editableClass)
-				.focus();
-		},
-
 		saveName: function(e) {
 			e.preventDefault();
 
 			this.model.set('name', this.$name.text());
 			this.$name.addClass(BoomCMS.editableClass);
+
+			this.model.save();
+		},
+
+		toggleEnabled: function(e) {
+			this.model.set('enabled', this.$('select[name=enabled] :selected').val());
 
 			this.model.save();
 		}
@@ -310,6 +325,7 @@
 
 	BoomCMS.PeopleManager.Router = Backbone.Router.extend({
 		routes: {
+			'': 'home',
 			'group/:group/edit': 'editGroup',
 			'group/:group': 'viewGroup',
 			'person/:person': 'editPerson'
@@ -318,6 +334,9 @@
 		initialize: function(options) {
 			this.groups = options.groups;
 			this.people = options.people;
+
+			this.listenTo(this.groups, 'change:id', this.editGroupOnCreate);
+			this.listenTo(this.people, 'destroy', this.goBackOnPersonDelete);
 		},
 
 		editGroup: function(id) {
@@ -326,16 +345,32 @@
 			group.trigger('edit', group);
 		},
 
-		viewGroup: function(id) {
-			var group = this.groups.get(id);
+		editGroupOnCreate: function(group) {
+			this.navigate('group/' + group.getId() + '/edit');
 
-			group.trigger('view', group);
+			group.trigger('edit', group);
 		},
 
 		editPerson: function(id) {
 			var person = this.people.get(id);
 
 			person.trigger('edit', person);
+		},
+
+		goBackOnPersonDelete: function(person) {
+			if (Backbone.history.getFragment() === 'person/' + person.getId()) {
+				window.history.back();
+			}
+		},
+
+		home: function() {
+			this.trigger('home');
+		},
+
+		viewGroup: function(id) {
+			var group = this.groups.get(id);
+
+			group.trigger('view', group);
 		}
 	});
 }(jQuery, Backbone, BoomCMS));

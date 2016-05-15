@@ -21,7 +21,9 @@
 			return this;
 		},
 
-		deleteGroup: function() {
+		deleteGroup: function(e) {
+			e.preventDefault();
+
 			var group = this.model,
 				confirmation = BoomCMS.confirm('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
 
@@ -30,7 +32,9 @@
 			});
 		},
 
-		editGroup: function() {
+		editGroup: function(e) {
+			e.preventDefault();
+
 			this.model.trigger('edit', this.model);
 		}
 	});

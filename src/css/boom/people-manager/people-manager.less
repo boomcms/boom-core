@@ -2,8 +2,9 @@
 	h2 {
 		.text-large;
 		font-weight: bold;
-		margin: 0;
 		display: inline-block;
+		border: 1px solid transparent;
+		margin: -1px;
 	}
 
 	.email {
@@ -11,27 +12,22 @@
 	}
 
 	section {
-		background: @lightest-grey;
-		padding: 2rem;
-
 		+ section {
 			margin-top: 5rem;
 		}
-
-		h2 {
-			font-weight: bold;
-		}
-
-		button {
-			color: @dark-grey;
-
-			&:hover, &:focus {
-				color: @red;
-			}
-		}
 	}
 
-	#b-items-view-list {
+	#b-people-content {
+		position: relative;
+	}
+
+	#b-person-delete {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	#b-people-table {
 		width: 100%;
 
 		.groups {
@@ -59,16 +55,6 @@
 		&-header {
 			background: @red;
 			padding: 0.5rem;
-
-			button {
-				float: right;
-				background-color: transparent;
-				margin-top: 0;
-
-				&:hover, &:focus, &:active {
-					color: @darkest-grey;
-				}
-			}
 
 			h2 {
 				.text-normal;

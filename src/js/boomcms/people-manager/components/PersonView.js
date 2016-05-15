@@ -7,11 +7,27 @@
 
 		events: {
 			'click .name, .name + a': 'editName',
-			'blur h2': 'saveName'
+			'click #b-person-delete': 'deletePerson',
+			'blur h2': 'saveName',
+			'change select[name=enabled]': 'toggleEnabled'
 		},
 
 		initialize: function(options) {
 			this.groups = options.groups;
+
+			this.listenTo(this.model, 'destroy', this.remove);
+		},
+
+		editName: function(e) {
+			e.preventDefault();
+
+			this.$name
+				.removeClass(BoomCMS.editableClass)
+				.focus();
+		},
+
+		deletePerson: function() {
+			this.model.destroy();
 		},
 
 		render: function() {
@@ -26,19 +42,17 @@
 			return this;
 		},
 
-		editName: function(e) {
-			e.preventDefault();
-
-			this.$name
-				.removeClass(BoomCMS.editableClass)
-				.focus();
-		},
-
 		saveName: function(e) {
 			e.preventDefault();
 
 			this.model.set('name', this.$name.text());
 			this.$name.addClass(BoomCMS.editableClass);
+
+			this.model.save();
+		},
+
+		toggleEnabled: function(e) {
+			this.model.set('enabled', this.$('select[name=enabled] :selected').val());
 
 			this.model.save();
 		}

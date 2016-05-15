@@ -18,8 +18,6 @@
 			e.preventDefault();
 
 			var person = this.people.create(this.$('form').serializeJSON());
-
-			this.people.trigger('created', person);
 		},
 
 		render: function() {

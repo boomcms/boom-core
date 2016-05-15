@@ -28,8 +28,16 @@
 			return this.get('email');
 		},
 
+		getId: function() {
+			return this.id;
+		},
+
 		getName: function() {
 			return this.get('name');
+		},
+
+		isEnabled: function() {
+			return this.get('enabled') === true;
 		},
 
 		removeGroup: function(groupId) {

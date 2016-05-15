@@ -45,9 +45,7 @@
 					</tr>
 				</thead>
 
-				<tbody>
-
-				</tbody>
+				<tbody></tbody>
 			</table>
         </div>
     </div>
@@ -115,7 +113,7 @@
 				<?= view('boomcms::people-manager.group-select') ?>
 			</label>
 
-			<?= $button('save', 'save', ['class' => 'b-button-withtext']) ?>
+			<?= $button('save', 'save', ['class' => 'b-button-withtext dark']) ?>
 		</form>
 	</section>
 </script>

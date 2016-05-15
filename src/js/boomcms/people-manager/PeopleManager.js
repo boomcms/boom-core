@@ -22,17 +22,14 @@
 				people: this.people
 			});
 
-			this.listenTo(this.groups, 'edit created', this.editGroup);
+			this.listenTo(this.groups, 'edit', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
-			this.listenTo(this.groups, 'change created', this.sortGroups);
+			this.listenTo(this.groups, 'change:name', this.sortGroups);
 			this.listenTo(this.groups, 'all sort', this.renderGroups);
+			this.listenTo(this.people, 'change:name', this.sortPeople);
 			this.listenTo(this.people, 'all sort filter', this.renderPeople);
-			this.listenTo(this.people, 'edit created', this.editPerson);
-			this.listenTo(this.people, 'created', this.showAllPeople);
-
-			this.showAllPeople();
-			this.people.sort();
-			this.groups.sort();
+			this.listenTo(this.people, 'edit', this.editPerson);
+			this.listenTo(this.router, 'home', this.showAllPeople);
 
 			Backbone.history.start();
 		},
@@ -52,13 +49,11 @@
 		createGroup: function(e) {
 			e.preventDefault();
 
-			var $el = $(e.target).find('input[type=text]'),
-				group = this.groups.create({
-					id: null,
-					name: $el.val()
-				});
-
-			this.groups.trigger('created', group);
+			var $el = $(e.target).find('input[type=text]');
+			
+			this.groups.create({
+				name: $el.val()
+			});
 
 			$el.val('');
 		},
@@ -78,7 +73,7 @@
 			var view = new BoomCMS.PeopleManager.PersonView({
 				model: person,
 				groups: this.groups.models
-			}); 
+			});
 
 			this.show(view);
 		},
@@ -116,6 +111,10 @@
 
 		sortGroups: function() {
 			this.groups.sort();
+		},
+
+		sortPeople: function() {
+			this.people.sort();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));
