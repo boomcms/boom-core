@@ -28,6 +28,7 @@
 			this.listenTo(this.groups, 'all sort', this.renderGroups);
 			this.listenTo(this.people, 'all sort filter', this.renderPeople);
 			this.listenTo(this.people, 'edit created', this.editPerson);
+			this.listenTo(this.people, 'created', this.showAllPeople);
 
 			this.showAllPeople();
 			this.people.sort();
@@ -133,7 +134,9 @@
 		createPerson: function(e) {
 			e.preventDefault();
 
-			this.people.create(this.$('form').serializeJSON());
+			var person = this.people.create(this.$('form').serializeJSON());
+
+			this.people.trigger('created', person);
 		},
 
 		render: function() {
@@ -188,19 +191,33 @@
 		template: _.template($('#b-group-edit').html()),
 
 		events: {
-			'click #b-people-group-save': 'saveGroupName'
+			'click #b-people-group-save': 'saveGroupName',
+			'click h2, h2 + a': 'editName',
+			'blur h2': 'save'
+		},
+
+		editName: function(e) {
+			e.preventDefault();
+
+			this.$name
+				.removeClass(BoomCMS.editableClass)
+				.focus();
 		},
 
 		render: function() {
 			this.$el.html(this.template(this.model.toJSON()));
 
+			this.$name = this.$('h2').addClass(BoomCMS.editableClass);
+
 			return this;
 		},
 
-		saveGroupName: function(e) {
+		save: function(e) {
 			e.preventDefault();
 
-			this.model.set('name', this.$el.find('#b-people-group-name').val());
+			this.model.set('name', this.$name.text());
+			this.$name.addClass(BoomCMS.editableClass);
+
 			this.model.save();
 		}
 	});
@@ -247,12 +264,35 @@
 		tagName: 'div',
 		template: _.template($('#b-person-view').html()),
 
+		events: {
+			'click .name, .name + a': 'editName',
+			'blur h2': 'saveName'
+		},
+
 		render: function() {
 			this.$el.html(this.template(this.model.toJSON()));
 
+			this.$name = this.$('.name').addClass(BoomCMS.editableClass);
 			this.$('select[multiple]').chosen();
 
 			return this;
+		},
+
+		editName: function(e) {
+			e.preventDefault();
+
+			this.$name
+				.removeClass(BoomCMS.editableClass)
+				.focus();
+		},
+
+		saveName: function(e) {
+			e.preventDefault();
+
+			this.model.set('name', this.$name.text());
+			this.$name.addClass(BoomCMS.editableClass);
+
+			this.model.save();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {

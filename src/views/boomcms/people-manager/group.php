@@ -1,18 +1,11 @@
 <div>
-	<div id="b-group-edit-name">
-		<form>
-			<fieldset>
-				<label for="b-people-group-name"><h2><?= trans('Edit group name') ?></h2></label>
-				<input type="text" id="b-people-group-name" name="name" value="<%= name %>" />
-
-				<?= $button('save', trans('Save group name'), ['id' => 'b-people-group-save', 'class' => 'b-button-withtext']) ?>
-			</fieldset>
-		</form>
+	<div>
+		<h2 contenteditable><%= name %></h2>
+		<a href="#" class="fa fa-edit"></a>
 	</div>
+		
 
 	<div id='b-group-edit-permissions' class="boom-tabs">
-		<h2>Edit permissions</h2>
-
 		<ul>
 			<li><a href="#b-group-roles-general"><?= trans('CMS Permissions') ?></a></li>
 			<li><a href="#b-group-roles-pages"><?= trans('Page Permissions') ?></a></li>

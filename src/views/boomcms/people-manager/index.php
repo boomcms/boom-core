@@ -68,7 +68,7 @@
 
 <script type="text/template" id="b-people-table-item">
     <td>
-        <a href="#person/<%= id ? id : 0 %>"><%= name %></a>
+        <a href="#person/<%= id %>"><%= name %></a>
     </td>
 
     <td>
@@ -82,7 +82,7 @@
     </td>
 
     <td>
-        <time datetime='<%= last_login ? last_login : null %>'></time>
+        <time datetime='<%= last_login %>'></time>
     </td>
 
     <td>

@@ -2,9 +2,6 @@
 
 return [
     'heading'        => 'Manage people and groups',
-    'details'        => 'User details',
-    'name'           => 'Name',
-    'email'          => 'Email',
     'status'         => 'Status',
     'superuser'      => 'Superuser',
     'groups-heading' => 'Groups',

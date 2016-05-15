@@ -28,6 +28,7 @@
 			this.listenTo(this.groups, 'all sort', this.renderGroups);
 			this.listenTo(this.people, 'all sort filter', this.renderPeople);
 			this.listenTo(this.people, 'edit created', this.editPerson);
+			this.listenTo(this.people, 'created', this.showAllPeople);
 
 			this.showAllPeople();
 			this.people.sort();

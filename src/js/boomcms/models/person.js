@@ -19,6 +19,11 @@
 			return this.addRelationship('site', siteId);
 		},
 
+		defaults: {
+			id: null,
+			last_login: null
+		},
+
 		getName: function() {
 			return this.get('name');
 		},

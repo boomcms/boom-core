@@ -17,7 +17,9 @@
 		createPerson: function(e) {
 			e.preventDefault();
 
-			this.people.create(this.$('form').serializeJSON());
+			var person = this.people.create(this.$('form').serializeJSON());
+
+			this.people.trigger('created', person);
 		},
 
 		render: function() {

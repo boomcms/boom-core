@@ -6,19 +6,33 @@
 		template: _.template($('#b-group-edit').html()),
 
 		events: {
-			'click #b-people-group-save': 'saveGroupName'
+			'click #b-people-group-save': 'saveGroupName',
+			'click h2, h2 + a': 'editName',
+			'blur h2': 'save'
+		},
+
+		editName: function(e) {
+			e.preventDefault();
+
+			this.$name
+				.removeClass(BoomCMS.editableClass)
+				.focus();
 		},
 
 		render: function() {
 			this.$el.html(this.template(this.model.toJSON()));
 
+			this.$name = this.$('h2').addClass(BoomCMS.editableClass);
+
 			return this;
 		},
 
-		saveGroupName: function(e) {
+		save: function(e) {
 			e.preventDefault();
 
-			this.model.set('name', this.$el.find('#b-people-group-name').val());
+			this.model.set('name', this.$name.text());
+			this.$name.addClass(BoomCMS.editableClass);
+
 			this.model.save();
 		}
 	});
