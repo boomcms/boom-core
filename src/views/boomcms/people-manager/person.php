@@ -28,6 +28,12 @@
 				</select>
 			</label>
 		<?php endif*/ ?>
+
+		<div>
+			<?= $button('save', 'save', ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
+			<?= $button('trash-o', 'delete', ['id' => 'b-person-delete']) ?>
+		</div>
+>>>>>>> 35b57695239483db2a9dd86094586fa3fda45c39
 	</form>
 </section>
 
