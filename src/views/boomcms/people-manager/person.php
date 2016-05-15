@@ -19,15 +19,15 @@
 		</label>
 
 		<?php /*if (Gate::allows('editSuperuser', $person)): ?>
-			<label for='person-superuser'>
-				<?= trans('boomcms::people-manager.superuser') ?>
+            <label for='person-superuser'>
+                <?= trans('boomcms::people-manager.superuser') ?>
 
-				<select name="superuser" id="person-superuser">
-					<option value="">No</option>
-					<option value="1">Yes</option>
-				</select>
-			</label>
-		<?php endif*/ ?>
+                <select name="superuser" id="person-superuser">
+                    <option value="">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </label>
+        <?php endif*/ ?>
 
 		<div>
 			<?= $button('save', 'save', ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>

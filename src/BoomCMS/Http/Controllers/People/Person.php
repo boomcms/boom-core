@@ -8,7 +8,6 @@ use BoomCMS\Jobs\CreatePerson;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
 use BoomCMS\Support\Facades\Router;
-use BoomCMS\Support\Facades\Site as SiteFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Gate;
@@ -19,7 +18,7 @@ class Person extends PeopleManager
 
     public function destroy(PersonModel $person)
     {
-//        PersonFacade::delete($person);
+        //        PersonFacade::delete($person);
     }
 
     public function index()
