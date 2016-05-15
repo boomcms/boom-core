@@ -75,7 +75,10 @@
 		},
 
 		editPerson: function(person) {
-			var view = new BoomCMS.PeopleManager.PersonView({model: person}); 
+			var view = new BoomCMS.PeopleManager.PersonView({
+				model: person,
+				groups: this.groups.models
+			}); 
 
 			this.show(view);
 		},
@@ -269,8 +272,15 @@
 			'blur h2': 'saveName'
 		},
 
+		initialize: function(options) {
+			this.groups = options.groups;
+		},
+
 		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
+			this.$el.html(this.template({
+				person: this.model,
+				groups: this.groups
+			}));
 
 			this.$name = this.$('.name').addClass(BoomCMS.editableClass);
 			this.$('select[multiple]').chosen();

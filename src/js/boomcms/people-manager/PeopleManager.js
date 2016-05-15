@@ -75,7 +75,10 @@
 		},
 
 		editPerson: function(person) {
-			var view = new BoomCMS.PeopleManager.PersonView({model: person}); 
+			var view = new BoomCMS.PeopleManager.PersonView({
+				model: person,
+				groups: this.groups.models
+			}); 
 
 			this.show(view);
 		},

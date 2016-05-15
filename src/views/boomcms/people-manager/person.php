@@ -1,9 +1,9 @@
 <div>
-	<h2 class="name" contenteditable><%= name %></h2>
+	<h2 class="name" contenteditable><%= person.getName() %></h2>
 	<a href="#" class="fa fa-edit"></a>
 </div>
 
-<p class="email"><%= email %></p>
+<p class="email"><%= person.getEmail() %></p>
 
 <section>
 	<form>
@@ -38,9 +38,7 @@
     <h2><?= trans('boomcms::people-manager.groups-heading') ?></h2>
     <p><?= trans('boomcms::people-manager.groups') ?></p>
 
-    <select class='b-person-groups' multiple>
-
-    </select>
+    <?= view('boomcms::people-manager.group-select') ?>
 </section>
 
 <?php if (Gate::allows('manageSites', Router::getActiveSite())): ?>

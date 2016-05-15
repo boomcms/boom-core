@@ -24,6 +24,10 @@
 			last_login: null
 		},
 
+		getEmail: function() {
+			return this.get('email');
+		},
+
 		getName: function() {
 			return this.get('name');
 		},
