@@ -6,16 +6,6 @@
 		display: inline-block;
 	}
 
-	> div {
-		display: inline-block;
-		vertical-align: top;
-	}
-
-	#b-people-content {
-		width: 70%;
-		margin-left: 2em;
-	}
-
 	.email {
 		color: @grey;
 	}
@@ -63,14 +53,8 @@
 		}
 	}
 
-	#b-people-addgroup {
-		display: none;
-	}
-
 	#b-groups {
-		width: 25%;
-		color: #fff;
-		min-height: 90%;
+		margin-bottom: 5rem;
 
 		&-header {
 			background: @red;
@@ -90,6 +74,7 @@
 				.text-normal;
 				margin: 0.75em 0;
 				text-transform: uppercase;
+				color: @white;
 			}
 		}
 
@@ -193,6 +178,28 @@
 
 		th {
 			color: @white;
+		}
+	}
+}
+
+@media all and (min-width: 768px) {
+	#b-people-manager {
+		overflow: hidden;
+
+		> div {
+			display: inline-block;
+			vertical-align: top;
+			float: left;
+		}
+
+		#b-people-content {
+			width: calc(~"100% - 35rem");
+			padding-left: 2em;
+		}
+
+		#b-groups {
+			width: 35rem;
+			margin-bottom: 0;
 		}
 	}
 }
