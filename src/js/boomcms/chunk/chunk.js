@@ -24,7 +24,7 @@ $.widget('ui.chunk',
 		var self = this;
 
 		this.element
-			.addClass('b-editable')
+			.addClass(BoomCMS.editableClass)
 			.unbind('click')
 			.on('click', function(e) {
 				self.triggerEdit(e);

@@ -45454,6 +45454,7 @@ $(function() {
 	'use strict';
 
 	function BoomCMS() {
+		this.editableClass = 'b-editable';
 		this.urlRoot = '/boomcms/';
 		this.Collections = {};
 
@@ -46413,7 +46414,7 @@ function boomHistory() {
 				var $this = $(this);
 
 				$this
-					.addClass('b-editable')
+					.addClass(BoomCMS.editableClass)
 					.on('click', function(e) {
 						e.preventDefault();
 
@@ -47978,7 +47979,7 @@ $.widget('ui.chunk',
 		var self = this;
 
 		this.element
-			.addClass('b-editable')
+			.addClass(BoomCMS.editableClass)
 			.unbind('click')
 			.on('click', function(e) {
 				self.triggerEdit(e);
@@ -49084,7 +49085,7 @@ $.widget('ui.chunkPageTags', {
 		var chunkPageTags = this;
 
 		this.element
-			.addClass('b-editable')
+			.addClass(BoomCMS.editableClass)
 			.on('click', function(e) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -49106,7 +49107,7 @@ $.widget('ui.chunkPageVisibility', {
 		var chunkPageVisibility = this;
 
 		this.element
-			.addClass('b-editable')
+			.addClass(BoomCMS.editableClass)
 			.on('click', function(e) {
 				e.preventDefault();
 				e.stopPropagation();

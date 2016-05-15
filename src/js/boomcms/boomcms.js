@@ -2,6 +2,7 @@
 	'use strict';
 
 	function BoomCMS() {
+		this.editableClass = 'b-editable';
 		this.urlRoot = '/boomcms/';
 		this.Collections = {};
 

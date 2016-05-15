@@ -75,7 +75,7 @@ $.widget( 'boom.pageEditor', {
 				var $this = $(this);
 
 				$this
-					.addClass('b-editable')
+					.addClass(BoomCMS.editableClass)
 					.on('click', function(e) {
 						e.preventDefault();
 

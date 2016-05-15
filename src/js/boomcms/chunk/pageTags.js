@@ -7,7 +7,7 @@ $.widget('ui.chunkPageTags', {
 		var chunkPageTags = this;
 
 		this.element
-			.addClass('b-editable')
+			.addClass(BoomCMS.editableClass)
 			.on('click', function(e) {
 				e.preventDefault();
 				e.stopPropagation();

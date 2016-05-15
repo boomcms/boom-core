@@ -124,8 +124,6 @@
 		initialize: function(options) {
 			this.groups = options.groups;
 			this.people = options.people;
-
-//			this.listenTo(this.groups, 'change created destroy', this.render);
 		},
 
 		events: {
