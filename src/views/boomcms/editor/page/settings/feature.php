@@ -7,7 +7,7 @@
 		<?php if (!$featureImageId): ?>
 			<img id='b-page-feature-current' src='' />
 		<?php else: ?>
-			<img id='b-page-feature-current' data-asset-id="<?= $featureImageId ?>" src='<?= $assetURL(['asset' => $featureImageId, 'width' => 500]) ?>' />
+			<img id='b-page-feature-current' data-asset-id="<?= $featureImageId ?>" src='<?= $assetURL(['asset' => $featureImageId, 'width' => 500, 'action' => 'thumb']) ?>' />
 		<?php endif ?>
 
         <?= $button('image', 'Select an image from the asset manager', ['id' => 'b-page-feature-edit', 'class' => 'b-button-withtext']) ?>
