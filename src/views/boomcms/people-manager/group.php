@@ -1,18 +1,11 @@
-<div id='b-group-edit'>
-	<div id="b-group-edit-name">
-		<form data-group-id='<?= $group->getId() ?>'>
-			<fieldset>
-				<label for="b-people-group-name"><h2><?= trans('Edit group name') ?></h2></label>
-				<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?= $group->getName() ?>" />
-
-				<?= $button('save', trans('Save group name'), ['id' => 'b-people-group-save', 'class' => 'b-button-withtext']) ?>
-			</fieldset>
-		</form>
+<div>
+	<div>
+		<h2 contenteditable><%= name %></h2>
+		<a href="#" class="fa fa-edit"></a>
 	</div>
+		
 
 	<div id='b-group-edit-permissions' class="boom-tabs">
-		<h2>Edit permissions</h2>
-
 		<ul>
 			<li><a href="#b-group-roles-general"><?= trans('CMS Permissions') ?></a></li>
 			<li><a href="#b-group-roles-pages"><?= trans('Page Permissions') ?></a></li>
@@ -20,7 +13,9 @@
 
 		<div id="b-group-roles-general">
 			<p>Edit permissions related to the CMS as a whole rather than particular pages in the site tree.</p>
-			<?= view('boomcms::groups.roles', ['roles' => $general_roles]) ?>
+			<?= view('boomcms::people-manager.roles', [
+                'roles' => BoomCMS\Database\Models\Role::getGeneralRoles(),
+            ]) ?>
 
 			<div class="b-group-roles-help">
 				<p>
@@ -62,7 +57,9 @@
 					<ul class="boom-tree"></ul>
 				</div>
 				<div>
-					<?= view('boomcms::groups.roles', ['roles' => $page_roles]) ?>
+					<?= view('boomcms::people-manager.roles', [
+                        'roles' => BoomCMS\Database\Models\Role::getPageRoles(),
+                    ]) ?>
 				</div>
 			</div>
 			<div class="b-group-roles-help">
@@ -103,11 +100,3 @@
 		</div>
 	</div>
 </div>
-
-<script type='text/javascript'>
-	window.onload = function () {
-		$('#b-group-edit').groupPermissionsEditor({
-			group : new boomGroup(<?= $group->getId() ?>)
-		});
-	};
-</script>

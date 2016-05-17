@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Tests\Http\Controllers\People;
 
+use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\People\Person as Controller;
@@ -21,23 +22,39 @@ class PersonTest extends BaseControllerTest
      */
     protected $className = Controller::class;
 
-    public function testCreate()
-    {
-        GroupFacade::shouldReceive('findAll');
-
-        $this->controller->create();
-    }
-
     public function testDestroy()
     {
-        $peopleIds = [1, 2];
-        $request = new Request(['people' => $peopleIds]);
+        $person = new Person();
+        PersonFacade::shouldReceive('delete')->with($person);
 
-        PersonFacade::shouldReceive('deleteByIds')->with($peopleIds);
-
-        $this->controller->destroy($request);
+        $this->controller->destroy($person);
     }
 
+    public function testStoreCanBeCalledWithoutGroups()
+    {
+       $person = m::mock(Person::class);
+       $person->shouldReceive('addGroup')->never();
+
+       $person->shouldReceive('addSite');
+
+        PersonFacade::shouldReceive('create')
+            ->once()
+            ->andReturn($person);
+
+        Auth::shouldReceive('user')->andReturn(new Person());
+        Event::shouldReceive('fire');
+
+        $request = new Request([
+            'email'  => 'support@uxblondon.com',
+            'name'   => 'Test user',
+        ]);
+
+        $this->controller->store($request, new Site());
+    }
+
+    /**
+     * @depends testStoreCanBeCalledWithoutGroups
+     */
     public function testStoreAddsNewPersonToCurrentSite()
     {
         $site = new Site();
@@ -57,12 +74,45 @@ class PersonTest extends BaseControllerTest
         Event::shouldReceive('fire');
 
         $request = new Request([
-            'email' => 'support@uxblondon.com',
-            'name'  => 'Test user',
+            'email'  => 'support@uxblondon.com',
+            'name'   => 'Test user',
         ]);
 
-        $this->controller->shouldReceive('addGroups');
         $this->controller->store($request, $site);
+    }
+
+    public function testStoreAddsNewPersonToGroups()
+    {
+        $groupId = 1;
+        $group = new Group();
+
+        GroupFacade::shouldReceive('find')
+            ->once()
+            ->with($groupId)
+            ->andReturn($group);
+        
+        $person = m::mock(Person::class);
+        $person
+            ->shouldReceive('addGroup')
+            ->once()
+            ->with($group);
+
+        $person->shouldReceive('addSite');
+
+        PersonFacade::shouldReceive('create')
+            ->once()
+            ->andReturn($person);
+
+        Auth::shouldReceive('user')->andReturn(new Person());
+        Event::shouldReceive('fire');
+
+        $request = new Request([
+            'email'  => 'support@uxblondon.com',
+            'name'   => 'Test user',
+            'groups' => [$groupId]
+        ]);
+
+        $this->controller->store($request, new Site());
     }
 
     public function testUpdatingSuperuser()

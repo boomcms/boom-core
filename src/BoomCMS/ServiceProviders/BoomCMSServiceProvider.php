@@ -24,7 +24,9 @@ class BoomCMSServiceProvider extends ServiceProvider
         'Tag'         => Facades\Tag::class,
         'Template'    => Facades\Template::class,
         'Group'       => Facades\Group::class,
+        'Person'      => Facades\Person::class,
         'Router'      => Facades\Router::class,
+        'Site'        => Facades\Site::class,
         'Str'         => Str::class,
     ];
 

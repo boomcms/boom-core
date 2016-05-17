@@ -30,8 +30,6 @@ class RouteServiceProvider extends ServiceProvider
         }
 
         $router->model('related', Page::class);
-
-        require __DIR__.'/../../routes.php';
     }
 
     public function register()
@@ -39,5 +37,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->app->singleton(BoomCMSRouter::class, function () {
             return new BoomCMSRouter($this->app);
         });
+
+        require __DIR__.'/../../routes.php';
     }
 }

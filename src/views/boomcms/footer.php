@@ -1,8 +1,9 @@
     <script type="text/javascript">
         //<![CDATA[
         (function ($) {
-            $.boom.init();
-            $('body').ui();
+            window.BoomCMS.init({
+                user: new BoomCMS.Person(<?= auth()->user()->toJson() ?>)
+            });
         })(jQuery);
         //]]>
     </script>

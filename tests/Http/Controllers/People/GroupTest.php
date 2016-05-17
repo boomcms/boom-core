@@ -98,7 +98,7 @@ class GroupTest extends BaseControllerTest
             ->with($site, $name)
             ->andReturn($group);
 
-        $this->assertEquals($group->getId(), $this->controller->store($request, $site));
+        $this->assertEquals($group, $this->controller->store($request, $site));
     }
 
     public function testUpdate()

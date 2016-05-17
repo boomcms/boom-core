@@ -4,7 +4,7 @@
 /**
 * Interface for the wysihtml5 editor.
 * @class
-* @name $.boom.textEditor
+* @name window.BoomCMS.textEditor
 */
 $.widget('boom.textEditor', {
 	/**
@@ -99,7 +99,7 @@ $.widget('boom.textEditor', {
 					}
 				})
 				.on('tableselect:composer', function(e) {
-					$.boom.page.toolbar.element.width('160px');
+					window.BoomCMS.page.toolbar.element.width('160px');
 					self.toolbar.parents('#b-topbar').width('160px');
 					top.$('body').first().animate({'margin-left': '160px'}, 500);
 
@@ -165,7 +165,7 @@ $.widget('boom.textEditor', {
 	apply: function(element) {
 		var html = this.model === 'block' ? this.instance.getValue() : element.html();
 
-		$.boom.page.toolbar.minimise();
+		window.BoomCMS.page.toolbar.minimise();
 		this.hideToolbar();
 
 		if (this.mode !== 'block') {
@@ -228,7 +228,7 @@ $.widget('boom.textEditor', {
 	},
 	
 	hideTableButtons: function() {
-		$.boom.page.toolbar.element.width('60px');
+		window.BoomCMS.page.toolbar.element.width('60px');
 		this.toolbar.parents('#b-topbar').width('60px');
 		top.$('body').first().animate({'margin-left': '60px'}, 500);
 		$('#wysihtml5-toolbar').width('60px');

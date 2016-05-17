@@ -24,7 +24,7 @@ $.widget('ui.chunk',
 		var self = this;
 
 		this.element
-			.addClass('b-editable')
+			.addClass(BoomCMS.editableClass)
 			.unbind('click')
 			.on('click', function(e) {
 				self.triggerEdit(e);
@@ -75,7 +75,7 @@ $.widget('ui.chunk',
 		return chunk.delete(this.options.template)
 			.done(function(data) {
 				self._update_html(data.html);
-				$.boom.page.toolbar.status.set(data.status);
+				window.BoomCMS.page.toolbar.status.set(data.status);
 				new boomNotification("Page content saved").show();
 			});
 	},
@@ -90,7 +90,7 @@ $.widget('ui.chunk',
 		return chunk.save(data)
 			.done(function(data) {
 				self._update_html(data.html);
-				$.boom.page.toolbar.status.set(data.status);
+				window.BoomCMS.page.toolbar.status.set(data.status);
 				new boomNotification("Page content saved").show();
 			});
 	},

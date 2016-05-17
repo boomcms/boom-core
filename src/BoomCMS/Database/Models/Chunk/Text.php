@@ -17,6 +17,7 @@ class Text extends BaseChunk
             $siteText = $text = strip_tags($text);
         } else {
             $embera = new Embera();
+
             $text = Str::makeInternalLinksRelative($text);
             $siteText = Str::StorifyEmbed($embera->autoEmbed($text));
         }

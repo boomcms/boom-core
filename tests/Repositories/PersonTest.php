@@ -26,15 +26,18 @@ class PersonTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->model = m::mock(Person::class.'[where,join,whereSite,destroy,orderBy,get]');
+        $this->model = m::mock(Person::class.'[where,join,whereSite,destroy,orderBy,get,with]');
         $this->repository = m::mock(PersonRepository::class, [$this->model])->makePartial();
     }
 
-    public function testDeleteByIds()
+    public function testDelete()
     {
-        $this->model->shouldReceive('destroy')->once()->with([1, 2]);
+        $model = m::mock(Person::class);
+        $model->shouldReceive('delete')->once();
 
-        $this->assertEquals($this->repository, $this->repository->deleteByIds([1, 2]));
+        $repository = new PersonRepository($model);
+
+        $this->assertEquals($repository, $repository->delete($model));
     }
 
     /**
@@ -62,6 +65,38 @@ class PersonTest extends AbstractTestCase
         $this->model->shouldReceive('get')->andReturn([]);
 
         $this->assertEquals([], $this->repository->findByGroupId(1));
+    }
+
+    public function testFindBySite()
+    {
+        $site = new Site();
+        $site->{Site::ATTR_ID} = 1;
+        $people = [new Person(), new Person()];
+
+        $this->model
+            ->shouldReceive('with')
+            ->once()
+            ->with('groups')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('with')
+            ->once()
+            ->with('sites')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('whereSite')
+            ->once()
+            ->with($site)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn($people);
+
+        $this->assertEquals($people, $this->repository->findBySite($site));
     }
 
     public function testRetrieveByCredentials()

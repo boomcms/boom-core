@@ -53,21 +53,22 @@ Route::group(['middleware' => [
 
             Route::group([
                 'namespace'  => 'People',
-                'middleware' => [Middleware\PeopleManager::class],
             ], function () {
-                Route::get('people', 'PeopleManager@index');
+                Route::get('people-manager', [
+                    'uses' => 'PeopleManager@index',
+                    'as'   => 'people-manager',
+                ]);
 
                 Route::group(['prefix' => 'person'], function () {
-                    Route::delete('', 'Person@destroy');
-                    Route::resource('{person}/group', 'PersonGroups');
-                    Route::resource('{person}/site', 'PersonSites');
+                    Route::resource('{person}/group', 'PersonGroup');
+                    Route::resource('{person}/site', 'PersonSite');
                 });
 
                 Route::resource('person', 'Person');
 
                 Route::get('group/{group}/roles', 'Group@roles');
                 Route::delete('group/{group}/roles', 'Group@removeRole');
-                Route::put('group/{group}/roles', 'Group@addRole');
+                Route::post('group/{group}/roles', 'Group@addRole');
                 Route::resource('group', 'Group');
             });
 

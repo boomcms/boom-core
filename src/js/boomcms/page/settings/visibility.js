@@ -22,7 +22,7 @@ $.widget('boom.pageSettingsVisibility', {
 				pageVisibilityEditor.save();
 			})
 			.on('click', '.b-visibility-preview', function() {
-				$.boom.editor.state('preview');
+				window.BoomCMS.editor.state('preview');
 			});
 
 		this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');
