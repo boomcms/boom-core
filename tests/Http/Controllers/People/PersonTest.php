@@ -32,10 +32,10 @@ class PersonTest extends BaseControllerTest
 
     public function testStoreCanBeCalledWithoutGroups()
     {
-       $person = m::mock(Person::class);
-       $person->shouldReceive('addGroup')->never();
+        $person = m::mock(Person::class);
+        $person->shouldReceive('addGroup')->never();
 
-       $person->shouldReceive('addSite');
+        $person->shouldReceive('addSite');
 
         PersonFacade::shouldReceive('create')
             ->once()
@@ -90,7 +90,7 @@ class PersonTest extends BaseControllerTest
             ->once()
             ->with($groupId)
             ->andReturn($group);
-        
+
         $person = m::mock(Person::class);
         $person
             ->shouldReceive('addGroup')
@@ -109,7 +109,7 @@ class PersonTest extends BaseControllerTest
         $request = new Request([
             'email'  => 'support@uxblondon.com',
             'name'   => 'Test user',
-            'groups' => [$groupId]
+            'groups' => [$groupId],
         ]);
 
         $this->controller->store($request, new Site());

@@ -29,7 +29,7 @@ class Person extends PeopleManager
     public function store(Request $request, Site $site)
     {
         $job = new CreatePerson($request->input('email'), $request->input('name'));
-        
+
         $person = Bus::dispatch($job);
         $person->addSite($site);
 
