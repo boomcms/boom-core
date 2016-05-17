@@ -7,7 +7,7 @@ use BoomCMS\Contracts\Models\Person;
 class PersonPolicy
 {
     /**
-     * Whether a user can edit the superuser status of another
+     * Whether a user can edit the superuser status of another.
      *
      * @param Person $user
      * @param Person $editing
