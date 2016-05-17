@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title'          => 'People Manager',
     'heading'        => 'Manage people and groups',
     'status'         => 'Status',
     'superuser'      => 'Superuser',

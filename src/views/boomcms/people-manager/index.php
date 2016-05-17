@@ -1,4 +1,4 @@
-<?= view('boomcms::header', ['title' => 'People']) ?>
+<?= view('boomcms::header', ['title' => trans('boomcms::people-manager.title')]) ?>
 
 <div id="b-topbar" class="b-toolbar">
     <?= $menu() ?>

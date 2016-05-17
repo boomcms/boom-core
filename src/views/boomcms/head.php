@@ -1,5 +1,5 @@
 <head>
-    <title><?= $title ?></title>
+    <title><?= $title ?> | BoomCMS - <?= Settings::get('site.name') ?></title>
 
     <meta name="robots" content="noindex, nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
