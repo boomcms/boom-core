@@ -50826,7 +50826,6 @@ $.widget('ui.chunkPageVisibility', {
 		this.uploadForm = this.element;
 		this.originalMessage = this.dropArea.find('.message').html();
 
-		this.resizeDropArea();
 		this.bind();
 		this.initUploader();
 	},
@@ -50874,10 +50873,6 @@ $.widget('ui.chunkPageVisibility', {
 			url: '/boomcms/assets/replace/' + asset.id,
 			singleFileUploads: true
 		});
-	},
-
-	resizeDropArea: function() {
-		this.options.dropAreaHeight && this.dropArea.height(this.options.dropAreaHeight);
 	},
 
 	reset: function() {
