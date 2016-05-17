@@ -87,7 +87,7 @@ $.widget('boom.pageSettingsFeature', {
 			this.currentImage = asset;
 
 			if (asset.getId()) {
-				this.element.find('#b-page-feature-current').attr('src', asset.getUrl('view', 500)).show();
+				this.element.find('#b-page-feature-current').attr('src', asset.getUrl('thumb', 500)).show();
 				this.element.find('#b-page-feature-remove').prop('disabled', false);
 				this.element.find('#b-page-feature-none').hide();
 			}

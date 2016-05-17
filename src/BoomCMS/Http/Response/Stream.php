@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Response;
 
-use BoomCMS\Core\Asset\Asset;
+use BoomCMS\Contracts\Models\Asset;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 
