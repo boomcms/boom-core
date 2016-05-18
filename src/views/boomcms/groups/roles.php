@@ -8,7 +8,7 @@
     <tbody>
         <?php foreach ($roles as $role): ?>
             <tr data-id="<?= $role->id ?>">
-                <td><?= $role->description ?></td>
+                <td><?= trans('boomcms::roles.'.$role->name) ?></td>
 
                 <td>
                     <input type="radio" id="allow-<?= $role->id ?>" value="1" name="<?= $role->id ?>" />
