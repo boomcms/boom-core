@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Tests\Models\Chunk;
+namespace BoomCMS\Tests\Database\Models\Chunk;
 
 use BoomCMS\Database\Models\Chunk\Library;
 use BoomCMS\Tests\AbstractTestCase;
