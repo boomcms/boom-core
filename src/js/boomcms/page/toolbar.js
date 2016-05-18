@@ -143,10 +143,8 @@ $.widget( 'boom.pageToolbar', {
 					toolbar._toggle_view_live_button();
 				},
 				urlsSave: function(event, primaryUrl) {
-					var history = new boomHistory();
-
-					history.replaceState({},
-						top.window.document.title,
+					top.history.replaceState({},
+						top.document.title,
 						'/' + ((primaryUrl === '/') ? '' : primaryUrl)
 					);
 				},

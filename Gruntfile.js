@@ -63,7 +63,6 @@ module.exports = function(grunt) {
 					'src/js/boomcms/collections/*.js',
 					'src/js/boomcms/plugins.js',
 					'src/js/boomcms/notification.js',
-					'src/js/boomcms/history.js',
 					'src/js/boomcms/dialog.js',
 					'src/js/boomcms/alert.js',
 					'src/js/boomcms/confirmation.js',
