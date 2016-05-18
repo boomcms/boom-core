@@ -8,6 +8,7 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Support\Facades\Editor;
 use DateTime;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 
 class PageVersion extends Model implements PageVersionInterface
@@ -220,14 +221,16 @@ class PageVersion extends Model implements PageVersionInterface
             ->orderBy(self::ATTR_ID, 'desc');
     }
 
-    public function scopeLatestAvailable($query)
+	/**
+	 * @param QueryBuilder $query
+	 *
+	 * @return QueryBuilder
+	 */
+    public function scopeLatestAvailable(QueryBuilder $query)
     {
-        if (Editor::isDisabled()) {
-            return $this->scopeLastPublished($query);
-        } else {
-            // For logged in users get the most recently created
-            return $query->orderBy(self::ATTR_EDITED_AT, 'desc');
-        }
+            return (Editor::isDisabled()) ?
+				$this->scopeLastPublished($query)
+				: $query->orderBy(self::ATTR_EDITED_AT, 'desc');
     }
 
     public function scopeForPage($query, PageInterface $page)
