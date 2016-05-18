@@ -884,13 +884,13 @@ class Page extends Model implements PageInterface
      *
      * @return URLInterface|null
      */
-    public function url($refresh = false)
+    public function url()
     {
         if ($this->{self::ATTR_PRIMARY_URI} === null) {
             return;
         }
 
-        if ($refresh || $this->primaryUrl === null) {
+        if ($this->primaryUrl === null) {
             $this->primaryUrl = new URL([
                 'page'       => $this,
                 'location'   => $this->{self::ATTR_PRIMARY_URI},

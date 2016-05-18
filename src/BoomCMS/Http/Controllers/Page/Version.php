@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\Template;
 use BoomCMS\Events;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
+use BoomCMS\Support\Facades\URL as URLFacade;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -155,7 +156,7 @@ class Version extends Controller
 
         return [
             'status'   => $page->getCurrentVersion()->getStatus(),
-            'location' => (string) $page->url(true),
+            'location' => (string) URLFacade::page($page),
         ];
     }
 }

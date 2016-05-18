@@ -8,6 +8,7 @@ use BoomCMS\Database\Models\Template;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Http\Controllers\Page\Version as Controller;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
+use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Mockery as m;
@@ -169,13 +170,15 @@ class VersionTest extends BaseControllerTest
             ->with($title)
             ->andReturnSelf();
 
-        $this->page
-            ->shouldReceive('url')
-            ->andReturn($url);
-
         $this->version
             ->shouldReceive('getStatus')
+			->once()
             ->andReturn($status);
+
+		URLFacade::shouldReceive('page')
+			->once()
+			->with($this->page)
+			->andReturn(new URL([URL::ATTR_LOCATION => '/']));
 
         $response = $this->controller->postTitle($request, $this->page);
 
