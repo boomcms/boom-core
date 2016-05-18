@@ -1,7 +1,9 @@
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
-            $.boom.init();
+            window.BoomCMS.init({
+				user: '<?= auth()->user()->toJson() ?>'
+			});
 
             $('body').pageEditor({
                 page_id : <?= $page->getId() ?>,
