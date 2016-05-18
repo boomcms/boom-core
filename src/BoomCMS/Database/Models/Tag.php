@@ -52,15 +52,15 @@ class Tag extends Model implements TagInterface
         return $this->{self::ATTR_NAME};
     }
 
-	/**
-	 * @param array $models
-	 *
-	 * @return TagCollection
-	 */
-	public function newCollection(array $models = [])
-	{
-		return new TagCollection($models);
-	}
+    /**
+     * @param array $models
+     *
+     * @return TagCollection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new TagCollection($models);
+    }
 
     /**
      * @return string
