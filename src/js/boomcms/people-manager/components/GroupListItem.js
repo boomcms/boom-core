@@ -7,11 +7,11 @@
 
 		events: {
 			'click .delete': 'deleteGroup',
-			'click .edit': 'editGroup'
 		},
 
 		initialize: function() {
 			this.listenTo(this.model, 'change', this.render);
+			this.listenTo(this.model, 'change', this.sortGroups);
 			this.listenTo(this.model, 'destroy', this.remove);
 		},
 
@@ -32,10 +32,8 @@
 			});
 		},
 
-		editGroup: function(e) {
-			e.preventDefault();
-
-			this.model.trigger('edit', this.model);
+		sortGroups: function() {
+			this.model.collection.sort();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));

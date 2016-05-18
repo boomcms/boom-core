@@ -5,25 +5,23 @@
 
     <?= $menuButton() ?>
     <?= $button('plus', trans('New person'), ['id' => 'b-people-create']) ?>
-
-    <a href="#" id="b-people-all"> <?= trans('All people') ?></a>
 </div>
 
 <main id="b-container">
     <div id="b-people-manager">
-        <h1><?= trans('boomcms::people-manager.heading') ?></h1>
+        <h1><a href="#"><?= trans('boomcms::people-manager.heading') ?></a></h1>
 
         <div id="b-groups">
             <div id="b-groups-header">
                 <h2>
-                    <?= trans('Groups') ?>
+                    <?= trans('boomcms::people-manager.groups-heading') ?>
                 </h2>
             </div>
 
             <ul id="b-groups-list"></ul>
 
             <form id="b-groups-new">
-                <input type="text" placeholder="New group" required name="name" />
+                <input type="text" placeholder="<?= trans('boomcms::people-manager.new-group') ?>" required name="name" />
 
                 <button>
                     <span class="fa fa-plus-circle"></span>
@@ -36,6 +34,12 @@
 </main>
 
 <script type="text/template" id="b-people-table">
+    <h2><%= group ? group.getName() : "<?= trans('boomcms::people-manager.all-people') ?>" %></h2>
+
+    <% if (group) { %>
+        <a href='#' class='all'><?= trans('boomcms::people-manager.all-people') ?></a>
+    <% } %>
+
     <table class="b-table">
         <thead>
             <tr>

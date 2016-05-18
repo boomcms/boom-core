@@ -2,18 +2,16 @@
 	'use strict';
 
 	BoomCMS.PeopleManager = Backbone.View.extend({
-		el: $('body'),
+		el: 'body',
 
 		events: {
 			'submit #b-groups-new': 'createGroup',
-			'click #b-people-create': 'createPerson',
-			'click #b-people-all': 'showAllPeople'
+			'click #b-people-create': 'createPerson'
 		},
 
 		initialize: function(options) {
 			this.$groupList = this.$('#b-groups-list');
 			this.$content = this.$('#b-people-content');
-			
 
 			this.groups = new BoomCMS.Collections.Groups(options.groups);
 			this.people = new BoomCMS.Collections.People(options.people);
@@ -21,21 +19,14 @@
 
 			this.listenTo(this.groups, 'edit', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
-			this.listenTo(this.groups, 'change:name', this.sortGroups);
-			this.listenTo(this.groups, 'all sort', this.renderGroups);
+			this.listenTo(this.groups, 'sort', this.renderGroups);
 			this.listenTo(this.groups, 'view', this.viewGroup);
-			this.listenTo(this.people, 'change:name', this.sortPeople);
 			this.listenTo(this.people, 'edit', this.editPerson);
-			this.listenTo(this.router, 'home', this.showAllPeople);
 
-			this.groups.sort();
-			this.people.sort();
+			this.renderGroups();
+			this.renderPeople();
 
-			this.$peopleTable = new BoomCMS.PeopleManager.PeopleTable({
-				people: this.people
-			}).render().$el;
-
-			this.router = new BoomCMS.PeopleManager.Router({
+			new BoomCMS.PeopleManager.Router({
 				groups: this.groups,
 				people: this.people
 			});
@@ -86,7 +77,6 @@
 			var view = new BoomCMS.PeopleManager.GroupView({model: group}); 
 
 			this.show(view);
-			view.$el.groupPermissionsEditor({group: group});
 		},
 
 		renderGroups: function() {
@@ -96,22 +86,16 @@
 			return this;
 		},
 
-		show: function(view) {
-			this.$content.html(view.render().el);
-		},
-
-		showAllPeople: function() {
-			this.people.trigger('filter', null);
+		renderPeople: function() {
+			this.$peopleTable = new BoomCMS.PeopleManager.PeopleTable({
+				people: this.people
+			}).render().$el;
 
 			this.$content.html(this.$peopleTable);
 		},
 
-		sortGroups: function() {
-			this.groups.sort();
-		},
-
-		sortPeople: function() {
-			this.people.sort();
+		show: function(view) {
+			this.$content.html(view.render().el);
 		},
 
 		viewGroup: function(group) {

@@ -6,7 +6,6 @@
 		template: _.template($('#b-group-edit').html()),
 
 		events: {
-			'click #b-people-group-save': 'saveGroupName',
 			'click h2, h2 + a': 'editName',
 			'blur h2': 'save'
 		},
@@ -23,6 +22,7 @@
 			this.$el.html(this.template(this.model.toJSON()));
 
 			this.$name = this.$('h2').addClass(BoomCMS.editableClass);
+			this.$('#b-group-roles').groupPermissionsEditor({group: this.model});
 
 			return this;
 		},

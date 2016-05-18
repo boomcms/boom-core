@@ -11,9 +11,19 @@
 		color: @grey;
 	}
 
+	.all {
+		.text-small;
+		color: @grey;
+		margin-left: 0.5rem;
+
+		&:hover, &:focus {
+			color: @black;
+		}
+	}
+
 	section {
 		+ section {
-			margin-top: 5rem;
+			margin-top: 2rem;
 		}
 	}
 
@@ -29,6 +39,7 @@
 
 	table {
 		width: 100%;
+		margin-top: 2rem;
 
 		.groups {
 			padding: 0;
@@ -155,15 +166,6 @@
 				width: 70% !important;
 				float: right;
 			}
-		}
-	}
-
-	.b-group-roles {
-		display: inline-table;
-		width: 60%;
-
-		th {
-			color: @white;
 		}
 	}
 }

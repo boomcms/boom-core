@@ -2,18 +2,16 @@
 	'use strict';
 
 	BoomCMS.PeopleManager = Backbone.View.extend({
-		el: $('body'),
+		el: 'body',
 
 		events: {
 			'submit #b-groups-new': 'createGroup',
-			'click #b-people-create': 'createPerson',
-			'click #b-people-all': 'showAllPeople'
+			'click #b-people-create': 'createPerson'
 		},
 
 		initialize: function(options) {
 			this.$groupList = this.$('#b-groups-list');
 			this.$content = this.$('#b-people-content');
-			
 
 			this.groups = new BoomCMS.Collections.Groups(options.groups);
 			this.people = new BoomCMS.Collections.People(options.people);
@@ -21,21 +19,14 @@
 
 			this.listenTo(this.groups, 'edit', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
-			this.listenTo(this.groups, 'change:name', this.sortGroups);
-			this.listenTo(this.groups, 'all sort', this.renderGroups);
+			this.listenTo(this.groups, 'sort', this.renderGroups);
 			this.listenTo(this.groups, 'view', this.viewGroup);
-			this.listenTo(this.people, 'change:name', this.sortPeople);
 			this.listenTo(this.people, 'edit', this.editPerson);
-			this.listenTo(this.router, 'home', this.showAllPeople);
 
-			this.groups.sort();
-			this.people.sort();
+			this.renderGroups();
+			this.renderPeople();
 
-			this.$peopleTable = new BoomCMS.PeopleManager.PeopleTable({
-				people: this.people
-			}).render().$el;
-
-			this.router = new BoomCMS.PeopleManager.Router({
+			new BoomCMS.PeopleManager.Router({
 				groups: this.groups,
 				people: this.people
 			});
@@ -86,7 +77,6 @@
 			var view = new BoomCMS.PeopleManager.GroupView({model: group}); 
 
 			this.show(view);
-			view.$el.groupPermissionsEditor({group: group});
 		},
 
 		renderGroups: function() {
@@ -96,22 +86,16 @@
 			return this;
 		},
 
-		show: function(view) {
-			this.$content.html(view.render().el);
-		},
-
-		showAllPeople: function() {
-			this.people.trigger('filter', null);
+		renderPeople: function() {
+			this.$peopleTable = new BoomCMS.PeopleManager.PeopleTable({
+				people: this.people
+			}).render().$el;
 
 			this.$content.html(this.$peopleTable);
 		},
 
-		sortGroups: function() {
-			this.groups.sort();
-		},
-
-		sortPeople: function() {
-			this.people.sort();
+		show: function(view) {
+			this.$content.html(view.render().el);
 		},
 
 		viewGroup: function(group) {
@@ -139,7 +123,7 @@
 		createPerson: function(e) {
 			e.preventDefault();
 
-			var person = this.people.create(this.$('form').serializeJSON());
+			this.people.create(this.$('form').serializeJSON());
 		},
 
 		render: function() {
@@ -162,11 +146,11 @@
 
 		events: {
 			'click .delete': 'deleteGroup',
-			'click .edit': 'editGroup'
 		},
 
 		initialize: function() {
 			this.listenTo(this.model, 'change', this.render);
+			this.listenTo(this.model, 'change', this.sortGroups);
 			this.listenTo(this.model, 'destroy', this.remove);
 		},
 
@@ -187,10 +171,8 @@
 			});
 		},
 
-		editGroup: function(e) {
-			e.preventDefault();
-
-			this.model.trigger('edit', this.model);
+		sortGroups: function() {
+			this.model.collection.sort();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
@@ -201,7 +183,6 @@
 		template: _.template($('#b-group-edit').html()),
 
 		events: {
-			'click #b-people-group-save': 'saveGroupName',
 			'click h2, h2 + a': 'editName',
 			'blur h2': 'save'
 		},
@@ -218,6 +199,7 @@
 			this.$el.html(this.template(this.model.toJSON()));
 
 			this.$name = this.$('h2').addClass(BoomCMS.editableClass);
+			this.$('#b-group-roles').groupPermissionsEditor({group: this.model});
 
 			return this;
 		},
@@ -235,46 +217,41 @@
 	'use strict';
 
 	BoomCMS.PeopleManager.PeopleTable = Backbone.View.extend({
-		rows: {},
 		tagName: 'div',
 		template: _.template($('#b-people-table').html()),
 
 		initialize: function(options) {
 			this.people = options.people;
 
-			this.listenTo(this.people, 'sort', this.showAllPeople);
-			this.listenTo(this.people, 'filter', this.filterPeople);
+			this.listenTo(this.peeople, 'change:name', this.sortPeople);
+			this.listenTo(this.people, 'all sort filter', this.render);
 		},
 
 		addPersonToTable: function(person) {
 			var view = new BoomCMS.PeopleManager.PeopleTableItem({model: person}),
 				$el = view.render().$el;
 
-			this.rows[person.getId()] = $el;
-
 			this.$('tbody').append($el);
 		},
 
-		filterPeople: function(group) {
-			var table = this, action;
-
-			this.people.each(function(person) {
-				action = (!group || person.groups.get(group.getId())) ? 'show' : 'hide';
-
-				table.rows[person.getId()][action]();
-			});
-		},
-
-		render: function() {
+		render: function(e, group) {
 			var table = this;
 
-			this.$el.html(this.template());
+			this.$el.html(this.template({
+				group: group
+			}));
 
 			this.people.each(function(person) {
-				table.addPersonToTable(person);
+				if (!group || person.groups.get(group.getId())) {
+					table.addPersonToTable(person);
+				}
 			});
 
 			return this;
+		},
+
+		sortPeople: function() {
+			this.people.sort();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
@@ -405,7 +382,7 @@
 				.save();
 		}
 	});
-}(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
+}(jQuery, Backbone, BoomCMS));;(function(Backbone, BoomCMS) {
 	'use strict';
 
 	BoomCMS.PeopleManager.Router = Backbone.Router.extend({
@@ -449,7 +426,7 @@
 		},
 
 		home: function() {
-			this.trigger('home');
+			this.people.trigger('all');
 		},
 
 		viewGroup: function(id) {
@@ -458,4 +435,4 @@
 			group.trigger('view', group);
 		}
 	});
-}(jQuery, Backbone, BoomCMS));
+}(Backbone, BoomCMS));

@@ -51305,7 +51305,6 @@ function Row() {
 					page_id = selected_page;
 
 				self._change(role_id, allowed, page_id);
-
 			});
 
 		/**
@@ -51366,7 +51365,6 @@ function Row() {
 
 	_create: function() {
 		this.group = this.options.group;
-		this.element.ui();
 		this.bind();
 
 		this._check_inputs($('#b-group-roles-general input[type=radio]'), -1);

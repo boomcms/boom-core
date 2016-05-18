@@ -1,4 +1,4 @@
-(function($, Backbone, BoomCMS) {
+(function(Backbone, BoomCMS) {
 	'use strict';
 
 	BoomCMS.PeopleManager.Router = Backbone.Router.extend({
@@ -42,7 +42,7 @@
 		},
 
 		home: function() {
-			this.trigger('home');
+			this.people.trigger('all');
 		},
 
 		viewGroup: function(id) {
@@ -51,4 +51,4 @@
 			group.trigger('view', group);
 		}
 	});
-}(jQuery, Backbone, BoomCMS));
+}(Backbone, BoomCMS));

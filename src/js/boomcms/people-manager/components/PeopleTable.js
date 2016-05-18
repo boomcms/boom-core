@@ -2,46 +2,41 @@
 	'use strict';
 
 	BoomCMS.PeopleManager.PeopleTable = Backbone.View.extend({
-		rows: {},
 		tagName: 'div',
 		template: _.template($('#b-people-table').html()),
 
 		initialize: function(options) {
 			this.people = options.people;
 
-			this.listenTo(this.people, 'sort', this.showAllPeople);
-			this.listenTo(this.people, 'filter', this.filterPeople);
+			this.listenTo(this.peeople, 'change:name', this.sortPeople);
+			this.listenTo(this.people, 'all sort filter', this.render);
 		},
 
 		addPersonToTable: function(person) {
 			var view = new BoomCMS.PeopleManager.PeopleTableItem({model: person}),
 				$el = view.render().$el;
 
-			this.rows[person.getId()] = $el;
-
 			this.$('tbody').append($el);
 		},
 
-		filterPeople: function(group) {
-			var table = this, action;
-
-			this.people.each(function(person) {
-				action = (!group || person.groups.get(group.getId())) ? 'show' : 'hide';
-
-				table.rows[person.getId()][action]();
-			});
-		},
-
-		render: function() {
+		render: function(e, group) {
 			var table = this;
 
-			this.$el.html(this.template());
+			this.$el.html(this.template({
+				group: group
+			}));
 
 			this.people.each(function(person) {
-				table.addPersonToTable(person);
+				if (!group || person.groups.get(group.getId())) {
+					table.addPersonToTable(person);
+				}
 			});
 
 			return this;
+		},
+
+		sortPeople: function() {
+			this.people.sort();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));
