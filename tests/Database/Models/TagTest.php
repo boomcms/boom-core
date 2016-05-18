@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Tests\Database\Models;
 
+use BoomCMS\Collection\TagCollection;
 use BoomCMS\Database\Models\Tag;
 
 class TagTest extends AbstractModelTestCase
@@ -66,6 +67,13 @@ class TagTest extends AbstractModelTestCase
         $tag = new Tag(['group' => 'test']);
         $this->assertEquals('test', $tag->getGroup());
     }
+
+	public function testNewCollectionReturnsTagCollection()
+	{
+		$tag = new Tag();
+
+		$this->assertInstanceOf(TagCollection::class, $tag->newCollection());
+	}
 
     public function testSetName()
     {

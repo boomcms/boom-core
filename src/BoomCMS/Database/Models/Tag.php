@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Database\Models;
 
+use BoomCMS\Collection\TagCollection;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Traits\SingleSite;
@@ -50,6 +51,16 @@ class Tag extends Model implements TagInterface
     {
         return $this->{self::ATTR_NAME};
     }
+
+	/**
+	 * @param array $models
+	 *
+	 * @return TagCollection
+	 */
+	public function newCollection(array $models = [])
+	{
+		return new TagCollection($models);
+	}
 
     /**
      * @return string
