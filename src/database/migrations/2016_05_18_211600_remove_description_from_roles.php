@@ -1,6 +1,5 @@
 <?php
 
-use BoomCMS\Database\Models\Person;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
