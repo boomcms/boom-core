@@ -41,7 +41,7 @@ $.widget('boom.pageSettingsDrafts', {
 					});
 			})
 			.on('click', '.b-page-preview', function() {
-				$.boom.editor.state('preview', $(this).attr('data-url'));
+				window.BoomCMS.editor.state('preview', $(this).attr('data-url'));
 			});
 	},
 

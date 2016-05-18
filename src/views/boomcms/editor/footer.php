@@ -2,8 +2,8 @@
         //<![CDATA[
         $(document).ready(function () {
             window.BoomCMS.init({
-				user: '<?= auth()->user()->toJson() ?>'
-			});
+                user: '<?= auth()->user()->toJson() ?>'
+            });
 
             $('body').pageEditor({
                 page_id : <?= $page->getId() ?>,

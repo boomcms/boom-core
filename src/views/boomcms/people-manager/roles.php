@@ -5,6 +5,7 @@
         <th>Deny</th>
         <th>Not set</th>
     </thead>
+
     <tbody>
         <?php foreach ($roles as $role): ?>
             <tr data-id="<?= $role->id ?>">

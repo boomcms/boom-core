@@ -1,45 +1,45 @@
 #b-people-manager {
 	h2 {
-		.text-normal;
-		font-weight: normal;
-		margin-top: 0;
-		text-transform: uppercase;
+		.text-large;
+		font-weight: bold;
 		display: inline-block;
+		border: 1px solid transparent;
+		margin: -1px;
 	}
 
-	> div {
-		display: inline-block;
-		vertical-align: top;
+	.email {
+		color: @grey;
 	}
 
-	#b-people-content {
-		width: 70%;
-		margin-left: 2em;
+	.all {
+		.text-small;
+		color: @grey;
+		margin-left: 0.5rem;
+
+		&:hover, &:focus {
+			color: @black;
+		}
 	}
 
 	section {
-		background: @lightest-grey;
-		padding: 2rem;
-
 		+ section {
-			margin-top: 5rem;
-		}
-
-		h2 {
-			font-weight: bold;
-		}
-
-		button {
-			color: @dark-grey;
-
-			&:hover, &:focus {
-				color: @red;
-			}
+			margin-top: 2rem;
 		}
 	}
 
-	#b-items-view-list {
+	#b-people-content {
+		position: relative;
+	}
+
+	#b-person-delete {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	table {
 		width: 100%;
+		margin-top: 2rem;
 
 		.groups {
 			padding: 0;
@@ -60,32 +60,18 @@
 		}
 	}
 
-	#b-people-addgroup {
-		display: none;
-	}
-
 	#b-groups {
-		width: 25%;
-		color: #fff;
-		min-height: 90%;
+		margin-bottom: 5rem;
 
 		&-header {
 			background: @red;
 			padding: 0.5rem;
 
-			button {
-				float: right;
-				background-color: transparent;
-				margin-top: 0;
-
-				&:hover, &:focus, &:active {
-					color: @darkest-grey;
-				}
-			}
-
 			h2 {
-				display: inline-block;
-				margin-top: 0.75em;
+				.text-normal;
+				margin: 0.75em 0;
+				text-transform: uppercase;
+				color: @white;
 			}
 		}
 
@@ -131,14 +117,75 @@
 				}
 			}
 		}
+
+		&-new {
+			overflow: hidden;
+			margin-top: 2rem;
+
+			input[type=text] {
+				width: calc(~"100% - 4rem");
+				float: left;
+				display: inline-block;
+			}
+
+			button {
+				float: right;
+				background: none;
+				border: 0;
+				padding: 0;
+				width: 4rem;
+				cursor: pointer;
+
+				&:hover, &:focus {
+					.fa {
+						color: @blue;
+					}
+				}
+
+				.fa {
+					color: @red;
+					font-size: 2rem;
+					line-height: 3.2rem;
+					text-align: center;
+				}
+			}
+		}
 	}
 
-	.b-group-roles {
-		display: inline-table;
-		width: 60%;
+	form.new-person {
+		label.groups {
+			overflow: visible;
 
-		th {
-			color: @white;
+			&:after {
+				display: block;
+				content: ' ';
+				clear: both;
+			}
+
+			.chosen-container {
+				width: 70% !important;
+				float: right;
+			}
+		}
+	}
+}
+
+@media all and (min-width: 768px) {
+	#b-people-manager {
+		> div {
+			display: inline-block;
+			vertical-align: top;
+			float: left;
+		}
+
+		#b-people-content {
+			width: calc(~"100% - 35rem");
+			padding-left: 2em;
+		}
+
+		#b-groups {
+			width: 35rem;
+			margin-bottom: 0;
 		}
 	}
 }

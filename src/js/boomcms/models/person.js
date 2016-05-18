@@ -1,100 +1,70 @@
-function boomPerson(person_id) {
-	this.id = person_id;
+(function(BoomCMS) {
+	'use strict';
 
-	boomPerson.prototype.baseUrl = '/boomcms/person';
+	BoomCMS.Person = BoomCMS.Model.extend({
+		urlRoot: BoomCMS.urlRoot + 'person',
 
-	boomPerson.prototype.add = function() {
-		var deferred = new $.Deferred(),
-			person = this,
-			dialog;
+		initialize: function() {
+			var person = this;
 
-		dialog = new boomDialog({
-			url : this.baseUrl + '/create',
-			width: '600px',
-			title : 'Create new person',
-			closeButton: false,
-			saveButton: true
-		})
-		.done(function() {
-			var data = dialog.contents.find('form').serialize();
+			this.groups = new BoomCMS.Collections.Groups(this.get('groups'));
+			this.sites = new BoomCMS.Collections.Sites(this.get('sites'));
 
-			person.addWithData(data)
-				.done(function(response) {
-					deferred.resolve();
+			this.groups
+				.on('add', function(group) {
+					person.addRelationship('group', group.getId());
 				})
-				.fail(function() {
-					deferred.reject();
-				});
-		});
-
-		return deferred;
-	};
-
-	boomPerson.prototype.addGroup = function(groupId) {
-		return this.addRelationship('group', groupId);
-	};
-
-	boomPerson.prototype.addRelationship = function(type, id) {
-		return $.ajax({
-			url: this.baseUrl + '/' + this.id + '/' + type + '/' + id,
-			type: 'put'
-		});
-	};
-
-	boomPerson.prototype.addSite = function(siteId) {
-		return this.addRelationship('site', siteId);
-	};
-
-	boomPerson.prototype.addWithData = function(data) {
-		return $.post(this.baseUrl, data);
-	};
-
-	boomPerson.prototype.delete = function() {
-		var deferred = new $.Deferred(),
-			person = this,
-			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to delete this person?');
-
-			confirmation
-				.done(function() {
-					person.deleteMultiple([person.id])
-					.done(function() {
-						deferred.resolve();
-					});
+				.on('remove', function(group) {
+					person.removeRelationship('group', group.getId());
 				});
 
-		return deferred;
-	};
+			this.sites
+				.on('add', function(site) {
+					person.addRelationship('site', site.getId());
+				})
+				.on('remove', function(site) {
+					person.removeRelationship('site', site.getId());
+				});
+		},
 
-	boomPerson.prototype.deleteMultiple = function(peopleIds) {
-		return 	$.ajax({
-			type: 'delete',
-			url: this.baseUrl,
-			data: {
-				'people[]': peopleIds
-			}
-		});
-	};
+		addGroup: function(group) {
+			return this.groups.add(group);
+		},
 
-	boomPerson.prototype.removeGroup = function(groupId) {
-		return this.removeRelationship('group', groupId);
-	};
+		addSite: function(site) {
+			return this.sites.add(site);
+		},
 
-	boomPerson.prototype.removeRelationship = function(type, id) {
-		return $.ajax({
-			type: 'delete',
-			url: this.baseUrl + '/' + this.id + '/' + type + '/' + id
-		});
-	};
+		getEmail: function() {
+			return this.get('email');
+		},
 
-	boomPerson.prototype.removeSite = function(siteId) {
-		return this.removeRelationship('site', siteId);
-	};
+		getGroups: function() {
+			return this.groups;
+		},
 
-	boomPerson.prototype.save = function(data) {
-		return $.ajax({
-			type: 'put',
-			url: this.baseUrl + '/' + this.id,
-			data: data
-		});
-	};
-}
+		getLastLogin: function() {
+			return this.get('last_login');
+		},
+
+		getName: function() {
+			return this.get('name');
+		},
+
+		isEnabled: function() {
+			return this.get('enabled') === true;
+		},
+
+		isSuperuser: function() {
+			return this.get('superuser') === true;
+		},
+
+		removeGroup: function(group) {
+			this.groups.remove(group);
+		},
+
+		removeSite: function(site) {
+			return this.sites.remove(site);
+		}
+	});
+}(BoomCMS));

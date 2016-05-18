@@ -30,9 +30,12 @@ class PersonPolicyTest extends AbstractTestCase
     public function testSuperuserCanEditSuperuserPropertyOfOthers()
     {
         $user = new Person([Person::ATTR_SUPERUSER => true]);
+        $user->{Person::ATTR_ID} = 1;
+
         $editing = new Person();
+        $editing->{Person::ATTR_ID} = 2;
         $policy = new PersonPolicy();
 
-        $this->assertFalse($policy->editSuperuser($user, $editing));
+        $this->assertTrue($policy->editSuperuser($user, $editing));
     }
 }

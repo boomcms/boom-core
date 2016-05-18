@@ -16,8 +16,10 @@ class Text extends BaseChunk
         if ($this->slotname === 'standfirst') {
             $siteText = $text = strip_tags($text);
         } else {
+            $embera = new Embera();
+
             $text = Str::makeInternalLinksRelative($text);
-            $siteText = Str::StorifyEmbed(Embera::autoEmbed($text));
+            $siteText = Str::StorifyEmbed($embera->autoEmbed($text));
         }
 
         $this->attributes['text'] = $text;

@@ -7,7 +7,7 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Jobs\CreatePerson;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
-use BoomCMS\Support\Facades\Site as SiteFacade;
+use BoomCMS\Support\Facades\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Gate;
@@ -16,52 +16,30 @@ class Person extends PeopleManager
 {
     protected $viewPrefix = 'boomcms::person.';
 
-    public function addSites(Request $request, PersonModel $person)
+    public function destroy(PersonModel $person)
     {
-        $siteIds = $request->input('sites');
-
-        if ($siteIds) {
-            $sites = SiteFacade::find($siteIds);
-            $person->addSites($sites);
-        }
+        PersonFacade::delete($person);
     }
 
-    public function create()
+    public function index()
     {
-        return view("$this->viewPrefix.new", [
-            'groups' => GroupFacade::findAll(),
-        ]);
-    }
-
-    public function destroy(Request $request)
-    {
-        PersonFacade::deleteByIds($request->input('people'));
-    }
-
-    public function removeSite(PersonModel $person, Site $site)
-    {
-        $person->removeSite($site);
-    }
-
-    public function show(Site $site, Request $request, PersonModel $person)
-    {
-        return view($this->viewPrefix.'view', [
-            'person'    => $person,
-            'request'   => $request,
-            'groups'    => GroupFacade::findBySite($site),
-            'hasGroups' => $person->getGroups(),
-            'sites'     => SiteFacade::findAll(),
-            'hasSites'  => $person->getSites(),
-        ]);
+        return PersonFacade::findBySite(Router::getActiveSite());
     }
 
     public function store(Request $request, Site $site)
     {
         $job = new CreatePerson($request->input('email'), $request->input('name'));
-        $person = Bus::dispatch($job);
 
-        $this->addGroups($request, $person);
+        $person = Bus::dispatch($job);
         $person->addSite($site);
+
+        if ($groups = $request->input('groups')) {
+            foreach ($groups as $groupId) {
+                $person->addGroup(GroupFacade::find($groupId));
+            }
+        }
+
+        return $person;
     }
 
     public function update(Request $request, PersonModel $person)

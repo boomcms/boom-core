@@ -29,13 +29,23 @@ class Group extends Controller
         GroupFacade::delete($group);
     }
 
-    public function edit(GroupModel $group)
+    public function show(GroupModel $group)
     {
         return view("$this->viewPrefix.edit", [
             'group'         => $group,
             'general_roles' => Role::getGeneralRoles(),
             'page_roles'    => Role::getPageRoles(),
         ]);
+    }
+
+    /**
+     * @param Site $site
+     *
+     * @return array
+     */
+    public function index(Site $site)
+    {
+        return GroupFacade::findBySite($site);
     }
 
     public function removeRole(Request $request, GroupModel $group)
@@ -50,9 +60,7 @@ class Group extends Controller
 
     public function store(Request $request, Site $site)
     {
-        $group = GroupFacade::create($site, $request->input('name'));
-
-        return $group->getId();
+        return GroupFacade::create($site, $request->input('name'));
     }
 
     public function update(Request $request, GroupModel $group)

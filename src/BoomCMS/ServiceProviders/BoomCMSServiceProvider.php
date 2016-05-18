@@ -24,7 +24,9 @@ class BoomCMSServiceProvider extends ServiceProvider
         'Tag'         => Facades\Tag::class,
         'Template'    => Facades\Template::class,
         'Group'       => Facades\Group::class,
+        'Person'      => Facades\Person::class,
         'Router'      => Facades\Router::class,
+        'Site'        => Facades\Site::class,
         'Str'         => Str::class,
     ];
 
@@ -52,7 +54,6 @@ class BoomCMSServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../../lang', 'boomcms');
 
         $this->publishes([
-            __DIR__.'/../../lang/framework'      => base_path('resources/lang'),
             __DIR__.'/../../../public'           => public_path('vendor/boomcms/boom-core'),
             __DIR__.'/../../database/migrations' => base_path('/migrations/boomcms'),
         ], 'boomcms');

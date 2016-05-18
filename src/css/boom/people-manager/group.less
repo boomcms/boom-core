@@ -1,31 +1,4 @@
 #b-group-edit {
-	&-name {
-		background: @light-grey;
-		margin-bottom: 1.5rem;
-		padding: 1.5rem 1rem;
-
-		fieldset {
-			padding: 0;
-			margin: 0;
-			border: 0;
-			
-			h2 {
-				margin-bottom: 0;
-			}
-		
-			> * {
-				display: inline-block;
-				margin: 0;
-				vertical-align: middle;
-				color: @darkest-grey;
-
-				+ * {
-					margin-left: 1.5rem;
-				}
-			}
-		}
-	}
-
 	&-permissions {
 		padding: 9.75px;
 
@@ -36,89 +9,48 @@
 		> ul {
 			padding-left: 1em;
 		}
-
-		#b-group-roles-general, #b-group-roles-pages {
-			display: none;
-			overflow: hidden;
-
-			input[type=radio], input[type=checkbox] {
-				position: absolute;
-				left: -9999px;
-			}
-
-			label {
-				width: 100%;
-				height: 100%;
-				display: block;
-				text-indent: -1000%;
-				overflow: hidden;
-				text-align: center;
-				margin: 0;
-				padding: 1.5rem;
-
-				&:after {
-					display: block;
-					content: "-";
-					position: absolute;
-					left: 0;
-					right: 0;
-					text-indent: 0;
-					top: 50%;
-					transform: translateY(-50%);
-				}
-
-				&:hover, &:active {
-					background: @light-grey;
-				}
-			}
-			input:checked + label {
-				&:after {
-					content: "X";
-				}
-			}
-		}
 	}
 }
 
-.b-group-roles {
-	width: 60%;
-	display: inline-block;
-	vertical-align: top;
-	margin-top: 1em;
+#b-group-roles {
+	overflow: hidden;
 
-	thead {
-		th {
-			font-weight: normal;
-			text-transform: uppercase;
-			padding: 1.5rem;
-		}
-	}
-
-	tr td, tr th {
-		border-right: 1px solid @grey;
-		border-bottom: 1px solid @grey;
-	}
-
-	td {
-		position: relative;
-	}
-
-	td:first-of-type, th:first-of-type {
-		width: 50%;
-	}
-
-	&-help {
+	> div:first-of-type {
+		width: 60%;
 		display: inline-block;
-		width: 35%;
 		vertical-align: top;
-		padding-left: 1em;
-		border-left: 1px solid @grey;
-		margin-top: -2em;
-		float: right;
+		margin-top: 1em;
 
-		p:first-of-type {
-			margin-top: 0;
+		thead {
+			th {
+				font-weight: normal;
+				text-transform: uppercase;
+				padding: 1.5rem;
+				color: @white;
+			}
 		}
+
+		tr td, tr th {
+			border-right: 1px solid @grey;
+			border-bottom: 1px solid @grey;
+		}
+
+		td {
+			position: relative;
+		}
+
+		td:first-of-type, th:first-of-type {
+			width: 50%;
+		}
+	}
+
+	> div:nth-of-type(2) {
+		display: inline-block;
+		width: calc(~"40% - 5rem");
+		vertical-align: top;
+		padding-left: 5rem;
+		border-left: 1px solid @grey;
+		float: right;
 
 		> p, dl {
 			padding-bottom: 1em;
@@ -176,24 +108,50 @@
 			}
 		}
 	}
-}
 
-#b-group-roles-pages {
-	> div {
-		display: inline-block;
+	input[type=radio], input[type=checkbox] {
+		position: absolute;
+		left: -9999px;
+	}
 
-		&:first-of-type {
-			width: 60%;
+	label {
+		width: 100%;
+		height: 100%;
+		display: block;
+		text-indent: -1000%;
+		overflow: hidden;
+		text-align: center;
+		margin: 0;
+		padding: 1.5rem;
+
+		&:after {
+			display: block;
+			content: "-";
+			position: absolute;
+			left: 0;
+			right: 0;
+			text-indent: 0;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		&:hover, &:active {
+			background: @light-grey;
 		}
 	}
 
-	.b-group-roles-help {
-		margin-top: 0;
+	input:checked + label {
+		&:after {
+			content: "X";
+		}
 	}
+}
+
+#b-group-roles-pages {
+	margin-top: 2rem;
 
 	.b-group-roles {
 		display: none;
-		width: 100%;
 	}
 
 	.boom-tree > ul {

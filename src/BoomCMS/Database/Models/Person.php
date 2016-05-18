@@ -9,6 +9,7 @@ use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Traits\MultipleSites;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -50,10 +51,10 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         self::ATTR_SUPERUSER  => 'boolean',
     ];
 
-	protected $hidden = [
-		self::ATTR_PASSWORD,
-		self::ATTR_REMEMBER_TOKEN,
-	];
+    protected $hidden = [
+        self::ATTR_PASSWORD,
+        self::ATTR_REMEMBER_TOKEN,
+    ];
 
     public $timestamps = false;
 
@@ -186,6 +187,11 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         return $query
             ->join('person_site', 'people.id', '=', 'person_site.person_id')
             ->where('person_site.site_id', '=', $site->getId());
+    }
+
+    protected function serializeDate(DateTime $date)
+    {
+        return $date->format('c');
     }
 
     /**

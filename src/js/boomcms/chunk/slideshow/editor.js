@@ -25,7 +25,8 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 		this.dialog.contents
 			.on('click', '#b-slideshow-editor-delete', function() {
 				slideshowEditor.deferred.resolveWith({});
-				$.boom.dialog.destroy(slideshowEditor.dialog);
+
+				slideshowEditor.dialog.close();
 			})
 			.on('change', '#b-slideshow-editor-slides input[type=radio]', function() {
 				var slide = slideshowEditor._getSlideDetails($(this));
