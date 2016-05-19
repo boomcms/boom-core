@@ -25,6 +25,16 @@ class GroupTest extends BaseControllerTest
         $this->controller->destroy($group);
     }
 
+    /**
+     * @expectedException Illuminate\Validation\ValidationException
+     */
+    public function testStoreValidatesNameIsRequired()
+    {
+        $request = new Request();
+
+        $this->controller->store($request, new Site());
+    }
+
     public function testStore()
     {
         $name = 'test';

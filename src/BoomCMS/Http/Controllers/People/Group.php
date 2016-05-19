@@ -19,6 +19,10 @@ class Group extends Controller
 
     public function store(Request $request, Site $site)
     {
+        $this->validate($request, [
+            GroupModel::ATTR_NAME => 'required',
+        ]);
+
         return GroupFacade::create($site, $request->input('name'));
     }
 
