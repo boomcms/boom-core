@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Group as GroupModel;
-use BoomCMS\Database\Models\Role;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
