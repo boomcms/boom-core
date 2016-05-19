@@ -19,11 +19,6 @@ class Group extends Controller
         $group->addRole($request->input('role_id'), $request->input('allowed'), $request->input('page_id'));
     }
 
-    public function create()
-    {
-        return view("$this->viewPrefix.add");
-    }
-
     public function destroy(GroupModel $group)
     {
         GroupFacade::delete($group);
