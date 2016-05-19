@@ -45484,7 +45484,6 @@ $(function() {
 			}
 
 			$.ajaxSetup({
-				cache: false, // Fix for IE9 - prevent caching of all AJAX requests.
 				headers: {
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
