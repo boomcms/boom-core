@@ -45579,7 +45579,7 @@ $(function() {
 		return $.post(this.urlPrefix + 'save', data);
 	};
 }
-;(function(BoomCMS) {
+;(function(Backbone, BoomCMS) {
 	'use strict';
 
 	BoomCMS.Group = BoomCMS.Model.extend({
@@ -45623,7 +45623,7 @@ $(function() {
 			});
 		}
 	});
-}(BoomCMS));
+}(Backbone, BoomCMS));
 ;	/**
 * @class
 * @name boomPage

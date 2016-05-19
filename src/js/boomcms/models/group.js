@@ -1,4 +1,4 @@
-(function(BoomCMS) {
+(function(Backbone, BoomCMS) {
 	'use strict';
 
 	BoomCMS.Group = BoomCMS.Model.extend({
@@ -42,4 +42,4 @@
 			});
 		}
 	});
-}(BoomCMS));
+}(Backbone, BoomCMS));
