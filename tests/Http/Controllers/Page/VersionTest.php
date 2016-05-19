@@ -172,13 +172,13 @@ class VersionTest extends BaseControllerTest
 
         $this->version
             ->shouldReceive('getStatus')
-			->once()
+            ->once()
             ->andReturn($status);
 
-		URLFacade::shouldReceive('page')
-			->once()
-			->with($this->page)
-			->andReturn(new URL([URL::ATTR_LOCATION => '/']));
+        URLFacade::shouldReceive('page')
+            ->once()
+            ->with($this->page)
+            ->andReturn(new URL([URL::ATTR_LOCATION => '/']));
 
         $response = $this->controller->postTitle($request, $this->page);
 

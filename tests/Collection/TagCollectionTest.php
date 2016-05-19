@@ -9,40 +9,40 @@ use Illuminate\Support\Collection;
 
 class TagCollectionTest extends AbstractTestCase
 {
-	public function testInheritsCollection()
-	{
-		$this->assertInstanceOf(Collection::class, new TagCollection());
-	}
+    public function testInheritsCollection()
+    {
+        $this->assertInstanceOf(Collection::class, new TagCollection());
+    }
 
-	public function testGetNames()
-	{
-		$tag1 = new Tag([Tag::ATTR_NAME => 'tag1']);
-		$tag2 = new Tag([Tag::ATTR_NAME => 'tag2']);
+    public function testGetNames()
+    {
+        $tag1 = new Tag([Tag::ATTR_NAME => 'tag1']);
+        $tag2 = new Tag([Tag::ATTR_NAME => 'tag2']);
 
-		$tags = [$tag1, $tag2];
-		$names = [$tag1->getName(), $tag2->getName()];
+        $tags = [$tag1, $tag2];
+        $names = [$tag1->getName(), $tag2->getName()];
 
-		$collection = new TagCollection($tags);
+        $collection = new TagCollection($tags);
 
-		$this->assertEquals($names, $collection->getNames());
+        $this->assertEquals($names, $collection->getNames());
 
-		return $collection;
-	}
+        return $collection;
+    }
 
-	public function testGetNamesReturnsEmptyArray()
-	{
-		$collection = new TagCollection([]);
+    public function testGetNamesReturnsEmptyArray()
+    {
+        $collection = new TagCollection([]);
 
-		$this->assertEquals([], $collection->getNames());
-	}
+        $this->assertEquals([], $collection->getNames());
+    }
 
-	/**
-	 * @depends testGetNames
-	 */
-	public function testStringIsCommaSeperatedList($collection)
-	{
-		$expect = implode(', ', $collection->getNames());
+    /**
+     * @depends testGetNames
+     */
+    public function testStringIsCommaSeperatedList($collection)
+    {
+        $expect = implode(', ', $collection->getNames());
 
-		$this->assertEquals($expect, (string) $collection);
-	}
+        $this->assertEquals($expect, (string) $collection);
+    }
 }

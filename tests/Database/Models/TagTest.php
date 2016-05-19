@@ -68,12 +68,12 @@ class TagTest extends AbstractModelTestCase
         $this->assertEquals('test', $tag->getGroup());
     }
 
-	public function testNewCollectionReturnsTagCollection()
-	{
-		$tag = new Tag();
+    public function testNewCollectionReturnsTagCollection()
+    {
+        $tag = new Tag();
 
-		$this->assertInstanceOf(TagCollection::class, $tag->newCollection());
-	}
+        $this->assertInstanceOf(TagCollection::class, $tag->newCollection());
+    }
 
     public function testSetName()
     {
