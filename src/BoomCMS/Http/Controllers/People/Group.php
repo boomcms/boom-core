@@ -11,31 +11,11 @@ use Illuminate\Http\Request;
 
 class Group extends Controller
 {
-    protected $viewPrefix = 'boomcms::groups.';
     protected $role = 'managePeople';
 
     public function destroy(GroupModel $group)
     {
         GroupFacade::delete($group);
-    }
-
-    public function show(GroupModel $group)
-    {
-        return view("$this->viewPrefix.edit", [
-            'group'         => $group,
-            'general_roles' => Role::getGeneralRoles(),
-            'page_roles'    => Role::getPageRoles(),
-        ]);
-    }
-
-    /**
-     * @param Site $site
-     *
-     * @return array
-     */
-    public function index(Site $site)
-    {
-        return GroupFacade::findBySite($site);
     }
 
     public function store(Request $request, Site $site)
