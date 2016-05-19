@@ -221,16 +221,16 @@ class PageVersion extends Model implements PageVersionInterface
             ->orderBy(self::ATTR_ID, 'desc');
     }
 
-	/**
-	 * @param QueryBuilder $query
-	 *
-	 * @return QueryBuilder
-	 */
+    /**
+     * @param QueryBuilder $query
+     *
+     * @return QueryBuilder
+     */
     public function scopeLatestAvailable(QueryBuilder $query)
     {
-            return (Editor::isDisabled()) ?
-				$this->scopeLastPublished($query)
-				: $query->orderBy(self::ATTR_EDITED_AT, 'desc');
+        return (Editor::isDisabled()) ?
+                $this->scopeLastPublished($query)
+                : $query->orderBy(self::ATTR_EDITED_AT, 'desc');
     }
 
     public function scopeForPage($query, PageInterface $page)
