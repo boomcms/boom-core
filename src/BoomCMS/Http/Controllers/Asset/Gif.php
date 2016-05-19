@@ -6,15 +6,16 @@ use Illuminate\Http\Response;
 
 class Gif extends BaseController
 {
-	/**
-	 * Gifs are not resized to ensure that animated gifs animate.
-	 *
-	 * Width and height parameters are therefore ignored.
-	 *
-	 * @param int $width
-	 * @param int $height
-	 * @return Response
-	 */
+    /**
+     * Gifs are not resized to ensure that animated gifs animate.
+     *
+     * Width and height parameters are therefore ignored.
+     *
+     * @param int $width
+     * @param int $height
+     *
+     * @return Response
+     */
     public function view($width = null, $height = null)
     {
         return $this->response
