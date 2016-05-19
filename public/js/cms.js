@@ -45616,9 +45616,8 @@ $(function() {
 		removeRole: function(roleId, pageId) {
 			return $.ajax({
 				type: 'delete',
-				url: this.roles.url,
+				url: this.roles.url + '/' + roleId,
 				data: {
-					role_id : roleId,
 					page_id : pageId
 				}
 			});
@@ -51319,8 +51318,6 @@ function Row() {
 				if (allowed >= 0) {
 					group.addRole(roleId, allowed, pageId);
 				}
-
-				new boomNotification('Permissions updated').show();
 			});
 	},
 

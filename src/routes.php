@@ -65,10 +65,7 @@ Route::group(['middleware' => [
                 });
 
                 Route::resource('person', 'Person');
-
-                Route::get('group/{group}/roles', 'Group@roles');
-                Route::delete('group/{group}/roles', 'Group@removeRole');
-                Route::post('group/{group}/roles', 'Group@addRole');
+                Route::resource('group/{group}/roles', 'GroupRole');
                 Route::resource('group', 'Group');
             });
 

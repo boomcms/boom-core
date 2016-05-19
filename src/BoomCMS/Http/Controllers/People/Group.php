@@ -14,11 +14,6 @@ class Group extends Controller
     protected $viewPrefix = 'boomcms::groups.';
     protected $role = 'managePeople';
 
-    public function addRole(Request $request, GroupModel $group)
-    {
-        $group->addRole($request->input('role_id'), $request->input('allowed'), $request->input('page_id'));
-    }
-
     public function destroy(GroupModel $group)
     {
         GroupFacade::delete($group);
@@ -41,16 +36,6 @@ class Group extends Controller
     public function index(Site $site)
     {
         return GroupFacade::findBySite($site);
-    }
-
-    public function removeRole(Request $request, GroupModel $group)
-    {
-        $group->removeRole($request->input('role_id'), $request->input('page_id'));
-    }
-
-    public function roles(Request $request, GroupModel $group)
-    {
-        return $group->getRoles($request->input('page_id'));
     }
 
     public function store(Request $request, Site $site)
