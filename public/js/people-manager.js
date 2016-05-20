@@ -5,8 +5,7 @@
 		el: 'body',
 
 		events: {
-			'submit #b-groups-new': 'createGroup',
-			'click #b-people-create': 'createPerson'
+			'submit #b-groups-new': 'createGroup'
 		},
 
 		initialize: function(options) {
@@ -20,11 +19,10 @@
 			this.listenTo(this.groups, 'edit', this.editGroup);
 			this.listenTo(this.groups, 'add', this.addGroup);
 			this.listenTo(this.groups, 'sort', this.renderGroups);
-			this.listenTo(this.groups, 'view', this.viewGroup);
 			this.listenTo(this.people, 'edit', this.editPerson);
+			this.listenTo(this.people, 'filter', this.showPeopleTable);
 
 			this.renderGroups();
-			this.renderPeople();
 
 			new BoomCMS.PeopleManager.Router({
 				groups: this.groups,
@@ -52,17 +50,6 @@
 			$el.val('');
 		},
 
-		createPerson: function(e) {
-			e.preventDefault();
-
-			var view = new BoomCMS.PeopleManager.CreatePerson({
-				groups: this.groups,
-				people: this.people
-			});
-
-			this.show(view);
-		},
-
 		editPerson: function(person) {
 			var view = new BoomCMS.PeopleManager.PersonView({
 				model: person,
@@ -86,55 +73,24 @@
 			return this;
 		},
 
-		renderPeople: function() {
-			this.$peopleTable = new BoomCMS.PeopleManager.PeopleTable({
-				people: this.people
-			}).render().$el;
-
-			this.$content.html(this.$peopleTable);
-		},
-
 		show: function(view) {
 			this.$content.html(view.render().el);
+		},
+
+		showPeopleTable: function(group) {
+			var peopleTable = new BoomCMS.PeopleManager.PeopleTable({
+				people: this.people,
+				groups: this.groups,
+				group: group
+			});
+
+			this.show(peopleTable);
 		},
 
 		viewGroup: function(group) {
 			this.people.trigger('filter', group);
 
 			this.$content.html(this.$peopleTable);
-		}
-	});
-}(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.PeopleManager.CreatePerson = Backbone.View.extend({
-		tagName: 'div',
-		template: _.template($('#b-person-create-form').html()),
-
-		initialize: function(options) {
-			this.groups = options.groups;
-			this.people = options.people;
-		},
-
-		events: {
-			'click button': 'createPerson'
-		},
-
-		createPerson: function(e) {
-			e.preventDefault();
-
-			this.people.create(this.$('form').serializeJSON());
-		},
-
-		render: function() {
-			this.$el.html(this.template({
-				groups: this.groups,
-				selectedGroups: new BoomCMS.Collections.Groups
-			}));
-
-			this.$('select').chosen();
-
-			return this;
 		}
 	});
 }(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
@@ -220,11 +176,14 @@
 		tagName: 'div',
 		template: _.template($('#b-people-table').html()),
 
+		events: {
+			'submit #b-people-create': 'createPerson'
+		},
+
 		initialize: function(options) {
 			this.people = options.people;
-
-			this.listenTo(this.peeople, 'change:name', this.sortPeople);
-			this.listenTo(this.people, 'all sort filter', this.render);
+			this.groups = options.groups;
+			this.group = options.group;
 		},
 
 		addPersonToTable: function(person) {
@@ -234,11 +193,24 @@
 			this.$('tbody').append($el);
 		},
 
-		render: function(e, group) {
-			var table = this;
+		createPerson: function(e) {
+			e.preventDefault();
+
+			var $form = this.$('form');
+
+			this.people.create($form.serializeJSON());
+
+			$form.reset();
+		},
+
+		render: function() {
+			var table = this,
+				group = this.group;
 
 			this.$el.html(this.template({
-				group: group
+				group: group,
+				groups: this.groups,
+				selectedGroups: new Backbone.Collection([group])
 			}));
 
 			this.people.each(function(person) {
@@ -246,6 +218,8 @@
 					table.addPersonToTable(person);
 				}
 			});
+
+			this.$('select').chosen();
 
 			return this;
 		},
@@ -426,13 +400,13 @@
 		},
 
 		home: function() {
-			this.people.trigger('all');
+			this.people.trigger('filter');
 		},
 
 		viewGroup: function(id) {
 			var group = this.groups.get(id);
 
-			group.trigger('view', group);
+			this.people.trigger('filter', group);
 		}
 	});
 }(Backbone, BoomCMS));

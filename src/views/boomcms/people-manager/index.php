@@ -2,9 +2,7 @@
 
 <div id="b-topbar" class="b-toolbar">
     <?= $menu() ?>
-
     <?= $menuButton() ?>
-    <?= $button('plus', trans('New person'), ['id' => 'b-people-create']) ?>
 </div>
 
 <main id="b-container">
@@ -23,7 +21,7 @@
             <form id="b-groups-new">
                 <input type="text" placeholder="<?= trans('boomcms::people-manager.new-group') ?>" required name="name" />
 
-                <button>
+                <button type="submit">
                     <span class="fa fa-plus-circle"></span>
                 </button>
             </form>
@@ -36,23 +34,52 @@
 <script type="text/template" id="b-people-table">
     <h2><%= group ? group.getName() : "<?= trans('boomcms::people-manager.all-people') ?>" %></h2>
 
-    <% if (group) { %>
-        <a href='#' class='all'><?= trans('boomcms::people-manager.all-people') ?></a>
-    <% } %>
+    <form method="post" action="#" id="b-people-create">
+        <table class="b-table">
+            <thead>
+                <tr>
+                    <th><?= trans('boomcms::people-manager.person.name') ?></th>
+                    <th><?= trans('boomcms::people-manager.person.email') ?></th>
+                    <th><?= trans('boomcms::people-manager.person.groups') ?></th>
+                    <th><?= trans('boomcms::people-manager.person.last-login') ?></th>
+                    <th></th>
+                </tr>
+            </thead>
 
-    <table class="b-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email address</th>
-                <th>Groups</th>
-                <th>Last login</th>
-                <th></th>
-            </tr>
-        </thead>
+            <tbody></tbody>
 
-        <tbody></tbody>
-    </table>
+            <tfoot>
+                <tr>
+                    <td>
+                        <label>
+                            <span><?= trans('boomcms::people-manager.person.name') ?></span>
+                            <input type="text" required name="name" placeholder="<?= trans('boomcms::people-manager.person.name') ?>" />
+                        </label>
+                    </td>
+
+                    <td>
+                        <label>
+                            <span><?= trans('boomcms::people-manager.person.email') ?></span>
+                            <input type="email" required name="email" placeholder="<?= trans('boomcms::people-manager.person.email') ?>" />
+                        </label>
+                    </td>
+
+                    <td colspan="2">
+                        <label class="groups">
+                            <span><?= trans('boomcms::people-manager.person.groups') ?></span>
+                            <?= view('boomcms::people-manager.group-select') ?>
+                        </label>
+                    </td>
+
+                    <td>
+                        <button type="submit">
+                            <span class="fa fa-plus-circle"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
 </script>
 
 <script type="text/template" id="b-group-list-item">
@@ -96,32 +123,6 @@
 
 <script type="text/template" id="b-person-view">
     <?= view('boomcms::people-manager.person') ?>
-</script>
-
-<script type="text/template" id="b-person-create-form">
-	<section>
-		<h2><?= trans('boomcms::people-manager.create-heading') ?></h2>
-
-	    <form method="post" action="/boomcms/people/add" class="new-person">
-			<label>
-				Name
-				<input type="text" required name="name" />
-			</label>
-
-			<label>
-				Email
-				<input type="email" required id="create-email" name="email" />
-			</label>
-
-			<label class="groups">
-				Groups
-
-				<?= view('boomcms::people-manager.group-select') ?>
-			</label>
-
-			<?= $button('save', 'save', ['class' => 'b-button-withtext dark']) ?>
-		</form>
-	</section>
 </script>
 
 <script type="text/javascript" src="/vendor/boomcms/boom-core/js/people-manager.js"></script>

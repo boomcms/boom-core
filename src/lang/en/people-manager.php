@@ -16,6 +16,11 @@ return [
     'groups'         => 'Set which groups <%= person.getName() %> is a member of.',
     'sites-heading'  => 'Sites',
     'sites'          => 'Set which sites <%= person.getName() %> has access to.',
-    'create-heading' => 'Add new person',
     'new-group'      => 'New group',
+    'person'         => [
+        'name'       => 'Name',
+        'email'      => 'Email address',
+        'groups'     => 'Groups',
+        'last-login' => 'Last login',
+    ],
 ];

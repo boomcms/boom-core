@@ -4,16 +4,23 @@ html.boom .chosen-container {
 	width: 100% !important;
 
 	.chosen-choices {
+		border: 1px solid @light-grey;
+		background-image: none;
+		height: 2em !important;
+
 		li.search-choice {
-			.text-normal;
+			.text-small;
 			color: @darkest-grey;
 			padding-right: 30px;
+			height: 2.5rem;
+			line-height: 19px;
 
 			.search-choice-close {
 				.text-normal;
 				background: none;
 				font-family: FontAwesome;
 				right: 8px;
+				top: 1px;
 
 				&:before {
 					content: "\f00d";
@@ -24,7 +31,10 @@ html.boom .chosen-container {
 
 		li.search-field input[type=text] {
 			.text-normal;
-			margin: 6px 0;
+			margin: 0;
+			height: 2em;
+			line-height: 2em;
+			width: 100% !important;
 		}
 	}
 }

@@ -5,11 +5,14 @@
 		tagName: 'div',
 		template: _.template($('#b-people-table').html()),
 
+		events: {
+			'submit #b-people-create': 'createPerson'
+		},
+
 		initialize: function(options) {
 			this.people = options.people;
-
-			this.listenTo(this.peeople, 'change:name', this.sortPeople);
-			this.listenTo(this.people, 'all sort filter', this.render);
+			this.groups = options.groups;
+			this.group = options.group;
 		},
 
 		addPersonToTable: function(person) {
@@ -19,11 +22,24 @@
 			this.$('tbody').append($el);
 		},
 
-		render: function(e, group) {
-			var table = this;
+		createPerson: function(e) {
+			e.preventDefault();
+
+			var $form = this.$('form');
+
+			this.people.create($form.serializeJSON());
+
+			$form.reset();
+		},
+
+		render: function() {
+			var table = this,
+				group = this.group;
 
 			this.$el.html(this.template({
-				group: group
+				group: group,
+				groups: this.groups,
+				selectedGroups: new Backbone.Collection([group])
 			}));
 
 			this.people.each(function(person) {
@@ -31,6 +47,8 @@
 					table.addPersonToTable(person);
 				}
 			});
+
+			this.$('select').chosen();
 
 			return this;
 		},

@@ -11,16 +11,6 @@
 		color: @grey;
 	}
 
-	.all {
-		.text-small;
-		color: @grey;
-		margin-left: 0.5rem;
-
-		&:hover, &:focus {
-			color: @black;
-		}
-	}
-
 	section {
 		+ section {
 			margin-top: 2rem;
@@ -45,7 +35,7 @@
 			text-align: left;
 		}
 
-		.groups {
+		tbody .groups {
 			padding: 0;
 			margin: 0;
 
@@ -139,37 +129,46 @@
 				padding: 0;
 				width: 4rem;
 				cursor: pointer;
-
-				&:hover, &:focus {
-					.fa {
-						color: @blue;
-					}
-				}
-
-				.fa {
-					color: @red;
-					font-size: 2rem;
-					line-height: 3.2rem;
-					text-align: center;
-				}
 			}
 		}
 	}
 
-	form.new-person {
-		label.groups {
-			overflow: visible;
+	button[type=submit] {
+		border: 0;
+		background: none;
+		padding: 0;
 
-			&:after {
-				display: block;
-				content: ' ';
-				clear: both;
+		&:hover, &:focus {
+			.fa {
+				color: @blue;
+			}
+		}
+
+		.fa {
+			color: @red;
+			font-size: 2rem;
+			line-height: 3.2rem;
+			text-align: center;
+		}
+	}
+
+	#b-people-create {
+		label {
+			margin-top: 0;
+
+			span {
+				position: absolute;
+				left: -10000%;
 			}
 
-			.chosen-container {
-				width: 70% !important;
-				float: right;
+			&.groups ul span {
+				position: static;
 			}
+		}
+
+		input[type=text], input[type=email] {
+			width: 100%;
+			margin-left: 0;
 		}
 	}
 }

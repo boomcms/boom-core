@@ -42,13 +42,13 @@
 		},
 
 		home: function() {
-			this.people.trigger('all');
+			this.people.trigger('filter');
 		},
 
 		viewGroup: function(id) {
 			var group = this.groups.get(id);
 
-			group.trigger('view', group);
+			this.people.trigger('filter', group);
 		}
 	});
 }(Backbone, BoomCMS));
