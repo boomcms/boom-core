@@ -184,6 +184,9 @@
 			this.people = options.people;
 			this.groups = options.groups;
 			this.group = options.group;
+
+			this.listenTo(this.people, 'change add', this.render);
+			this.listenTo(this.groups, 'add', this.render);
 		},
 
 		addPersonToTable: function(person) {
@@ -196,11 +199,25 @@
 		createPerson: function(e) {
 			e.preventDefault();
 
-			var $form = this.$('form');
+			var $form = this.$('form'),
+				groups = this.groups,
+				person;
 
-			this.people.create($form.serializeJSON());
+			person = this.people.create({
+				name: $form.find('input[name=name]').val(),
+				email: $form.find('input[name=email]').val()
+			}, {
+				success: function() {
+					$form.find('select option[selected]').each(function() {
+						var $this = $(this);
 
-			$form.reset();
+						person.addGroup(groups.get($this.val()));
+						person.trigger('change');
+					});
+				}
+			});
+
+			$form[0].reset();
 		},
 
 		render: function() {

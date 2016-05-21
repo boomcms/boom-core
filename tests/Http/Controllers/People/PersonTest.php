@@ -30,31 +30,6 @@ class PersonTest extends BaseControllerTest
         $this->controller->destroy($person);
     }
 
-    public function testStoreCanBeCalledWithoutGroups()
-    {
-        $person = m::mock(Person::class);
-        $person->shouldReceive('addGroup')->never();
-
-        $person->shouldReceive('addSite');
-
-        PersonFacade::shouldReceive('create')
-            ->once()
-            ->andReturn($person);
-
-        Auth::shouldReceive('user')->andReturn(new Person());
-        Event::shouldReceive('fire');
-
-        $request = new Request([
-            'email'  => 'support@uxblondon.com',
-            'name'   => 'Test user',
-        ]);
-
-        $this->controller->store($request, new Site());
-    }
-
-    /**
-     * @depends testStoreCanBeCalledWithoutGroups
-     */
     public function testStoreAddsNewPersonToCurrentSite()
     {
         $site = new Site();
@@ -79,40 +54,6 @@ class PersonTest extends BaseControllerTest
         ]);
 
         $this->controller->store($request, $site);
-    }
-
-    public function testStoreAddsNewPersonToGroups()
-    {
-        $groupId = 1;
-        $group = new Group();
-
-        GroupFacade::shouldReceive('find')
-            ->once()
-            ->with($groupId)
-            ->andReturn($group);
-
-        $person = m::mock(Person::class);
-        $person
-            ->shouldReceive('addGroup')
-            ->once()
-            ->with($group);
-
-        $person->shouldReceive('addSite');
-
-        PersonFacade::shouldReceive('create')
-            ->once()
-            ->andReturn($person);
-
-        Auth::shouldReceive('user')->andReturn(new Person());
-        Event::shouldReceive('fire');
-
-        $request = new Request([
-            'email'  => 'support@uxblondon.com',
-            'name'   => 'Test user',
-            'groups' => [$groupId],
-        ]);
-
-        $this->controller->store($request, new Site());
     }
 
     public function testUpdatingSuperuser()

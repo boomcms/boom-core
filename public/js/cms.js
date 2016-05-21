@@ -45932,16 +45932,16 @@ function boomPage(page_id) {
 	BoomCMS.Collections.Groups = Backbone.Collection.extend({
 		model: BoomCMS.Group,
 		url: BoomCMS.urlRoot + 'group',
-		comparator: 'name'
+		comparator: 'name'	
 	});
-}(Backbone, window.BoomCMS));
+}(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
 	BoomCMS.Collections.People = Backbone.Collection.extend({
 		model: BoomCMS.Person,
 		url: BoomCMS.urlRoot + 'person',
 		comparator: 'name'
 	});
-}(Backbone, window.BoomCMS));
+}(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
 	BoomCMS.Collections.Sites = Backbone.Collection.extend({
 		model: BoomCMS.Site,

@@ -5,7 +5,6 @@ namespace BoomCMS\Http\Controllers\People;
 use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Jobs\CreatePerson;
-use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Person as PersonFacade;
 use BoomCMS\Support\Facades\Router;
 use Illuminate\Http\Request;
@@ -32,12 +31,6 @@ class Person extends PeopleManager
 
         $person = Bus::dispatch($job);
         $person->addSite($site);
-
-        if ($groups = $request->input('groups')) {
-            foreach ($groups as $groupId) {
-                $person->addGroup(GroupFacade::find($groupId));
-            }
-        }
 
         return $person;
     }

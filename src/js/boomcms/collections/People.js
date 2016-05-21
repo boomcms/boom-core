@@ -4,4 +4,4 @@
 		url: BoomCMS.urlRoot + 'person',
 		comparator: 'name'
 	});
-}(Backbone, window.BoomCMS));
+}(Backbone, BoomCMS));

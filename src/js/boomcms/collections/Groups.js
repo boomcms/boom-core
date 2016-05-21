@@ -2,6 +2,6 @@
 	BoomCMS.Collections.Groups = Backbone.Collection.extend({
 		model: BoomCMS.Group,
 		url: BoomCMS.urlRoot + 'group',
-		comparator: 'name'
+		comparator: 'name'	
 	});
-}(Backbone, window.BoomCMS));
+}(Backbone, BoomCMS));
