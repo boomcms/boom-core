@@ -169,8 +169,6 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			title: 'Edit linkset',
 			id: 'b-linkset-editor',
 			width: 900,
-			closeButton: false,
-			saveButton: true,
 			onLoad: function() {
 				linksetEditor.bind();
 			}

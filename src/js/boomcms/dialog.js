@@ -101,7 +101,6 @@ function boomDialog(options) {
 		this.contents = $div.appendTo($(document).contents().find('body'));
 
 		this.options.closeButton && this.options.buttons.push(this.closeButton);
-		this.options.saveButton && this.options.buttons.push(this.saveButton);
 		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
 
 		if (this.options.url && this.options.url.length) {
@@ -132,15 +131,6 @@ function boomDialog(options) {
 					self.options.onLoad(self);
 				}
 			}, 100);
-		}
-	};
-
-	boomDialog.prototype.saveButton = {
-		text: 'Save',
-		class: 'b-button-save',
-		click: function() {
-			var boomDialog = $(this).dialog('option', 'boomDialog');
-			boomDialog.close();
 		}
 	};
 

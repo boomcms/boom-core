@@ -10,8 +10,6 @@ function boomPageUrl(id, pageId) {
 		dialog = new boomDialog({
 			url : '/boomcms/page/' + this.pageId + '/urls/create',
 			title : 'Add URL',
-			closeButton: false,
-			saveButton: true,
 			width : 700
 		}).done(function() {
 			var location = dialog.contents.find('input[name=url]').val();

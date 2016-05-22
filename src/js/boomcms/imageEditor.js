@@ -181,8 +181,6 @@ function boomImageEditor(imageUrl) {
 			width: document.documentElement.clientWidth < 1024? '100%' : 1024,
 			height: document.documentElement.clientHeight < 768? document.documentElement.clientHeight : 768,
 			title: 'Image editor',
-			closeButton: false,
-			saveButton: true,
 			onLoad: function() {
 				imageEditor.$element = imageEditor.dialog.contents;
 				imageEditor.createCanvas();

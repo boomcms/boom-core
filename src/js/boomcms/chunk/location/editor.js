@@ -84,8 +84,6 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 			url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=location',
 			id : 'b-location-editor',
 			width: 920,
-			closeButton: false,
-			saveButton: true,
 			title: this.title,
 			open: function() {
 				locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');

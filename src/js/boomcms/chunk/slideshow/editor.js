@@ -180,8 +180,6 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			url : '/boomcms/page/' + this.page_id + '/chunk/edit?slotname=' + this.slotname + '&type=slideshow',
 			id : 'b-slideshow-editor',
 			width: 920,
-			closeButton: false,
-			saveButton: true,
 			open: function() {
 				slideshowEditor.bind();
 			}

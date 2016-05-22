@@ -13,8 +13,6 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
 		this.dialog = new boomDialog({
 			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=library&slotname=' + this.options.name,
 			width: 700,
-			closeButton: false,
-			saveButton: true,
 			onLoad: function() {
 				library.dialog.contents
 					.on('click', '.b-button.clear', function() {

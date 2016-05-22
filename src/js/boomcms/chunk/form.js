@@ -6,9 +6,7 @@ $.widget('ui.chunkHtml', $.ui.chunk, {
 		dialog = new boomDialog({
 			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=html&slotname=' + this.options.name,
 			width: 600,
-			title: 'Edit HTML',
-			closeButton: false,
-			saveButton: true
+			title: 'Edit HTML'
 		}).done(function() {
 			var html = dialog.contents.find('textarea').val();
 

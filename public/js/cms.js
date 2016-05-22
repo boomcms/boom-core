@@ -46133,7 +46133,6 @@ function boomPage(page_id) {
 		this.contents = $div.appendTo($(document).contents().find('body'));
 
 		this.options.closeButton && this.options.buttons.push(this.closeButton);
-		this.options.saveButton && this.options.buttons.push(this.saveButton);
 		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
 
 		if (this.options.url && this.options.url.length) {
@@ -46164,15 +46163,6 @@ function boomPage(page_id) {
 					self.options.onLoad(self);
 				}
 			}, 100);
-		}
-	};
-
-	boomDialog.prototype.saveButton = {
-		text: 'Save',
-		class: 'b-button-save',
-		click: function() {
-			var boomDialog = $(this).dialog('option', 'boomDialog');
-			boomDialog.close();
 		}
 	};
 
@@ -48522,8 +48512,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?slotname=' + self.options.name + '&type=timestamp',
 			width: 400,
 			title: 'Edit date / time',
-			closeButton: false,
-			saveButton: true,
 			onLoad: function() {
 				if (self.formatIsEditable) {
 					data.format && $('#format').val(data.format);
@@ -48582,8 +48570,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		this.dialog = new boomDialog({
 			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=library&slotname=' + this.options.name,
 			width: 700,
-			closeButton: false,
-			saveButton: true,
 			onLoad: function() {
 				library.dialog.contents
 					.on('click', '.b-button.clear', function() {
@@ -48797,8 +48783,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			url : '/boomcms/page/' + this.page_id + '/chunk/edit?slotname=' + this.slotname + '&type=slideshow',
 			id : 'b-slideshow-editor',
 			width: 920,
-			closeButton: false,
-			saveButton: true,
 			open: function() {
 				slideshowEditor.bind();
 			}
@@ -48986,8 +48970,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			title: 'Edit linkset',
 			id: 'b-linkset-editor',
 			width: 900,
-			closeButton: false,
-			saveButton: true,
 			onLoad: function() {
 				linksetEditor.bind();
 			}
@@ -49079,8 +49061,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=asset',
 			id : 'b-assets-chunk-editor',
 			width: 900,
-			closeButton: false,
-			saveButton: true,
 			open: function() {
 				chunkAssetEditor.dialogOpened();
 			}
@@ -49342,8 +49322,6 @@ $.widget('ui.chunkPageVisibility', {
 			url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=location',
 			id : 'b-location-editor',
 			width: 920,
-			closeButton: false,
-			saveButton: true,
 			title: this.title,
 			open: function() {
 				locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');
@@ -49456,9 +49434,7 @@ $.widget('ui.chunkPageVisibility', {
 		dialog = new boomDialog({
 			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=html&slotname=' + this.options.name,
 			width: 600,
-			title: 'Edit HTML',
-			closeButton: false,
-			saveButton: true
+			title: 'Edit HTML'
 		}).done(function() {
 			var html = dialog.contents.find('textarea').val();
 
@@ -49495,8 +49471,6 @@ $.widget('ui.chunkPageVisibility', {
 		dialog = new boomDialog({
 			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=calendar&slotname=' + this.options.name,
 			width: 700,
-			closeButton: false,
-			saveButton: true,
 			title: 'Select dates',
 			onLoad: function() {
 				var $content = dialog.contents.find('.content'),
@@ -51534,8 +51508,6 @@ function Row() {
 			width: document.documentElement.clientWidth < 1024? '100%' : 1024,
 			height: document.documentElement.clientHeight < 768? document.documentElement.clientHeight : 768,
 			title: 'Image editor',
-			closeButton: false,
-			saveButton: true,
 			onLoad: function() {
 				imageEditor.$element = imageEditor.dialog.contents;
 				imageEditor.createCanvas();

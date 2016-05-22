@@ -32,8 +32,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?slotname=' + self.options.name + '&type=timestamp',
 			width: 400,
 			title: 'Edit date / time',
-			closeButton: false,
-			saveButton: true,
 			onLoad: function() {
 				if (self.formatIsEditable) {
 					data.format && $('#format').val(data.format);
