@@ -3,7 +3,7 @@
 return [
     'account'   => 'Manage account',
     'approvals' => 'Pages pending approval',
-    'assets'    => 'Assets',
+    'assets'    => 'Asset manager',
     'home'      => 'Site',
     'logout'    => 'Logout',
     'pages'     => 'Pages',
