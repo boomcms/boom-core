@@ -64,7 +64,7 @@ function boomPageUrl(id, pageId) {
 		return deferred;
 	};
 
-	boomPageUrl.prototype.makePrimary = function(is_primary) {
+	boomPageUrl.prototype.makePrimary = function() {
 		return $.post('/boomcms/page/' + this.pageId + '/urls/' + this.id + '/make-primary');
 	};
 

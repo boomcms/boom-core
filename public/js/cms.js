@@ -45846,8 +45846,6 @@ function boomPage(page_id) {
 		dialog = new boomDialog({
 			url : '/boomcms/page/' + this.pageId + '/urls/create',
 			title : 'Add URL',
-			closeButton: false,
-			saveButton: true,
 			width : 700
 		}).done(function() {
 			var location = dialog.contents.find('input[name=url]').val();
@@ -45902,7 +45900,7 @@ function boomPage(page_id) {
 		return deferred;
 	};
 
-	boomPageUrl.prototype.makePrimary = function(is_primary) {
+	boomPageUrl.prototype.makePrimary = function() {
 		return $.post('/boomcms/page/' + this.pageId + '/urls/' + this.id + '/make-primary');
 	};
 
