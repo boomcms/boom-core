@@ -81,7 +81,7 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 				linksetEditor.dialog.cancel();
 			})
 			.on('click', '.b-linkset-asset a', function() {
-				linksetEditor.editAsset(new boomAsset(linksetEditor.currentLink.attr('data-asset')));
+				linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
 			})
 			.find('ul')
 			.sortable();
@@ -114,7 +114,7 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			.val($a.attr('data-title'))
 			.end();
 
-		this.toggleLinkAsset(new boomAsset($a.attr('data-asset')));
+		this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
 	};
 
 	boomChunkLinksetEditor.prototype.editLinkTarget = function() {

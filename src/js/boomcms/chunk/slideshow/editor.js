@@ -31,7 +31,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			.on('change', '#b-slideshow-editor-slides input[type=radio]', function() {
 				var slide = slideshowEditor._getSlideDetails($(this));
 		
-				slide.asset = new boomAsset(slide.asset_id);
+				slide.asset = new BoomCMS.Asset({id: slide.asset_id});
 				slideshowEditor.editSlide(slide);
 			})
 			.on('click', '#b-slideshow-editor-current-delete', function(e) {
@@ -43,7 +43,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 				e.preventDefault();
 
 				var currentAssetId = $(this).find('img').attr('src').replace(/\/asset\/(\d+)(.*?)/, "$1");
-				slideshowEditor.editCurrentSlideAsset(new boomAsset(currentAssetId));
+				slideshowEditor.editCurrentSlideAsset(new BoomCMS.Asset({id: currentAssetId}));
 			})
 			.on('keydown, change', '#b-slideshow-editor-current form input[type=text]', function() {
 				var $this = $(this),

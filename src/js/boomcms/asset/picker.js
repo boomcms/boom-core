@@ -1,6 +1,6 @@
 function boomAssetPicker(currentAsset, filters) {
 	this.currentAsset = typeof(currentAsset) === 'object' ? 
-		currentAsset : new boomAsset();
+		currentAsset : new BoomCMS.Asset();
 
 	this.deferred = new $.Deferred();
 	this.document = $(document);
@@ -16,7 +16,7 @@ function boomAssetPicker(currentAsset, filters) {
 
 	boomAssetPicker.prototype.assetsUploaded = function(assetIds) {
 		if (assetIds.length === 1) {
-			this.pick(new boomAsset(assetIds[0]));
+			this.pick(new BoomCMS.Asset({id: assetIds[0]}));
 		} else {
 			this.clearFilters();
 			this.getAssets();
@@ -56,13 +56,13 @@ function boomAssetPicker(currentAsset, filters) {
 
 				var assetId = $(this).attr('data-asset');
 
-				assetPicker.pick(new boomAsset(assetId));
+				assetPicker.pick(new BoomCMS.Asset({id: assetId}));
 			})
 			.on('click', '#b-assets-picker-close', function() {
 				assetPicker.cancel();
 			})
 			.on('click', '#b-assets-picker-current-remove', function() {
-				assetPicker.pick(new boomAsset());
+				assetPicker.pick(new BoomCMS.Asset());
 			})
 			.find('#b-assets-upload-form')
 			.assetUploader({

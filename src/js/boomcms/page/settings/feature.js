@@ -34,12 +34,12 @@ $.widget('boom.pageSettingsFeature', {
 				pageFeatureEditor.save();
 			})
 			.on('click', '.b-page-feature-set', function() {
-				pageFeatureEditor.setFeature(new boomAsset($(this).attr('data-asset-id')));
+				pageFeatureEditor.setFeature(new BoomCMS.Asset({id: $(this).attr('data-asset-id')}));
 			});
 
 		if (this.imagesInPage.length) {
 			for (var i = 0; i < this.imagesInPage.length; i++) {
-				var asset = new boomAsset(this.imagesInPage[i]);
+				var asset = new BoomCMS.Asset({id: this.imagesInPage[i]});
 
 				$imagesInPageContainer.append("<li><a href='#' class='b-page-feature-set' data-asset-id='" + asset.getId() + "'><img src='" + asset.getUrl() + "' /></a></li>");
 			}
@@ -53,7 +53,7 @@ $.widget('boom.pageSettingsFeature', {
 	},
 
 	_create: function() {
-		this.currentImage = this.initial = new boomAsset(this.element.find('#b-page-feature-current').attr('src').replace(/\/asset\/(\d+)(.*)/, "$1"));
+		this.currentImage = this.initial = new BoomCMS.Asset({id: this.element.find('#b-page-feature-current').attr('src').replace(/\/asset\/(\d+)(.*)/, "$1")});
 		this.imagesInPage = this.getImagesInPage();
 		this.bind();
 	},
@@ -65,7 +65,7 @@ $.widget('boom.pageSettingsFeature', {
 	},
 
 	removeFeature: function() {
-		this.setFeature(new boomAsset());
+		this.setFeature(new BoomCMS.Asset());
 	},
 
 	save: function() {

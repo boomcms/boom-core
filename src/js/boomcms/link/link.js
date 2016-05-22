@@ -34,7 +34,7 @@ function boomLink(url, pageId, title) {
 	boomLink.prototype.getAsset = function() {
 		var assetId = this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, "$1");
 
-		return new boomAsset(assetId);
+		return new BoomCMS.Asset({id: assetId});
 	};
 
 	boomLink.prototype.getAssetAction = function() {

@@ -28,7 +28,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			title : this.elements.title.length
 		})
 		.done(function(chunkData) {
-			chunkAsset.asset = new boomAsset(chunkData['asset_id']);
+			chunkAsset.asset = new BoomCMS.Asset({id: chunkData['asset_id']});
 			chunkAsset.save(chunkData);
 		})
 		.fail(function() {
@@ -74,7 +74,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 	edit: function() {
 		this.elements = this.getElements();
-		this.asset = new boomAsset(this.element.attr('data-boom-target'));
+		this.asset = new BoomCMS.Asset({id: this.element.attr('data-boom-target')});
 
 		if (this.hasMetadata()) {
 			this.editAllElements();

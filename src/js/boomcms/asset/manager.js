@@ -249,7 +249,7 @@ $.widget('boom.assetManager', {
 	viewAsset: function() {
 		var assetManager = this;
 
-		new boomAssetEditor(new boomAsset(this.selection.index(0)), assetManager.uploader)
+		new boomAssetEditor(new BoomCMS.Asset({id: this.selection.index(0)}), assetManager.uploader)
 			.fail(function() {
 				assetManager.getAssets();
 			});

@@ -28,7 +28,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 		this.caption = this.dialog.contents.find('.b-caption');
 		this.link = this.dialog.contents.find('.b-link');
 		this.assetElement = this.dialog.contents.find('a');
-		this.asset = new boomAsset(this.assetElement.attr("data-asset-id"));
+		this.asset = new BoomCMS.Asset({id: this.assetElement.attr("data-asset-id")});
 
 		this.bind();
 		this.toggleElements();
