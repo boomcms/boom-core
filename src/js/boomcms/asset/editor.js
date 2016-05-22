@@ -59,7 +59,7 @@ function boomAssetEditor(asset, uploader) {
 			.on('focus', '#thumbnail', function() {
 				var $this = $(this);
 
-				new boomAssetPicker(new boomAsset($this.val()))
+				new boomAssetPicker(new BoomCMS.Asset({id: $this.val()}))
 					.done(function(asset) {
 						$this.val(asset.getId());
 					});

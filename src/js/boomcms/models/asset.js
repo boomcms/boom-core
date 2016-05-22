@@ -1,7 +1,7 @@
 (function(BoomCMS) {
 	'use strict';
 
-	BoomCMS.Group = BoomCMS.Model.extend({
+	BoomCMS.Asset = BoomCMS.Model.extend({
 		urlRoot: BoomCMS.urlRoot + 'asset',
 
 		getEmbedCode: function() {

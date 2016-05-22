@@ -45526,7 +45526,7 @@ $(function() {
 ;(function(BoomCMS) {
 	'use strict';
 
-	BoomCMS.Group = BoomCMS.Model.extend({
+	BoomCMS.Asset = BoomCMS.Model.extend({
 		urlRoot: BoomCMS.urlRoot + 'asset',
 
 		getEmbedCode: function() {
@@ -45975,7 +45975,7 @@ function boomPage(page_id) {
 	$.fn.assetManagerImages = function() {
 		$(this).each(function() {
 			var $this = $(this),
-				asset = new boomAsset($this.attr('data-asset')),
+				asset = new BoomCMS.Asset({id: $this.attr('data-asset')}),
 				url  = asset.getUrl('thumb', $this.width(), $this.height()) + '?' + Math.floor(Date.now() / 1000);
 
 			$this.find('img')
@@ -50168,7 +50168,7 @@ $.widget('ui.chunkPageVisibility', {
 			.on('focus', '#thumbnail', function() {
 				var $this = $(this);
 
-				new boomAssetPicker(new boomAsset($this.val()))
+				new boomAssetPicker(new BoomCMS.Asset({id: $this.val()}))
 					.done(function(asset) {
 						$this.val(asset.getId());
 					});
