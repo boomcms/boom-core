@@ -37,16 +37,16 @@
 				email: $form.find('input[name=email]').val()
 			}, {
 				success: function() {
-					$form.find('select option[selected]').each(function() {
-						var $this = $(this);
+					var groupIds = $form.find('select').val();
 
-						person.addGroup(groups.get($this.val()));
-						person.trigger('change');
-					});
+					for (var i in groupIds) {
+						person.addGroup(groups.get(groupIds[i]));
+					}
+
+					person.trigger('change');
+					$form[0].reset();
 				}
 			});
-
-			$form[0].reset();
 		},
 
 		render: function() {
