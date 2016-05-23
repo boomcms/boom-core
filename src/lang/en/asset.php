@@ -6,6 +6,7 @@ return [
     'previous_versions_intro' => 'These files were previously assigned to this asset but were replaced.',
     'openeditor'              => 'Open in image editor',
     'aspect-ratio'            => 'Aspect ratio',
+    'manager'                 => 'Asset Manager',
     'metadata'                => 'Metadata',
     'none'                    => 'No assets found',
     'picker'                  => [

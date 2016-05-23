@@ -1,4 +1,4 @@
-<?= view('boomcms::header', ['title' => 'Assets']) ?>
+<?= view('boomcms::header', ['title' => trans('boomcms::asset.manager')]) ?>
 
 <?= $manager ?>
 
