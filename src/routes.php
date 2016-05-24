@@ -59,7 +59,7 @@ Route::group(['middleware' => [
 
                 Route::group(['prefix' => 'person'], function () {
                     Route::delete('', 'Person@destroy');
-                    Route::resource('{person}/group', 'PersonGroups');
+                    Route::resource('{person}/group', 'PersonGroup');
                     Route::resource('{person}/site', 'PersonSites');
                 });
 
