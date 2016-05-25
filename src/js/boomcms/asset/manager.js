@@ -62,6 +62,12 @@ $.widget('boom.assetManager', {
 				assetManager.removeFilters();
 				assetManager.getAssets();
 			})
+			.on('click', '.thumb .edit', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+
+				assetManager.viewAsset($(this).parent());
+			})
 			.on('click', '.thumb', function(event) {
 				event.preventDefault();
 
@@ -105,10 +111,6 @@ $.widget('boom.assetManager', {
 						assetManager.getAssets();
 						assetManager.clearSelection();
 				});
-			})
-			.on('click', '#b-button-multiaction-edit', function() {
-				assetManager.viewAsset();
-				assetManager.clearSelection();
 			})
 			.on('click', '#b-button-multiaction-download', function() {
 				assetManager.selection.download();
@@ -227,8 +229,8 @@ $.widget('boom.assetManager', {
 	},
 
 	toggleButtons: function() {
-		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
-		$('#b-button-multiaction-edit').prop('disabled', this.selection.length() == 1 ? false : true);
+		var buttons = $('[id|=b-button-multiaction]');
+
 		buttons.prop('disabled', this.selection.length() ? false : true);
 	},
 
@@ -246,10 +248,10 @@ $.widget('boom.assetManager', {
 		this.getAssets();
 	},
 
-	viewAsset: function() {
+	viewAsset: function($el) {
 		var assetManager = this;
 
-		new boomAssetEditor(new BoomCMS.Asset({id: this.selection.index(0)}), assetManager.uploader)
+		new boomAssetEditor(new BoomCMS.Asset({id: $el.attr('data-asset')}), assetManager.uploader)
 			.fail(function() {
 				assetManager.getAssets();
 			});

@@ -2,7 +2,7 @@
     <?php if (count($assets)): ?>
         <?php foreach ($assets as $asset): ?>
             <div style="height: 160px; width: <?= floor(160 * $asset->getAspectRatio()) ?>px" data-aspect-ratio="<?= $asset->getAspectRatio() ?>">
-                <a href="#" class="thumb" data-asset="<?= $asset->getId() ?>">
+                <div class="thumb" data-asset="<?= $asset->getId() ?>" tabindex="0">
                     <img class="loading" />
 
                     <div class="pace loading">
@@ -25,7 +25,11 @@
                             <?php endif ?>
                         </p>
                     </div>
-                </a>
+
+                    <a href="#" class="edit">
+                        <span class="fa fa-edit"></span>
+                    </a>
+                </div>
             </div>
         <?php endforeach ?>
     <?php else: ?>
