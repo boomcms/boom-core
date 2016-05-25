@@ -7,7 +7,6 @@
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
 		<div id="b-assets-buttons">
 			<?= $button('upload', 'upload', ['id' => 'b-assets-upload']) ?>
-			<?= $button('edit', 'view-edit', ['id' => 'b-button-multiaction-edit', 'disabled' => 'disabled']) ?>
 			<?= $button('trash-o', 'delete', ['id' => 'b-button-multiaction-delete', 'disabled' => 'disabled']) ?>
 			<?= $button('download', 'download', ['id' => 'b-button-multiaction-download', 'disabled' => 'disabled']) ?>
 			<?= $button('tags', 'add-tags', ['id' => 'b-button-multiaction-tag', 'disabled' => 'disabled']) ?>
@@ -15,6 +14,8 @@
             <a href="#" id="b-assets-select-all"><?= trans('Select all') ?></a>
             &nbsp;:&nbsp;
             <a href="#" id="b-assets-select-none"><?= trans('Select none') ?></a>
+
+            <?= $button('search', 'search-assets', ['id' => 'b-assets-search', 'class' => 'b-button-withtext']) ?>
         </div>
 	</div>
 
@@ -38,7 +39,6 @@
 
 	<?= view('boomcms::assets.upload') ?>
 </div>
-
 
 <script type="text/javascript">
     window.onload = function() {

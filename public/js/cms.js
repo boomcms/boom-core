@@ -50274,6 +50274,12 @@ $.widget('ui.chunkPageVisibility', {
 				assetManager.removeFilters();
 				assetManager.getAssets();
 			})
+			.on('click', '.thumb .edit', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+
+				assetManager.viewAsset($(this).parent());
+			})
 			.on('click', '.thumb', function(event) {
 				event.preventDefault();
 
@@ -50318,10 +50324,6 @@ $.widget('ui.chunkPageVisibility', {
 						assetManager.clearSelection();
 				});
 			})
-			.on('click', '#b-button-multiaction-edit', function() {
-				assetManager.viewAsset();
-				assetManager.clearSelection();
-			})
 			.on('click', '#b-button-multiaction-download', function() {
 				assetManager.selection.download();
 			})
@@ -50340,6 +50342,10 @@ $.widget('ui.chunkPageVisibility', {
 			})
 			.on('click', '#b-assets-upload', function() {
 				assetManager.uploader.show();
+			})
+			.on('click', '#b-assets-search', function() {
+				$('#b-assets-filters').toggleClass('visible');
+				$(this).toggleClass('open');
 			});
 	},
 
@@ -50375,7 +50381,6 @@ $.widget('ui.chunkPageVisibility', {
 
 				assetManager.initPagination(response.total);
 				assetManager.clearSelection();
-				assetManager.updateContentAreaMargin();
 			});
 	},
 
@@ -50439,16 +50444,9 @@ $.widget('ui.chunkPageVisibility', {
 	},
 
 	toggleButtons: function() {
-		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
-		$('#b-button-multiaction-edit').prop('disabled', this.selection.length() == 1 ? false : true);
-		buttons.prop('disabled', this.selection.length() ? false : true);
-	},
+		var buttons = $('[id|=b-button-multiaction]');
 
-	updateContentAreaMargin: function() {
-		// The filters bar will now be higher so move the content box down.
-		// Filters bar is position: fixed so this won't happen automatically.
-		var $filters = this.element.find('#b-assets-filters');
-		this.element.find('#b-assets-content').css('padding-top', $filters.outerHeight() + ($filters.offset().top) + 'px');
+		buttons.prop('disabled', this.selection.length() ? false : true);
 	},
 
 	updateTagFilters: function(tags) {
@@ -50458,10 +50456,10 @@ $.widget('ui.chunkPageVisibility', {
 		this.getAssets();
 	},
 
-	viewAsset: function() {
+	viewAsset: function($el) {
 		var assetManager = this;
 
-		new boomAssetEditor(new BoomCMS.Asset({id: this.selection.index(0)}), assetManager.uploader)
+		new boomAssetEditor(new BoomCMS.Asset({id: $el.attr('data-asset')}), assetManager.uploader)
 			.fail(function() {
 				assetManager.getAssets();
 			});

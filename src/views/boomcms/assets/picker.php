@@ -16,26 +16,15 @@
             </section>
         <?php endif ?>
 
+        <?= view('boomcms::assets.filters') ?>
         <section id="b-assets-picker-filter" class="ui-front">
             <h1><?= trans('boomcms::asset.picker.filter') ?></h1>
 
             <?= $button('accept', 'All assets', ['id' => 'b-assets-picker-all', 'class' => 'b-button-textonly']) ?>
 
-            <div>
-                <h2><?= trans('boomcms::asset.search.title') ?></h2>
-                <?= view('boomcms::assets.search.title') ?>
-            </div>
-
-            <div>
-                <h2><?= trans('boomcms::asset.search.type') ?></h2>
-
-                <?= view('boomcms::assets.search.type') ?>
-            </div>
-
-            <div>
-                <h2><?= trans('boomcms::asset.search.tag') ?></h2>
-                <?= view('boomcms::assets.search.tag') ?>
-            </div>
+            <?= view('boomcms::assets.search.title') ?>
+            <?= view('boomcms::assets.search.type') ?>
+            <?= view('boomcms::assets.search.tag') ?>
         </section>
 
         <?= view('boomcms::assets.pagination') ?>

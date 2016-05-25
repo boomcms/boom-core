@@ -1,11 +1,10 @@
 #b-assets-view-thumbs {
 	overflow: hidden;
-	padding-left: 3px;
-	margin: -0.25em;
 	background: @lightest-grey;
+	margin: 0.25rem -0.5rem 0.25rem 0.25rem;
 
 	> div {
-		margin: 0.25em;
+		margin: 0.25rem;
 		display: inline-block;
 		position: relative;
 		overflow: hidden;
@@ -19,11 +18,38 @@
 		max-height: 100%;
 		position: relative;
 		display: block;
+		cursor: pointer;
+
+		.edit {
+			display: none;
+			position: absolute;
+			top: 0.5rem;
+			left: 0.5rem;
+			z-index: 3;
+			color: @white;
+			padding: 0.5rem;
+			text-align: center;
+
+			&:hover, &:focus {
+				color: @red;
+			}
+
+			&:before {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translateX(-50%) translateY(-50%);
+			}
+		}
 
 		&:hover, &:focus, &:active, &.selected {
 			.b-asset-details {
 				transform: translateY(0);
 				transition: all 1.5s ease-out;
+			}
+
+			.edit {
+				display: block;
 			}
 		}
 

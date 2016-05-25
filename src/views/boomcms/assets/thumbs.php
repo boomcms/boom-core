@@ -4,7 +4,7 @@
 
 <script type="text/template" id="b-asset-thumb">
     <div style="height: 160px; width: <%= Math.floor(160 * asset.getAspectRatio()) %>px">
-        <a href="#asset/<%= asset.getId() %>" class="thumb">
+        <div href="#asset/<%= asset.getId() %>" class="thumb">
             <img class="loading" />
 
             <div class="pace loading">
@@ -27,6 +27,10 @@
                     <?php endif */ ?>
                 </p>
             </div>
-        </a>
+
+            <a href="#" class="edit">
+                <span class="fa fa-edit"></span>
+            </a>
+        </div>
     </div>
 </script>
