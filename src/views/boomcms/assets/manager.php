@@ -12,6 +12,8 @@
             <a href="#" id="b-assets-select-all"><?= trans('Select all') ?></a>
             &nbsp;:&nbsp;
             <a href="#" id="b-assets-select-none"><?= trans('Select none') ?></a>
+
+            <?= $button('search', 'search-assets', ['id' => 'b-assets-search', 'class' => 'b-button-withtext']) ?>
         </div>
 	</div>
 

@@ -130,6 +130,10 @@ $.widget('boom.assetManager', {
 			})
 			.on('click', '#b-assets-upload', function() {
 				assetManager.uploader.show();
+			})
+			.on('click', '#b-assets-search', function() {
+				$('#b-assets-filters').toggleClass('visible');
+				$(this).toggleClass('open');
 			});
 	},
 
@@ -165,7 +169,6 @@ $.widget('boom.assetManager', {
 
 				assetManager.initPagination(response.total);
 				assetManager.clearSelection();
-				assetManager.updateContentAreaMargin();
 			});
 	},
 
@@ -232,13 +235,6 @@ $.widget('boom.assetManager', {
 		var buttons = $('[id|=b-button-multiaction]');
 
 		buttons.prop('disabled', this.selection.length() ? false : true);
-	},
-
-	updateContentAreaMargin: function() {
-		// The filters bar will now be higher so move the content box down.
-		// Filters bar is position: fixed so this won't happen automatically.
-		var $filters = this.element.find('#b-assets-filters');
-		this.element.find('#b-assets-content').css('padding-top', $filters.outerHeight() + ($filters.offset().top) + 'px');
 	},
 
 	updateTagFilters: function(tags) {
