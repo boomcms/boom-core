@@ -1,3 +1,20 @@
+(function($, Backbone, BoomCMS) {
+	'use strict';
+
+	BoomCMS.PeopleManager = Backbone.View.extend({
+		el: 'body',
+
+		initialize: function() {
+			this.router = new BoomCMS.AssetManager.Router();
+			this.assets = new BoomCMS.Collections.Assets();
+
+			this.gridView = new BoomCMS.AssetManager.GridView({
+				assets: this.assets
+			});
+		}
+	});
+}(jQuery, Backbone, BoomCMS));
+
 $.widget('boom.assetManager', {
 	baseUrl: '/boomcms/assets/',
 	listUrl: '/boomcms/assets/get',

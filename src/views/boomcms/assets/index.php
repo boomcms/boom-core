@@ -42,7 +42,7 @@
 
 <script type="text/javascript">
     window.onload = function() {
-        $('body').assetManager();
+        new BoomCMS.AssetManager();
     };
 </script>
 

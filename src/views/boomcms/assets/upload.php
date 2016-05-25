@@ -1,4 +1,4 @@
-<div>
+<div id="b-assets-upload">
 	<form method="post" enctype="multipart/form-data" id="b-assets-upload-form" action="/boomcms/assets/upload">
 		<div id="b-assets-upload-container">
             <div id="b-assets-upload-info">

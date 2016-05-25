@@ -85,10 +85,7 @@ class AssetManager extends Controller
      */
     public function index()
     {
-        return view($this->viewPrefix.'index', [
-            'manager' => $this->manager(),
-            'person'  => auth()->user(),
-        ]);
+        return view($this->viewPrefix.'index');
     }
 
     public function get()
@@ -101,14 +98,6 @@ class AssetManager extends Controller
                 'assets' => Helpers::getAssets($params),
             ])->render(),
         ];
-    }
-
-    /**
-     * Display the asset manager without topbar etc.
-     */
-    public function manager()
-    {
-        return view($this->viewPrefix.'manager');
     }
 
     public function picker()
