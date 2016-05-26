@@ -29,7 +29,7 @@ class Slideshow extends BaseChunk
 
     public function slides()
     {
-        return $this->hasMany('BoomCMS\Database\Models\Chunk\Slideshow\Slide', 'chunk_id');
+        return $this->hasMany(Slideshow\Slide::class, 'chunk_id');
     }
 
     /**
