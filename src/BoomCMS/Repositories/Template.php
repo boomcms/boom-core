@@ -93,12 +93,12 @@ class Template
     /**
      * @param TemplateInterface $model
      *
-     * @return $this
+     * @return TemplateInterface
      */
     public function save(TemplateInterface $model)
     {
         $model->save();
 
-        return $this;
+        return $model;
     }
 }

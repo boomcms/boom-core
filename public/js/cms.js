@@ -45519,6 +45519,10 @@ $(function() {
 				});
 			}
 		};
+
+		BoomCMS.prototype.notify = function(message) {
+			new boomNotification(message).show();
+		};
 	}
 
 	window.BoomCMS = top.BoomCMS = new BoomCMS();
@@ -45834,6 +45838,54 @@ function boomPage(page_id) {
 		}
 	});
 }(BoomCMS));
+;(function(BoomCMS) {
+	'use strict';
+
+	BoomCMS.Template = BoomCMS.Model.extend({
+		urlRoot: BoomCMS.urlRoot + 'template',
+		needsSave: false,
+
+		initialize: function() {
+			this.pages = new BoomCMS.Collections.Pages();
+
+			this.listenTo(this, 'change', function() {
+				this.needsSave = true;
+			});
+
+			this.listenTo(this, 'sync', function() {
+				this.needsSave = false;
+			});
+		},
+
+		getDescription: function() {
+			return this.get('description');
+		},
+
+		getFilename: function() {
+			return this.get('filename');
+		},
+
+		getName: function() {
+			return this.get('name');
+		},
+
+		getPageCount: function() {
+			return 0;
+		},
+
+		getPages: function() {
+			return this.pages.fetch({
+				data: {
+					template: this.getId()
+				}
+			});
+		},
+
+		getTheme: function() {
+			return this.get('theme');
+		}
+	});
+}(BoomCMS));
 ;function boomPageUrl(id, pageId) {
 	this.id = id;
 	this.pageId = pageId;
@@ -45934,6 +45986,12 @@ function boomPage(page_id) {
 	});
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	BoomCMS.Collections.Pages = Backbone.Collection.extend({
+		model: BoomCMS.Page,
+		url: BoomCMS.urlRoot + 'pages'
+	});
+}(Backbone, BoomCMS));
+;(function(Backbone, BoomCMS) {
 	BoomCMS.Collections.People = Backbone.Collection.extend({
 		model: BoomCMS.Person,
 		url: BoomCMS.urlRoot + 'person',
@@ -45947,6 +46005,12 @@ function boomPage(page_id) {
 		comparator: 'name'
 	});
 }(Backbone, window.BoomCMS));
+;(function(Backbone, BoomCMS) {
+	BoomCMS.Collections.Templates = Backbone.Collection.extend({
+		model: BoomCMS.Template,
+		url: BoomCMS.urlRoot + 'template'
+	});
+}(Backbone, BoomCMS));
 ;/**
 @fileOverview jQuery plugins written specifically for Boom.
 */
@@ -50031,55 +50095,7 @@ $.widget('ui.chunkPageVisibility', {
 
 	return this.open();
 };
-;$.widget('boom.templateManager', {
-	bind: function() {
-		this.element
-			.on('click', '.b-templates-delete', function(e) {
-				e.preventDefault();
-
-				var item = $(this).closest( "tr" ),
-					confirmation = new boomConfirmation("Please confirm", "Are you sure you want to delete this template?");
-
-				confirmation
-					.done(function() {
-						$.post('/boomcms/templates/delete/' + item.attr('data-id'))
-							.done(function() {
-								item.fadeOut(600, function(){
-									item.remove();
-								});
-							});
-					});
-			})
-			.on('click', '#b-templates-save', function() {
-				var data = $('#b-templates').serialize();
-
-				$.post('/boomcms/templates/save', data, function(){
-					new boomNotification('Templates successfully saved').show();
-				});
-			})
-			.on('click', '#b-template-pages-download', function() {
-				window.location.href = window.location.href + '.csv';
-			});
-	},
-
-	_create: function() {
-		this.bind();
-
-		this.element.find('table')
-			.tablesorter({
-				/**
-				Return the value of any form input in a table cell, or the text content of the cell.
-				*/
-				textExtraction: function( node ){
-					var text = $( node )
-						.find( 'select, input' )
-						.val();
-
-					return (typeof text == 'undefined') ? $( node ).text() : text;
-				}
-			});
-	}
-});;function boomAssetEditor(asset, uploader) {
+;function boomAssetEditor(asset, uploader) {
     this.asset = asset;
     this.uploader = uploader;
 	this.selection = new boomAssetSelection([this.asset.id]);

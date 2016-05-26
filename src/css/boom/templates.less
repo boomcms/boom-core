@@ -1,26 +1,27 @@
 #b-templates {
-	#b-templates-table {
-		thead {
-			th {
-				&:hover, &:focus {
-					background: @red;
-				}
-			}
-		}
+	thead {
+		th {
+			cursor: pointer;
 
-		/* Table row for a template where the file doesn't exist in the templates directory */
-		tbody tr.b-templates-nofile {
-			background-color: @red;
-		}
-
-		input {
-			border: 1px dotted transparent;
-			width: 100%;
-			background-color: transparent;
-
-			&:hover {
-				border-color: #000;
+			&:hover, &:focus {
+				text-decoration: underline;
 			}
 		}
 	}
+
+	/* Table row for a template where the file doesn't exist in the templates directory */
+	tbody tr.b-templates-nofile {
+		background-color: @red;
+	}
+
+	input {
+		border: 1px dotted transparent;
+		width: 100%;
+		background-color: transparent;
+
+		&:hover {
+			border-color: #000;
+		}
+	}
 }
+	
