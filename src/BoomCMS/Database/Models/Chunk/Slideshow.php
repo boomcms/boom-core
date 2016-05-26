@@ -4,6 +4,8 @@ namespace BoomCMS\Database\Models\Chunk;
 
 class Slideshow extends BaseChunk
 {
+    const ATTR_TITLE = 'title';
+
     protected $table = 'chunk_slideshows';
 
     public static function create(array $attributes = [])
@@ -24,7 +26,7 @@ class Slideshow extends BaseChunk
 
     public function setTitleAttribute($value)
     {
-        $this->attributes['title'] = strip_tags($value);
+        $this->attributes[self::ATTR_TITLE] = strip_tags($value);
     }
 
     public function slides()
