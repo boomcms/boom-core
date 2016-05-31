@@ -29,6 +29,7 @@ class RouteSiteTest extends AbstractTestCase
         $request->shouldReceive('getHttpHost')->andReturn($hostname);
 
         $middleware = new RouteSite($router);
-        $middleware->handle($request, function () {});
+        $middleware->handle($request, function () {
+        });
     }
 }
