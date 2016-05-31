@@ -8,7 +8,7 @@
 		background: @lightest-grey;
 		display: inline-block;
 		width: 35rem;
-		height: 100%;
+		height: calc(~"100% + 3rem");
 		float: left;
 		padding: 6.5rem 0;
 		margin: -1.5rem 0;
@@ -190,10 +190,12 @@
 
 		.b-page-settings-menu {
 			width: 30rem;
+			padding: 2rem 0;
 		}
 
 		.b-page-settings-content {
 			max-width: calc(~"100% - 30rem");
+			padding: 2rem;
 		}
 	}
 }
@@ -231,11 +233,10 @@
 			.toggle {
 				display: block;
 				position: absolute;
-				right: 1rem;
-				top: 50%;
-				transform: translateY(-50%);
+				right: 0;
+				top: 0;
+				bottom: 0;
 				overflow: hidden;
-				height: 5rem;
 				width: 3rem;
 				font-size: 3rem;
 				background: @lightest-grey;
