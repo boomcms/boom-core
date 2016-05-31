@@ -11,6 +11,9 @@ $.widget('boom.pageSettings', {
 			})
 			.on('click', 'a[data-b-page-setting]', function() {
 				pageSettings.show($(this).attr('data-b-page-setting'));
+			})
+			.on('click', '.toggle', function() {
+				pageSettings.toggleMenu();
 			});
 	},
 
@@ -81,5 +84,9 @@ $.widget('boom.pageSettings', {
 				}
 			});
 		});
+	},
+
+	toggleMenu: function() {
+		this.$menu.toggleClass('open');
 	}
 });

@@ -12,7 +12,17 @@
 		float: left;
 		padding: 6.5rem 0;
 		margin: -1.5rem 0;
-		overflow-y: auto;
+		overflow: visible;
+		position: relative;
+
+		ul {
+			padding: 0;
+			overflow: hidden;
+		}
+
+		.toggle {
+			display: none;
+		}
 
 		.group {
 			border-top: 3px solid @white;
@@ -44,6 +54,7 @@
 					display: inline-block;
 					width: 30px;
 					text-align: center;
+					margin-right: 2rem;
 				}
 
 				&:hover, &:focus {
@@ -66,7 +77,8 @@
 
 	.b-page-settings-content {
 		display: inline-block;
-		width: calc(~"100% - 35rem");
+		width: 100%;
+		max-width: calc(~"100% - 35rem");
 		float: left;
 		max-height: 100%;
 		overflow-y: auto;
@@ -169,11 +181,91 @@
 	}
 }
 
-@media all and (max-width: 768px) {
+@media all and (max-width: 900px) {
 	.b-page-settings {
 		.b-page-settings-menu li a, .b-page-settings-content {
 			padding-left: 2rem;
 			padding-right: 2rem;
+		}
+
+		.b-page-settings-menu {
+			width: 30rem;
+		}
+
+		.b-page-settings-content {
+			max-width: calc(~"100% - 30rem");
+		}
+	}
+}
+
+@media all and (max-width: 768px) {
+	.b-page-settings {
+		.b-page-settings-menu {
+			max-width: 7rem;
+			transition: max-width 0.5s;
+
+			&.open {
+				max-width: 30rem;
+				transition: max-width 0.5s;
+
+				+ .b-page-settings-content {
+					max-width: calc(~"100% - 30rem");
+					transition: max-width 0.5s;
+				}
+
+				.toggle {
+					.fa-caret-left {
+						display: block;
+					}
+
+					.fa-caret-right {
+						display: none;
+					}
+				}
+			}
+
+			.toggle {
+				display: block;
+				position: absolute;
+				right: -3rem;
+				top: 50%;
+				transform: translateY(-50%);
+				overflow: hidden;
+				height: 5rem;
+				width: 3rem;
+				font-size: 3rem;
+				background: @lightest-grey;
+				text-align: center;
+
+				span {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translateX(-50%) translateY(-50%);
+				}
+
+				.text {
+					position: absolute;
+					top: -1000%;
+				}
+
+				.fa-caret-left {
+					display: none;
+				}
+
+				.fa-caret-right {
+					display: block;
+				}
+			}
+
+			ul a {
+				width: 30rem;
+			}
+		}
+
+		.b-page-settings-content {
+			max-width: calc(~"100% - 10rem");
+			transition: max-width 0.5s;
 		}
 	}
 }

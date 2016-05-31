@@ -46312,6 +46312,9 @@ function boomPage(page_id) {
 			})
 			.on('click', 'a[data-b-page-setting]', function() {
 				pageSettings.show($(this).attr('data-b-page-setting'));
+			})
+			.on('click', '.toggle', function() {
+				pageSettings.toggleMenu();
 			});
 	},
 
@@ -46382,6 +46385,10 @@ function boomPage(page_id) {
 				}
 			});
 		});
+	},
+
+	toggleMenu: function() {
+		this.$menu.toggleClass('open');
 	}
 });;$.widget( 'boom.pageEditor', {
 	elements : {},
