@@ -16,8 +16,7 @@ class Stream
     }
 
     /**
-     * This code has been adapted the code at http://www.tuxxin.com/php-mp4-streaming
-     * 
+     * This code has been adapted the code at http://www.tuxxin.com/php-mp4-streaming.
      */
     public function getResponse()
     {
@@ -28,13 +27,13 @@ class Stream
         $code = 200;
 
         $headers = [
-            'Content-Type' => $this->asset->getMimetype(),
+            'Content-Type'  => $this->asset->getMimetype(),
             'Accept-Ranges' => 'bytes',
         ];
 
         if ($range = Request::header('Range')) {
             $c_start = $start;
-            $c_end   = $end;
+            $c_end = $end;
             list(, $range) = explode('=', $range, 2);
 
             if (strpos($range, ',') !== false) {
@@ -44,9 +43,9 @@ class Stream
             if ($range === '-') {
                 $c_start = $size - substr($range, 1);
             } else {
-                $range  = explode('-', $range);
+                $range = explode('-', $range);
                 $c_start = $range[0];
-                $c_end   = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $size;
+                $c_end = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $size;
             }
 
             $c_end = ($c_end > $end) ? $end : $c_end;
@@ -55,8 +54,8 @@ class Stream
                 abort(416, null, ['Content-Range' => "bytes $start-$end/$size"]);
             }
 
-            $start  = $c_start;
-            $end    = $c_end;
+            $start = $c_start;
+            $end = $c_end;
             $length = $end - $start + 1;
             fseek($stream, $start);
             $code = 206;
@@ -67,8 +66,8 @@ class Stream
 
         return Response::stream(function () use ($stream, $end) {
             $buffer = 1024 * 8;
-            
-            while(!feof($stream) && ($p = ftell($stream)) <= $end) {
+
+            while (!feof($stream) && ($p = ftell($stream)) <= $end) {
                 if ($p + $buffer > $end) {
                     $buffer = $end - $p + 1;
                 }
