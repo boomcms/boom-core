@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Contracts\Models\Asset;
 use Intervention\Image\Constraint;
+use Intervention\Image\ImageCache;
 use Intervention\Image\ImageManager;
 
 class Image extends BaseController
@@ -25,8 +26,8 @@ class Image extends BaseController
     public function crop($width = null, $height = null)
     {
         if (!empty($width) && !empty($height)) {
-            $image = $this->manager->cache(function (ImageManager $manager) use ($width, $height) {
-                return $manager->make($this->asset->getFilename())
+            $image = $this->manager->cache(function (ImageCache $cache) use ($width, $height) {
+                return $cache->make($this->asset->getFilename())
                     ->fit($width, $height)
                     ->encode($this->encoding);
             });
@@ -47,11 +48,11 @@ class Image extends BaseController
     public function view($width = null, $height = null)
     {
         if (!empty($width) || !empty($height)) {
-            $image = $this->manager->cache(function (ImageManager $manager) use ($width, $height) {
+            $image = $this->manager->cache(function (ImageCache $cache) use ($width, $height) {
                 $width = empty($width) ? null : $width;
                 $height = empty($height) ? null : $height;
 
-                return $manager
+                return $cache
                     ->make($this->asset->getFilename())
                     ->resize($width, $height, function (Constraint $constraint) {
                         $constraint->aspectRatio();
