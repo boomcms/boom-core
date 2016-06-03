@@ -11,6 +11,8 @@ class Search extends Controller
         $results = [];
         $pages = Helpers::getPages($this->request->input());
 
+        return $pages;
+
         foreach ($pages as $p) {
             $results[] = [
                 'id'           => $p->getId(),
@@ -18,6 +20,7 @@ class Search extends Controller
                 'url'          => (string) $p->url(),
                 'visible'      => (int) $p->isVisible(),
                 'has_children' => (int) $p->hasChildren(),
+                ''
             ];
         }
 

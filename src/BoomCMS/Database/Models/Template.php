@@ -20,6 +20,8 @@ class Template extends Model implements TemplateInterface
 
     protected $table = 'templates';
 
+    protected $appends = ['file_exists'];
+
     protected $guarded = [
         self::ATTR_ID,
     ];
@@ -40,6 +42,16 @@ class Template extends Model implements TemplateInterface
     public function getDescription()
     {
         return $this->{self::ATTR_DESCRIPTION};
+    }
+
+    /**
+     * Returns the file_exists attribute for the JSON form
+     *
+     * @return int
+     */
+    public function getFileExistsAttribute()
+    {
+        return (int) $this->fileExists();
     }
 
     /**

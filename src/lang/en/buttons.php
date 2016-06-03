@@ -10,6 +10,7 @@ return [
     'clear-selection'       => 'Clear selection',
     'crop'                  => 'Crop',
     'delete'                => 'Delete',
+    'delete-template'       => 'Delete template',
     'download'              => 'Download',
     'embargo'               => 'Set embargo time',
     'embargo-change'        => 'Change embargo time',

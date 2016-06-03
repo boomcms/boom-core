@@ -5,10 +5,22 @@ namespace BoomCMS\Tests\Database\Models;
 use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Database\Models\Template;
 use Illuminate\Support\Facades\View;
+use Mockery as m;
 
 class TemplateTest extends AbstractModelTestCase
 {
     protected $model = Template::class;
+
+    public function testAjaxFormIncludesFileExists()
+    {
+        $template = m::mock(Template::class)->makePartial();
+        $template->shouldReceive('fileExists')->once()->andReturn(true);
+
+        $json = $template->toJson();
+        $data = json_decode($json);
+
+        $this->assertEquals(1, $data->file_exists);
+    }
 
     public function testGetThemeName()
     {

@@ -12,7 +12,7 @@ return [
         'icon'     => 'thumbs-o-up',
     ],
     'templates' => [
-        'url'      => '/boomcms/templates',
+        'url'      => route('template-manager'),
         'role'     => 'manageTemplates',
         'icon'     => 'file-o',
     ],

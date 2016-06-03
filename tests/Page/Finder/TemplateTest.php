@@ -4,6 +4,7 @@ namespace BoomCMS\Tests\Page\Finder;
 
 use BoomCMS\Core\Page\Finder\Template as Filter;
 use BoomCMS\Database\Models\Template;
+use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
@@ -15,6 +16,26 @@ class TemplateTest extends AbstractTestCase
         $filter = new Filter();
 
         $this->assertFalse($filter->shouldBeApplied());
+    }
+
+    public function testAcceptsTemplateId()
+    {
+        $templateId = 1;
+        $template = new Template();
+        $template->{Template::ATTR_ID} = $templateId;
+
+        TemplateFacade::shouldReceive($templateId)->once()->andReturn($template);
+
+        $query = m::mock(Builder::class);
+        $query->shouldReceive('where')
+            ->once()
+            ->with('template_id', '=', $templateId);
+
+        $filter = new Filter($template);
+
+        $this->assertTrue($filter->shouldBeApplied());
+
+        $filter->build($query);
     }
 
     public function testIsAppliedWithTemplate()

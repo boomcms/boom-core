@@ -12,7 +12,7 @@ $.widget( 'boom.pageManager', {
 	},
 
 	addPage: function($el) {
-		var page = new boomPage($el.data('page-id'));
+		var page = new BoomCMS.Page({id: $el.data('page-id')});
 
 		page.add()
 			.done(function(data) {
@@ -66,7 +66,7 @@ $.widget( 'boom.pageManager', {
 	},
 
 	showPageSettings: function($el, section) {
-		var page = new boomPage($el.data('page-id')),
+		var page = new BoomCMS.Page({id: $el.data('page-id')}),
 			$settings = $('<div></div>');
 
 		$settings

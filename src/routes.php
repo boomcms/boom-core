@@ -73,13 +73,12 @@ Route::group(['middleware' => [
                 Route::resource('group', 'Group');
             });
 
-            Route::group(['prefix' => 'templates'], function () {
-                Route::get('', 'Templates@index');
-                Route::get('pages/{template}.{format?}', 'Templates@pages');
+            Route::get('template-manager', [
+                'uses' => 'TemplateManagerController@index',
+                'as'   => 'template-manager',
+            ]);
 
-                Route::post('save', 'Templates@save');
-                Route::post('delete/{template}', 'Templates@delete');
-            });
+            Route::resource('template', 'TemplateController');
 
             Route::group(['prefix' => 'pages'], function () {
                 Route::get('', 'Pages@index');
