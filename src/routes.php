@@ -10,7 +10,7 @@ Route::group(['middleware' => [
     Route::group(['prefix' => 'boomcms', 'namespace' => 'BoomCMS\Http\Controllers'], function () {
         Route::group([
             'namespace'  => 'Auth',
-            'middleware' => [Middleware\RequireGuest::class]
+            'middleware' => [Middleware\RequireGuest::class],
         ], function () {
             Route::get('login', ['as' => 'login', 'uses' => 'AuthController@getLogin']);
 

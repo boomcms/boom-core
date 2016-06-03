@@ -5,8 +5,8 @@ namespace BoomCMS\Tests\Http\Middleware;
 use BoomCMS\Http\Middleware\RequireLogin;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Contracts\Auth\Guard as Auth;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Mockery as m;
 
 class RequireLoginTest extends AbstractTestCase
@@ -18,12 +18,12 @@ class RequireLoginTest extends AbstractTestCase
         $auth = m::mock(Auth::class);
         $auth->shouldReceive('check')->once()->andReturn(false);
 
-        $closure = function() use(&$nextCalled) {
+        $closure = function () use (&$nextCalled) {
             $nextCalled = true;
         };
 
         $middleware = new RequireLogin($auth);
-        $response = $middleware->handle(new Request, $closure);
+        $response = $middleware->handle(new Request(), $closure);
 
         $this->assertFalse($nextCalled);
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -38,12 +38,12 @@ class RequireLoginTest extends AbstractTestCase
         $auth = m::mock(Auth::class);
         $auth->shouldReceive('check')->once()->andReturn(true);
 
-        $closure = function() use(&$nextCalled) {
+        $closure = function () use (&$nextCalled) {
             $nextCalled = true;
         };
 
         $middleware = new RequireLogin($auth);
-        $middleware->handle(new Request, $closure);
+        $middleware->handle(new Request(), $closure);
 
         $this->assertTrue($nextCalled);
     }

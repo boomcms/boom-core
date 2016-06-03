@@ -4,8 +4,8 @@ namespace BoomCMS\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard as Auth;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class RequireGuest
 {
