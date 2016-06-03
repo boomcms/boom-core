@@ -8,19 +8,23 @@ Route::group(['middleware' => [
     Middleware\DefineCMSViewSharedVariables::class,
 ]], function () {
     Route::group(['prefix' => 'boomcms', 'namespace' => 'BoomCMS\Http\Controllers'], function () {
-        Route::group(['namespace' => 'Auth'], function () {
+        Route::group([
+            'namespace'  => 'Auth',
+            'middleware' => [Middleware\RequireGuest::class]
+        ], function () {
             Route::get('login', ['as' => 'login', 'uses' => 'AuthController@getLogin']);
-            Route::post('login', 'AuthController@postLogin');
-            Route::get('logout', 'AuthController@getLogout');
 
             // Password reset link request routes...
             Route::get('recover', ['as' => 'password', 'uses' => 'PasswordReset@getEmail']);
             Route::post('recover', 'PasswordReset@postEmail');
             Route::get('recover/{token}', 'PasswordReset@getReset');
             Route::post('recover/{token}', 'PasswordReset@postReset');
+            Route::post('login', 'AuthController@postLogin');
         });
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
+            Route::get('logout', 'Auth\AuthController@getLogout');
+
             Route::controller('autocomplete', 'Autocomplete');
             Route::controller('ui', 'UI');
             Route::controller('editor', 'Editor');

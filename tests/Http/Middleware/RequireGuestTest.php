@@ -2,16 +2,16 @@
 
 namespace BoomCMS\Tests\Http\Middleware;
 
-use BoomCMS\Http\Middleware\RequireLogin;
+use BoomCMS\Http\Middleware\RequireGuest;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Contracts\Auth\Guard as Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Mockery as m;
 
-class RequireLoginTest extends AbstractTestCase
+class RequireGuestTest extends AbstractTestCase
 {
-    public function testGuestIsRedirected()
+    public function testGuestIsNotRedirected()
     {
         $nextCalled = false;
 
@@ -22,13 +22,10 @@ class RequireLoginTest extends AbstractTestCase
             $nextCalled = true;
         };
 
-        $middleware = new RequireLogin($auth);
-        $response = $middleware->handle(new Request, $closure);
+        $middleware = new RequireGuest($auth);
+        $middleware->handle(new Request, $closure);
 
-        $this->assertFalse($nextCalled);
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals(302, $response->status());
-        $this->assertEquals(route('login'), $response->getTargetUrl());
+        $this->assertTrue($nextCalled);
     }
 
     public function testUserIsRedirected()
@@ -42,9 +39,12 @@ class RequireLoginTest extends AbstractTestCase
             $nextCalled = true;
         };
 
-        $middleware = new RequireLogin($auth);
-        $middleware->handle(new Request, $closure);
+        $middleware = new RequireGuest($auth);
+        $response = $middleware->handle(new Request, $closure);
 
-        $this->assertTrue($nextCalled);
+        $this->assertFalse($nextCalled);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertEquals(302, $response->status());
+        $this->assertEquals('/', $response->getTargetUrl());
     }
 }
