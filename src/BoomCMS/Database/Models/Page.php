@@ -510,9 +510,14 @@ class Page extends Model implements PageInterface
         return $this->getFeatureImageId() != 0;
     }
 
+    /**
+     * Whether the page has been deleted
+     *
+     * @return bool
+     */
     public function isDeleted()
     {
-        return $this->{self::ATTR_DELETED_AT} != null;
+        return !empty($this->{self::ATTR_DELETED_AT});
     }
 
     /**
