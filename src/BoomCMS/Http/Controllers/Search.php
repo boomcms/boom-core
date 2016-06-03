@@ -20,7 +20,7 @@ class Search extends Controller
                 'url'          => (string) $p->url(),
                 'visible'      => (int) $p->isVisible(),
                 'has_children' => (int) $p->hasChildren(),
-                ''
+                '',
             ];
         }
 
