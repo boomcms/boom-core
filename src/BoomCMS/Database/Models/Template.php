@@ -45,7 +45,7 @@ class Template extends Model implements TemplateInterface
     }
 
     /**
-     * Returns the file_exists attribute for the JSON form
+     * Returns the file_exists attribute for the JSON form.
      *
      * @return int
      */

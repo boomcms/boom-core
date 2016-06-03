@@ -22,9 +22,9 @@ class TempateTest extends BaseControllerTest
         $description = 'test-description';
 
         $request = new Request([
-            'name' => $name,
+            'name'        => $name,
             'description' => $description,
-            'filename' => $filename,
+            'filename'    => $filename,
         ]);
 
         $template = m::mock(Template::class);

@@ -366,7 +366,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Returns the has_children attribute for the JSON form
+     * Returns the has_children attribute for the JSON form.
      *
      * @return int
      */
@@ -376,7 +376,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Returns the url attribute for the JSON form
+     * Returns the url attribute for the JSON form.
      *
      * @return string
      */
@@ -386,7 +386,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Returns the visible attribute for the JSON form
+     * Returns the visible attribute for the JSON form.
      *
      * @return int
      */
