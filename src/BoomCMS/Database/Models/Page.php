@@ -511,7 +511,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Whether the page has been deleted
+     * Whether the page has been deleted.
      *
      * @return bool
      */
