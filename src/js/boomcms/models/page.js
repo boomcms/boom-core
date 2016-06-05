@@ -46,8 +46,16 @@
 			return promise;
 		},
 
+		hasChildren: function() {
+			return this.get('has_children') === true;
+		},
+
 		getLastEdited: function() {
 			return this.get('edited_time');
+		},
+
+		getParentId: function() {
+			return this.get('parent_id');
 		},
 
 		getTitle: function() {
@@ -56,6 +64,10 @@
 
 		getUrl: function() {
 			return this.get('url');
+		},
+
+		isRoot: function() {
+			return this.get('parent_id') === null;
 		},
 
 		isVisible: function() {

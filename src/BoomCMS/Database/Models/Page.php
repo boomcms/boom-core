@@ -372,7 +372,7 @@ class Page extends Model implements PageInterface
      */
     public function getHasChildrenAttribute()
     {
-        return (int) $this->hasChildren();
+        return (bool) $this->hasChildren();
     }
 
     /**
