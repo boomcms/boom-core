@@ -6,7 +6,7 @@ $.widget('ui.chunkCalendar', $.ui.chunk, {
 			dialog;
 
 		dialog = new boomDialog({
-			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=calendar&slotname=' + this.options.name,
+			url: this.options.currentPage.baseUrl + 'chunk/edit?type=calendar&slotname=' + this.options.name,
 			width: 700,
 			title: 'Select dates',
 			onLoad: function() {

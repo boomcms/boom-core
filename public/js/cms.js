@@ -48401,7 +48401,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			data = this.getData();
 
 		this.dialog = new boomDialog({
-			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?slotname=' + self.options.name + '&type=timestamp',
+			url: this.options.currentPage.baseUrl + 'chunk/edit?slotname=' + self.options.name + '&type=timestamp',
 			width: 400,
 			title: 'Edit date / time',
 			onLoad: function() {
@@ -48460,7 +48460,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		var library = this;
 
 		this.dialog = new boomDialog({
-			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=library&slotname=' + this.options.name,
+			url: this.options.currentPage.baseUrl + 'chunk/edit?type=library&slotname=' + this.options.name,
 			width: 700,
 			onLoad: function() {
 				library.dialog.contents
@@ -49324,7 +49324,7 @@ $.widget('ui.chunkPageVisibility', {
 			dialog;
 
 		dialog = new boomDialog({
-			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=html&slotname=' + this.options.name,
+			url: this.options.currentPage.baseUrl + 'chunk/edit?type=html&slotname=' + this.options.name,
 			width: 600,
 			title: 'Edit HTML'
 		}).done(function() {
@@ -49361,7 +49361,7 @@ $.widget('ui.chunkPageVisibility', {
 			dialog;
 
 		dialog = new boomDialog({
-			url: '/boomcms/page/' + this.options.currentPage.id + '/chunk/edit?type=calendar&slotname=' + this.options.name,
+			url: this.options.currentPage.baseUrl + 'chunk/edit?type=calendar&slotname=' + this.options.name,
 			width: 700,
 			title: 'Select dates',
 			onLoad: function() {
