@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\Guard as Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class RequireLogin
+class RequireGuest
 {
     /**
      * @var Auth
@@ -22,15 +22,15 @@ class RequireLogin
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
-     * @param Closure $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
      *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$this->auth->check()) {
-            return new RedirectResponse(route('login'));
+        if ($this->auth->check()) {
+            return new RedirectResponse('/');
         }
 
         return $next($request);

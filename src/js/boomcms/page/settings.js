@@ -11,6 +11,9 @@ $.widget('boom.pageSettings', {
 			})
 			.on('click', 'a[data-b-page-setting]', function() {
 				pageSettings.show($(this).attr('data-b-page-setting'));
+			})
+			.on('click', '.toggle', function() {
+				pageSettings.toggleMenu();
 			});
 	},
 
@@ -31,19 +34,21 @@ $.widget('boom.pageSettings', {
 	},
 
 	getUrl: function(section) {
+		var prefix = '/boomcms/page/' + this.page.getId() + '/';
+
 		switch (section) {
 			case 'urls':
-				return '/boomcms/page/' + this.page.id + '/urls';
+				return  prefix + 'urls';
 			case 'relations':
-				return '/boomcms/page/' + this.page.id + '/relations';
+				return prefix + 'relations';
 			case 'tags':
-				return '/boomcms/page/' + this.page.id + '/tags';
+				return prefix + 'tags';
 			case 'template':
-				return '/boomcms/page/' + this.page.id + '/version/template';
+				return prefix + 'version/template';
 			case 'drafts':
-				return '/boomcms/page/' + this.page.id + '/version/status';
+				return prefix + 'version/status';
 			default:
-				return '/boomcms/page/' + this.page.id + '/settings/' + section;
+				return prefix + '/settings/' + section;
 		}
 	},
 
@@ -81,5 +86,9 @@ $.widget('boom.pageSettings', {
 				}
 			});
 		});
+	},
+
+	toggleMenu: function() {
+		this.$menu.toggleClass('open');
 	}
 });

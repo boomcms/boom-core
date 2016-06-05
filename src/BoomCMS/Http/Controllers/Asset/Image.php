@@ -3,6 +3,8 @@
 namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Contracts\Models\Asset;
+use Intervention\Image\Constraint;
+use Intervention\Image\ImageCache;
 use Intervention\Image\ImageManager;
 
 class Image extends BaseController
@@ -23,10 +25,9 @@ class Image extends BaseController
 
     public function crop($width = null, $height = null)
     {
-        if ($width && $height) {
-            $image = $this->manager->cache(function ($manager) use ($width, $height) {
-                return $manager->make($this->asset
-                    ->getFilename())
+        if (!empty($width) && !empty($height)) {
+            $image = $this->manager->cache(function (ImageCache $cache) use ($width, $height) {
+                return $cache->make($this->asset->getFilename())
                     ->fit($width, $height)
                     ->encode($this->encoding);
             });
@@ -46,15 +47,18 @@ class Image extends BaseController
 
     public function view($width = null, $height = null)
     {
-        $filename = $this->asset->exists() ? $this->asset->getFilename() : __DIR__.'/../../../../vendor/boomcms/boom-core/img/placeholder.png';
+        if (!empty($width) || !empty($height)) {
+            $image = $this->manager->cache(function (ImageCache $cache) use ($width, $height) {
+                $width = empty($width) ? null : $width;
+                $height = empty($height) ? null : $height;
 
-        if ($width || $height) {
-            $image = $this->manager->cache(function ($manager) use ($width, $height, $filename) {
-                return $manager->make($filename)->resize($width != 0 ? $width : null, $height != 0 ? $height : null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->encode($this->encoding);
+                return $cache
+                    ->make($this->asset->getFilename())
+                    ->resize($width, $height, function (Constraint $constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode($this->encoding);
             });
         } else {
             $image = $this->manager->make($this->asset->getFilename())->encode();

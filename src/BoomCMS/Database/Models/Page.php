@@ -69,6 +69,8 @@ class Page extends Model implements PageInterface
     const ADD_PAGE_CHILD = 2;
     const ADD_PAGE_SIBLING = 3;
 
+    protected $appends = ['has_children', 'url', 'visible'];
+
     protected $casts = [
         self::ATTR_ADD_BEHAVIOUR               => 'integer',
         self::ATTR_CHILD_ADD_BEHAVIOUR         => 'integer',
@@ -364,6 +366,36 @@ class Page extends Model implements PageInterface
     }
 
     /**
+     * Returns the has_children attribute for the JSON form.
+     *
+     * @return int
+     */
+    public function getHasChildrenAttribute()
+    {
+        return (bool) $this->hasChildren();
+    }
+
+    /**
+     * Returns the url attribute for the JSON form.
+     *
+     * @return string
+     */
+    public function getUrlAttribute()
+    {
+        return (string) $this->url();
+    }
+
+    /**
+     * Returns the visible attribute for the JSON form.
+     *
+     * @return int
+     */
+    public function getVisibleAttribute()
+    {
+        return (int) $this->isVisible();
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -478,9 +510,14 @@ class Page extends Model implements PageInterface
         return $this->getFeatureImageId() != 0;
     }
 
+    /**
+     * Whether the page has been deleted.
+     *
+     * @return bool
+     */
     public function isDeleted()
     {
-        return $this->{self::ATTR_DELETED_AT} != null;
+        return !empty($this->{self::ATTR_DELETED_AT});
     }
 
     /**

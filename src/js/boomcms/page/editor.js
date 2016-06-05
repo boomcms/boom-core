@@ -10,7 +10,7 @@ $.widget( 'boom.pageEditor', {
 	_create: function() {
 		var self = this;
 
-		this.page = new boomPage(this.options.page_id);
+		this.page = new BoomCMS.Page({id: this.options.page_id});
 		window.BoomCMS.page = this.page;
 
 		this.document = $(top.document);

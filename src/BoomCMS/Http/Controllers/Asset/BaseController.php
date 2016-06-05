@@ -17,6 +17,10 @@ class BaseController extends Controller
     {
         $this->asset = $asset;
         $this->response = new Response();
+
+        if (!$this->asset->exists()) {
+            abort(404);
+        }
     }
 
     public function download()

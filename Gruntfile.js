@@ -36,6 +36,13 @@ module.exports = function(grunt) {
 				],
 				dest: 'public/js/people-manager.js'
 			},
+			'template-manager': {
+                                src: [
+                                        'src/js/boomcms/template-manager/TemplateManager.js',
+                                        'src/js/boomcms/template-manager/components/*.js',
+                                ],
+                                dest: 'public/js/template-manager.js'
+			},
 			dist: {
 	  			src: [
 					'bower_components/modernizr/modernizr.js',
@@ -56,7 +63,7 @@ module.exports = function(grunt) {
 					'bower_components/chosen/chosen.jquery.js',
 					'bower_components/underscore/underscore.js',
 					'bower_components/backbone/backbone.js',
-					'bower_components/jquery-timeago/jquery.timeago.js',
+					'bower_components/moment/min/moment.min.js',
 					'bower_components/pushy/js/pushy.js',
 					'src/js/boomcms/boomcms.js',
 					'src/js/boomcms/models/*.js',
@@ -97,9 +104,16 @@ module.exports = function(grunt) {
 					'src/js/boomcms/page/title.js',
 					'src/js/boomcms/link/link.js',
 					'src/js/boomcms/link/picker.js',
-					'src/js/boomcms/template/manager.js',
-					'src/js/boomcms/asset/assetManager.js',
 					'src/js/boomcms/asset/compoenents/*.js',
+					'src/js/boomcms/asset/editor.js',
+					'src/js/boomcms/asset/manager.js',
+					'src/js/boomcms/asset/picker.js',
+					'src/js/boomcms/asset/titleFilter.js',
+					'src/js/boomcms/asset/uploader.js',
+					'src/js/boomcms/asset/justify.js',
+					'src/js/boomcms/asset/tagAutocomplete.js',
+					'src/js/boomcms/asset/tagSearch.js',
+					'src/js/boomcms/asset/selection.js',
 					'src/js/boomcms/group/permissionsEditor.js',
 					'src/js/boomcms/imageEditor.js',
 					'src/js/boomcms/approvals.js',
@@ -125,7 +139,8 @@ module.exports = function(grunt) {
 			build: {
 				files: {
 					'public/js/cms.min.js': 'public/js/cms.js',
-					'public/js/people-manager.min.js': 'public/js/people-manager.js'
+					'public/js/people-manager.min.js': 'public/js/people-manager.js',
+                                        'public/js/template-manager.min.js': 'public/js/template-manager.js'
 				}
 			}
 		},
@@ -192,7 +207,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.registerTask('build-css', ['less', 'autoprefixer:no_dest', 'cssmin']);
-	grunt.registerTask('build-js', ['concat:dist', 'concat:people-manager', 'uglify']);
+	grunt.registerTask('build-js', ['concat:dist', 'concat:people-manager', 'concat:template-manager', 'uglify']);
 	grunt.registerTask('dist', ['copy', 'build-css', 'build-js']);
 	grunt.registerTask('default',['watch']);
 };

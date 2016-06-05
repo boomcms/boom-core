@@ -8,11 +8,20 @@
 		background: @lightest-grey;
 		display: inline-block;
 		width: 35rem;
-		height: 100%;
+		height: calc(~"100% + 3rem");
 		float: left;
 		padding: 6.5rem 0;
 		margin: -1.5rem 0;
 		overflow-y: auto;
+		position: relative;
+
+		ul {
+			padding: 0;
+		}
+
+		.toggle {
+			display: none;
+		}
 
 		.group {
 			border-top: 3px solid @white;
@@ -44,6 +53,7 @@
 					display: inline-block;
 					width: 30px;
 					text-align: center;
+					margin-right: 2rem;
 				}
 
 				&:hover, &:focus {
@@ -66,7 +76,8 @@
 
 	.b-page-settings-content {
 		display: inline-block;
-		width: calc(~"100% - 35rem");
+		width: 100%;
+		max-width: calc(~"100% - 35rem");
 		float: left;
 		max-height: 100%;
 		overflow-y: auto;
@@ -134,8 +145,10 @@
 					background: @light-grey;
 				}
 
-				+ .b-button-withtext {
-					margin-left: 1.5rem;
+				@media all and (min-width: 850px) {
+					+ .b-button-withtext {
+						margin-left: 1.5rem;
+					}
 				}
 			}
 		}
@@ -155,14 +168,109 @@
 	right: 0;
 	bottom: 0;
 	top: 0;
-	left: 60px;
+	left: 0;
 	max-width: 0;
-	width: 100%;
+	width: 100vw;
+	padding-left: 60px;
 	transition: all 1s;
 	overflow: hidden;
 
 	&.open {
 		max-width: 5000px;
 		transition: all 1s;
+	}
+}
+
+@media all and (max-width: 900px) {
+	.b-page-settings {
+		.b-page-settings-menu li a, .b-page-settings-content {
+			padding-left: 2rem;
+			padding-right: 2rem;
+		}
+
+		.b-page-settings-menu {
+			width: 30rem;
+			padding: 2rem 0;
+		}
+
+		.b-page-settings-content {
+			max-width: calc(~"100% - 30rem");
+			padding: 2rem;
+		}
+	}
+}
+
+@media all and (max-width: 768px) {
+	.b-page-settings {
+		.b-page-settings-menu {
+			max-width: 10rem;
+			transition: max-width 0.5s;
+
+			&.open {
+				max-width: 30rem;
+				transition: max-width 0.5s;
+
+				+ .b-page-settings-content {
+					max-width: calc(~"100% - 30rem");
+					transition: max-width 0.5s;
+				}
+
+				.toggle {
+					.fa-caret-left {
+						display: block;
+					}
+
+					.fa-caret-right {
+						display: none;
+					}
+				}
+			}
+
+			.toggle {
+				display: block;
+				position: absolute;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				overflow: hidden;
+				width: 3rem;
+				font-size: 3rem;
+				background: @lightest-grey;
+				text-align: center;
+
+				span {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translateX(-50%) translateY(-50%);
+				}
+
+				.text {
+					position: absolute;
+					top: -1000%;
+				}
+
+				.fa-caret-left {
+					display: none;
+				}
+
+				.fa-caret-right {
+					display: block;
+				}
+			}
+
+			ul {
+				overflow-x: hidden;
+
+				a {
+					width: 30rem;
+				}
+			}
+		}
+
+		.b-page-settings-content {
+			max-width: calc(~"100% - 16rem");
+			transition: max-width 0.5s;
+		}
 	}
 }

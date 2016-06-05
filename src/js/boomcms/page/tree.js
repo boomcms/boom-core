@@ -1,102 +1,97 @@
-/**
-Create a tree widget for selecting pages.
-*/
-$.widget('boom.pageTree', {
-	options : {
-		onPageSelect: function() {}
-	},
+(function(BoomCMS) {
+	'use strict';
 
-	bind: function() {
-		var pageTree = this;
+	$.widget('boom.pageTree', {
+		options : {
+			onPageSelect: function() {}
+		},
 
-		this.element
-			.on('click', 'a[data-page-id]', function(e) {
-				e.preventDefault();
+		addPageToList: function(page) {
+			var parentId = page.getParentId(),
+				$ul = page.isRoot() ? this.element : this.element.find('ul[parent-id=' + parentId + ']'),
+				$li = $('<li></li>').data('page', page).appendTo($ul);
 
-				pageTree.itemClick($(this));
-			})
-			.on('click', '.b-tree-toggle', function(e) {
-				e.preventDefault();
+			$('<a></a>')
+				.attr('href', page.getUrl())
+				.attr('data-page-id', page.getId())
+				.text(page.getTitle())
+				.appendTo($li);
 
-				var $this = $(this);
+			if (page.hasChildren()) {
+				this.makeExpandable($li);
+			}
 
-				$this.toggleClass('expanded');
+			if (typeof(this.options.active) !== 'undefined') {
+				$ul
+					.find('a[data-page-id=' + this.options.active + ']')
+					.addClass('active');
+			}
+		},
 
-				if ($this.hasClass('expanded')) {
-					pageTree.showChildren($this.closest('li'));
-				} else {
-					pageTree.hideChildren($this.closest('li'));
-				}
+		bind: function() {
+			var pageTree = this;
+
+			this.pages = new BoomCMS.Collections.Pages();
+			this.pages.on('add', function(page) {
+				pageTree.addPageToList(page);
 			});
-	},
 
-	_create: function() {
-		this.bind();
-		this.getChildren(null, this.element);
-	},
+			this.element
+				.on('click', 'a[data-page-id]', function(e) {
+					e.preventDefault();
 
-	itemClick: function($node) {
-		this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('data-page-id'), $node.text()));
-	},
+					pageTree.itemClick($(this));
+				})
+				.on('click', '.b-tree-toggle', function(e) {
+					e.preventDefault();
 
-	getChildren: function(pageId, $ul) {
-		var pageTree = this;
+					var $this = $(this);
 
-		$.get('/boomcms/search/pages', {parent: pageId})
-			.done(function(data) {
+					$this.toggleClass('expanded');
 
-				$(data).each(function(i, item) {
-					var $li = $('<li></li>')
-						.data({
-							children : parseInt(item.has_children, 10),
-							'page-id' : item.id
-						})
-						.appendTo($ul);
-
-					$('<a></a>')
-						.attr('href', item.url)
-						.attr('data-page-id', item.id)
-						.text(item.title)
-						.appendTo($li);
-
-					if (item.has_children == 1) {
-						pageTree.makeExpandable($li);
-					}
-
-					if (typeof(pageTree.options.active) !== 'undefined') {
-						$ul
-							.find('a[data-page-id=' + pageTree.options.active + ']')
-							.addClass('active');
+					if ($this.hasClass('expanded')) {
+						pageTree.showChildren($this.closest('li'));
+					} else {
+						pageTree.hideChildren($this.closest('li'));
 					}
 				});
+		},
 
-			pageTree._trigger('load', null, {
-				elements : $ul.find('li'),
-				children : data
-			});
-		});
-	},
+		_create: function() {
+			this.bind();
+			this.getChildren(null, this.element);
+		},
 
-	hideChildren: function($li) {
-		$li.find('> ul').hide();
-	},
+		itemClick: function($node) {
+			this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('data-page-id'), $node.text()));
+		},
 
-	makeExpandable: function($li) {
-		$('<span />')
-			.addClass('b-tree-toggle')
-			.prependTo($li);
-	},
+		getChildren: function(page) {
+			this.pages.findByParent(page);
+		},
 
-	showChildren: function($li) {
-		var $ul = $li.find('> ul');
+		hideChildren: function($li) {
+			$li.find('> ul').hide();
+		},
 
-		if ($ul.length === 0) {
-			var $ul = $('<ul></ul>');
+		makeExpandable: function($li) {
+			$('<span />')
+				.addClass('b-tree-toggle')
+				.prependTo($li);
+		},
 
-			$li.append($ul);
-			this.getChildren($li.data('page-id'), $ul);
-		} else {
+		showChildren: function($li) {
+			var $ul = $li.find('> ul');
+
+			if ($ul.length === 0) {
+				var page = $li.data('page'),
+					$ul = $('<ul></ul>').attr('parent-id', page.getId());
+
+				$li.append($ul);
+				this.getChildren(page);
+			}
+
 			$ul.show();
 		}
-	}
-});
+	});
+}(BoomCMS));

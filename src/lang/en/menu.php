@@ -9,5 +9,5 @@ return [
     'pages'     => 'Pages',
     'people'    => 'People Manager',
     'settings'  => 'Settings',
-    'templates' => 'Templates',
+    'templates' => 'Template Manager',
 ];

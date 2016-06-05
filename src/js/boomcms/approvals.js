@@ -25,7 +25,7 @@ $(document).ready(function() {
 	function boom_approvals_get_page($element) {
 		var page_id = $element.parents('tr').attr('data-page-id');
 
-		return new boomPage(page_id);
+		return new BoomCMS.Page({id: page_id});
 	}
 
 	function boom_approvals_remove_row($element) {

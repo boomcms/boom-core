@@ -4,6 +4,7 @@ namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Foundation\Finder\Filter;
+use BoomCMS\Support\Facades\Template as TemplateFacade;
 use Illuminate\Database\Eloquent\Builder;
 
 class Template extends Filter
@@ -13,9 +14,9 @@ class Template extends Filter
      */
     protected $template;
 
-    public function __construct(TemplateInterface $template = null)
+    public function __construct($template = null)
     {
-        $this->template = $template;
+        $this->template = is_numeric($template) ? TemplateFacade::find($template) : $template;
     }
 
     public function build(Builder $query)

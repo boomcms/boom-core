@@ -67,6 +67,10 @@
 				});
 			}
 		};
+
+		BoomCMS.prototype.notify = function(message) {
+			new boomNotification(message).show();
+		};
 	}
 
 	window.BoomCMS = top.BoomCMS = new BoomCMS();
