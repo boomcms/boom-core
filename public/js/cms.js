@@ -48340,7 +48340,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				title : chunk.hasClass('slide-title'),
 				caption : chunk.hasClass('slide-caption'),
 				link : chunk.hasClass('slide-link'),
-				linkText : chunk.hasClass('slide-linktext')
+				linktext : chunk.hasClass('slide-linktext')
 			});
 
 		editor
@@ -48501,21 +48501,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	boomChunkSlideshowEditor.prototype.bind = function() {
 		var slideshowEditor = this;
 
-		if ( ! this.options.title) {
-			this.dialog.contents.find('.b-slideshow-title').hide();
-		}
-
-		if ( ! this.options.caption) {
-			this.dialog.contents.find('.b-slideshow-caption').hide();
-		}
-
-		if ( ! this.options.link) {
-			this.dialog.contents.find('.b-slideshow-link').hide();
-		}
-
-		if ( ! this.options.linkText) {
-			this.dialog.contents.find('.b-slideshow-linktext').hide();
-		}
+		this.toggleSections();
 
 		this.dialog.contents
 			.on('click', '#b-slideshow-editor-delete', function() {
@@ -48687,6 +48673,18 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		});
 
 		return this.deferred;
+	};
+
+	boomChunkSlideshowEditor.prototype.toggleSections = function() {
+		var sections = ['title', 'caption', 'link', 'linktext'];
+
+		for (var i in sections) {
+			var section = sections[i];
+
+			if (this.options[section] === false) {
+				this.dialog.contents.find('.b-slideshow-' + section).hide();
+			}
+		}
 	};
 
 	return this.open();
