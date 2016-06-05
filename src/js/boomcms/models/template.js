@@ -34,13 +34,7 @@
 		},
 
 		getPages: function() {
-			this.pages.fetch({
-				data: {
-					template: this.getId()
-				}
-			});
-
-			return this.pages;
+			this.pages.findByTemplate(this);
 		},
 
 		getTheme: function() {
