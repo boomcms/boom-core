@@ -6,21 +6,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 	boomChunkSlideshowEditor.prototype.bind = function() {
 		var slideshowEditor = this;
 
-		if ( ! this.options.title) {
-			this.dialog.contents.find('.b-slideshow-title').hide();
-		}
-
-		if ( ! this.options.caption) {
-			this.dialog.contents.find('.b-slideshow-caption').hide();
-		}
-
-		if ( ! this.options.link) {
-			this.dialog.contents.find('.b-slideshow-link').hide();
-		}
-
-		if ( ! this.options.linkText) {
-			this.dialog.contents.find('.b-slideshow-linktext').hide();
-		}
+		this.toggleSections();
 
 		this.dialog.contents
 			.on('click', '#b-slideshow-editor-delete', function() {
@@ -192,6 +178,18 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 		});
 
 		return this.deferred;
+	};
+
+	boomChunkSlideshowEditor.prototype.toggleSections = function() {
+		var sections = ['title', 'caption', 'link', 'linktext'];
+
+		for (var i in sections) {
+			var section = sections[i];
+
+			if (this.options[section] === false) {
+				this.dialog.contents.find('.b-slideshow-' + section).hide();
+			}
+		}
 	};
 
 	return this.open();

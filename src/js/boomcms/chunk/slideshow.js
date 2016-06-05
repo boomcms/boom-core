@@ -19,7 +19,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				title : chunk.hasClass('slide-title'),
 				caption : chunk.hasClass('slide-caption'),
 				link : chunk.hasClass('slide-link'),
-				linkText : chunk.hasClass('slide-linktext')
+				linktext : chunk.hasClass('slide-linktext')
 			});
 
 		editor
