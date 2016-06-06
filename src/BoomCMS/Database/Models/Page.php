@@ -513,7 +513,7 @@ class Page extends Model implements PageInterface
      */
     public function hasChildren()
     {
-        return $this->countChildren() > 0;
+        return $this->children()->exists();
     }
 
     public function hasFeatureImage()
