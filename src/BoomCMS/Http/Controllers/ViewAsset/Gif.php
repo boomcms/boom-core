@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Http\Controllers\Asset;
+namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use Illuminate\Http\Response;
 
