@@ -31,7 +31,6 @@ Route::group(['middleware' => [
             Route::controller('account', 'Auth\Account');
             Route::controller('approvals', 'Approvals');
             Route::controller('settings', 'Settings');
-            Route::controller('search', 'Search');
             Route::controller('support', 'Support');
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
@@ -88,6 +87,8 @@ Route::group(['middleware' => [
                 'as'   => 'page-manager',
                 'uses' => 'PageManager@index',
             ]);
+
+            Route::get('page', 'Page\PageController@getIndex');
 
             Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
                 Route::post('version/template/{template}', 'Version@postTemplate');

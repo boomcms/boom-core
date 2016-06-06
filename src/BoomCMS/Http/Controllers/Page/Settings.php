@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\Page;
 
+use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Events;
 use BoomCMS\Jobs\DeletePage;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
-class Settings extends PageController
+class Settings extends Controller
 {
     /**
      * @var string

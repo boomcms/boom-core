@@ -45789,7 +45789,7 @@ $(function() {
 ;(function(Backbone, BoomCMS) {
 	BoomCMS.Collections.Pages = Backbone.Collection.extend({
 		model: BoomCMS.Page,
-		url: BoomCMS.urlRoot + 'search/pages',
+		url: BoomCMS.urlRoot + 'page',
 
 		findBy: function(data) {
 			this.fetch({
