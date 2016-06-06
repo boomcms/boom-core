@@ -257,16 +257,20 @@ class Page extends Model implements PageInterface
         return $this->{self::ATTR_CHILD_ADD_BEHAVIOUR} ?: self::ADD_PAGE_NONE;
     }
 
+    /**
+     * Returns an array of [column, direction] indicating the page's child ordering policy
+     *
+     * @return array
+     */
     public function getChildOrderingPolicy()
     {
         $order = $this->{self::ATTR_CHILD_ORDERING_POLICY};
+        $column = 'sequence';
 
         if ($order & static::ORDER_TITLE) {
             $column = 'title';
         } elseif ($order & static::ORDER_VISIBLE_FROM) {
             $column = 'visible_from';
-        } else {
-            $column = 'sequence';
         }
 
         $direction = ($order & static::ORDER_ASC) ? 'asc' : 'desc';
@@ -318,6 +322,11 @@ class Page extends Model implements PageInterface
         return $this->{self::ATTR_DESCRIPTION};
     }
 
+    /**
+     * Returns the default template ID that child pages should use.
+     *
+     * @return int
+     */
     public function getDefaultChildTemplateId()
     {
         if ($templateId = $this->{self::ATTR_CHILD_TEMPLATE}) {
@@ -326,7 +335,9 @@ class Page extends Model implements PageInterface
 
         $parent = $this->getParent();
 
-        return ($parent && $parent->getGrandchildTemplateId() != 0) ? $parent->getGrandchildTemplateId() : $this->getTemplateId();
+        return ($parent && !empty($parent->getGrandchildTemplateId())) ?
+            $parent->getGrandchildTemplateId()
+            : $this->getTemplateId();
     }
 
     /**
@@ -646,9 +657,9 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
-    public function setChildTemplateId($id)
+    public function setChildTemplateId($templateId)
     {
-        $this->{self::ATTR_CHILD_TEMPLATE} = $id;
+        $this->{self::ATTR_CHILD_TEMPLATE} = $templateId;
 
         return $this;
     }
@@ -916,8 +927,7 @@ class Page extends Model implements PageInterface
      *
      * The URL can be displayed by casting the returned object to a string:
      *
-     *		(string) $page->url();
-     *
+     *        (string) $page->url();
      *
      * @return URLInterface|null
      */
