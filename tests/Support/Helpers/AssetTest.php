@@ -34,7 +34,7 @@ class AssetTest extends AbstractTestCase
 
     public function testController()
     {
-        $namespace = 'BoomCMS\Http\Controllers\Asset\\';
+        $namespace = 'BoomCMS\Http\Controllers\ViewAsset\\';
 
         $asset = $this->getMock(Asset::class, ['getExtension']);
         $asset->expects($this->any())->method('getExtension')->will($this->returnValue(null));
