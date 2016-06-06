@@ -28,6 +28,11 @@ html.boom .b-button, .b-button {
 	&.b-button-withtext {
 		width: auto;
 
+		.b-button-icon {
+			left: 1.5rem;
+			transform: translateY(-50%);
+		}
+
 		.b-button-text, .ui-button-text {
 			text-indent: 0;
 			margin-left: 50px;
@@ -58,11 +63,6 @@ html.boom .b-button, .b-button {
 	&.small {
 		width: 30px;
 		height: 30px;
-
-		.b-button-icon {
-			top: 0;
-			left: 0;
-		}
 	}
 
 	&.dark {
@@ -84,14 +84,12 @@ html.boom .b-button, .b-button {
 	}
 
 	.b-button-icon {
-		top: 10px;
-		left: 10px;
-		width: 30px;
-		height: 30px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-50%);
 		margin: 0;
 		display: block;
-		position: absolute;
-		line-height: 28px;
 
 		&.fa-eye-slash {
 			color: @pink;
@@ -102,9 +100,6 @@ html.boom .b-button, .b-button {
 		}
 
 		&.fa-h2, &.fa-h3 {
-			top: 5px;
-			left: 5px;
-
 			&:before {
 				font-size: 1em;
 				font-weight: bold;
