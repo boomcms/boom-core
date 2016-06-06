@@ -3,7 +3,7 @@
 namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
-use BoomCMS\Core\Theme\Theme;
+use BoomCMS\Theme\Theme;
 use BoomCMS\Support\Traits\Comparable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;

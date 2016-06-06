@@ -3,7 +3,7 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Core\Template\Manager;
-use BoomCMS\Core\Theme\Theme;
+use BoomCMS\Theme\Theme;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use Illuminate\Cache\Repository as Cache;

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Template;
 
-use BoomCMS\Core\Theme\Theme;
+use BoomCMS\Theme\Theme;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Support\Str;
 use Illuminate\Cache\Repository as Cache;
