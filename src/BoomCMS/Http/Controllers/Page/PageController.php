@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Event;
 
 class PageController extends Controller
 {
-    protected $viewPrefix = 'boomcms::editor.page.';
-
     public function getIndex(Request $request)
     {
         return Helpers::getPages($request->input());
