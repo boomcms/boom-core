@@ -37,3 +37,7 @@
 
 	<?= view('boomcms::assets.upload') ?>
 </div>
+
+<script type="text/template" id="b-image-editor-template">
+    <?= view('boomcms::assets.image-editor') ?>
+</script>

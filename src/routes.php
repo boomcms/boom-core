@@ -26,7 +26,6 @@ Route::group(['middleware' => [
             Route::get('logout', 'Auth\AuthController@getLogout');
 
             Route::controller('autocomplete', 'Autocomplete');
-            Route::controller('ui', 'UI');
             Route::controller('editor', 'Editor');
             Route::controller('account', 'Auth\Account');
             Route::controller('approvals', 'Approvals');

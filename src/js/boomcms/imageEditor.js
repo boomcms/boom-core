@@ -2,7 +2,6 @@ function boomImageEditor(imageUrl) {
 	this.imageUrl = imageUrl;
 	this.imageSelector = '#b-imageeditor-image';
 	this.cropButtonSelector = '#b-imageeditor-crop';
-	this.url = '/boomcms/ui/image-editor';
 	this.deferred = new $.Deferred();
 	this.isCropping = false;
 	
@@ -177,10 +176,10 @@ function boomImageEditor(imageUrl) {
 		var imageEditor = this;
 
 		this.dialog = new boomDialog({
-			url: this.url,
 			width: document.documentElement.clientWidth < 1024? '100%' : 1024,
 			height: document.documentElement.clientHeight < 768? document.documentElement.clientHeight : 768,
 			title: 'Image editor',
+			msg: $('#b-image-editor-template').html(),
 			onLoad: function() {
 				imageEditor.$element = imageEditor.dialog.contents;
 				imageEditor.createCanvas();
