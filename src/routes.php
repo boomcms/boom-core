@@ -36,11 +36,15 @@ Route::group(['middleware' => [
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 
+            Route::get('asset-manager', [
+                'uses' => 'Assets\AssetManager@index',
+                'as'   => 'asset-manager',
+            ]);
+
             Route::group([
                 'prefix'    => 'assets',
                 'namespace' => 'Assets',
             ], function () {
-                Route::get('', 'AssetManager@index');
                 Route::post('get', 'AssetManager@get');
                 Route::any('{action}', function ($action = 'index') {
                     return App::make('BoomCMS\Http\Controllers\Assets\AssetManager')->$action();
@@ -80,9 +84,10 @@ Route::group(['middleware' => [
 
             Route::resource('template', 'TemplateController');
 
-            Route::group(['prefix' => 'pages'], function () {
-                Route::get('', 'Pages@index');
-            });
+            Route::get('page-manager', [
+                'as'   => 'page-manager',
+                'uses' => 'PageManager@index',
+            ]);
 
             Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
                 Route::post('version/template/{template}', 'Version@postTemplate');
