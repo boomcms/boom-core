@@ -258,7 +258,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Returns an array of [column, direction] indicating the page's child ordering policy
+     * Returns an array of [column, direction] indicating the page's child ordering policy.
      *
      * @return array
      */
