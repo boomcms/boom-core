@@ -2,10 +2,12 @@
 
 use BoomCMS\Http\Middleware;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 
 Route::group(['middleware' => [
     Middleware\DisableHttpCacheIfLoggedIn::class,
     Middleware\DefineCMSViewSharedVariables::class,
+    VerifyCsrfToken::class,
 ]], function () {
     Route::group(['prefix' => 'boomcms', 'namespace' => 'BoomCMS\Http\Controllers'], function () {
         Route::group(['namespace' => 'Auth'], function () {

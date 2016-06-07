@@ -1,5 +1,9 @@
 # BoomCMS Upgrade Notes
 
+## v5.1.7
+
+* Themes defining routes will now need to ensure that the VerifyCsrfToken is defined as it's now longer set globally
+ 
 ## v5.0
 
 * Before updrading to v5.0 v5.1 sites should first be upgraded to v4.3 to ensure all database migrations are run.
