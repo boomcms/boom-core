@@ -175,7 +175,8 @@ class PageVersion extends Model implements PageVersionInterface
     /**
      * Set the user who created the page version.
      *
-     * This can be set to null to allow page content to be changed programmatically when a real user may not be logged in.
+     * This can be set to null to allow page content to be changed programmatically,
+     * when a real user may not be logged in.
      *
      * @param null|PersonInterface $person
      *
