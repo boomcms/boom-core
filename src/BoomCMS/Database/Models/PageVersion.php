@@ -185,13 +185,15 @@ class PageVersion extends Model implements PageVersionInterface
     /**
      * Set the user who created the page version.
      *
-     * @param PersonInterface $person
+     * This can be set to null to allow page content to be changed programmatically when a real user may not be logged in.
+     *
+     * @param null|PersonInterface $person
      *
      * @return $this
      */
-    public function setEditedBy(PersonInterface $person)
+    public function setEditedBy(PersonInterface $person = null)
     {
-        $this->{self::ATTR_EDITED_BY} = $person->getId();
+        $this->{self::ATTR_EDITED_BY} = ($person === null) ? null : $person->getId();
 
         return $this;
     }
