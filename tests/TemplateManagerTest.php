@@ -3,9 +3,9 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Core\Template\Manager;
-use BoomCMS\Theme\Theme;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Repositories\Template as TemplateRepository;
+use BoomCMS\Theme\Theme;
 use Illuminate\Cache\Repository as Cache;
 use Illuminate\Filesystem\Filesystem;
 use Mockery as m;
