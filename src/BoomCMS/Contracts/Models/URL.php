@@ -30,13 +30,6 @@ interface URL
     public function getSite();
 
     /**
-     * @param string $location
-     *
-     * @return bool
-     */
-    public function is($location);
-
-    /**
      * @param Page $page
      *
      * @return bool
@@ -47,6 +40,13 @@ interface URL
      * @return bool
      */
     public function isPrimary();
+
+    /**
+     * @param string $location
+     *
+     * @return bool
+     */
+    public function matches($location);
 
     /**
      * @param string $scheme

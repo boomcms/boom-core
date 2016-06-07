@@ -86,18 +86,6 @@ class URL extends Model implements URLInterface
     }
 
     /**
-     * Determine whether this URL matches a given URL.
-     *
-     * @param string $location
-     *
-     * @return bool
-     */
-    public function is($location)
-    {
-        return trim($this->getLocation(), '/') === ltrim($location, '/');
-    }
-
-    /**
      * @param Page $page
      *
      * @return bool
@@ -113,6 +101,18 @@ class URL extends Model implements URLInterface
     public function isPrimary()
     {
         return $this->{self::ATTR_IS_PRIMARY} === true;
+    }
+
+    /**
+     * Determine whether this URL matches a given URL.
+     *
+     * @param string $location
+     *
+     * @return bool
+     */
+    public function matches($location)
+    {
+        return trim($this->getLocation(), '/') === ltrim($location, '/');
     }
 
     /**

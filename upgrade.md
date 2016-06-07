@@ -1,5 +1,9 @@
 # BoomCMS Upgrade Notes
 
+## 5.2
+
+* URL::is() has been renamed URL::matches()
+
 ## v5.1.7
 
 * Themes defining routes will now need to ensure that the VerifyCsrfToken is defined as it's now longer set globally

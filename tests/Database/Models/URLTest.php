@@ -114,6 +114,22 @@ class URLTest extends AbstractModelTestCase
         $url->setPrimary('maybe');
     }
 
+    public function testMatches()
+    {
+        $matches = [
+            '/test',
+            'test',
+        ];
+
+        $url = new URL([URL::ATTR_LOCATION => 'test']);
+
+        foreach ($matches as $path) {
+            $this->assertTrue($url->matches($path));
+        }
+
+        $this->assertFalse($url->matches('notthesame'));
+    }
+
     public function testScheme()
     {
         $url = new URL(['location' => 'test']);
