@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Tests\Support\Traits;
+namespace BoomCMS\Tests\Foundation\Database;
 
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Tests\AbstractTestCase;
