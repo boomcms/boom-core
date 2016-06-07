@@ -4,9 +4,9 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Traits\SingleSite;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL as URLFacade;
 use InvalidArgumentException;
 
@@ -14,7 +14,6 @@ class URL extends Model implements URLInterface
 {
     use SingleSite;
 
-    const ATTR_ID = 'id';
     const ATTR_PAGE_ID = 'page_id';
     const ATTR_LOCATION = 'location';
     const ATTR_IS_PRIMARY = 'is_primary';
@@ -27,17 +26,11 @@ class URL extends Model implements URLInterface
 
     protected $table = 'page_urls';
 
-    public $guarded = [
-        self::ATTR_ID,
-    ];
-
     protected $casts = [
         self::ATTR_ID         => 'integer',
         self::ATTR_IS_PRIMARY => 'boolean',
         self::ATTR_PAGE_ID    => 'integer',
     ];
-
-    public $timestamps = false;
 
     public function __toString()
     {
@@ -47,14 +40,6 @@ class URL extends Model implements URLInterface
         $url = URLFacade::to($location);
 
         return ($location === '/') ? $url.'/' : $url;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->{self::ATTR_ID};
     }
 
     /**

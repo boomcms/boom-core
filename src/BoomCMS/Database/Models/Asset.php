@@ -4,21 +4,18 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
-use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Traits\MultipleSites;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class Asset extends Model implements AssetInterface
 {
-    use Comparable;
     use MultipleSites;
 
-    const ATTR_ID = 'id';
     const ATTR_TITLE = 'title';
     const ATTR_DESCRIPTION = 'description';
     const ATTR_TYPE = 'type';
@@ -29,12 +26,6 @@ class Asset extends Model implements AssetInterface
     const ATTR_DOWNLOADS = 'downloads';
 
     public $table = 'assets';
-
-    public $guarded = [
-        self::ATTR_ID,
-    ];
-
-    public $timestamps = false;
 
     /**
      * @var PersinInterface
@@ -140,14 +131,6 @@ class Asset extends Model implements AssetInterface
     public function getHeight()
     {
         return (int) $this->getLatestVersion()->getHeight();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return  (int) $this->{self::ATTR_ID};
     }
 
     public function getEmbedHtml($height = null, $width = null)

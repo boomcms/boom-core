@@ -2,15 +2,13 @@
 
 namespace BoomCMS\Database\Models\Chunk\Linkset;
 
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Link\Link as LinkObject;
-use Illuminate\Database\Eloquent\Model;
 
 class Link extends Model
 {
-    protected $guarded = ['id'];
     protected $link;
     protected $table = 'chunk_linkset_links';
-    public $timestamps = false;
 
     public function getLink()
     {

@@ -4,17 +4,14 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Collection\TagCollection;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
-use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Traits\SingleSite;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Tag extends Model implements TagInterface
 {
-    use Comparable;
     use SingleSite;
 
-    const ATTR_ID = 'id';
     const ATTR_GROUP = 'group';
     const ATTR_NAME = 'name';
     const ATTR_SITE = 'site_id';
@@ -22,26 +19,12 @@ class Tag extends Model implements TagInterface
 
     protected $table = 'tags';
 
-    public $guarded = [
-        self::ATTR_ID,
-    ];
-
-    public $timestamps = false;
-
     /**
      * @return string
      */
     public function getGroup()
     {
         return $this->{self::ATTR_GROUP};
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->{self::ATTR_ID};
     }
 
     /**

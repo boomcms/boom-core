@@ -2,13 +2,11 @@
 
 namespace BoomCMS\Database\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use BoomCMS\Foundation\Database\Model;
 
 class Role extends Model
 {
     protected $table = 'roles';
-    public $guarded = ['id'];
-    public $timestamps = false;
 
     public function scopeGetGeneralRoles($query)
     {

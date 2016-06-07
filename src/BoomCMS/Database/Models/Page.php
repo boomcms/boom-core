@@ -8,24 +8,21 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
-use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Page extends Model implements PageInterface
 {
-    use Comparable;
     use SingleSite;
     use SoftDeletes;
 
-    const ATTR_ID = 'id';
     const ATTR_SEQUENCE = 'sequence';
     const ATTR_VISIBLE_FROM = 'visible_from';
     const ATTR_VISIBLE_TO = 'visible_to';
@@ -94,12 +91,6 @@ class Page extends Model implements PageInterface
     protected $currentVersion;
 
     protected $table = 'pages';
-
-    public $guarded = [
-        self::ATTR_ID,
-    ];
-
-    public $timestamps = false;
 
     /**
      * @var Asset
@@ -404,14 +395,6 @@ class Page extends Model implements PageInterface
     public function getVisibleAttribute()
     {
         return (int) $this->isVisible();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return  $this->{self::ATTR_ID};
     }
 
     public function getInternalName()

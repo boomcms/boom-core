@@ -6,14 +6,13 @@ use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\PageVersion as PageVersionInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Database\Eloquent\Model;
 
 class PageVersion extends Model implements PageVersionInterface
 {
-    const ATTR_ID = 'id';
     const ATTR_PAGE = 'page_id';
     const ATTR_TEMPLATE = 'template_id';
     const ATTR_TITLE = 'title';
@@ -23,12 +22,6 @@ class PageVersion extends Model implements PageVersionInterface
     const ATTR_PENDING_APPROVAL = 'pending_approval';
 
     protected $table = 'page_versions';
-
-    public $guarded = [
-        self::ATTR_ID,
-    ];
-
-    public $timestamps = false;
 
     /**
      * @var Template;
@@ -69,14 +62,6 @@ class PageVersion extends Model implements PageVersionInterface
     public function getEmbargoedUntil()
     {
         return (new DateTime())->setTimestamp($this->{self::ATTR_EMBARGOED_UNTIL});
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return  (int) $this->{self::ATTR_ID};
     }
 
     /**

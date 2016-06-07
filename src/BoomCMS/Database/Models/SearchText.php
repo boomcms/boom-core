@@ -2,11 +2,9 @@
 
 namespace BoomCMS\Database\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use BoomCMS\Foundation\Database\Model;
 
 class SearchText extends Model
 {
     protected $table = 'search_texts';
-    protected $guarded = ['id'];
-    public $timestamps = false;
 }

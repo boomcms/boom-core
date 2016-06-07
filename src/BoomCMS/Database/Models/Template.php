@@ -3,16 +3,12 @@
 namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
-use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Theme\Theme;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
 
 class Template extends Model implements TemplateInterface
 {
-    use Comparable;
-
-    const ATTR_ID = 'id';
     const ATTR_NAME = 'name';
     const ATTR_FILENAME = 'filename';
     const ATTR_DESCRIPTION = 'description';
@@ -21,12 +17,6 @@ class Template extends Model implements TemplateInterface
     protected $table = 'templates';
 
     protected $appends = ['file_exists'];
-
-    protected $guarded = [
-        self::ATTR_ID,
-    ];
-
-    public $timestamps = false;
 
     /**
      * @return bool
@@ -60,14 +50,6 @@ class Template extends Model implements TemplateInterface
     public function getFilename()
     {
         return $this->{self::ATTR_FILENAME};
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return  (int) $this->{self::ATTR_ID};
     }
 
     /**
