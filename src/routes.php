@@ -1,8 +1,8 @@
 <?php
 
 use BoomCMS\Http\Middleware;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
     Middleware\DisableHttpCacheIfLoggedIn::class,
