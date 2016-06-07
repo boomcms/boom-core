@@ -8,7 +8,7 @@
 			<?= $button('trash-o', 'delete', ['id' => 'b-button-multiaction-delete', 'disabled' => 'disabled']) ?>
 			<?= $button('download', 'download', ['id' => 'b-button-multiaction-download', 'disabled' => 'disabled']) ?>
 			<?= $button('tags', 'add-tags', ['id' => 'b-button-multiaction-tag', 'disabled' => 'disabled']) ?>
-		
+
             <a href="#" id="b-assets-select-all"><?= trans('Select all') ?></a>
             &nbsp;:&nbsp;
             <a href="#" id="b-assets-select-none"><?= trans('Select none') ?></a>
