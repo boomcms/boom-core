@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Tests\Database\Models;
 
-use BoomCMS\Theme\Theme;
 use BoomCMS\Database\Models\Template;
+use BoomCMS\Theme\Theme;
 use Illuminate\Support\Facades\View;
 use Mockery as m;
 

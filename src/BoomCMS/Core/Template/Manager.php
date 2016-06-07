@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Core\Template;
 
-use BoomCMS\Theme\Theme;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Support\Str;
+use BoomCMS\Theme\Theme;
 use Illuminate\Cache\Repository as Cache;
 use Illuminate\Filesystem\Filesystem;
 
