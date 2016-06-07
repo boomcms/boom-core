@@ -21,6 +21,11 @@ class PageVersion extends Model implements PageVersionInterface
     const ATTR_EMBARGOED_UNTIL = 'embargoed_until';
     const ATTR_PENDING_APPROVAL = 'pending_approval';
 
+    protected $casts = [
+        self::ATTR_PAGE             => 'integer',
+        self::ATTR_PENDING_APPROVAL => 'boolean',
+    ];
+
     protected $table = 'page_versions';
 
     /**
@@ -69,7 +74,7 @@ class PageVersion extends Model implements PageVersionInterface
      */
     public function getPageId()
     {
-        return (int) $this->{self::ATTR_PAGE};
+        return $this->{self::ATTR_PAGE};
     }
 
     /**
@@ -130,7 +135,7 @@ class PageVersion extends Model implements PageVersionInterface
      */
     public function isPendingApproval()
     {
-        return $this->{self::ATTR_PENDING_APPROVAL} == true;
+        return $this->{self::ATTR_PENDING_APPROVAL} === true;
     }
 
     /**
