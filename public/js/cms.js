@@ -43847,7 +43847,7 @@ $.widget('boom.textEditor', {
 				toolbar: self.toolbar[0],
 				style: true,
 				parserRules:  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
-				useLineBreaks: false,
+				useLineBreaks: (self.mode !== 'block'),
 				contentEditableMode: true,
 				autoLink: false,
 				uneditableContainerClassname: 'b-asset-embed',
