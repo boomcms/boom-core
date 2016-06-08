@@ -17,9 +17,7 @@ class PageController extends Controller
 {
     public function getIndex(Request $request)
     {
-        $params = $request->input() + ['excludeinvisible' => false];
-
-        return Helpers::getPages($params);
+        return Helpers::getPages($request->input());
     }
 
     public function postAdd(Site $site, Page $page)

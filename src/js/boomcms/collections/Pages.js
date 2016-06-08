@@ -13,11 +13,17 @@
 		findByParent: function(page) {
 			var parentId = (page === null) ? null : page.getId();
 
-			this.findBy({parent: parentId});
+			this.findBy({
+				parent: parentId,
+				excludeinvisible: false
+			});
 		},
 
 		findByTemplate: function(template) {
-			this.findBy({template: template.getId()});
+			this.findBy({
+				template: template.getId(),
+				excludeinvisible: false
+			});
 		}
 	});
 }(Backbone, BoomCMS));
