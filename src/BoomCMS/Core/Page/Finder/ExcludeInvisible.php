@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ExcludeInvisible extends Filter
 {
-    protected $exclude;
+    protected $apply;
 
-    public function __construct($exclude = false)
+    public function __construct($apply = null)
     {
-        $this->exclude = $exclude;
+        $this->apply = $apply;
     }
 
     public function build(Builder $query)
@@ -22,6 +22,6 @@ class ExcludeInvisible extends Filter
 
     public function shouldBeApplied()
     {
-        return $this->exclude === true && !Editor::isEnabled();
+        return $this->apply === true || !Editor::isEnabled();
     }
 }
