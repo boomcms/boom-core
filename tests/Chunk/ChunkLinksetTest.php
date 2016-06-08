@@ -4,9 +4,9 @@ namespace BoomCMS\Tests\Chunk;
 
 use BoomCMS\Chunk\Linkset;
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Tests\AbstractTestCase;
-use BoomCMS\Support\Facades\URL;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use BoomCMS\Support\Facades\URL;
+use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
 class ChunkLinksetTest extends AbstractTestCase
@@ -34,7 +34,7 @@ class ChunkLinksetTest extends AbstractTestCase
 
         $chunk = $this->chunk(['links' => [['url' => '/test']]], true);
 
-        $this->assertEquals([], $chunk->getLinks());    
+        $this->assertEquals([], $chunk->getLinks());
     }
 
     public function testGetLinksRemovesDeletedPageWhenNotEditable()
@@ -53,7 +53,7 @@ class ChunkLinksetTest extends AbstractTestCase
 
         $chunk = $this->chunk(['links' => [['url' => '/test']]]);
 
-        $this->assertEquals([], $chunk->getLinks());    
+        $this->assertEquals([], $chunk->getLinks());
     }
 
     public function testGetLinksIgnoresPageVisibilityWhenEditable()
@@ -76,7 +76,7 @@ class ChunkLinksetTest extends AbstractTestCase
         $chunk = $this->chunk(['links' => [['url' => '/test']]], true);
         $links = $chunk->getLinks();
 
-        $this->assertEquals(1, count($links)); 
+        $this->assertEquals(1, count($links));
         $this->assertEquals($page, $links[0]->getLink()->getPage());
 
         return $page;
@@ -85,7 +85,7 @@ class ChunkLinksetTest extends AbstractTestCase
     public function testGetLinksRemovesInvisiblePageWhenNotEditable()
     {
         $path = 'test';
-        
+
         $page = m::mock(Page::class);
         $page->shouldReceive('isVisible')
             ->once()
@@ -103,11 +103,11 @@ class ChunkLinksetTest extends AbstractTestCase
 
         $chunk = $this->chunk(['links' => [['url' => '/test']]], false);
 
-        $this->assertEquals([], $chunk->getLinks()); 
+        $this->assertEquals([], $chunk->getLinks());
     }
 
     protected function chunk(array $attrs = [], $editable = false)
     {
-        return new Linkset(new Page, $attrs, 'test', $editable);
+        return new Linkset(new Page(), $attrs, 'test', $editable);
     }
 }
