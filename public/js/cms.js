@@ -46231,7 +46231,7 @@ $(function() {
 			case 'drafts':
 				return prefix + 'version/status';
 			default:
-				return prefix + '/settings/' + section;
+				return prefix + 'settings/' + section;
 		}
 	},
 
