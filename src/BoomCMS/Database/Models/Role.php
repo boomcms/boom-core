@@ -10,17 +10,11 @@ class Role extends Model
 
     public function scopeGetGeneralRoles($query)
     {
-        return $query
-            ->where('tree', '=', false)
-            ->orderBy('description', 'asc')
-            ->get();
+        return $query->where('tree', '=', false)->get();
     }
 
     public function scopeGetPageRoles($query)
     {
-        return $query
-            ->where('tree', '=', true)
-            ->orderBy('description', 'asc')
-            ->get();
+        return $query->where('tree', '=', true)->get();
     }
 }
