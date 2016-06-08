@@ -16,7 +16,6 @@
             </section>
         <?php endif ?>
 
-        <?= view('boomcms::assets.filters') ?>
         <section id="b-assets-picker-filter" class="ui-front">
             <h1><?= trans('boomcms::asset.picker.filter') ?></h1>
 
