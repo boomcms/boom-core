@@ -103,7 +103,7 @@ class Site extends Model implements SiteInterface
      */
     public function setDefault($default)
     {
-        $this->{self::ATTR_DEFAULT} = ($default == true);
+        $this->{self::ATTR_DEFAULT} = $default;
 
         return $this;
     }
@@ -133,7 +133,7 @@ class Site extends Model implements SiteInterface
     }
 
     /**
-     * @param string $name
+     * @param string $scheme
      *
      * @return $this
      */

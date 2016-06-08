@@ -28,7 +28,7 @@
             <p><?= trans('boomcms::settings.visibility.to-description') ?></p>
 
             <input type="checkbox" name="toggle_visible_to" value="1" id="toggle-visible"<?php if ($page->getVisibleTo() !== null): ?> checked="checked"<?php endif ?> />
-            <input type="text" name="visible_to" value="<?= ($page->getVisibleTo() != null) ? $page->getVisibleTo()->format('d F Y H:i') : date('d F Y H:i', time()) ?>" id="visible-to" class="boom-datepicker" />
+            <input type="text" name="visible_to" value="<?= (!empty($page->getVisibleTo())) ? $page->getVisibleTo()->format('d F Y H:i') : date('d F Y H:i', time()) ?>" id="visible-to" class="boom-datepicker" />
         </label>
     </div>
 </form>
