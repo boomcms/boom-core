@@ -3,6 +3,7 @@
 ## 5.2
 
 * URL::is() has been renamed URL::matches()
+* Following 5.1.7, themes definiing routes should ensure that the 'web' middleware group is included. Session, cookie, and CSRF middleware are no longer set globally
 
 ## v5.1.7
 

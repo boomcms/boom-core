@@ -1,13 +1,12 @@
 <?php
 
 use BoomCMS\Http\Middleware;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
     Middleware\DisableHttpCacheIfLoggedIn::class,
     Middleware\DefineCMSViewSharedVariables::class,
-    VerifyCsrfToken::class,
+    'web',
 ]], function () {
     Route::group(['prefix' => 'boomcms', 'namespace' => 'BoomCMS\Http\Controllers'], function () {
         Route::group([
@@ -167,6 +166,7 @@ Route::group(['middleware' => [
 
 Route::any('{location}.{format?}', [
     'middleware' => [
+        'web',
         Middleware\RoutePage::class,
         Middleware\InsertCMSToolbar::class,
     ],
