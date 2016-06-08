@@ -11,6 +11,11 @@ class Link
      */
     protected $attrs;
 
+    /**
+     * @var Link
+     */
+    protected $link;
+
     public function __construct($attrs)
     {
         $this->attrs = $attrs;
@@ -31,7 +36,11 @@ class Link
      */
     public function getLink()
     {
-        return LinkObject::factory($this->getUrl());
+        if ($this->link === null) {
+            $this->link = LinkObject::factory($this->getUrl());
+        }
+
+        return $this->link;
     }
 
     public function getTarget()

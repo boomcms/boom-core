@@ -43,17 +43,8 @@ class Linkset extends BaseChunk
             return $this->links;
         }
 
-        $this->links = isset($this->attrs['links']) ? $this->attrs['links'] : [];
-
-        foreach ($this->links as $i => $item) {
-            $link = $item->getLink();
-
-            if ($link->isInternal() &&
-                (!$link->getPage() || (!$this->editable && !$link->getPage()->isVisible()))
-            ) {
-                unset($this->links[$i]);
-            }
-        }
+        $this->links = isset($this->attrs['links']) ?
+            $this->removeInvalidLinks($this->attrs['links']) : [];
 
         return $this->links;
     }
@@ -66,5 +57,33 @@ class Linkset extends BaseChunk
     public function getTitle()
     {
         return isset($this->attrs['title']) ? $this->attrs['title'] : '';
+    }
+
+    /**
+     * Removes internal links to delted pages.
+     *
+     * And internal links to invisible pages when the editor is disabled.
+     *
+     * @param array $links
+     *
+     * @return array
+     */
+    protected function removeInvalidLinks(array $links)
+    {
+        foreach ($links as $i => $item) {
+            $link = $item->getLink();
+
+            if ($link->isExternal()) {
+                continue;
+            }
+
+            if (!$link->getPage() ||
+                (!$this->editable && !$link->getPage()->isVisible())
+            ) {
+                unset($links[$i]);
+            }
+        }
+
+        return $links;
     }
 }
