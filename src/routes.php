@@ -4,9 +4,9 @@ use BoomCMS\Http\Middleware;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
+    'web',
     Middleware\DisableHttpCacheIfLoggedIn::class,
     Middleware\DefineCMSViewSharedVariables::class,
-    'web',
 ]], function () {
     Route::group(['prefix' => 'boomcms', 'namespace' => 'BoomCMS\Http\Controllers'], function () {
         Route::group([
