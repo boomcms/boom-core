@@ -120,7 +120,7 @@ Route::group(['middleware' => [
     });
 });
 
-Route::group(['prefix' => 'asset'], function() {
+Route::group(['prefix' => 'asset'], function () {
     Route::get('version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
         'middleware' => [Middleware\RequireLogin::class],
