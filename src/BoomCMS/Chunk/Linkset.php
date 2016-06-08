@@ -30,21 +30,28 @@ class Linkset extends BaseChunk
         ])->render();
     }
 
+    /**
+     * Returns an array of links in the linkset.
+     *
+     * Or an empty array if the linkset doesn't contain any links
+     *
+     * @return array
+     */
     public function getLinks()
     {
-        if ($this->links === null) {
-            if (isset($this->attrs['links'])) {
-                $this->links = $this->attrs['links'];
+        if ($this->links !== null) {
+            return $this->links;
+        }
 
-                if (!$this->editable) {
-                    foreach ($this->links as $i => $link) {
-                        if ($link->isInternal() && !$link->getLink()->getPage()->isVisible()) {
-                            unset($this->links[$i]);
-                        }
-                    }
-                }
-            } else {
-                $this->links = [];
+        $this->links = isset($this->attrs['links']) ? $this->attrs['links'] : [];
+
+        foreach ($this->links as $i => $item) {
+            $link = $item->getLink();
+
+            if ($link->isInternal() &&
+                (!$link->getPage() || (!$this->editable && !$link->getPage()->isVisible()))
+            ) {
+                unset($this->links[$i]);
             }
         }
 
