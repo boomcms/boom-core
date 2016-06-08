@@ -8,7 +8,7 @@ use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
-class ExcludeInvisibleTest extends AbstractTestCase
+class ExcludeInvisibeTest extends AbstractTestCase
 {
     public function testHandle()
     {
