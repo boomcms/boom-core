@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
     'web',
-    Middleware\DisableHttpCacheIfLoggedIn::class,
     Middleware\DefineCMSViewSharedVariables::class,
 ]], function () {
     Route::group(['prefix' => 'boomcms', 'namespace' => 'BoomCMS\Http\Controllers'], function () {
@@ -119,8 +118,10 @@ Route::group(['middleware' => [
             });
         });
     });
+});
 
-    Route::get('asset/version/{id}/{width?}/{height?}', [
+Route::group(['prefix' => 'asset'], function() {
+    Route::get('version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
         'middleware' => [Middleware\RequireLogin::class],
         'uses'       => function ($id, $width = null, $height = null) {
@@ -130,7 +131,7 @@ Route::group(['middleware' => [
         },
     ]);
 
-    Route::get('asset/{asset}/download', [
+    Route::get('{asset}/download', [
         'asset'      => 'asset-download',
         'middleware' => [
             Middleware\LogAssetDownload::class,
@@ -140,7 +141,7 @@ Route::group(['middleware' => [
         },
     ]);
 
-    Route::get('asset/{asset}/{action}.{extension}', [
+    Route::get('{asset}/{action}.{extension}', [
         'as'         => 'asset',
         'middleware' => [
             Middleware\CheckAssetETag::class,
@@ -153,7 +154,7 @@ Route::group(['middleware' => [
         'extension' => '[a-z]+',
     ]);
 
-    Route::get('asset/{asset}/{action?}/{width?}/{height?}', [
+    Route::get('{asset}/{action?}/{width?}/{height?}', [
         'as'         => 'asset',
         'middleware' => [
             Middleware\CheckAssetETag::class,
