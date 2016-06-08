@@ -19,7 +19,6 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     *
      * @var array
      */
     protected $middlewareGroups = [
@@ -30,6 +29,6 @@ class Kernel extends HttpKernel
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             Middleware\DefineGlobalViewSharedVariables::class,
-        ]
+        ],
     ];
 }
