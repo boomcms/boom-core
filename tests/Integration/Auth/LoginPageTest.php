@@ -16,4 +16,11 @@ class LoginPageTest extends AbstractTestCase
         $this->assertResponseStatus(302, $response);
         $this->assertEquals('/', $response->getTargetUrl());
     }
+
+    public function testLoginShouldLoadForGuest()
+    {
+        $response = $this->call('GET', route('login'));
+
+        $this->assertResponseStatus(200, $response);
+    }
 }

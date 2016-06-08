@@ -2,7 +2,9 @@
         //<![CDATA[
         (function ($) {
             window.BoomCMS.init({
-                user: new BoomCMS.Person(<?= auth()->user()->toJson() ?>)
+                <?php if (auth()->check()): ?>
+                    user: new BoomCMS.Person(<?= auth()->user()->toJson() ?>)
+                <?php endif ?>
             });
         })(jQuery);
         //]]>
