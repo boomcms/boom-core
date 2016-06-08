@@ -48,7 +48,7 @@ class Linkset extends BaseChunk
         foreach ($this->links as $i => $item) {
             $link = $item->getLink();
 
-            if ($link->isInternal() && 
+            if ($link->isInternal() &&
                 (!$link->getPage() || (!$this->editable && !$link->getPage()->isVisible()))
             ) {
                 unset($this->links[$i]);
