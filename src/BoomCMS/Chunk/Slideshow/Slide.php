@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Chunk\Slideshow;
 
-use BoomCMS\Database\Models\Asset;
 use BoomCMS\Link\Link;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 
@@ -23,8 +22,7 @@ class Slide
         $this->attrs = $attrs;
 
         if (isset($this->attrs['asset'])) {
-            $this->asset = new Asset($this->attrs['asset']);
-            $this->asset->id = $this->attrs['asset']['id'];
+            $this->asset = $this->attrs['asset'];
         }
     }
 
