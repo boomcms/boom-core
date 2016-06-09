@@ -35,8 +35,13 @@
             </label>
 
             <label class="b-linkset-title">
-                <p>Text</p>
+                <p>Title</p>
                 <input type="text" name="title" value="" />
+            </label>
+
+            <label class="b-linkset-text">
+                <p>Text</p>
+                <input type="text" name="text" value="" />
             </label>
 
             <label class="b-linkset-asset">

@@ -48080,16 +48080,28 @@ $.widget('ui.chunkText', $.ui.chunk,
 	edit: function() {
 		var chunkLinkset = this;
 
-		new boomChunkLinksetEditor(this.options.currentPage.id, this.options.name, {
-				title : chunkLinkset.element.find('.linkset-title').length > 0,
-				linkAssets : chunkLinkset.element.find('.link-asset').length > 0
-			})
+		new boomChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.getOptions())
 			.done(function(data) {
 				chunkLinkset.insert(data);
 			})
 			.fail(function() {
 				chunkLinkset.destroy();
 			});
+	},
+
+	getOptions: function() {
+		var $el = this.element,
+			options = {
+				title: 'linkset-title',
+				linkAssets: 'link-asset',
+				linkText: 'link-text'
+			};
+
+		for (var i in options) {
+			options[i] = $el.hasClass(options[i]) || $el.find('.' + options[i]).length > 0;
+		}
+
+		return options;
 	},
 
 	insert: function(links) {
@@ -48728,12 +48740,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	boomChunkLinksetEditor.prototype.bind = function() {
 		var linksetEditor = this;
 
-		if ( ! this.options.title) {
+		if (!this.options.title) {
 			this.dialog.contents.find('#b-linkset-title, #b-linkset-title-tab').hide();
 		}
 
-		if ( ! this.options.linkAssets) {
+		if (!this.options.linkAssets) {
 			this.dialog.contents.find('.b-linkset-asset').hide();
+		}
+
+		if (!this.options.linkText) {
+			this.dialog.contents.find('.b-linkset-text').hide();
 		}
 
 		this.$links = this.dialog.contents.find('#b-linkset-links ul');
@@ -48804,6 +48820,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			.end()
 			.find('.b-linkset-title input[type=text]')
 			.val($a.attr('data-title'))
+			.end()
+			.find('.b-linkset-text input[type=text]')
+			.val($a.attr('data-text'))
 			.end();
 
 		this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
@@ -48831,8 +48850,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
 	boomChunkLinksetEditor.prototype.getData = function() {
 		return {
-			links : this.getLinks(),
-			title : this.dialog.contents.find('#b-linkset-title input').val()
+			links: this.getLinks(),
+			title: this.dialog.contents.find('#b-linkset-title input').val()
 		};
 	};
 
@@ -48843,10 +48862,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			var $this = $(this);
 
 			links.push({
-				target_page_id : $this.attr('data-page-id'),
-				url : $this.attr('data-url'),
-				title : $this.attr('data-title'),
-				asset_id : $this.attr('data-asset')
+				target_page_id: $this.attr('data-page-id'),
+				url: $this.attr('data-url'),
+				title: $this.attr('data-title'),
+				asset_id: $this.attr('data-asset'),
+				text: $this.attr('data-text')
 			});
 		});
 

@@ -53,6 +53,14 @@ class Link
         return $this->attrs['target_page_id'];
     }
 
+    /**
+     * @return string
+     */
+    public function getText()
+    {
+        return (isset($this->attrs['text'])) ? $this->attrs['text'] : '';
+    }
+
     public function getTitle()
     {
         return (isset($this->attrs['title']) && $this->attrs['title']) ?

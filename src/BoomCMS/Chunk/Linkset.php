@@ -49,6 +49,11 @@ class Linkset extends BaseChunk
         return $this->links;
     }
 
+    /**
+     * Returns true if the linkset contains any links.
+     *
+     * @return bool
+     */
     public function hasContent()
     {
         return count($this->getLinks()) > 0;

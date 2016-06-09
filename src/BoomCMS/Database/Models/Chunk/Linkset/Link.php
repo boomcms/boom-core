@@ -7,6 +7,9 @@ use BoomCMS\Link\Link as LinkObject;
 
 class Link extends Model
 {
+    const ATTR_TITLE = 'title';
+    const ATTR_TEXT = 'text';
+
     protected $link;
     protected $table = 'chunk_linkset_links';
 
@@ -20,8 +23,19 @@ class Link extends Model
         return $this->link;
     }
 
+    /**
+     * @param string $value
+     */
     public function setTitleAttribute($value)
     {
-        $this->attributes['title'] = trim(strip_tags($value));
+        $this->attributes[self::ATTR_TITLE] = trim(strip_tags($value));
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setTextAttribute($value)
+    {
+        $this->attributes[self::ATTR_TEXT] = trim(strip_tags($value));
     }
 }
