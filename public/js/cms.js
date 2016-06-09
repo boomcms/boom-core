@@ -46186,6 +46186,10 @@ $(function() {
 			.text(this._get_abbreviated_status(status))
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
+
+		if (status === 'draft' || status === 'embargoed') {
+			this.element.attr('title', this.element.attr('title') + ' (double click to publish)');
+		}
 	}
 });;$.widget('boom.pageSettings', {
 	bind: function() {
@@ -46399,7 +46403,8 @@ $.widget( 'boom.pageToolbar', {
 	buttons : {},
 
 	_bindButtonEvents: function() {
-		var self = this;
+		var self = this,
+			page = this.options.page;
 
 		this.element.contents()
 			.on('click', '#b-page-delete', function() {
@@ -46407,7 +46412,7 @@ $.widget( 'boom.pageToolbar', {
 				self.openPageSettings();
 			})
 			.on('click', '#b-page-addpage', function() {
-				self.options.page.add()
+				page.add()
 					.done(function(response) {
 						top.location = response.url;
 					})
@@ -46437,7 +46442,26 @@ $.widget( 'boom.pageToolbar', {
 				self.settingsAreOpen() ? self.closePageSettings() : self.showSettings();
 			})
 			.on('click', '#b-page-version-status', function() {
-				self.settingsAreOpen() ? self.showSettings('drafts') : self.showSettingsAndCloseOnSave('drafts');
+				var $this = $(this),
+					clicks = $this.data('clicks');
+
+				$this.data('clicks', clicks ? ++clicks : 1);
+
+				if ($this.data('clicks') === 2) {
+					$this.data('clicks', 0);
+
+					page.publish().done(function(data) {
+						self.status.set(data);
+						$this.blur();
+					});
+				} else {
+					setTimeout(function() {
+						if ($this.data('clicks') === 1) {
+							$this.data('clicks', 0);
+							self.settingsAreOpen() ? self.showSettings('drafts') : self.showSettingsAndCloseOnSave('drafts');
+						}
+					}, 200);
+				}
 			})
 			.on('mouseup', '#b-menu a', function() {
 				// Clicking a link in the menu but opening in a new tab causes the menu to close.
