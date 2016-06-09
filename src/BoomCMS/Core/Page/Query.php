@@ -34,7 +34,7 @@ class Query extends BaseQuery
         // Exclude invisible should be included by default
         // To prevent invisible pages showing up in the site to non CMS users.
         if (!isset($params['excludeinvisible'])) {
-            $params['excludeinvisible'] = true;
+            $params['excludeinvisible'] = null;
         }
 
         $this->params = $params;
