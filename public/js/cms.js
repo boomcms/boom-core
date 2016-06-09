@@ -46710,6 +46710,8 @@ $.widget( 'boom.pageToolbar', {
 					.find('a[data-page-id=' + this.options.active + ']')
 					.addClass('active');
 			}
+
+			this._trigger('add', null, $li);
 		},
 
 		bind: function() {
@@ -71816,16 +71818,8 @@ if (!console) {
 
 }
 ;$.widget( 'boom.pageManager', {
-	addActionButtons: function($elements, children) {
-		var pageManager = this,
-			elementsById = {};
-
-		$elements.each(function() {
-			var $el = $(this);
-
-			$el.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
-			elementsById[$el.find('a').attr('rel')] = $el;
-		});
+	addActionButtons: function($li) {
+		$li.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
 	},
 
 	addPage: function($el) {
@@ -71842,8 +71836,8 @@ if (!console) {
 
 		this.element
 			.pageTree({
-				load: function(e, data) {
-					pageManager.addActionButtons(data.elements, data.children);
+				add: function(e, $li) {
+					pageManager.addActionButtons($li);
 				},
 				onPageSelect: function(link) {
 					window.open(link.getUrl());
@@ -71883,13 +71877,13 @@ if (!console) {
 	},
 
 	showPageSettings: function($el, section) {
-		var page = new BoomCMS.Page({id: $el.data('page-id')}),
+		var page = $el.data('page'),
 			$settings = $('<div></div>');
 
 		$settings
 			.addClass('b-settings-container')
 			.appendTo($('#b-pages'))
-			.load('/boomcms/page/' + page.id + '/settings/index', function() {
+			.load(page.baseUrl + 'settings/index', function() {
 				$settings
 					.addClass('open')
 					.pageSettings({

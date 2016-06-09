@@ -26,6 +26,8 @@
 					.find('a[data-page-id=' + this.options.active + ']')
 					.addClass('active');
 			}
+
+			this._trigger('add', null, $li);
 		},
 
 		bind: function() {
