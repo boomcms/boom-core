@@ -43,11 +43,6 @@ Route::group(['middleware' => [
                 'prefix'    => 'assets',
                 'namespace' => 'Assets',
             ], function () {
-                Route::post('get', 'AssetManager@get');
-                Route::any('{action}', function ($action = 'index') {
-                    return App::make('BoomCMS\Http\Controllers\Assets\AssetManager')->$action();
-                });
-
                 Route::get('view/{asset}', 'AssetManager@view');
                 Route::post('save/{asset}', 'AssetManager@save');
                 Route::post('replace/{asset}', 'AssetManager@replace');
@@ -55,6 +50,13 @@ Route::group(['middleware' => [
                 Route::post('tags/add', 'Tags@add');
                 Route::post('tags/remove', 'Tags@remove');
                 Route::get('tags/list/{assets}', 'Tags@listTags');
+
+                Route::get('asset-manager', [
+                    'uses' => 'AssetManager@index',
+                    'as'   => 'asset-manager',
+                ]);
+
+                Route::controller('', 'AssetManager');
             });
 
             Route::group([

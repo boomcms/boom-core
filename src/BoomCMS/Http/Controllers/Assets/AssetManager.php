@@ -86,12 +86,12 @@ class AssetManager extends Controller
     public function index()
     {
         return view($this->viewPrefix.'index', [
-            'manager' => $this->manager(),
+            'manager' => $this->getManager(),
             'person'  => auth()->user(),
         ]);
     }
 
-    public function get()
+    public function postGet()
     {
         $params = $this->request->input();
 
@@ -106,12 +106,12 @@ class AssetManager extends Controller
     /**
      * Display the asset manager without topbar etc.
      */
-    public function manager()
+    public function getManager()
     {
         return view($this->viewPrefix.'manager');
     }
 
-    public function picker()
+    public function getPicker()
     {
         return view($this->viewPrefix.'picker');
     }
@@ -154,7 +154,7 @@ class AssetManager extends Controller
         AssetFacade::save($asset);
     }
 
-    public function upload()
+    public function postUpload()
     {
         $assetIds = [];
 
