@@ -3,6 +3,7 @@
 namespace BoomCMS\Chunk\Linkset;
 
 use BoomCMS\Link\Link as LinkObject;
+use BoomCMS\Support\Facades\Chunk;
 
 class Link
 {
@@ -19,6 +20,10 @@ class Link
     public function __construct($attrs)
     {
         $this->attrs = $attrs;
+
+        if (isset($attrs['link'])) {
+            $this->link = $attrs['link'];
+        }
     }
 
     public function getAssetId()
@@ -58,7 +63,17 @@ class Link
      */
     public function getText()
     {
-        return (isset($this->attrs['text'])) ? $this->attrs['text'] : '';
+        if (isset($this->attrs['text'])) {
+            return $this->attrs['text'];
+        }
+
+        if ($this->getLink()->isInternal()) {
+            $page = $this->getLink()->getPage();
+
+            return $this->attrs['text'] = $page ? Chunk::get('text', 'standfirst', $page) : '';
+        }
+
+        return $this->attrs['text'] = '';
     }
 
     public function getTitle()
