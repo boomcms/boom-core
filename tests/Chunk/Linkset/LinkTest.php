@@ -51,6 +51,4 @@ class LinkTest extends AbstractTestCase
 
         $this->assertEquals($text, $link->getText());
     }
-
-    
 }
