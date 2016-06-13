@@ -47,9 +47,9 @@ class LinkTest extends AbstractTestCase
         $page = $this->validPage();
         $standfirst = 'test';
         $text = new TextChunk($page, [
-            'slotname' => 'standfirst',
-            'text' => $standfirst,
-            'site_text' => $standfirst],
+            'slotname'  => 'standfirst',
+            'text'      => $standfirst,
+            'site_text' => $standfirst, ],
         'test', false);
 
         $internal = m::mock(InternalLink::class)->makePartial();
