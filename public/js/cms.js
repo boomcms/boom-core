@@ -45804,7 +45804,8 @@ $(function() {
 
 		findByRelatedTo: function(page) {
 			this.findBy({
-				relatedto: page.getId()
+				relatedto: page.getId(),
+				excludeinvisible: false
 			});
 		},
 
