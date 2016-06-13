@@ -45416,7 +45416,7 @@ $(function() {
 		urlRoot: BoomCMS.urlRoot + 'page',
 
 		initialize: function() {
-			this.baseUrl = this.urlRoot + '/' + this.getId().toString() + '/';
+			this.baseUrl = this.urlRoot + '/' + this.getId() + '/';
 		},
 
 		add: function() {
@@ -46774,9 +46774,7 @@ $.widget( 'boom.pageToolbar', {
 
 					var $this = $(this);
 
-					$this.toggleClass('expanded');
-
-					if ($this.hasClass('expanded')) {
+					if (!$this.hasClass('expanded')) {
 						pageTree.showChildren($this.closest('li'));
 					} else {
 						pageTree.hideChildren($this.closest('li'));
@@ -46798,13 +46796,17 @@ $.widget( 'boom.pageToolbar', {
 		},
 
 		hideChildren: function($li) {
+			$li.find('.b-tree-toggle').removeClass('expanded');
+
 			$li.find('> ul').hide();
 		},
 
 		makeExpandable: function($li) {
-			$('<span />')
-				.addClass('b-tree-toggle')
-				.prependTo($li);
+			if (!$li.find('.b-tree-toggle').length) {
+				$('<span />')
+					.addClass('b-tree-toggle')
+					.prependTo($li);
+			}
 		},
 
 		showChildren: function($li) {
@@ -46817,6 +46819,8 @@ $.widget( 'boom.pageToolbar', {
 				$li.append($ul);
 				this.getChildren(page);
 			}
+
+			$li.find('.b-tree-toggle').addClass('expanded');
 
 			$ul.show();
 		}
@@ -71882,11 +71886,19 @@ if (!console) {
 	},
 
 	addPage: function($el) {
-		var page = new BoomCMS.Page({id: $el.data('page-id')});
+		var page = $el.data('page'),
+			el = this.element;
 
 		page.add()
 			.done(function(data) {
-				window.open(data.url);
+				var newPage = new BoomCMS.Page(data);
+
+				el.pageTree('addPageToList', newPage);
+				el.pageTree('makeExpandable', $el);
+
+				setTimeout(function() {
+					el.pageTree('showChildren', $el);
+				}, 0);
 			});
 	},
 

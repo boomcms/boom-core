@@ -4,11 +4,19 @@ $.widget( 'boom.pageManager', {
 	},
 
 	addPage: function($el) {
-		var page = new BoomCMS.Page({id: $el.data('page-id')});
+		var page = $el.data('page'),
+			el = this.element;
 
 		page.add()
 			.done(function(data) {
-				window.open(data.url);
+				var newPage = new BoomCMS.Page(data);
+
+				el.pageTree('addPageToList', newPage);
+				el.pageTree('makeExpandable', $el);
+
+				setTimeout(function() {
+					el.pageTree('showChildren', $el);
+				}, 0);
 			});
 	},
 

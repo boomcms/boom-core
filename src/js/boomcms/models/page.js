@@ -5,7 +5,7 @@
 		urlRoot: BoomCMS.urlRoot + 'page',
 
 		initialize: function() {
-			this.baseUrl = this.urlRoot + '/' + this.getId().toString() + '/';
+			this.baseUrl = this.urlRoot + '/' + this.getId() + '/';
 		},
 
 		add: function() {

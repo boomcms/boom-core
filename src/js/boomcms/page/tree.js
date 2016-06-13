@@ -49,9 +49,7 @@
 
 					var $this = $(this);
 
-					$this.toggleClass('expanded');
-
-					if ($this.hasClass('expanded')) {
+					if (!$this.hasClass('expanded')) {
 						pageTree.showChildren($this.closest('li'));
 					} else {
 						pageTree.hideChildren($this.closest('li'));
@@ -73,13 +71,17 @@
 		},
 
 		hideChildren: function($li) {
+			$li.find('.b-tree-toggle').removeClass('expanded');
+
 			$li.find('> ul').hide();
 		},
 
 		makeExpandable: function($li) {
-			$('<span />')
-				.addClass('b-tree-toggle')
-				.prependTo($li);
+			if (!$li.find('.b-tree-toggle').length) {
+				$('<span />')
+					.addClass('b-tree-toggle')
+					.prependTo($li);
+			}
 		},
 
 		showChildren: function($li) {
@@ -92,6 +94,8 @@
 				$li.append($ul);
 				this.getChildren(page);
 			}
+
+			$li.find('.b-tree-toggle').addClass('expanded');
 
 			$ul.show();
 		}

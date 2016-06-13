@@ -8,6 +8,7 @@ use BoomCMS\Database\Models\URL;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Page\PageController as Controller;
 use BoomCMS\Jobs\CreatePage;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\PageVersion as PageVersionFacade;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Support\Facades\Event;
@@ -53,12 +54,12 @@ class PageControllerTest extends BaseControllerTest
             ->once()
             ->with(m::type(PageWasCreated::class));
 
-        $expected = [
-            'url' => (string) $url,
-            'id'  => 1,
-        ];
+        PageFacade::shouldReceive('find')
+            ->once()
+            ->with($page->getId())
+            ->andReturn($page);
 
-        $this->assertEquals($expected, $this->controller->postAdd($site, $parent));
+        $this->assertEquals($page, $this->controller->postAdd($site, $parent));
     }
 
     public function testPostDiscard()

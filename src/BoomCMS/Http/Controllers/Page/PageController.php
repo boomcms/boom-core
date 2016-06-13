@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\PageVersion;
 use BoomCMS\Support\Facades\URL;
 use BoomCMS\Support\Helpers;
@@ -20,6 +21,12 @@ class PageController extends Controller
         return Helpers::getPages($request->input());
     }
 
+    /**
+     * @param Site $site
+     * @param Page $page
+     *
+     * @return Page
+     */
     public function postAdd(Site $site, Page $page)
     {
         $this->authorize('add', $page);
@@ -28,13 +35,9 @@ class PageController extends Controller
         $newPage = $this->dispatch(new CreatePage(auth()->user(), $site, $parent));
 
         Event::fire(new PageWasCreated($newPage, $page));
+        URL::page($newPage);
 
-        $url = URL::page($newPage);
-
-        return [
-            'url' => (string) $url,
-            'id'  => $newPage->getId(),
-        ];
+        return PageFacade::find($newPage->getId());
     }
 
     public function postDiscard(Page $page)

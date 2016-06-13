@@ -34,17 +34,6 @@ class ExcludeInvisibeTest extends AbstractTestCase
         $this->assertTrue($filter->shouldBeApplied());
     }
 
-    public function testEditorStateOverridesGivenArgument()
-    {
-        Editor::shouldReceive('isEnabled')
-            ->once()
-            ->andReturn(false);
-
-        $filter = new Filter(false);
-
-        $this->assertTrue($filter->shouldBeApplied());
-    }
-
     public function testInvisiblePagesAreHiddenSoEditorStateIsIgnored()
     {
         Editor::shouldReceive('isEnabled')->never();
@@ -52,5 +41,14 @@ class ExcludeInvisibeTest extends AbstractTestCase
         $filter = new Filter(true);
 
         $this->assertTrue($filter->shouldBeApplied());
+    }
+
+    public function testShouldNotBeAppliedIfSetToFalseButEditorIsDisabled()
+    {
+        Editor::shouldReceive('isEnabled')->never();
+
+        $filter = new Filter(false);
+
+        $this->assertFalse($filter->shouldBeApplied());
     }
 }

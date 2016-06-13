@@ -22,6 +22,6 @@ class ExcludeInvisible extends Filter
 
     public function shouldBeApplied()
     {
-        return $this->apply === true || !Editor::isEnabled();
+        return $this->apply === true || ($this->apply === null && !Editor::isEnabled());
     }
 }
