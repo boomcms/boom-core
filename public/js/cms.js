@@ -49528,7 +49528,7 @@ $.widget('ui.chunkPageVisibility', {
 				var oldText = self.getTitle();
 
 				setTimeout(function() {
-					self.ipdateLengthCounter(self.getLength());
+					self.updateLengthCounter(self.getLength());
 				}, 0);
 			})
 			.on('focus', function() {
