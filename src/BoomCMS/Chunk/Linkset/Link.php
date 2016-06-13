@@ -76,7 +76,7 @@ class Link
         if ($this->getLink()->isInternal()) {
             $page = $this->getLink()->getPage();
 
-            return $this->attrs['text'] = $page ? Chunk::get('text', 'standfirst', $page) : '';
+            return $this->attrs['text'] = $page ? Chunk::get('text', 'standfirst', $page)->text() : '';
         }
 
         return $this->attrs['text'] = '';

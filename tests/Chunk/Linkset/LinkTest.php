@@ -45,7 +45,12 @@ class LinkTest extends AbstractTestCase
     public function testGetTextReturnsStandfirstForInternalLink()
     {
         $page = $this->validPage();
-        $text = new TextChunk($page, ['site_text' => 'test'], 'test', false);
+        $standfirst = 'test';
+        $text = new TextChunk($page, [
+            'slotname' => 'standfirst',
+            'text' => $standfirst,
+            'site_text' => $standfirst],
+        'test', false);
 
         $internal = m::mock(InternalLink::class)->makePartial();
         $internal->shouldReceive('getPage')->once()->andReturn($page);
@@ -57,7 +62,7 @@ class LinkTest extends AbstractTestCase
 
         $link = new Link(['link' => $internal]);
 
-        $this->assertEquals($text->text(), $link->getText());
+        $this->assertEquals($standfirst, $link->getText());
     }
 
     public function testGetTextReturnsGivenText()
