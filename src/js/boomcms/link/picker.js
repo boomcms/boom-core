@@ -119,13 +119,13 @@ function boomLinkPicker(link, options) {
 
 					break;
 				case 'mailto':
-					if (url.substring(0, 6) !== 'mailto:') {
+					if (url.substring(0, 7) !== 'mailto:') {
 						url = 'mailto:' + url;
 					}
 
 					break;
 				case 'tel':
-					if (url.substring(0, 3)) {
+					if (url.substring(0, 4) !== 'tel:') {
 						url = 'tel:' + url.replace(' ', '');
 					}
 
@@ -141,7 +141,7 @@ function boomLinkPicker(link, options) {
 		this.internal = dialog.contents.find('#b-linkpicker-add-internal');
 		this.external = dialog.contents.find('#b-linkpicker-add-external');
 		this.asset = dialog.contents.find('#b-linkpicker-add-asset');
-		this.externalTypeSelector = this.external.find('select'),
+		this.externalTypeSelector = this.external.find('select');
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
 		this.removeButton = dialog.contents.find('#b-linkpicker-remove');
