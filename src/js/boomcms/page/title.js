@@ -21,7 +21,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				var title = self.getTitle();
 
 				if (title !== '' && title !== oldText && title.length <= self.hardLimit) {
-					self.updatePageTitle(oldText, title);
 					self._save(title, oldText);
 				}
 
@@ -35,7 +34,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				var oldText = self.getTitle();
 
 				setTimeout(function() {
-					self.updatePageTitle(oldText, self.getTitle());
 					self.ipdateLengthCounter(self.getLength());
 				}, 0);
 			})
@@ -146,10 +144,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				var page_title = top.$('title').text().replace(old_title, title);
 				top.$('title').text(page_title);
 			});
-	},
-
-	updatePageTitle: function(oldTitle, newTitle) {
-		top.document.title = top.document.title.replace(oldTitle, newTitle);
 	},
 
 	updateLengthCounter: function(length) {
