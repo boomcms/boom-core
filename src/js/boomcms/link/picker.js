@@ -106,22 +106,29 @@ function boomLinkPicker(link, options) {
 			this.textInput.val() :
 			url.replace('mailto:', '').replace('tel:', '');
 
-		if (url.indexOf(window.location.hostname) == -1) {
+		if (url.indexOf(window.location.hostname) === -1) {
 			switch(this.externalTypeSelector.val()) {
 				case 'http':
-					if (url.substring(0,7) !='http://' && url.substring(0,8) !='https://' && url.substring(0,1) != '/' && url.substring(0,1) != '#') {
+					if (url.substring(0, 7) !== 'http://'
+							&& url.substring(0, 8) !== 'https://'
+							&& url.substring(0, 1) !== '/'
+							&& url.substring(0, 1) !== '#')
+					{
 						url = 'http://' + url;
 					}
+
 					break;
 				case 'mailto':
-					if (url.substring(0,6) != 'mailto:') {
+					if (url.substring(0, 6) !== 'mailto:') {
 						url = 'mailto:' + url;
 					}
+
 					break;
 				case 'tel':
-					if (url.substring(0,3)) {
+					if (url.substring(0, 3)) {
 						url = 'tel:' + url.replace(' ', '');
 					}
+
 					break;
 			}
 		}
@@ -236,7 +243,7 @@ function boomLinkPicker(link, options) {
 	};
 
 	boomLinkPicker.prototype.setupText = function() {
-		if ( ! this.options.text) {
+		if (!this.options.text) {
 			this.dialog.contents.find('#b-linkpicker-text').hide();
 			this.dialog.contents.find('a[href=#b-linkpicker-text]').hide();
 		} else {
@@ -247,4 +254,4 @@ function boomLinkPicker(link, options) {
 	};
 
 	return this.open();
-};
+}
