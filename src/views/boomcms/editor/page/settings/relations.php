@@ -9,5 +9,5 @@
 
     <ul id="b-page-relations"></ul>
 
-    <?= $button('plus', trans('boomcms::settings.relations.add'), ['id' => 'b-tags-addpage', 'class' => 'b-button-withtext']) ?>
+    <?= $button('plus', 'add-related-page', ['id' => 'b-tags-addpage', 'class' => 'b-button-withtext']) ?>
 </section>

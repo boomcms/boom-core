@@ -45508,10 +45508,10 @@ $(function() {
 			return $.post(url);
 		},
 
-		removeRelatedPage: function(relatedPageId) {
+		removeRelatedPage: function(page) {
 			return $.ajax({
 				type: 'delete',
-				url: this.baseUrl + 'relations/' + relatedPageId
+				url: this.baseUrl + 'relations/' + page.getId()
 			});
 		},
 
@@ -45780,6 +45780,8 @@ $(function() {
 	};
 }
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.Groups = Backbone.Collection.extend({
 		model: BoomCMS.Group,
 		url: BoomCMS.urlRoot + 'group',
@@ -45787,6 +45789,8 @@ $(function() {
 	});
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.Pages = Backbone.Collection.extend({
 		model: BoomCMS.Page,
 		url: BoomCMS.urlRoot + 'page',
@@ -45795,6 +45799,12 @@ $(function() {
 			this.fetch({
 				remove: false,
 				data: data
+			});
+		},
+
+		findByRelatedTo: function(page) {
+			this.findBy({
+				relatedto: page.getId()
 			});
 		},
 
@@ -45816,6 +45826,8 @@ $(function() {
 	});
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.People = Backbone.Collection.extend({
 		model: BoomCMS.Person,
 		url: BoomCMS.urlRoot + 'person',
@@ -45823,6 +45835,8 @@ $(function() {
 	});
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.Sites = Backbone.Collection.extend({
 		model: BoomCMS.Site,
 		url: BoomCMS.urlRoot + 'site',
@@ -45830,6 +45844,8 @@ $(function() {
 	});
 }(Backbone, window.BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.Templates = Backbone.Collection.extend({
 		model: BoomCMS.Template,
 		url: BoomCMS.urlRoot + 'template'
@@ -47291,90 +47307,87 @@ $.widget( 'boom.pageToolbar', {
 			}
 		});
 	}
-});;$.widget('boom.pageSettingsRelations', {
-	addRelatedPage: function() {
-		var page = this.page,
-			$relatedPages = this.element.find('ul'),
-			$el = this.element;
+});;(function($, BoomCMS) {
+	'use strict';
 
-		new boomLinkPicker(new boomLink(), {
-				external: false,
-				asset: false
-			})
-			.done(function(link) {
-				page.addRelatedPage(link.getPageId())
-					.done(function() {
-						var $li = $('<li></li>')
-							.append('<span class="title">' + link.getTitle() + '</span>')
-							.append('<span class="uri">' + link.getUrl() + '</span>')
-							.append('<a href="#" class="fa fa-trash-o"><span>Remove</span></a>');
+	$.widget('boom.pageSettingsRelations', {
+		addRelatedPage: function() {
+			var page = this.page,
+				pages = this.pages;
 
-						$relatedPages.append($li);
-						$el.find('.current').show();
-					});
+			new boomLinkPicker(new boomLink(), {
+					external: false,
+					asset: false
+				})
+				.done(function(link) {
+					page.addRelatedPage(link.getPageId())
+						.done(function() {
+							pages.add(new BoomCMS.Page({
+								id: link.getPageId(),
+								title: link.getTitle(),
+								url: link.getUrl()
+							}));
+						});
+				});
+		},
+
+		bind: function() {
+			var editor = this,
+				page = this.page;
+
+			this.element
+				.on('click', '#b-tags-addpage', function() {
+					editor.addRelatedPage();
+				})
+				.on('click', 'li a', function() {
+					editor.removeRelatedPage($(this));
+				});
+		},
+
+		_create: function() {
+			var $ul = this.element.find('ul'),
+				$current = this.element.find('.current');
+
+			this.page = this.options.page;
+			this.pages = new BoomCMS.Collections.Pages();
+
+			this.pages.on('add', function(page) {
+				var $li = $('<li>'),
+					$title = $('<span>').addClass('title').text(page.getTitle()).appendTo($li),
+					$uri = $('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
+					$delete = $('<a>')
+						.attr('href', '#')
+						.addClass('fa fa-trash-o')
+						.data('page', page)
+						.html('<span>Remove</span>')
+						.appendTo($li);
+
+				$ul.append($li);
+				$current.show();
 			});
-	},
 
-	bind: function() {
-		var editor = this,
-			page = this.page;
+			this.getRelatedPages();
+			this.bind();
+		},
 
-		this.element
-			.on('click', '#b-tags-addpage', function() {
-				editor.addRelatedPage();
-			})
-			.on('click', 'li a', function() {
-				editor.removeRelatedPage($(this));
-			});
-	},
+		getRelatedPages: function() {
+			this.pages.findByRelatedTo(this.page);
+		},
 
-	_create: function() {
-		this.page = this.options.page;
+		removeRelatedPage: function($a) {
+			var $el = this.element,
+				$relatedPages = $el.find('ul'),
+				$current = $el.find('.current');
 
-		this.getRelatedPages();
-		this.bind();
-	},
+			this.page.removeRelatedPage($a.data('page'))
+				.done(function() {
+					$a.parent().remove();
 
-	getRelatedPages: function() {
-		var $element = this.element;
-
-		$.get('/boomcms/search/pages', {relatedTo: this.page.id})
-			.done(function(pages) {
-				var $ul = $element.find('ul');
-
-				if (pages.length) {
-					$element.find('.current').show();
-				}
-
-				for (var i = 0; i < pages.length; i++) {
-					var $li = $('<li>'),
-						$title = $('<span>').addClass('title').text(pages[i].title).appendTo($li),
-						$uri = $('<span>').addClass('uri').text(pages[i].uri).appendTo($li),
-						$delete = $('<a>')
-							.attr('href', '#')
-							.addClass('fa fa-trash-o')
-							.attr('data-page-id', pages[i].id)
-							.html('<span>Remove</span>')
-							.appendTo($li);
-
-					$ul.append($li);
-				}
-			});
-	},
-
-	removeRelatedPage: function($a) {
-		var $el = this.element,
-			$relatedPages = $el.find('ul'),
-			$current = $el.find('.current');
-
-		this.page.removeRelatedPage($a.attr('data-page-id'))
-			.done(function() {
-				$a.parent().remove();
-
-				$relatedPages.find('li').length ? $current.show() : $current.hide();
-			});
-	}
-});;$.widget('boom.pageSettingsTags', {
+					$relatedPages.find('li').length ? $current.show() : $current.hide();
+				});
+		}
+	});
+}(jQuery, BoomCMS));;$.widget('boom.pageSettingsTags', {
 	addTag: function(group, tag, $el) {
 		this.page.addTag(group, tag).done(function(tagId) {
 			$el.find('a').attr('data-tag', tagId);

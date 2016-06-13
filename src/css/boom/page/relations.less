@@ -3,26 +3,26 @@
 
 	li {
 		list-style-type: none;
+		position: relative;
 
 		+ li {
-			margin-top: 0.5rem;
+			margin-top: 1.5rem;
 		}
 
 		.title {
 			font-weight: bold;
-			vertical-align: top;
 		}
 
-		.uri {
-			margin-left: 1em;
-			font-style: italic;
-			vertical-align: top;
+		.title, .uri {
+			display: block;
+			margin-left: 3rem;
 		}
 
 		a {
-			margin-right: 1em;
 			overflow: hidden;
-			position: relative;
+			position: absolute;
+			top: 0;
+			left: 0;
 			color: @darkest-grey;
 			text-decoration: none;
 			float: left;

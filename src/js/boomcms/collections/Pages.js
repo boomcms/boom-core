@@ -1,4 +1,6 @@
 (function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.Pages = Backbone.Collection.extend({
 		model: BoomCMS.Page,
 		url: BoomCMS.urlRoot + 'page',
@@ -7,6 +9,12 @@
 			this.fetch({
 				remove: false,
 				data: data
+			});
+		},
+
+		findByRelatedTo: function(page) {
+			this.findBy({
+				relatedto: page.getId()
 			});
 		},
 

@@ -97,10 +97,10 @@
 			return $.post(url);
 		},
 
-		removeRelatedPage: function(relatedPageId) {
+		removeRelatedPage: function(page) {
 			return $.ajax({
 				type: 'delete',
-				url: this.baseUrl + 'relations/' + relatedPageId
+				url: this.baseUrl + 'relations/' + page.getId()
 			});
 		},
 
