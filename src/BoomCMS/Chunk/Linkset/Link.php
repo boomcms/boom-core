@@ -83,7 +83,7 @@ class Link
     }
 
     /**
-     * Returns the contents of the text attribute
+     * Returns the contents of the text attribute.
      *
      * @return string
      */
