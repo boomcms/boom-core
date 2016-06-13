@@ -19,6 +19,22 @@ class LinkTest extends AbstractTestCase
         $this->assertEquals($internal, $link->getLink());
     }
 
+    public function testTextAttributeReturnsEmptyString()
+    {
+        $link = new Link([]);
+
+        $this->assertEquals('', $link->getTextAttribute());
+    }
+
+    public function testTextAttributeReturnsText()
+    {
+        $text = 'test';
+
+        $link = new Link(['text' => $text]);
+
+        $this->assertEquals($text, $link->getTextAttribute());
+    }
+
     public function testGetTextReturnsEmptyString()
     {
         $link = new Link(['url' => 'http://www.test.com']);

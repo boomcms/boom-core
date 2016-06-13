@@ -59,6 +59,12 @@ class Link
     }
 
     /**
+     * Get the text for the link.
+     *
+     * If text has been given then that is used.
+     *
+     * Otherwise, if the link is internal, then the standfirst of the linked page is returned.
+     *
      * @return string
      */
     public function getText()
@@ -74,6 +80,16 @@ class Link
         }
 
         return $this->attrs['text'] = '';
+    }
+
+    /**
+     * Returns the contents of the text attribute
+     *
+     * @return string
+     */
+    public function getTextAttribute()
+    {
+        return isset($this->attrs['text']) ? $this->attrs['text'] : '';
     }
 
     public function getTitle()
