@@ -59,7 +59,7 @@ class Tags extends Controller
             $grouped[$group][] = $t;
         }
 
-        $tags = Helpers::getTags($page)->map(function($tag) {
+        $tags = Helpers::getTags($page)->map(function ($tag) {
             return $tag->getId();
         });
 
