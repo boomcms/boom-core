@@ -45867,7 +45867,6 @@ $(function() {
 	@function
 	*/
 	$.fn.ui = function() {
-		this.find('.boom-tabs').tabs();
 		this.find('.boom-datepicker').datetimepicker({
 			format: 'd F Y H:i'
 		});
@@ -49792,12 +49791,17 @@ $.widget('ui.chunkPageVisibility', {
 			}
 		});
 
-		this.dialog.contents.find('.boom-tree').pageTree({
-			onPageSelect: function(link) {
-				linkPicker.pick(link);
-				linkPicker.dialog.cancel();
-			}
-		});
+		this.dialog.contents
+			.find('.boom-tabs')
+			.tabs()
+			.end()
+			.find('.boom-tree')
+			.pageTree({
+				onPageSelect: function(link) {
+					linkPicker.pick(link);
+					linkPicker.dialog.cancel();
+				}
+			});
 
 		this.removeButton.on('click', function(e) {
 			e.preventDefault();
@@ -50069,6 +50073,9 @@ $.widget('ui.chunkPageVisibility', {
                 assetEditor.bind(assetEditor.dialog);
 
 				assetEditor.dialog.contents
+					.find('.boom-tabs')
+					.tabs()
+					.end()
 					.find('#b-tags')
 					.assetTagSearch({
 						addTag: function(e, tag) {

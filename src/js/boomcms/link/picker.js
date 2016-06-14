@@ -58,12 +58,17 @@ function boomLinkPicker(link, options) {
 			}
 		});
 
-		this.dialog.contents.find('.boom-tree').pageTree({
-			onPageSelect: function(link) {
-				linkPicker.pick(link);
-				linkPicker.dialog.cancel();
-			}
-		});
+		this.dialog.contents
+			.find('.boom-tabs')
+			.tabs()
+			.end()
+			.find('.boom-tree')
+			.pageTree({
+				onPageSelect: function(link) {
+					linkPicker.pick(link);
+					linkPicker.dialog.cancel();
+				}
+			});
 
 		this.removeButton.on('click', function(e) {
 			e.preventDefault();

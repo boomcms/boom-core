@@ -13,7 +13,6 @@
 	@function
 	*/
 	$.fn.ui = function() {
-		this.find('.boom-tabs').tabs();
 		this.find('.boom-datepicker').datetimepicker({
 			format: 'd F Y H:i'
 		});
