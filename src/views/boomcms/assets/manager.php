@@ -14,6 +14,7 @@
             <a href="#" id="b-assets-select-none"><?= trans('Select none') ?></a>
 
             <?= $button('search', 'search-assets', ['id' => 'b-assets-search', 'class' => 'b-button-withtext']) ?>
+            <?= view('boomcms::assets.pagination') ?>
         </div>
 	</div>
 
@@ -28,7 +29,6 @@
         <?= view('boomcms::assets.search.type') ?>
         <?= view('boomcms::assets.search.tag') ?>
         <?= view('boomcms::assets.search.sort') ?>
-        <?= view('boomcms::assets.pagination') ?>
 	</div>
 
     <div id="b-assets-content">
