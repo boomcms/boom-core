@@ -1,0 +1,61 @@
+#b-page-tags {
+	padding-left: 0;
+
+	> li {
+		list-style-type: none;
+		overflow: hidden;
+
+		&.b-tags-newgroup {
+			overflow: hidden;
+
+			input[type=text] {
+				width: 15em;
+				clear: left;
+				float: left;
+			}
+
+			.b-button {
+				float: left;
+				margin-top: -10px;
+			}
+		}
+
+		ul.b-tags-list {
+			overflow: hidden;
+			margin: -0.75rem;
+
+			li {
+				padding: 0.75rem;
+				display: inline-block;
+				float: left;
+			}
+
+			a {
+				border: 1px solid @light-grey;
+				padding: 0.75rem;
+				min-width: 15rem;
+				text-decoration: none;
+				color: @black;
+				display: block;
+				overflow: hidden;
+
+				.remove {
+					display: none;
+					float: right;
+				}
+
+				&:hover, &:focus {
+					background: @blue;
+				}
+
+				&.active {
+					background: @red;
+
+					.remove {
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+}

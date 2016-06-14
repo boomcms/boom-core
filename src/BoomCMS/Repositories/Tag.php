@@ -87,6 +87,18 @@ class Tag implements TagRepositoryInterface
 
     /**
      * @param SiteInterface $site
+     *
+     * @return TagInterface
+     */
+    public function findBySite(SiteInterface $site)
+    {
+        return $this->model
+            ->whereSiteIs($site)
+            ->get();
+    }
+
+    /**
+     * @param SiteInterface $site
      * @param string        $slug
      * @param string        $group
      *
