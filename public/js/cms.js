@@ -46727,6 +46727,8 @@ $.widget( 'boom.pageToolbar', {
 	'use strict';
 
 	$.widget('boom.pageTree', {
+		expandedClass: 'expanded',
+
 		options : {
 			onPageSelect: function() {}
 		},
@@ -46774,7 +46776,7 @@ $.widget( 'boom.pageToolbar', {
 
 					var $this = $(this);
 
-					if (!$this.hasClass('expanded')) {
+					if (!$this.hasClass(pageTree.expandedClass)) {
 						pageTree.showChildren($this.closest('li'));
 					} else {
 						pageTree.hideChildren($this.closest('li'));
@@ -46796,7 +46798,7 @@ $.widget( 'boom.pageToolbar', {
 		},
 
 		hideChildren: function($li) {
-			$li.find('.b-tree-toggle').removeClass('expanded');
+			$li.find('> .b-tree-toggle').removeClass(this.expandedClass);
 
 			$li.find('> ul').hide();
 		},
@@ -46820,7 +46822,7 @@ $.widget( 'boom.pageToolbar', {
 				this.getChildren(page);
 			}
 
-			$li.find('.b-tree-toggle').addClass('expanded');
+			$li.find('> .b-tree-toggle').addClass(this.expandedClass);
 
 			$ul.show();
 		}
