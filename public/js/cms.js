@@ -46914,7 +46914,8 @@ $.widget( 'boom.pageToolbar', {
 });;$.widget('boom.pageSettingsChildren', {
 	bind: function() {
 		var settingsEditor = this,
-			page = this.options.page;
+			page = this.options.page,
+			pages = new BoomCMS.Collections.Pages();
 
 		this.element
 			.on('change', 'select[name="children_ordering_policy"]', function() {
@@ -46927,43 +46928,7 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '#b-page-settings-children-reorder', function(e) {
 				e.preventDefault();
 
-				$.get('/boomcms/search/pages', {parent: page.id})
-					.done(function(pages) {
-						var sortDialog = new boomDialog({
-							msg: "<div></div>",
-							title: 'Reorder child pages',
-							width: 'auto',
-							open: function() {
-								var $ul = $('<ul>')
-									.attr('id', 'b-page-settings-children-sort')
-									.appendTo(sortDialog.contents);
-
-								for (var i = 0; i < pages.length; i++) {
-									$('<li>')
-										.attr('data-id', pages[i].id)
-										.append(
-											$('<span>')
-												.addClass('title fa fa-bars')
-												.text(pages[i].title)
-										)
-										.appendTo($ul);
-								}
-
-								$ul.sortable();
-							}
-						});
-
-						sortDialog.done(function() {
-							var sequences = sortDialog.contents.find('li').map(function() {
-								return $(this).attr('data-id');
-							}).get();
-
-							$.post(settingsEditor.sortUrl, {sequences: sequences})
-								.done(function() {
-									new boomNotification('Child page ordering saved').show();
-								});
-						});
-					});
+				pages.findByParent(page);
 			})
 			.on('click', '.b-button-cancel', function(e) {
 				e.preventDefault();
@@ -46978,7 +46943,11 @@ $.widget( 'boom.pageToolbar', {
 					.done(function() {
 						new boomNotification('Child page settings saved').show();
 					});
-			});;
+			});
+
+		pages.on('sync', function(pages) {
+			settingsEditor.sortPages(pages);
+		});
 	},
 
 	_create: function() {
@@ -46986,6 +46955,47 @@ $.widget( 'boom.pageToolbar', {
 		this.sortUrl = '/boomcms/page/' + this.options.page.id + '/settings/sort-children';
 
 		this.bind();
+	},
+
+	sortPages: function(pages) {
+		var url = this.sortUrl;
+
+		var sortDialog = new boomDialog({
+			msg: "<div></div>",
+			title: 'Reorder child pages',
+			width: 'auto',
+			open: function() {
+				var $ul = $('<ul>')
+					.attr('id', 'b-page-settings-children-sort')
+					.appendTo(sortDialog.contents);
+
+				for (var i = 0; i < pages.length; i++) {
+					var page = pages.models[i];
+
+					$('<li>')
+						.attr('data-id', page.getId())
+						.append(
+							$('<span>')
+								.addClass('title fa fa-bars')
+								.text(page.getTitle())
+						)
+						.appendTo($ul);
+				}
+
+				$ul.sortable();
+			}
+		});
+
+		sortDialog.done(function() {
+			var sequences = sortDialog.contents.find('li').map(function() {
+				return $(this).attr('data-id');
+			}).get();
+
+			$.post(url, {sequences: sequences})
+				.done(function() {
+					new boomNotification('Child page ordering saved').show();
+				});
+		});
 	}
 });;$.widget('boom.pageSettingsDefault', {
 	bind: function() {
