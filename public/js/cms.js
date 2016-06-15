@@ -45555,7 +45555,7 @@ $(function() {
 
 		setTemplate: function(templateId) {
 			return $.post(this.baseUrl + 'version/template/' + templateId);
-		},
+		}
 	});
 }(BoomCMS));
 ;(function(BoomCMS) {
