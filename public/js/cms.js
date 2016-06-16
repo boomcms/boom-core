@@ -47399,7 +47399,7 @@ $.widget( 'boom.pageToolbar', {
 		},
 
 		createTag: function(group, tag) {
-			if (group && tag) {
+			if (tag) {
 				var $li = $(this.tagTemplate);
 
 				$li.find('span:first-of-type').text(tag);

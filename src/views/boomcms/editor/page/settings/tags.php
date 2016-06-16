@@ -4,7 +4,8 @@
     <ul>
         <?php if (!isset($all[''])): ?>
             <li>
-                <h2><?= $group ? $group : trans('boomcms::settings.tags.free') ?></h2>
+                <h2><?= trans('boomcms::settings.tags.free') ?></h2>
+                <ul data-group=""></ul>
             </li>
         <?php endif ?>
 
