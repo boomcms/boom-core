@@ -93,7 +93,11 @@ return [
         'internal'    => 'Show in site search results',
     ],
     'tags' => [
-        'heading' => 'Page tags',
+        'heading'               => 'Page tags',
+        'free'                  => '[Free tags]',
+        'new-group-placeholder' => 'New group name',
+        'new-tag-placeholder'   => 'New tag name',
+        'new-group'             => 'Add a new tag group',
     ],
     'template' => [
         'heading'     => 'Page template',

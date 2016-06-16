@@ -45434,6 +45434,13 @@ $(function() {
 			return promise;
 		},
 
+		addTag: function(group, tag) {
+			return $.post(this.baseUrl + 'tags', {
+				group : group,
+				tag : tag
+			});
+		},
+
 		addRelatedPage: function(relatedPageId) {
 			return $.post(this.baseUrl + 'relations/' + relatedPageId);
 		},
@@ -46827,91 +46834,7 @@ $.widget( 'boom.pageToolbar', {
 		}
 	});
 }(BoomCMS));
-;$.widget('boom.pageTagSearch',  {
-	tags : [],
-
-	addTag: function(tag) {
-		this.tags.push(tag.id);
-
-		var $el = $('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag.id + '"></a></li>')
-			.insertBefore(this.tagList.children().last());
-
-		this._trigger('addTag', null, {
-			group: this.group,
-			tag: tag.name,
-			element: $el
-		});
-
-		this.update();
-	},
-
-	bind: function() {
-		var tagSearch = this;
-
-		this.input
-			.pageTagAutocomplete({
-				group : this.group,
-				complete: function(e, tag) {
-					tagSearch.addTag(tag);
-				}
-			});
-
-		this.element.on('click', '.b-button[title="Add tag"]', function(e) {
-			e.preventDefault();
-
-			var $input = $(this).parent().find('input');
-
-			if ($input.val()) {
-				$input.pageTagAutocomplete('tagSelected', $input.val());
-			}
-		});
-
-		this.element.on('click', '.b-tag-remove', function() {
-			tagSearch.removeTag($(this));
-		});
-	},
-
-	_create: function() {
-		this.tagList = this.element.is('ul') ? this.element : this.element.find('ul');
-		this.input = this.element.find('input');
-		this.group = this.element.attr('data-group');
-
-		this.bind();
-	},
-
-	removeTag: function($a) {
-		var tag = $a.attr('data-tag');
-
-		$a.parent().remove();
-		this.tags.splice(this.tags.indexOf(tag));
-
-		this._trigger('removeTag', null, tag);
-		this.update();
-	},
-
-	update: function() {
-		this.input.pageTagAutocomplete('setIgnoreTags', this.tags);
-		this._trigger('update', null, {tags : this.tags});
-	}
-});;$.widget('boom.pageTagAutocomplete', $.boom.tagAutocomplete,  {
-	url : '/boomcms/autocomplete/page-tags',
-
-	tagSelected: function(tag) {
-		if (typeof(tag) === 'object') {
-			// A tag which already exists has been selected - we have a tag ID.
-			this._trigger('complete', null, {
-				id : tag.value,
-				name : tag.label
-			});
-		} else {
-			// A new tag has been created - there's no tag ID.
-			this._trigger('complete', null, {
-				id : 0,
-				name : tag
-			});
-		}
-	}
-});;$.widget('boom.pageSettingsChildren', {
+;$.widget('boom.pageSettingsChildren', {
 	bind: function() {
 		var settingsEditor = this,
 			page = this.options.page,
@@ -47399,68 +47322,115 @@ $.widget( 'boom.pageToolbar', {
 				});
 		}
 	});
-}(jQuery, BoomCMS));;$.widget('boom.pageSettingsTags', {
-	addTag: function(group, tag, $el) {
-		this.page.addTag(group, tag).done(function(tagId) {
-			$el.find('a').attr('data-tag', tagId);
-		});
-	},
+}(jQuery, BoomCMS));;(function($, BoomCMS) {
+	'use strict';
 
-	addTagGroup: function(name) {
-		if (name) {
-			var $newGroup = $('<li><p>' + name + '</p><ul class="b-tags-list" data-group="' + name + '"><li class="b-tag"></li></ul></li>');
+	$.widget('boom.pageSettingsTags', {
+		activeClass: 'active',
 
-			$newGroup.find('.b-tag').html(this.element.find('.b-tags-add').first().clone());
-			$newGroup.insertBefore(this.element.find('.b-tags-grouped').children().last());
-			$newGroup.find('.b-tags-add input[type=text]').focus();
+		addTag: function($a) {
+			var activeClass = this.activeClass,
+				group = $a.parents('ul').attr('data-group'),
+				tag = $a.find('span:first-of-type').text();
 
-			this.initTagList($newGroup.find('.b-tags-list'));
-		}
-	},
+			this.page
+				.addTag(group, tag)
+				.done(function(tagId) {
+					$a.attr('data-tag', tagId)
+					.addClass(activeClass);
+				});
+		},
 
-	bind: function() {
-		var tagEditor = this,
-			page = this.page;
+		addTagGroup: function(name) {
+			if (name) {
+				var $newGroup = $('<li><h2>' + name + '</h2><ul data-group="' + name + '"></ul></li>');
 
-		this.element
-			.on('submit', '.b-tags-newgroup form', function(e) {
-				e.preventDefault();
+				this.$list.append($newGroup);
 
-				var $input = $(this).find('input[type=text]');
+				$newGroup
+					.append(this.newTagForm)
+					.find('input')
+					.focus();
+			}
+		},
 
-				tagEditor.addTagGroup($input.val());
-				$input.val('');
+		bind: function() {
+			var tagEditor = this,
+				page = this.page;
+
+			this.element
+				.on('submit', 'form', function(e) {
+					e.preventDefault();
+				})
+				.on('submit', '.b-tags-newgroup form', function() {
+					var $input = $(this).find('input[type=text]');
+
+					tagEditor.addTagGroup($input.val());
+					$input.val('');
+				})
+				.on('submit', '.create-tag', function() {
+					var $this = $(this),
+						group = $this.siblings('ul').attr('data-group'),
+						tag = $this.find('input').val();
+
+					tagEditor.createTag(group, tag);
+					$this.find('input').val('');
+				})
+				.on('click', '#b-page-tags a', function(e) {
+					e.preventDefault();
+						
+					tagEditor.toggleTag($(this));
+				});
+		},
+
+		_create: function() {
+			var pageTags = this;
+
+			this.page = this.options.page;
+			this.$list = this.element.find('#b-page-tags > ul');
+			this.newTagForm = this.element.find('#b-tags-add').html();
+			this.tagTemplate = this.element.find('#b-tag-template').html();
+
+			this.$list.find('> li').each(function() {
+				$(this).append(pageTags.newTagForm);
 			});
 
-		this.initTagList(this.element.find('.b-tags-list'));
-	},
+			this.bind();
+		},
 
-	_create: function() {
-		this.page = this.options.page;
+		createTag: function(group, tag) {
+			if (group && tag) {
+				var $li = $(this.tagTemplate);
 
-		this.bind();
-	},
+				$li.find('span:first-of-type').text(tag);
 
-	initTagList: function($list) {
-		var page = this.page,
-			pageTags = this;
+				this.element
+					.find('ul[data-group="' + group + '"]')
+					.append($li);
 
-		$list.pageTagSearch({
-			addTag: function(e, data) {
-				pageTags.addTag(data.group, data.tag, data.element);
-			},
-			removeTag: function(e, tagId) {
-				page.removeTag(tagId);
+				this.addTag($li.find('a'));
 			}
-		});
-	},
+		},
 
-	updateTagList: function() {
-		var tagEditor = this;
+		removeTag: function($a) {
+			var activeClass = this.activeClass;
 
-		$.get('/boomcms/page/' + this.page.id + '/tags');
-	}
-});;$.widget('boom.pageSettingsTemplate', {
+			this.page
+				.removeTag($a.attr('data-tag'))
+				.done(function() {
+					$a.removeClass(activeClass);
+				});
+		},
+
+		toggleTag: function($a) {
+			var funcName = $a.hasClass(this.activeClass) ? 'removeTag' : 'addTag';
+
+			this[funcName]($a);
+			$a.blur();
+		}
+	});
+}(jQuery, BoomCMS));
+;$.widget('boom.pageSettingsTemplate', {
 	_create: function() {
 		var templateEditor = this,
 			initial = this.element.find('select option:selected').val();

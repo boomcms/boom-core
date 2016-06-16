@@ -1,62 +1,108 @@
-$.widget('boom.pageSettingsTags', {
-	addTag: function(group, tag, $el) {
-		this.page.addTag(group, tag).done(function(tagId) {
-			$el.find('a').attr('data-tag', tagId);
-		});
-	},
+(function($, BoomCMS) {
+	'use strict';
 
-	addTagGroup: function(name) {
-		if (name) {
-			var $newGroup = $('<li><p>' + name + '</p><ul class="b-tags-list" data-group="' + name + '"><li class="b-tag"></li></ul></li>');
+	$.widget('boom.pageSettingsTags', {
+		activeClass: 'active',
 
-			$newGroup.find('.b-tag').html(this.element.find('.b-tags-add').first().clone());
-			$newGroup.insertBefore(this.element.find('.b-tags-grouped').children().last());
-			$newGroup.find('.b-tags-add input[type=text]').focus();
+		addTag: function($a) {
+			var activeClass = this.activeClass,
+				group = $a.parents('ul').attr('data-group'),
+				tag = $a.find('span:first-of-type').text();
 
-			this.initTagList($newGroup.find('.b-tags-list'));
-		}
-	},
+			this.page
+				.addTag(group, tag)
+				.done(function(tagId) {
+					$a.attr('data-tag', tagId)
+					.addClass(activeClass);
+				});
+		},
 
-	bind: function() {
-		var tagEditor = this,
-			page = this.page;
+		addTagGroup: function(name) {
+			if (name) {
+				var $newGroup = $('<li><h2>' + name + '</h2><ul data-group="' + name + '"></ul></li>');
 
-		this.element
-			.on('submit', '.b-tags-newgroup form', function(e) {
-				e.preventDefault();
+				this.$list.append($newGroup);
 
-				var $input = $(this).find('input[type=text]');
+				$newGroup
+					.append(this.newTagForm)
+					.find('input')
+					.focus();
+			}
+		},
 
-				tagEditor.addTagGroup($input.val());
-				$input.val('');
+		bind: function() {
+			var tagEditor = this,
+				page = this.page;
+
+			this.element
+				.on('submit', 'form', function(e) {
+					e.preventDefault();
+				})
+				.on('submit', '.b-tags-newgroup form', function() {
+					var $input = $(this).find('input[type=text]');
+
+					tagEditor.addTagGroup($input.val());
+					$input.val('');
+				})
+				.on('submit', '.create-tag', function() {
+					var $this = $(this),
+						group = $this.siblings('ul').attr('data-group'),
+						tag = $this.find('input').val();
+
+					tagEditor.createTag(group, tag);
+					$this.find('input').val('');
+				})
+				.on('click', '#b-page-tags a', function(e) {
+					e.preventDefault();
+						
+					tagEditor.toggleTag($(this));
+				});
+		},
+
+		_create: function() {
+			var pageTags = this;
+
+			this.page = this.options.page;
+			this.$list = this.element.find('#b-page-tags > ul');
+			this.newTagForm = this.element.find('#b-tags-add').html();
+			this.tagTemplate = this.element.find('#b-tag-template').html();
+
+			this.$list.find('> li').each(function() {
+				$(this).append(pageTags.newTagForm);
 			});
 
-		this.initTagList(this.element.find('.b-tags-list'));
-	},
+			this.bind();
+		},
 
-	_create: function() {
-		this.page = this.options.page;
+		createTag: function(group, tag) {
+			if (group && tag) {
+				var $li = $(this.tagTemplate);
 
-		this.bind();
-	},
+				$li.find('span:first-of-type').text(tag);
 
-	initTagList: function($list) {
-		var page = this.page,
-			pageTags = this;
+				this.element
+					.find('ul[data-group="' + group + '"]')
+					.append($li);
 
-		$list.pageTagSearch({
-			addTag: function(e, data) {
-				pageTags.addTag(data.group, data.tag, data.element);
-			},
-			removeTag: function(e, tagId) {
-				page.removeTag(tagId);
+				this.addTag($li.find('a'));
 			}
-		});
-	},
+		},
 
-	updateTagList: function() {
-		var tagEditor = this;
+		removeTag: function($a) {
+			var activeClass = this.activeClass;
 
-		$.get('/boomcms/page/' + this.page.id + '/tags');
-	}
-});
+			this.page
+				.removeTag($a.attr('data-tag'))
+				.done(function() {
+					$a.removeClass(activeClass);
+				});
+		},
+
+		toggleTag: function($a) {
+			var funcName = $a.hasClass(this.activeClass) ? 'removeTag' : 'addTag';
+
+			this[funcName]($a);
+			$a.blur();
+		}
+	});
+}(jQuery, BoomCMS));

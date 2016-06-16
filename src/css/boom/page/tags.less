@@ -1,0 +1,136 @@
+#b-page-tags {
+	padding-left: 0;
+
+	form {
+		overflow: hidden;
+		position: relative;
+		width: 20rem;
+		height: 3.9rem;
+
+		input[type=text] {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			padding: 0.75rem 5rem 0.75rem 0.75rem;
+			height: auto;
+			width: 100%;
+			max-width: 100%;
+
+			&:focus {
+				+ button {
+					display: block;
+				}
+			}
+		}
+
+		button {
+			position: absolute;
+			right: 0.75rem;
+			bottom: 0;
+			top: 0;
+			display: none;
+			font-size: 1rem;
+			width: auto;
+			height: auto;
+			margin: 0;
+		}
+	}
+
+	ul {
+		padding: 0;
+		overflow: hidden;
+		list-style-type: none;
+	}
+
+	> ul {
+		> li {
+			overflow: hidden;
+			
+			+ li {
+				margin-top: 5rem;
+			}
+		}
+
+		form {
+			display: inline-block;
+			float: left;
+			margin-left: 1.5rem;
+		}
+
+		ul {
+			margin: -0.75rem;
+			display: inline-block;
+			float: left;
+
+			li {
+				padding: 0.75rem;
+				display: inline-block;
+				float: left;
+			}
+
+			a {
+				border: 1px solid @light-grey;
+				padding: 0.75rem;
+				min-width: 15rem;
+				text-decoration: none;
+				color: @black;
+				display: block;
+				overflow: hidden;
+				position: relative;
+
+				.remove, .add {
+					display: none;
+					position: absolute;
+					top: 50%;
+					right: 1.5rem;
+					transform: translateY(-50%);
+					line-height: 1px;
+				}
+
+				.add {
+					display: inline-block;
+				}
+
+				&:hover, &:focus {
+					background: @blue;
+					color: @white;
+					border-color: @blue;
+				}
+
+				&.active {
+					background: @blue;
+					color: @white;
+					border-color: @blue;
+
+					&:hover, &:focus {
+						.remove {
+							color: @red;
+						}
+					}
+
+					.add {
+						display: none;
+					}
+
+					.remove {
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+
+	.b-tags-newgroup {
+		width: calc(~"100% + 10rem");
+		padding: 5rem;
+		background: @light-grey;
+		margin: 5rem -5rem 0 -5rem;
+
+		form {
+			width: 40rem;
+			max-width: 100%;
+		}
+	}
+}

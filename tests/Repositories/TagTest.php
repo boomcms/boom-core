@@ -120,6 +120,22 @@ class TagTest extends AbstractTestCase
         $this->assertEquals($model, $repository->findByNameAndGroup($this->site, $name, $group));
     }
 
+    public function testFindBySite()
+    {
+        $model = m::mock(Tag::class);
+        $model
+            ->shouldReceive('whereSiteIs')
+            ->once()
+            ->with($this->site)
+            ->andReturnSelf();
+
+        $model->shouldReceive('get')->andReturnSelf();
+
+        $repository = new TagRepository($model);
+
+        $this->assertEquals($model, $repository->findBySite($this->site, 'test'));
+    }
+
     public function testFindBySlugAndGroup()
     {
         $slug = 'test-slug';

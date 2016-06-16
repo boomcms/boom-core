@@ -23,6 +23,13 @@
 			return promise;
 		},
 
+		addTag: function(group, tag) {
+			return $.post(this.baseUrl + 'tags', {
+				group : group,
+				tag : tag
+			});
+		},
+
 		addRelatedPage: function(relatedPageId) {
 			return $.post(this.baseUrl + 'relations/' + relatedPageId);
 		},
