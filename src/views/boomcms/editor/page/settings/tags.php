@@ -48,7 +48,7 @@
         <li>
             <a href="#">
                 <span></span>
-                <span class='fa fa-times-o remove'></span>
+                <span class='fa fa-times remove'></span>
                 <span class='fa fa-plus add'></span>
             </a>
         </li>        
