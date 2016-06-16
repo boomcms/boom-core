@@ -6,7 +6,7 @@ function boomAssetSelection(assetIds) {
 	boomAssetSelection.prototype.add = function(assetId) {
 		var index = this.assets.indexOf(assetId);
 
-		if (index == -1) {
+		if (index === -1) {
 			this.assets.push(assetId);
 		} else {
 			this.assets.splice(index, 1);
