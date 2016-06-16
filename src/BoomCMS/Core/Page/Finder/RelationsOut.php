@@ -7,15 +7,29 @@ use BoomCMS\Foundation\Finder\Filter;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Database\Eloquent\Builder;
 
-class RelatedTo extends Filter
+/**
+ * Finds the pages which are related pages of the given page.
+ *
+ * The relationship is outgoing
+ * i.e. the relationship is listed in the given page's page relationships
+ */
+class RelationsOut extends Filter
 {
     protected $page;
 
+    /**
+     * @param Page $page
+     */
     public function __construct($page)
     {
         $this->page = ($page instanceof Page) ? $page : PageFacade::find($page);
     }
 
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
     public function execute(Builder $query)
     {
         return $query
