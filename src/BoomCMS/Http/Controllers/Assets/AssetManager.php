@@ -48,7 +48,7 @@ class AssetManager extends Controller
         AssetFacade::delete($this->request->input('assets'));
     }
 
-    public function download()
+    public function getDownload()
     {
         $assets = AssetFacade::find($this->request->input('asset'));
 
