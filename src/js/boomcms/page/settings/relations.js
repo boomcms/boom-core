@@ -43,15 +43,16 @@
 			this.pages = new BoomCMS.Collections.Pages();
 
 			this.pages.on('add', function(page) {
-				var $li = $('<li>'),
-					$title = $('<span>').addClass('title').text(page.getTitle()).appendTo($li),
-					$uri = $('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
-					$delete = $('<a>')
-						.attr('href', '#')
-						.addClass('fa fa-trash-o')
-						.data('page', page)
-						.html('<span>Remove</span>')
-						.appendTo($li);
+				var $li = $('<li>');
+
+				$('<span>').addClass('title').text(page.getTitle()).appendTo($li),
+				$('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
+				$('<a>')
+					.attr('href', '#')
+					.addClass('fa fa-trash-o')
+					.data('page', page)
+					.html('<span>Remove</span>')
+					.appendTo($li);
 
 				$ul.append($li);
 				$current.show();
