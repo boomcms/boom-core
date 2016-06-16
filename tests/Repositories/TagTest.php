@@ -123,12 +123,26 @@ class TagTest extends AbstractTestCase
     public function testFindBySite()
     {
         $model = m::mock(Tag::class);
+
         $model
-            ->shouldReceive('whereSiteIs')
+            ->shouldReceive('select')
             ->once()
-            ->with($this->site)
+            ->with('tags.*')
             ->andReturnSelf();
 
+        $model
+            ->shouldReceive('where')
+            ->once()
+            ->with('tags.site_id', $this->site->getId())
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('appliedToALivePage')
+            ->once()
+            ->andReturnSelf();
+
+        $model->shouldReceive('orderBy')->with('group')->andReturnSelf();
+        $model->shouldReceive('orderBy')->with('name')->andReturnSelf();
         $model->shouldReceive('get')->andReturnSelf();
 
         $repository = new TagRepository($model);

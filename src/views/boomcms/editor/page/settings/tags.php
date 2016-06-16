@@ -18,7 +18,7 @@
                         <li>
                             <a data-tag="<?= $tag->getId() ?>" href="#"<?php if (in_array($tag->getId(), $tags)): ?> class='active'<?php endif ?>>
                                 <span><?= $tag->getName() ?></span>
-                                <span class='fa fa-trash-o remove'></span>
+                                <span class='fa fa-times remove'></span>
                                 <span class='fa fa-plus add'></span>
                             </a>
                         </li>
@@ -48,7 +48,7 @@
         <li>
             <a href="#">
                 <span></span>
-                <span class='fa fa-trash-o remove'></span>
+                <span class='fa fa-times-o remove'></span>
                 <span class='fa fa-plus add'></span>
             </a>
         </li>        
