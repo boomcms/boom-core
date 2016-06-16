@@ -49769,9 +49769,6 @@ $.widget('ui.chunkPageVisibility', {
 		});
 
 		this.dialog.contents
-			.find('.boom-tabs')
-			.tabs()
-			.end()
 			.find('.boom-tree')
 			.pageTree({
 				onPageSelect: function(link) {
@@ -49860,6 +49857,8 @@ $.widget('ui.chunkPageVisibility', {
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
 		this.removeButton = dialog.contents.find('#b-linkpicker-remove');
+
+		dialog.contents.find('.boom-tabs').tabs();
 
 		if (!this.options.remove) {
 			this.removeButton.hide();
