@@ -43,7 +43,7 @@ class AssetManager extends Controller
         }
     }
 
-    public function delete()
+    public function postDelete()
     {
         AssetFacade::delete($this->request->input('assets'));
     }
