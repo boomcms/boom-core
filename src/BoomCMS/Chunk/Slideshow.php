@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\View;
 
 class Slideshow extends BaseChunk
 {
-    public function __construct(Page $page, array $attrs, $slotname, $editable)
+    public function __construct(Page $page, array $attrs, $slotname)
     {
-        parent::__construct($page, $attrs, $slotname, $editable);
+        parent::__construct($page, $attrs, $slotname);
 
         if (isset($this->attrs['slides'])) {
             foreach ($this->attrs['slides'] as &$slide) {

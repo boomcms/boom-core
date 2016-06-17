@@ -11,9 +11,9 @@ class Linkset extends BaseChunk
 
     protected $links;
 
-    public function __construct(Page $page, array $attrs, $slotname, $editable)
+    public function __construct(Page $page, array $attrs, $slotname)
     {
-        parent::__construct($page, $attrs, $slotname, $editable);
+        parent::__construct($page, $attrs, $slotname);
 
         if (isset($this->attrs['links'])) {
             foreach ($this->attrs['links'] as &$link) {

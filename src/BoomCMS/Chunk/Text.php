@@ -11,9 +11,9 @@ class Text extends BaseChunk
 
     protected $allowFormatting = false;
 
-    public function __construct(Page $page, array $attrs, $slotname, $editable)
+    public function __construct(Page $page, array $attrs, $slotname)
     {
-        parent::__construct($page, $attrs, $slotname, $editable);
+        parent::__construct($page, $attrs, $slotname);
 
         // Formatting is allowed for bodycopy by default.
         // For other text chunks it must be manually set.
