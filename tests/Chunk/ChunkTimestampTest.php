@@ -22,7 +22,7 @@ class ChunkTimestampTest extends AbstractTestCase
         $attrs = ['timestamp' => $timestamp];
         $text = '<p>Some test text</p>';
 
-        $closure = function(Timestamp $chunk) use($timestamp, $text) {
+        $closure = function (Timestamp $chunk) use ($timestamp,$text) {
             if ($chunk->getTimestamp() !== $timestamp) {
                 $this->fail();
             }

@@ -21,7 +21,6 @@ class Text extends BaseChunk
     }
 
     /**
-     * 
      * @return string
      */
     protected function addContentToHtml()
