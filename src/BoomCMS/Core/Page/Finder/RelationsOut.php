@@ -2,9 +2,6 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Foundation\Finder\Filter;
-use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -13,18 +10,8 @@ use Illuminate\Database\Eloquent\Builder;
  * The relationship is outgoing
  * i.e. the relationship is listed in the given page's page relationships
  */
-class RelationsOut extends Filter
+class RelationsOut extends AbstractPageFilter
 {
-    protected $page;
-
-    /**
-     * @param Page $page
-     */
-    public function __construct($page)
-    {
-        $this->page = ($page instanceof Page) ? $page : PageFacade::find($page);
-    }
-
     /**
      * @param Builder $query
      *
@@ -35,10 +22,5 @@ class RelationsOut extends Filter
         return $query
             ->join('pages_relations', 'pages.id', '=', 'pages_relations.related_page_id')
             ->where('pages_relations.page_id', '=', $this->page->getId());
-    }
-
-    public function shouldBeApplied()
-    {
-        return $this->page !== null;
     }
 }
