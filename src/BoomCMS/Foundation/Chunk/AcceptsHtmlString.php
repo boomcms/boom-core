@@ -17,4 +17,13 @@ trait AcceptsHtmlString
 
         return $this;
     }
+
+    protected function show()
+    {
+        if (is_callable($this->html)) {
+            return call_user_func($this->html, $this);
+        }
+
+        return $this->addContentToHtml();
+    }
 }

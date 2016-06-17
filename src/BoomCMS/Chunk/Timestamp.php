@@ -3,6 +3,7 @@
 namespace BoomCMS\Chunk;
 
 use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
+use DateTime;
 
 class Timestamp extends BaseChunk
 {
@@ -23,8 +24,9 @@ class Timestamp extends BaseChunk
     protected $defaultHtml = "<span class='b-chunk-timestamp'>{time}</span>";
     protected $formatIsEditable = true;
 
-    protected function addContentToHtml($content)
+    protected function addContentToHtml($content = null)
     {
+        $content = $content ?: date($this->getFormat(), $this->getTimestamp());
         $html = $this->html ?: $this->defaultHtml;
 
         return str_replace('{time}', $content, $html);
@@ -44,6 +46,14 @@ class Timestamp extends BaseChunk
         return $this->getFormat() && $this->getTimestamp() > 0;
     }
 
+    /**
+     * @return DateTime
+     */
+    public function getDateTime()
+    {
+        return (new DateTime())->setTimestamp($this->getTimestamp());
+    }
+
     public function getFormat()
     {
         return isset($this->attrs['format']) ? $this->attrs['format'] : static::$defaultFormat;
@@ -60,11 +70,6 @@ class Timestamp extends BaseChunk
         $this->attrs['format'] = $format;
 
         return $this;
-    }
-
-    protected function show()
-    {
-        return $this->addContentToHtml(date($this->getFormat(), $this->getTimestamp()));
     }
 
     protected function showDefault()

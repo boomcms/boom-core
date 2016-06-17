@@ -20,6 +20,15 @@ class Text extends BaseChunk
         $this->allowFormatting = ($this->slotname === 'bodycopy');
     }
 
+    /**
+     * 
+     * @return string
+     */
+    protected function addContentToHtml()
+    {
+        return $this->showText($this->text());
+    }
+
     public function getHtmlContainerForSlotname($slotname)
     {
         switch ($slotname) {
@@ -37,11 +46,6 @@ class Text extends BaseChunk
         $this->allowFormatting = true;
 
         return $this;
-    }
-
-    protected function show()
-    {
-        return $this->showText($this->text());
     }
 
     protected function showDefault()
