@@ -6,7 +6,6 @@ use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Foundation\Finder\Filter;
 use BoomCMS\Support\Facades\Page as PageFacade;
 
-
 abstract class AbstractPageFilter extends Filter
 {
     /**

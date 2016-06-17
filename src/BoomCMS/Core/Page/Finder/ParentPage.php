@@ -25,7 +25,7 @@ class ParentPage extends AbstractPageFilter
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function shouldBeApplied()
     {
