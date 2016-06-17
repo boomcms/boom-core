@@ -31,7 +31,7 @@ class Timestamp extends BaseChunk
     protected $formatIsEditable = true;
 
     /**
-     * Define a closure to apply to the chunk content before rendering
+     * Define a closure to apply to the chunk content before rendering.
      *
      * @param Closure $closure
      *
