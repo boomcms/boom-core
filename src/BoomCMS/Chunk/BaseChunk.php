@@ -149,7 +149,8 @@ abstract class BaseChunk
     }
 
     /**
-     * Set whether the chunk is editable
+     * Set whether the chunk is editable.
+     *
      * @param bool $editable
      *
      * @return $this
