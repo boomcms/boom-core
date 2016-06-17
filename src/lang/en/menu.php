@@ -7,7 +7,7 @@ return [
     'home'      => 'Site',
     'logout'    => 'Logout',
     'pages'     => 'Pages',
-    'people'    => 'People Manager',
+    'people'    => 'People mnager',
     'settings'  => 'Settings',
-    'templates' => 'Template Manager',
+    'templates' => 'Template manager',
 ];
