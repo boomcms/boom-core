@@ -180,7 +180,7 @@ class AssetManager extends Controller
         $validFiles = $errors = [];
 
         foreach ($this->request->file() as $files) {
-            foreach ($files as $i => $file) {
+            foreach ($files as $file) {
                 if (!$file->isValid()) {
                     $errors[] = $file->getErrorMessage();
                     continue;
