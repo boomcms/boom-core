@@ -75,13 +75,17 @@ class BaseChunkTest extends AbstractTestCase
     {
         $editable = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page(), [], 'test', true])
+            ->setConstructorArgs([new Page(), [], 'test'])
             ->getMock();
+
+        $editable->editable(true);
 
         $noteditable = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page(), [], 'test', false])
+            ->setConstructorArgs([new Page(), [], 'test'])
             ->getMock();
+
+        $noteditable->editable(false);
 
         $this->assertTrue($editable->isEditable());
         $this->assertFalse($noteditable->isEditable());
@@ -91,9 +95,10 @@ class BaseChunkTest extends AbstractTestCase
     {
         $editable = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page(), [], 'test', true])
+            ->setConstructorArgs([new Page(), [], 'test'])
             ->getMock();
 
+        $editable->editable(true);
         $readonly = $editable->readonly();
 
         $this->assertFalse($readonly->isEditable());

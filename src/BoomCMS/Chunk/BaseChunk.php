@@ -39,7 +39,7 @@ abstract class BaseChunk
     /**
      * @var bool
      */
-    protected $editable;
+    protected $editable = false;
 
     /**
      * @var Page
@@ -72,12 +72,11 @@ abstract class BaseChunk
 
     protected $viewPrefix = 'boomcms.chunks::';
 
-    public function __construct(Page $page, array $attrs, $slotname, $editable = false)
+    public function __construct(Page $page, array $attrs, $slotname)
     {
         $this->page = $page;
         $this->attrs = $attrs;
         $this->slotname = $slotname;
-        $this->editable = $editable;
     }
 
     /**
@@ -147,6 +146,19 @@ abstract class BaseChunk
         $attributesString = Html::attributes($attributes);
 
         return preg_replace('|<(.*?)>|', "<$1$attributesString>", $html, 1);
+    }
+
+    /**
+     * Set whether the chunk is editable
+     * @param bool $editable
+     *
+     * @return $this
+     */
+    public function editable($editable)
+    {
+        $this->editable = $editable;
+
+        return $this;
     }
 
     /**

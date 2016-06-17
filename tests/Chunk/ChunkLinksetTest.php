@@ -32,7 +32,8 @@ class ChunkLinksetTest extends AbstractTestCase
             ->with($path)
             ->andReturn(null);
 
-        $chunk = $this->chunk(['links' => [['url' => '/test']]], true);
+        $chunk = $this->chunk(['links' => [['url' => '/test']]]);
+        $chunk->editable(true);
 
         $this->assertEquals([], $chunk->getLinks());
     }
@@ -73,7 +74,8 @@ class ChunkLinksetTest extends AbstractTestCase
             ->with($path)
             ->andReturn($page);
 
-        $chunk = $this->chunk(['links' => [['url' => '/test']]], true);
+        $chunk = $this->chunk(['links' => [['url' => '/test']]]);
+        $chunk->editable(true);
         $links = $chunk->getLinks();
 
         $this->assertEquals(1, count($links));
