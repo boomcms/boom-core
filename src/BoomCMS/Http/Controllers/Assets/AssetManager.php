@@ -57,27 +57,27 @@ class AssetManager extends Controller
                 $assets[0]->getFilename(),
                 $assets[0]->getOriginalFilename()
             );
-        } else {
-            $downloadFilename = rtrim($this->request->input('filename'), '.zip').'.zip';
-            $filename = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
-            $zip = new ZipArchive();
-            $zip->open($filename, ZipArchive::CREATE);
-
-            foreach ($assets as $asset) {
-                $zip->addFile($asset->getFilename(), $asset->getOriginalFilename());
-            }
-
-            $zip->close();
-
-            $response = Response::make()
-                ->header('Content-type', 'application/zip')
-                ->header('Content-Disposition', "attachment; filename=$downloadFilename")
-                ->setContent(file_get_contents($filename));
-
-            unlink($filename);
-
-            return $response;
         }
+
+        $downloadFilename = rtrim($this->request->input('filename'), '.zip').'.zip';
+        $filename = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
+        $zip = new ZipArchive();
+        $zip->open($filename, ZipArchive::CREATE);
+
+        foreach ($assets as $asset) {
+            $zip->addFile($asset->getFilename(), $asset->getOriginalFilename());
+        }
+
+        $zip->close();
+
+        $response = Response::make()
+            ->header('Content-type', 'application/zip')
+            ->header('Content-Disposition', "attachment; filename=$downloadFilename")
+            ->setContent(file_get_contents($filename));
+
+        unlink($filename);
+
+        return $response;
     }
 
     /**
