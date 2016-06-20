@@ -2,7 +2,7 @@
 
 return [
     'pages' => [
-        'url'      => route('page-manager'),
+        'url'      => '/boomcms/page-manager',
         'role'     => 'managePages',
         'icon'     => 'sitemap',
     ],
@@ -12,17 +12,17 @@ return [
         'icon'     => 'thumbs-o-up',
     ],
     'templates' => [
-        'url'      => route('template-manager'),
+        'url'      => '/boomcms/template-manager',
         'role'     => 'manageTemplates',
         'icon'     => 'file-o',
     ],
     'assets' => [
-        'url'      => route('asset-manager'),
+        'url'      => '/boomcms/asset-manger',
         'role'     => 'manageAssets',
         'icon'     => 'picture-o',
     ],
     'people' => [
-        'url'      => route('people-manager'),
+        'url'      => '/boomcms/people-manager',
         'role'     => 'managePeople',
         'icon'     => 'users',
     ],

@@ -34,6 +34,8 @@ Route::group(['middleware' => [
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 
+            Route::get('asset-manager', 'Assets\AssetManager@index');
+
             Route::group([
                 'prefix'    => 'assets',
                 'namespace' => 'Assets',
@@ -45,11 +47,6 @@ Route::group(['middleware' => [
                 Route::post('tags/add', 'Tags@add');
                 Route::post('tags/remove', 'Tags@remove');
                 Route::get('tags/list/{assets}', 'Tags@listTags');
-
-                Route::get('asset-manager', [
-                    'uses' => 'AssetManager@index',
-                    'as'   => 'asset-manager',
-                ]);
 
                 Route::controller('', 'AssetManager');
             });
