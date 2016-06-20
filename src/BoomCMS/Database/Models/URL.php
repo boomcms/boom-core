@@ -56,7 +56,7 @@ class URL extends Model implements URLInterface
     public function getPage()
     {
         if ($this->page === null) {
-            $this->page = $this->belongsTo(Page::class, 'page_id')->first();
+            $this->page = $this->belongsTo(Page::class, 'page_id')->withTrashed()->first();
         }
 
         return $this->page;
