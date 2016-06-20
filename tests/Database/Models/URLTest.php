@@ -27,6 +27,7 @@ class URLTest extends AbstractModelTestCase
 
         $query = m::mock(Builder::class);
         $query->shouldReceive('first')->andReturn($page);
+        $query->shouldReceive('withTrashed')->once()->andReturn($query);
 
         $url = m::mock(URL::class)->makePartial();
         $url->shouldReceive('belongsTo')
