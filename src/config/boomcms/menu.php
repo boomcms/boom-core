@@ -17,7 +17,7 @@ return [
         'icon'     => 'file-o',
     ],
     'assets' => [
-        'url'      => '/boomcms/asset-manger',
+        'url'      => '/boomcms/asset-manager',
         'role'     => 'manageAssets',
         'icon'     => 'picture-o',
     ],
