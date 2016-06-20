@@ -1,19 +1,21 @@
 <form>
     <h1><?= trans('boomcms::settings.admin.heading') ?></h1>
 
-    <label>
-        <p><?= trans('boomcms::settings.admin.internal-name') ?></p>
-        <input type='text' name='internal_name' value='<?= $page->getInternalName() ?>' />
-    </label>
+    <section>
+        <label>
+            <p><?= trans('boomcms::settings.admin.internal-name') ?></p>
+            <input type='text' name='internal_name' value='<?= $page->getInternalName() ?>' />
+        </label>
 
-    <label>
-        <p><?= trans('boomcms::settings.admin.disable-delete') ?></p>
+        <label>
+            <p><?= trans('boomcms::settings.admin.disable-delete') ?></p>
 
-        <select name="disable_delete">
-            <option value="1"<?php if (!$page->canBeDeleted()): ?> selected<?php endif ?>>Yes</option>
-            <option value=""<?php if ($page->canBeDeleted()): ?> selected<?php endif ?>>No</option>
-        </select>
-    </label>
+            <select name="disable_delete">
+                <option value="1"<?php if (!$page->canBeDeleted()): ?> selected<?php endif ?>>Yes</option>
+                <option value=""<?php if ($page->canBeDeleted()): ?> selected<?php endif ?>>No</option>
+            </select>
+        </label>
+    </section>
 
     <section>
         <h2><?= trans('boomcms::settings.admin.add-behaviour-heading') ?></h2>
