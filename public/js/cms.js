@@ -46388,7 +46388,7 @@ $(function() {
 					.on('click', function(e) {
 						e.preventDefault();
 
-						window.BoomCMS.page.toolbar.showSettingsAndCloseOnSave('feature');
+						window.BoomCMS.page.toolbar.showSettings('feature');
 					});
 			});
 	},
@@ -46481,7 +46481,7 @@ $.widget( 'boom.pageToolbar', {
 					setTimeout(function() {
 						if ($this.data('clicks') === 1) {
 							$this.data('clicks', 0);
-							self.settingsAreOpen() ? self.showSettings('drafts') : self.showSettingsAndCloseOnSave('drafts');
+							self.showSettings('drafts');
 						}
 					}, 200);
 				}
@@ -46672,20 +46672,6 @@ $.widget( 'boom.pageToolbar', {
 		if (section) {
 			this.$settings.pageSettings('show', section);
 		}
-	},
-
-	showSettingsAndCloseOnSave: function(section) {
-		var toolbar = this;
-
-		this.$settings
-			.pageSettings({
-				draftsSave: function(event, data) {
-					toolbar.draftsSaved(event, data);
-					toolbar.closePageSettings();
-				}
-			});
-
-		this.showSettings(section);
 	},
 
 	supportRequest: function() {
