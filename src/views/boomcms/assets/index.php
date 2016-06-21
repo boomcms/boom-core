@@ -34,7 +34,7 @@
 	</div>
 
     <div id="b-assets-content">
-        <?= view('boomcms::assets.thumbs', ['assets' => []]) ?>
+        <?= view('boomcms::assets.thumbs') ?>
     </div>
 
 	<?= view('boomcms::assets.upload') ?>

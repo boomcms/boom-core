@@ -1,29 +1,38 @@
-(function($, Backbone, BoomCMS) {
+(function(Backbone, BoomCMS) {
 	'use strict';
 
-	BoomCMS.PeopleManager = Backbone.View.extend({
+	BoomCMS.AssetManager = Backbone.View.extend({
 		el: 'body',
 
+		postData: {
+			page: 1,
+			limit: 30,
+			order: 'last_modified desc'
+		},
+
 		initialize: function() {
-			this.router = new BoomCMS.AssetManager.Router();
+//			this.router = new BoomCMS.AssetManager.Router();
 			this.assets = new BoomCMS.Collections.Assets();
 
 			this.gridView = new BoomCMS.AssetManager.GridView({
 				assets: this.assets
 			});
+		},
+
+		getAssets: function() {
+			this.assets.fetch(this.postData);
+		},
+
+		renderGrid: function() {
+
 		}
 	});
-}(jQuery, Backbone, BoomCMS));
+}(Backbone, BoomCMS));
 
 $.widget('boom.assetManager', {
 	baseUrl: '/boomcms/assets/',
 	listUrl: '/boomcms/assets/get',
 
-	postData: {
-		page: 1,
-		limit: 30,
-		order: 'last_modified desc'
-	},
 
 	selection: new boomAssetSelection(),
 
