@@ -102,7 +102,7 @@ class CreatePageTest extends AbstractTestCase
         $this->newPage
             ->shouldReceive('addVersion')
             ->once()
-            ->with(m::on(function (array $attrs) use($title) {
+            ->with(m::on(function (array $attrs) use ($title) {
                 return $title === $attrs['title'];
             }));
 
