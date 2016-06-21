@@ -79,7 +79,7 @@ $.widget( 'boom.pageEditor', {
 					.on('click', function(e) {
 						e.preventDefault();
 
-						window.BoomCMS.page.toolbar.showSettingsAndCloseOnSave('feature');
+						window.BoomCMS.page.toolbar.showSettings('feature');
 					});
 			});
 	},

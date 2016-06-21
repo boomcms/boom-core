@@ -3,12 +3,23 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Site;
+use BoomCMS\Support\Facades\Router;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase;
 
 abstract class AbstractTestCase extends TestCase
 {
     protected $baseUrl = 'localhost';
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->site = new Site();
+
+        Router::setActiveSite($this->site);
+    }
 
     /**
      * Creates the application.

@@ -36,12 +36,16 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 	boomChunkLinksetEditor.prototype.bind = function() {
 		var linksetEditor = this;
 
-		if ( ! this.options.title) {
+		if (!this.options.title) {
 			this.dialog.contents.find('#b-linkset-title, #b-linkset-title-tab').hide();
 		}
 
-		if ( ! this.options.linkAssets) {
+		if (!this.options.linkAssets) {
 			this.dialog.contents.find('.b-linkset-asset').hide();
+		}
+
+		if (!this.options.linkText) {
+			this.dialog.contents.find('.b-linkset-text').hide();
 		}
 
 		this.$links = this.dialog.contents.find('#b-linkset-links ul');
@@ -112,6 +116,9 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			.end()
 			.find('.b-linkset-title input[type=text]')
 			.val($a.attr('data-title'))
+			.end()
+			.find('.b-linkset-text input[type=text]')
+			.val($a.attr('data-text'))
 			.end();
 
 		this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
@@ -139,8 +146,8 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 
 	boomChunkLinksetEditor.prototype.getData = function() {
 		return {
-			links : this.getLinks(),
-			title : this.dialog.contents.find('#b-linkset-title input').val()
+			links: this.getLinks(),
+			title: this.dialog.contents.find('#b-linkset-title input').val()
 		};
 	};
 
@@ -151,10 +158,11 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			var $this = $(this);
 
 			links.push({
-				target_page_id : $this.attr('data-page-id'),
-				url : $this.attr('data-url'),
-				title : $this.attr('data-title'),
-				asset_id : $this.attr('data-asset')
+				target_page_id: $this.attr('data-page-id'),
+				url: $this.attr('data-url'),
+				title: $this.attr('data-title'),
+				asset_id: $this.attr('data-asset'),
+				text: $this.attr('data-text')
 			});
 		});
 

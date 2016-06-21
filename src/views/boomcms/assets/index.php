@@ -10,12 +10,13 @@
 			<?= $button('trash-o', 'delete', ['id' => 'b-button-multiaction-delete', 'disabled' => 'disabled']) ?>
 			<?= $button('download', 'download', ['id' => 'b-button-multiaction-download', 'disabled' => 'disabled']) ?>
 			<?= $button('tags', 'add-tags', ['id' => 'b-button-multiaction-tag', 'disabled' => 'disabled']) ?>
-		
+
             <a href="#" id="b-assets-select-all"><?= trans('Select all') ?></a>
             &nbsp;:&nbsp;
             <a href="#" id="b-assets-select-none"><?= trans('Select none') ?></a>
 
             <?= $button('search', 'search-assets', ['id' => 'b-assets-search', 'class' => 'b-button-withtext']) ?>
+            <?= view('boomcms::assets.pagination') ?>
         </div>
 	</div>
 
@@ -30,7 +31,6 @@
         <?= view('boomcms::assets.search.type') ?>
         <?= view('boomcms::assets.search.tag') ?>
         <?= view('boomcms::assets.search.sort') ?>
-        <?= view('boomcms::assets.pagination') ?>
 	</div>
 
     <div id="b-assets-content">

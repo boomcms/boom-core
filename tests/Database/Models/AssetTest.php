@@ -12,38 +12,6 @@ class AssetTest extends AbstractModelTestCase
 {
     protected $model = Asset::class;
 
-    public function testAddSite()
-    {
-        $site = new Site();
-        $asset = m::mock(Asset::class.'[sites,attach]');
-
-        $asset->shouldReceive('sites')
-            ->once()
-            ->andReturnSelf();
-
-        $asset->shouldReceive('attach')
-            ->once()
-            ->with($site);
-
-        $this->assertEquals($asset, $asset->addSite($site));
-    }
-
-    public function testAddSites()
-    {
-        $sites = [new Site(), new Site()];
-        $asset = m::mock(Asset::class.'[addSite]');
-
-        foreach ($sites as $s) {
-            $asset
-                ->shouldReceive('addSite')
-                ->once()
-                ->with($s)
-                ->andReturnSelf();
-        }
-
-        $this->assertEquals($asset, $asset->addSites($sites));
-    }
-
     public function testDirectory()
     {
         $model = new Asset();
@@ -119,27 +87,6 @@ class AssetTest extends AbstractModelTestCase
         $this->assertEquals(1000, $asset->getFilesize());
     }
 
-    public function testGetSites()
-    {
-        $sites = [new Site(), new Site()];
-        $asset = m::mock(Asset::class.'[sites,orderBy,get]');
-
-        $asset->shouldReceive('sites')
-            ->once()
-            ->andReturnSelf();
-
-        $asset->shouldReceive('orderBy')
-            ->once()
-            ->with('name', 'asc')
-            ->andReturnSelf();
-
-        $asset->shouldReceive('get')
-            ->once()
-            ->andReturn($sites);
-
-        $this->assertEquals($sites, $asset->getSites());
-    }
-
     public function testGetType()
     {
         $asset = new Asset([Asset::ATTR_TYPE => 'image']);
@@ -150,33 +97,6 @@ class AssetTest extends AbstractModelTestCase
 
         $asset = new Asset();
         $this->assertEquals('', $asset->getType());
-    }
-
-    public function testHasSite()
-    {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
-
-        $query = m::mock(Site::class);
-        $asset = m::mock(Asset::class)->makePartial();
-
-        $asset
-            ->shouldReceive('sites')
-            ->once()
-            ->andReturn($query);
-
-        $query
-            ->shouldReceive('where')
-            ->once()
-            ->with(Site::ATTR_ID, '=', $site->getId())
-            ->andReturnSelf();
-
-        $query
-            ->shouldReceive('exists')
-            ->once()
-            ->andReturn(true);
-
-        $this->assertTrue($asset->hasSite($site));
     }
 
     public function testIsImage()
@@ -252,22 +172,13 @@ class AssetTest extends AbstractModelTestCase
         $this->assertFalse($asset->hasMetadata());
     }
 
-    public function testRemoveSite()
+    public function testSetSite()
     {
-        $site = new Site();
-        $asset = m::mock(Asset::class)->makePartial();
+        $asset = new Asset();
 
-        $asset
-            ->shouldReceive('sites')
-            ->once()
-            ->andReturnSelf();
+        $asset->setSite($this->site);
 
-        $asset
-            ->shouldReceive('detach')
-            ->once()
-            ->with($site);
-
-        $this->assertEquals($asset, $asset->removeSite($site));
+        $this->assertEquals($this->site->getId(), $asset->{Asset::ATTR_SITE});
     }
 
     public function testSetVersion()

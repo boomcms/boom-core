@@ -10,7 +10,7 @@
 
             <ul>
                 <?php foreach ($chunk->getLinks() as $link): ?>
-                    <li><a class="b-linkset-link" href='#' data-page-id="<?= $link->getTargetPageId() ?>" data-url="<?= $link->getUrl() ?>" data-title="<?= $link->getTitle() ?>" data-asset="<?= $link->getAssetId() ?>"><?= $link->getTitle() ?></a></li>
+                    <li><a class="b-linkset-link" href='#' data-text="<?= $link->getTextAttribute() ?>" data-page-id="<?= $link->getTargetPageId() ?>" data-url="<?= $link->getUrl() ?>" data-title="<?= $link->getTitle() ?>" data-asset="<?= $link->getAssetId() ?>"><?= $link->getTitle() ?></a></li>
                 <?php endforeach ?>
             </ul>
 
@@ -35,8 +35,13 @@
             </label>
 
             <label class="b-linkset-title">
-                <p>Text</p>
+                <p>Title</p>
                 <input type="text" name="title" value="" />
+            </label>
+
+            <label class="b-linkset-text">
+                <p>Text</p>
+                <input type="text" name="text" value="" />
             </label>
 
             <label class="b-linkset-asset">

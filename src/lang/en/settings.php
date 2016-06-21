@@ -83,7 +83,6 @@ return [
         'intro'   => '<p>You can define relationships between pages.</p>
                     <p>This might be useful, for example, when your site contains blog templates and you need to define a relationship between blog posts and author pages.</p>
                     <p>In this case you would add author pages as related pages of the blog post page.</p>',
-        'add'     => 'Add related page',
         'current' => 'Current page relationships:',
     ],
     'search' => [
@@ -94,7 +93,11 @@ return [
         'internal'    => 'Show in site search results',
     ],
     'tags' => [
-        'heading' => 'Page tags',
+        'heading'               => 'Page tags',
+        'free'                  => '[Free tags]',
+        'new-group-placeholder' => 'New group name',
+        'new-tag-placeholder'   => 'New tag name',
+        'new-group'             => 'Add a new tag group',
     ],
     'template' => [
         'heading'     => 'Page template',

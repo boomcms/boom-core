@@ -6,14 +6,13 @@ use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\PageVersion as PageVersionInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Database\Eloquent\Model;
 
 class PageVersion extends Model implements PageVersionInterface
 {
-    const ATTR_ID = 'id';
     const ATTR_PAGE = 'page_id';
     const ATTR_TEMPLATE = 'template_id';
     const ATTR_TITLE = 'title';
@@ -22,13 +21,12 @@ class PageVersion extends Model implements PageVersionInterface
     const ATTR_EMBARGOED_UNTIL = 'embargoed_until';
     const ATTR_PENDING_APPROVAL = 'pending_approval';
 
-    protected $table = 'page_versions';
-
-    public $guarded = [
-        self::ATTR_ID,
+    protected $casts = [
+        self::ATTR_PAGE             => 'integer',
+        self::ATTR_PENDING_APPROVAL => 'boolean',
     ];
 
-    public $timestamps = false;
+    protected $table = 'page_versions';
 
     /**
      * @var Template;
@@ -74,17 +72,9 @@ class PageVersion extends Model implements PageVersionInterface
     /**
      * @return int
      */
-    public function getId()
-    {
-        return  (int) $this->{self::ATTR_ID};
-    }
-
-    /**
-     * @return int
-     */
     public function getPageId()
     {
-        return (int) $this->{self::ATTR_PAGE};
+        return $this->{self::ATTR_PAGE};
     }
 
     /**
@@ -145,7 +135,7 @@ class PageVersion extends Model implements PageVersionInterface
      */
     public function isPendingApproval()
     {
-        return $this->{self::ATTR_PENDING_APPROVAL} == true;
+        return $this->{self::ATTR_PENDING_APPROVAL} === true;
     }
 
     /**
@@ -185,13 +175,16 @@ class PageVersion extends Model implements PageVersionInterface
     /**
      * Set the user who created the page version.
      *
-     * @param PersonInterface $person
+     * This can be set to null to allow page content to be changed programmatically,
+     * when a real user may not be logged in.
+     *
+     * @param null|PersonInterface $person
      *
      * @return $this
      */
-    public function setEditedBy(PersonInterface $person)
+    public function setEditedBy(PersonInterface $person = null)
     {
-        $this->{self::ATTR_EDITED_BY} = $person->getId();
+        $this->{self::ATTR_EDITED_BY} = ($person === null) ? null : $person->getId();
 
         return $this;
     }

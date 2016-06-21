@@ -1,1 +1,1 @@
-<a class='download' href='/asset/<?= $asset->getId() ?>'><?= $asset->getTitle() ?></a>
+<a class='download' href='<?= route('asset', $asset) ?>'><?= $asset->getTitle() ?></a>

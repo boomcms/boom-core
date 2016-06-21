@@ -3,13 +3,10 @@
 namespace BoomCMS\Database\Models\Chunk;
 
 use BoomCMS\Contracts\Models\PageVersion;
-use Illuminate\Database\Eloquent\Model;
+use BoomCMS\Foundation\Database\Model;
 
 class BaseChunk extends Model
 {
-    public $guarded = ['id'];
-    public $timestamps = false;
-
     public function scopeGetSingleChunk($query, PageVersion $version, $slotname)
     {
         return $query

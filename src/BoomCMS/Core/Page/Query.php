@@ -9,6 +9,7 @@ use BoomCMS\Foundation\Query as BaseQuery;
 class Query extends BaseQuery
 {
     protected $filterAliases = [
+        'excludeinvisible'    => Finder\ExcludeInvisible::class,
         'ignorepages'         => Finder\IgnorePages::class,
         'not'                 => Finder\IgnorePages::class,
         'pageid'              => Finder\PageId::class,
@@ -22,11 +23,24 @@ class Query extends BaseQuery
         'nextto'              => Finder\NextTo::class,
         'title'               => Finder\Title::class,
         'search'              => Finder\Search::class,
-        'relatedto'           => Finder\RelatedTo::class,
+        'relatedto'           => Finder\RelationsOut::class,
+        'relationsout'        => Finder\RelationsOut::class,
+        'relationsin'         => Finder\RelationsIn::class,
         'withouttag'          => Finder\WithoutTag::class,
         'year'                => Finder\Year::class,
         'yearandmonth'        => Finder\YearAndMonth::class,
     ];
+
+    public function __construct(array $params)
+    {
+        // Exclude invisible should be included by default
+        // To prevent invisible pages showing up in the site to non CMS users.
+        if (!isset($params['excludeinvisible'])) {
+            $params['excludeinvisible'] = null;
+        }
+
+        $this->params = $params;
+    }
 
     public function count()
     {

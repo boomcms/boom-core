@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Http\Controllers\Asset;
+namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Contracts\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;

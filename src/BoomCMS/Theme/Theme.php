@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Theme;
+namespace BoomCMS\Theme;
 
 class Theme
 {

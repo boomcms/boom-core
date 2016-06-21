@@ -13,9 +13,9 @@ class Feature extends BaseChunk
      */
     protected $targetPage;
 
-    public function __construct(Page $page, array $attrs, $slotname, $editable = true)
+    public function __construct(Page $page, array $attrs, $slotname)
     {
-        parent::__construct($page, $attrs, $slotname, $editable);
+        parent::__construct($page, $attrs, $slotname);
 
         if (isset($this->attrs['target_page_id'])) {
             $this->targetPage = PageFacade::find($this->attrs['target_page_id']);

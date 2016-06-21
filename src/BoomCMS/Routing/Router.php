@@ -76,7 +76,7 @@ class Router
                 throw new NotFoundHttpException();
             }
 
-            if (!$page->url()->is($path)) {
+            if (!$page->url()->matches($path)) {
                 return redirect((string) $page->url(), 301);
             }
 

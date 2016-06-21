@@ -3,23 +3,32 @@
 namespace BoomCMS\Foundation\Http;
 
 use BoomCMS\Http\Middleware;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class Kernel extends HttpKernel
 {
+    protected $middleware = [
+        CheckForMaintenanceMode::class,
+        Middleware\RouteSite::class,
+    ];
+
     /**
-     * The application's global HTTP middleware stack.
-     *
      * @var array
      */
-    protected $middleware = [
-        Middleware\RouteSite::class,
-        'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
-        'Illuminate\Cookie\Middleware\EncryptCookies',
-        'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
-        'Illuminate\Session\Middleware\StartSession',
-        'Illuminate\View\Middleware\ShareErrorsFromSession',
-        'App\Http\Middleware\VerifyCsrfToken',
-        Middleware\DefineGlobalViewSharedVariables::class,
+    protected $middlewareGroups = [
+        'web' => [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            Middleware\DefineGlobalViewSharedVariables::class,
+        ],
     ];
 }

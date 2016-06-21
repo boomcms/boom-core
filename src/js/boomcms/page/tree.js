@@ -2,6 +2,8 @@
 	'use strict';
 
 	$.widget('boom.pageTree', {
+		expandedClass: 'expanded',
+
 		options : {
 			onPageSelect: function() {}
 		},
@@ -26,6 +28,8 @@
 					.find('a[data-page-id=' + this.options.active + ']')
 					.addClass('active');
 			}
+
+			this._trigger('add', null, $li);
 		},
 
 		bind: function() {
@@ -47,9 +51,7 @@
 
 					var $this = $(this);
 
-					$this.toggleClass('expanded');
-
-					if ($this.hasClass('expanded')) {
+					if (!$this.hasClass(pageTree.expandedClass)) {
 						pageTree.showChildren($this.closest('li'));
 					} else {
 						pageTree.hideChildren($this.closest('li'));
@@ -71,13 +73,17 @@
 		},
 
 		hideChildren: function($li) {
+			$li.find('> .b-tree-toggle').removeClass(this.expandedClass);
+
 			$li.find('> ul').hide();
 		},
 
 		makeExpandable: function($li) {
-			$('<span />')
-				.addClass('b-tree-toggle')
-				.prependTo($li);
+			if (!$li.find('.b-tree-toggle').length) {
+				$('<span />')
+					.addClass('b-tree-toggle')
+					.prependTo($li);
+			}
 		},
 
 		showChildren: function($li) {
@@ -90,6 +96,8 @@
 				$li.append($ul);
 				this.getChildren(page);
 			}
+
+			$li.find('> .b-tree-toggle').addClass(this.expandedClass);
 
 			$ul.show();
 		}

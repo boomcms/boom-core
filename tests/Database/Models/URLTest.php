@@ -27,6 +27,7 @@ class URLTest extends AbstractModelTestCase
 
         $query = m::mock(Builder::class);
         $query->shouldReceive('first')->andReturn($page);
+        $query->shouldReceive('withTrashed')->once()->andReturn($query);
 
         $url = m::mock(URL::class)->makePartial();
         $url->shouldReceive('belongsTo')
@@ -112,6 +113,22 @@ class URLTest extends AbstractModelTestCase
     {
         $url = new URL(['is_primary' => true]);
         $url->setPrimary('maybe');
+    }
+
+    public function testMatches()
+    {
+        $matches = [
+            '/test',
+            'test',
+        ];
+
+        $url = new URL([URL::ATTR_LOCATION => 'test']);
+
+        foreach ($matches as $path) {
+            $this->assertTrue($url->matches($path));
+        }
+
+        $this->assertFalse($url->matches('notthesame'));
     }
 
     public function testScheme()

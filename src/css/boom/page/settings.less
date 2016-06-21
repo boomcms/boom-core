@@ -17,6 +17,7 @@
 
 		ul {
 			padding: 0;
+			margin: 0;
 		}
 
 		.toggle {
@@ -206,8 +207,12 @@
 			max-width: 10rem;
 			transition: max-width 0.5s;
 
+			ul a {
+				padding: 0.75rem 2rem;
+			}
+
 			&.open {
-				max-width: 30rem;
+				max-width: calc(~"100vw - 6rem");
 				transition: max-width 0.5s;
 
 				+ .b-page-settings-content {
@@ -269,7 +274,7 @@
 		}
 
 		.b-page-settings-content {
-			max-width: calc(~"100% - 16rem");
+			max-width: calc(~"100% - 10rem");
 			transition: max-width 0.5s;
 		}
 	}

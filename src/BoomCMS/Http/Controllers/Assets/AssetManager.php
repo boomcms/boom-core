@@ -7,7 +7,6 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Router;
-use BoomCMS\Support\Facades\Site as SiteFacade;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
@@ -33,22 +32,12 @@ class AssetManager extends Controller
         }
     }
 
-    public function addSites(Request $request, Asset $asset)
-    {
-        $siteIds = $request->input('sites');
-
-        if ($siteIds) {
-            $sites = SiteFacade::find($siteIds);
-            $asset->addSites($sites);
-        }
-    }
-
-    public function delete()
+    public function postDelete()
     {
         AssetFacade::delete($this->request->input('assets'));
     }
 
-    public function download()
+    public function getDownload()
     {
         $assets = AssetFacade::find($this->request->input('asset'));
 
@@ -57,27 +46,27 @@ class AssetManager extends Controller
                 $assets[0]->getFilename(),
                 $assets[0]->getOriginalFilename()
             );
-        } else {
-            $downloadFilename = rtrim($this->request->input('filename'), '.zip').'.zip';
-            $filename = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
-            $zip = new ZipArchive();
-            $zip->open($filename, ZipArchive::CREATE);
-
-            foreach ($assets as $asset) {
-                $zip->addFile($asset->getFilename(), $asset->getOriginalFilename());
-            }
-
-            $zip->close();
-
-            $response = Response::make()
-                ->header('Content-type', 'application/zip')
-                ->header('Content-Disposition', "attachment; filename=$downloadFilename")
-                ->setContent(file_get_contents($filename));
-
-            unlink($filename);
-
-            return $response;
         }
+
+        $downloadFilename = rtrim($this->request->input('filename'), '.zip').'.zip';
+        $filename = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
+        $zip = new ZipArchive();
+        $zip->open($filename, ZipArchive::CREATE);
+
+        foreach ($assets as $asset) {
+            $zip->addFile($asset->getFilename(), $asset->getOriginalFilename());
+        }
+
+        $zip->close();
+
+        $response = Response::make()
+            ->header('Content-type', 'application/zip')
+            ->header('Content-Disposition', "attachment; filename=$downloadFilename")
+            ->setContent(file_get_contents($filename));
+
+        unlink($filename);
+
+        return $response;
     }
 
     /**
@@ -88,7 +77,7 @@ class AssetManager extends Controller
         return view($this->viewPrefix.'index');
     }
 
-    public function get()
+    public function postGet()
     {
         $params = $this->request->input();
 
@@ -122,11 +111,6 @@ class AssetManager extends Controller
         }
     }
 
-    public function removeSite(Asset $asset, Site $site)
-    {
-        $asset->removeSite($site);
-    }
-
     public function revert(Asset $asset)
     {
         AssetFacade::revert($asset, $this->request->input('version_id'));
@@ -143,7 +127,7 @@ class AssetManager extends Controller
         AssetFacade::save($asset);
     }
 
-    public function upload()
+    public function postUpload(Site $site)
     {
         $assetIds = [];
 
@@ -152,6 +136,7 @@ class AssetManager extends Controller
         foreach ($validFiles as $file) {
             $asset = new Asset();
             $asset
+                ->setSite($site)
                 ->setUploadedTime(new DateTime('now'))
                 ->setUploadedBy(Auth::user())
                 ->setTitle($file->getClientOriginalName())
@@ -169,7 +154,7 @@ class AssetManager extends Controller
         $validFiles = $errors = [];
 
         foreach ($this->request->file() as $files) {
-            foreach ($files as $i => $file) {
+            foreach ($files as $file) {
                 if (!$file->isValid()) {
                     $errors[] = $file->getErrorMessage();
                     continue;

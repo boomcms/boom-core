@@ -6,7 +6,7 @@ use BoomCMS\Auth\Hasher;
 use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
-use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Traits\MultipleSites;
 use Carbon\Carbon;
 use DateTime;
@@ -14,7 +14,6 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
@@ -22,11 +21,9 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
 {
     use Authenticatable;
     use Authorizable;
-    use Comparable;
     use SoftDeletes;
     use MultipleSites;
 
-    const ATTR_ID = 'id';
     const ATTR_NAME = 'name';
     const ATTR_EMAIL = 'email';
     const ATTR_ENABLED = 'enabled';
@@ -55,8 +52,6 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         self::ATTR_PASSWORD,
         self::ATTR_REMEMBER_TOKEN,
     ];
-
-    public $timestamps = false;
 
     /**
      * @param Group $group
@@ -98,14 +93,6 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     public function getGroups()
     {
         return $this->groups()->get();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->{self::ATTR_ID};
     }
 
     /**

@@ -45416,7 +45416,7 @@ $(function() {
 		urlRoot: BoomCMS.urlRoot + 'page',
 
 		initialize: function() {
-			this.baseUrl = this.urlRoot + '/' + this.getId().toString() + '/';
+			this.baseUrl = this.urlRoot + '/' + this.getId() + '/';
 		},
 
 		add: function() {
@@ -45432,6 +45432,13 @@ $(function() {
 			});
 
 			return promise;
+		},
+
+		addTag: function(group, tag) {
+			return $.post(this.baseUrl + 'tags', {
+				group : group,
+				tag : tag
+			});
 		},
 
 		addRelatedPage: function(relatedPageId) {
@@ -45508,10 +45515,10 @@ $(function() {
 			return $.post(url);
 		},
 
-		removeRelatedPage: function(relatedPageId) {
+		removeRelatedPage: function(page) {
 			return $.ajax({
 				type: 'delete',
-				url: this.baseUrl + 'relations/' + relatedPageId
+				url: this.baseUrl + 'relations/' + page.getId()
 			});
 		},
 
@@ -45555,7 +45562,7 @@ $(function() {
 
 		setTemplate: function(templateId) {
 			return $.post(this.baseUrl + 'version/template/' + templateId);
-		},
+		}
 	});
 }(BoomCMS));
 ;(function(BoomCMS) {
@@ -45787,6 +45794,8 @@ $(function() {
 	});
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.Groups = Backbone.Collection.extend({
 		model: BoomCMS.Group,
 		url: BoomCMS.urlRoot + 'group',
@@ -45794,9 +45803,11 @@ $(function() {
 	});
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.Pages = Backbone.Collection.extend({
 		model: BoomCMS.Page,
-		url: BoomCMS.urlRoot + 'search/pages',
+		url: BoomCMS.urlRoot + 'page',
 
 		findBy: function(data) {
 			this.fetch({
@@ -45805,18 +45816,33 @@ $(function() {
 			});
 		},
 
+		findByRelatedTo: function(page) {
+			this.findBy({
+				relatedto: page.getId(),
+				excludeinvisible: false
+			});
+		},
+
 		findByParent: function(page) {
 			var parentId = (page === null) ? null : page.getId();
 
-			this.findBy({parent: parentId});
+			this.findBy({
+				parent: parentId,
+				excludeinvisible: false
+			});
 		},
 
 		findByTemplate: function(template) {
-			this.findBy({template: template.getId()});
+			this.findBy({
+				template: template.getId(),
+				excludeinvisible: false
+			});
 		}
 	});
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.People = Backbone.Collection.extend({
 		model: BoomCMS.Person,
 		url: BoomCMS.urlRoot + 'person',
@@ -45824,6 +45850,8 @@ $(function() {
 	});
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.Sites = Backbone.Collection.extend({
 		model: BoomCMS.Site,
 		url: BoomCMS.urlRoot + 'site',
@@ -45831,6 +45859,8 @@ $(function() {
 	});
 }(Backbone, window.BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
 	BoomCMS.Collections.Templates = Backbone.Collection.extend({
 		model: BoomCMS.Template,
 		url: BoomCMS.urlRoot + 'template'
@@ -45851,7 +45881,6 @@ $(function() {
 	@function
 	*/
 	$.fn.ui = function() {
-		this.find('.boom-tabs').tabs();
 		this.find('.boom-datepicker').datetimepicker({
 			format: 'd F Y H:i'
 		});
@@ -46187,6 +46216,10 @@ $(function() {
 			.text(this._get_abbreviated_status(status))
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
+
+		if (status === 'draft' || status === 'embargoed') {
+			this.element.attr('title', this.element.attr('title') + ' (double click to publish)');
+		}
 	}
 });;$.widget('boom.pageSettings', {
 	bind: function() {
@@ -46238,7 +46271,7 @@ $(function() {
 			case 'drafts':
 				return prefix + 'version/status';
 			default:
-				return prefix + '/settings/' + section;
+				return prefix + 'settings/' + section;
 		}
 	},
 
@@ -46362,7 +46395,7 @@ $(function() {
 					.on('click', function(e) {
 						e.preventDefault();
 
-						window.BoomCMS.page.toolbar.showSettingsAndCloseOnSave('feature');
+						window.BoomCMS.page.toolbar.showSettings('feature');
 					});
 			});
 	},
@@ -46400,7 +46433,8 @@ $.widget( 'boom.pageToolbar', {
 	buttons : {},
 
 	_bindButtonEvents: function() {
-		var self = this;
+		var self = this,
+			page = this.options.page;
 
 		this.element.contents()
 			.on('click', '#b-page-delete', function() {
@@ -46408,7 +46442,7 @@ $.widget( 'boom.pageToolbar', {
 				self.openPageSettings();
 			})
 			.on('click', '#b-page-addpage', function() {
-				self.options.page.add()
+				page.add()
 					.done(function(response) {
 						top.location = response.url;
 					})
@@ -46438,7 +46472,26 @@ $.widget( 'boom.pageToolbar', {
 				self.settingsAreOpen() ? self.closePageSettings() : self.showSettings();
 			})
 			.on('click', '#b-page-version-status', function() {
-				self.settingsAreOpen() ? self.showSettings('drafts') : self.showSettingsAndCloseOnSave('drafts');
+				var $this = $(this),
+					clicks = $this.data('clicks');
+
+				$this.data('clicks', clicks ? ++clicks : 1);
+
+				if ($this.data('clicks') === 2) {
+					$this.data('clicks', 0);
+
+					page.publish().done(function(data) {
+						self.status.set(data);
+						$this.blur();
+					});
+				} else {
+					setTimeout(function() {
+						if ($this.data('clicks') === 1) {
+							$this.data('clicks', 0);
+							self.showSettings('drafts');
+						}
+					}, 200);
+				}
 			})
 			.on('mouseup', '#b-menu a', function() {
 				// Clicking a link in the menu but opening in a new tab causes the menu to close.
@@ -46628,20 +46681,6 @@ $.widget( 'boom.pageToolbar', {
 		}
 	},
 
-	showSettingsAndCloseOnSave: function(section) {
-		var toolbar = this;
-
-		this.$settings
-			.pageSettings({
-				draftsSave: function(event, data) {
-					toolbar.draftsSaved(event, data);
-					toolbar.closePageSettings();
-				}
-			});
-
-		this.showSettings(section);
-	},
-
 	supportRequest: function() {
 		var url = '/boomcms/support', dialog;
 
@@ -46687,6 +46726,8 @@ $.widget( 'boom.pageToolbar', {
 	'use strict';
 
 	$.widget('boom.pageTree', {
+		expandedClass: 'expanded',
+
 		options : {
 			onPageSelect: function() {}
 		},
@@ -46711,6 +46752,8 @@ $.widget( 'boom.pageToolbar', {
 					.find('a[data-page-id=' + this.options.active + ']')
 					.addClass('active');
 			}
+
+			this._trigger('add', null, $li);
 		},
 
 		bind: function() {
@@ -46732,9 +46775,7 @@ $.widget( 'boom.pageToolbar', {
 
 					var $this = $(this);
 
-					$this.toggleClass('expanded');
-
-					if ($this.hasClass('expanded')) {
+					if (!$this.hasClass(pageTree.expandedClass)) {
 						pageTree.showChildren($this.closest('li'));
 					} else {
 						pageTree.hideChildren($this.closest('li'));
@@ -46756,13 +46797,17 @@ $.widget( 'boom.pageToolbar', {
 		},
 
 		hideChildren: function($li) {
+			$li.find('> .b-tree-toggle').removeClass(this.expandedClass);
+
 			$li.find('> ul').hide();
 		},
 
 		makeExpandable: function($li) {
-			$('<span />')
-				.addClass('b-tree-toggle')
-				.prependTo($li);
+			if (!$li.find('.b-tree-toggle').length) {
+				$('<span />')
+					.addClass('b-tree-toggle')
+					.prependTo($li);
+			}
 		},
 
 		showChildren: function($li) {
@@ -46776,98 +46821,17 @@ $.widget( 'boom.pageToolbar', {
 				this.getChildren(page);
 			}
 
+			$li.find('> .b-tree-toggle').addClass(this.expandedClass);
+
 			$ul.show();
 		}
 	});
 }(BoomCMS));
-;$.widget('boom.pageTagSearch',  {
-	tags : [],
-
-	addTag: function(tag) {
-		this.tags.push(tag.id);
-
-		var $el = $('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag.id + '"></a></li>')
-			.insertBefore(this.tagList.children().last());
-
-		this._trigger('addTag', null, {
-			group: this.group,
-			tag: tag.name,
-			element: $el
-		});
-
-		this.update();
-	},
-
-	bind: function() {
-		var tagSearch = this;
-
-		this.input
-			.pageTagAutocomplete({
-				group : this.group,
-				complete: function(e, tag) {
-					tagSearch.addTag(tag);
-				}
-			});
-
-		this.element.on('click', '.b-button[title="Add tag"]', function(e) {
-			e.preventDefault();
-
-			var $input = $(this).parent().find('input');
-
-			if ($input.val()) {
-				$input.pageTagAutocomplete('tagSelected', $input.val());
-			}
-		});
-
-		this.element.on('click', '.b-tag-remove', function() {
-			tagSearch.removeTag($(this));
-		});
-	},
-
-	_create: function() {
-		this.tagList = this.element.is('ul') ? this.element : this.element.find('ul');
-		this.input = this.element.find('input');
-		this.group = this.element.attr('data-group');
-
-		this.bind();
-	},
-
-	removeTag: function($a) {
-		var tag = $a.attr('data-tag');
-
-		$a.parent().remove();
-		this.tags.splice(this.tags.indexOf(tag));
-
-		this._trigger('removeTag', null, tag);
-		this.update();
-	},
-
-	update: function() {
-		this.input.pageTagAutocomplete('setIgnoreTags', this.tags);
-		this._trigger('update', null, {tags : this.tags});
-	}
-});;$.widget('boom.pageTagAutocomplete', $.boom.tagAutocomplete,  {
-	url : '/boomcms/autocomplete/page-tags',
-
-	tagSelected: function(tag) {
-		if (typeof(tag) === 'object') {
-			// A tag which already exists has been selected - we have a tag ID.
-			this._trigger('complete', null, {
-				id : tag.value,
-				name : tag.label
-			});
-		} else {
-			// A new tag has been created - there's no tag ID.
-			this._trigger('complete', null, {
-				id : 0,
-				name : tag
-			});
-		}
-	}
-});;$.widget('boom.pageSettingsChildren', {
+;$.widget('boom.pageSettingsChildren', {
 	bind: function() {
 		var settingsEditor = this,
-			page = this.options.page;
+			page = this.options.page,
+			pages = new BoomCMS.Collections.Pages();
 
 		this.element
 			.on('change', 'select[name="children_ordering_policy"]', function() {
@@ -46880,7 +46844,12 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '#b-page-settings-children-reorder', function(e) {
 				e.preventDefault();
 
-				$.get('/boomcms/search/pages', {parent: page.id})
+				// Don't use pages.findByParent()
+				// We need to preserve the order that the results are returned in.
+				$.get(pages.url, {
+						parent: page.id,
+						excludeinvisible: false
+					})
 					.done(function(pages) {
 						var sortDialog = new boomDialog({
 							msg: "<div></div>",
@@ -46931,12 +46900,12 @@ $.widget( 'boom.pageToolbar', {
 					.done(function() {
 						new boomNotification('Child page settings saved').show();
 					});
-			});;
+			});
 	},
 
 	_create: function() {
 		this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
-		this.sortUrl = '/boomcms/page/' + this.options.page.id + '/settings/sort-children';
+		this.sortUrl = this.options.page.baseUrl + 'settings/sort-children';
 
 		this.bind();
 	}
@@ -47214,24 +47183,10 @@ $.widget( 'boom.pageToolbar', {
 		}
 	}
 });;$.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
-	bind: function() {
-		var settingsEditor = this,
-			section = settingsEditor.options.section;
+	bindReparent: function() {
+		var settingsEditor = this;
 
 		this.element
-			.on('click', '.b-button-cancel', function(e) {
-				e.preventDefault();
-
-				settingsEditor.options.settings.show(section);
-			})
-			.on('click', '.b-button-save', function(e) {
-				e.preventDefault();
-
-				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
-					.done(function() {
-						new boomNotification('Page settings saved').show();
-					});
-			})
 			.on('click', '.b-navigation-reparent', function(e) {
 				var current = settingsEditor.element.find('input[name=parent_id]').val();
 
@@ -47258,6 +47213,7 @@ $.widget( 'boom.pageToolbar', {
 		var $el = this.element;
 		this.page = this.options.page;
 		this.bind();
+		this.bindReparent();
 
 		$el.find('.boom-tree').pageTree({
 			active: $el.find('input[name=parent_id]').val(),
@@ -47266,151 +47222,196 @@ $.widget( 'boom.pageToolbar', {
 			}
 		});
 	}
-});;$.widget('boom.pageSettingsRelations', {
-	addRelatedPage: function() {
-		var page = this.page,
-			$relatedPages = this.element.find('ul'),
-			$el = this.element;
+});;(function($, BoomCMS) {
+	'use strict';
 
-		new boomLinkPicker(new boomLink(), {
-				external: false,
-				asset: false
-			})
-			.done(function(link) {
-				page.addRelatedPage(link.getPageId())
-					.done(function() {
-						var $li = $('<li></li>')
-							.append('<span class="title">' + link.getTitle() + '</span>')
-							.append('<span class="uri">' + link.getUrl() + '</span>')
-							.append('<a href="#" class="fa fa-trash-o"><span>Remove</span></a>');
+	$.widget('boom.pageSettingsRelations', {
+		addRelatedPage: function() {
+			var page = this.page,
+				pages = this.pages;
 
-						$relatedPages.append($li);
-						$el.find('.current').show();
-					});
+			new boomLinkPicker(new boomLink(), {
+					external: false,
+					asset: false
+				})
+				.done(function(link) {
+					page.addRelatedPage(link.getPageId())
+						.done(function() {
+							pages.add(new BoomCMS.Page({
+								id: link.getPageId(),
+								title: link.getTitle(),
+								url: link.getUrl()
+							}));
+						});
+				});
+		},
+
+		bind: function() {
+			var editor = this,
+				page = this.page;
+
+			this.element
+				.on('click', '#b-tags-addpage', function() {
+					editor.addRelatedPage();
+				})
+				.on('click', 'li a', function() {
+					editor.removeRelatedPage($(this));
+				});
+		},
+
+		_create: function() {
+			var $ul = this.element.find('ul'),
+				$current = this.element.find('.current');
+
+			this.page = this.options.page;
+			this.pages = new BoomCMS.Collections.Pages();
+
+			this.pages.on('add', function(page) {
+				var $li = $('<li>');
+
+				$('<span>').addClass('title').text(page.getTitle()).appendTo($li),
+				$('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
+				$('<a>')
+					.attr('href', '#')
+					.addClass('fa fa-trash-o')
+					.data('page', page)
+					.html('<span>Remove</span>')
+					.appendTo($li);
+
+				$ul.append($li);
+				$current.show();
 			});
-	},
 
-	bind: function() {
-		var editor = this,
-			page = this.page;
+			this.getRelatedPages();
+			this.bind();
+		},
 
-		this.element
-			.on('click', '#b-tags-addpage', function() {
-				editor.addRelatedPage();
-			})
-			.on('click', 'li a', function() {
-				editor.removeRelatedPage($(this));
-			});
-	},
+		getRelatedPages: function() {
+			this.pages.findByRelatedTo(this.page);
+		},
 
-	_create: function() {
-		this.page = this.options.page;
+		removeRelatedPage: function($a) {
+			var $el = this.element,
+				$relatedPages = $el.find('ul'),
+				$current = $el.find('.current');
 
-		this.getRelatedPages();
-		this.bind();
-	},
+			this.page.removeRelatedPage($a.data('page'))
+				.done(function() {
+					$a.parent().remove();
 
-	getRelatedPages: function() {
-		var $element = this.element;
-
-		$.get('/boomcms/search/pages', {relatedTo: this.page.id})
-			.done(function(pages) {
-				var $ul = $element.find('ul');
-
-				if (pages.length) {
-					$element.find('.current').show();
-				}
-
-				for (var i = 0; i < pages.length; i++) {
-					var $li = $('<li>'),
-						$title = $('<span>').addClass('title').text(pages[i].title).appendTo($li),
-						$uri = $('<span>').addClass('uri').text(pages[i].uri).appendTo($li),
-						$delete = $('<a>')
-							.attr('href', '#')
-							.addClass('fa fa-trash-o')
-							.attr('data-page-id', pages[i].id)
-							.html('<span>Remove</span>')
-							.appendTo($li);
-
-					$ul.append($li);
-				}
-			});
-	},
-
-	removeRelatedPage: function($a) {
-		var $el = this.element,
-			$relatedPages = $el.find('ul'),
-			$current = $el.find('.current');
-
-		this.page.removeRelatedPage($a.attr('data-page-id'))
-			.done(function() {
-				$a.parent().remove();
-
-				$relatedPages.find('li').length ? $current.show() : $current.hide();
-			});
-	}
-});;$.widget('boom.pageSettingsTags', {
-	addTag: function(group, tag, $el) {
-		this.page.addTag(group, tag).done(function(tagId) {
-			$el.find('a').attr('data-tag', tagId);
-		});
-	},
-
-	addTagGroup: function(name) {
-		if (name) {
-			var $newGroup = $('<li><p>' + name + '</p><ul class="b-tags-list" data-group="' + name + '"><li class="b-tag"></li></ul></li>');
-
-			$newGroup.find('.b-tag').html(this.element.find('.b-tags-add').first().clone());
-			$newGroup.insertBefore(this.element.find('.b-tags-grouped').children().last());
-			$newGroup.find('.b-tags-add input[type=text]').focus();
-
-			this.initTagList($newGroup.find('.b-tags-list'));
+					$relatedPages.find('li').length ? $current.show() : $current.hide();
+				});
 		}
-	},
+	});
+}(jQuery, BoomCMS));;(function($, BoomCMS) {
+	'use strict';
 
-	bind: function() {
-		var tagEditor = this,
-			page = this.page;
+	$.widget('boom.pageSettingsTags', {
+		activeClass: 'active',
 
-		this.element
-			.on('submit', '.b-tags-newgroup form', function(e) {
-				e.preventDefault();
+		addTag: function($a) {
+			var activeClass = this.activeClass,
+				group = $a.parents('ul').attr('data-group'),
+				tag = $a.find('span:first-of-type').text();
 
-				var $input = $(this).find('input[type=text]');
+			this.page
+				.addTag(group, tag)
+				.done(function(tagId) {
+					$a.attr('data-tag', tagId)
+					.addClass(activeClass);
+				});
+		},
 
-				tagEditor.addTagGroup($input.val());
-				$input.val('');
+		addTagGroup: function(name) {
+			if (name) {
+				var $newGroup = $('<li><h2>' + name + '</h2><ul data-group="' + name + '"></ul></li>');
+
+				this.$list.append($newGroup);
+
+				$newGroup
+					.append(this.newTagForm)
+					.find('input')
+					.focus();
+			}
+		},
+
+		bind: function() {
+			var tagEditor = this,
+				page = this.page;
+
+			this.element
+				.on('submit', 'form', function(e) {
+					e.preventDefault();
+				})
+				.on('submit', '.b-tags-newgroup form', function() {
+					var $input = $(this).find('input[type=text]');
+
+					tagEditor.addTagGroup($input.val());
+					$input.val('');
+				})
+				.on('submit', '.create-tag', function() {
+					var $this = $(this),
+						group = $this.siblings('ul').attr('data-group'),
+						tag = $this.find('input').val();
+
+					tagEditor.createTag(group, tag);
+					$this.find('input').val('');
+				})
+				.on('click', '#b-page-tags a', function(e) {
+					e.preventDefault();
+						
+					tagEditor.toggleTag($(this));
+				});
+		},
+
+		_create: function() {
+			var pageTags = this;
+
+			this.page = this.options.page;
+			this.$list = this.element.find('#b-page-tags > ul');
+			this.newTagForm = this.element.find('#b-tags-add').html();
+			this.tagTemplate = this.element.find('#b-tag-template').html();
+
+			this.$list.find('> li').each(function() {
+				$(this).append(pageTags.newTagForm);
 			});
 
-		this.initTagList(this.element.find('.b-tags-list'));
-	},
+			this.bind();
+		},
 
-	_create: function() {
-		this.page = this.options.page;
+		createTag: function(group, tag) {
+			if (tag) {
+				var $li = $(this.tagTemplate);
 
-		this.bind();
-	},
+				$li.find('span:first-of-type').text(tag);
 
-	initTagList: function($list) {
-		var page = this.page,
-			pageTags = this;
+				this.element
+					.find('ul[data-group="' + group + '"]')
+					.append($li);
 
-		$list.pageTagSearch({
-			addTag: function(e, data) {
-				pageTags.addTag(data.group, data.tag, data.element);
-			},
-			removeTag: function(e, tagId) {
-				page.removeTag(tagId);
+				this.addTag($li.find('a'));
 			}
-		});
-	},
+		},
 
-	updateTagList: function() {
-		var tagEditor = this;
+		removeTag: function($a) {
+			var activeClass = this.activeClass;
 
-		$.get('/boomcms/page/' + this.page.id + '/tags');
-	}
-});;$.widget('boom.pageSettingsTemplate', {
+			this.page
+				.removeTag($a.attr('data-tag'))
+				.done(function() {
+					$a.removeClass(activeClass);
+				});
+		},
+
+		toggleTag: function($a) {
+			var funcName = $a.hasClass(this.activeClass) ? 'removeTag' : 'addTag';
+
+			this[funcName]($a);
+			$a.blur();
+		}
+	});
+}(jQuery, BoomCMS));
+;$.widget('boom.pageSettingsTemplate', {
 	_create: function() {
 		var templateEditor = this,
 			initial = this.element.find('select option:selected').val();
@@ -47680,7 +47681,7 @@ $.widget('boom.textEditor', {
 				toolbar: self.toolbar[0],
 				style: true,
 				parserRules:  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
-				useLineBreaks: false,
+				useLineBreaks: (self.mode !== 'block'),
 				contentEditableMode: true,
 				autoLink: false,
 				uneditableContainerClassname: 'b-asset-embed',
@@ -48079,16 +48080,28 @@ $.widget('ui.chunkText', $.ui.chunk,
 	edit: function() {
 		var chunkLinkset = this;
 
-		new boomChunkLinksetEditor(this.options.currentPage.id, this.options.name, {
-				title : chunkLinkset.element.find('.linkset-title').length > 0,
-				linkAssets : chunkLinkset.element.find('.link-asset').length > 0
-			})
+		new boomChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.getOptions())
 			.done(function(data) {
 				chunkLinkset.insert(data);
 			})
 			.fail(function() {
 				chunkLinkset.destroy();
 			});
+	},
+
+	getOptions: function() {
+		var $el = this.element,
+			options = {
+				title: 'linkset-title',
+				linkAssets: 'link-asset',
+				linkText: 'link-text'
+			};
+
+		for (var i in options) {
+			options[i] = $el.hasClass(options[i]) || $el.find('.' + options[i]).length > 0;
+		}
+
+		return options;
 	},
 
 	insert: function(links) {
@@ -48727,12 +48740,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	boomChunkLinksetEditor.prototype.bind = function() {
 		var linksetEditor = this;
 
-		if ( ! this.options.title) {
+		if (!this.options.title) {
 			this.dialog.contents.find('#b-linkset-title, #b-linkset-title-tab').hide();
 		}
 
-		if ( ! this.options.linkAssets) {
+		if (!this.options.linkAssets) {
 			this.dialog.contents.find('.b-linkset-asset').hide();
+		}
+
+		if (!this.options.linkText) {
+			this.dialog.contents.find('.b-linkset-text').hide();
 		}
 
 		this.$links = this.dialog.contents.find('#b-linkset-links ul');
@@ -48803,6 +48820,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			.end()
 			.find('.b-linkset-title input[type=text]')
 			.val($a.attr('data-title'))
+			.end()
+			.find('.b-linkset-text input[type=text]')
+			.val($a.attr('data-text'))
 			.end();
 
 		this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
@@ -48830,8 +48850,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
 	boomChunkLinksetEditor.prototype.getData = function() {
 		return {
-			links : this.getLinks(),
-			title : this.dialog.contents.find('#b-linkset-title input').val()
+			links: this.getLinks(),
+			title: this.dialog.contents.find('#b-linkset-title input').val()
 		};
 	};
 
@@ -48842,10 +48862,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			var $this = $(this);
 
 			links.push({
-				target_page_id : $this.attr('data-page-id'),
-				url : $this.attr('data-url'),
-				title : $this.attr('data-title'),
-				asset_id : $this.attr('data-asset')
+				target_page_id: $this.attr('data-page-id'),
+				url: $this.attr('data-url'),
+				title: $this.attr('data-title'),
+				asset_id: $this.attr('data-asset'),
+				text: $this.attr('data-text')
 			});
 		});
 
@@ -49449,18 +49470,17 @@ $.widget('ui.chunkPageVisibility', {
 
 		var self = this,
 			element = this.element,
-			old_text = this.getTitle();
+			oldText = this.getTitle();
 
 		this.element.textEditor({
 			edit: function() {
 				var title = self.getTitle();
 
-				if (title != '' && title != old_text && title.length <= self.hardLimit) {
-					self.updatePageTitle(old_text, title);
-					self._save(title, old_text);
+				if (title !== '' && title !== oldText && title.length <= self.hardLimit) {
+					self._save(title, oldText);
 				}
 
-				old_text = title;
+				oldText = title;
 				self.removeTitleLengthCounter();
 			}
 		});
@@ -49470,8 +49490,7 @@ $.widget('ui.chunkPageVisibility', {
 				var oldText = self.getTitle();
 
 				setTimeout(function() {
-					self.updatePageTitle(oldText, self.getTitle());
-					self._update_length_counter(self.getLength());
+					self.updateLengthCounter(self.getLength());
 				}, 0);
 			})
 			.on('focus', function() {
@@ -49479,14 +49498,14 @@ $.widget('ui.chunkPageVisibility', {
 					self.element.text('');
 				}
 
-				if ( ! self.lengthCounterCreated) {
-					self._create_length_counter(self.getLength());
+				if (!self.lengthCounterCreated) {
+					self.createLengthCounter(self.getLength());
 					self.lengthCounterCreated = true;
 				}
 			});
 	},
 
-	_create_length_counter: function() {
+	createLengthCounter: function() {
 		var $counter = $('<div id="b-title-length"><span></span></div>');
 
 		$(top.document)
@@ -49509,7 +49528,7 @@ $.widget('ui.chunkPageVisibility', {
 				title.element.textEditor('disableAutoSave');
 			})
 			.on('keydown', function(e) {
-				if (e.which == 13) {
+				if (e.which === 13) {
 					title.openHelp();
 				}
 			})
@@ -49519,12 +49538,12 @@ $.widget('ui.chunkPageVisibility', {
 				title.openHelp();
 			});
 
-		this._update_length_counter(this.getLength());
+		this.updateLengthCounter(this.getLength());
 	},
 
 	edit: function() {},
 
-	_get_counter_color_for_length: function(length) {
+	getCounterColorForLength: function(length) {
 		if (length >= this.softLimit) {
 			return 'red';
 		} else if (length >= this.softLimit * 0.9) {
@@ -49552,8 +49571,8 @@ $.widget('ui.chunkPageVisibility', {
 		var title = this;
 
 		new boomDialog({
-			url : '/vendor/boomcms/boom-core/html/help/title_length.html',
-			width : '600px',
+			url: '/vendor/boomcms/boom-core/html/help/title_length.html',
+			width: '600px',
 			cancelButton: false
 		}).always(function() {
 			title.element.textEditor('enableAutoSave');
@@ -49583,16 +49602,12 @@ $.widget('ui.chunkPageVisibility', {
 			});
 	},
 
-	updatePageTitle: function(oldTitle, newTitle) {
-		top.document.title = top.document.title.replace(oldTitle, newTitle);
-	},
-
-	_update_length_counter: function(length) {
+	updateLengthCounter: function(length) {
 		$(top.document).find('#b-title-length')
 			.find('span')
 			.text(length)
 			.end()
-			.css('background-color', this._get_counter_color_for_length(length));
+			.css('background-color', this.getCounterColorForLength(length));
 
 		var disable_accept_button = (length >= this.hardLimit || length === 0)? true : false;
 		var opacity = disable_accept_button? '.35' : 1;
@@ -49733,12 +49748,14 @@ $.widget('ui.chunkPageVisibility', {
 			}
 		});
 
-		this.dialog.contents.find('.boom-tree').pageTree({
-			onPageSelect: function(link) {
-				linkPicker.pick(link);
-				linkPicker.dialog.cancel();
-			}
-		});
+		this.dialog.contents
+			.find('.boom-tree')
+			.pageTree({
+				onPageSelect: function(link) {
+					linkPicker.pick(link);
+					linkPicker.dialog.cancel();
+				}
+			});
 
 		this.removeButton.on('click', function(e) {
 			e.preventDefault();
@@ -49781,22 +49798,29 @@ $.widget('ui.chunkPageVisibility', {
 			this.textInput.val() :
 			url.replace('mailto:', '').replace('tel:', '');
 
-		if (url.indexOf(window.location.hostname) == -1) {
+		if (url.indexOf(window.location.hostname) === -1) {
 			switch(this.externalTypeSelector.val()) {
 				case 'http':
-					if (url.substring(0,7) !='http://' && url.substring(0,8) !='https://' && url.substring(0,1) != '/' && url.substring(0,1) != '#') {
+					if (url.substring(0, 7) !== 'http://'
+							&& url.substring(0, 8) !== 'https://'
+							&& url.substring(0, 1) !== '/'
+							&& url.substring(0, 1) !== '#')
+					{
 						url = 'http://' + url;
 					}
+
 					break;
 				case 'mailto':
-					if (url.substring(0,6) != 'mailto:') {
+					if (url.substring(0, 7) !== 'mailto:') {
 						url = 'mailto:' + url;
 					}
+
 					break;
 				case 'tel':
-					if (url.substring(0,3)) {
+					if (url.substring(0, 4) !== 'tel:') {
 						url = 'tel:' + url.replace(' ', '');
 					}
+
 					break;
 			}
 		}
@@ -49809,10 +49833,12 @@ $.widget('ui.chunkPageVisibility', {
 		this.internal = dialog.contents.find('#b-linkpicker-add-internal');
 		this.external = dialog.contents.find('#b-linkpicker-add-external');
 		this.asset = dialog.contents.find('#b-linkpicker-add-asset');
-		this.externalTypeSelector = this.external.find('select'),
+		this.externalTypeSelector = this.external.find('select');
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
 		this.removeButton = dialog.contents.find('#b-linkpicker-remove');
+
+		dialog.contents.find('.boom-tabs').tabs();
 
 		if (!this.options.remove) {
 			this.removeButton.hide();
@@ -49911,7 +49937,7 @@ $.widget('ui.chunkPageVisibility', {
 	};
 
 	boomLinkPicker.prototype.setupText = function() {
-		if ( ! this.options.text) {
+		if (!this.options.text) {
 			this.dialog.contents.find('#b-linkpicker-text').hide();
 			this.dialog.contents.find('a[href=#b-linkpicker-text]').hide();
 		} else {
@@ -49922,7 +49948,7 @@ $.widget('ui.chunkPageVisibility', {
 	};
 
 	return this.open();
-};
+}
 ;function boomAssetEditor(asset, uploader) {
     this.asset = asset;
     this.uploader = uploader;
@@ -50003,6 +50029,9 @@ $.widget('ui.chunkPageVisibility', {
                 assetEditor.bind(assetEditor.dialog);
 
 				assetEditor.dialog.contents
+					.find('.boom-tabs')
+					.tabs()
+					.end()
 					.find('#b-tags')
 					.assetTagSearch({
 						addTag: function(e, tag) {
@@ -50695,7 +50724,7 @@ function Row() {
 	boomAssetSelection.prototype.add = function(assetId) {
 		var index = this.assets.indexOf(assetId);
 
-		if (index == -1) {
+		if (index === -1) {
 			this.assets.push(assetId);
 		} else {
 			this.assets.splice(index, 1);
@@ -50914,7 +50943,6 @@ function Row() {
 	this.imageUrl = imageUrl;
 	this.imageSelector = '#b-imageeditor-image';
 	this.cropButtonSelector = '#b-imageeditor-crop';
-	this.url = '/boomcms/ui/image-editor';
 	this.deferred = new $.Deferred();
 	this.isCropping = false;
 	
@@ -51089,10 +51117,10 @@ function Row() {
 		var imageEditor = this;
 
 		this.dialog = new boomDialog({
-			url: this.url,
 			width: document.documentElement.clientWidth < 1024? '100%' : 1024,
 			height: document.documentElement.clientHeight < 768? document.documentElement.clientHeight : 768,
 			title: 'Image editor',
+			msg: $('#b-image-editor-template').html(),
 			onLoad: function() {
 				imageEditor.$element = imageEditor.dialog.contents;
 				imageEditor.createCanvas();
@@ -71563,24 +71591,24 @@ if (!console) {
 
 }
 ;$.widget( 'boom.pageManager', {
-	addActionButtons: function($elements, children) {
-		var pageManager = this,
-			elementsById = {};
-
-		$elements.each(function() {
-			var $el = $(this);
-
-			$el.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
-			elementsById[$el.find('a').attr('rel')] = $el;
-		});
+	addActionButtons: function($li) {
+		$li.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
 	},
 
 	addPage: function($el) {
-		var page = new BoomCMS.Page({id: $el.data('page-id')});
+		var page = $el.data('page'),
+			el = this.element;
 
 		page.add()
 			.done(function(data) {
-				window.open(data.url);
+				var newPage = new BoomCMS.Page(data);
+
+				el.pageTree('addPageToList', newPage);
+				el.pageTree('makeExpandable', $el);
+
+				setTimeout(function() {
+					el.pageTree('showChildren', $el);
+				}, 0);
 			});
 	},
 
@@ -71589,8 +71617,8 @@ if (!console) {
 
 		this.element
 			.pageTree({
-				load: function(e, data) {
-					pageManager.addActionButtons(data.elements, data.children);
+				add: function(e, $li) {
+					pageManager.addActionButtons($li);
 				},
 				onPageSelect: function(link) {
 					window.open(link.getUrl());
@@ -71630,13 +71658,13 @@ if (!console) {
 	},
 
 	showPageSettings: function($el, section) {
-		var page = new BoomCMS.Page({id: $el.data('page-id')}),
+		var page = $el.data('page'),
 			$settings = $('<div></div>');
 
 		$settings
 			.addClass('b-settings-container')
 			.appendTo($('#b-pages'))
-			.load('/boomcms/page/' + page.id + '/settings/index', function() {
+			.load(page.baseUrl + 'settings/index', function() {
 				$settings
 					.addClass('open')
 					.pageSettings({

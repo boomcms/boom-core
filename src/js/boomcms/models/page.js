@@ -5,7 +5,7 @@
 		urlRoot: BoomCMS.urlRoot + 'page',
 
 		initialize: function() {
-			this.baseUrl = this.urlRoot + '/' + this.getId().toString() + '/';
+			this.baseUrl = this.urlRoot + '/' + this.getId() + '/';
 		},
 
 		add: function() {
@@ -21,6 +21,13 @@
 			});
 
 			return promise;
+		},
+
+		addTag: function(group, tag) {
+			return $.post(this.baseUrl + 'tags', {
+				group : group,
+				tag : tag
+			});
 		},
 
 		addRelatedPage: function(relatedPageId) {
@@ -97,10 +104,10 @@
 			return $.post(url);
 		},
 
-		removeRelatedPage: function(relatedPageId) {
+		removeRelatedPage: function(page) {
 			return $.ajax({
 				type: 'delete',
-				url: this.baseUrl + 'relations/' + relatedPageId
+				url: this.baseUrl + 'relations/' + page.getId()
 			});
 		},
 
@@ -144,6 +151,6 @@
 
 		setTemplate: function(templateId) {
 			return $.post(this.baseUrl + 'version/template/' + templateId);
-		},
+		}
 	});
 }(BoomCMS));

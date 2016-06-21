@@ -3,7 +3,7 @@
 namespace BoomCMS\Chunk;
 
 use BoomCMS\Contracts\Models\Asset as AssetContract;
-use BoomCMS\Link\Link;
+use BoomCMS\Link\Link as LinkObject;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Support\Facades\View;
 
@@ -72,7 +72,7 @@ class Asset extends BaseChunk
     public function getLink()
     {
         if ($this->link === null && isset($this->attrs['url'])) {
-            $this->link = Link::factory($this->attrs['url']);
+            $this->link = LinkObject::factory($this->attrs['url']);
         }
 
         return $this->link;

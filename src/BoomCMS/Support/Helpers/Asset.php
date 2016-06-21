@@ -16,7 +16,7 @@ abstract class Asset
      */
     public static function controller(AssetModel $asset)
     {
-        $namespace = 'BoomCMS\Http\Controllers\Asset\\';
+        $namespace = 'BoomCMS\Http\Controllers\ViewAsset\\';
 
         if (!$asset->getExtension()) {
             return;

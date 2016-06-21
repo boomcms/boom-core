@@ -4,7 +4,7 @@ use BoomCMS\Http\Middleware;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
-    Middleware\DisableHttpCacheIfLoggedIn::class,
+    'web',
     Middleware\DefineCMSViewSharedVariables::class,
 ]], function () {
     Route::group(['prefix' => 'boomcms', 'namespace' => 'BoomCMS\Http\Controllers'], function () {
@@ -26,26 +26,20 @@ Route::group(['middleware' => [
             Route::get('logout', 'Auth\AuthController@getLogout');
 
             Route::controller('autocomplete', 'Autocomplete');
-            Route::controller('ui', 'UI');
             Route::controller('editor', 'Editor');
             Route::controller('account', 'Auth\Account');
             Route::controller('approvals', 'Approvals');
             Route::controller('settings', 'Settings');
-            Route::controller('search', 'Search');
             Route::controller('support', 'Support');
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
+
+            Route::get('asset-manager', 'Assets\AssetManager@index');
 
             Route::group([
                 'prefix'    => 'assets',
                 'namespace' => 'Assets',
             ], function () {
-                Route::get('', 'AssetManager@index');
-                Route::post('get', 'AssetManager@get');
-                Route::any('{action}', function ($action = 'index') {
-                    return App::make('BoomCMS\Http\Controllers\Assets\AssetManager')->$action();
-                });
-
                 Route::get('view/{asset}', 'AssetManager@view');
                 Route::post('save/{asset}', 'AssetManager@save');
                 Route::post('replace/{asset}', 'AssetManager@replace');
@@ -53,6 +47,8 @@ Route::group(['middleware' => [
                 Route::post('tags/add', 'Tags@add');
                 Route::post('tags/remove', 'Tags@remove');
                 Route::get('tags/list/{assets}', 'Tags@listTags');
+
+                Route::controller('', 'AssetManager');
             });
 
             Route::group([
@@ -80,9 +76,12 @@ Route::group(['middleware' => [
 
             Route::resource('template', 'TemplateController');
 
-            Route::group(['prefix' => 'pages'], function () {
-                Route::get('', 'Pages@index');
-            });
+            Route::get('page-manager', [
+                'as'   => 'page-manager',
+                'uses' => 'PageManager@index',
+            ]);
+
+            Route::get('page', 'Page\PageController@getIndex');
 
             Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
                 Route::post('version/template/{template}', 'Version@postTemplate');
@@ -113,8 +112,10 @@ Route::group(['middleware' => [
             });
         });
     });
+});
 
-    Route::get('asset/version/{id}/{width?}/{height?}', [
+Route::group(['prefix' => 'asset'], function () {
+    Route::get('version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
         'middleware' => [Middleware\RequireLogin::class],
         'uses'       => function ($id, $width = null, $height = null) {
@@ -124,7 +125,7 @@ Route::group(['middleware' => [
         },
     ]);
 
-    Route::get('asset/{asset}/download', [
+    Route::get('{asset}/download', [
         'asset'      => 'asset-download',
         'middleware' => [
             Middleware\LogAssetDownload::class,
@@ -134,7 +135,7 @@ Route::group(['middleware' => [
         },
     ]);
 
-    Route::get('asset/{asset}/{action}.{extension}', [
+    Route::get('{asset}/{action}.{extension}', [
         'as'         => 'asset',
         'middleware' => [
             Middleware\CheckAssetETag::class,
@@ -147,7 +148,7 @@ Route::group(['middleware' => [
         'extension' => '[a-z]+',
     ]);
 
-    Route::get('asset/{asset}/{action?}/{width?}/{height?}', [
+    Route::get('{asset}/{action?}/{width?}/{height?}', [
         'as'         => 'asset',
         'middleware' => [
             Middleware\CheckAssetETag::class,
@@ -160,6 +161,7 @@ Route::group(['middleware' => [
 
 Route::any('{location}.{format?}', [
     'middleware' => [
+        'web',
         Middleware\RoutePage::class,
         Middleware\InsertCMSToolbar::class,
     ],

@@ -14,18 +14,17 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		var self = this,
 			element = this.element,
-			old_text = this.getTitle();
+			oldText = this.getTitle();
 
 		this.element.textEditor({
 			edit: function() {
 				var title = self.getTitle();
 
-				if (title != '' && title != old_text && title.length <= self.hardLimit) {
-					self.updatePageTitle(old_text, title);
-					self._save(title, old_text);
+				if (title !== '' && title !== oldText && title.length <= self.hardLimit) {
+					self._save(title, oldText);
 				}
 
-				old_text = title;
+				oldText = title;
 				self.removeTitleLengthCounter();
 			}
 		});
@@ -35,8 +34,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				var oldText = self.getTitle();
 
 				setTimeout(function() {
-					self.updatePageTitle(oldText, self.getTitle());
-					self._update_length_counter(self.getLength());
+					self.updateLengthCounter(self.getLength());
 				}, 0);
 			})
 			.on('focus', function() {
@@ -44,14 +42,14 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					self.element.text('');
 				}
 
-				if ( ! self.lengthCounterCreated) {
-					self._create_length_counter(self.getLength());
+				if (!self.lengthCounterCreated) {
+					self.createLengthCounter(self.getLength());
 					self.lengthCounterCreated = true;
 				}
 			});
 	},
 
-	_create_length_counter: function() {
+	createLengthCounter: function() {
 		var $counter = $('<div id="b-title-length"><span></span></div>');
 
 		$(top.document)
@@ -74,7 +72,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				title.element.textEditor('disableAutoSave');
 			})
 			.on('keydown', function(e) {
-				if (e.which == 13) {
+				if (e.which === 13) {
 					title.openHelp();
 				}
 			})
@@ -84,12 +82,12 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				title.openHelp();
 			});
 
-		this._update_length_counter(this.getLength());
+		this.updateLengthCounter(this.getLength());
 	},
 
 	edit: function() {},
 
-	_get_counter_color_for_length: function(length) {
+	getCounterColorForLength: function(length) {
 		if (length >= this.softLimit) {
 			return 'red';
 		} else if (length >= this.softLimit * 0.9) {
@@ -117,8 +115,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		var title = this;
 
 		new boomDialog({
-			url : '/vendor/boomcms/boom-core/html/help/title_length.html',
-			width : '600px',
+			url: '/vendor/boomcms/boom-core/html/help/title_length.html',
+			width: '600px',
 			cancelButton: false
 		}).always(function() {
 			title.element.textEditor('enableAutoSave');
@@ -148,16 +146,12 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			});
 	},
 
-	updatePageTitle: function(oldTitle, newTitle) {
-		top.document.title = top.document.title.replace(oldTitle, newTitle);
-	},
-
-	_update_length_counter: function(length) {
+	updateLengthCounter: function(length) {
 		$(top.document).find('#b-title-length')
 			.find('span')
 			.text(length)
 			.end()
-			.css('background-color', this._get_counter_color_for_length(length));
+			.css('background-color', this.getCounterColorForLength(length));
 
 		var disable_accept_button = (length >= this.hardLimit || length === 0)? true : false;
 		var opacity = disable_accept_button? '.35' : 1;

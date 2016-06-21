@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Events;
+use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\DeletePage;
 use BoomCMS\Jobs\ReorderChildPages;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
-class Settings extends PageController
+class Settings extends Controller
 {
     /**
      * @var string

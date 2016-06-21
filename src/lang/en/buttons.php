@@ -3,6 +3,9 @@
 return [
     'accept-crop'           => 'Crop to selection',
     'add-group'             => 'Add group',
+    'add-related-page'      => 'Add a related page',
+    'add-tag'               => 'Add tag',
+    'add-tag-group'         => 'Add tag group',
     'add-tags'              => 'Add tags',
     'add-url'               => 'Add URL',
     'cancel'                => 'Cancel',

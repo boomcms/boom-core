@@ -2,15 +2,16 @@
 
 namespace BoomCMS\Database\Models\Chunk\Linkset;
 
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Link\Link as LinkObject;
-use Illuminate\Database\Eloquent\Model;
 
 class Link extends Model
 {
-    protected $guarded = ['id'];
+    const ATTR_TITLE = 'title';
+    const ATTR_TEXT = 'text';
+
     protected $link;
     protected $table = 'chunk_linkset_links';
-    public $timestamps = false;
 
     public function getLink()
     {
@@ -22,8 +23,19 @@ class Link extends Model
         return $this->link;
     }
 
+    /**
+     * @param string $value
+     */
     public function setTitleAttribute($value)
     {
-        $this->attributes['title'] = trim(strip_tags($value));
+        $this->attributes[self::ATTR_TITLE] = trim(strip_tags($value));
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setTextAttribute($value)
+    {
+        $this->attributes[self::ATTR_TEXT] = trim(strip_tags($value));
     }
 }

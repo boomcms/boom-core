@@ -24,5 +24,9 @@ $.widget('boom.pageStatus', {
 			.text(this._get_abbreviated_status(status))
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
+
+		if (status === 'draft' || status === 'embargoed') {
+			this.element.attr('title', this.element.attr('title') + ' (double click to publish)');
+		}
 	}
 });

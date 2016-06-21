@@ -15,9 +15,9 @@ class Library extends BaseChunk
 
     protected $defaultTemplate = 'gallery';
 
-    public function __construct(Page $page, array $attrs, $slotname, $editable)
+    public function __construct(Page $page, array $attrs, $slotname)
     {
-        parent::__construct($page, $attrs, $slotname, $editable);
+        parent::__construct($page, $attrs, $slotname);
 
         $this->params = isset($attrs['params']) ? $this->cleanData((array) $attrs['params']) : [];
     }

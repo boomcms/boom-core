@@ -10,6 +10,7 @@ use BoomCMS\Database\Models\URL;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mockery as m;
 
 class PageTest extends AbstractModelTestCase
@@ -469,25 +470,26 @@ class PageTest extends AbstractModelTestCase
         $this->assertNull($page->{Page::ATTR_VISIBLE_FROM});
     }
 
-    public function testHasChildrenReturnsFalseIfChildCountIs0()
+    public function testHasChildren()
     {
+        $hasMany = m::mock(HasMany::class);
+        $hasMany
+            ->shouldReceive('exists')
+            ->once()
+            ->andReturn(false);
+
+        $hasMany
+            ->shouldReceive('exists')
+            ->once()
+            ->andReturn(true);
+
         $page = m::mock(Page::class)->makePartial();
         $page
-            ->shouldReceive('countChildren')
-            ->once()
-            ->andReturn(0);
+            ->shouldReceive('children')
+            ->times(2)
+            ->andReturn($hasMany);
 
         $this->assertFalse($page->hasChildren());
-    }
-
-    public function testHasChildrenReturnsTrueIfChildCountGreaterThan0()
-    {
-        $page = m::mock(Page::class)->makePartial();
-        $page
-            ->shouldReceive('countChildren')
-            ->once()
-            ->andReturn(1);
-
         $this->assertTrue($page->hasChildren());
     }
 

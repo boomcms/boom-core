@@ -5,8 +5,10 @@ namespace BoomCMS\Jobs;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Contracts\Models\Site;
+use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Event;
 
 class CreatePage extends Command
 {
@@ -26,6 +28,11 @@ class CreatePage extends Command
      * @var Site
      */
     protected $site;
+
+    /**
+     * @var string
+     */
+    protected $title = 'Untitled';
 
     /**
      * @param Person $createdBy
@@ -59,10 +66,26 @@ class CreatePage extends Command
 
         $page->addVersion([
             'template_id'     => $this->parent ? $this->parent->getDefaultChildTemplateId() : null,
-            'title'           => 'Untitled',
+            'title'           => $this->title,
             'embargoed_until' => time(),
         ]);
 
+        Event::fire(new PageWasCreated($page, $this->parent));
+
         return $page;
+    }
+
+    /**
+     * Set a title to be used for the new page.
+     *
+     * @param type $title
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }

@@ -108,6 +108,28 @@
 		border: 0;
 		margin-top: 2em;
 		width: 100%;
+
+		input, a {
+			color: @black;
+		}
+
+		input:hover {
+			color: @red;
+		}
+
+		a {
+			&.disabled {
+				color: @grey;
+
+				&:hover, &:focus {
+					color: @grey;
+				}
+			}
+
+			&:hover, &:focus {
+				color: @red;
+			}
+		}
 	}
 
 	.b-tags-list {

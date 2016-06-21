@@ -1,11 +1,11 @@
 {
   "name": "boom-core",
-  "version": "5.2-Dev",
+  "version": "5.3.0-dev",
   "homepage": "https://github.com/boomcms/boom-core",
   "authors": [
     "Rob Taylor <rob@uxblondon.com>"
   ],
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",

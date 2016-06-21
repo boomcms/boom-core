@@ -2,13 +2,11 @@
 
 namespace BoomCMS\Database\Models\Asset;
 
-use Illuminate\Database\Eloquent\Model;
+use BoomCMS\Foundation\Database\Model;
 
 class Download extends Model
 {
-    public $guarded = ['id'];
     protected $table = 'asset_downloads';
-    public $timestamps = false;
 
     public function scopeRecentlyLogged($query, $assetId, $ip)
     {

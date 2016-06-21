@@ -3,6 +3,7 @@
 namespace BoomCMS\Chunk\Linkset;
 
 use BoomCMS\Link\Link as LinkObject;
+use BoomCMS\Support\Facades\Chunk;
 
 class Link
 {
@@ -11,9 +12,18 @@ class Link
      */
     protected $attrs;
 
+    /**
+     * @var Link
+     */
+    protected $link;
+
     public function __construct($attrs)
     {
         $this->attrs = $attrs;
+
+        if (isset($attrs['link'])) {
+            $this->link = $attrs['link'];
+        }
     }
 
     public function getAssetId()
@@ -31,7 +41,11 @@ class Link
      */
     public function getLink()
     {
-        return LinkObject::factory($this->getUrl());
+        if ($this->link === null) {
+            $this->link = LinkObject::factory($this->getUrl());
+        }
+
+        return $this->link;
     }
 
     public function getTarget()
@@ -42,6 +56,40 @@ class Link
     public function getTargetPageId()
     {
         return $this->attrs['target_page_id'];
+    }
+
+    /**
+     * Get the text for the link.
+     *
+     * If text has been given then that is used.
+     *
+     * Otherwise, if the link is internal, then the standfirst of the linked page is returned.
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        if (isset($this->attrs['text'])) {
+            return $this->attrs['text'];
+        }
+
+        if ($this->getLink()->isInternal()) {
+            $page = $this->getLink()->getPage();
+
+            return $this->attrs['text'] = $page ? Chunk::get('text', 'standfirst', $page)->text() : '';
+        }
+
+        return $this->attrs['text'] = '';
+    }
+
+    /**
+     * Returns the contents of the text attribute.
+     *
+     * @return string
+     */
+    public function getTextAttribute()
+    {
+        return isset($this->attrs['text']) ? $this->attrs['text'] : '';
     }
 
     public function getTitle()

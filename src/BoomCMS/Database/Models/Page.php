@@ -8,24 +8,21 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
-use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Page extends Model implements PageInterface
 {
-    use Comparable;
     use SingleSite;
     use SoftDeletes;
 
-    const ATTR_ID = 'id';
     const ATTR_SEQUENCE = 'sequence';
     const ATTR_VISIBLE_FROM = 'visible_from';
     const ATTR_VISIBLE_TO = 'visible_to';
@@ -94,12 +91,6 @@ class Page extends Model implements PageInterface
     protected $currentVersion;
 
     protected $table = 'pages';
-
-    public $guarded = [
-        self::ATTR_ID,
-    ];
-
-    public $timestamps = false;
 
     /**
      * @var Asset
@@ -257,16 +248,20 @@ class Page extends Model implements PageInterface
         return $this->{self::ATTR_CHILD_ADD_BEHAVIOUR} ?: self::ADD_PAGE_NONE;
     }
 
+    /**
+     * Returns an array of [column, direction] indicating the page's child ordering policy.
+     *
+     * @return array
+     */
     public function getChildOrderingPolicy()
     {
         $order = $this->{self::ATTR_CHILD_ORDERING_POLICY};
+        $column = 'sequence';
 
         if ($order & static::ORDER_TITLE) {
             $column = 'title';
         } elseif ($order & static::ORDER_VISIBLE_FROM) {
             $column = 'visible_from';
-        } else {
-            $column = 'sequence';
         }
 
         $direction = ($order & static::ORDER_ASC) ? 'asc' : 'desc';
@@ -318,6 +313,11 @@ class Page extends Model implements PageInterface
         return $this->{self::ATTR_DESCRIPTION};
     }
 
+    /**
+     * Returns the default template ID that child pages should use.
+     *
+     * @return int
+     */
     public function getDefaultChildTemplateId()
     {
         if ($templateId = $this->{self::ATTR_CHILD_TEMPLATE}) {
@@ -326,7 +326,9 @@ class Page extends Model implements PageInterface
 
         $parent = $this->getParent();
 
-        return ($parent && $parent->getGrandchildTemplateId() != 0) ? $parent->getGrandchildTemplateId() : $this->getTemplateId();
+        return ($parent && !empty($parent->getGrandchildTemplateId())) ?
+            $parent->getGrandchildTemplateId()
+            : $this->getTemplateId();
     }
 
     /**
@@ -393,14 +395,6 @@ class Page extends Model implements PageInterface
     public function getVisibleAttribute()
     {
         return (int) $this->isVisible();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return  $this->{self::ATTR_ID};
     }
 
     public function getInternalName()
@@ -502,7 +496,7 @@ class Page extends Model implements PageInterface
      */
     public function hasChildren()
     {
-        return $this->countChildren() > 0;
+        return $this->children()->exists();
     }
 
     public function hasFeatureImage()
@@ -646,9 +640,9 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
-    public function setChildTemplateId($id)
+    public function setChildTemplateId($templateId)
     {
-        $this->{self::ATTR_CHILD_TEMPLATE} = $id;
+        $this->{self::ATTR_CHILD_TEMPLATE} = $templateId;
 
         return $this;
     }
@@ -916,8 +910,7 @@ class Page extends Model implements PageInterface
      *
      * The URL can be displayed by casting the returned object to a string:
      *
-     *		(string) $page->url();
-     *
+     *        (string) $page->url();
      *
      * @return URLInterface|null
      */

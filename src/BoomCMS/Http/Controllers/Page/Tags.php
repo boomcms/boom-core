@@ -47,20 +47,25 @@ class Tags extends Controller
     /**
      * @param Page $page
      */
-    public function view(Page $page)
+    public function view(Site $site, Page $page)
     {
         $this->auth($page);
 
+        $all = TagFacade::findBySite($site);
         $grouped = [];
-        $tags = Helpers::getTags($page);
 
-        foreach ($tags as $t) {
+        foreach ($all as $t) {
             $group = $t->getGroup() ?: '';
             $grouped[$group][] = $t;
         }
 
+        $tags = Helpers::getTags($page)->map(function ($tag) {
+            return $tag->getId();
+        });
+
         return view('boomcms::editor.page.settings.tags', [
-            'tags' => $grouped,
+            'all'  => $grouped,
+            'tags' => $tags->toArray(),
         ]);
     }
 

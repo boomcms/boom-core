@@ -1,7 +1,8 @@
 $.widget('boom.pageSettingsChildren', {
 	bind: function() {
 		var settingsEditor = this,
-			page = this.options.page;
+			page = this.options.page,
+			pages = new BoomCMS.Collections.Pages();
 
 		this.element
 			.on('change', 'select[name="children_ordering_policy"]', function() {
@@ -14,7 +15,12 @@ $.widget('boom.pageSettingsChildren', {
 			.on('click', '#b-page-settings-children-reorder', function(e) {
 				e.preventDefault();
 
-				$.get('/boomcms/search/pages', {parent: page.id})
+				// Don't use pages.findByParent()
+				// We need to preserve the order that the results are returned in.
+				$.get(pages.url, {
+						parent: page.id,
+						excludeinvisible: false
+					})
 					.done(function(pages) {
 						var sortDialog = new boomDialog({
 							msg: "<div></div>",
@@ -65,12 +71,12 @@ $.widget('boom.pageSettingsChildren', {
 					.done(function() {
 						new boomNotification('Child page settings saved').show();
 					});
-			});;
+			});
 	},
 
 	_create: function() {
 		this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
-		this.sortUrl = '/boomcms/page/' + this.options.page.id + '/settings/sort-children';
+		this.sortUrl = this.options.page.baseUrl + 'settings/sort-children';
 
 		this.bind();
 	}

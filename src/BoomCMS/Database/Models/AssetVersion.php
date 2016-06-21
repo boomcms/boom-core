@@ -3,12 +3,11 @@
 namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Mdoels\Person as PersonInterface;
+use BoomCMS\Foundation\Database\Model;
 use DateTime;
-use Illuminate\Database\Eloquent\Model;
 
 class AssetVersion extends Model
 {
-    const ATTR_ID = 'id';
     const ATTR_ASSET = 'asset_id';
     const ATTR_WIDTH = 'width';
     const ATTR_HEIGHT = 'height';
@@ -21,17 +20,12 @@ class AssetVersion extends Model
     const ATTR_METADATA = 'metadata';
 
     protected $casts = [
+        self::ATTR_ID       => 'integer',
         self::ATTR_ASSET    => 'integer',
         self::ATTR_METADATA => 'array',
     ];
 
     public $table = 'asset_versions';
-
-    public $guarded = [
-        self::ATTR_ID,
-    ];
-
-    public $timestamps = false;
 
     /**
      * @var PersonInterface
@@ -98,14 +92,6 @@ class AssetVersion extends Model
     public function getHeight()
     {
         return (int) $this->{self::ATTR_HEIGHT};
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return (int) $this->{self::ATTR_ID};
     }
 
     /**

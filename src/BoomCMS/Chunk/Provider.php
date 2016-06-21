@@ -82,10 +82,12 @@ class Provider
             $page = Router::getActivePage();
         }
 
-        $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
-        $attrs = $chunk ? $chunk->toArray() : [];
+        $model = $this->find($type, $slotname, $page->getCurrentVersion());
+        $attrs = $model ? $model->toArray() : [];
 
-        return new $className($page, $attrs, $slotname, $this->allowedToEdit($page));
+        $chunk = new $className($page, $attrs, $slotname);
+
+        return $chunk->editable($this->allowedToEdit($page));
     }
 
     /**
@@ -123,7 +125,7 @@ class Provider
         $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
         $attrs = $chunk ? $chunk->toArray() : [];
 
-        return new $className($page, $attrs, $slotname, false);
+        return new $className($page, $attrs, $slotname);
     }
 
     /**

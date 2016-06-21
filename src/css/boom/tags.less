@@ -1,91 +1,51 @@
-form.b-tags-add {
+html.boom form.b-tags-add {
 	display: inline-block;
 	padding: 0;
+	position: relative;
+	height: 3.4rem;
+	width: 20rem;
+	float: left;
+	margin: 0.75rem;
+	
+	input[type=text] {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 100%;
+		width: auto;
+		padding: 0.75rem 3rem 0.75rem 0.75rem;
 
-	> * {
-		margin: 0.3em 0.5em;
-	}
-
-	input[type=text].b-tags-add-name {
-		height: 23px;
-		line-height: 23px;
-		float: left;
-		margin: 4px;
-	}
-
-	button.b-button {
-		width: 32px;
-		height: 32px;
-		border-right: 0;
-		margin-top: 0;
-		vertical-align: top;
-		border-left: 1px solid @grey;
-
-		.b-button-icon {
-			top: 5px;
-			left: 5px;
-			width: 22px;
-			height: 22px;
-			background-position: -244px -4px;
-			font-size: 150%;
+		+ button {
+			display: block;
 		}
+	}
+
+	button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		font-size: 1rem;
+		display: none;
+		height: 100%;
+		width: 3rem;
+		text-align: center;
 	}
 }
 
 .b-tags {
+	overflow: hidden;
+
 	&-list {
-		padding-left: 0;
+		padding: 0;
+		margin: 0;
+		display: inline-block;
+		float: left;
 
 		li {
 			list-style-type: none;
 			vertical-align: top;
-		}
-	}
-
-	&-grouped {
-		padding-left: 0;
-
-		li {
-			list-style-type: none;
-			overflow: hidden;
-
-			+ li {
-				border-top: 1px solid @light-grey;
-			}
-
-			&.b-tags-newgroup {
-				overflow: hidden;
-
-				input[type=text] {
-					width: 15em;
-					clear: left;
-					float: left;
-				}
-
-				.b-button {
-					float: left;
-					margin-top: -10px;
-				}
-			}
-
-			p {
-				display: inline-block;
-				margin: 0;
-				width: 20%;
-				float: left;
-				vertical-align: top;
-				padding: 0.75em 0.5em 0.25em 0.5em;
-			}
-
-			ul.b-tags-list {
-				display: inline-block;
-				border-left: 1px solid @grey;
-				padding: 0.5em;
-				padding-left: 0.5em;
-				width: 80%;
-				float: right;
-				vertical-align: top;
-			}
 		}
 	}
 }

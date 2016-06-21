@@ -4,7 +4,6 @@ namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Foundation\Finder\Finder as BaseFinder;
-use BoomCMS\Support\Facades\Editor;
 
 class Finder extends BaseFinder
 {
@@ -16,9 +15,5 @@ class Finder extends BaseFinder
     public function __construct()
     {
         $this->query = Model::currentVersion();
-
-        if (Editor::isDisabled()) {
-            $this->query = $this->query->isVisibleAtTime(time());
-        }
     }
 }

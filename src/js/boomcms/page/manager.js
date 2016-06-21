@@ -1,22 +1,22 @@
 $.widget( 'boom.pageManager', {
-	addActionButtons: function($elements, children) {
-		var pageManager = this,
-			elementsById = {};
-
-		$elements.each(function() {
-			var $el = $(this);
-
-			$el.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
-			elementsById[$el.find('a').attr('rel')] = $el;
-		});
+	addActionButtons: function($li) {
+		$li.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
 	},
 
 	addPage: function($el) {
-		var page = new BoomCMS.Page({id: $el.data('page-id')});
+		var page = $el.data('page'),
+			el = this.element;
 
 		page.add()
 			.done(function(data) {
-				window.open(data.url);
+				var newPage = new BoomCMS.Page(data);
+
+				el.pageTree('addPageToList', newPage);
+				el.pageTree('makeExpandable', $el);
+
+				setTimeout(function() {
+					el.pageTree('showChildren', $el);
+				}, 0);
 			});
 	},
 
@@ -25,8 +25,8 @@ $.widget( 'boom.pageManager', {
 
 		this.element
 			.pageTree({
-				load: function(e, data) {
-					pageManager.addActionButtons(data.elements, data.children);
+				add: function(e, $li) {
+					pageManager.addActionButtons($li);
 				},
 				onPageSelect: function(link) {
 					window.open(link.getUrl());
@@ -66,13 +66,13 @@ $.widget( 'boom.pageManager', {
 	},
 
 	showPageSettings: function($el, section) {
-		var page = new BoomCMS.Page({id: $el.data('page-id')}),
+		var page = $el.data('page'),
 			$settings = $('<div></div>');
 
 		$settings
 			.addClass('b-settings-container')
 			.appendTo($('#b-pages'))
-			.load('/boomcms/page/' + page.id + '/settings/index', function() {
+			.load(page.baseUrl + 'settings/index', function() {
 				$settings
 					.addClass('open')
 					.pageSettings({

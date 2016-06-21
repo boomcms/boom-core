@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Http\Controllers\Asset;
+namespace BoomCMS\Http\Controllers\ViewAsset;
 
 /**
  * Browser support for Tiffs isn't great, so we convert them to png to viewing in browser.

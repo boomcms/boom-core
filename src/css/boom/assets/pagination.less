@@ -25,23 +25,49 @@
 	a {
 		position: absolute;
 		z-index: 2;
-		height: 32px;
+		height: 24px;
 		font-size: 25px;
 		width: 25px;
-		line-height: 30px;
+		line-height: 20px;
 		color: @dark-grey;
+		background: transparent;
+		color: @white;
+		cursor: pointer;
+		border: 0;
+
+		&:hover, &:focus {
+			color: @red;
+		}
 		
 		&.disabled {
-			color: @lightest-grey;
+			color: @dark-grey;
+			cursor: default;
+
+			&:hover, &:focus {
+				color: @dark-grey;
+			}
 		}
 	}
 
 	input {
+		.text-small;
 		position: absolute;
 		padding: 0 50px;
 		width: 100%;
 		left: 0;
 		top: 0;
 		z-index: 1;
+		cursor: pointer;
+		background: transparent;
+		color: @white;
+		border: 0;
+
+		&:hover {
+			color: @red;
+		}
+
+		&:focus {
+			cursor: text;
+		}
 	}
 }

@@ -87,7 +87,7 @@ class RouterTest extends AbstractTestCase
             ->once()
             ->andReturn($page);
 
-        $url->shouldReceive('is')->andReturn(true);
+        $url->shouldReceive('matches')->andReturn(true);
         $page->shouldReceive('url')->andReturn($url);
 
         URLFacade::shouldReceive('findBySiteAndLocation')
@@ -164,7 +164,7 @@ class RouterTest extends AbstractTestCase
             ->andReturn($page);
 
         $url
-            ->shouldReceive('is')
+            ->shouldReceive('matches')
             ->andReturn(true);
 
         $page

@@ -3,10 +3,17 @@
 namespace BoomCMS\Chunk;
 
 use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
+use Closure;
+use DateTime;
 
 class Timestamp extends BaseChunk
 {
     use AcceptsHtmlString;
+
+    /**
+     * @var Closure
+     */
+    protected $closure;
 
     public static $defaultFormat = 'j F Y';
     public static $formats = [
@@ -22,6 +29,20 @@ class Timestamp extends BaseChunk
 
     protected $defaultHtml = "<span class='b-chunk-timestamp'>{time}</span>";
     protected $formatIsEditable = true;
+
+    /**
+     * Define a closure to apply to the chunk content before rendering.
+     *
+     * @param Closure $closure
+     *
+     * @return $this
+     */
+    public function apply(Closure $closure)
+    {
+        $this->closure = $closure;
+
+        return $this;
+    }
 
     protected function addContentToHtml($content)
     {
@@ -44,6 +65,14 @@ class Timestamp extends BaseChunk
         return $this->getFormat() && $this->getTimestamp() > 0;
     }
 
+    /**
+     * @return DateTime
+     */
+    public function getDateTime()
+    {
+        return (new DateTime())->setTimestamp($this->getTimestamp());
+    }
+
     public function getFormat()
     {
         return isset($this->attrs['format']) ? $this->attrs['format'] : static::$defaultFormat;
@@ -64,7 +93,11 @@ class Timestamp extends BaseChunk
 
     protected function show()
     {
-        return $this->addContentToHtml(date($this->getFormat(), $this->getTimestamp()));
+        $content = (is_callable($this->closure)) ?
+            call_user_func($this->closure, $this)
+            : date($this->getFormat(), $this->getTimestamp());
+
+        return $this->addContentToHtml($content);
     }
 
     protected function showDefault()

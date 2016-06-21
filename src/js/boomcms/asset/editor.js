@@ -78,6 +78,9 @@ function boomAssetEditor(asset, uploader) {
                 assetEditor.bind(assetEditor.dialog);
 
 				assetEditor.dialog.contents
+					.find('.boom-tabs')
+					.tabs()
+					.end()
 					.find('#b-tags')
 					.assetTagSearch({
 						addTag: function(e, tag) {

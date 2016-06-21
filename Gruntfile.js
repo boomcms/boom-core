@@ -79,8 +79,6 @@ module.exports = function(grunt) {
 					'src/js/boomcms/page/editor.js',
 					'src/js/boomcms/page/toolbar.js',
 					'src/js/boomcms/page/tree.js',
-					'src/js/boomcms/page/tagSearch.js',
-					'src/js/boomcms/page/tagAutocomplete.js',
 					'src/js/boomcms/page/settings/*.js',
 					'src/js/boomcms/textEditor.js',
 					'src/js/boomcms/chunk/chunk.js',
