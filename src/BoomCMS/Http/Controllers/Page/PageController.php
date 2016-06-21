@@ -8,7 +8,6 @@ use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\PageVersion;
-use BoomCMS\Support\Facades\URL;
 use BoomCMS\Support\Helpers;
 use Illuminate\Http\Request;
 
@@ -31,8 +30,6 @@ class PageController extends Controller
 
         $parent = $page->getAddPageParent();
         $newPage = $this->dispatch(new CreatePage(auth()->user(), $site, $parent));
-
-        URL::page($newPage);
 
         return PageFacade::find($newPage->getId());
     }

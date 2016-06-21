@@ -9,7 +9,6 @@ use BoomCMS\Http\Controllers\Page\PageController as Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\PageVersion as PageVersionFacade;
-use BoomCMS\Support\Facades\URL as URLFacade;
 use Mockery as m;
 
 class PageControllerTest extends BaseControllerTest
@@ -42,11 +41,6 @@ class PageControllerTest extends BaseControllerTest
             ->once()
             ->with(m::type(CreatePage::class))
             ->andReturn($page);
-
-        URLFacade::shouldReceive('page')
-            ->once()
-            ->with($page)
-            ->andReturn($url);
 
         PageFacade::shouldReceive('find')
             ->once()
