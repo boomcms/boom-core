@@ -4,7 +4,6 @@ namespace BoomCMS\Tests\Jobs;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Person;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Tests\AbstractTestCase;
@@ -12,75 +11,101 @@ use Mockery as m;
 
 class CreatePageTest extends AbstractTestCase
 {
+    /**
+     * @var Page
+     */
+    protected $newPage;
+
+    /**
+     * @var Page
+     */
+    protected $parent;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->newPage = m::mock(Page::class.'[addVersion]');
+
+        $this->parent = $this->validPage();
+        $this->parent->{Page::ATTR_CHILD_TEMPLATE} = 1;
+    }
+
     public function testSiteIdOfNewPageIsSet()
     {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
-
-        $newPage = m::mock(Page::class.'[addVersion]');
-        $newPage->shouldReceive('addVersion');
+        $this->newPage->shouldReceive('addVersion');
 
         PageFacade::shouldReceive('create')
             ->once()
             ->with(m::subset([
-                Page::ATTR_SITE => $site->getId(),
+                Page::ATTR_SITE => $this->site->getId(),
             ]))
-            ->andReturn($newPage);
+            ->andReturn($this->newPage);
 
-        $job = new CreatePage(new Person(), $site);
+        $job = new CreatePage(new Person(), $this->site);
         $job->handle();
     }
 
     public function testSiteIdAndParentIdAreSet()
     {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
+        $this->newPage->shouldReceive('addVersion');
 
-        $parent = new Page([
+        $this->parent->fill([
             Page::ATTR_CHILDREN_VISIBLE_IN_NAV     => true,
             Page::ATTR_CHILDREN_VISIBLE_IN_NAV_CMS => true,
             Page::ATTR_CHILD_TEMPLATE              => 1,
         ]);
-        $parent->{Page::ATTR_ID} = 1;
-
-        $newPage = m::mock(Page::class.'[addVersion]');
-        $newPage->shouldReceive('addVersion');
 
         PageFacade::shouldReceive('create')
             ->once()
             ->with(m::subset([
-                Page::ATTR_SITE   => $site->getId(),
-                Page::ATTR_PARENT => $parent->getId(),
+                Page::ATTR_SITE   => $this->site->getId(),
+                Page::ATTR_PARENT => $this->parent->getId(),
             ]))
-            ->andReturn($newPage);
+            ->andReturn($this->newPage);
 
-        $job = new CreatePage(new Person(), $site, $parent);
+        $job = new CreatePage(new Person(), $this->site, $this->parent);
         $job->handle();
     }
 
     public function testNewPageShouldNotHaveVisibleFromSetToBeInvisible()
     {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
+        $this->newPage->shouldReceive('addVersion');
 
-        $parent = new Page([
+        $this->parent->fill([
             Page::ATTR_CHILDREN_VISIBLE_IN_NAV     => true,
             Page::ATTR_CHILDREN_VISIBLE_IN_NAV_CMS => true,
             Page::ATTR_CHILD_TEMPLATE              => 1,
         ]);
-        $parent->{Page::ATTR_ID} = 1;
-
-        $newPage = m::mock(Page::class.'[addVersion]');
-        $newPage->shouldReceive('addVersion');
 
         PageFacade::shouldReceive('create')
             ->once()
             ->with(m::on(function (array $attrs) {
                 return !isset($attrs['visible_from']);
             }))
-            ->andReturn($newPage);
+            ->andReturn($this->newPage);
 
-        $job = new CreatePage(new Person(), $site, $parent);
+        $job = new CreatePage(new Person(), $this->site, $this->parent);
+        $job->handle();
+    }
+
+    public function testSetTitleAllowsSettingPageTitle()
+    {
+        $title = 'new page title';
+
+        $this->newPage
+            ->shouldReceive('addVersion')
+            ->once()
+            ->with(m::on(function (array $attrs) use($title) {
+                return $title === $attrs['title'];
+            }));
+
+        PageFacade::shouldReceive('create')
+            ->once()
+            ->andReturn($this->newPage);
+
+        $job = new CreatePage(new Person(), $this->site, $this->parent);
+        $job->setTitle($title);
         $job->handle();
     }
 }

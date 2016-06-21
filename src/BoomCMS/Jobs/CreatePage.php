@@ -28,6 +28,11 @@ class CreatePage extends Command
     protected $site;
 
     /**
+     * @var string
+     */
+    protected $title = 'Untitled';
+
+    /**
      * @param Person $createdBy
      * @param Page   $parent
      */
@@ -59,10 +64,24 @@ class CreatePage extends Command
 
         $page->addVersion([
             'template_id'     => $this->parent ? $this->parent->getDefaultChildTemplateId() : null,
-            'title'           => 'Untitled',
+            'title'           => $this->title,
             'embargoed_until' => time(),
         ]);
 
         return $page;
+    }
+
+    /**
+     * Set a title to be used for the new page.
+     *
+     * @param type $title
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }
