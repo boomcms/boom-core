@@ -5,7 +5,7 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Foundation\Database\Model;
-use BoomCMS\Support\Traits\MultipleSites;
+use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\View;
 
 class Asset extends Model implements AssetInterface
 {
-    use MultipleSites;
+    use SingleSite;
 
     const ATTR_TITLE = 'title';
     const ATTR_DESCRIPTION = 'description';
@@ -24,6 +24,7 @@ class Asset extends Model implements AssetInterface
     const ATTR_THUMBNAIL_ID = 'thumbnail_asset_id';
     const ATTR_CREDITS = 'credits';
     const ATTR_DOWNLOADS = 'downloads';
+    const ATTR_SITE = 'site_id';
 
     public $table = 'assets';
 

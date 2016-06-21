@@ -8,20 +8,6 @@ use DateTime;
 interface Asset
 {
     /**
-     * @param Site $site
-     *
-     * @return $this
-     */
-    public function addSite(Site $site);
-
-    /**
-     * @param array $sites
-     *
-     * @return $this
-     */
-    public function addSites(array $sites);
-
-    /**
      * @return string
      */
     public function directory();
@@ -108,9 +94,9 @@ interface Asset
     public function getOriginalFilename();
 
     /**
-     * @return array
+     * @return Site
      */
-    public function getSites();
+    public function getSite();
 
     /**
      * @return array
@@ -162,13 +148,6 @@ interface Asset
     public function hasPreviousVersions();
 
     /**
-     * @param \Site $site
-     *
-     * @return bool
-     */
-    public function hasSite(Site $site);
-
-    /**
      * @return bool
      */
     public function hasThumbnail();
@@ -184,13 +163,6 @@ interface Asset
     public function isImage();
 
     /**
-     * @param Site $site
-     *
-     * @return $this;
-     */
-    public function removeSite(Site $site);
-
-    /**
      * @param string $credits
      *
      * @return $this
@@ -203,6 +175,15 @@ interface Asset
      * @return $this
      */
     public function setDescription($description);
+
+    /**
+     * Set the site that the asset belongs to.
+     *
+     * @param Site $site
+     *
+     * @return $this
+     */
+    public function setSite(Site $site);
 
     /**
      * @param int $assetId

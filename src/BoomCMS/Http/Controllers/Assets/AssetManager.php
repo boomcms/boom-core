@@ -7,7 +7,6 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Router;
-use BoomCMS\Support\Facades\Site as SiteFacade;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
@@ -30,16 +29,6 @@ class AssetManager extends Controller
 
         if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
             $this->authorize('manageAssets', Router::getActiveSite());
-        }
-    }
-
-    public function addSites(Request $request, Asset $asset)
-    {
-        $siteIds = $request->input('sites');
-
-        if ($siteIds) {
-            $sites = SiteFacade::find($siteIds);
-            $asset->addSites($sites);
         }
     }
 
@@ -133,11 +122,6 @@ class AssetManager extends Controller
         }
     }
 
-    public function removeSite(Asset $asset, Site $site)
-    {
-        $asset->removeSite($site);
-    }
-
     public function revert(Asset $asset)
     {
         AssetFacade::revert($asset, $this->request->input('version_id'));
@@ -154,7 +138,7 @@ class AssetManager extends Controller
         AssetFacade::save($asset);
     }
 
-    public function postUpload()
+    public function postUpload(Site $site)
     {
         $assetIds = [];
 
@@ -163,6 +147,7 @@ class AssetManager extends Controller
         foreach ($validFiles as $file) {
             $asset = new Asset();
             $asset
+                ->setSite($site)
                 ->setUploadedTime(new DateTime('now'))
                 ->setUploadedBy(Auth::user())
                 ->setTitle($file->getClientOriginalName())
