@@ -4,9 +4,11 @@ namespace BoomCMS\Tests\Jobs;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Tests\AbstractTestCase;
+use Illuminate\Support\Facades\Event;
 use Mockery as m;
 
 class CreatePageTest extends AbstractTestCase
@@ -29,6 +31,10 @@ class CreatePageTest extends AbstractTestCase
 
         $this->parent = $this->validPage();
         $this->parent->{Page::ATTR_CHILD_TEMPLATE} = 1;
+
+        Event::shouldReceive('fire')
+            ->once()
+            ->with(m::type(PageWasCreated::class));
     }
 
     public function testSiteIdOfNewPageIsSet()

@@ -5,8 +5,10 @@ namespace BoomCMS\Jobs;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Contracts\Models\Site;
+use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Event;
 
 class CreatePage extends Command
 {
@@ -67,6 +69,8 @@ class CreatePage extends Command
             'title'           => $this->title,
             'embargoed_until' => time(),
         ]);
+
+        Event::fire(new PageWasCreated($page, $this->parent));
 
         return $page;
     }

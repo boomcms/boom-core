@@ -5,13 +5,11 @@ namespace BoomCMS\Tests\Http\Controllers;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
-use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Page\PageController as Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\PageVersion as PageVersionFacade;
 use BoomCMS\Support\Facades\URL as URLFacade;
-use Illuminate\Support\Facades\Event;
 use Mockery as m;
 
 class PageControllerTest extends BaseControllerTest
@@ -49,10 +47,6 @@ class PageControllerTest extends BaseControllerTest
             ->once()
             ->with($page)
             ->andReturn($url);
-
-        Event::shouldReceive('fire')
-            ->once()
-            ->with(m::type(PageWasCreated::class));
 
         PageFacade::shouldReceive('find')
             ->once()
