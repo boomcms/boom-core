@@ -1,6 +1,10 @@
 # BoomCMS Upgrade Notes
 
-## 5.2
+## v5.3.0
+
+* Themes which use the CreatePage job to create pages should no longer need to fire the PageWasCreated event manually
+
+## v5.2.0
 
 * URL::is() has been renamed URL::matches()
 * Following 5.1.7, themes definiing routes should ensure that the 'web' middleware group is included. Session, cookie, and CSRF middleware are no longer set globally
