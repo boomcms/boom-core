@@ -55,7 +55,7 @@ class StrTest extends AbstractTestCase
     public function testUniqueWithAUniqueString()
     {
         $string = 'test';
-        $result = Str::unique($string, function() {
+        $result = Str::unique($string, function () {
             return true;
         });
 
@@ -68,7 +68,7 @@ class StrTest extends AbstractTestCase
         $unique = 'test2';
         $i = 0;
 
-        $callback = function() use (&$i) {
+        $callback = function () use (&$i) {
             $i++;
 
             return $i > 2;
