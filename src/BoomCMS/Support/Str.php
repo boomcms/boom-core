@@ -94,11 +94,11 @@ abstract class Str extends BaseStr
     }
 
     /**
-     * Make a string unique
-     * 
+     * Make a string unique.
+     *
      * Increments a numeric suffix until the given closure returns true.
      *
-     * @param string $initial
+     * @param string  $initial
      * @param Closure $closure
      *
      * @return string

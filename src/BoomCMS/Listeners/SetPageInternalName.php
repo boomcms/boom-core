@@ -17,7 +17,7 @@ class SetPageInternalName extends CreatePagePrimaryURL
         if ($title !== Page::DEFAULT_TITLE && empty($page->getInternalName())) {
             $slug = Str::slug($title);
 
-            $unique = Str::unique($slug, function($name) {
+            $unique = Str::unique($slug, function ($name) {
                 return PageFacade::internalNameExists($name) === false;
             });
 
