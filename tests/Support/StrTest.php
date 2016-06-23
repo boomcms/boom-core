@@ -51,4 +51,29 @@ class StrTest extends AbstractTestCase
             $this->assertEquals($after, Str::nl2paragraph($original));
         }
     }
+
+    public function testUniqueWithAUniqueString()
+    {
+        $string = 'test';
+        $result = Str::unique($string, function() {
+            return true;
+        });
+
+        $this->assertEquals($string, $result);
+    }
+
+    public function testMakeUniqueAppendsIncrementalNumber()
+    {
+        $string = 'test';
+        $unique = 'test2';
+        $i = 0;
+
+        $callback = function() use (&$i) {
+            $i++;
+
+            return $i > 2;
+        };
+
+        $this->assertEquals($unique, Str::unique($string, $callback));
+    }
 }

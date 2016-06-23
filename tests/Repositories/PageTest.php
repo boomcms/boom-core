@@ -137,4 +137,23 @@ class PageTest extends AbstractTestCase
 
         $this->assertEquals($this->page, $this->repository->findBySiteAndUri($this->site, $uri));
     }
+
+    public function testInternalNameExists()
+    {
+        $name = 'test';
+        $exists = true;
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with('internal_name', $name)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('exists')
+            ->once()
+            ->andReturn($exists);
+
+        $this->assertEquals($exists, $this->repository->internalNameExists($name));
+    }
 }

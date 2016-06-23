@@ -109,36 +109,6 @@ class URLTest extends AbstractTestCase
         }
     }
 
-    public function testMakeUniqueWithUniqueUrl()
-    {
-        $location = 'test';
-
-        URLFacade::shouldReceive('isAvailable')
-            ->once()
-            ->with($this->site, $location)
-            ->andReturn(true);
-
-        $this->assertEquals($location, URL::makeUnique($this->site, $location));
-    }
-
-    public function testMakeUniqueAppendsIncrementalNumber()
-    {
-        $location = 'test';
-        $unique = 'test1';
-
-        URLFacade::shouldReceive('isAvailable')
-            ->once()
-            ->with($this->site, $location)
-            ->andReturn(false);
-
-        URLFacade::shouldReceive('isAvailable')
-            ->once()
-            ->with($this->site, $unique)
-            ->andReturn(true);
-
-        $this->assertEquals($unique, URL::makeUnique($this->site, $location));
-    }
-
     public function testMakeRelative()
     {
         $urls = [
