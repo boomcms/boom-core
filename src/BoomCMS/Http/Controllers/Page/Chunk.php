@@ -29,6 +29,7 @@ class Chunk extends PageController
         $this->authorize('edit', $page);
 
         $chunk = ChunkFacade::create($page, $request->except('template'));
+        $chunk->editable(true);
 
         if ($template = $request->input('template')) {
             $chunk->template($template);
