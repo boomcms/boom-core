@@ -110,7 +110,7 @@ class Page implements PageRepositoryInterface
     }
 
     /**
-     * Returns whether a given page internal name is already in use
+     * Returns whether a given page internal name is already in use.
      *
      * @param string $name
      *

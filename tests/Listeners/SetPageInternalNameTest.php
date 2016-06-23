@@ -4,8 +4,8 @@ namespace BoomCMS\Tests\Events;
 
 use BoomCMS\Events\PageTitleWasChanged;
 use BoomCMS\Listeners\SetPageInternalName;
-use BoomCMS\Tests\AbstractTestCase;
 use BoomCMS\Support\Facades\Page;
+use BoomCMS\Tests\AbstractTestCase;
 
 class SetPageInternalNameTest extends AbstractTestCase
 {

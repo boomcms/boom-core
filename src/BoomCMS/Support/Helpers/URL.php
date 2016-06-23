@@ -85,7 +85,7 @@ abstract class URL
      */
     public static function makeUnique(Site $site, $url)
     {
-        return Str::unique($url, function($url) use ($site) {
+        return Str::unique($url, function ($url) use ($site) {
             return URLFacade::isAvailable($site, $url);
         });
     }
