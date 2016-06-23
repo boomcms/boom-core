@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Http\Controllers\Page\Version as Controller;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Http\Request;
@@ -170,10 +171,21 @@ class VersionTest extends BaseControllerTest
             ->with($title)
             ->andReturnSelf();
 
+        $this->page
+            ->shouldReceive('getTitle')
+            ->andReturn($title);
+
         $this->version
             ->shouldReceive('getStatus')
             ->once()
             ->andReturn($status);
+
+        PageFacade::shouldReceive('internalNameExists')
+            ->once()
+            ->with('test')
+            ->andReturn(false);
+
+        PageFacade::shouldReceive('save')->once()->with($this->page);
 
         URLFacade::shouldReceive('page')
             ->once()
@@ -186,5 +198,7 @@ class VersionTest extends BaseControllerTest
             'status'   => $status,
             'location' => 'http://localhost/',
         ], $response);
+
+        $this->assertEquals($title, $this->page->getInternalName());
     }
 }

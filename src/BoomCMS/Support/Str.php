@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Support;
 
+use Closure;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str as BaseStr;
 use Rych\ByteSize;
@@ -90,5 +91,27 @@ abstract class Str extends BaseStr
         $replaceString = '<script type="text/javascript" src="${1}.js"></script>';
 
         return \preg_replace($matchString, $replaceString, $text);
+    }
+
+    /**
+     * Make a string unique
+     * 
+     * Increments a numeric suffix until the given closure returns true.
+     *
+     * @param string $initial
+     * @param Closure $closure
+     *
+     * @return string
+     */
+    public static function unique($initial, Closure $closure)
+    {
+        $append = 0;
+
+        do {
+            $string = ($append > 0) ? ($initial.$append) : $initial;
+            $append++;
+        } while ($closure($string) === false);
+
+        return $string;
     }
 }

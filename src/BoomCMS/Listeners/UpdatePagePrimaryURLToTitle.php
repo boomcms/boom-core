@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Listeners;
 
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Events\PageTitleWasChanged;
 
 class UpdatePagePrimaryURLToTitle extends CreatePagePrimaryURL
@@ -11,7 +12,7 @@ class UpdatePagePrimaryURLToTitle extends CreatePagePrimaryURL
         $oldTitle = $event->getOldTitle();
 
         return ($oldTitle !== $event->getNewTitle())
-            && $oldTitle == 'Untitled'
+            && $oldTitle === Page::DEFAULT_TITLE
             && $event->getPage()->url()->getLocation() !== '/';
     }
 }

@@ -5,6 +5,7 @@ namespace BoomCMS\Support\Helpers;
 use BoomCMS\Contracts\Models\Site;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\URL as URLFacade;
+use BoomCMS\Support\Str;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -84,15 +85,9 @@ abstract class URL
      */
     public static function makeUnique(Site $site, $url)
     {
-        $append = 0;
-        $startUrl = $url;
-
-        do {
-            $url = ($append > 0) ? ($startUrl.$append) : $startUrl;
-            $append++;
-        } while (!URLFacade::isAvailable($site, $url));
-
-        return $url;
+        return Str::unique($url, function($url) use ($site) {
+            return URLFacade::isAvailable($site, $url);
+        });
     }
 
     /**

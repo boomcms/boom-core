@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Jobs;
 
-use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Contracts\Models\Site;
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;
@@ -32,7 +32,7 @@ class CreatePage extends Command
     /**
      * @var string
      */
-    protected $title = 'Untitled';
+    protected $title = Page::DEFAULT_TITLE;
 
     /**
      * @param Person $createdBy

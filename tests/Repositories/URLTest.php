@@ -31,11 +31,8 @@ class URLTest extends AbstractTestCase
         $this->repository = new URLRepository($this->model);
     }
 
-    public function testCreate()
+    public function testCreateWithUniqueUrl()
     {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
-
         $url = new URL();
         $location = '/test';
         $isPrimary = false;
@@ -44,7 +41,7 @@ class URLTest extends AbstractTestCase
         $page
             ->shouldReceive('getSite')
             ->once()
-            ->andReturn($site);
+            ->andReturn($this->site);
 
         $page->shouldReceive('getId')->andReturn(2);
 
@@ -55,13 +52,51 @@ class URLTest extends AbstractTestCase
                 URL::ATTR_LOCATION   => 'test',
                 URL::ATTR_PAGE_ID    => $page->getId(),
                 URL::ATTR_IS_PRIMARY => $isPrimary,
-                URL::ATTR_SITE       => $site->getId(),
+                URL::ATTR_SITE       => $this->site->getId(),
             ])
             ->andReturn($url);
 
         URLFacade::shouldReceive('isAvailable')
             ->once()
             ->andReturn(true);
+
+        $this->assertEquals($url, $this->repository->create($location, $page, $isPrimary));
+    }
+
+    public function testCreateWithNonUniqueUrl()
+    {
+        $url = new URL();
+        $location = '/test';
+        $isPrimary = false;
+
+        URLFacade::shouldReceive('isAvailable')
+            ->once()
+            ->with($this->site, 'test')
+            ->andReturn(false);
+
+        URLFacade::shouldReceive('isAvailable')
+            ->once()
+            ->with($this->site, 'test1')
+            ->andReturn(true);
+
+        $page = m::mock(Page::class)->makePartial();
+        $page
+            ->shouldReceive('getSite')
+            ->once()
+            ->andReturn($this->site);
+
+        $page->shouldReceive('getId')->andReturn(2);
+
+        $this->model
+            ->shouldReceive('create')
+            ->once()
+            ->with([
+                URL::ATTR_LOCATION   => 'test1',
+                URL::ATTR_PAGE_ID    => $page->getId(),
+                URL::ATTR_IS_PRIMARY => $isPrimary,
+                URL::ATTR_SITE       => $this->site->getId(),
+            ])
+            ->andReturn($url);
 
         $this->assertEquals($url, $this->repository->create($location, $page, $isPrimary));
     }

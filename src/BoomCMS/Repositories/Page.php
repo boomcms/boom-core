@@ -110,6 +110,20 @@ class Page implements PageRepositoryInterface
     }
 
     /**
+     * Returns whether a given page internal name is already in use
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function internalNameExists($name)
+    {
+        return $this->model
+            ->where(Model::ATTR_INTERNAL_NAME, $name)
+            ->exists();
+    }
+
+    /**
      * Save a page.
      *
      * @param PageModelInterface $page

@@ -20,6 +20,7 @@ class EventServiceProvider extends ServiceProvider
             Listeners\UpdateSearchText::class,
         ],
         Events\PageTitleWasChanged::class => [
+            Listeners\SetPageInternalName::class,
             Listeners\UpdatePagePrimaryURLToTitle::class,
         ],
         Events\PageWasCreated::class => [
