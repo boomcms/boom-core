@@ -121,7 +121,7 @@
     </td>
 </script>
 
-<script type="text/template" id="b-person-view">
+<script type="text/template" id="b-person-view-template">
     <?= view('boomcms::people-manager.person') ?>
 </script>
 

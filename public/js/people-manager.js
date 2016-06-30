@@ -293,7 +293,7 @@
 
 	BoomCMS.PeopleManager.PersonView = Backbone.View.extend({
 		tagName: 'div',
-		template: _.template($('#b-person-view').html()),
+		template: _.template($('#b-person-view-template').html()),
 
 		events: {
 			'click .name, .name + a': 'editName',
