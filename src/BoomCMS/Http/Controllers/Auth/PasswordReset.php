@@ -11,7 +11,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 class PasswordReset extends Controller
 {
     use ResetsPasswords;
-    use ValidatesRequests;
 
     protected $subject = 'BoomCMS Password Reset';
     protected $linkRequestView = 'boomcms::auth.password';
