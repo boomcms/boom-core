@@ -6,7 +6,6 @@ use BoomCMS\Auth\Hasher;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Person;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class PasswordReset extends Controller
 {
