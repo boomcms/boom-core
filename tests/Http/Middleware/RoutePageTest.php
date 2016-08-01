@@ -25,6 +25,7 @@ class RoutePageTest extends AbstractTestCase
         $request->shouldReceive('route')->andReturn($route);
 
         $middleware = new RoutePage($router);
-        $middleware->handle($request, function () {});
+        $middleware->handle($request, function () {
+        });
     }
 }
