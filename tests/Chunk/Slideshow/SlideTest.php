@@ -24,4 +24,18 @@ class SlideTest extends AbstractTestCase
 
         $this->assertEquals($asset, $slide->getAsset());
     }
+
+    public function testCanBeInstantiatedWithArrayOfAssetAttributes()
+    {
+        $attrs = [
+            Asset::ATTR_ID => 1,
+            Asset::ATTR_TITLE => 'test',
+        ];
+
+        $slide = new Slide(['asset' => $attrs]);
+        $asset = $slide->getAsset();
+
+        $this->assertInstanceOf(Asset::class, $asset);
+        $this->assertEquals($attrs, $asset->toArray());
+    }
 }
