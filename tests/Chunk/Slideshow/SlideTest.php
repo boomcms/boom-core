@@ -28,7 +28,7 @@ class SlideTest extends AbstractTestCase
     public function testCanBeInstantiatedWithArrayOfAssetAttributes()
     {
         $attrs = [
-            Asset::ATTR_ID => 1,
+            Asset::ATTR_ID    => 1,
             Asset::ATTR_TITLE => 'test',
         ];
 
