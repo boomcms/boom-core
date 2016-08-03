@@ -35,7 +35,7 @@ class Page implements PageRepositoryInterface
 
     public function find($id)
     {
-        return $this->model->find($id);
+        return $this->model->currentVersion()->find($id);
     }
 
     public function findByInternalName($name)

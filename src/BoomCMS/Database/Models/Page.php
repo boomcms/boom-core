@@ -8,13 +8,13 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
-use BoomCMS\Database\Scopes\PageVersionScope;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -174,18 +174,6 @@ class Page extends Model implements PageInterface
     public function allowsInternalIndexing()
     {
         return $this->{self::ATTR_INTERNAL_INDEXING};
-    }
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new PageVersionScope());
     }
 
     /**
@@ -978,6 +966,19 @@ class Page extends Model implements PageInterface
         return $this->getCreatedBy() === $person->getId();
     }
 
+    public function getCurrentVersionQuery()
+    {
+        $query = DB::table('page_versions')
+            ->select([DB::raw('max(id) as id'), 'page_id'])
+            ->groupBy('page_id');
+
+        if (Editor::isDisabled()) {
+            $query->where('embargoed_until', '<=', time());
+        }
+
+        return $query;
+    }
+
     /**
      * @param Builder $query
      * @param string  $title
@@ -988,10 +989,39 @@ class Page extends Model implements PageInterface
     public function scopeAutocompleteTitle(Builder $query, $title, $limit)
     {
         return $query
+            ->currentVersion()
             ->select('title', 'primary_uri')
             ->where('title', 'like', '%'.$title.'%')
             ->limit($limit)
             ->orderBy(DB::raw('length(title)'), 'asc');
+    }
+
+    /**
+     * Scope for getting pages with the current version.
+     *
+     * This doesn't work as a global scope as changing the select columns breaks queries which add select columns.
+     *
+     * e.g. finding pages by related tags.
+     *
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeCurrentVersion(Builder $query)
+    {
+        $subquery = $this->getCurrentVersionQuery();
+
+        return $query
+            ->select('version.*')
+            ->addSelect('version.id as version:id')
+            ->addSelect('pages.*')
+            ->join(DB::raw('('.$subquery->toSql().') as v2'), 'pages.id', '=', 'v2.page_id')
+            ->mergeBindings($subquery)
+            ->join('page_versions as version', function (JoinClause $join) {
+                $join
+                    ->on('pages.id', '=', 'version.page_id')
+                    ->on('v2.id', '=', 'version.id');
+            });
     }
 
     /**
