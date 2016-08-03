@@ -9,6 +9,7 @@ use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
 use BoomCMS\Foundation\Database\Model;
+use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
