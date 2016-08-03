@@ -28,7 +28,7 @@ class PageVersionScope implements Scope
             ->addSelect('pages.*')
             ->join(DB::raw('('.$subquery->toSql().') as v2'), 'pages.id', '=', 'v2.page_id')
             ->mergeBindings($subquery)
-            ->join('page_versions as version', function ($join) {
+            ->join('page_versions as version', function (Builder $join) {
                 $join
                     ->on('pages.id', '=', 'version.page_id')
                     ->on('v2.id', '=', 'version.id');

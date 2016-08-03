@@ -1015,7 +1015,7 @@ class Page extends Model implements PageInterface
         return $query
             ->where('visible', '=', true)
             ->where('visible_from', '<=', $time)
-            ->where(function ($query) use ($time) {
+            ->where(function (Builder $query) use ($time) {
                 $query
                     ->where('visible_to', '>=', $time)
                     ->orWhere('visible_to', '=', 0);
