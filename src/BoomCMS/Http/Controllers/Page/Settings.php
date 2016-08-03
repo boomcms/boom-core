@@ -295,7 +295,7 @@ class Settings extends Controller
             $visibleFrom = $request->input('visible_from') > 0 ?
                 new DateTime($visibleFrom)
                 : null;
-            
+
             $visibleTo = ($request->has('toggle_visible_to')) ?
                 new DateTime($request->input('visible_to'))
                 : null;
