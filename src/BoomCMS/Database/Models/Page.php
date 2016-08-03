@@ -995,9 +995,14 @@ class Page extends Model implements PageInterface
             ->orderBy(DB::raw('length(title)'), 'asc');
     }
 
-    public function scopeIsVisible($query)
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeIsVisible(Builder $query)
     {
-        return $this->scopeIsVisibleAtTime($query, time());
+        return $query->isVisibleAtTime(time());
     }
 
     /**
