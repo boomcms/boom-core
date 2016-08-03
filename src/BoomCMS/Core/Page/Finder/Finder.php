@@ -14,6 +14,6 @@ class Finder extends BaseFinder
 
     public function __construct()
     {
-        $this->query = Model::currentVersion();
+        $this->query = Model::query();
     }
 }
