@@ -486,11 +486,13 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @return DateTime
+     * Returns the visible to date, or null if none is set.
+     *
+     * @return null|DateTime
      */
     public function getVisibleTo()
     {
-        return $this->{self::ATTR_VISIBLE_TO} == 0 ? null : new DateTime('@'.$this->{self::ATTR_VISIBLE_TO});
+        return empty($this->{self::ATTR_VISIBLE_TO}) ? null : new DateTime('@'.$this->{self::ATTR_VISIBLE_TO});
     }
 
     /**
@@ -501,9 +503,14 @@ class Page extends Model implements PageInterface
         return $this->children()->exists();
     }
 
+    /**
+     * Whether the page has a feature image defined.
+     *
+     * @return bool
+     */
     public function hasFeatureImage()
     {
-        return $this->getFeatureImageId() != 0;
+        return !empty($this->getFeatureImageId());
     }
 
     /**
