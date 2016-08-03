@@ -258,27 +258,6 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals($site, $page->getSite());
     }
 
-    public function testGetVisibleFromReturnsNullWhenPageIsNotVisible()
-    {
-        $values = [null, 0];
-
-        foreach ($values as $value) {
-            $page = new Page([Page::ATTR_VISIBLE_FROM => $value]);
-
-            $this->assertNull($page->getVisibleFrom());
-        }
-    }
-
-    public function testGetVisibleFromReturnsDateTimeWhenPageIsVisible()
-    {
-        $time = new DateTime('@'.time());
-        $page = new Page([Page::ATTR_VISIBLE_FROM => $time->getTimestamp()]);
-        $visibleFrom = $page->getVisibleFrom();
-
-        $this->assertTrue($visibleFrom instanceof DateTime);
-        $this->assertEquals($time->getTimestamp(), $visibleFrom->getTimestamp());
-    }
-
     public function testHasFeatureImage()
     {
         $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
@@ -303,23 +282,19 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
-    public function testIsVisibleWithVisibleToInFuture()
+    public function testIsVisibleAtAnyTime()
     {
-        $values = [
-            0            => false,
-            null         => false,
-            1            => true,
-            time()       => true,
-            time() + 100 => false,
-        ];
+        $yes = [1, true];
+        $no = [0, false, null];
 
-        foreach ($values as $visibleFrom => $isVisible) {
-            $page = new Page([
-                Page::ATTR_VISIBLE_FROM => $visibleFrom,
-                Page::ATTR_VISIBLE_TO   => time() + 100,
-            ]);
+        foreach ($yes as $y) {
+            $page = new Page([Page::ATTR_VISIBLE => $y]);
+            $this->assertTrue($page->isVisibleAtAnyTime(), $y);
+        }
 
-            $this->assertEquals($isVisible, $page->isVisible(), $visibleFrom);
+        foreach ($no as $n) {
+            $page = new Page([Page::ATTR_VISIBLE => $n]);
+            $this->assertFalse($page->isVisibleAtAnyTime(), $n);
         }
     }
 
@@ -329,9 +304,15 @@ class PageTest extends AbstractModelTestCase
         $query = m::mock(Builder::class);
 
         $query
-            ->shouldReceive('whereBetween')
+            ->shouldReceive('where')
             ->once()
-            ->with(Page::ATTR_VISIBLE_FROM, [1, $time])
+            ->with(Page::ATTR_VISIBLE, '=', true)
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->with(Page::ATTR_VISIBLE_FROM, '<=', time())
             ->andReturnSelf();
 
         $query
@@ -456,6 +437,23 @@ class PageTest extends AbstractModelTestCase
         $page->setSite($site);
 
         $this->assertEquals($site->getId(), $page->{Page::ATTR_SITE});
+    }
+
+    public function testSetVisibleAtAnyTime()
+    {
+        $values = [
+            1     => true,
+            true  => true,
+            0     => false,
+            false => false,
+        ];
+
+        foreach ($values as $value => $expected) {
+            $page = new Page();
+            $page->setVisibleAtAnyTime($value);
+
+            $this->assertEquals($expected, $page->isVisibleAtAnyTime());
+        }
     }
 
     public function testSetVisibleFrom()

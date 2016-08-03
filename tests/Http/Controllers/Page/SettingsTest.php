@@ -28,19 +28,7 @@ class SettingsTest extends BaseControllerTest
     {
         $this->requireRole('publish', $this->page);
 
-        $request = new Request(['visible_from' => 0]);
-
-        $this->page
-            ->shouldReceive('setVisibleFrom')
-            ->once()
-            ->with(null)
-            ->andReturnSelf();
-
-        $this->page
-            ->shouldReceive('setVisibleTo')
-            ->once()
-            ->with(null)
-            ->andReturnSelf();
+        $request = new Request(['visible' => 0]);
 
         PageFacade::shouldReceive('save')
             ->once()

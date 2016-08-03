@@ -9,8 +9,8 @@
         <h2><?= trans('boomcms::settings.visibility.visible') ?></h2>
 
         <select name="visible" id="b-page-visible">
-            <option value="1"<?php if ($page->getVisibleFrom() !== null): ?> selected="selected"<?php endif ?>>Yes</option>
-            <option value=""<?php if ($page->getVisibleFrom() === null): ?> selected="selected"<?php endif ?>>No</option>
+            <option value="1"<?php if ($page->isVisibleAtAnyTime()): ?> selected="selected"<?php endif ?>>Yes</option>
+            <option value=""<?php if (!$page->isVisibleAtAnyTime()): ?> selected="selected"<?php endif ?>>No</option>
         </select>
     </label>
 
@@ -19,8 +19,7 @@
             <h2><?= trans('boomcms::settings.visibility.from') ?></h2>
             <p><?= trans('boomcms::settings.visibility.from-description') ?></p>
 
-            <?php $visibleFrom = $page->getVisibleFrom() !== null ? $page->getVisibleFrom()->getTimestamp() : time() ?>
-            <input type="text" name="visible_from" value="<?= date('d F Y H:i', $visibleFrom) ?>" id="visible-from" class="boom-datepicker" />
+            <input type="text" name="visible_from" value="<?= $page->getVisibleFrom()->format('d F Y H:i') ?>" id="visible-from" class="boom-datepicker" />
         </label>
 
         <label>

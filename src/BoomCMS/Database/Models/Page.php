@@ -24,6 +24,7 @@ class Page extends Model implements PageInterface
     use SoftDeletes;
 
     const ATTR_SEQUENCE = 'sequence';
+    const ATTR_VISIBLE = 'visible';
     const ATTR_VISIBLE_FROM = 'visible_from';
     const ATTR_VISIBLE_TO = 'visible_to';
     const ATTR_INTERNAL_NAME = 'internal_name';
@@ -85,6 +86,7 @@ class Page extends Model implements PageInterface
         self::ATTR_PARENT                      => 'integer',
         self::ATTR_VISIBLE_IN_NAV              => 'boolean',
         self::ATTR_VISIBLE_IN_NAV_CMS          => 'boolean',
+        self::ATTR_VISIBLE                     => 'boolean',
     ];
 
     /**
@@ -474,15 +476,13 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @return null|DateTime
+     * @return DateTime
      */
     public function getVisibleFrom()
     {
-        if ($this->{self::ATTR_VISIBLE_FROM} < 1) {
-            return;
-        }
+        $timestamp = $this->{self::ATTR_VISIBLE_FROM} ?: time();
 
-        return new DateTime('@'.$this->{self::ATTR_VISIBLE_FROM});
+        return new DateTime('@'.$timestamp);
     }
 
     /**
@@ -539,14 +539,23 @@ class Page extends Model implements PageInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isVisibleAtAnyTime()
+    {
+        return isset($this->attributes[self::ATTR_VISIBLE])
+            && (bool) $this->attributes[self::ATTR_VISIBLE] === true;
+    }
+
+    /**
      * @param DateTime $time
      *
      * @return bool
      */
     public function isVisibleAtTime(DateTime $time)
     {
-        return $this->{self::ATTR_VISIBLE_FROM} > 0 &&
-            $this->{self::ATTR_VISIBLE_FROM} <= $time->getTimestamp() &&
+        return $this->isVisibleAtAnyTime() &&
+            $this->getVisibleFrom()->getTimestamp() <= $time->getTimestamp() &&
             ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $time->getTimestamp());
     }
 
@@ -855,6 +864,18 @@ class Page extends Model implements PageInterface
     }
 
     /**
+     * @param bool $visible
+     *
+     * @return $this
+     */
+    public function setVisibleAtAnyTime($visible)
+    {
+        $this->attributes[self::ATTR_VISIBLE] = $visible;
+
+        return $this;
+    }
+
+    /**
      * @param DateTime $time
      *
      * @return $this
@@ -990,6 +1011,11 @@ class Page extends Model implements PageInterface
             });
     }
 
+    public function scopeIsVisible($query)
+    {
+        return $this->scopeIsVisibleAtTime($query, time());
+    }
+
     /**
      * @param Builder $query
      * @param int     $time
@@ -999,7 +1025,8 @@ class Page extends Model implements PageInterface
     public function scopeIsVisibleAtTime(Builder $query, $time)
     {
         return $query
-            ->whereBetween('visible_from', [1, $time])
+            ->where('visible', '=', true)
+            ->where('visible_from', '<=', $time)
             ->where(function ($query) use ($time) {
                 $query
                     ->where('visible_to', '>=', $time)
