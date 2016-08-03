@@ -6,6 +6,7 @@ use BoomCMS\Support\Facades\Editor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 
 class PageVersionScope implements Scope
@@ -28,7 +29,7 @@ class PageVersionScope implements Scope
             ->addSelect('pages.*')
             ->join(DB::raw('('.$subquery->toSql().') as v2'), 'pages.id', '=', 'v2.page_id')
             ->mergeBindings($subquery)
-            ->join('page_versions as version', function (Builder $join) {
+            ->join('page_versions as version', function (JoinClause $join) {
                 $join
                     ->on('pages.id', '=', 'version.page_id')
                     ->on('v2.id', '=', 'version.id');
