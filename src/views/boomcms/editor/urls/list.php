@@ -1,17 +1,13 @@
 <div id='b-page-urls' class="b-pagesettings">
     <section>
-        <h1>Primary and secondary URLs</h1>
-
-        <p>
-            Below is a list of all URLs for the page.
-        </p>
+        <h1><?= trans('boomcms::urls.heading') ?></h1>
 
         <ul class='b-page-urls-help'>
-            <li>The highlighted URL indicates the page's primary URL.</li>
-            <li>You may only have one primary URL for the page which cannot be deleted.</li>
-            <li>All non-primary URLs will redirect to the primary URL.</li>
-            <li>Click on a URL to make it the primary URL for the page.</li>
-            <li>There is no 'edit' URL. Instead of editing a URL you should simply add the new URL. This ensures that the page remains accessible from the existing URL.</li>
+            <li><?= trans('boomcms::urls.help.primary') ?></li>
+            <li><?= trans('boomcms::urls.help.one-primary') ?></li>
+            <li><?= trans('boomcms::urls.help.redirect') ?></li>
+            <li><?= trans('boomcms::urls.help.make-primary') ?></li>
+            <li><?= trans('boomcms::urls.help.no-edit') ?></li>
         </ul>
 
         <ul id='b-page-urls-list'>
@@ -24,7 +20,31 @@
                 </li>
             <?php endforeach ?>
         </ul>
+    </section>
 
-        <?= $button('plus', 'add-url', ['class' => 'b-urls-add b-button-withtext']) ?>
+    <section>
+        <h1><?= trans('boomcms::urls.add.heading') ?></h1>
+
+        <ul>
+            <li><?= trans('boomcms::urls.add.lowercase') ?></li>
+            <li><?= trans('boomcms::urls.add.nospaces') ?></li>
+            <li><?= trans('boomcms::urls.add.hyphens') ?></li>
+            <li><?= trans('boomcms::urls.add.nosurprises') ?></li>
+            <li><?= trans('boomcms::urls.add.keywords') ?></li>
+        </ul>
+
+        <form>
+            <label for="url">
+                <?= trans('boomcms::urls.add.new') ?>
+            </label>
+
+            <p>
+                <input type='text' name='url' id='url' placeholder='<?= trans('boomcms::urls.add.placeholder') ?>' />
+
+                <button type="submit">
+                    <span class="fa fa-plus"></span>
+                </button>
+            </p>
+        </form>
     </section>
 </div>

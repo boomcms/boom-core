@@ -1,4 +1,8 @@
 #b-page-urls {
+	li {
+		max-width: 700px;
+	}
+
 	&-list {
 		padding-left: 0;
 		width: 100%;
@@ -6,11 +10,12 @@
 		margin-top: 2em;
 		border-top: 1px solid @lightest-grey;
 		border-bottom: 1px solid @lightest-grey;
+		max-width: 100rem;
 
 		li {
 			overflow: hidden;
-			line-height: initial;
 			color: @darkest-grey;
+			max-width: 100%;
 
 			&:nth-of-type(odd) {
 				background: @white;
@@ -39,11 +44,15 @@
 
 			label {
 				cursor: pointer;
-				padding: 0.7em;
+				padding: 0.9rem;
 				margin: 0;
 				display: inline;
 				float: right;
 				width: calc(~"100% - 10rem");
+
+				&:hover, &:focus {
+					color: @blue;
+				}
 			}
 
 			.b-page-urls-primary-indicator, .b-urls-remove {
@@ -80,23 +89,21 @@
 		}
 	}
 
-	.b-urls-add {
-		margin-top: 0;
-	}
-}
-
-#b-form-addurl {
-	margin-top: 2rem;
-	width: 100%;
-
-	label {
+	form {
+		margin-top: 5rem;
+		width: 100%;
+		max-width: 100rem;
 		position: relative;
 		overflow: hidden;
-		width: 100%;
 
-		span {
+		label {
 			position: absolute;
 			top: -1000%;
+		}
+
+		p {
+			position: relative;
+			max-width: 100%;
 		}
 
 		input {
@@ -104,6 +111,26 @@
 			width: 100%;
 			height: auto;
 			line-height: 2em;
+
+			&:focus + button {
+				display: block;
+			}
+		}
+
+		button {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			display: none;
+			background: none;
+			border: 0;
+			padding: 0 1rem;
+
+			&:hover, &:focus {
+				color: @blue;
+				display: block;
+			}
 		}
 	}
 }

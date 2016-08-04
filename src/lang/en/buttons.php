@@ -7,7 +7,6 @@ return [
     'add-tag'               => 'Add tag',
     'add-tag-group'         => 'Add tag group',
     'add-tags'              => 'Add tags',
-    'add-url'               => 'Add URL',
     'cancel'                => 'Cancel',
     'clear-filters'         => 'Clear filters',
     'clear-selection'       => 'Clear selection',

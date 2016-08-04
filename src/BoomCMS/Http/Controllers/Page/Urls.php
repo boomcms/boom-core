@@ -23,15 +23,6 @@ class Urls extends Controller
         $this->authorize('editUrls', $page);
     }
 
-    public function create(Page $page)
-    {
-        $this->auth($page);
-
-        return view("$this->viewPrefix.add", [
-            'page' => $page,
-        ]);
-    }
-
     public function index(Page $page)
     {
         $this->auth($page);

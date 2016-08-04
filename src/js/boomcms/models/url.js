@@ -2,28 +2,7 @@ function boomPageUrl(id, pageId) {
 	this.id = id;
 	this.pageId = pageId;
 
-	boomPageUrl.prototype.add = function() {
-		var url = this,
-			deferred = new $.Deferred(),
-			dialog;
-
-		dialog = new boomDialog({
-			url : '/boomcms/page/' + this.pageId + '/urls/create',
-			title : 'Add URL',
-			width : 700
-		}).done(function() {
-			var location = dialog.contents.find('input[name=url]').val();
-
-			url.addWithLocation(location)
-				.done(function() {
-					deferred.resolve();
-				});
-		});
-
-		return deferred;
-	};
-
-	boomPageUrl.prototype.addWithLocation = function(location) {
+	boomPageUrl.prototype.add = function(location) {
 		var deferred = new $.Deferred(),
 			pageId = this.pageId;
 
