@@ -8,13 +8,15 @@
         <div id="b-linkset-links">
             <h1>All links</h1>
 
-            <ul>
-                <?php foreach ($chunk->getLinks() as $link): ?>
-                    <li><a class="b-linkset-link" href='#' data-text="<?= $link->getTextAttribute() ?>" data-page-id="<?= $link->getTargetPageId() ?>" data-url="<?= $link->getUrl() ?>" data-title="<?= $link->getTitle() ?>" data-asset="<?= $link->getAssetId() ?>"><?= $link->getTitle() ?></a></li>
-                <?php endforeach ?>
-            </ul>
+            <?php if (count($chunk->getLinks())): ?>
+                <ul>
+                    <?php foreach ($chunk->getLinks() as $link): ?>
+                        <li><a class="b-linkset-link" href='#' data-text="<?= $link->getTextAttribute() ?>" data-page-id="<?= $link->getTargetPageId() ?>" data-url="<?= $link->getUrl() ?>" data-title="<?= $link->getTitle() ?>" data-asset="<?= $link->getAssetId() ?>"><?= $link->getTitle() ?></a></li>
+                    <?php endforeach ?>
+                </ul>
+            <?php else: ?>
+                <ul></ul>
 
-            <?php if (!count($chunk->getLinks())): ?>
                 <p class="none">This linkset does not contain any links.</p>
             <?php endif ?>
         </div>
