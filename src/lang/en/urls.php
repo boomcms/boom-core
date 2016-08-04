@@ -3,11 +3,11 @@
 return [
     'heading' => 'Existing URLs',
     'help'    => [
-        'primary' => 'The highlighted URL indicates the page\'s primary URL',
-        'one-primary' => 'You may only have one primary URL for the page which cannot be deleted',
-        'redirect' => 'All non-primary URLs will redirect to the primary URL',
+        'primary'      => 'The highlighted URL indicates the page\'s primary URL',
+        'one-primary'  => 'You may only have one primary URL for the page which cannot be deleted',
+        'redirect'     => 'All non-primary URLs will redirect to the primary URL',
         'make-primary' => 'Click on a URL to make it the primary URL for the page',
-        'no-edit' => 'There is no \'edit\' URL. Instead of editing a URL you should simply add the new URL. This ensures that the page remains accessible from the existing URL',
+        'no-edit'      => 'There is no \'edit\' URL. Instead of editing a URL you should simply add the new URL. This ensures that the page remains accessible from the existing URL',
     ],
     'add' => [
         'heading'     => 'Add URL',
