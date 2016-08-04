@@ -90,7 +90,7 @@ class Asset extends BaseChunk
      */
     public function hasContent()
     {
-        return $this->getAssetId() != 0;
+        return !empty($this->getAssetId());
     }
 
     /**
