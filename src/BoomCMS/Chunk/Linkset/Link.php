@@ -17,6 +17,9 @@ class Link
      */
     protected $link;
 
+    /**
+     * @param array $attrs
+     */
     public function __construct($attrs)
     {
         $this->attrs = $attrs;
@@ -26,11 +29,21 @@ class Link
         }
     }
 
+    /**
+     * Returns the ID of the link's associated asset.
+     *
+     * @return int
+     */
     public function getAssetId()
     {
         return $this->attrs['asset_id'];
     }
 
+    /**
+     * Returns the database ID of the link.
+     *
+     * @return int
+     */
     public function getId()
     {
         return $this->attrs['id'];
@@ -48,6 +61,11 @@ class Link
         return $this->link;
     }
 
+    /**
+     * Alias for getLink().
+     *
+     * @return Link
+     */
     public function getTarget()
     {
         return $this->getLink();
@@ -92,6 +110,11 @@ class Link
         return isset($this->attrs['text']) ? $this->attrs['text'] : '';
     }
 
+    /**
+     * Returns the link title.
+     *
+     * @return string
+     */
     public function getTitle()
     {
         return (isset($this->attrs['title']) && $this->attrs['title']) ?
@@ -99,16 +122,31 @@ class Link
             $this->getLink()->getTitle();
     }
 
+    /**
+     * Returns the link URL.
+     *
+     * @return string
+     */
     public function getUrl()
     {
         return $this->attrs['url'];
     }
 
+    /**
+     * Returns true if the link is an  internal link.
+     *
+     * @return bool
+     */
     public function isInternal()
     {
         return $this->getLink()->isInternal();
     }
 
+    /**
+     * Returns true if the link is an external link.
+     *
+     * @return bool
+     */
     public function isExternal()
     {
         return !$this->isInternal();
