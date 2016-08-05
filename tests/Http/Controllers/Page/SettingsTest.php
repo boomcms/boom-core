@@ -26,7 +26,8 @@ class SettingsTest extends BaseControllerTest
     }
 
     public function testGetInfo()
-    {        $this->page
+    {
+        $this->page
             ->shouldReceive('getCreatedBy')
             ->andReturn(new Person());
 
