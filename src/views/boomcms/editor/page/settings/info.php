@@ -7,7 +7,9 @@
             <dd><?= $page->getCreatedTime()->format('d M Y H:i') ?></dd>
         <?php endif ?>
 
-        <dt><?= trans('boomcms::settings.info.created-by') ?></dt>
-        <dd><?= $page->getCreatedBy()->getName() ?>&nbsp;<small><?= $page->getCreatedBy()->getEmail() ?></small></dd>
+        <?php if ($page->getCreatedBy()): ?>
+            <dt><?= trans('boomcms::settings.info.created-by') ?></dt>
+            <dd><?= $page->getCreatedBy()->getName() ?>&nbsp;<small><?= $page->getCreatedBy()->getEmail() ?></small></dd>
+        <?php endif ?>
     </dl>
 </div>
