@@ -33,9 +33,9 @@ return [
     'rotate-right'          => 'Rotate right 90&deg;',
     'save'                  => 'Save',
     'save-changes'          => 'Save changes',
+    'search-address'        => 'Search address',
     'search-assets'         => 'Search assets',
     'select-asset'          => 'Select an asset',
-    'set-location-postcode' => 'Set location from postcode',
     'set-location-latlng'   => 'Set location from Lat / Long',
     'toolbar'               => [
         'add'       => 'Add a new page as a child of the current page',

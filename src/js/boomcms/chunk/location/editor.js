@@ -25,7 +25,7 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 			.on('click', '#b-location-set', function(e) {
 				e.preventDefault();
 
-				locationEditor.setMapLocationFromPostcode();
+				locationEditor.setMapLocationFromAddress();
 			})
 			.on('click', '#b-location-latlng', function(e) {
 				e.preventDefault();
@@ -61,8 +61,8 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 		return (this.marker)? this.marker.getLatLng() : {lat: 0, lng: 0};
 	};
 
-	boomChunkLocationEditor.prototype.getPostcode = function() {
-		return this.element.find('input[name=postcode]').val();
+	boomChunkLocationEditor.prototype.getSearchAddress = function() {
+		return this.element.find('input[name=search-address]').val();
 	};
 
 	boomChunkLocationEditor.prototype.getTitle = function() {
@@ -72,7 +72,8 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 	boomChunkLocationEditor.prototype.geocode = function(location) {
 		return $.get('//nominatim.openstreetmap.org/search', {
 			q: location,
-			format: 'json'
+			format: 'json',
+			limit: 1
 		});
 	};
 
@@ -157,17 +158,18 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 		this.setMapLocation(Dms.parseDMS(lat), Dms.parseDMS(lng));
 	};
 
-	boomChunkLocationEditor.prototype.setMapLocationFromPostcode = function() {
+	boomChunkLocationEditor.prototype.setMapLocationFromAddress = function() {
 		var locationEditor = this,
-			postcode = this.getPostcode(),
-			location = this.geocode(postcode)
-				.done(function(response) {
-					if (response.length) {
-						locationEditor.setMapLocation(response[0].lat, response[0].lon);
-					} else {
-						new boomAlert("No location was found matching the postcode supplied");
-					}
-				});
+			address = this.getSearchAddress();
+		
+		this.geocode(address)
+			.done(function(response) {
+				if (response.length) {
+					locationEditor.setMapLocation(response[0].lat, response[0].lon);
+				} else {
+					new boomAlert("No location was found matching the postcode supplied");
+				}
+			});
 	};
 
 	boomChunkLocationEditor.prototype.toggleElements = function(options) {
