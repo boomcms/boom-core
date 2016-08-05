@@ -50202,6 +50202,7 @@ $.widget('ui.chunkPageVisibility', {
 	_create: function() {
 		this.menu = this.element.find('#b-topbar');
 		this.uploader = this.element.find('#b-assets-upload-form');
+		this.setAssetsPerPage();
 		this.bind();
 
 		this.getAssets();
@@ -50279,6 +50280,21 @@ $.widget('ui.chunkPageVisibility', {
 		this.selection.add(assetId);
 
 		this.toggleButtons();
+	},
+
+	setAssetsPerPage: function() {
+		var rowHeight = 200,
+			avgAspectRatio = 1.5,
+			height = this.element.find('#b-assets-view-thumbs').height(),
+			rows = Math.ceil(height / rowHeight),
+			perrow = Math.ceil(document.documentElement.clientWidth / (rowHeight * avgAspectRatio)),
+			perpage = Math.ceil(rows * perrow);
+
+		if (perpage < 30) {
+			perpage = 30;
+		}
+
+		this.postData.limit = perpage;
 	},
 
 	sortBy: function(sort) {
