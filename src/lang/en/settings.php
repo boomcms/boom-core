@@ -73,7 +73,7 @@ return [
         'from-page' => 'Use an image from the page',
     ],
     'info'    => [
-        'heading' => 'Page information',
+        'heading'    => 'Page information',
         'created-by' => 'Created by',
         'created-at' => 'Created at',
     ],
