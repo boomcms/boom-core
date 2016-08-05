@@ -50059,7 +50059,6 @@ $.widget('ui.chunkPageVisibility', {
 
 	postData: {
 		page: 1,
-		limit: 30,
 		order: 'last_modified desc'
 	},
 
@@ -50210,6 +50209,8 @@ $.widget('ui.chunkPageVisibility', {
 
 	getAssets: function() {
 		var assetManager = this;
+		
+		this.postData.limit = this.perpage;
 
 		return $.post(this.listUrl, this.postData)
 			.done(function(response) {
@@ -50256,7 +50257,6 @@ $.widget('ui.chunkPageVisibility', {
 	removeFilters: function() {
 		this.postData = {
 			page: 1,
-			limit: 30,
 			order: 'last_modified desc'
 		};
 
@@ -50294,7 +50294,7 @@ $.widget('ui.chunkPageVisibility', {
 			perpage = 30;
 		}
 
-		this.postData.limit = perpage;
+		this.perpage = perpage;
 	},
 
 	sortBy: function(sort) {

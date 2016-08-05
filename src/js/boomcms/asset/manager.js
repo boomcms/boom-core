@@ -4,7 +4,6 @@ $.widget('boom.assetManager', {
 
 	postData: {
 		page: 1,
-		limit: 30,
 		order: 'last_modified desc'
 	},
 
@@ -155,6 +154,8 @@ $.widget('boom.assetManager', {
 
 	getAssets: function() {
 		var assetManager = this;
+		
+		this.postData.limit = this.perpage;
 
 		return $.post(this.listUrl, this.postData)
 			.done(function(response) {
@@ -201,7 +202,6 @@ $.widget('boom.assetManager', {
 	removeFilters: function() {
 		this.postData = {
 			page: 1,
-			limit: 30,
 			order: 'last_modified desc'
 		};
 
@@ -239,7 +239,7 @@ $.widget('boom.assetManager', {
 			perpage = 30;
 		}
 
-		this.postData.limit = perpage;
+		this.perpage = perpage;
 	},
 
 	sortBy: function(sort) {
