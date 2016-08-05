@@ -42,7 +42,7 @@ class Page extends Model implements PageInterface
     const ATTR_KEYWORDS = 'keywords';
     const ATTR_DESCRIPTION = 'description';
     const ATTR_CREATED_BY = 'created_by';
-    const ATTR_CREATED_AT = 'created_at';
+    const ATTR_CREATED_AT = 'created_time';
     const ATTR_PRIMARY_URI = 'primary_uri';
     const ATTR_FEATURE_IMAGE = 'feature_image_id';
     const ATTR_PARENT = 'parent_id';
