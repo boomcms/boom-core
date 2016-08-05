@@ -162,6 +162,27 @@
 			max-height: 400px;
 		}
 	}
+
+	dl {
+		overflow: hidden;
+		margin-top: -1rem;
+
+		dt, dd {
+			display: inline-block;
+			margin: 0;
+			float: left;
+			margin-top: 1rem;
+		}
+
+		dt {
+			font-weight: bold;
+			width: 20rem;
+		}
+
+		dd {
+			width: calc(~"100% - 20rem");
+		}
+	}
 }
 
 #b-page-settings-toolbar {

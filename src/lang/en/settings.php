@@ -15,6 +15,7 @@ return [
         'visibility' => 'Visibility',
         'drafts'     => 'Draft status',
         'relations'  => 'Relationships',
+        'info'       => 'Page information',
     ],
     'admin' => [
         'heading'               => 'Admin settings',
@@ -70,6 +71,11 @@ return [
     'feature' => [
         'heading'   => 'Page feature image',
         'from-page' => 'Use an image from the page',
+    ],
+    'info'    => [
+        'heading' => 'Page information',
+        'created-by' => 'Created by',
+        'created-at' => 'Created at',
     ],
     'navigation' => [
         'heading'   => 'Page navigation settings',

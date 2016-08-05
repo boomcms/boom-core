@@ -104,6 +104,20 @@ class Settings extends Controller
     }
 
     /**
+     * Show the page information.
+     *
+     * @param Page $page
+     *
+     * @return View
+     */
+    public function getInfo(Page $page)
+    {
+        return view("$this->viewPrefix.info", [
+            'page' => $page,
+        ]);
+    }
+
+    /**
      * Show the page navigation settings.
      *
      * @param Page $page

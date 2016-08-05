@@ -24,6 +24,13 @@ class SettingsTest extends BaseControllerTest
         $this->page = m::mock(Page::class)->makePartial();
     }
 
+    public function testGetInfo()
+    {
+        $view = view('boomcms::editor.page.settings.info', ['page' => $this->page]);
+
+        $this->assertEquals($view, $this->controller->getInfo($this->page));
+    }
+
     public function testPostVisiblityMakesPageInvisible()
     {
         $this->requireRole('publish', $this->page);
