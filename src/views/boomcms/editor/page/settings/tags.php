@@ -40,7 +40,7 @@
     <script type="text/template" id="b-tags-add">
         <form class="create-tag">
             <input type="text" value="" class="b-tags-add-name" placeholder="<?= trans('boomcms::settings.tags.new-tag-placeholder') ?>" />
-            <?= $button('plus', 'add-tag') ?>
+            <?= $button('plus', 'add-tag', ['tabindex' => -1]) ?>
         </form>
     </script>
 
