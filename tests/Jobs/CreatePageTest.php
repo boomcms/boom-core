@@ -8,7 +8,6 @@ use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Support\Facades\Event;
 use Mockery as m;
 
 class CreatePageTest extends AbstractTestCase
