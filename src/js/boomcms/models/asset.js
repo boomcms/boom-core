@@ -4,8 +4,20 @@
 	BoomCMS.Asset = BoomCMS.Model.extend({
 		urlRoot: BoomCMS.urlRoot + 'asset',
 
+		getAspectRatio: function() {
+			return this.getWidth() / this.getHeight();
+		},
+
 		getEmbedCode: function() {
 			return $.get(this.getUrl('embed'));
+		},
+
+		getHeight: function() {
+			return parseFloat(this.get('height'));
+		},
+
+		getTitle: function() {
+			return this.get('title');
 		},
 	
 		getUrl: function(action, width, height) {
@@ -26,6 +38,10 @@
 			}
 
 			return url;
+		},
+
+		getWidth: function() {
+			return parseFloat(this.get('width'));
 		}
 	});
 }(BoomCMS));

@@ -3,6 +3,9 @@
 
 	BoomCMS.AssetManager.Uploader = Backbone.View.extend({
 		tagName: 'div',
-		template: _.template($('#b-assets-upload').html())
+
+		initialize: function() {
+			this.template = _.template($('#b-assets-upload').html());
+		}
 	});
 }(jQuery, Backbone, BoomCMS));

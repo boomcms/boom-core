@@ -111,7 +111,6 @@ module.exports = function(grunt) {
 					'src/js/boomcms/asset/justify.js',
 					'src/js/boomcms/asset/tagAutocomplete.js',
 					'src/js/boomcms/asset/tagSearch.js',
-					'src/js/boomcms/asset/selection.js',
 					'src/js/boomcms/group/permissionsEditor.js',
 					'src/js/boomcms/imageEditor.js',
 					'src/js/boomcms/approvals.js',

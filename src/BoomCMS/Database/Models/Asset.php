@@ -38,6 +38,8 @@ class Asset extends Model implements AssetInterface
      */
     protected $latestVersion;
 
+    protected $appends = ['width', 'height'];
+
     protected $versionColumns = [
         'asset_id'   => '',
         'width'      => '',
@@ -132,6 +134,14 @@ class Asset extends Model implements AssetInterface
     public function getHeight()
     {
         return (int) $this->getLatestVersion()->getHeight();
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeightAttribute()
+    {
+        return $this->getHeight();
     }
 
     public function getEmbedHtml($height = null, $width = null)
@@ -269,6 +279,14 @@ class Asset extends Model implements AssetInterface
     public function getWidth()
     {
         return (int) $this->getLatestVersion()->getWidth();
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidthAttribute()
+    {
+        return $this->getWidth();
     }
 
     /**

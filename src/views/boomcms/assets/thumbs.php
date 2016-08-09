@@ -3,8 +3,8 @@
 </div>
 
 <script type="text/template" id="b-asset-thumb">
-    <div style="height: 160px; width: <%= Math.floor(160 * asset.getAspectRatio()) %>px">
-        <div href="#asset/<%= asset.getId() %>" class="thumb">
+    <div style="height: 160px; width: <%= Math.floor(160 * asset.getAspectRatio()) %>px" data-asset="<%= asset.getId() %>">
+        <div class="thumb">
             <img class="loading" />
 
             <div class="pace loading">
@@ -28,7 +28,7 @@
                 </p>
             </div>
 
-            <a href="#" class="edit">
+            <a href="#asset/<%= asset.getId() %>" class="edit">
                 <span class="fa fa-edit"></span>
             </a>
         </div>
