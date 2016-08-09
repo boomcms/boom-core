@@ -5,6 +5,7 @@ namespace BoomCMS\Tests\Http\Controllers;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
+use BoomCMS\Events\PageWasReverted;
 use BoomCMS\Http\Controllers\Page\PageController as Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -55,6 +56,8 @@ class PageControllerTest extends BaseControllerTest
         $page = new Page();
 
         $this->requireRole('edit', $page);
+
+        $this->expectsEvents(PageWasReverted::class);
 
         PageVersionFacade::shouldReceive('deleteDrafts')
             ->once()

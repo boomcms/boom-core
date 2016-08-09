@@ -32,9 +32,7 @@ class CreatePageTest extends AbstractTestCase
         $this->parent = $this->validPage();
         $this->parent->{Page::ATTR_CHILD_TEMPLATE} = 1;
 
-        Event::shouldReceive('fire')
-            ->once()
-            ->with(m::type(PageWasCreated::class));
+        $this->expectsEvents(PageWasCreated::class);
     }
 
     public function testSiteIdOfNewPageIsSet()
