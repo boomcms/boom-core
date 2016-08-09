@@ -104,6 +104,20 @@ class Settings extends Controller
     }
 
     /**
+     * Show the page information.
+     *
+     * @param Page $page
+     *
+     * @return View
+     */
+    public function getInfo(Page $page)
+    {
+        return view("$this->viewPrefix.info", [
+            'page' => $page,
+        ]);
+    }
+
+    /**
      * Show the page navigation settings.
      *
      * @param Page $page
@@ -140,7 +154,7 @@ class Settings extends Controller
         $this->authorize('publish', $page);
 
         return view("$this->viewPrefix.visibility", [
-            'page'        => $page,
+            'page' => $page,
         ]);
     }
 
@@ -289,16 +303,21 @@ class Settings extends Controller
 
         $wasVisible = $page->isVisible();
 
-        $visibleFrom = $request->input('visible_from');
-        $visibleFrom = $visibleFrom > 0 ? new DateTime($visibleFrom) : null;
+        $page->setVisibleAtAnyTime($request->input('visible'));
 
-        $visibleTo = ($request->has('toggle_visible_to')) ?
-            new DateTime('@'.$request->input('visible_to'))
-            : null;
+        if ($page->isVisibleAtAnyTime()) {
+            $visibleFrom = $request->input('visible_from') > 0 ?
+                new DateTime($visibleFrom)
+                : null;
 
-        $page
-            ->setVisibleFrom($visibleFrom)
-            ->setVisibleTo($visibleTo);
+            $visibleTo = ($request->has('toggle_visible_to')) ?
+                new DateTime($request->input('visible_to'))
+                : null;
+
+            $page
+                ->setVisibleFrom($visibleFrom)
+                ->setVisibleTo($visibleTo);
+        }
 
         PageFacade::save($page);
 

@@ -15,6 +15,7 @@ use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +25,7 @@ class Page extends Model implements PageInterface
     use SoftDeletes;
 
     const ATTR_SEQUENCE = 'sequence';
+    const ATTR_VISIBLE = 'visible';
     const ATTR_VISIBLE_FROM = 'visible_from';
     const ATTR_VISIBLE_TO = 'visible_to';
     const ATTR_INTERNAL_NAME = 'internal_name';
@@ -40,7 +42,7 @@ class Page extends Model implements PageInterface
     const ATTR_KEYWORDS = 'keywords';
     const ATTR_DESCRIPTION = 'description';
     const ATTR_CREATED_BY = 'created_by';
-    const ATTR_CREATED_AT = 'created_at';
+    const ATTR_CREATED_AT = 'created_time';
     const ATTR_PRIMARY_URI = 'primary_uri';
     const ATTR_FEATURE_IMAGE = 'feature_image_id';
     const ATTR_PARENT = 'parent_id';
@@ -85,6 +87,7 @@ class Page extends Model implements PageInterface
         self::ATTR_PARENT                      => 'integer',
         self::ATTR_VISIBLE_IN_NAV              => 'boolean',
         self::ATTR_VISIBLE_IN_NAV_CMS          => 'boolean',
+        self::ATTR_VISIBLE                     => 'boolean',
     ];
 
     /**
@@ -474,23 +477,23 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @return null|DateTime
+     * @return DateTime
      */
     public function getVisibleFrom()
     {
-        if ($this->{self::ATTR_VISIBLE_FROM} < 1) {
-            return;
-        }
+        $timestamp = $this->{self::ATTR_VISIBLE_FROM} ?: time();
 
-        return new DateTime('@'.$this->{self::ATTR_VISIBLE_FROM});
+        return new DateTime('@'.$timestamp);
     }
 
     /**
-     * @return DateTime
+     * Returns the visible to date, or null if none is set.
+     *
+     * @return null|DateTime
      */
     public function getVisibleTo()
     {
-        return $this->{self::ATTR_VISIBLE_TO} == 0 ? null : new DateTime('@'.$this->{self::ATTR_VISIBLE_TO});
+        return empty($this->{self::ATTR_VISIBLE_TO}) ? null : new DateTime('@'.$this->{self::ATTR_VISIBLE_TO});
     }
 
     /**
@@ -501,9 +504,14 @@ class Page extends Model implements PageInterface
         return $this->children()->exists();
     }
 
+    /**
+     * Whether the page has a feature image defined.
+     *
+     * @return bool
+     */
     public function hasFeatureImage()
     {
-        return $this->getFeatureImageId() != 0;
+        return !empty($this->getFeatureImageId());
     }
 
     /**
@@ -539,14 +547,23 @@ class Page extends Model implements PageInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isVisibleAtAnyTime()
+    {
+        return isset($this->attributes[self::ATTR_VISIBLE])
+            && (bool) $this->attributes[self::ATTR_VISIBLE] === true;
+    }
+
+    /**
      * @param DateTime $time
      *
      * @return bool
      */
     public function isVisibleAtTime(DateTime $time)
     {
-        return $this->{self::ATTR_VISIBLE_FROM} > 0 &&
-            $this->{self::ATTR_VISIBLE_FROM} <= $time->getTimestamp() &&
+        return $this->isVisibleAtAnyTime() &&
+            $this->getVisibleFrom()->getTimestamp() <= $time->getTimestamp() &&
             ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $time->getTimestamp());
     }
 
@@ -855,6 +872,18 @@ class Page extends Model implements PageInterface
     }
 
     /**
+     * @param bool $visible
+     *
+     * @return $this
+     */
+    public function setVisibleAtAnyTime($visible)
+    {
+        $this->attributes[self::ATTR_VISIBLE] = $visible;
+
+        return $this;
+    }
+
+    /**
      * @param DateTime $time
      *
      * @return $this
@@ -969,6 +998,12 @@ class Page extends Model implements PageInterface
     }
 
     /**
+     * Scope for getting pages with the current version.
+     *
+     * This doesn't work as a global scope as changing the select columns breaks queries which add select columns.
+     *
+     * e.g. finding pages by related tags.
+     *
      * @param Builder $query
      *
      * @return Builder
@@ -983,11 +1018,21 @@ class Page extends Model implements PageInterface
             ->addSelect('pages.*')
             ->join(DB::raw('('.$subquery->toSql().') as v2'), 'pages.id', '=', 'v2.page_id')
             ->mergeBindings($subquery)
-            ->join('page_versions as version', function ($join) {
+            ->join('page_versions as version', function (JoinClause $join) {
                 $join
                     ->on('pages.id', '=', 'version.page_id')
                     ->on('v2.id', '=', 'version.id');
             });
+    }
+
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeIsVisible(Builder $query)
+    {
+        return $query->isVisibleAtTime(time());
     }
 
     /**
@@ -999,8 +1044,9 @@ class Page extends Model implements PageInterface
     public function scopeIsVisibleAtTime(Builder $query, $time)
     {
         return $query
-            ->whereBetween('visible_from', [1, $time])
-            ->where(function ($query) use ($time) {
+            ->where('visible', '=', true)
+            ->where('visible_from', '<=', $time)
+            ->where(function (Builder $query) use ($time) {
                 $query
                     ->where('visible_to', '>=', $time)
                     ->orWhere('visible_to', '=', 0);

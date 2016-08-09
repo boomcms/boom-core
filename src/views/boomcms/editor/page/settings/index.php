@@ -1,6 +1,20 @@
 <div class='b-page-settings'>
     <div class="b-page-settings-menu">
         <ul>
+            <li class="b-page-settings-close">
+                <a href="#">
+                    <span class="fa fa-close"></span>
+                    <?= trans('boomcms::settings.menu.close') ?>
+                </a>
+            </li>
+
+            <li class="selected">
+                <a href="#" data-b-page-setting="info">
+                    <span class="fa fa-info"></span>
+                    <?= trans('boomcms::settings.menu.info') ?>
+                </a>
+            </li>
+
             <?php if (Gate::allows('editTemplate', $page)): ?>
                 <li>
                     <a href="#" data-b-page-setting="template">
@@ -104,13 +118,6 @@
                     </a>
                 </li>
             <?php endif ?>
-
-            <li class="b-page-settings-close">
-                <a href="#">
-                    <span class="fa fa-close"></span>
-                    <?= trans('boomcms::settings.menu.close') ?>
-                </a>
-            </li>
         </ul>
 
         <a href="#" class="toggle">
@@ -120,5 +127,7 @@
         </a>
     </div>
 
-    <div class="b-page-settings-content"></div>
+    <div class="b-page-settings-content">
+        <?= view('boomcms::editor.page.settings.info', ['page' => $page]) ?>
+    </div>
 </div>

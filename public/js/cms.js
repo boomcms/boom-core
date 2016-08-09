@@ -45698,28 +45698,7 @@ $(function() {
 	this.id = id;
 	this.pageId = pageId;
 
-	boomPageUrl.prototype.add = function() {
-		var url = this,
-			deferred = new $.Deferred(),
-			dialog;
-
-		dialog = new boomDialog({
-			url : '/boomcms/page/' + this.pageId + '/urls/create',
-			title : 'Add URL',
-			width : 700
-		}).done(function() {
-			var location = dialog.contents.find('input[name=url]').val();
-
-			url.addWithLocation(location)
-				.done(function() {
-					deferred.resolve();
-				});
-		});
-
-		return deferred;
-	};
-
-	boomPageUrl.prototype.addWithLocation = function(location) {
+	boomPageUrl.prototype.add = function(location) {
 		var deferred = new $.Deferred(),
 			pageId = this.pageId;
 
@@ -47475,7 +47454,7 @@ $.widget( 'boom.pageToolbar', {
 		var url = new boomPageUrl(null, this.page.id),
 			urlEditor = this;
 
-		url.add()
+		url.add(this.element.find('form input[type=text]').val())
 			.done(function(response) {
 				new boomNotification('Url added').show();
 
@@ -47502,14 +47481,14 @@ $.widget( 'boom.pageToolbar', {
 
 				urlEditor.delete($(e.target).closest('li'));
 			})
-			.on('click', '.b-urls-add', function() {
+			.on('submit', 'form', function(e) {
+				e.preventDefault();
+
 				urlEditor.add();
 			});
 	},
 
 	_create: function() {
-		var urlEditor = this;
-
 		this.page = this.options.page;
 		this.list_url = this.baseUrl.replace('{page}', this.page.id);
 
@@ -47575,7 +47554,7 @@ $.widget( 'boom.pageToolbar', {
 		this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');
 		this.toggleVisibleTo(this.elements.visibleToToggle.is(':checked'));
 	},
-
+	
 	_create: function() {
 		this.findElements();
 		this.bind();
@@ -47604,11 +47583,7 @@ $.widget( 'boom.pageToolbar', {
 		var visibilityEditor = this;
 
 		if (this.changed) {
-			var data = this.element.find('#b-page-visible option:selected').val() === '1' ?
-				this.element.find('form').serialize() :
-				{'visible_from': 0};
-
-			$.post(this.baseUrl.replace('{page}', this.options.page.id), data)
+			$.post(this.baseUrl.replace('{page}', this.options.page.id), this.element.find('form').serialize())
 				.done(function(response) {
 					new boomNotification('Page visibility saved').show();
 
@@ -47649,7 +47624,8 @@ $.widget( 'boom.pageToolbar', {
 			visibleTo.blur();
 		}
 	}
-});;/**
+});
+;/**
 @fileOverview Boom interface for wysihtml5.
 */
 /**
@@ -49160,9 +49136,8 @@ $.widget('ui.chunkPageVisibility', {
 	boomChunkLocationEditor.prototype.bind = function() {
 		var locationEditor = this;
 
-		L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> contributors | Tiles Courtesy of <a href="http://www.mapquest.com/" title="MapQuest" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" width="16" height="16">',
-			subdomains: ['otile1','otile2','otile3','otile4']
+		L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
+			attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
 		}).addTo(this.map);
 
 		if (this.mapElement.attr('data-lat') != 0 && this.mapElement.attr('data-lng') != 0) {
@@ -49177,7 +49152,7 @@ $.widget('ui.chunkPageVisibility', {
 			.on('click', '#b-location-set', function(e) {
 				e.preventDefault();
 
-				locationEditor.setMapLocationFromPostcode();
+				locationEditor.setMapLocationFromAddress();
 			})
 			.on('click', '#b-location-latlng', function(e) {
 				e.preventDefault();
@@ -49213,8 +49188,8 @@ $.widget('ui.chunkPageVisibility', {
 		return (this.marker)? this.marker.getLatLng() : {lat: 0, lng: 0};
 	};
 
-	boomChunkLocationEditor.prototype.getPostcode = function() {
-		return this.element.find('input[name=postcode]').val();
+	boomChunkLocationEditor.prototype.getSearchAddress = function() {
+		return this.element.find('input[name=search-address]').val();
 	};
 
 	boomChunkLocationEditor.prototype.getTitle = function() {
@@ -49224,7 +49199,8 @@ $.widget('ui.chunkPageVisibility', {
 	boomChunkLocationEditor.prototype.geocode = function(location) {
 		return $.get('//nominatim.openstreetmap.org/search', {
 			q: location,
-			format: 'json'
+			format: 'json',
+			limit: 1
 		});
 	};
 
@@ -49309,17 +49285,18 @@ $.widget('ui.chunkPageVisibility', {
 		this.setMapLocation(Dms.parseDMS(lat), Dms.parseDMS(lng));
 	};
 
-	boomChunkLocationEditor.prototype.setMapLocationFromPostcode = function() {
+	boomChunkLocationEditor.prototype.setMapLocationFromAddress = function() {
 		var locationEditor = this,
-			postcode = this.getPostcode(),
-			location = this.geocode(postcode)
-				.done(function(response) {
-					if (response.length) {
-						locationEditor.setMapLocation(response[0].lat, response[0].lon);
-					} else {
-						new boomAlert("No location was found matching the postcode supplied");
-					}
-				});
+			address = this.getSearchAddress();
+		
+		this.geocode(address)
+			.done(function(response) {
+				if (response.length) {
+					locationEditor.setMapLocation(response[0].lat, response[0].lon);
+				} else {
+					new boomAlert("No location was found matching the postcode supplied");
+				}
+			});
 	};
 
 	boomChunkLocationEditor.prototype.toggleElements = function(options) {
@@ -49986,6 +49963,10 @@ $.widget('boom.assetManager', {
 	baseUrl: '/boomcms/assets/',
 	listUrl: '/boomcms/assets/get',
 
+	postData: {
+		page: 1,
+		order: 'last_modified desc'
+	},
 
 	selection: new boomAssetSelection(),
 
@@ -50126,6 +50107,7 @@ $.widget('boom.assetManager', {
 	_create: function() {
 		this.menu = this.element.find('#b-topbar');
 		this.uploader = this.element.find('#b-assets-upload-form');
+		this.setAssetsPerPage();
 		this.bind();
 
 		this.getAssets();
@@ -50133,6 +50115,8 @@ $.widget('boom.assetManager', {
 
 	getAssets: function() {
 		var assetManager = this;
+		
+		this.postData.limit = this.perpage;
 
 		return $.post(this.listUrl, this.postData)
 			.done(function(response) {
@@ -50179,7 +50163,6 @@ $.widget('boom.assetManager', {
 	removeFilters: function() {
 		this.postData = {
 			page: 1,
-			limit: 30,
 			order: 'last_modified desc'
 		};
 
@@ -50203,6 +50186,21 @@ $.widget('boom.assetManager', {
 		this.selection.add(assetId);
 
 		this.toggleButtons();
+	},
+
+	setAssetsPerPage: function() {
+		var rowHeight = 200,
+			avgAspectRatio = 1.5,
+			height = this.element.find('#b-assets-view-thumbs').height(),
+			rows = Math.ceil(height / rowHeight),
+			perrow = Math.ceil(document.documentElement.clientWidth / (rowHeight * avgAspectRatio)),
+			perpage = Math.ceil(rows * perrow);
+
+		if (perpage < 30) {
+			perpage = 30;
+		}
+
+		this.perpage = perpage;
 	},
 
 	sortBy: function(sort) {

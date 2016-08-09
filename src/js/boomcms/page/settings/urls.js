@@ -5,7 +5,7 @@ $.widget('boom.pageSettingsUrls', {
 		var url = new boomPageUrl(null, this.page.id),
 			urlEditor = this;
 
-		url.add()
+		url.add(this.element.find('form input[type=text]').val())
 			.done(function(response) {
 				new boomNotification('Url added').show();
 
@@ -32,14 +32,14 @@ $.widget('boom.pageSettingsUrls', {
 
 				urlEditor.delete($(e.target).closest('li'));
 			})
-			.on('click', '.b-urls-add', function() {
+			.on('submit', 'form', function(e) {
+				e.preventDefault();
+
 				urlEditor.add();
 			});
 	},
 
 	_create: function() {
-		var urlEditor = this;
-
 		this.page = this.options.page;
 		this.list_url = this.baseUrl.replace('{page}', this.page.id);
 

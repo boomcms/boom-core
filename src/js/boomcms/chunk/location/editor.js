@@ -9,9 +9,8 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 	boomChunkLocationEditor.prototype.bind = function() {
 		var locationEditor = this;
 
-		L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> contributors | Tiles Courtesy of <a href="http://www.mapquest.com/" title="MapQuest" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" width="16" height="16">',
-			subdomains: ['otile1','otile2','otile3','otile4']
+		L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
+			attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
 		}).addTo(this.map);
 
 		if (this.mapElement.attr('data-lat') != 0 && this.mapElement.attr('data-lng') != 0) {
@@ -26,7 +25,7 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 			.on('click', '#b-location-set', function(e) {
 				e.preventDefault();
 
-				locationEditor.setMapLocationFromPostcode();
+				locationEditor.setMapLocationFromAddress();
 			})
 			.on('click', '#b-location-latlng', function(e) {
 				e.preventDefault();
@@ -62,8 +61,8 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 		return (this.marker)? this.marker.getLatLng() : {lat: 0, lng: 0};
 	};
 
-	boomChunkLocationEditor.prototype.getPostcode = function() {
-		return this.element.find('input[name=postcode]').val();
+	boomChunkLocationEditor.prototype.getSearchAddress = function() {
+		return this.element.find('input[name=search-address]').val();
 	};
 
 	boomChunkLocationEditor.prototype.getTitle = function() {
@@ -73,7 +72,8 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 	boomChunkLocationEditor.prototype.geocode = function(location) {
 		return $.get('//nominatim.openstreetmap.org/search', {
 			q: location,
-			format: 'json'
+			format: 'json',
+			limit: 1
 		});
 	};
 
@@ -158,17 +158,18 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 		this.setMapLocation(Dms.parseDMS(lat), Dms.parseDMS(lng));
 	};
 
-	boomChunkLocationEditor.prototype.setMapLocationFromPostcode = function() {
+	boomChunkLocationEditor.prototype.setMapLocationFromAddress = function() {
 		var locationEditor = this,
-			postcode = this.getPostcode(),
-			location = this.geocode(postcode)
-				.done(function(response) {
-					if (response.length) {
-						locationEditor.setMapLocation(response[0].lat, response[0].lon);
-					} else {
-						new boomAlert("No location was found matching the postcode supplied");
-					}
-				});
+			address = this.getSearchAddress();
+		
+		this.geocode(address)
+			.done(function(response) {
+				if (response.length) {
+					locationEditor.setMapLocation(response[0].lat, response[0].lon);
+				} else {
+					new boomAlert("No location was found matching the postcode supplied");
+				}
+			});
 	};
 
 	boomChunkLocationEditor.prototype.toggleElements = function(options) {

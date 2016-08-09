@@ -19,11 +19,11 @@
         <h1><?= trans('boomcms::editor.chunk.location.set-location') ?></h1>
 
         <label class="b-postcode">
-            <span><?= trans('boomcms::editor.chunk.location.postcode') ?></span>
-            <input type="text" name="postcode" value="<?= $chunk->getPostcode() ?>" />
+            <span><?= trans('boomcms::editor.chunk.location.search-address') ?></span>
+            <input type="text" name="search-address" value="" />
         </label>
 
-        <?= $button('globe', 'set-location-postcode', ['id' => 'b-location-set', 'class' => 'b-button-withtext']) ?>
+        <?= $button('globe', 'search-address', ['id' => 'b-location-set', 'class' => 'b-button-withtext']) ?>
 
         <label class="b-lat">
             <span><?= trans('boomcms::editor.chunk.location.lat') ?></span>

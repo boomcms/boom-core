@@ -49,13 +49,6 @@ class UrlsTest extends BaseControllerTest
         $this->requireRole('editUrls', $this->page);
     }
 
-    public function testCreate()
-    {
-        $response = view('boomcms::editor.urls.add', ['page' => $this->page])->render();
-
-        $this->assertEquals($response, $this->controller->create($this->page));
-    }
-
     public function testPostAddUrlIsUnique()
     {
         $location = 'test';

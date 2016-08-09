@@ -33,6 +33,10 @@ $.widget('boom.assetManager', {
 	baseUrl: '/boomcms/assets/',
 	listUrl: '/boomcms/assets/get',
 
+	postData: {
+		page: 1,
+		order: 'last_modified desc'
+	},
 
 	selection: new boomAssetSelection(),
 
@@ -173,6 +177,7 @@ $.widget('boom.assetManager', {
 	_create: function() {
 		this.menu = this.element.find('#b-topbar');
 		this.uploader = this.element.find('#b-assets-upload-form');
+		this.setAssetsPerPage();
 		this.bind();
 
 		this.getAssets();
@@ -180,6 +185,8 @@ $.widget('boom.assetManager', {
 
 	getAssets: function() {
 		var assetManager = this;
+		
+		this.postData.limit = this.perpage;
 
 		return $.post(this.listUrl, this.postData)
 			.done(function(response) {
@@ -226,7 +233,6 @@ $.widget('boom.assetManager', {
 	removeFilters: function() {
 		this.postData = {
 			page: 1,
-			limit: 30,
 			order: 'last_modified desc'
 		};
 
@@ -250,6 +256,21 @@ $.widget('boom.assetManager', {
 		this.selection.add(assetId);
 
 		this.toggleButtons();
+	},
+
+	setAssetsPerPage: function() {
+		var rowHeight = 200,
+			avgAspectRatio = 1.5,
+			height = this.element.find('#b-assets-view-thumbs').height(),
+			rows = Math.ceil(height / rowHeight),
+			perrow = Math.ceil(document.documentElement.clientWidth / (rowHeight * avgAspectRatio)),
+			perpage = Math.ceil(rows * perrow);
+
+		if (perpage < 30) {
+			perpage = 30;
+		}
+
+		this.perpage = perpage;
 	},
 
 	sortBy: function(sort) {

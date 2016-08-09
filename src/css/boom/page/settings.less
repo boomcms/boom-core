@@ -26,9 +26,8 @@
 
 		.group {
 			border-top: 3px solid @white;
-			border-bottom: 3px solid @white;
-			margin: 0.75rem 0;
-			padding: 0.75rem 0;
+			margin: 0.75rem 0 0 0;
+			padding: 0.75rem 0 0 0;
 		}
 
 		li {
@@ -37,7 +36,7 @@
 			position: relative;
 
 			&.b-page-settings-close {
-				margin-top: 2em;
+				margin-bottom: 2rem;
 			}
 
 			&.selected a {
@@ -97,7 +96,7 @@
 		}
 
 		section + section {
-			margin-top: 1.5em;
+			margin-top: 5rem;
 		}
 
 		input[type=text], select, textarea {
@@ -160,6 +159,27 @@
 
 		.boom-tree {
 			max-height: 400px;
+		}
+	}
+
+	dl {
+		overflow: hidden;
+		margin-top: -1rem;
+
+		dt, dd {
+			display: inline-block;
+			margin: 0;
+			float: left;
+			margin-top: 1rem;
+		}
+
+		dt {
+			font-weight: bold;
+			width: 20rem;
+		}
+
+		dd {
+			width: calc(~"100% - 20rem");
 		}
 	}
 }

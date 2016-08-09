@@ -1,8 +1,16 @@
 <?php
 
 return [
+    'heading' => 'Existing URLs',
+    'help'    => [
+        'primary'      => 'The highlighted URL indicates the page\'s primary URL',
+        'one-primary'  => 'You may only have one primary URL for the page which cannot be deleted',
+        'redirect'     => 'All non-primary URLs will redirect to the primary URL',
+        'make-primary' => 'Click on a URL to make it the primary URL for the page',
+        'no-edit'      => 'There is no \'edit\' URL. Instead of editing a URL you should simply add the new URL. This ensures that the page remains accessible from the existing URL',
+    ],
     'add' => [
-        'pointers'    => 'Some points to remember when creating a URL',
+        'heading'     => 'Add URL',
         'lowercase'   => 'URLs should contain only lower-case letters, numbers, or hyphens eg /course-programe-news-august13',
         'nospaces'    => 'No spaces or punctuation should be used',
         'hyphens'     => 'Separate words with a hyphen eg /case-studies',
