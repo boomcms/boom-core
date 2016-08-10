@@ -12,7 +12,6 @@ abstract class PageRelationshipEvent extends PageEvent
     protected $relatedPage;
 
     /**
-     * 
      * @param Page $page
      * @param Page $relatedPage
      */
