@@ -30,6 +30,36 @@ class PageVersionTest extends AbstractTestCase
         $this->repository = new VersionRepository($this->model);
     }
 
+    public function testHistory()
+    {
+        $page = $this->validPage();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with(VersionModel::ATTR_PAGE, $page->getId())
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with(VersionModel::ATTR_EDITED_AT, 'desc')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('with')
+            ->once()
+            ->with('editedBy')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn([]);
+
+        $this->assertEquals([], $this->repository->history($page));
+    }
+
     public function testDeleteDrafts()
     {
         $pageLastPublished = time();

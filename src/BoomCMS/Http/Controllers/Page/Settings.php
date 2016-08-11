@@ -8,6 +8,7 @@ use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\DeletePage;
 use BoomCMS\Jobs\ReorderChildPages;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use BoomCMS\Support\Facades\PageVersion as PageVersionFacade;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use DateTime;
 use Illuminate\Http\Request;
@@ -86,6 +87,22 @@ class Settings extends Controller
 
         return view("$this->viewPrefix.feature", [
             'featureImageId' => $page->getFeatureImageId(),
+        ]);
+    }
+
+    /**
+     * Show the page version history.
+     *
+     * @param Page $page
+     *
+     * @return View
+     */
+    public function getHistory(Page $page)
+    {
+        $this->authorize('editFeature', $page);
+
+        return view("$this->viewPrefix.history", [
+            'versions' => PageVersionFacade::history($page),
         ]);
     }
 

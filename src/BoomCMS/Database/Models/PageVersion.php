@@ -33,8 +33,6 @@ class PageVersion extends Model implements PageVersionInterface
      */
     private $template;
 
-    protected $editedBy;
-
     public function __construct(array $attributes = [])
     {
         if (isset($attributes['version:id'])) {
@@ -45,12 +43,17 @@ class PageVersion extends Model implements PageVersionInterface
         parent::__construct($attributes);
     }
 
+    public function editedBy()
+    {
+        return $this->belongsTo(Person::class, 'edited_by');
+    }
+
     /**
      * @return PersonInterface
      */
     public function getEditedBy()
     {
-        return $this->belongsTo(Person::class, 'edited_by')->first();
+        return $this->editedBy;
     }
 
     /**

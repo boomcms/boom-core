@@ -22,5 +22,19 @@ $.widget('boom.pageSettingsDefault', {
 	_create: function() {
 		this.page = this.options.page;
 		this.bind();
+
+		var $time = this.element.find('time');
+
+		if ($time.length) {
+			var tz = BoomCMS.getTimezone();
+
+			this.element.find('time')
+				.each(function() {
+					var $this = $(this),
+						time = moment($this.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
+console.log($this.attr('datetime'), moment($this.attr('datetime')));
+					$this.text(time);
+				});
+		}
 	}
 });

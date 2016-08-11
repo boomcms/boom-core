@@ -4,7 +4,12 @@
     <dl>
         <?php if ($page->getCreatedTime()->getTimestamp()): ?>
             <dt><?= trans('boomcms::settings.info.created-at') ?></dt>
-            <dd><?= $page->getCreatedTime()->format('d M Y H:i') ?></dd>
+
+            <dd>
+                <time datetime="<?= $page->getCreatedTime()->format('c') ?>">
+                    <?= $page->getCreatedTime()->format('d M Y h:i') ?>
+                </time>
+            </dd>
         <?php endif ?>
 
         <?php if ($page->getCreatedBy()): ?>

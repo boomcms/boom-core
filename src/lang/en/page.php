@@ -20,4 +20,10 @@ return [
             'new'             => 'New Page',
         ],
     ],
+    'status' => [
+        'published'        => 'Published',
+        'draft'            => 'Draft',
+        'pending approval' => 'Pending Approval',
+        'embargoed'        => 'Embargoed',
+    ],
 ];

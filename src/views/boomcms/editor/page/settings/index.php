@@ -15,6 +15,13 @@
                 </a>
             </li>
 
+            <li>
+                <a href="#" data-b-page-setting="history">
+                    <span class="fa fa-history"></span>
+                    <?= trans('boomcms::settings.menu.history') ?>
+                </a>
+            </li>
+
             <?php if (Gate::allows('editTemplate', $page)): ?>
                 <li>
                     <a href="#" data-b-page-setting="template">

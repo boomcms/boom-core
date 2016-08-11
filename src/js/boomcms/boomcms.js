@@ -68,6 +68,18 @@
 			}
 		};
 
+		BoomCMS.prototype.getTimezone = function() {
+			var key = 'boomcms.timezone';
+
+			if (!sessionStorage.getItem(key)) {
+			  var tz = jstz.determine() || 'UTC';
+
+			  sessionStorage.setItem(key, tz.name());
+			}
+
+			return sessionStorage.getItem(key);
+		};
+
 		BoomCMS.prototype.notify = function(message) {
 			new boomNotification(message).show();
 		};

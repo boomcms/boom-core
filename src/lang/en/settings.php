@@ -16,6 +16,7 @@ return [
         'drafts'     => 'Draft status',
         'relations'  => 'Relationships',
         'info'       => 'Page information',
+        'history'    => 'History',
     ],
     'admin' => [
         'heading'               => 'Admin settings',
@@ -71,6 +72,9 @@ return [
     'feature' => [
         'heading'   => 'Page feature image',
         'from-page' => 'Use an image from the page',
+    ],
+    'history' => [
+        'heading' => 'History',
     ],
     'info'    => [
         'heading'    => 'Page information',

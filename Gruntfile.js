@@ -65,6 +65,8 @@ module.exports = function(grunt) {
 					'bower_components/backbone/backbone.js',
 					'bower_components/moment/min/moment.min.js',
 					'bower_components/pushy/js/pushy.js',
+					'node_modules/jstimezonedetect/dist/jstz.js',
+					'bower_components/moment-timezone/builds/moment-timezone-with-data.js',
 					'src/js/boomcms/boomcms.js',
 					'src/js/boomcms/models/*.js',
 					'src/js/boomcms/collections/*.js',

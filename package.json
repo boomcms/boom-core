@@ -5,7 +5,8 @@
     "bower": "~1.4.1",
     "grunt": "~0.4.5",
     "grunt-contrib-copy": "~0.8.0",
-    "geodesy": "~1.0.2"
+    "geodesy": "~1.0.2",
+    "jstimezonedetect": "~1.0.6"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

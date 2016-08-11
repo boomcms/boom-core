@@ -1,0 +1,36 @@
+#b-page-history {
+	ol {
+		padding: 0;
+
+		li {
+			list-style-type: none;
+			max-width: 60rem;
+
+			+ li {
+				margin-top: 1rem;
+			}
+
+			&[data-status="published"]:not(:first-child) {
+				margin-top: 2rem;
+				border-top: 1px solid @red;
+				padding-top: 2rem;
+			}
+
+			div {
+				overflow: hidden;
+
+				time {
+					float: left;
+				}
+
+				.status {
+					float: right;
+				}
+			}
+
+			p {
+				margin: 0.5rem 0 0 0;
+			}
+		}
+	}
+}

@@ -19,6 +19,15 @@ class PageVersion implements PageVersionRepositoryInterface
         $this->model = $model;
     }
 
+    public function history(PageModelInterface $page)
+    {
+        return $this->model
+            ->where(Model::ATTR_PAGE, $page->getId())
+            ->orderBy(Model::ATTR_EDITED_AT, 'desc')
+            ->with('editedBy')
+            ->get();
+    }
+
     /**
      * Delete the draft versions for a page.
      *
