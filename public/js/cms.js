@@ -47918,8 +47918,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		};
 
 		BoomCMS.prototype.editor = {
+			setTime: function(time) {
+				return $.post('/boomcms/editor/time', {time: time});
+			},
 			state: function(state, url) {
-
 				$.post('/boomcms/editor/state', {state: state}, function() {
 					if (url) {
 						top.location = url;
@@ -49556,7 +49558,7 @@ $.widget( 'boom.pageToolbar', {
 				.each(function() {
 					var $this = $(this),
 						time = moment($this.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
-console.log($this.attr('datetime'), moment($this.attr('datetime')));
+
 					$this.text(time);
 				});
 		}
@@ -49808,6 +49810,14 @@ console.log($this.attr('datetime'), moment($this.attr('datetime')));
 		if (!asset || !asset.getId()) {
 			this.hasNoFeatureImage();
 		}
+	}
+});;$.widget('boom.pageSettingsHistory', $.boom.pageSettingsDefault, {
+	bind: function() {
+		this.element.on('click', 'a[data-timestamp]', function() {
+			BoomCMS.editor.setTime($(this).attr('data-timestamp')).done(function(response) {
+				top.location.reload();
+			});
+		});
 	}
 });;$.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
 	bindReparent: function() {

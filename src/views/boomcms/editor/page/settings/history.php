@@ -5,9 +5,11 @@
         <?php foreach ($versions as $version): ?>
             <li data-status="<?= $version->getStatus() ?>">
                 <div>
-                    <time datetime="<?= $version->getEditedTime()->format('c') ?>">
-                        <?= $version->getEditedTime()->format('d M Y h:i') ?>
-                    </time>
+                    <a href="#" data-timestamp="<?= $version->getEditedTime()->getTimestamp() ?>">
+                        <time datetime="<?= $version->getEditedTime()->format('c') ?>">
+                            <?= $version->getEditedTime()->format('d M Y h:i') ?>
+                        </time>
+                    </a>
 
                     <span class="status"><?= trans('boomcms::page.status.'.$version->getStatus()) ?></span>
                 </div>

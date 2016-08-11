@@ -32,7 +32,7 @@ $.widget('boom.pageSettingsDefault', {
 				.each(function() {
 					var $this = $(this),
 						time = moment($this.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
-console.log($this.attr('datetime'), moment($this.attr('datetime')));
+
 					$this.text(time);
 				});
 		}

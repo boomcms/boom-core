@@ -224,6 +224,13 @@ class PageVersion extends Model implements PageVersionInterface
      */
     public function scopeLatestAvailable(QueryBuilder $query)
     {
+        if (Editor::isHistory()) {
+            return $query
+                ->where(self::ATTR_EDITED_AT, '<=', Editor::getTime()->getTimestamp())
+                ->orderBy(self::ATTR_EDITED_AT, 'desc')
+                ->orderBy(self::ATTR_ID, 'desc');
+        }
+
         return (Editor::isDisabled()) ?
                 $this->scopeLastPublished($query)
                 : $query->orderBy(self::ATTR_EDITED_AT, 'desc');

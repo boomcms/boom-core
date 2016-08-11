@@ -6,6 +6,7 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Editor\Editor as Editor;
 use BoomCMS\Http\Controllers\Editor as EditorController;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Mockery as m;
@@ -21,6 +22,7 @@ class EditorTest extends BaseControllerTest
             'edit'     => 1,
             'disabled' => 2,
             'preview'  => 3,
+            'history'  => 4,
         ];
 
         foreach ($states as $state => $value) {
@@ -33,6 +35,24 @@ class EditorTest extends BaseControllerTest
 
             $this->controller->postState($request, $editor);
         }
+    }
+
+    public function testPostTime()
+    {
+        $timestamp = time() - 1000;
+        $editor = m::mock(Editor::class)->makePartial();
+
+        $editor
+            ->shouldReceive('setTime')
+            ->once()
+            ->with(m::on(function(DateTime $time) use ($timestamp) {
+                return $time->getTimestamp() === $timestamp;
+            }))
+            ->andReturnSelf();
+
+        $request = new Request(['time' => $timestamp]);
+
+        $this->controller->postTime($request, $editor);
     }
 
     public function testGetEditToolbar()

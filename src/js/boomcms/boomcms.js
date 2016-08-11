@@ -56,8 +56,10 @@
 		};
 
 		BoomCMS.prototype.editor = {
+			setTime: function(time) {
+				return $.post('/boomcms/editor/time', {time: time});
+			},
 			state: function(state, url) {
-
 				$.post('/boomcms/editor/state', {state: state}, function() {
 					if (url) {
 						top.location = url;

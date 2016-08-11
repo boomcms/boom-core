@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Editor\Editor as EditorObject;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -15,6 +16,16 @@ class Editor extends Controller
         $numericState = constant(EditorObject::class.'::'.strtoupper($state));
 
         $editor->setState($numericState);
+    }
+
+    public function postTime(Request $request, EditorObject $editor)
+    {
+        $timestamp = $request->input('time', time());
+        $time = (new DateTime())->setTimestamp($timestamp);
+
+        $editor
+            ->setTime($time)
+            ->setState(EditorObject::HISTORY);
     }
 
     /**

@@ -974,7 +974,11 @@ class Page extends Model implements PageInterface
             ->groupBy('page_id');
 
         if (Editor::isDisabled()) {
-            $query->where('embargoed_until', '<=', time());
+            $query->where('embargoed_until', '<=', Editor::getTime()->getTimestamp());
+        }
+
+        if (Editor::isHistory()) {
+            $query->where('edited_time', '<=', Editor::getTime()->getTimestamp());
         }
 
         return $query;
