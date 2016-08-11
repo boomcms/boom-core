@@ -16,5 +16,12 @@
             <dt><?= trans('boomcms::settings.info.created-by') ?></dt>
             <dd><?= $page->getCreatedBy()->getName() ?>&nbsp;<small><?= $page->getCreatedBy()->getEmail() ?></small></dd>
         <?php endif ?>
+
+        <dt><?= trans('boomcms::settings.info.last-modified') ?></dt>
+        <dd>
+            <time datetime="<?= $page->getLastModified()->format('c') ?>">
+                <?= $page->getLastModified()->format('d M Y h:i') ?>
+            </time>
+        </dd>
     </dl>
 </div>

@@ -77,9 +77,10 @@ return [
         'heading' => 'History',
     ],
     'info'    => [
-        'heading'    => 'Page information',
-        'created-by' => 'Created by',
-        'created-at' => 'Created at',
+        'heading'       => 'Page information',
+        'created-by'    => 'Created by',
+        'created-at'    => 'Created at',
+        'last-modified' => 'Last modified',
     ],
     'navigation' => [
         'heading'   => 'Page navigation settings',
