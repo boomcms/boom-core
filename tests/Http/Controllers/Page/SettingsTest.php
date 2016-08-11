@@ -6,6 +6,7 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Http\Controllers\Page\Settings as Controller;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use DateTime;
 use Illuminate\Http\Request;
 use Mockery as m;
 
@@ -31,6 +32,10 @@ class SettingsTest extends BaseControllerTest
             ->shouldReceive('getCreatedBy')
             ->andReturn(new Person());
 
+        $this->page
+            ->shouldReceive('getLastModified')
+            ->andReturn(new DateTime());
+
         $view = view('boomcms::editor.page.settings.info', ['page' => $this->page]);
 
         $this->assertEquals($view->render(), $this->controller->getInfo($this->page)->render());
@@ -41,6 +46,10 @@ class SettingsTest extends BaseControllerTest
         $this->page
             ->shouldReceive('getCreatedBy')
             ->andReturnNull();
+
+        $this->page
+            ->shouldReceive('getLastModified')
+            ->andReturn(new DateTime());
 
         $view = view('boomcms::editor.page.settings.info', ['page' => $this->page]);
 
