@@ -163,7 +163,7 @@ abstract class BaseChunk
     }
 
     /**
-     * Returns the ID of the chunk
+     * Returns the ID of the chunk.
      *
      * @return int
      */

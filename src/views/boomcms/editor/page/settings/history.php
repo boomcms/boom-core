@@ -23,8 +23,8 @@
             </li>
 
             <?php if ($page->isVisibleAtTime($version->getEditedTime()) &&
-                (!isset($versions[$i+1]) ||
-                !$page->isVisibleAtTime($versions[$i+1]->getEditedTime()))): ?>
+                (!isset($versions[$i + 1]) ||
+                !$page->isVisibleAtTime($versions[$i + 1]->getEditedTime()))): ?>
 
                 <li class="visibility">
                     <div>
