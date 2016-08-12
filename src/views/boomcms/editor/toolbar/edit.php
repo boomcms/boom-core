@@ -33,7 +33,7 @@
 		<?php endif ?>
 
 		<div class="b-page-container">
-			<?= $button('view-live', 'toolbar.live', ['id' => 'b-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled']) ?>
+			<?= view('boomcms::editor.toolbar.view-live-button') ?>
 		</div>
 
         <div class="b-page-container">

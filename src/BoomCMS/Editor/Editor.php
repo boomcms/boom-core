@@ -56,8 +56,6 @@ class Editor
      */
     public function enable()
     {
-        $this->setTime(null);
-
         return $this->setState(static::EDIT);
     }
 
@@ -68,6 +66,11 @@ class Editor
      */
     public function getTime()
     {
+        // Time should only be used with the history state.
+        if (!$this->isHistory()) {
+            return new DateTime('now');
+        }
+
         $timestamp = Session::get($this->timePersistenceKey, time());
 
         return (new DateTime())->setTimestamp($timestamp);

@@ -21,6 +21,8 @@
             <span class="text"><?= trans('boomcms::page.history.next') ?></span>
         </a>
     <?php endif ?>
+
+    <?= view('boomcms::editor.toolbar.view-live-button') ?>
 </div>
 
 <script type="text/template" id="b-history-template">

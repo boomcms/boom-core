@@ -23,7 +23,7 @@ class EditorTest extends AbstractTestCase
         $this->assertTrue($editor->isEnabled());
     }
 
-    public function testIsHistoryIsHasHistoryState()
+    public function testIsHistoryIfHasHistoryState()
     {
         $editor = $this->getEditor(['hasState']);
 
@@ -48,26 +48,14 @@ class EditorTest extends AbstractTestCase
         $editor->enable();
     }
 
-    public function testEnableRemovesTheLiveTime()
-    {
-        $editor = $this->getEditor(['setTime']);
-
-        $editor
-            ->expects($this->once())
-            ->method('setTime')
-            ->with(null);
-
-        $editor->enable();
-    }
-
     public function testGetTimeReturnsCurrentTimeByDefault()
     {
         Session::forget('editor_time');
 
         $editor = new Editor();
-        $time = $editor->getTime();
+        $editor->setState(Editor::HISTORY);
 
-        $this->assertEquals(time(), $time->getTimestamp());
+        $this->assertEquals(time(), $editor->getTime()->getTimestamp());
     }
 
     public function testGetTimeReturnsSavedTime()
@@ -76,9 +64,20 @@ class EditorTest extends AbstractTestCase
         Session::put('editor_time', $time);
 
         $editor = new Editor();
-        $editorTime = $editor->getTime();
+        $editor->setState(Editor::HISTORY);
 
-        $this->assertEquals($time, $editorTime->getTimestamp());
+        $this->assertEquals($time, $editor->getTime()->getTimestamp());
+    }
+
+    public function testGetTimeReturnsCurrentTimeIfNotInHistoryMode()
+    {
+        $editor = new Editor();
+
+        foreach ([Editor::DISABLED, Editor::EDIT, Editor::PREVIEW] as $state) {
+            $editor->setState($state);
+
+            $this->assertEquals(time(), $editor->getTime()->getTimestamp());
+        }
     }
 
     public function testPreviewIsAliasForSettingStateToPreview()
