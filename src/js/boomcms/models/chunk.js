@@ -12,7 +12,8 @@ function boomChunk(page_id, type, slotname) {
 	 */
 	boomChunk.prototype.delete = function(template) {
 		return this.save({
-			'template': template
+			template: template,
+			force: true
 		});
 	};
 

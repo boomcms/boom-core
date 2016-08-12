@@ -48457,7 +48457,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	 */
 	boomChunk.prototype.delete = function(template) {
 		return this.save({
-			'template': template
+			template: template,
+			force: true
 		});
 	};
 
