@@ -55,21 +55,6 @@
 			return new boomConfirmation(title, message);
 		};
 
-		BoomCMS.prototype.editor = {
-			setTime: function(time) {
-				return $.post('/boomcms/editor/time', {time: time});
-			},
-			state: function(state, url) {
-				$.post('/boomcms/editor/state', {state: state}, function() {
-					if (url) {
-						top.location = url;
-					} else {
-						top.location.reload();
-					}
-				});
-			}
-		};
-
 		BoomCMS.prototype.getTimezone = function() {
 			var key = 'boomcms.timezone';
 

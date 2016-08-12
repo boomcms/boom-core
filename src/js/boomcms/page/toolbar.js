@@ -12,7 +12,7 @@ $.widget( 'boom.pageToolbar', {
 
 		this.element.contents()
 			.on('click', 'button[data-editor-time]', function() {
-				BoomCMS.editor
+				BoomCMS.Editor
 					.setTime($(this).attr('data-editor-time'))
 					.done(function() {
 						top.location.reload();
@@ -44,7 +44,7 @@ $.widget( 'boom.pageToolbar', {
  				self.showSettings('visibility');
 			})
 			.on('click', '.b-button-preview', function() {
-				window.BoomCMS.editor.state($(this).attr('data-preview'));
+				window.BoomCMS.Editor.state($(this).attr('data-preview'));
 			})
 			.on('click', '#b-page-template', function() {
 				self.showSettings('template');

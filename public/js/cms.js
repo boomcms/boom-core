@@ -47917,21 +47917,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return new boomConfirmation(title, message);
 		};
 
-		BoomCMS.prototype.editor = {
-			setTime: function(time) {
-				return $.post('/boomcms/editor/time', {time: time});
-			},
-			state: function(state, url) {
-				$.post('/boomcms/editor/state', {state: state}, function() {
-					if (url) {
-						top.location = url;
-					} else {
-						top.location.reload();
-					}
-				});
-			}
-		};
-
 		BoomCMS.prototype.getTimezone = function() {
 			var key = 'boomcms.timezone';
 
@@ -47951,6 +47936,27 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	window.BoomCMS = top.BoomCMS = new BoomCMS();
 }(jQuery, Backbone));
+;(function(BoomCMS) {
+	'use strict';
+
+	BoomCMS.Editor = {
+		url: BoomCMS.urlRoot + 'editor/',
+
+		setTime: function(time) {
+			return $.post(this.url + 'time', {time: time});
+		},
+
+		state: function(state, url) {
+			$.post(this.url + 'state', {state: state}, function() {
+				if (url) {
+					top.location = url;
+				} else {
+					top.location.reload();
+				}
+			});
+		}
+	};
+}(BoomCMS));
 ;(function(BoomCMS) {
 	'use strict';
 
@@ -49070,7 +49076,7 @@ $.widget( 'boom.pageToolbar', {
 
 		this.element.contents()
 			.on('click', 'button[data-editor-time]', function() {
-				BoomCMS.editor
+				BoomCMS.Editor
 					.setTime($(this).attr('data-editor-time'))
 					.done(function() {
 						top.location.reload();
@@ -49102,7 +49108,7 @@ $.widget( 'boom.pageToolbar', {
  				self.showSettings('visibility');
 			})
 			.on('click', '.b-button-preview', function() {
-				window.BoomCMS.editor.state($(this).attr('data-preview'));
+				window.BoomCMS.Editor.state($(this).attr('data-preview'));
 			})
 			.on('click', '#b-page-template', function() {
 				self.showSettings('template');
@@ -49723,7 +49729,7 @@ $.widget( 'boom.pageToolbar', {
 					});
 			})
 			.on('click', '.b-page-preview', function() {
-				window.BoomCMS.editor.state('preview', $(this).attr('data-url'));
+				window.BoomCMS.Editor.state('preview', $(this).attr('data-url'));
 			});
 	},
 
@@ -49837,7 +49843,7 @@ $.widget( 'boom.pageToolbar', {
 });;$.widget('boom.pageSettingsHistory', $.boom.pageSettingsDefault, {
 	bind: function() {
 		this.element.on('click', 'a[data-timestamp]', function() {
-			BoomCMS.editor.setTime($(this).attr('data-timestamp')).done(function(response) {
+			BoomCMS.Editor.setTime($(this).attr('data-timestamp')).done(function(response) {
 				top.location.reload();
 			});
 		});
@@ -50227,7 +50233,7 @@ $.widget( 'boom.pageToolbar', {
 				pageVisibilityEditor.save();
 			})
 			.on('click', '.b-visibility-preview', function() {
-				window.BoomCMS.editor.state('preview');
+				window.BoomCMS.Editor.state('preview');
 			});
 
 		this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');

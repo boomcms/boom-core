@@ -68,6 +68,7 @@ module.exports = function(grunt) {
 					'node_modules/jstimezonedetect/dist/jstz.js',
 					'bower_components/moment-timezone/builds/moment-timezone-with-data.js',
 					'src/js/boomcms/boomcms.js',
+					'src/js/boomcms/editor.js',
 					'src/js/boomcms/models/*.js',
 					'src/js/boomcms/collections/*.js',
 					'src/js/boomcms/plugins.js',
