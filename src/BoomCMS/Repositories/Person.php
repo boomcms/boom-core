@@ -58,7 +58,7 @@ class Person implements PersonRepositoryInterface, UserProvider
     }
 
     /**
-     * Returns the person with the given ID
+     * Returns the person with the given ID.
      *
      * @param int $personId
      *

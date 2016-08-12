@@ -46,7 +46,7 @@ class Tag implements TagRepositoryInterface
     }
 
     /**
-     * Returns the tag with the given ID
+     * Returns the tag with the given ID.
      *
      * @param int $tagId
      *

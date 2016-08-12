@@ -43,7 +43,7 @@ class Site implements SiteRepositoryInterface
     }
 
     /**
-     * Returns the site with the given ID
+     * Returns the site with the given ID.
      *
      * @param int $siteId
      *

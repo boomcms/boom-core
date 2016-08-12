@@ -31,7 +31,7 @@ class Template
     }
 
     /**
-     * Delete the given template
+     * Delete the given template.
      *
      * @param TemplateModel $template
      *
@@ -45,7 +45,7 @@ class Template
     }
 
     /**
-     * Returns the template with the given ID
+     * Returns the template with the given ID.
      *
      * @param int $templateId
      *

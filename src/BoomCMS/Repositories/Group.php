@@ -49,7 +49,7 @@ class Group implements GroupRepositoryInterface
     }
 
     /**
-     * Find a group by its ID
+     * Find a group by its ID.
      *
      * @param int $groupId
      *
