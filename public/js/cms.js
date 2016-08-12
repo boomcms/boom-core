@@ -49041,8 +49041,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		$.jGrowl(message);
 	};
 };;function boomDialog(options) {
-	this.deferred = new $.Deferred().always(function() {
+	var dialog = this;
+
+	this.deferred = $.Deferred().always(function() {
 		$(top.window).trigger('boom:dialog:close');
+
+		dialog.cleanup();
 	});
 
 	this.buttons = {
@@ -49065,15 +49069,13 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	}, options);
 
 	boomDialog.prototype.always = function(callback) {
-		this.deferred.always(callback);
+		dialog.deferred.always(callback);
 
 		return this;
 	};
 
 	boomDialog.prototype.cancel = function() {
-		this.deferred.rejectWith(this.dialog);
-
-		this.cleanup();
+		dialog.deferred.rejectWith(this.dialog);
 	};
 
 	boomDialog.prototype.cleanup = function() {
@@ -49084,22 +49086,18 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	};
 
 	boomDialog.prototype.close = function() {
-		this.deferred.resolveWith(this.dialog);
-		
-		this.cleanup();
+		dialog.deferred.resolveWith(this.dialog);
 	};
 
 	boomDialog.prototype.configureButtons = function(options) {
 		var dialog = this;
 
-		for (var button in this.buttons) {
+		for (var button in dialog.buttons) {
 			if (options[button + 'Button']) {
-				this.options.buttons.push({
-					text: this.buttons[button],
+				dialog.options.buttons.push({
+					text: dialog.buttons[button],
 					class: 'b-button-' + button,
-					click: function() {
-						dialog[button]();
-					}
+					click: dialog[button]
 				});
 			}
 		}
