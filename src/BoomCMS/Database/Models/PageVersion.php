@@ -73,7 +73,7 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
-     * Returns the next version
+     * Returns the next version.
      *
      * @return PageVersion
      */
@@ -95,7 +95,7 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
-     * Returns the previous version
+     * Returns the previous version.
      *
      * @return PageVersion
      */

@@ -45,7 +45,7 @@ class EditorTest extends BaseControllerTest
         $editor
             ->shouldReceive('setTime')
             ->once()
-            ->with(m::on(function(DateTime $time) use ($timestamp) {
+            ->with(m::on(function (DateTime $time) use ($timestamp) {
                 return $time->getTimestamp() === $timestamp;
             }))
             ->andReturnSelf();

@@ -40,7 +40,7 @@ class Editor
     }
 
     /**
-     * Disable the editor
+     * Disable the editor.
      *
      * @return $this
      */
@@ -50,19 +50,19 @@ class Editor
     }
 
     /**
-     * Enable the editor
+     * Enable the editor.
      *
      * @return $this
      */
     public function enable()
     {
         $this->setTime(null);
-    
+
         return $this->setState(static::EDIT);
     }
 
     /**
-     * Get the time to view pages at
+     * Get the time to view pages at.
      *
      * @return DateTime
      */
@@ -74,7 +74,7 @@ class Editor
     }
 
     /**
-     * Returns true if the editor is disabled
+     * Returns true if the editor is disabled.
      *
      * @return bool
      */
@@ -84,7 +84,7 @@ class Editor
     }
 
     /**
-     * Returns true if the editor is enabled
+     * Returns true if the editor is enabled.
      *
      * @return bool
      */
@@ -94,7 +94,7 @@ class Editor
     }
 
     /**
-     * Returns true if the editor is viewing the site as it existed in the past
+     * Returns true if the editor is viewing the site as it existed in the past.
      *
      * @return bool
      */
@@ -104,7 +104,7 @@ class Editor
     }
 
     /**
-     * Returns true if the editor has the given state
+     * Returns true if the editor has the given state.
      *
      * @param int $state
      *
@@ -116,7 +116,7 @@ class Editor
     }
 
     /**
-     * Returns the current state of the editor
+     * Returns the current state of the editor.
      *
      * @return int
      */
@@ -126,7 +126,7 @@ class Editor
     }
 
     /**
-     * Put the editor into preview mode
+     * Put the editor into preview mode.
      *
      * @return $this
      */
@@ -156,7 +156,7 @@ class Editor
     }
 
     /**
-     * Set a time at which to view pages at
+     * Set a time at which to view pages at.
      *
      * @param DateTime $time
      *
