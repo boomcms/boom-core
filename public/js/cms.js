@@ -49177,7 +49177,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	};
 
 	this.open();
-};;function boomAlert(message) {
+};function boomAlert(message) {
 	this.message = message;
 
 	boomAlert.prototype.open = function() {

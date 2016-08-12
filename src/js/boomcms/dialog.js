@@ -135,4 +135,4 @@ function boomDialog(options) {
 	};
 
 	this.open();
-};
+}
