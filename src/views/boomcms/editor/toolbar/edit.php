@@ -14,11 +14,9 @@
 				<?= $button('cog', 'toolbar.settings', ['id' => 'b-page-settings']) ?>
 			</div>
 
-			<div id="b-page-publish-menu">
-				<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
-					<?= $page->getCurrentVersion()->status() ?>
-				</button>
-			</div>
+            <button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
+                <?= $page->getCurrentVersion()->status() ?>
+            </button>
 		<?php endif ?>
 
 		<?php if (Gate::allows('publish', $page)): ?>

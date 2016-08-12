@@ -48829,9 +48829,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		this._trigger('complete', null, {tag : tag});
 	}
 });;$.widget('boom.pageStatus', {
-
-	menu : $('#b-page-publish-menu'),
-
 	_create: function() {
 		this.set(this.element.text().trim());
 	},

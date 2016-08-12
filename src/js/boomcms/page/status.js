@@ -1,7 +1,4 @@
 $.widget('boom.pageStatus', {
-
-	menu : $('#b-page-publish-menu'),
-
 	_create: function() {
 		this.set(this.element.text().trim());
 	},
