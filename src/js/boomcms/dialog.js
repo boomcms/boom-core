@@ -3,6 +3,11 @@ function boomDialog(options) {
 		$(top.window).trigger('boom:dialog:close');
 	});
 
+	this.buttons = {
+		close: 'Okay',
+		cancel: 'Cancel'
+	};
+
 	this.options = $.extend({
 		width: 'auto',
 		cancelButton : true,
@@ -23,15 +28,6 @@ function boomDialog(options) {
 		return this;
 	};
 
- 	boomDialog.prototype.cancelButton = {
-		text: 'Cancel',
-		class: 'b-button-cancel',
-		click: function() {
-			var boomDialog = $(this).dialog('option', 'boomDialog');
-			boomDialog.cancel();
-		}
-	};
-
 	boomDialog.prototype.cancel = function() {
 		this.deferred.rejectWith(this.dialog);
 
@@ -45,19 +41,26 @@ function boomDialog(options) {
 		}
 	};
 
-	boomDialog.prototype.closeButton = {
-		text: 'Okay',
-		class: 'b-button-close',
-		click: function() {
-			var boomDialog = $(this).dialog('option', 'boomDialog');
-			boomDialog.close();
-		}
-	};
-
 	boomDialog.prototype.close = function() {
 		this.deferred.resolveWith(this.dialog);
 		
 		this.cleanup();
+	};
+
+	boomDialog.prototype.configureButtons = function(options) {
+		var dialog = this;
+
+		for (var button in this.buttons) {
+			if (options[button + 'Button']) {
+				this.options.buttons.push({
+					text: this.buttons[button],
+					class: 'b-button-' + button,
+					click: function() {
+						dialog[button]();
+					}
+				});
+			}
+		}
 	};
 
 	boomDialog.prototype.done = function(callback) {
@@ -100,8 +103,7 @@ function boomDialog(options) {
 
 		this.contents = $div.appendTo($(document).contents().find('body'));
 
-		this.options.closeButton && this.options.buttons.push(this.closeButton);
-		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
+		this.configureButtons(this.options);
 
 		if (this.options.url && this.options.url.length) {
 			if (this.contents.hasClass('ui-dialog-content')) {
