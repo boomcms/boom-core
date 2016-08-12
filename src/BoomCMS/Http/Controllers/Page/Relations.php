@@ -3,7 +3,10 @@
 namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Events\PageRelationshipAdded;
+use BoomCMS\Events\PageRelationshipRemoved;
 use BoomCMS\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Event;
 use Illuminate\View\View;
 
 class Relations extends Controller
@@ -24,6 +27,8 @@ class Relations extends Controller
     {
         $this->auth($page);
         $page->removeRelation($related);
+
+        Event::fire(new PageRelationshipRemoved($page, $related));
     }
 
     /**
@@ -44,5 +49,7 @@ class Relations extends Controller
     {
         $this->auth($page);
         $page->addRelation($related);
+
+        Event::fire(new PageRelationshipAdded($page, $related));
     }
 }
