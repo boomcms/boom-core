@@ -23,8 +23,9 @@ $.widget( 'boom.pageToolbar', {
 
 				new boomDialog({
 					msg: html,
-					width: '400px',
-					cancelButton: false
+					width: '600px',
+					cancelButton: false,
+					title: 'Version information'
 				});
 			})
 			.on('click', '#b-page-delete', function() {
