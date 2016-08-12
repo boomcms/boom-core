@@ -74,7 +74,9 @@ return [
         'from-page' => 'Use an image from the page',
     ],
     'history' => [
-        'heading' => 'History',
+        'heading'      => 'History',
+        'visible'      => 'Page became visible',
+        'visible-note' => 'Note: page visibility is calculated by the current visibility settings',
     ],
     'info'    => [
         'heading'       => 'Page information',

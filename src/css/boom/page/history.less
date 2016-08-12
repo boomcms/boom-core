@@ -26,6 +26,19 @@
 				padding-top: 2rem;
 			}
 
+			&.visibility {
+				border-top: 1px solid @blue;
+				border-bottom: 1px solid @blue;
+				padding: 2rem 0;
+				margin: 2rem 0;
+
+				+ li[data-status="published"] {
+					border-top: 0;
+					margin-top: 1rem;
+					padding-top: 0;
+				}
+			}
+
 			div {
 				overflow: hidden;
 

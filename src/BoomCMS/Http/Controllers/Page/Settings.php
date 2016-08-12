@@ -103,6 +103,7 @@ class Settings extends Controller
 
         return view("$this->viewPrefix.history", [
             'versions' => PageVersionFacade::history($page),
+            'page'     => $page,
         ]);
     }
 
