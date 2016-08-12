@@ -6,10 +6,83 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion as Version;
 use BoomCMS\Database\Models\Person;
 use DateTime;
+use Mockery as m;
 
 class PageVersionTest extends AbstractModelTestCase
 {
     protected $model = Version::class;
+
+    public function testGetNext()
+    {
+        $pageId = 1;
+        $editedAt = time() - 1000;
+        $next = new Version();
+
+        $version = m::mock($this->model)->makePartial();
+        $version->{Version::ATTR_PAGE} = $pageId;
+        $version->{Version::ATTR_EDITED_AT} = $editedAt;
+
+        $version
+            ->shouldReceive('where')
+            ->once()
+            ->with(Version::ATTR_PAGE, $pageId)
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('where')
+            ->once()
+            ->with(Version::ATTR_EDITED_AT, '>', $editedAt)
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with(Version::ATTR_EDITED_AT, 'asc')
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($next);
+
+        $this->assertEquals($next, $version->getNext());
+    }
+
+    public function testGetPrevious()
+    {
+        $pageId = 1;
+        $editedAt = time() - 1000;
+        $prev = new Version();
+
+        $version = m::mock($this->model)->makePartial();
+        $version->{Version::ATTR_PAGE} = $pageId;
+        $version->{Version::ATTR_EDITED_AT} = $editedAt;
+
+        $version
+            ->shouldReceive('where')
+            ->once()
+            ->with(Version::ATTR_PAGE, $pageId)
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('where')
+            ->once()
+            ->with(Version::ATTR_EDITED_AT, '<', $editedAt)
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with(Version::ATTR_EDITED_AT, 'desc')
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($prev);
+
+        $this->assertEquals($prev, $version->getPrevious());
+    }
 
     public function testIsPublishedIfEmbargoedTimeIsPast()
     {

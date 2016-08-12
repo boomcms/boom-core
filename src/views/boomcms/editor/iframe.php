@@ -3,12 +3,12 @@
 </head>
 <?= $body_tag ?>
 
-<?php if ($editor->isEnabled()): ?>
+<?php if ($editor->isEnabled() || $editor->isHistory()): ?>
 	<script type="text/javascript">
 		(function () {
-			document.getElementsByTagName("BODY")[0].style['margin-left'] = "60px";
+			document.getElementsByTagName("BODY")[0].style['margin-left'] = "<?= $editor->isEnabled() ? '60px' : '101px' ?>";
 		})();
 	</script>
 <?php endif ?>
 
-<iframe style="border: 0; max-width: none; position: fixed; left: 0; top: 0; width: <?= $editor->isEnabled() ? '60px' : '101px' ?>; height: <?= $editor->isEnabled() ? '100%' : '35px' ?>; overflow: hidden; z-index: 10000; background: transparent" id='b-page-topbar' src='/boomcms/editor/toolbar?page_id=<?= $page_id ?>'></iframe>
+<iframe id="b-editor-iframe" data-state="<?= $editor->getState() ?>" src='/boomcms/editor/toolbar?page_id=<?= $page_id ?>'></iframe>

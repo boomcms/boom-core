@@ -35,7 +35,6 @@ class Editor extends Controller
     public function getToolbar(EditorObject $editor, Request $request)
     {
         $page = PageFacade::find($request->input('page_id'));
-        $toolbarFilename = ($editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
 
         View::share([
             'page'   => $page,
@@ -44,6 +43,16 @@ class Editor extends Controller
             'person' => auth()->user(),
         ]);
 
-        return view("boomcms::editor.$toolbarFilename");
+        if ($editor->isHistory()) {
+            return view('boomcms::editor.toolbar.history', [
+                'previous' => $page->getCurrentVersion()->getPrevious(),
+                'next'     => $page->getCurrentVersion()->getNext(),
+                'version'  => $page->getCurrentVersion(),
+            ]);
+        }
+
+        $toolbarFilename = ($editor->isEnabled()) ? 'edit' : 'preview';
+
+        return view("boomcms::editor.toolbar.$toolbarFilename");
     }
 }

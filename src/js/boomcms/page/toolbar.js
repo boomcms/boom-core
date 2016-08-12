@@ -11,6 +11,22 @@ $.widget( 'boom.pageToolbar', {
 			page = this.options.page;
 
 		this.element.contents()
+			.on('click', 'button[data-editor-time]', function() {
+				BoomCMS.editor
+					.setTime($(this).attr('data-editor-time'))
+					.done(function() {
+						top.location.reload();
+					});
+			})
+			.on('click', 'button.b-version-info', function() {
+				var html = self.element.contents().find('#b-history-template').html();
+
+				new boomDialog({
+					msg: html,
+					width: '400px',
+					cancelButton: false
+				});
+			})
 			.on('click', '#b-page-delete', function() {
 				self.$settings.pageSettings('show', 'delete');
 				self.openPageSettings();
@@ -93,6 +109,8 @@ $.widget( 'boom.pageToolbar', {
 
 	_create: function() {
 		var toolbar = this;
+
+		this.toolbarWidth = this.element.width();
 
 		this.findButtons();
 		this._toggle_view_live_button();
@@ -213,7 +231,7 @@ $.widget( 'boom.pageToolbar', {
 	*/
 	minimise: function() {
 		this.element.css({
-			width : '60px',
+			width : this.toolbarWidth,
 			'z-index' : 10000
 		});
 	},

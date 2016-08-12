@@ -31,6 +31,45 @@ html.boom .b-toolbar, .b-toolbar {
 		}
 	}
 
+	&.b-page-toolbar-history {
+		height: 100vh;
+		background: @darkest-grey;
+		padding-left: 0;
+		width: 101px;
+
+		#b-page-editbutton {
+			height: 35px;
+			border-bottom: 1px solid @light-grey;
+		}
+
+		button[data-editor-time], button.b-version-info {
+			display: block;
+			position: relative;
+			overflow: hidden;
+			text-align: center;
+			margin-top: 2rem;
+			background: transparent;
+			width: 100%;
+			border: 0;
+
+			&:hover, &:focus {
+				.fa {
+					color: @red;
+				}
+			}
+
+			.fa {
+				font-size: 3rem;
+				color: @white;
+			}
+
+			.text {
+				position: absolute;
+				top: -1000%;
+			}
+		}
+	}
+
 	&.b-toolbar-text {
 		overflow: visible;
 	}

@@ -48500,7 +48500,24 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			format: 'd F Y H:i'
 		});
 
+		this.find('time').localTime();
+
 		return this;
+	};
+
+	$.fn.localTime = function() {
+		var $this = $(this);
+
+		if ($this.length) {
+			var tz = BoomCMS.getTimezone();
+
+			$this.each(function() {
+				var $el = $(this),
+					time = moment($el.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
+
+				$el.text(time);
+			});
+		}
 	};
 
 	$.fn.assetManagerImages = function() {
@@ -48947,7 +48964,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		this.document = $(top.document);
 
 		this.page.toolbar = this.toolbar = this.document
-			.find('#b-page-topbar')
+			.find('#b-editor-iframe')
 			.pageToolbar({ // This should probably be called editorIframe as we're calling this on the iframe. Then we need another widget which is specifically for the toolbar.
 				page : this.page,
 				publishable : this.options.publishable
@@ -49052,6 +49069,22 @@ $.widget( 'boom.pageToolbar', {
 			page = this.options.page;
 
 		this.element.contents()
+			.on('click', 'button[data-editor-time]', function() {
+				BoomCMS.editor
+					.setTime($(this).attr('data-editor-time'))
+					.done(function() {
+						top.location.reload();
+					});
+			})
+			.on('click', 'button.b-version-info', function() {
+				var html = self.element.contents().find('#b-history-template').html();
+
+				new boomDialog({
+					msg: html,
+					width: '400px',
+					cancelButton: false
+				});
+			})
 			.on('click', '#b-page-delete', function() {
 				self.$settings.pageSettings('show', 'delete');
 				self.openPageSettings();
@@ -49134,6 +49167,8 @@ $.widget( 'boom.pageToolbar', {
 
 	_create: function() {
 		var toolbar = this;
+
+		this.toolbarWidth = this.element.width();
 
 		this.findButtons();
 		this._toggle_view_live_button();
@@ -49254,7 +49289,7 @@ $.widget( 'boom.pageToolbar', {
 	*/
 	minimise: function() {
 		this.element.css({
-			width : '60px',
+			width : this.toolbarWidth,
 			'z-index' : 10000
 		});
 	},
@@ -49549,19 +49584,7 @@ $.widget( 'boom.pageToolbar', {
 		this.page = this.options.page;
 		this.bind();
 
-		var $time = this.element.find('time');
-
-		if ($time.length) {
-			var tz = BoomCMS.getTimezone();
-
-			this.element.find('time')
-				.each(function() {
-					var $this = $(this),
-						time = moment($this.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
-
-					$this.text(time);
-				});
-		}
+		this.element.find('time').localTime();
 	}
 });;$.widget('boom.pageSettingsDelete', {
 	bind: function() {

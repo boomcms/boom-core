@@ -14,6 +14,7 @@ return [
     'delete'                => 'Delete',
     'delete-template'       => 'Delete template',
     'download'              => 'Download',
+    'edit-page'             => 'Edit page',
     'embargo'               => 'Set embargo time',
     'embargo-change'        => 'Change embargo time',
     'image-revert'          => 'Restore to original',

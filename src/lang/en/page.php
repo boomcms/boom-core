@@ -8,6 +8,14 @@ return [
         Page::ADD_PAGE_CHILD   => 'Add a child page',
         Page::ADD_PAGE_SIBLING => 'Add a sibling page',
     ],
+    'history'   => [
+        'info'      => 'Version information',
+        'next'      => 'Next version',
+        'prev'      => 'Previous version',
+        'edited-at' => 'Edited at',
+        'edited-by' => 'Edited by',
+        'status'    => 'Status',
+    ],
     'visible'   => 'Visible',
     'invisible' => 'Invisible',
     'urls'      => [

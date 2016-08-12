@@ -73,11 +73,39 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * Returns the next version
+     *
+     * @return PageVersion
+     */
+    public function getNext()
+    {
+        return $this
+            ->where(self::ATTR_PAGE, $this->getPageId())
+            ->where(self::ATTR_EDITED_AT, '>', $this->getEditedTime()->getTimestamp())
+            ->orderBy(self::ATTR_EDITED_AT, 'asc')
+            ->first();
+    }
+
+    /**
      * @return int
      */
     public function getPageId()
     {
         return $this->{self::ATTR_PAGE};
+    }
+
+    /**
+     * Returns the previous version
+     *
+     * @return PageVersion
+     */
+    public function getPrevious()
+    {
+        return $this
+            ->where(self::ATTR_PAGE, $this->getPageId())
+            ->where(self::ATTR_EDITED_AT, '<', $this->getEditedTime()->getTimestamp())
+            ->orderBy(self::ATTR_EDITED_AT, 'desc')
+            ->first();
     }
 
     /**

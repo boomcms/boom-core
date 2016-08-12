@@ -16,7 +16,7 @@ $.widget( 'boom.pageEditor', {
 		this.document = $(top.document);
 
 		this.page.toolbar = this.toolbar = this.document
-			.find('#b-page-topbar')
+			.find('#b-editor-iframe')
 			.pageToolbar({ // This should probably be called editorIframe as we're calling this on the iframe. Then we need another widget which is specifically for the toolbar.
 				page : this.page,
 				publishable : this.options.publishable

@@ -57,4 +57,4 @@
     <?= view('boomcms::editor.page.settings.index') ?>
 </div>
 
-<?= view('boomcms::editor.footer') ?>
+<?= view('boomcms::editor.toolbar.footer') ?>
