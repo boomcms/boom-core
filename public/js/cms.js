@@ -51870,6 +51870,12 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	this.options = options;
 	this.deferred = new $.Deferred();
 
+	this.toggle = {
+		title: '#b-linkset-title',
+		linkAssets: '.b-linkset-asset',
+		linkText: '.b-linkset-text'
+	};
+
 	boomChunkLinksetEditor.prototype.addDeleteButtons = function() {
 		this.$links.find('li').each(function() {
 			var $this = $(this);
@@ -51902,16 +51908,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	boomChunkLinksetEditor.prototype.bind = function() {
 		var linksetEditor = this;
 
-		if (!this.options.title) {
-			this.dialog.contents.find('#b-linkset-title, #b-linkset-title-tab').hide();
-		}
-
-		if (!this.options.linkAssets) {
-			this.dialog.contents.find('.b-linkset-asset').hide();
-		}
-
-		if (!this.options.linkText) {
-			this.dialog.contents.find('.b-linkset-text').hide();
+		for (var property in this.toggle) {
+			if (!this.options[property]) {
+				this.dialog.contents.find(this.toggle[property]).hide();
+			}
 		}
 
 		this.$links = this.dialog.contents.find('#b-linkset-links ul');

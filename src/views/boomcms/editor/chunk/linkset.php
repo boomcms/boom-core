@@ -1,4 +1,4 @@
-<label id="b-linkset-title">
+<label id="b-linkset-title" class="toggle-titile">
     <span>Linkset title</span>
     <input type="text" name="title" placeholder="Linkset title" value="<?= $chunk->getTitle() ?>" />
 </label>
