@@ -38,6 +38,8 @@ return [
     'search-assets'         => 'Search assets',
     'select-asset'          => 'Select an asset',
     'set-location-latlng'   => 'Set location from Lat / Long',
+    'slideshow-add-slide'   => 'Add slide',
+    'slideshow-delete'      => 'Delete slideshow',
     'toolbar'               => [
         'add'       => 'Add a new page as a child of the current page',
         'delete'    => 'Delete this page',
