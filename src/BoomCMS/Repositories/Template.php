@@ -31,7 +31,9 @@ class Template
     }
 
     /**
-     * @param int $id
+     * Delete the given template
+     *
+     * @param TemplateModel $template
      *
      * @return $this
      */
@@ -43,13 +45,15 @@ class Template
     }
 
     /**
-     * @param int $id
+     * Returns the template with the given ID
      *
-     * @return TemplateInterface
+     * @param int $templateId
+     *
+     * @return null|TemplateInterface
      */
-    public function find($id)
+    public function find($templateId)
     {
-        return $this->model->find($id);
+        return $this->model->find($templateId);
     }
 
     public function findAll()

@@ -75,13 +75,13 @@ class Asset implements AssetRepositoryInterface
     }
 
     /**
-     * @param int $id
+     * @param int $assetId
      *
      * @return AssetModel
      */
-    public function find($id)
+    public function find($assetId)
     {
-        return $this->model->find($id);
+        return $this->model->find($assetId);
     }
 
     public function findByVersionId($versionId)

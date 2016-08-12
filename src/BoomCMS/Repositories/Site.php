@@ -43,13 +43,15 @@ class Site implements SiteRepositoryInterface
     }
 
     /**
-     * @param int $id
+     * Returns the site with the given ID
      *
-     * @return SiteModelInterface
+     * @param int $siteId
+     *
+     * @return null|SiteModelInterface
      */
-    public function find($id)
+    public function find($siteId)
     {
-        return $this->model->find($id);
+        return $this->model->find($siteId);
     }
 
     public function findAll()

@@ -48,9 +48,16 @@ class Group implements GroupRepositoryInterface
         return $this->model->all();
     }
 
-    public function find($id)
+    /**
+     * Find a group by its ID
+     *
+     * @param int $groupId
+     *
+     * @return GroupModelInterface
+     */
+    public function find($groupId)
     {
-        return $this->model->find($id);
+        return $this->model->find($groupId);
     }
 
     /**

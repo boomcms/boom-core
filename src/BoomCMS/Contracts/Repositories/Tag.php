@@ -17,11 +17,11 @@ interface Tag
     public function create(SiteInterface $site, $name, $group);
 
     /**
-     * @param int $id
+     * @param int $tagId
      *
      * @return TagInterface
      */
-    public function find($id);
+    public function find($tagId);
 
     /**
      * @param SiteInterface $site

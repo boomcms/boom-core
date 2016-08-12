@@ -33,9 +33,16 @@ class Page implements PageRepositoryInterface
         return $this;
     }
 
-    public function find($id)
+    /**
+     * Returns a page with the given ID
+     *
+     * @param int $pageId
+     *
+     * @return null|PageModelInterface
+     */
+    public function find($pageId)
     {
-        return $this->model->currentVersion()->find($id);
+        return $this->model->currentVersion()->find($pageId);
     }
 
     public function findByInternalName($name)

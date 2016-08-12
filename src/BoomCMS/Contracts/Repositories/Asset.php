@@ -22,9 +22,9 @@ interface Asset
     /**
      * Retrive an asset by ID.
      *
-     * @param int $id
+     * @param int $assetId
      */
-    public function find($id);
+    public function find($assetId);
 
     /**
      * Find the asset which is associated with a particular version ID.

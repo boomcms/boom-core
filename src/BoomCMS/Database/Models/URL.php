@@ -139,13 +139,13 @@ class URL extends Model implements URLInterface
     }
 
     /**
-     * @param int $id
+     * @param int $pageId
      *
      * @return $this
      */
-    public function setPageId($id)
+    public function setPageId($pageId)
     {
-        $this->{self::ATTR_PAGE_ID} = $id;
+        $this->{self::ATTR_PAGE_ID} = $pageId;
 
         return $this;
     }

@@ -22,11 +22,11 @@ interface Page
     public function delete(PageInterface $page);
 
     /**
-     * @param mixed $id
+     * @param mixed $pageId
      *
      * @return PageInterface
      */
-    public function find($id);
+    public function find($pageId);
 
     /**
      * @param string $name

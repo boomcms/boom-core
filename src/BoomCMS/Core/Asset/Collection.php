@@ -39,11 +39,11 @@ class Collection
         // If an asset already has the tag then a Database_Exception will be thrown due to a unique key on asset_id and tag.
         // Therefore, the tag is added to each asset individually.
 
-        foreach ($this->getAssetIds() as $id) {
+        foreach ($this->getAssetIds() as $assetId) {
             try {
                 DB::table('assets_tags')
                     ->insert([
-                        'asset_id' => $id,
+                        'asset_id' => $assetId,
                         'tag'      => $tag,
                     ]);
             } catch (\Exception $e) {

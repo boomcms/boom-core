@@ -44,10 +44,10 @@ abstract class AbstractTestCase extends TestCase
         return new Page();
     }
 
-    protected function validPage($id = 1)
+    protected function validPage($pageId = 1)
     {
         $page = new Page();
-        $page->id = $id;
+        $page->id = $pageId;
 
         return $page;
     }

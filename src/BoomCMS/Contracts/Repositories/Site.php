@@ -26,11 +26,11 @@ interface Site
     public function delete(SiteInterface $site);
 
     /**
-     * @param int $id
+     * @param int $siteId
      *
      * @return SiteInterface
      */
-    public function find($id);
+    public function find($siteId);
 
     public function findAll();
 
