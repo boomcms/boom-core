@@ -48,12 +48,12 @@ class Settings extends Controller
         $templates = TemplateFacade::findValid();
 
         return view("$this->viewPrefix.children", [
-            'default_child_template'      => $page->getDefaultChildTemplateId(),
-            'default_grandchild_template' => $page->getDefaultGrandchildTemplateId(),
-            'templates'                   => $templates,
-            'child_order_column'          => $orderCol,
-            'child_order_direction'       => $orderDirection,
-            'page'                        => $page,
+            'childTemplate'      => $page->getDefaultChildTemplateId(),
+            'grandchildTemplate' => $page->getDefaultGrandchildTemplateId(),
+            'templates'          => $templates,
+            'orderColumn'        => $orderCol,
+            'orderDirection'     => $orderDirection,
+            'page'               => $page,
         ]);
     }
 

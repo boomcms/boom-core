@@ -37,6 +37,15 @@ return [
         'nav-cms'             => 'Children visible in CMS nav',
         'uri-prefix'          => 'Default child URI prefix',
         'grandchild-template' => 'Default grandchild template',
+        'column'              => [
+            'sequence'     => 'Manual',
+            'visible_from' => 'Date by visible from time',
+            'title'        => 'Alphabetic by title',
+        ],
+        'direction'           => [
+            'asc'  => 'Ascending',
+            'desc' => 'Descending',
+        ],
     ],
     'delete' => [
         'heading'  => 'Delete page',

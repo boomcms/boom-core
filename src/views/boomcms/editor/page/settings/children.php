@@ -8,9 +8,13 @@
             <label>
                 <p><?= trans('boomcms::settings.children.template') ?></p>
 
-                <select name="children_template_id" id="children_template_id" data-default="<?= $default_child_template ?>">
-                    <?php foreach ($templates as $t): ?>
-                      <option value="<?= $t->getId() ?>"<?php if ($t->getId() === $default_child_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
+                <select name="children_template_id" id="children_template_id" data-default="<?= $childTemplate ?>">
+                    <?php foreach ($templates as $template): ?>
+                        <option value="<?= $template->getId() ?>"
+                            <?php if ($template->getId() === $childTemplate): ?> selected<?php endif ?>
+                        >
+                            <?= $template->getName() ?>
+                        </option>
                     <?php endforeach ?>
                 </select>
             </label>
@@ -19,14 +23,23 @@
                 <p><?= trans('boomcms::settings.children.order') ?></p>
 
                 <select name="children_ordering_policy" id="children_ordering_policy">
-                    <option value="sequence"<?php if ($child_order_column === 'sequence'): ?> selected="selected"<?php endif ?>>Manual</option>
-                    <option value="visible_from"<?php if ($child_order_column === 'visible_from'): ?> selected="selected"<?php endif ?>>Date by visible from time</option>
-                    <option value="title"<?php if ($child_order_column === 'title'): ?> selected="selected"<?php endif ?>>Alphabetic by title</option>
+                    <?php foreach (['sequence', 'visible_from', 'title'] as $order): ?>
+                        <option value="<?= $order ?>"
+                            <?php if ($orderColumn === $order): ?> selected="selected"<?php endif ?>
+                        >
+                            <?= trans("boomcms::settings.children.column.$order") ?>
+                        </option>
+                    <?php endforeach ?>
                 </select>
 
                 <select name="children_ordering_direction">
-                    <option value="asc"<?php if ($child_order_direction === 'asc'): ?> selected="selected"<?php endif ?>>Ascending</option>
-                    <option value="desc"<?php if ($child_order_direction === 'desc'): ?> selected="selected"<?php endif ?>>Descending</option>
+                    <?php foreach (['asc', 'desc'] as $direction): ?>
+                        <option value="<?= $direction ?>"
+                            <?php if ($orderDirection === $direction): ?> selected="selected"<?php endif ?>
+                        >
+                            <?= trans("boomcms::settings.children.direction.$direction") ?>
+                        </option>
+                    <?php endforeach ?>
                 </select>
 
                 <?php if ($page->hasChildren()): ?>
@@ -67,7 +80,9 @@
 
                     <select name="grandchild_template_id" id="grandchild_template_id">
                         <?php foreach ($templates as $t): ?>
-                            <option value="<?= $t->getId() ?>"<?php if ($t->getId() === $default_grandchild_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
+                            <option value="<?= $t->getId() ?>"
+                                <?php if ($t->getId() === $grandchildTemplate): ?> selected<?php endif ?>
+                            ><?= $t->getName() ?></option>
                         <?php endforeach ?>
                     </select>
                 </label>
