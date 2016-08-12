@@ -50643,12 +50643,52 @@ $.widget('ui.chunk',
 			data = data? data : this.getData();
 
 		data.template = this.options.template;
+		data.chunkId = this.options.chunkId;
 
 		return chunk.save(data)
 			.done(function(data) {
+				self.options.chunkId = data.chunkId;
+
 				self._update_html(data.html);
 				window.BoomCMS.page.toolbar.status.set(data.status);
+
 				new boomNotification("Page content saved").show();
+			})
+			.fail(function(response) {
+				if (response.responseJSON.error === 'conflict') {
+					self.resolveConflict(response.responseJSON, data);
+				}
+			});
+	},
+
+	resolveConflict: function(data, saveData) {
+		var chunk = this,
+			dialog = new boomDialog({
+				msg: data.html,
+				closeButton: false,
+				width: 500,
+				title: 'Save conflict',
+				onLoad: function() {
+					dialog.contents
+						.on('click', '#b-conflict-reload', function() {
+							chunk.options.chunkId = data.chunkId;
+							chunk._update_html(data.chunk);
+
+							window.BoomCMS.page.toolbar.status.set(data.status);
+
+							dialog.cancel();
+						})
+						.on('click', '#b-conflict-overwrite', function() {
+							saveData.force = 1;
+
+							chunk._save(saveData);
+
+							dialog.cancel();
+						})
+						.on('click', '#b-conflict-inspect', function() {
+							window.open(top.location);
+						});
+				}
 			});
 	},
 
@@ -50738,7 +50778,13 @@ $.widget('ui.chunkText', $.ui.chunk,
 		this.originalContent = this.element.html();
 	},
 
-	_update_html: function() {}
+	_update_html: function(html) {
+		var contents = $(html).html();
+
+		if (contents !== this.element.html()) {
+			this.element.html(contents);
+		}
+	}
 });;$.widget('ui.chunkLinkset', $.ui.chunk, {
 	edit: function() {
 		var chunkLinkset = this;
