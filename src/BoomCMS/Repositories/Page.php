@@ -34,7 +34,7 @@ class Page implements PageRepositoryInterface
     }
 
     /**
-     * Returns a page with the given ID
+     * Returns a page with the given ID.
      *
      * @param int $pageId
      *

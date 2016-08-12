@@ -26,7 +26,7 @@ interface Group
     public function delete(GroupInterface $group);
 
     /**
-     * Find a group by ID
+     * Find a group by ID.
      *
      * @param int $groupId
      *

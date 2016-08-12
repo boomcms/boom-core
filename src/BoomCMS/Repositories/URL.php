@@ -57,7 +57,7 @@ class URL implements URLRepositoryInterface
     }
 
     /**
-     * Returns the URL with the given ID
+     * Returns the URL with the given ID.
      *
      * @param int $urlId
      *
