@@ -9,9 +9,20 @@ use Illuminate\Support\Facades\Bus;
 
 class CreatePagePrimaryURL
 {
+    /**
+     * @param Page $page
+     *
+     * @return string
+     */
     public function getPrefix(Page $page)
     {
-        return ($page->getParent()->getChildPageUrlPrefix()) ?: $page->getParent()->url()->getLocation();
+        $parent = $page->getParent();
+
+        if ($parent === null) {
+            return '';
+        }
+
+        return ($parent->getChildPageUrlPrefix()) ?: $page->getParent()->url()->getLocation();
     }
 
     public function handle(PageEvent $event)
