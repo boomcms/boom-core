@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Editor\Editor as EditorObject;
+use BoomCMS\Page\History\Diff;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use DateTime;
 use Illuminate\Http\Request;
@@ -48,6 +49,7 @@ class Editor extends Controller
                 'previous' => $page->getCurrentVersion()->getPrevious(),
                 'next'     => $page->getCurrentVersion()->getNext(),
                 'version'  => $page->getCurrentVersion(),
+                'diff'     => new Diff(),
             ]);
         }
 

@@ -44,6 +44,11 @@
 
         <dt><?= trans('boomcms::page.history.status') ?>
         <dd><?= trans('boomcms::page.status.'.$version->getStatus()) ?></dd>
+
+        <?php if (isset($previous)): ?>
+            <dt><?= trans('boomcms::page.history.description') ?>
+            <dd><?= $diff->compare($version, $previous) ?></dd> 
+        <?php endif ?>
     </dl>
 </script>
 

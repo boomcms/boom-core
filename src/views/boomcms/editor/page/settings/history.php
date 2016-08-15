@@ -20,6 +20,12 @@
                         <small><?= $version->getEditedBy()->getEmail() ?></small>                 
                     </p>
                 <?php endif ?>
+
+                <?php if (isset($versions[$i+1])): ?>
+                    <p class="description">
+                        <?= $diff->compare($version, $versions[$i+1]) ?>
+                    </p>
+                <?php endif ?>
             </li>
 
             <?php if ($page->isVisibleAtTime($version->getEditedTime()) &&
