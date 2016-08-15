@@ -438,11 +438,11 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @return PageInterface
+     * @return null|PageInterface
      */
     public function getParent()
     {
-        return $this->parent;
+        return $this->isRoot() ? null : $this->parent;
     }
 
     /**
