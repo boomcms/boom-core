@@ -43,7 +43,7 @@ class Asset extends BaseChunk
     }
 
     /**
-     * Returns and array of attributes.
+     * Returns an array of attributes.
      *
      * @return array
      */
