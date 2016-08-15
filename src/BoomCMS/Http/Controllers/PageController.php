@@ -3,7 +3,7 @@
 namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Core\Page\RssFeed;
+use BoomCMS\Page\RssFeed;
 use BoomCMS\Support\Facades\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;

@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Page;
+namespace BoomCMS\Page;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Helpers;

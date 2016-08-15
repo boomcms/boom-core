@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Page\Finder;
 
-use BoomCMS\Core\Page\Finder\RelationsOut as Filter;
+use BoomCMS\Page\Finder\RelationsOut as Filter;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;

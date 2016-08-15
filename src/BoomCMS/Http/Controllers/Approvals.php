@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Core\Page\Finder;
+use BoomCMS\Page\Finder;
 
 class Approvals extends Controller
 {

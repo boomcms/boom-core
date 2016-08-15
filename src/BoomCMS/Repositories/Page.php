@@ -5,7 +5,7 @@ namespace BoomCMS\Repositories;
 use BoomCMS\Contracts\Models\Page as PageModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Page as PageRepositoryInterface;
-use BoomCMS\Core\Page\Finder;
+use BoomCMS\Page\Finder;
 use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Support\Facades\Router;
 

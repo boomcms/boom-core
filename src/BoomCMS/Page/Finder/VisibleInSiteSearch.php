@@ -1,14 +1,14 @@
 <?php
 
-namespace BoomCMS\Core\Page\Finder;
+namespace BoomCMS\Page\Finder;
 
 use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
-class VisibleToSearchEngines extends Filter
+class VisibleInSiteSearch extends Filter
 {
     public function execute(Builder $query)
     {
-        return $query->where('external_indexing', '=', true);
+        return $query->where('internal_indexing', '=', true);
     }
 }

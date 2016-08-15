@@ -6,7 +6,7 @@ use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Core\Asset;
-use BoomCMS\Core\Page;
+use BoomCMS\Page;
 use BoomCMS\Core\Tag;
 use BoomCMS\Database\Models\Chunk;
 use BoomCMS\Support\Facades\Chunk as ChunkFacade;

@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Page\Finder;
+namespace BoomCMS\Page\Finder;
 
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Foundation\Finder\Filter;

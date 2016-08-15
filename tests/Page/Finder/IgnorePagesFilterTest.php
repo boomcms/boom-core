@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Page\Finder;
 
-use BoomCMS\Core\Page\Finder\IgnorePages as Filter;
+use BoomCMS\Page\Finder\IgnorePages as Filter;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 

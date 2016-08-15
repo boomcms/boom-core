@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Page\Finder;
 
-use BoomCMS\Core\Page\Finder\Tag;
+use BoomCMS\Page\Finder\Tag;
 use BoomCMS\Database\Models\Tag as TagModel;
 use BoomCMS\Support\Facades\Tag as TagFacade;
 use BoomCMS\Tests\AbstractTestCase;

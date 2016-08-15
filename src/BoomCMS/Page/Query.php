@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Page;
+namespace BoomCMS\Page;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Foundation\Finder\Finder as BaseFinder;

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Page\Finder;
 
-use BoomCMS\Core\Page\Finder\Template as Filter;
+use BoomCMS\Page\Finder\Template as Filter;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Tests\AbstractTestCase;
