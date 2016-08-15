@@ -16,16 +16,16 @@ class Diff
      */
     public function compare(PageVersion $new, PageVersion $old)
     {
+        if ($new->isContentChange()) {
+            return new Diff\ChunkChange($new, $old);
+        }
+
         if ($new->getTemplateId() !== $old->getTemplateId()) {
-            $className = Diff\TemplateChange::class;
+            return new Diff\TemplateChange($new, $old);
         }
 
         if (strcmp($new->getTitle(), $old->getTitle()) !== 0) {
-            $className = Diff\TitleChange::class;
-        }
-
-        if (isset($className)) {
-            return new $className($new, $old);
+            return new Diff\TitleChange($new, $old);
         }
     }
 }

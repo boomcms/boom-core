@@ -50,4 +50,14 @@ class DiffTest extends AbstractTestCase
 
         $this->assertInstanceOf(Diff\TitleChange::class, $result);  
     }
+
+    public function testCompareChunkChange()
+    {
+        $this->new->{PageVersion::ATTR_CHUNK_TYPE} = 'text';
+        $this->new->{PageVersion::ATTR_CHUNK_ID} = 1;
+
+        $result = $this->diff->compare($this->new, $this->old);
+
+        $this->assertInstanceOf(Diff\ChunkChange::class, $result);  
+    }
 }

@@ -227,4 +227,29 @@ class PageVersionTest extends AbstractModelTestCase
 
         $this->assertEquals('test', $version->title);
     }
+
+    public function isContentChangeIfChunkTypeAndChunkId()
+    {
+        $version = new Version([
+            Version::ATTR_CHUNK_TYPE => 'text',
+            Version::ATTR_CHUNK_ID   => 1,
+        ]);
+
+        $this->assertTrue($version->isContentChange());
+    }
+
+    public function testIsContentChangeReturnsFalse()
+    {
+        $not = [
+            [Version::ATTR_CHUNK_ID => 1],
+            [Version::ATTR_CHUNK_TYPE => 'text'],
+            [],
+        ];
+
+        foreach ($not as $attrs) {
+            $version = new Version($attrs);
+
+            $this->assertFalse($version->isContentChange());
+        }
+    }
 }

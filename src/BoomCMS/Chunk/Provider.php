@@ -4,6 +4,7 @@ namespace BoomCMS\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\PageVersion;
+use BoomCMS\Database\Models\PageVersion as VersionModel;
 use BoomCMS\Database\Models\Chunk\BaseChunk as ChunkModel;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Router;
@@ -47,6 +48,10 @@ class Provider
 
         $className = $this->getClassName($type);
         $attrs['id'] = $model->id;
+
+        $version->{VersionModel::ATTR_CHUNK_TYPE} = $type;
+        $version->{VersionModel::ATTR_CHUNK_ID} = $model->id;
+        $version->save();
 
         return new $className($page, $attrs, $attrs['slotname'], true);
     }

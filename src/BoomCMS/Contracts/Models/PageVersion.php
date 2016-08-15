@@ -54,6 +54,11 @@ interface PageVersion
     /**
      * @return bool
      */
+    public function isContentChange();
+
+    /**
+     * @return bool
+     */
     public function isDraft();
 
     /**

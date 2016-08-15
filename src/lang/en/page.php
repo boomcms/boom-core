@@ -19,6 +19,7 @@ return [
         'diff'        => [
             'title'    => 'Title changed to <em>:new</em>',
             'template' => 'Template changed to <em>:new</em>',
+            'chunk'    => 'Content changed',
         ],
     ],
     'visible'   => 'Visible',

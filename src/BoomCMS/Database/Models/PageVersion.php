@@ -20,10 +20,13 @@ class PageVersion extends Model implements PageVersionInterface
     const ATTR_EDITED_AT = 'edited_time';
     const ATTR_EMBARGOED_UNTIL = 'embargoed_until';
     const ATTR_PENDING_APPROVAL = 'pending_approval';
+    const ATTR_CHUNK_TYPE = 'chunk_type';
+    const ATTR_CHUNK_ID = 'chunk_id';
 
     protected $casts = [
         self::ATTR_PAGE             => 'integer',
         self::ATTR_PENDING_APPROVAL => 'boolean',
+        self::ATTR_CHUNK_ID         => 'integer',
     ];
 
     protected $table = 'page_versions';
@@ -143,6 +146,17 @@ class PageVersion extends Model implements PageVersionInterface
     public function getTitle()
     {
         return $this->{self::ATTR_TITLE};
+    }
+
+    /**
+     * Whether this version relates to a content change
+     *
+     * @return bool
+     */
+    public function isContentChange()
+    {
+        return !empty($this->{self::ATTR_CHUNK_TYPE})
+            && !empty($this->{self::ATTR_CHUNK_ID});
     }
 
     /**
