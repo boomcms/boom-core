@@ -10,7 +10,7 @@ use Mockery as m;
 
 class ChunkChangeTest extends AbstractTestCase
 {
-   public function testDescriptionKeyExists()
+    public function testDescriptionKeyExists()
     {
         $class = new ChunkChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
 

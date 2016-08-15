@@ -149,7 +149,7 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
-     * Whether this version relates to a content change
+     * Whether this version relates to a content change.
      *
      * @return bool
      */

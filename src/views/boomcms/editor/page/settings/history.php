@@ -21,9 +21,9 @@
                     </p>
                 <?php endif ?>
 
-                <?php if (isset($versions[$i+1])): ?>
+                <?php if (isset($versions[$i + 1])): ?>
                     <p class="description">
-                        <?= $diff->compare($version, $versions[$i+1]) ?>
+                        <?= $diff->compare($version, $versions[$i + 1]) ?>
                     </p>
                 <?php endif ?>
             </li>

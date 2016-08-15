@@ -10,7 +10,6 @@ use Mockery as m;
 class BaseChangeTest extends AbstractTestCase
 {
     /**
-     *
      * @var BaseChange
      */
     protected $class;

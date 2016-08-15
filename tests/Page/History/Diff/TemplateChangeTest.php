@@ -11,7 +11,7 @@ use Mockery as m;
 
 class TemplateChangeTest extends AbstractTestCase
 {
-   public function testDescriptionKeyExists()
+    public function testDescriptionKeyExists()
     {
         $class = new TemplateChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
 

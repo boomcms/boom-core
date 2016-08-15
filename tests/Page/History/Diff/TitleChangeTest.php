@@ -10,7 +10,7 @@ use Mockery as m;
 
 class TitleChangeTest extends AbstractTestCase
 {
-   public function testDescriptionKeyExists()
+    public function testDescriptionKeyExists()
     {
         $class = new TitleChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
 

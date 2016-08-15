@@ -5,8 +5,8 @@ namespace BoomCMS\Repositories;
 use BoomCMS\Contracts\Models\Page as PageModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Page as PageRepositoryInterface;
-use BoomCMS\Page\Finder;
 use BoomCMS\Database\Models\Page as Model;
+use BoomCMS\Page\Finder;
 use BoomCMS\Support\Facades\Router;
 
 class Page implements PageRepositoryInterface

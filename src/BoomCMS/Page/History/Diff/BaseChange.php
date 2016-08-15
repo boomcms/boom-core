@@ -36,7 +36,7 @@ abstract class BaseChange
     }
 
     /**
-     * Returns a description of the change
+     * Returns a description of the change.
      *
      * @return string
      */
@@ -46,7 +46,7 @@ abstract class BaseChange
     }
 
     /**
-     * Reutrns the lang key for this change's description
+     * Reutrns the lang key for this change's description.
      *
      * @return string
      */
@@ -58,7 +58,7 @@ abstract class BaseChange
     }
 
     /**
-     * Returns parameters for Lang::get() to be used in the description of the change
+     * Returns parameters for Lang::get() to be used in the description of the change.
      *
      * @return array
      */

@@ -4,8 +4,8 @@ namespace BoomCMS\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\PageVersion;
-use BoomCMS\Database\Models\PageVersion as VersionModel;
 use BoomCMS\Database\Models\Chunk\BaseChunk as ChunkModel;
+use BoomCMS\Database\Models\PageVersion as VersionModel;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Router;
 use Illuminate\Auth\AuthManager;
