@@ -52643,7 +52643,7 @@ $.widget('ui.chunkPageVisibility', {
 		var toggle = ['remove', 'external', 'internal', 'text', 'asset'],
 			i, option;
 
-		for (i in toggle) {
+		for (i = 0; i < toggle.length; i++) {
 			option = toggle[i];
 
 			if (!this.options[option]) {
