@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Tests\Page\Finder;
 
-use BoomCMS\Page\Finder\WithoutTag as Filter;
 use BoomCMS\Database\Models\Tag;
+use BoomCMS\Page\Finder\WithoutTag as Filter;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;

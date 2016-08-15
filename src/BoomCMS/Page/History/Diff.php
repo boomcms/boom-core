@@ -7,7 +7,7 @@ use BoomCMS\Contracts\Models\PageVersion;
 class Diff
 {
     /**
-     * Compare two versions
+     * Compare two versions.
      *
      * @param PageVersion $new
      * @param PageVersion $old

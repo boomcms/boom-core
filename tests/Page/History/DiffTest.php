@@ -9,7 +9,6 @@ use BoomCMS\Tests\AbstractTestCase;
 class DiffTest extends AbstractTestCase
 {
     /**
-     *
      * @var Diff
      */
     protected $diff;
@@ -38,7 +37,7 @@ class DiffTest extends AbstractTestCase
 
         $result = $this->diff->compare($this->new, $this->old);
 
-        $this->assertInstanceOf(Diff\TemplateChange::class, $result);  
+        $this->assertInstanceOf(Diff\TemplateChange::class, $result);
     }
 
     public function testCompareTitleChange()
@@ -48,7 +47,7 @@ class DiffTest extends AbstractTestCase
 
         $result = $this->diff->compare($this->new, $this->old);
 
-        $this->assertInstanceOf(Diff\TitleChange::class, $result);  
+        $this->assertInstanceOf(Diff\TitleChange::class, $result);
     }
 
     public function testCompareChunkChange()
@@ -58,6 +57,6 @@ class DiffTest extends AbstractTestCase
 
         $result = $this->diff->compare($this->new, $this->old);
 
-        $this->assertInstanceOf(Diff\ChunkChange::class, $result);  
+        $this->assertInstanceOf(Diff\ChunkChange::class, $result);
     }
 }
