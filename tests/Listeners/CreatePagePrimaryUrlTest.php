@@ -6,7 +6,7 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Listeners\CreatePagePrimaryURL;
 use BoomCMS\Tests\AbstractTestCase;
 
-class  CreatePagePrimaryURLTest extends AbstractTestCase
+class CreatePagePrimaryUrlTest extends AbstractTestCase
 {
     public function testGetPrefixIsEmptyForRootPage()
     {
