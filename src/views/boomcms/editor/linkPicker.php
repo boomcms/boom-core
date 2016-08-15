@@ -63,8 +63,8 @@
             </label>
 
 			<?= $button('paperclip', 'select-asset', [
-                'id' => 'b-linkpicker-asset-select',
-                'class' => 'b-button-withtext'
+                'id'    => 'b-linkpicker-asset-select',
+                'class' => 'b-button-withtext',
             ]) ?>
 		
             <img />
@@ -83,8 +83,8 @@
 
     <div class="buttons">
         <?= $button('trash-o', 'remove-link', [
-            'id' => 'b-linkpicker-remove',
-            'class' => 'b-button-withtext toggle-remove'
+            'id'    => 'b-linkpicker-remove',
+            'class' => 'b-button-withtext toggle-remove',
         ]) ?>
     </div>
 </div>
