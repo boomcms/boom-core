@@ -1,6 +1,6 @@
 {
   "name": "boom-core",
-  "version": "5.3.0-dev",
+  "version": "5.3.0",
   "homepage": "https://github.com/boomcms/boom-core",
   "authors": [
     "Rob Taylor <rob@uxblondon.com>"
