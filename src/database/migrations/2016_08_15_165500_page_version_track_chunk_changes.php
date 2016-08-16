@@ -18,7 +18,7 @@ class PageVersionTrackChunkChanges extends Migration
             $table->integer(PageVersion::ATTR_CHUNK_ID)->unsigned();
         });
 
-        $versions = PageVersion::all();
+        $versions = PageVersion::where(PageVersion::ATTR_EMBARGOED_UNTIL, null)->get();
         $types = ['text', 'feature', 'asset', 'slideshow', 'linkset', 'link', 'location', 'timestamp', 'html', 'calendar', 'library'];
 
         foreach ($versions as $version) {
