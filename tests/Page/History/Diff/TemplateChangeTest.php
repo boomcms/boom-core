@@ -6,31 +6,14 @@ use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Page\History\Diff\TemplateChange;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Support\Facades\Lang;
 use Mockery as m;
 
 class TemplateChangeTest extends AbstractTestCase
 {
-    public function testSummaryExists()
-    {
-        $class = new TemplateChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
+    protected $className = TemplateChange::class;
 
-        $this->assertTrue(Lang::has($class->getSummaryKey()));
-    }
-
-    public function testNewDescriptionExists()
-    {
-        $class = new TemplateChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
-
-        $this->assertTrue(Lang::has($class->getNewDescriptionKey()));
-    }
-
-    public function testOldDescriptionExists()
-    {
-        $class = new TemplateChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
-
-        $this->assertTrue(Lang::has($class->getOldDescriptionKey()));
-    }
+    protected $hasNewDescription = true;
+    protected $hasOldDescription = true;
 
     public function testGetOldAndNewDescriptionParams()
     {

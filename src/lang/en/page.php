@@ -31,6 +31,18 @@ return [
         'chunk'    => [
             'summary' => 'Content changed',
         ],
+        'embargochanged' => [
+            'summary' => 'Embargo time changed',
+        ],
+        'embargoed' => [
+            'summary' => 'Embargo time set',
+        ],
+        'published' => [
+            'summary' => 'Changes published',
+        ],
+        'approvalrequest' => [
+            'summary' => 'Requested approval',
+        ],
     ],
     'visible'   => 'Visible',
     'invisible' => 'Invisible',

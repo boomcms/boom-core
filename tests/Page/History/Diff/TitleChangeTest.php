@@ -4,32 +4,13 @@ namespace BoomCMS\Tests\Page\History\Diff;
 
 use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Page\History\Diff\TitleChange;
-use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Support\Facades\Lang;
-use Mockery as m;
 
-class TitleChangeTest extends AbstractTestCase
+class TitleChangeTest extends AbstractChangeTestCase
 {
-    public function testDescriptionKeyExists()
-    {
-        $class = new TitleChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
+    protected $className = TitleChange::class;
 
-        $this->assertTrue(Lang::has($class->getSummaryKey()));
-    }
-
-    public function testNewDescriptionExists()
-    {
-        $class = new TitleChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
-
-        $this->assertTrue(Lang::has($class->getNewDescriptionKey()));
-    }
-
-    public function testOldDescriptionExists()
-    {
-        $class = new TitleChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
-
-        $this->assertTrue(Lang::has($class->getOldDescriptionKey()));
-    }
+    protected $hasNewDescription = true;
+    protected $hasOldDescription = true;
 
     public function testGetDescriptionParams()
     {

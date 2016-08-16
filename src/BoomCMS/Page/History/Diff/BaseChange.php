@@ -48,7 +48,7 @@ abstract class BaseChange
     protected function getLangPrefix()
     {
         if ($this->langPrefix === null) {
-            $type = strtolower(str_replace('Change', '', class_basename($this)));
+            $type = strtolower(preg_replace('|Change$|', '', class_basename($this)));
             $this->langPrefix = "boomcms::page.diff.$type.";
         }
 

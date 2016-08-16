@@ -27,5 +27,25 @@ class Diff
         if (strcmp($new->getTitle(), $old->getTitle()) !== 0) {
             return new Diff\TitleChange($new, $old);
         }
+
+        if ($new->isPendingApproval() && !$old->isPendingApproval()) {
+            return new Diff\ApprovalRequest($new, $old);
+        }
+
+        if ($new->isEmbargoed($new->getEditedTime())) {
+            if (!$old->isEmbargoed($old->getEditedTime())) {
+                return new Diff\Embargoed($new, $old);
+            }
+
+            if ($new->getEmbargoedUntil()->getTimestamp() !== $old->getEmbargoedUntil()->getTimestamp()) {
+                return new Diff\EmbargoChanged($new, $old);
+            }
+        }
+
+        if ($new->isPublished($new->getEditedTime())) {
+            if (!$old->isPublished($old->getEditedTime())) {
+                return new Diff\Published($new, $old);
+            }
+        }
     }
 }
