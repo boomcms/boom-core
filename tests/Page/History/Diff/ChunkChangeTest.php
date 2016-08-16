@@ -10,10 +10,10 @@ use Mockery as m;
 
 class ChunkChangeTest extends AbstractTestCase
 {
-    public function testDescriptionKeyExists()
+    public function testSummaryKeyExists()
     {
         $class = new ChunkChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
 
-        $this->assertTrue(Lang::has($class->getDescriptionKey()));
+        $this->assertTrue(Lang::has($class->getSummaryKey()));
     }
 }

@@ -15,11 +15,21 @@ return [
         'edited-at'   => 'Edited at',
         'edited-by'   => 'Edited by',
         'status'      => 'Status',
-        'description' => 'Nature of change',
-        'diff'        => [
-            'title'    => 'Title changed to <em>:new</em>',
-            'template' => 'Template changed to <em>:new</em>',
-            'chunk'    => 'Content changed',
+        'summary'     => 'Nature of change',
+    ],
+    'diff'        => [
+        'title'    => [
+            'summary' => 'Title changed',
+            'old'     => 'Old title: :title',
+            'new'     => 'New title: :title',
+        ],
+        'template' => [
+            'summary' => 'Template changed',
+            'old'     => 'Old template: :template',
+            'new'     => 'New template: :template',
+        ],
+        'chunk'    => [
+            'summary' => 'Content changed',
         ],
     ],
     'visible'   => 'Visible',

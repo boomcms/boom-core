@@ -11,14 +11,28 @@ use Mockery as m;
 
 class TemplateChangeTest extends AbstractTestCase
 {
-    public function testDescriptionKeyExists()
+    public function testSummaryExists()
     {
         $class = new TemplateChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
 
-        $this->assertTrue(Lang::has($class->getDescriptionKey()));
+        $this->assertTrue(Lang::has($class->getSummaryKey()));
     }
 
-    public function testGetDescriptionParams()
+    public function testNewDescriptionExists()
+    {
+        $class = new TemplateChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
+
+        $this->assertTrue(Lang::has($class->getNewDescriptionKey()));
+    }
+
+    public function testOldDescriptionExists()
+    {
+        $class = new TemplateChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
+
+        $this->assertTrue(Lang::has($class->getOldDescriptionKey()));
+    }
+
+    public function testGetOldAndNewDescriptionParams()
     {
         $new = m::mock(PageVersion::class);
         $old = m::mock(PageVersion::class);
@@ -37,11 +51,10 @@ class TemplateChangeTest extends AbstractTestCase
             ->andReturn($oldTemplate);
 
         $change = new TemplateChange($new, $old);
-        $params = [
-            'new' => $newTemplate->getName(),
-            'old' => $oldTemplate->getName(),
-        ];
+        $newAttrs = ['template' => $newTemplate->getName()];
+        $oldAttrs = ['template' => $oldTemplate->getName()];
 
-        $this->assertEquals($params, $change->getDescriptionParams());
+        $this->assertEquals($newAttrs, $change->getNewDescriptionParams());
+        $this->assertEquals($oldAttrs, $change->getOldDescriptionParams());
     }
 }

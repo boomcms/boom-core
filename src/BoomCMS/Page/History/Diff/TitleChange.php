@@ -4,11 +4,23 @@ namespace BoomCMS\Page\History\Diff;
 
 class TitleChange extends BaseChange
 {
-    public function getDescriptionParams()
+    /**
+     * @return array
+     */
+    public function getNewDescriptionParams()
     {
         return [
-            'new' => $this->new->getTitle(),
-            'old' => $this->old->getTitle(),
+            'title' => $this->new->getTitle(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getOldDescriptionParams()
+    {
+        return [
+            'title' => $this->old->getTitle(),
         ];
     }
 }

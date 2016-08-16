@@ -4,11 +4,23 @@ namespace BoomCMS\Page\History\Diff;
 
 class TemplateChange extends BaseChange
 {
-    public function getDescriptionParams()
+    /**
+     * @return array
+     */
+    public function getNewDescriptionParams()
     {
         return [
-            'new' => $this->new->getTemplate()->getName(),
-            'old' => $this->old->getTemplate()->getName(),
+            'template' => $this->new->getTemplate()->getName(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getOldDescriptionParams()
+    {
+        return [
+            'template' => $this->old->getTemplate()->getName(),
         ];
     }
 }

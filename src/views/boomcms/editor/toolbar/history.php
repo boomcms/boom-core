@@ -48,7 +48,7 @@
         </dd>
 
         <?php if (isset($previous)): ?>
-            <dt><?= trans('boomcms::page.history.description') ?>
+            <dt><?= trans('boomcms::page.history.summary') ?>
             <dd><?= $diff->compare($version, $previous) ?></dd> 
         <?php endif ?>
     </dl>

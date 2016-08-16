@@ -14,7 +14,21 @@ class TitleChangeTest extends AbstractTestCase
     {
         $class = new TitleChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
 
-        $this->assertTrue(Lang::has($class->getDescriptionKey()));
+        $this->assertTrue(Lang::has($class->getSummaryKey()));
+    }
+
+    public function testNewDescriptionExists()
+    {
+        $class = new TitleChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
+
+        $this->assertTrue(Lang::has($class->getNewDescriptionKey()));
+    }
+
+    public function testOldDescriptionExists()
+    {
+        $class = new TitleChange(m::mock(PageVersion::class), m::mock(PageVersion::class));
+
+        $this->assertTrue(Lang::has($class->getOldDescriptionKey()));
     }
 
     public function testGetDescriptionParams()
@@ -24,11 +38,10 @@ class TitleChangeTest extends AbstractTestCase
 
         $change = new TitleChange($new, $old);
 
-        $params = [
-            'new' => $new->getTitle(),
-            'old' => $old->getTitle(),
-        ];
+        $newAttrs = ['title' => $new->getTitle()];
+        $oldAttrs = ['title' => $old->getTitle()];
 
-        $this->assertEquals($params, $change->getDescriptionParams());
+        $this->assertEquals($newAttrs, $change->getNewDescriptionParams());
+        $this->assertEquals($oldAttrs, $change->getOldDescriptionParams());
     }
 }
