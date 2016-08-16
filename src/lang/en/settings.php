@@ -88,10 +88,11 @@ return [
         'visible-note' => 'Note: page visibility is calculated by the current visibility settings',
     ],
     'info'    => [
-        'heading'       => 'Page information',
-        'created-by'    => 'Created by',
-        'created-at'    => 'Created at',
-        'last-modified' => 'Last modified',
+        'heading'          => 'Page information',
+        'created-by'       => 'Created by',
+        'created-at'       => 'Created at',
+        'last-modified'    => 'Last modified',
+        'last-modified-by' => 'Last modified by',
     ],
     'navigation' => [
         'heading'   => 'Page navigation settings',

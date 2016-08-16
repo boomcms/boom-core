@@ -23,5 +23,10 @@
                 <?= $page->getLastModified()->format('d M Y h:i') ?>
             </time>
         </dd>
+
+        <?php if ($person = $page->getCurrentVersion()->getEditedBy()): ?>
+            <dt><?= trans('boomcms::settings.info.last-modified-by') ?></dt>
+            <dd><?= $person->getName() ?>&nbsp;<small><?= $person->getEmail() ?></small></dd>
+        <?php endif ?>
     </dl>
 </div>
