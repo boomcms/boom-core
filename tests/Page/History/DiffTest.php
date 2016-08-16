@@ -63,8 +63,7 @@ class DiffTest extends AbstractTestCase
 
     /**
      * Approval was requested if the new version is pending approval
-     * but the old version is not
-     * 
+     * but the old version is not.
      */
     public function testApprovalRequested()
     {
@@ -77,8 +76,7 @@ class DiffTest extends AbstractTestCase
     }
 
     /**
-     * An embargo time was set if the old version wasn't embargoed but the new one is
-     * 
+     * An embargo time was set if the old version wasn't embargoed but the new one is.
      */
     public function testEmbargoSet()
     {
@@ -95,11 +93,10 @@ class DiffTest extends AbstractTestCase
     }
 
     /**
-     * The embargo time was changed if:
-     * 
+     * The embargo time was changed if:.
+     *
      *   * Both versions are embargoed
      *   * The embargo times aren't the same
-     * 
      */
     public function testEmbargoChanged()
     {
@@ -117,8 +114,7 @@ class DiffTest extends AbstractTestCase
     }
 
     /**
-     * Changes were published if the new version is published but the previous one ins't
-     * 
+     * Changes were published if the new version is published but the previous one ins't.
      */
     public function testPublishedAfterDraft()
     {
@@ -133,13 +129,12 @@ class DiffTest extends AbstractTestCase
     }
 
     /**
-     * Changes were published if the new version is published but the previous one ins't
-     * 
+     * Changes were published if the new version is published but the previous one ins't.
      */
     public function testPublishedAfterApprovalRequest()
     {
         $this->new->{PageVersion::ATTR_EMBARGOED_UNTIL} = time();
-         $this->new->{PageVersion::ATTR_EDITED_AT} = time();
+        $this->new->{PageVersion::ATTR_EDITED_AT} = time();
 
         $this->old->{PageVersion::ATTR_PENDING_APPROVAL} = true;
         $this->old->{PageVersion::ATTR_EMBARGOED_UNTIL} = null;
@@ -150,13 +145,12 @@ class DiffTest extends AbstractTestCase
     }
 
     /**
-     * Changes were published if the new version is published but the previous one ins't
-     * 
+     * Changes were published if the new version is published but the previous one ins't.
      */
     public function testPublishedAfterEmbargoed()
     {
         $this->new->{PageVersion::ATTR_EMBARGOED_UNTIL} = time();
-         $this->new->{PageVersion::ATTR_EDITED_AT} = time();
+        $this->new->{PageVersion::ATTR_EDITED_AT} = time();
 
         $this->old->{PageVersion::ATTR_EMBARGOED_UNTIL} = time() - 500;
         $this->old->{PageVersion::ATTR_EDITED_AT} = time() - 1000;
