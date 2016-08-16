@@ -4,7 +4,9 @@ function boomDialog(options) {
 	this.deferred = $.Deferred().always(function() {
 		$(top.window).trigger('boom:dialog:close');
 
-		dialog.cleanup();
+		setTimeout(function() {
+			dialog.cleanup();
+		}, 0);
 	});
 
 	this.buttons = {

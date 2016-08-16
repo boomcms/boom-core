@@ -48111,10 +48111,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 				width: 440
 			}).done(function() {
 				$.post(url, dialog.contents.find('form').serialize())
-				.done(function(response) {
-					new boomNotification("Page embargo saved").show();
-					promise.resolve(response);
-				});
+					.done(function(response) {
+						new boomNotification("Page embargo saved").show();
+						promise.resolve(response);
+					});
 			});
 
 			return promise;
@@ -48591,7 +48591,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	this.deferred = $.Deferred().always(function() {
 		$(top.window).trigger('boom:dialog:close');
 
-		dialog.cleanup();
+		setTimeout(function() {
+			dialog.cleanup();
+		}, 0);
 	});
 
 	this.buttons = {
