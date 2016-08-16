@@ -48,8 +48,20 @@
         </dd>
 
         <?php if (isset($previous)): ?>
-            <dt><?= trans('boomcms::page.history.summary') ?>
-            <dd><?= $diff->compare($version, $previous) ?></dd> 
+            <?php $compare = $diff->compare($version, $previous) ?>
+
+            <dt><?= trans('boomcms::page.history.description') ?>
+            <dd>
+                <p><?= $compare ?></p>
+
+                <?php if ($compare->getNewDescription()): ?>
+                    <p><?= $compare->getNewDescription() ?></p>
+                <?php endif ?>
+
+                <?php if ($compare->getOldDescription()): ?>
+                    <p><?= $compare->getOldDescription() ?></p>
+                <?php endif ?>
+            </dd> 
         <?php endif ?>
     </dl>
 </script>

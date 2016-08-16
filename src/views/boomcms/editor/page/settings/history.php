@@ -3,51 +3,71 @@
 
     <ol>
         <?php foreach ($versions as $i => $version): ?>
-            <li data-status="<?= $version->getStatus() ?>">
-                <div>
-                    <a href="#" data-timestamp="<?= $version->getEditedTime()->getTimestamp() ?>">
-                        <time datetime="<?= $version->getEditedTime()->format('c') ?>">
-                            <?= $version->getEditedTime()->format('d M Y h:i') ?>
-                        </time>
-                    </a>
+            <?php if (isset($versions[$i+1])): ?>
+                <?php $compare = $diff->compare($version, $versions[$i+1]) ?>
 
-                    <span class="status">
-                        <?= trans('boomcms::page.status.'.$version->getStatus($version->getEditedTime())) ?>
-                    </span>
-                </div>
+                <li data-status="<?= $version->getStatus() ?>">
+                    <div class="summary">
+                        <?php if ($compare): ?>
+                            <span class="fa fa-<?= $compare->getIcon() ?>"></span>
+                        <?php endif ?>
 
-                <?php if ($version->getEditedBy()): ?>
-                    <p>
-                        <?= $version->getEditedBy()->getName() ?>&nbsp;
-                        <small><?= $version->getEditedBy()->getEmail() ?></small>                 
-                    </p>
-                <?php endif ?>
+                        <p>
+                            <?= $compare ?>
+                        </p>
+                    </div>
 
-                <?php if (isset($versions[$i + 1])): ?>
-                    <p class="description">
-                        <?= $diff->compare($version, $versions[$i + 1]) ?>
-                    </p>
-                <?php endif ?>
-            </li>
+                    <div class="main">
+                        <div>
+                            <a href="#" data-timestamp="<?= $version->getEditedTime()->getTimestamp() ?>">
+                                <time datetime="<?= $version->getEditedTime()->format('c') ?>">
+                                    <?= $version->getEditedTime()->format('d M Y h:i') ?>
+                                </time>
+                            </a>
+
+                            <span class="status">
+                                <?= trans('boomcms::page.status.'.$version->getStatus($version->getEditedTime())) ?>
+                            </span>
+                        </div>
+
+                        <?php if ($version->getEditedBy()): ?>
+                            <p>
+                                <?= $version->getEditedBy()->getName() ?>&nbsp;
+                                <small><?= $version->getEditedBy()->getEmail() ?></small>                 
+                            </p>
+                        <?php endif ?>
+                    </div>
+                </li>
+            <?php endif ?>
 
             <?php if ($page->isVisibleAtTime($version->getEditedTime()) &&
                 (!isset($versions[$i + 1]) ||
                 !$page->isVisibleAtTime($versions[$i + 1]->getEditedTime()))): ?>
 
                 <li class="visibility">
-                    <div>
-                        <a href="#" data-timestamp="<?= $page->getVisibleFrom()->getTimestamp() ?>">
-                            <time datetime="<?= $page->getVisibleFrom()->format('c') ?>">
-                                <?=$page->getVisibleFrom()->format('d M Y h:i') ?>
-                            </time>
-                        </a>
-
-                        <span class="status">
-                            <?= trans('boomcms::settings.history.visible') ?>
-                        </span>
+                    <div class="summary">
+                        <span class='fa fa-eye'></span>
                     </div>
-                    
-                    <small><?= trans('boomcms::settings.history.visible-note') ?></small>
+
+                    <div class="main">
+                        <div>
+                            <a href="#" data-timestamp="<?= $page->getVisibleFrom()->getTimestamp() ?>">
+                                <time datetime="<?= $page->getVisibleFrom()->format('c') ?>">
+                                    <?=$page->getVisibleFrom()->format('d M Y h:i') ?>
+                                </time>
+                            </a>
+
+                            <span class="status">
+                                <?= trans('boomcms::settings.history.visible') ?>
+                            </span>
+                        </div>
+
+                        <p>
+                            <small>
+                                <?= trans('boomcms::settings.history.visible-note') ?>
+                            </small>
+                        </p>
+                    </div>
                 </li>
             <?php endif ?>
         <?php endforeach ?>

@@ -15,33 +15,34 @@ return [
         'edited-at'   => 'Edited at',
         'edited-by'   => 'Edited by',
         'status'      => 'Status',
-        'summary'     => 'Nature of change',
+        'description' => 'Description of change',
+        'initial'     => 'Initial version',
     ],
     'diff'        => [
         'title'    => [
-            'summary' => 'Title changed',
+            'summary' => 'Title',
             'old'     => 'Old title: :title',
             'new'     => 'New title: :title',
         ],
         'template' => [
-            'summary' => 'Template changed',
+            'summary' => 'Template',
             'old'     => 'Old template: :template',
             'new'     => 'New template: :template',
         ],
         'chunk'    => [
-            'summary' => 'Content changed',
+            'summary' => 'Content',
         ],
         'embargochanged' => [
-            'summary' => 'Embargo time changed',
+            'summary' => 'Embargo changed',
         ],
         'embargoed' => [
-            'summary' => 'Embargo time set',
+            'summary' => 'Embargo set',
         ],
         'published' => [
-            'summary' => 'Changes published',
+            'summary' => 'Published',
         ],
         'approvalrequest' => [
-            'summary' => 'Requested approval',
+            'summary' => 'Request approval',
         ],
     ],
     'visible'   => 'Visible',

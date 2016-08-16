@@ -17,7 +17,30 @@
 			max-width: 60rem;
 
 			+ li {
-				margin-top: 1rem;
+				margin-top: 2rem;
+			}
+
+			.summary {
+				float: left;
+				text-align: center;
+
+				p {
+					.text-small;
+				}
+
+				span {
+					display: inline-block;
+					position: relative;
+				}
+
+				.fa {
+					font-size: 4rem;
+					color: @blue;
+
+					+ .fa {
+						margin-left: 0.5rem;
+					}
+				}
 			}
 
 			&[data-status="published"]:not(:first-child) {
@@ -39,7 +62,7 @@
 				}
 			}
 
-			p {
+			.main p {
 				margin: 0.5rem 0 0 0;
 			}
 		}
@@ -48,15 +71,30 @@
 
 @media all and (min-width: 500px) {
 	#b-page-history {
-		ol li div {
+		ol li {
 			overflow: hidden;
 
-			time {
+			.summary {
 				float: left;
+				width: 8rem;
 			}
 
-			.status {
-				float: right
+			.main {
+				overflow: hidden;
+				width: calc(~"100% - 15rem");
+				float: right;
+
+				> div {
+					overflow: hidden;
+
+					a {
+						float: left;
+					}
+
+					.status {
+						float: right;
+					}
+				}
 			}
 		}
 	}

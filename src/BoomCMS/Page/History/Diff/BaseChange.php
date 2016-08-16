@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Lang;
 abstract class BaseChange
 {
     /**
+     * @var array
+     */
+    protected $iconClass = '';
+
+    /**
      * Prefix to be used for Lang::get() keys.
      *
      * @var string
@@ -40,6 +45,16 @@ abstract class BaseChange
     public function __toString()
     {
         return $this->getSummary();
+    }
+
+    /**
+     * Returns the FontAwesome icon class to use.
+     *
+     * @return string
+     */
+    public function getIcon()
+    {
+        return $this->iconClass;
     }
 
     /**
