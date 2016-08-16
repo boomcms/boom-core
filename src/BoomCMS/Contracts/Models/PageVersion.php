@@ -62,9 +62,11 @@ interface PageVersion
     public function isDraft();
 
     /**
+     * @param null|DateTime $time
+     *
      * @return bool
      */
-    public function isEmbargoed();
+    public function isEmbargoed(DateTime $time = null);
 
     /**
      * @return bool
@@ -72,9 +74,11 @@ interface PageVersion
     public function isPendingApproval();
 
     /**
+     * @param null|DateTime $time
+     *
      * @return bool
      */
-    public function isPublished();
+    public function isPublished(DateTime $time = null);
 
     /**
      * @return $this

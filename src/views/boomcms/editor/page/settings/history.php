@@ -11,7 +11,9 @@
                         </time>
                     </a>
 
-                    <span class="status"><?= trans('boomcms::page.status.'.$version->getStatus()) ?></span>
+                    <span class="status">
+                        <?= trans('boomcms::page.status.'.$version->getStatus($version->getEditedTime())) ?>
+                    </span>
                 </div>
 
                 <?php if ($version->getEditedBy()): ?>

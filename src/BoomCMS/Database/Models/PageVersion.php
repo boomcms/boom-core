@@ -112,11 +112,13 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * @param null|DateTime $time
+     *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(DateTime $time = null)
     {
-        return $this->status();
+        return $this->status($time);
     }
 
     /**
@@ -168,11 +170,21 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * Whether the version is embargoed.
+     *
+     * If a time is given then the embargo time is compared with the given time.
+     *
+     * Otherwise it is compared with the current time.
+     *
+     * @param null|DateTime $time
+     *
      * @return bool
      */
-    public function isEmbargoed()
+    public function isEmbargoed(DateTime $time = null)
     {
-        return $this->{self::ATTR_EMBARGOED_UNTIL} > time();
+        $timestamp = $time ? $time->getTimestamp() : time();
+
+        return $this->{self::ATTR_EMBARGOED_UNTIL} > $timestamp;
     }
 
     /**
@@ -184,11 +196,21 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * Whether the version is published.
+     *
+     * If a time is given then the embargo time is compared with the given time.
+     *
+     * Otherwise it is compared with the current time.
+     *
+     * @param null|DateTime $time
+     *
      * @return bool
      */
-    public function isPublished()
+    public function isPublished(DateTime $time = null)
     {
-        return $this->{self::ATTR_EMBARGOED_UNTIL} && $this->{self::ATTR_EMBARGOED_UNTIL} <= time();
+        $timestamp = $time ? $time->getTimestamp() : time();
+
+        return $this->{self::ATTR_EMBARGOED_UNTIL} && $this->{self::ATTR_EMBARGOED_UNTIL} <= $timestamp;
     }
 
     /**
@@ -295,17 +317,21 @@ class PageVersion extends Model implements PageVersionInterface
     /**
      * Returns the status of the current page version.
      *
+     * If a time parameter is given then the status of the page at that time will be returned.
+     *
+     * @param null|DateTime $time
+     *
      * @return string
      */
-    public function status()
+    public function status(DateTime $time = null)
     {
         if ($this->isPendingApproval()) {
             return 'pending approval';
         } elseif ($this->isDraft()) {
             return 'draft';
-        } elseif ($this->isPublished()) {
+        } elseif ($this->isPublished($time)) {
             return 'published';
-        } elseif ($this->isEmbargoed()) {
+        } elseif ($this->isEmbargoed($time)) {
             return 'embargoed';
         }
     }

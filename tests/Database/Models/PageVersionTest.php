@@ -112,6 +112,24 @@ class PageVersionTest extends AbstractModelTestCase
         $this->assertNotEquals('published', $version->status());
     }
 
+    public function testIsPublishedWithTimeParameter()
+    {
+        $time = new DateTime('@'.time() - 1000);
+
+        $published = new Version([Version::ATTR_EMBARGOED_UNTIL => $time->getTimestamp() - 10]);
+        $this->assertTrue($published->isPublished($time));
+        $this->assertEquals('published', $published->status($time));
+    }
+
+    public function testIsNotPublishedWithTimeParameter()
+    {
+        $time = new DateTime('@'.time() + 1000);
+
+        $published = new Version([Version::ATTR_EMBARGOED_UNTIL => time()]);
+        $this->assertFalse($published->isPublished($time));
+        $this->assertNotEquals('published', $published->status($time));
+    }
+
     public function testIsDraftIfNoEmbargoTime()
     {
         $version = new Version(['embargoed_until' => null]);
@@ -131,6 +149,15 @@ class PageVersionTest extends AbstractModelTestCase
         $version = new Version(['embargoed_until' => time() + 10]);
         $this->assertTrue($version->isEmbargoed());
         $this->assertEquals('embargoed', $version->status());
+    }
+
+    public function testIsEmbargoedWithTimeParameterIfEmbargoInFuture()
+    {
+        $time = new DateTime('@'.time() + 1000);
+        $version = new Version([Version::ATTR_EMBARGOED_UNTIL => $time->getTimestamp() + 10]);
+
+        $this->assertTrue($version->isEmbargoed($time));
+        $this->assertEquals('embargoed', $version->status($time));
     }
 
     /**

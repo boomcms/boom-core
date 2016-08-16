@@ -43,7 +43,9 @@
         <?php endif ?>
 
         <dt><?= trans('boomcms::page.history.status') ?>
-        <dd><?= trans('boomcms::page.status.'.$version->getStatus()) ?></dd>
+        <dd>
+            <?= trans('boomcms::page.status.'.$version->getStatus($version->getEditedTime())) ?>
+        </dd>
 
         <?php if (isset($previous)): ?>
             <dt><?= trans('boomcms::page.history.description') ?>
