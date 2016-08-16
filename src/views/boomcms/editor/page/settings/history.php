@@ -3,8 +3,8 @@
 
     <ol>
         <?php foreach ($versions as $i => $version): ?>
-            <?php if (isset($versions[$i+1])): ?>
-                <?php $compare = $diff->compare($version, $versions[$i+1]) ?>
+            <?php if (isset($versions[$i + 1])): ?>
+                <?php $compare = $diff->compare($version, $versions[$i + 1]) ?>
 
                 <li data-status="<?= $version->getStatus() ?>">
                     <div class="summary">
