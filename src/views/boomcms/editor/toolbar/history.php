@@ -12,9 +12,7 @@
         <?php $compare = $diff->compare($version, $previous) ?>
 
         <div class="summary">
-            <?php if ($compare): ?>
-                <span class="fa fa-<?= $compare->getIcon() ?>"></span>
-            <?php endif ?>
+            <span class="fa fa-<?= $compare->getIcon() ?>"></span>
 
             <p>
                 <?= $compare ?>
@@ -74,13 +72,6 @@
         <dd>
             <?= trans('boomcms::page.status.'.$version->getStatus($version->getEditedTime())) ?>
         </dd>
-
-        <?php if (isset($previous)): ?>
-            <dt><?= trans('boomcms::page.history.description') ?>
-            <dd>
-                <p><?= $diff->compare($version, $previous) ?></p>
-            </dd> 
-        <?php endif ?>
     </dl>
 </script>
 

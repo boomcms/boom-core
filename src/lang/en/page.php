@@ -15,7 +15,6 @@ return [
         'edited-at'   => 'Edited at',
         'edited-by'   => 'Edited by',
         'status'      => 'Status',
-        'description' => 'Description of change',
         'initial'     => 'Initial version',
     ],
     'diff'        => [
