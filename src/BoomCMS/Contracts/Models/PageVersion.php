@@ -7,6 +7,11 @@ use DateTime;
 interface PageVersion
 {
     /**
+     * @return int
+     */
+    public function getChunkId();
+
+    /**
      * @return string
      */
     public function getChunkType();

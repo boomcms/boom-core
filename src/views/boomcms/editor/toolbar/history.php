@@ -25,6 +25,22 @@
     <?= view('boomcms::editor.toolbar.view-live-button') ?>
 </div>
 
+<?php if ($version->getChunkType() === 'text'): ?>
+    <?php
+        $chunk = Chunk::findById($version->getChunkType(), $version->getChunkId());
+        $previousChunk = Chunk::find($version->getChunkType(), $chunk->slotname, $previous);
+        $previousText = $previousChunk ? $previousChunk->site_text : '';
+    ?>
+
+    <script type="text/template"
+            id="b-history-diff"
+            data-slotname="<?= $chunk->slotname ?>"
+            data-type="<?= $version->getChunkType() ?>"
+    >
+        <?= Str::diff($previousText, $chunk->site_text) ?>
+    </script>
+<?php endif ?>
+
 <script type="text/template" id="b-history-template">
     <dl>
         <?php if ($version->getEditedTime()->getTimestamp()): ?>

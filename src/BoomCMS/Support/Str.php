@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Support;
 
+use Caxy\HtmlDiff\HtmlDiff;
 use Closure;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str as BaseStr;
@@ -9,6 +10,13 @@ use Rych\ByteSize;
 
 abstract class Str extends BaseStr
 {
+    public static function diff($old, $new)
+    {
+        $htmlDiff = new HtmlDiff($old, $new);
+
+        return $htmlDiff->build();
+    }
+
     /**
      * Turn a number of bytes into a human friendly filesize.
      *

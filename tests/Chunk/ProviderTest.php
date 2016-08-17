@@ -47,6 +47,7 @@ class ProviderTest extends AbstractTestCase
     public function testAllowedToEditIsFalseIfEditorIsNotEnabled()
     {
         Editor::shouldReceive('isEnabled')->once()->andReturn(false);
+        Editor::shouldReceive('isHistory')->once()->andReturn(false);
 
         $page = new Page();
 
@@ -72,6 +73,22 @@ class ProviderTest extends AbstractTestCase
             ->andReturn(true);
 
         $this->assertFalse($this->provider->allowedToEdit($page));
+        $this->assertTrue($this->provider->allowedToEdit($page));
+    }
+
+    public function testAllowedToEditIfEditorIsInHistoryState()
+    {
+        $page = new Page();
+
+        Editor::shouldReceive('isEnabled')->once()->andReturn(false);
+        Editor::shouldReceive('isHistory')->once()->andReturn(true);
+
+        $this->auth
+            ->shouldReceive('check')
+            ->once()
+            ->with('edit', $page)
+            ->andReturn(true);
+
         $this->assertTrue($this->provider->allowedToEdit($page));
     }
 

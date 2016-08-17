@@ -59,6 +59,9 @@ class Provider
     /**
      * Returns whether the logged in user is allowed to edit a page.
      *
+     * Editing is allowed in the history state, even though the editor is disabled
+     * To ensure that chnuk attributes are added to the HTML
+     *
      * @return bool
      */
     public function allowedToEdit(Page $page = null)
@@ -67,7 +70,8 @@ class Provider
             return true;
         }
 
-        return Editor::isEnabled() && $this->auth->check('edit', $page);
+        return (Editor::isEnabled() || Editor::isHistory())
+            && $this->auth->check('edit', $page);
     }
 
     /**
@@ -121,6 +125,21 @@ class Provider
         $this->saveToCache($type, $slotname, $version, $chunk);
 
         return $chunk;
+    }
+
+    /**
+     * Find a chunk by it's ID.
+     *
+     * @param string $type
+     * @param int $chunkId
+     *
+     * @return ChunkModel
+     */
+    public function findById($type, $chunkId)
+    {
+        $model = $this->getModelName($type);
+
+        return $model::find($chunkId);
     }
 
     public function get($type, $slotname, Page $page)

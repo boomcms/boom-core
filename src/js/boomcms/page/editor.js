@@ -25,6 +25,8 @@ $.widget( 'boom.pageEditor', {
 
 		this.watchForDialogs();
 
+		this.showTextDiff();
+
 		if (this.options.editable) {
 			this.createChunks();
 		}
@@ -82,6 +84,19 @@ $.widget( 'boom.pageEditor', {
 						window.BoomCMS.page.toolbar.showSettings('feature');
 					});
 			});
+	},
+
+	showTextDiff: function() {
+		var $diff = this.toolbar.element.contents().find('#b-history-diff');
+
+		if ($diff.length) {
+			var type = $diff.attr('data-type'),
+				slotname = $diff.attr('data-slotname');
+
+		this.document.contents()
+			.find('[data-boom-chunk="' + type + '"][data-boom-slot-name="' + slotname + '"]')
+			.html($diff.html());
+		}
 	},
 
 	watchForDialogs: function() {
