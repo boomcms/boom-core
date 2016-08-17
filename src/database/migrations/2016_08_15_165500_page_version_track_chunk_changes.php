@@ -25,11 +25,15 @@ class PageVersionTrackChunkChanges extends Migration
             foreach ($types as $type) {
                 $className = 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
 
-                $chunk = (new $className())
+                $count = (new $className())
                     ->where('page_vid', $version->getId())
-                    ->first();
+                    ->count();
 
-                if ($chunk) {
+                if ($count === 1) {
+                    $chunk = (new $className())
+                        ->where('page_vid', $version->getId())
+                        ->first();
+
                     $version->{PageVersion::ATTR_CHUNK_TYPE} = $type;
                     $version->{PageVersion::ATTR_CHUNK_ID} = $chunk->id;
                     $version->save();
