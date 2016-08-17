@@ -13,13 +13,6 @@ abstract class BaseChange
     protected $iconClass = '';
 
     /**
-     * Prefix to be used for Lang::get() keys.
-     *
-     * @var string
-     */
-    protected $langPrefix;
-
-    /**
      * @var PageVersion
      */
     protected $new;
@@ -58,19 +51,6 @@ abstract class BaseChange
     }
 
     /**
-     * @return string
-     */
-    protected function getLangPrefix()
-    {
-        if ($this->langPrefix === null) {
-            $type = strtolower(preg_replace('|Change$|', '', class_basename($this)));
-            $this->langPrefix = "boomcms::page.diff.$type.";
-        }
-
-        return $this->langPrefix;
-    }
-
-    /**
      * Returns a summary of the change.
      *
      * @return string
@@ -87,7 +67,9 @@ abstract class BaseChange
      */
     public function getSummaryKey()
     {
-        return $this->getLangPrefix().'summary';
+        $type = strtolower(preg_replace('|Change$|', '', class_basename($this)));
+
+        return "boomcms::page.diff.$type";
     }
 
     /**
@@ -96,66 +78,6 @@ abstract class BaseChange
      * @return array
      */
     public function getSummaryParams()
-    {
-        return [];
-    }
-
-    /**
-     * Returns a description of the new version.
-     *
-     * @return string
-     */
-    public function getNewDescription()
-    {
-        return Lang::get($this->getNewDescriptionKey(), $this->getNewDescriptionParams());
-    }
-
-    /**
-     * Reutrns the lang key for the description of the new version.
-     *
-     * @return string
-     */
-    public function getNewDescriptionKey()
-    {
-        return $this->getLangPrefix().'new';
-    }
-
-    /**
-     * Returns parameters for Lang::get() to be used in the description of the new version.
-     *
-     * @return array
-     */
-    public function getNewDescriptionParams()
-    {
-        return [];
-    }
-
-    /**
-     * Returns a description of the old version.
-     *
-     * @return string
-     */
-    public function getOldDescription()
-    {
-        return Lang::get($this->getOldDescriptionKey(), $this->getOldDescriptionParams());
-    }
-
-    /**
-     * Reutrns the lang key for the description of the old version.
-     *
-     * @return string
-     */
-    public function getOldDescriptionKey()
-    {
-        return $this->getLangPrefix().'old';
-    }
-
-    /**
-     * Returns parameters for Lang::get() to be used in the description of the old version.
-     *
-     * @return array
-     */
-    public function getOldDescriptionParams()
     {
         return [];
     }

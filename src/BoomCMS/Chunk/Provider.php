@@ -59,9 +59,6 @@ class Provider
     /**
      * Returns whether the logged in user is allowed to edit a page.
      *
-     * Editing is allowed in the history state, even though the editor is disabled
-     * To ensure that chnuk attributes are added to the HTML
-     *
      * @return bool
      */
     public function allowedToEdit(Page $page = null)
@@ -70,8 +67,7 @@ class Provider
             return true;
         }
 
-        return (Editor::isEnabled() || Editor::isHistory())
-            && $this->auth->check('edit', $page);
+        return Editor::isEnabled() && $this->auth->check('edit', $page);
     }
 
     /**

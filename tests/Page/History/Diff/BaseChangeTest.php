@@ -25,7 +25,7 @@ class BaseChangeTest extends AbstractTestCase
     {
         $className = strtolower(str_replace('Change', '', class_basename($this->class)));
 
-        $this->assertEquals('boomcms::page.diff.'.$className.'.summary', $this->class->getSummaryKey());
+        $this->assertEquals('boomcms::page.diff.'.$className, $this->class->getSummaryKey());
     }
 
     public function testGetSummary()
@@ -43,53 +43,5 @@ class BaseChangeTest extends AbstractTestCase
     public function testGetSummaryParams()
     {
         $this->assertEquals([], $this->class->getSummaryParams());
-    }
-
-    public function testGetNewDescriptionKey()
-    {
-        $className = strtolower(str_replace('Change', '', class_basename($this->class)));
-
-        $this->assertEquals('boomcms::page.diff.'.$className.'.new', $this->class->getNewDescriptionKey());
-    }
-
-    public function testGetNewDescription()
-    {
-        $description = 'test';
-
-        Lang::shouldReceive('get')
-            ->once()
-            ->with($this->class->getNewDescriptionKey(), [])
-            ->andReturn($description);
-
-        $this->assertEquals($description, $this->class->getNewDescription());
-    }
-
-    public function testGetNewDescriptionParams()
-    {
-        $this->assertEquals([], $this->class->getNewDescriptionParams());
-    }
-
-    public function testGetOldDescriptionKey()
-    {
-        $className = strtolower(str_replace('Change', '', class_basename($this->class)));
-
-        $this->assertEquals('boomcms::page.diff.'.$className.'.old', $this->class->getOldDescriptionKey());
-    }
-
-    public function testGetOldDescription()
-    {
-        $description = 'test';
-
-        Lang::shouldReceive('get')
-            ->once()
-            ->with($this->class->getOldDescriptionKey(), [])
-            ->andReturn($description);
-
-        $this->assertEquals($description, $this->class->getOldDescription());
-    }
-
-    public function testGetOldDescriptionParams()
-    {
-        $this->assertEquals([], $this->class->getOldDescriptionParams());
     }
 }

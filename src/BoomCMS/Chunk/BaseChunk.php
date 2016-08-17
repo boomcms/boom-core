@@ -3,6 +3,7 @@
 namespace BoomCMS\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Traits\Renderable;
 use Collective\Html\HtmlFacade as Html;
 use Illuminate\Support\Facades\App;
@@ -246,7 +247,7 @@ abstract class BaseChunk
         try {
             $html = $this->html();
 
-            if ($this->editable === true) {
+            if ($this->editable === true || Editor::isHistory()) {
                 $html = $this->addAttributesToHtml($html);
             }
 

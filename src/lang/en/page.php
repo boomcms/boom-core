@@ -19,16 +19,8 @@ return [
         'initial'     => 'Initial version',
     ],
     'diff'        => [
-        'title'    => [
-            'summary' => 'Title',
-            'old'     => 'Old title: :title',
-            'new'     => 'New title: :title',
-        ],
-        'template' => [
-            'summary' => 'Template',
-            'old'     => 'Old template: :template',
-            'new'     => 'New template: :template',
-        ],
+        'title'    => 'Title',
+        'template' => 'Template',
         'chunk'    => [
             'text'      => 'Text',
             'feature'   => 'Featured page',
@@ -42,18 +34,10 @@ return [
             'linkset'   => 'Linkset',
             'html'      => 'HTML block',
         ],
-        'embargochanged' => [
-            'summary' => 'Embargo changed',
-        ],
-        'embargoed' => [
-            'summary' => 'Embargo set',
-        ],
-        'published' => [
-            'summary' => 'Published',
-        ],
-        'approvalrequest' => [
-            'summary' => 'Request approval',
-        ],
+        'embargochanged' => 'Embargo changed',
+        'embargoed' => 'Embargo set',
+        'published' => 'Published',
+        'approvalrequest' => 'Request approval',
     ],
     'visible'   => 'Visible',
     'invisible' => 'Invisible',

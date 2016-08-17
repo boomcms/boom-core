@@ -11,8 +11,6 @@ abstract class AbstractChangeTestCase extends AbstractTestCase
 {
     protected $class;
     protected $className;
-    protected $hasNewDescription = false;
-    protected $hasOldDescription = false;
 
     public function setUp()
     {
@@ -24,13 +22,5 @@ abstract class AbstractChangeTestCase extends AbstractTestCase
     public function testLangKeysExist()
     {
         $this->assertTrue(Lang::has($this->class->getSummaryKey()));
-
-        if ($this->hasNewDescription) {
-            $this->assertTrue(Lang::has($this->class->getNewDescriptionKey()));
-        }
-
-        if ($this->hasOldDescription) {
-            $this->assertTrue(Lang::has($this->class->getOldDescriptionKey()));
-        }
     }
 }
