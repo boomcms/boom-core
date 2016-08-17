@@ -7,6 +7,11 @@ use DateTime;
 interface PageVersion
 {
     /**
+     * @return string
+     */
+    public function getChunkType();
+
+    /**
      * @return Page
      */
     public function getEditedBy();

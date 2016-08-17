@@ -12,6 +12,14 @@ class PageVersionTest extends AbstractModelTestCase
 {
     protected $model = Version::class;
 
+    public function testGetChunkType()
+    {
+        $type = 'test';
+        $version = new Version([Version::ATTR_CHUNK_TYPE => $type]);
+
+        $this->assertEquals($type, $version->getChunkType());
+    }
+
     public function testGetNext()
     {
         $pageId = 1;

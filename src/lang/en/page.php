@@ -30,7 +30,17 @@ return [
             'new'     => 'New template: :template',
         ],
         'chunk'    => [
-            'summary' => 'Content',
+            'text'      => 'Text',
+            'feature'   => 'Featured page',
+            'asset'     => 'Asset',
+            'library'   => 'Asset library',
+            'location'  => 'Location',
+            'timestamp' => 'Date / time',
+            'calendar'  => 'Calendar',
+            'slideshow' => 'Slideshow',
+            'link'      => 'Link',
+            'linkset'   => 'Linkset',
+            'html'      => 'HTML block',
         ],
         'embargochanged' => [
             'summary' => 'Embargo changed',

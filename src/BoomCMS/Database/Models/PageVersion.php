@@ -52,6 +52,16 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * Returns the value of the chunk_type field.
+     *
+     * @return string
+     */
+    public function getChunkType()
+    {
+        return $this->{self::ATTR_CHUNK_TYPE};
+    }
+
+    /**
      * @return PersonInterface
      */
     public function getEditedBy()
