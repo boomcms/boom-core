@@ -72,10 +72,10 @@ $.widget('ui.chunkText', $.ui.chunk,
 	},
 
 	_update_html: function(html) {
-		var contents = $(html).html();
+		
+	},
 
-		if (contents !== this.element.html()) {
-			this.element.html(contents);
-		}
+	_replace_html: function(html) {
+		this.element.html(html);
 	}
 });

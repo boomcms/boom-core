@@ -50677,6 +50677,20 @@ $.widget('ui.chunk',
 			});
 	},
 
+	/**
+	 * Replace the HTML of the chunk during conflict resolution.
+	 * 
+	 * Most chunks will just call _update_html()
+	 * However, text chunks define an empty _update_html() method
+	 * So this method needs to do something useful there.
+	 *
+	 * @param {string} html
+	 * @returns {undefined}
+	 */
+	_replace_html: function(html) {
+		this._update_html(html);
+	},
+
 	resolveConflict: function(data, saveData) {
 		var chunk = this,
 			dialog = new boomDialog({
@@ -50688,7 +50702,7 @@ $.widget('ui.chunk',
 					dialog.contents
 						.on('click', '#b-conflict-reload', function() {
 							chunk.options.chunkId = data.chunkId;
-							chunk._update_html(data.chunk);
+							chunk._replace_html(data.chunk);
 
 							window.BoomCMS.page.toolbar.status.set(data.status);
 
@@ -50792,6 +50806,10 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	setOriginalContent: function() {
 		this.originalContent = this.element.html();
+	},
+
+	_update_html: function(html) {
+		
 	},
 
 	_update_html: function(html) {
