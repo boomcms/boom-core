@@ -9,17 +9,29 @@
     </button>
 
     <?php if (isset($previous)): ?>
+        <?php $compare = $diff->compare($version, $previous) ?>
+
+        <div class="summary">
+            <?php if ($compare): ?>
+                <span class="fa fa-<?= $compare->getIcon() ?>"></span>
+            <?php endif ?>
+
+            <p>
+                <?= $compare ?>
+            </p>
+        </div>
+
         <button data-editor-time="<?= $previous->getEditedTime()->getTimestamp() ?>">
             <span class="fa fa-step-backward"></span>
             <span class="text"><?= trans('boomcms::page.history.prev') ?></span>
-        </a>
+        </button>
     <?php endif ?>
 
     <?php if (isset($next)): ?>
         <button data-editor-time="<?= $next->getEditedTime()->getTimestamp() ?>">
             <span class="fa fa-step-forward"></span>
             <span class="text"><?= trans('boomcms::page.history.next') ?></span>
-        </a>
+        </button>
     <?php endif ?>
 
     <?= view('boomcms::editor.toolbar.view-live-button') ?>
