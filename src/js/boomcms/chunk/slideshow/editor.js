@@ -67,7 +67,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 	boomChunkSlideshowEditor.prototype.addSlide = function() {
 		var slideshowEditor = this;
 
-		new boomAssetPicker()
+		new boomAssetPicker(null, {type: 'image'})
 			.done(function(asset) {
 				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl('view', 0, 100) + '" /></label></li>');
 

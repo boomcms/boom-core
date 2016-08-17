@@ -106,6 +106,7 @@ module.exports = function(grunt) {
 					'src/js/boomcms/link/link.js',
 					'src/js/boomcms/link/picker.js',
 					'src/js/boomcms/asset/editor.js',
+					'src/js/boomcms/asset/search.js',
 					'src/js/boomcms/asset/manager.js',
 					'src/js/boomcms/asset/picker.js',
 					'src/js/boomcms/asset/titleFilter.js',
