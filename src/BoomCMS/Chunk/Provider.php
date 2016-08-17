@@ -127,7 +127,7 @@ class Provider
      * Find a chunk by it's ID.
      *
      * @param string $type
-     * @param int $chunkId
+     * @param int    $chunkId
      *
      * @return ChunkModel
      */
