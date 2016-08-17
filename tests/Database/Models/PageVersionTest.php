@@ -131,9 +131,11 @@ class PageVersionTest extends AbstractModelTestCase
 
     public function testIsNotPublishedWithTimeParameter()
     {
-        $time = new DateTime('@'.time() + 1000);
+        $time = new DateTime('@'.time());
+        $published = new Version([
+            Version::ATTR_EMBARGOED_UNTIL => time() + 1000,
+        ]);
 
-        $published = new Version([Version::ATTR_EMBARGOED_UNTIL => time()]);
         $this->assertFalse($published->isPublished($time));
         $this->assertNotEquals('published', $published->status($time));
     }
