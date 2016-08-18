@@ -41,7 +41,6 @@ Route::group(['middleware' => [
                 'prefix'    => 'assets',
                 'namespace' => 'Assets',
             ], function () {
-                Route::get('view/{asset}', 'AssetManager@view');
                 Route::post('save/{asset}', 'AssetManager@save');
                 Route::post('replace/{asset}', 'AssetManager@replace');
                 Route::post('revert/{asset}', 'AssetManager@revert');

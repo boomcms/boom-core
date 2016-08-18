@@ -69,7 +69,7 @@ function boomAssetEditor(asset, uploader) {
 
         this.dialog = new boomDialog({
 			title : 'Edit Asset',
-			url : '/boomcms/assets/view/' + assetEditor.asset.id,
+			url : '/boomcms/asset/' + assetEditor.asset.id,
 			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
 			closeButton: false,
 			onLoad: function() {

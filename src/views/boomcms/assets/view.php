@@ -15,9 +15,23 @@
 
     <div class="boom-tabs">
         <ul>
-            <li><a href="#b-assets-view-info"><?= trans('Info') ?></a></li>
-            <li><a href="#b-assets-view-attributes"><?= trans('Attributes') ?></a></li>
-            <li><a href="#b-tags"><?= trans('Tags') ?></a></li>
+            <li>
+                <a href="#b-assets-view-info">
+                    <?= trans('boomcms::asset.info') ?>
+                </a>
+            </li>
+
+            <li>
+                <a href="#b-assets-view-attributes">
+                    <?= trans('boomcms::asset.attributes') ?>
+                </a>
+            </li>
+
+            <li>
+                <a href="#b-tags">
+                    <?= trans('boomcms::asset.tags') ?>
+                </a>
+            </li>
 
             <?php if ($asset->hasMetadata()): ?>
                 <li><a href="#b-assets-metadata"><?= trans('boomcms::asset.metadata') ?></a></li>
@@ -31,22 +45,23 @@
         <div id="b-assets-view-attributes">
             <form>
                 <label>
-                    <?= trans('Title') ?>
+                    <?= trans('boomcms::asset.title') ?>
                     <input type="text" id="title" name="title" value="<?= $asset->getTitle() ?>" />
                 </label>
 
                 <label>
-                    <?= trans('Description') ?>
+                    <?= trans('boomcms::asset.description') ?>
                     <textarea id="description" name="description"><?= $asset->getDescription() ?></textarea>
                 </label>
 
                 <label>
-                    <?= trans('Credits') ?>
+                    <?= trans('boomcms::asset.credits') ?>
                     <textarea id="credits" name="credits"><?= $asset->getCredits() ?></textarea>
                 </label>
 
                 <?php if (!$asset->isImage()): ?>
-                    <label for="thumbnail">Thumbnail
+                    <label for="thumbnail">
+                        <?= trans('boomcms::asset.thumbnail') ?>
                         <input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->getThumbnailAssetId() ?>" size="4" />
                     </label>
                 <?php endif ?>
@@ -57,30 +72,30 @@
 
         <div id="b-assets-view-info">
             <dl>
-                <dt><?= trans('Type') ?></dt>
+                <dt><?= trans('boomcms::asset.type-heading') ?></dt>
                 <dd><?= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?></dd>
 
                 <dt><?= trans('boomcms::asset.extension') ?></dt>
                 <dd><?= $asset->getExtension() ?></dd>
 
-                <dt><?= trans('Filesize') ?></dt>
+                <dt><?= trans('boomcms::asset.filesize') ?></dt>
                 <dd><span id='filesize'><?= Str::filesize($asset->getFilesize()) ?></dd>
 
                 <?php if ($asset->isImage()): ?>
-                    <dt><?= trans('Dimensions') ?></dt>
+                    <dt><?= trans('boomcms::asset.dimensions') ?></dt>
                     <dd><?= $asset->getWidth() ?> x <?= $asset->getHeight() ?></dd>
                 <?php endif ?>
 
                 <?php if ($uploader = $asset->getUploadedBy()): ?>
-                    <dt><?= trans('Uploaded by') ?></dt>
+                    <dt><?= trans('boomcms::asset.uploaded-by') ?></dt>
                     <dd><?= $uploader->getName() ?></dd>
                 <?php endif ?>
 
-                <dt><?= trans('Uploaded on') ?></dt>
+                <dt><?= trans('boomcms::asset.uploaded-on') ?></dt>
                 <dd><?= $asset->getUploadedTime()->format('d F Y h:i:s') ?></dd>
 
                 <?php if (!$asset->isImage()): ?>
-                    <dt><?= trans('Downloads') ?></dt>
+                    <dt><?= trans('boomcms::asset.downloads') ?></dt>
                     <dd><?= $asset->getDownloads() ?></dd>
                 <?php endif ?>
             </dl>
@@ -111,13 +126,13 @@
                             </div>
 
                             <div>
-                                <h3>Edited by</h3>
+                                <h3><?= trans('boomcms::asset.edited-by') ?></h3>
                                 <p><?= $version->getEditedBy()->getName() ?></p>
 
-                                <h3>Edited at</h3>
+                                <h3><?= trans('boomcms::asset.edited-at') ?></h3>
                                 <time datetime="<?= $version->getEditedAt()->format('c') ?>"><?= $version->getEditedAt()->format('d F Y H:i') ?></time>
 
-                                <?= $button('undo', 'Revert to this version', ['class' => 'b-button-withtext b-assets-revert', 'data-version-id' => $version->getId()]) ?>
+                                <?= $button('undo', 'asset-revert', ['class' => 'b-button-withtext b-assets-revert', 'data-version-id' => $version->getId()]) ?>
                             </div>
                         </li>
                     <?php endforeach ?>

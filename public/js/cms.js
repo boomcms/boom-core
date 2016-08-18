@@ -52947,6 +52947,21 @@ $.widget('ui.chunkPageVisibility', {
 ;(function($, Backbone, BoomCMS) {
 	'use strict';
 
+	BoomCMS.AssetManager.AssetView = Backbone.View.extend({
+		tagName: 'div',
+
+		initialize: function() {
+
+		},
+
+		render: function() {
+
+			return this;
+		}
+	});
+}(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
+	'use strict';
+
 //	BoomCMS.AssetManager.Filters = Backbone.View.extend({
 //		tagName: 'div',
 //		template: _.template($('#b-assets-filters').html())
@@ -53099,7 +53114,7 @@ $.widget('ui.chunkPageVisibility', {
 
         this.dialog = new boomDialog({
 			title : 'Edit Asset',
-			url : '/boomcms/assets/view/' + assetEditor.asset.id,
+			url : '/boomcms/asset/' + assetEditor.asset.id,
 			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
 			closeButton: false,
 			onLoad: function() {

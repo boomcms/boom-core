@@ -161,11 +161,4 @@ class AssetManager extends Controller
 
         return [$validFiles, $errors];
     }
-
-    public function view(Asset $asset)
-    {
-        return view("$this->viewPrefix/view", [
-            'asset' => $asset,
-        ]);
-    }
 }

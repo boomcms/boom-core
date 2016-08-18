@@ -8,6 +8,7 @@ return [
     'add-tag-group'         => 'Add tag group',
     'add-tags'              => 'Add tags',
     'all-assets'            => 'All assets',
+    'asset-revert'          => 'Revert to this version',
     'cancel'                => 'Cancel',
     'clear-filters'         => 'Clear filters',
     'clear-selection'       => 'Clear selection',

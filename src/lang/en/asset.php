@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'attributes'              => 'Attributes',
+    'info'                    => 'Info',
+    'tags'                    => 'Tags',
     'extension'               => 'File extension',
     'previous_versions'       => 'Versions',
     'previous_versions_intro' => 'These files were previously assigned to this asset but were replaced.',
@@ -9,6 +12,18 @@ return [
     'manager'                 => 'Asset Manager',
     'metadata'                => 'Metadata',
     'none'                    => 'No assets found',
+    'title'                   => 'Title',
+    'description'             => 'Description',
+    'credits'                 => 'Credits',
+    'thumbnail'               => 'Thumbnail',
+    'type-heading'            => 'Type',
+    'filesize'                => 'Filesize',
+    'dimensions'              => 'Dimensions',
+    'uploaded-by'             => 'Uploaded by',
+    'uploaded-on'             => 'Uploaded on',
+    'downloads'               => 'Downloads',
+    'edited-by'               => 'Edited by',
+    'edited-at'               => 'Edited at',
     'picker'                  => [
         'current' => 'Current Asset',
         'upload'  => 'Upload Asset',
