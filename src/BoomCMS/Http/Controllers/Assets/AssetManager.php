@@ -77,18 +77,6 @@ class AssetManager extends Controller
         return view($this->viewPrefix.'index');
     }
 
-    public function postGet()
-    {
-        $params = $this->request->input();
-
-        return [
-            'total' => Helpers::countAssets($params),
-            'html'  => view($this->viewPrefix.'thumbs', [
-                'assets' => Helpers::getAssets($params),
-            ])->render(),
-        ];
-    }
-
     public function picker()
     {
         return view($this->viewPrefix.'picker');

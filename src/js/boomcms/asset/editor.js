@@ -1,20 +1,14 @@
 function boomAssetEditor(asset, uploader) {
     this.asset = asset;
     this.uploader = uploader;
-	this.selection = new boomAssetSelection([this.asset.id]);
 
     boomAssetEditor.prototype.bind = function(dialog) {
         var asset = this.asset,
-			selection = this.selection,
             assetEditor = this;
 
         dialog.contents
 			.on('click', '.b-assets-delete', function() {
-				selection
-					.delete()
-					.done(function() {
-						dialog.cancel();
-					});
+				asset.destroy();
 			})
 			.on('click', '.b-assets-download', function(e) {
 				e.preventDefault();
@@ -69,6 +63,10 @@ function boomAssetEditor(asset, uploader) {
     boomAssetEditor.prototype.open = function() {
         var assetEditor = this;
 
+		this.asset.on('destroy', function() {
+			assetEditor.dialog.cancel();
+		});
+
         this.dialog = new boomDialog({
 			title : 'Edit Asset',
 			url : '/boomcms/assets/view/' + assetEditor.asset.id,
@@ -103,21 +101,7 @@ function boomAssetEditor(asset, uploader) {
     };
 	
 	boomAssetEditor.prototype.replaceWithBlob = function(blob) {
-		var assetEditor = this,
-			data = new FormData();
-		
-		data.append('files[]', blob);
-
-		$.ajax({
-			data: data,
-			url: '/boomcms/assets/replace/' + asset.getId(),
-			processData: false,
-			contentType: false,
-			type: 'POST'
-		})
-		.done(function() {
-			assetEditor.reloadPreviewImage();
-		});
+		this.asset.replaceWith(blob);
 	};
 
     boomAssetEditor.prototype.revertTo = function(versionId) {

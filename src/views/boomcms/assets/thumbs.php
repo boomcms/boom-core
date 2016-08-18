@@ -3,41 +3,39 @@
 </div>
 
 <script type="text/template" id="b-asset-thumb">
-    <div style="height: 160px; width: <%= Math.floor(160 * asset.getAspectRatio()) %>px" data-asset="<%= asset.getId() %>">
-        <div class="thumb">
-            <img class="loading" />
+    <div class="thumb" data-asset="<%= asset.getId() %>" tabindex="0">
+        <img class="loading" />
 
-            <div class="pace progress">
-                <div>
-                    <span><?= trans('boomcms::asset.loading') ?></span>
-                    <div class="pace-activity"></div>
-                </div>
+        <div class="pace progress">
+            <div>
+                <span><?= trans('boomcms::asset.loading') ?></span>
+                <div class="pace-activity"></div>
             </div>
-
-            <div class="failed">
-                <div>
-                    <span class="fa fa-frown-o"></span>
-                    <p><?= trans('boomcms::asset.failed') ?></p>
-                </div>
-            </div>
-
-            <div class="b-asset-details">
-                <h2><%= asset.getTitle() %>></h2>
-
-                <p>
-                    <?//= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />
-
-                    <?php /* if ($asset->isImage()): ?>
-                        <?= $asset->getWidth() ?> x <?= $asset->getHeight() ?>
-                    <?php else: ?>
-                        <?= Str::filesize($asset->getFilesize()) ?>
-                    <?php endif */ ?>
-                </p>
-            </div>
-
-            <a href="#asset/<%= asset.getId() %>" class="edit">
-                <span class="fa fa-edit"></span>
-            </a>
         </div>
+
+        <div class="failed">
+            <div>
+                <span class="fa fa-frown-o"></span>
+                <p><?= trans('boomcms::asset.failed') ?></p>
+            </div>
+        </div>
+
+        <div class="b-asset-details">
+            <h2><%= asset.getTitle() %>></h2>
+
+            <p>
+                <?//= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />
+
+                <?php /* if ($asset->isImage()): ?>
+                    <?= $asset->getWidth() ?> x <?= $asset->getHeight() ?>
+                <?php else: ?>
+                    <?= Str::filesize($asset->getFilesize()) ?>
+                <?php endif */ ?>
+            </p>
+        </div>
+
+        <a href="#asset/<%= asset.getId() %>" class="edit">
+            <span class="fa fa-edit"></span>
+        </a>
     </div>
 </script>

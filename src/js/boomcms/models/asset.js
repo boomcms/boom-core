@@ -42,6 +42,23 @@
 
 		getWidth: function() {
 			return parseFloat(this.get('width'));
+		},
+
+		replaceWith: function(blob) {
+			var asset = this,
+				data = new FormData();
+
+			data.append('files[]', blob);
+
+			return $.ajax({
+				data: data,
+				url: this.urlRoot + '/' + this.getId() + '/replace',
+				processData: false,
+				contentType: false,
+				type: 'POST'
+			}).done(function() {
+				asset.trigger('change');
+			});
 		}
 	});
 }(BoomCMS));

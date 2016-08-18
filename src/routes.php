@@ -34,8 +34,8 @@ Route::group(['middleware' => [
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 
-            Route::get('asset', 'Asset\AssetController@getIndex');
             Route::get('asset-manager', 'Assets\AssetManager@index');
+            Route::resource('asset', 'Asset\AssetController');
 
             Route::group([
                 'prefix'    => 'assets',

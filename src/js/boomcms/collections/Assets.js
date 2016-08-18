@@ -58,6 +58,10 @@
 			}
 		},
 
+		parse: function(data) {
+			return data.assets;
+		},
+
 		removeTag: function(tag) {
 			$.post(this.url + 'tags/remove', {
 				assets : this.assets,

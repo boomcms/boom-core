@@ -8,8 +8,11 @@ use Illuminate\Http\Request;
 
 class AssetController extends Controller
 {
-    public function getIndex(Request $request)
+    public function index(Request $request)
     {
-        return Helpers::getAssets($request->input());
+        return [
+            'total'  => Helpers::countAssets($request->input()),
+            'assets' => Helpers::getAssets($request->input()),
+        ];
     }
 }
