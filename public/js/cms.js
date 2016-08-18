@@ -52893,12 +52893,16 @@ $.widget('ui.chunkPageVisibility', {
 						.each(function() {
 							var $this = $(this),
 								asset = new BoomCMS.Asset({id: $this.attr('data-asset')}),
-								url  = asset.getUrl('thumb', $this.width(), $this.height()) + '?' + Math.floor(Date.now() / 1000);
+								url  = asset.getUrl('thumb', $this.width(), $this.height()) + '?' + Math.floor(Date.now() / 1000),
+								loadingClass = 'loading';
 
 							$this.find('img')
 								.attr('src', url)
 								.on('load', function() {
-									$(this).removeClass('loading');
+									$(this).parent().removeClass(loadingClass);
+								})
+								.on('error', function() {
+									$(this).parent().removeClass(loadingClass).addClass('failed');
 								});
 						});
 

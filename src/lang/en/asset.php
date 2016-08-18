@@ -38,4 +38,5 @@ return [
         'audio'    => 'Audio',
     ],
     'loading'                => 'Loading thumbnail',
+    'failed'                 => 'Unable to load thumbail',
 ];

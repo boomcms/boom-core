@@ -21,6 +21,26 @@
 		display: block;
 		cursor: pointer;
 
+		&.loading {
+			img {
+				visibility: hidden;
+			}
+
+			.progress {
+				display: block;
+			}
+		}
+
+		&.failed {
+			img {
+				display: none;
+			}
+
+			.failed {
+				display: block;
+			}
+		}
+
 		.edit {
 			display: none;
 			position: absolute;
@@ -61,7 +81,7 @@
 
 		}
 
-		.loading {
+		.progress, .failed {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -77,11 +97,21 @@
 				left: 50%;
 				transform: translateX(-50%) translateY(-50%);
 			}
+		}
 
+		.progress {
 			.pace-activity {
 				position: relative;
 				left: 50%;
 				transform: translateX(-50%);
+			}
+		}
+
+		.failed {
+			.fa {
+				color: @red;
+				font-size: 5rem;
+				margin-bottom: 1rem;
 			}
 		}
 
@@ -91,14 +121,6 @@
 			width: 100%;
 			height: 100%;
 			max-height: 100%;
-
-			&.loading {
-				visibility: hidden;
-
-				+ .loading {
-					display: block;
-				}
-			}
 		}
 
 		.b-asset-details {

@@ -2,13 +2,20 @@
     <?php if (count($assets)): ?>
         <?php foreach ($assets as $asset): ?>
             <div style="height: 160px; width: <?= floor(160 * $asset->getAspectRatio()) ?>px" data-aspect-ratio="<?= $asset->getAspectRatio() ?>">
-                <div class="thumb" data-asset="<?= $asset->getId() ?>" tabindex="0">
-                    <img class="loading" />
+                <div class="thumb" data-asset="<?= $asset->getId() ?>" tabindex="0" class="loading">
+                    <img />
 
-                    <div class="pace loading">
+                    <div class="pace progress">
                         <div>
                             <span><?= trans('boomcms::asset.loading') ?></span>
                             <div class="pace-activity"></div>
+                        </div>
+                    </div>
+
+                    <div class="failed">
+                        <div>
+                            <span class="fa fa-frown-o"></span>
+                            <p><?= trans('boomcms::asset.failed') ?></p>
                         </div>
                     </div>
 
