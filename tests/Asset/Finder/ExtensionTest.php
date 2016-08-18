@@ -20,7 +20,7 @@ class ExtensionTest extends AbstractTestCase
     public function testBuildWithSingleExtension()
     {
         $extension = 'gif';
-        $filter= new Extension($extension);
+        $filter = new Extension($extension);
         $query = m::mock(Builder::class);
 
         $query
@@ -35,7 +35,7 @@ class ExtensionTest extends AbstractTestCase
     public function testBuildWithMultipleExtensions()
     {
         $extensions = ['gif', 'jpeg'];
-        $filter= new Extension($extensions);
+        $filter = new Extension($extensions);
         $query = m::mock(Builder::class);
 
         $query
