@@ -74,14 +74,24 @@ class Asset implements AssetRepositoryInterface
         return $this;
     }
 
+    public function extensions()
+    {
+        return $this->version
+            ->select(AssetVersionModel::ATTR_EXTENSION)
+            ->where(AssetVersionModel::ATTR_EXTENSION, '!=', '')
+            ->orderBy(AssetVersionModel::ATTR_EXTENSION)
+            ->distinct()
+            ->pluck(AssetVersionModel::ATTR_EXTENSION);
+    }
+
     /**
-     * @param int $id
+     * @param int $assetId
      *
      * @return AssetModel
      */
-    public function find($id)
+    public function find($assetId)
     {
-        return $this->model->find($id);
+        return $this->model->find($assetId);
     }
 
     public function findByVersionId($versionId)

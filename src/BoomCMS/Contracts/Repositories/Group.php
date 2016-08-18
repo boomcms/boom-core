@@ -25,7 +25,14 @@ interface Group
      */
     public function delete(GroupInterface $group);
 
-    public function find($id);
+    /**
+     * Find a group by ID.
+     *
+     * @param int $groupId
+     *
+     * @return GroupModel
+     */
+    public function find($groupId);
 
     public function findAll();
 

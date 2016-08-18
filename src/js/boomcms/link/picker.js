@@ -3,6 +3,7 @@ function boomLinkPicker(link, options) {
 	this.link = link? link : new boomLink();
 
 	this.defaultOptions = {
+		internal: true,
 		text: false,
 		remove: false,
 		external: true,
@@ -34,7 +35,7 @@ function boomLinkPicker(link, options) {
 			});
 
 		this.externalUrl.autocomplete({
-			appendTo: linkPicker.dialog.contents.find('#b-linkpicker-add-external form'),
+			appendTo: linkPicker.$el.find('#b-linkpicker-add-external form'),
 			source: function(request, response) {
 				if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
 					if (linkPicker.externalUrl.val()) {
@@ -58,7 +59,7 @@ function boomLinkPicker(link, options) {
 			}
 		});
 
-		this.dialog.contents
+		this.$el
 			.find('.boom-tree')
 			.pageTree({
 				onPageSelect: function(link) {
@@ -67,14 +68,13 @@ function boomLinkPicker(link, options) {
 				}
 			});
 
-		this.removeButton.on('click', function(e) {
-			e.preventDefault();
+		this.$el
+			.on('click', '#b-linkpicker-remove', function(e) {
+				e.preventDefault();
 
-			linkPicker.deferred.resolve(new boomLink());
-			linkPicker.dialog.cancel();
-		});
-
-		this.dialog.contents
+				linkPicker.deferred.resolve(new boomLink());
+				linkPicker.dialog.cancel();
+			})
 			.on('click', '#b-linkpicker-asset-select', function() {
 				new boomAssetPicker(linkPicker.link.getAsset())
 					.done(function(asset) {
@@ -139,31 +139,17 @@ function boomLinkPicker(link, options) {
 	};
 
 	boomLinkPicker.prototype.onLoad = function(dialog) {
-		this.dialog = dialog;
-		this.internal = dialog.contents.find('#b-linkpicker-add-internal');
-		this.external = dialog.contents.find('#b-linkpicker-add-external');
-		this.asset = dialog.contents.find('#b-linkpicker-add-asset');
+		this.$el = dialog.contents;
+		this.internal = this.$el.find('#b-linkpicker-add-internal');
+		this.external = this.$el.find('#b-linkpicker-add-external');
+		this.asset = this.$el.find('#b-linkpicker-add-asset');
 		this.externalTypeSelector = this.external.find('select');
 		this.externalUrl = this.external.find('input');
-		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
-		this.removeButton = dialog.contents.find('#b-linkpicker-remove');
+		this.textInput = this.$el.find('#b-linkpicker-text input[type=text]');
 
-		dialog.contents.find('.boom-tabs').tabs();
+		this.$el.find('.boom-tabs').tabs();
 
-		if (!this.options.remove) {
-			this.removeButton.hide();
-		}
-
-		if (!this.options.external) {
-			this.external.hide();
-			dialog.contents.find('.ui-tabs-nav li:nth-of-type(2)').hide();
-		}
-
-		if (!this.options.asset) {
-			this.asset.hide();
-			dialog.contents.find('.ui-tabs-nav li:nth-of-type(3)').hide();
-		}
-
+		this.toggleOptions();
 		this.setupInternal();
 		this.setupExternalUrl();
 		this.setupText();
@@ -247,13 +233,25 @@ function boomLinkPicker(link, options) {
 	};
 
 	boomLinkPicker.prototype.setupText = function() {
-		if (!this.options.text) {
-			this.dialog.contents.find('#b-linkpicker-text').hide();
-			this.dialog.contents.find('a[href=#b-linkpicker-text]').hide();
-		} else {
-			this.dialog.contents
+		if (this.options.text) {
+			this.$el
 				.find('#b-linkpicker-text input[type=text]')
 				.val(link.getTitle());
+		}
+	};
+
+	boomLinkPicker.prototype.toggleOptions = function() {
+		var toggle = ['remove', 'external', 'internal', 'text', 'asset'],
+			i, option;
+
+		for (i = 0; i < toggle.length; i++) {
+			option = toggle[i];
+
+			if (!this.options[option]) {
+				var selector = '.toggle-' + option;
+
+				this.$el.find(selector).hide();
+			}
 		}
 	};
 

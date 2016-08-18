@@ -3,6 +3,7 @@
 namespace BoomCMS\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Traits\Renderable;
 use Collective\Html\HtmlFacade as Html;
 use Illuminate\Support\Facades\App;
@@ -163,6 +164,16 @@ abstract class BaseChunk
     }
 
     /**
+     * Returns the ID of the chunk.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return isset($this->attrs['id']) ? $this->attrs['id'] : 0;
+    }
+
+    /**
      * Returns an array of HTML attributes which are required to be make the chunk editable.
      *
      * To add other attributes see the attributes method.
@@ -176,7 +187,7 @@ abstract class BaseChunk
             $this->attributePrefix.'slot-name'     => $this->slotname,
             $this->attributePrefix.'slot-template' => $this->template,
             $this->attributePrefix.'page'          => $this->page->getId(),
-            $this->attributePrefix.'chunk-id'      => isset($this->attrs['id']) ? $this->attrs['id'] : 0,
+            $this->attributePrefix.'chunk-id'      => $this->getId(),
         ];
     }
 
@@ -236,7 +247,7 @@ abstract class BaseChunk
         try {
             $html = $this->html();
 
-            if ($this->editable === true) {
+            if ($this->editable === true || Editor::isHistory()) {
                 $html = $this->addAttributesToHtml($html);
             }
 

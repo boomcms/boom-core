@@ -5,6 +5,7 @@ namespace BoomCMS\Chunk;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\PageVersion;
 use BoomCMS\Database\Models\Chunk\BaseChunk as ChunkModel;
+use BoomCMS\Database\Models\PageVersion as VersionModel;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Router;
 use Illuminate\Auth\AuthManager;
@@ -47,6 +48,10 @@ class Provider
 
         $className = $this->getClassName($type);
         $attrs['id'] = $model->id;
+
+        $version->{VersionModel::ATTR_CHUNK_TYPE} = $type;
+        $version->{VersionModel::ATTR_CHUNK_ID} = $model->id;
+        $version->save();
 
         return new $className($page, $attrs, $attrs['slotname'], true);
     }
@@ -116,6 +121,21 @@ class Provider
         $this->saveToCache($type, $slotname, $version, $chunk);
 
         return $chunk;
+    }
+
+    /**
+     * Find a chunk by it's ID.
+     *
+     * @param string $type
+     * @param int    $chunkId
+     *
+     * @return ChunkModel
+     */
+    public function findById($type, $chunkId)
+    {
+        $model = $this->getModelName($type);
+
+        return $model::find($chunkId);
     }
 
     public function get($type, $slotname, Page $page)

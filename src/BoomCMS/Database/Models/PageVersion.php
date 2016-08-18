@@ -20,10 +20,13 @@ class PageVersion extends Model implements PageVersionInterface
     const ATTR_EDITED_AT = 'edited_time';
     const ATTR_EMBARGOED_UNTIL = 'embargoed_until';
     const ATTR_PENDING_APPROVAL = 'pending_approval';
+    const ATTR_CHUNK_TYPE = 'chunk_type';
+    const ATTR_CHUNK_ID = 'chunk_id';
 
     protected $casts = [
         self::ATTR_PAGE             => 'integer',
         self::ATTR_PENDING_APPROVAL => 'boolean',
+        self::ATTR_CHUNK_ID         => 'integer',
     ];
 
     protected $table = 'page_versions';
@@ -32,8 +35,6 @@ class PageVersion extends Model implements PageVersionInterface
      * @var Template;
      */
     private $template;
-
-    protected $editedBy;
 
     public function __construct(array $attributes = [])
     {
@@ -45,12 +46,35 @@ class PageVersion extends Model implements PageVersionInterface
         parent::__construct($attributes);
     }
 
+    public function editedBy()
+    {
+        return $this->belongsTo(Person::class, 'edited_by');
+    }
+
+    /**
+     * @return int
+     */
+    public function getChunkId()
+    {
+        return $this->{self::ATTR_CHUNK_ID};
+    }
+
+    /**
+     * Returns the value of the chunk_type field.
+     *
+     * @return string
+     */
+    public function getChunkType()
+    {
+        return $this->{self::ATTR_CHUNK_TYPE};
+    }
+
     /**
      * @return PersonInterface
      */
     public function getEditedBy()
     {
-        return $this->belongsTo(Person::class, 'edited_by')->first();
+        return $this->editedBy;
     }
 
     /**
@@ -70,6 +94,20 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * Returns the next version.
+     *
+     * @return PageVersion
+     */
+    public function getNext()
+    {
+        return $this
+            ->where(self::ATTR_PAGE, $this->getPageId())
+            ->where(self::ATTR_EDITED_AT, '>', $this->getEditedTime()->getTimestamp())
+            ->orderBy(self::ATTR_EDITED_AT, 'asc')
+            ->first();
+    }
+
+    /**
      * @return int
      */
     public function getPageId()
@@ -78,11 +116,27 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * Returns the previous version.
+     *
+     * @return PageVersion
+     */
+    public function getPrevious()
+    {
+        return $this
+            ->where(self::ATTR_PAGE, $this->getPageId())
+            ->where(self::ATTR_EDITED_AT, '<', $this->getEditedTime()->getTimestamp())
+            ->orderBy(self::ATTR_EDITED_AT, 'desc')
+            ->first();
+    }
+
+    /**
+     * @param null|DateTime $time
+     *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(DateTime $time = null)
     {
-        return $this->status();
+        return $this->status($time);
     }
 
     /**
@@ -115,6 +169,17 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * Whether this version relates to a content change.
+     *
+     * @return bool
+     */
+    public function isContentChange()
+    {
+        return !empty($this->{self::ATTR_CHUNK_TYPE})
+            && !empty($this->{self::ATTR_CHUNK_ID});
+    }
+
+    /**
      * @return bool
      */
     public function isDraft()
@@ -123,11 +188,21 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * Whether the version is embargoed.
+     *
+     * If a time is given then the embargo time is compared with the given time.
+     *
+     * Otherwise it is compared with the current time.
+     *
+     * @param null|DateTime $time
+     *
      * @return bool
      */
-    public function isEmbargoed()
+    public function isEmbargoed(DateTime $time = null)
     {
-        return $this->{self::ATTR_EMBARGOED_UNTIL} > time();
+        $timestamp = $time ? $time->getTimestamp() : time();
+
+        return $this->{self::ATTR_EMBARGOED_UNTIL} > $timestamp;
     }
 
     /**
@@ -139,11 +214,21 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
+     * Whether the version is published.
+     *
+     * If a time is given then the embargo time is compared with the given time.
+     *
+     * Otherwise it is compared with the current time.
+     *
+     * @param null|DateTime $time
+     *
      * @return bool
      */
-    public function isPublished()
+    public function isPublished(DateTime $time = null)
     {
-        return $this->{self::ATTR_EMBARGOED_UNTIL} && $this->{self::ATTR_EMBARGOED_UNTIL} <= time();
+        $timestamp = $time ? $time->getTimestamp() : time();
+
+        return $this->{self::ATTR_EMBARGOED_UNTIL} && $this->{self::ATTR_EMBARGOED_UNTIL} <= $timestamp;
     }
 
     /**
@@ -221,6 +306,13 @@ class PageVersion extends Model implements PageVersionInterface
      */
     public function scopeLatestAvailable(QueryBuilder $query)
     {
+        if (Editor::isHistory()) {
+            return $query
+                ->where(self::ATTR_EDITED_AT, '<=', Editor::getTime()->getTimestamp())
+                ->orderBy(self::ATTR_EDITED_AT, 'desc')
+                ->orderBy(self::ATTR_ID, 'desc');
+        }
+
         return (Editor::isDisabled()) ?
                 $this->scopeLastPublished($query)
                 : $query->orderBy(self::ATTR_EDITED_AT, 'desc');
@@ -243,17 +335,21 @@ class PageVersion extends Model implements PageVersionInterface
     /**
      * Returns the status of the current page version.
      *
+     * If a time parameter is given then the status of the page at that time will be returned.
+     *
+     * @param null|DateTime $time
+     *
      * @return string
      */
-    public function status()
+    public function status(DateTime $time = null)
     {
         if ($this->isPendingApproval()) {
             return 'pending approval';
         } elseif ($this->isDraft()) {
             return 'draft';
-        } elseif ($this->isPublished()) {
+        } elseif ($this->isPublished($time)) {
             return 'published';
-        } elseif ($this->isEmbargoed()) {
+        } elseif ($this->isEmbargoed($time)) {
             return 'embargoed';
         }
     }

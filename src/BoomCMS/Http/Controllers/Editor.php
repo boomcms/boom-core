@@ -3,7 +3,9 @@
 namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Editor\Editor as EditorObject;
+use BoomCMS\Page\History\Diff;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -17,6 +19,16 @@ class Editor extends Controller
         $editor->setState($numericState);
     }
 
+    public function postTime(Request $request, EditorObject $editor)
+    {
+        $timestamp = $request->input('time', time());
+        $time = (new DateTime())->setTimestamp($timestamp);
+
+        $editor
+            ->setTime($time)
+            ->setState(EditorObject::HISTORY);
+    }
+
     /**
      * Displays the CMS interface with buttons for add page, settings, etc.
      * Called from an iframe when logged into the CMS.
@@ -24,7 +36,6 @@ class Editor extends Controller
     public function getToolbar(EditorObject $editor, Request $request)
     {
         $page = PageFacade::find($request->input('page_id'));
-        $toolbarFilename = ($editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
 
         View::share([
             'page'   => $page,
@@ -33,6 +44,17 @@ class Editor extends Controller
             'person' => auth()->user(),
         ]);
 
-        return view("boomcms::editor.$toolbarFilename");
+        if ($editor->isHistory()) {
+            return view('boomcms::editor.toolbar.history', [
+                'previous' => $page->getCurrentVersion()->getPrevious(),
+                'next'     => $page->getCurrentVersion()->getNext(),
+                'version'  => $page->getCurrentVersion(),
+                'diff'     => new Diff(),
+            ]);
+        }
+
+        $toolbarFilename = ($editor->isEnabled()) ? 'edit' : 'preview';
+
+        return view("boomcms::editor.toolbar.$toolbarFilename");
     }
 }

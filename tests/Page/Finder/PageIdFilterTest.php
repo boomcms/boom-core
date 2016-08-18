@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Page\Finder;
 
-use BoomCMS\Core\Page\Finder\PageId;
+use BoomCMS\Page\Finder\PageId;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 

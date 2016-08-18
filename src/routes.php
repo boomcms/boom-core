@@ -119,8 +119,8 @@ Route::group(['prefix' => 'asset'], function () {
     Route::get('version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
         'middleware' => [Middleware\RequireLogin::class],
-        'uses'       => function ($id, $width = null, $height = null) {
-            $asset = Asset::findByVersionId($id);
+        'uses'       => function ($versionId, $width = null, $height = null) {
+            $asset = Asset::findByVersionId($versionId);
 
             return App::make(AssetHelper::controller($asset), [$asset])->view($width, $height);
         },

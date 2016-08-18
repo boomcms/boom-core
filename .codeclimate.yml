@@ -31,3 +31,4 @@ exclude_paths:
 - src/config/
 - src/lang/
 - src/database/
+- src/js/jquery/

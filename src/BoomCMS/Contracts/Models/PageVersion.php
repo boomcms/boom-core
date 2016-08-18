@@ -7,6 +7,16 @@ use DateTime;
 interface PageVersion
 {
     /**
+     * @return int
+     */
+    public function getChunkId();
+
+    /**
+     * @return string
+     */
+    public function getChunkType();
+
+    /**
      * @return Page
      */
     public function getEditedBy();
@@ -54,12 +64,19 @@ interface PageVersion
     /**
      * @return bool
      */
-    public function isDraft();
+    public function isContentChange();
 
     /**
      * @return bool
      */
-    public function isEmbargoed();
+    public function isDraft();
+
+    /**
+     * @param null|DateTime $time
+     *
+     * @return bool
+     */
+    public function isEmbargoed(DateTime $time = null);
 
     /**
      * @return bool
@@ -67,9 +84,11 @@ interface PageVersion
     public function isPendingApproval();
 
     /**
+     * @param null|DateTime $time
+     *
      * @return bool
      */
-    public function isPublished();
+    public function isPublished(DateTime $time = null);
 
     /**
      * @return $this

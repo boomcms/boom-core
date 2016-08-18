@@ -11,6 +11,18 @@ use Mockery as m;
 
 class BaseChunkTest extends AbstractTestCase
 {
+    public function testGetId()
+    {
+        $chunkId = 1;
+
+        $chunk = $this->getMockBuilder(BaseChunk::class)
+            ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
+            ->setConstructorArgs([new Page(), ['id' => $chunkId], 'test', true])
+            ->getMock();
+
+        $this->assertEquals($chunkId, $chunk->getId());
+    }
+
     public function testGetPlaceholderTextForSlotnameIfDefined()
     {
         Lang::shouldReceive('has')

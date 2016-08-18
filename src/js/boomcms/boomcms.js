@@ -55,17 +55,16 @@
 			return new boomConfirmation(title, message);
 		};
 
-		BoomCMS.prototype.editor = {
-			state: function(state, url) {
+		BoomCMS.prototype.getTimezone = function() {
+			var key = 'boomcms.timezone';
 
-				$.post('/boomcms/editor/state', {state: state}, function() {
-					if (url) {
-						top.location = url;
-					} else {
-						top.location.reload();
-					}
-				});
+			if (!sessionStorage.getItem(key)) {
+			  var tz = jstz.determine() || 'UTC';
+
+			  sessionStorage.setItem(key, tz.name());
 			}
+
+			return sessionStorage.getItem(key);
 		};
 
 		BoomCMS.prototype.notify = function(message) {

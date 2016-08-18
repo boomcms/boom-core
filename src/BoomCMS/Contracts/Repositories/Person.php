@@ -23,11 +23,11 @@ interface Person
     public function findAll();
 
     /**
-     * @param int $id
+     * @param int $personId
      *
      * @return PersonInterface
      */
-    public function find($id);
+    public function find($personId);
 
     /**
      * @param int $groupId

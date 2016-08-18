@@ -25,11 +25,11 @@ interface URL
     public function delete(URLInterface $url);
 
     /**
-     * @param int $id
+     * @param int $urlId
      *
      * @return URLInterface
      */
-    public function find($id);
+    public function find($urlId);
 
     /**
      * @param SiteInterface $site

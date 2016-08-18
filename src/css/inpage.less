@@ -8,3 +8,45 @@ CSS file which is embedded into an editable site page.
 
 @import 'boom/editable.less';
 @import 'boom/title-length.less';
+
+#b-editor-iframe {
+	border: 0;
+	max-width: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 101px;
+	height: 35px;
+	overflow: hidden;
+	z-index: 10000;
+	background: transparent;
+
+	/* Editor enabled */
+	&[data-state="1"] {
+		width: 60px;
+		height: 100%;
+	}
+
+	/* History state */
+	&[data-state="4"] {
+		height: 100%;
+	}
+}
+
+[data-boom-chunk] {
+	ins {
+		color: @light-green;
+
+		img {
+			border: 1px solid @light-green;
+		}
+	}
+
+	del {
+		color: @red;
+
+		img {
+			border: 1px solid @red;
+		}
+	}
+}

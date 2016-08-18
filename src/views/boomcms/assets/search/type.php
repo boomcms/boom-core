@@ -1,7 +1,7 @@
 <div>
     <h2><?= trans('boomcms::asset.search.type') ?></h2>
 
-    <select id="b-assets-types" name="types">
+    <select id="b-assets-types" name="type">
         <option value="0">Filter by type</option>
 
         <?php foreach (array_keys(AssetHelper::types()) as $type): ?>

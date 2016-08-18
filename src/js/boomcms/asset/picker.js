@@ -4,15 +4,10 @@ function boomAssetPicker(currentAsset, filters) {
 
 	this.deferred = new $.Deferred();
 	this.document = $(document);
-	this.filters = filters? filters : {};
+
+	this.filters = filters ? filters : {};
 
 	boomAssetPicker.prototype.url = '/boomcms/assets/picker';
-	boomAssetPicker.prototype.listUrl = '/boomcms/assets/get';
-
-	boomAssetPicker.prototype.addFilter = function(type, value) {
-		this.filters.page = 1;
-		this.filters[type] = value;
-	};
 
 	boomAssetPicker.prototype.assetsUploaded = function(assetIds) {
 		if (assetIds.length === 1) {
@@ -25,30 +20,6 @@ function boomAssetPicker(currentAsset, filters) {
 
 	boomAssetPicker.prototype.bind = function() {
 		var assetPicker = this;
-
-		this.titleFilter.assetTitleFilter({
-			search: function(event, ui) {
-				assetPicker.addFilter('title', assetPicker.titleFilter.val());
-				assetPicker.getAssets();
-			},
-			select: function(event, ui) {
-				assetPicker.addFilter('title', ui.item.value);
-				assetPicker.getAssets();
-			}
-		});
-
-		this.tagFilter
-			.assetTagSearch({
-				update: function(e, data) {
-					assetPicker.addFilter('tag', data.tags);
-					assetPicker.getAssets();
-				}
-			});
-
-		this.typeFilter.on('change', function() {
-			assetPicker.addFilter('type', $(this).val());
-			assetPicker.getAssets();
-		});
 
 		this.picker
 			.on('click', '.thumb', function(e) {
@@ -69,11 +40,6 @@ function boomAssetPicker(currentAsset, filters) {
 				uploadFinished: function(e, data) {
 					assetPicker.assetsUploaded(data.result);
 				}
-			})
-			.end()
-			.on('click', '#b-assets-picker-all', function() {
-				assetPicker.clearFilters();
-				assetPicker.getAssets();
 			});
 	};
 
@@ -82,38 +48,8 @@ function boomAssetPicker(currentAsset, filters) {
 		this.dialog.cancel();
 	};
 
-	boomAssetPicker.prototype.clearFilters = function() {
-		this.filters = {
-			page: 1,
-			limit: 30,
-			order: 'last_modified desc'
-		};
-
-		this.titleFilter.val('');
-		this.typeFilter.val('');
-	};
-
 	boomAssetPicker.prototype.close = function() {
 		this.dialog.cancel();
-	};
-
-	boomAssetPicker.prototype.getAssets = function() {
-		var assetPicker = this;
-
-		$.post(this.listUrl, this.filters)
-			.done(function(response) {
-				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith(response.html);
-				assetPicker.justifyAssets();
-
-				assetPicker.initPagination(response.total);
-			});
-	};
-
-	boomAssetPicker.prototype.getPage = function(page) {
-		if (this.filters.page !== page) {
-			this.filters.page = page;
-			this.getAssets();
-		}
 	};
 
 	boomAssetPicker.prototype.hideCurrentAsset = function() {
@@ -122,37 +58,8 @@ function boomAssetPicker(currentAsset, filters) {
 			.hide();
 	};
 
-	boomAssetPicker.prototype.initPagination = function(total) {
-		var assetPicker = this,
-			$el = this.picker.find('.b-pagination');
-
-		// Max page isn't set correctly when re-initialising
-		if ($el.data('jqPagination')) {
-			$el.jqPagination('destroy');
-		}
-
-		$el.jqPagination({
-			paged: function(page) {
-				assetPicker.getPage(page);
-			},
-			max_page: Math.ceil(total / this.filters.limit),
-			current_page: total > 0 ? this.filters.page : 0
-		});
-	};
-
-	boomAssetPicker.prototype.justifyAssets = function() {
-		this.picker
-			.find('#b-assets-view-thumbs')
-			.justifyAssets()
-			.find('[data-asset]')
-			.assetManagerImages();
-	};
-
 	boomAssetPicker.prototype.loadPicker = function() {
 		var assetPicker = this;
-
-		this.filters.limit = 30;
-		this.filters.order = 'last_modified desc';
 
 		this.dialog = new boomDialog({
 			url : this.url,
@@ -165,18 +72,18 @@ function boomAssetPicker(currentAsset, filters) {
 				});
 
 				assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
-				assetPicker.titleFilter = assetPicker.picker.find('#b-assets-filter-title');
-				assetPicker.tagFilter = assetPicker.picker.find('#b-tags-search');
-				assetPicker.typeFilter = assetPicker.picker.find('#b-assets-types');
 
 				if (typeof(assetPicker.filters.type) !== 'undefined') {
 					assetPicker.showActiveTypeFilter(assetPicker.filters.type);
 				}
 
-				assetPicker.bind();
-				assetPicker.getAssets();
+				assetPicker.dialog.contents.assetSearch({
+					filters: assetPicker.filters
+				});
 
-				if (assetPicker.currentAsset.getId() > 0) {
+				assetPicker.bind();
+
+				if (assetPicker.currentAsset && assetPicker.currentAsset.getId() > 0) {
 					assetPicker.picker
 						.find('#b-assets-picker-current img')
 						.attr('src', assetPicker.currentAsset.getUrl());
@@ -207,13 +114,14 @@ function boomAssetPicker(currentAsset, filters) {
 	 * @returns {boomAssetPicker.prototype}
 	 */
 	boomAssetPicker.prototype.showActiveTypeFilter = function(type) {
-		var assetPicker = this;
+		var assetPicker = this,
+			$types = this.dialog.contents.find('#b-assets-types');
 
-		this.typeFilter.find('option').each(function() {
+		$types.find('option').each(function() {
 			var $this = $(this);
 
-			if ($this.text().toLowerCase() === type.toLowerCase()) {
-				assetPicker.typeFilter.val($this.val());
+			if ($this.val().toLowerCase() === type.toLowerCase()) {
+				$types.val($this.val());
 			}
 		});
 

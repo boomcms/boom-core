@@ -1,7 +1,18 @@
 function boomDialog(options) {
-	this.deferred = new $.Deferred().always(function() {
+	var dialog = this;
+
+	this.deferred = $.Deferred().always(function() {
 		$(top.window).trigger('boom:dialog:close');
+
+		setTimeout(function() {
+			dialog.cleanup();
+		}, 0);
 	});
+
+	this.buttons = {
+		close: 'Okay',
+		cancel: 'Cancel'
+	};
 
 	this.options = $.extend({
 		width: 'auto',
@@ -18,24 +29,13 @@ function boomDialog(options) {
 	}, options);
 
 	boomDialog.prototype.always = function(callback) {
-		this.deferred.always(callback);
+		dialog.deferred.always(callback);
 
 		return this;
 	};
 
- 	boomDialog.prototype.cancelButton = {
-		text: 'Cancel',
-		class: 'b-button-cancel',
-		click: function() {
-			var boomDialog = $(this).dialog('option', 'boomDialog');
-			boomDialog.cancel();
-		}
-	};
-
 	boomDialog.prototype.cancel = function() {
-		this.deferred.rejectWith(this.dialog);
-
-		this.cleanup();
+		dialog.deferred.rejectWith(this.dialog);
 	};
 
 	boomDialog.prototype.cleanup = function() {
@@ -45,19 +45,22 @@ function boomDialog(options) {
 		}
 	};
 
-	boomDialog.prototype.closeButton = {
-		text: 'Okay',
-		class: 'b-button-close',
-		click: function() {
-			var boomDialog = $(this).dialog('option', 'boomDialog');
-			boomDialog.close();
-		}
+	boomDialog.prototype.close = function() {
+		dialog.deferred.resolveWith(this.dialog);
 	};
 
-	boomDialog.prototype.close = function() {
-		this.deferred.resolveWith(this.dialog);
-		
-		this.cleanup();
+	boomDialog.prototype.configureButtons = function(options) {
+		var dialog = this;
+
+		for (var button in dialog.buttons) {
+			if (options[button + 'Button']) {
+				dialog.options.buttons.push({
+					text: dialog.buttons[button],
+					class: 'b-button-' + button,
+					click: dialog[button]
+				});
+			}
+		}
 	};
 
 	boomDialog.prototype.done = function(callback) {
@@ -100,8 +103,7 @@ function boomDialog(options) {
 
 		this.contents = $div.appendTo($(document).contents().find('body'));
 
-		this.options.closeButton && this.options.buttons.push(this.closeButton);
-		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
+		this.configureButtons(this.options);
 
 		if (this.options.url && this.options.url.length) {
 			if (this.contents.hasClass('ui-dialog-content')) {
@@ -135,4 +137,4 @@ function boomDialog(options) {
 	};
 
 	this.open();
-};
+}

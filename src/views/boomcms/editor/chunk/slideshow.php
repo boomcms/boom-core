@@ -62,6 +62,6 @@
 </div>
 
 <div class="buttons">
-    <?= $button('trash-o', trans('Delete slideshow'), ['id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly']) ?>
-    <?= $button('plus', trans('Add slide'), ['id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext']) ?>
+    <?= $button('trash-o', 'slideshow-delete', ['id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly']) ?>
+    <?= $button('plus', 'slideshow-add-slide', ['id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext']) ?>
 </div>

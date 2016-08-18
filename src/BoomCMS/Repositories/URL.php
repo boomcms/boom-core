@@ -57,13 +57,15 @@ class URL implements URLRepositoryInterface
     }
 
     /**
-     * @param int $id
+     * Returns the URL with the given ID.
      *
-     * @return URLInterface
+     * @param int $urlId
+     *
+     * @return null|URLInterface
      */
-    public function find($id)
+    public function find($urlId)
     {
-        return $this->model->find($id);
+        return $this->model->find($urlId);
     }
 
     /**

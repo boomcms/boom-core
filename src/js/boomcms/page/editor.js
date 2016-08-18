@@ -16,7 +16,7 @@ $.widget( 'boom.pageEditor', {
 		this.document = $(top.document);
 
 		this.page.toolbar = this.toolbar = this.document
-			.find('#b-page-topbar')
+			.find('#b-editor-iframe')
 			.pageToolbar({ // This should probably be called editorIframe as we're calling this on the iframe. Then we need another widget which is specifically for the toolbar.
 				page : this.page,
 				publishable : this.options.publishable
@@ -24,6 +24,8 @@ $.widget( 'boom.pageEditor', {
 			.data('boom-pageToolbar');
 
 		this.watchForDialogs();
+
+		this.showTextDiff();
 
 		if (this.options.editable) {
 			this.createChunks();
@@ -82,6 +84,19 @@ $.widget( 'boom.pageEditor', {
 						window.BoomCMS.page.toolbar.showSettings('feature');
 					});
 			});
+	},
+
+	showTextDiff: function() {
+		var $diff = this.toolbar.element.contents().find('#b-history-diff');
+
+		if ($diff.length) {
+			var type = $diff.attr('data-type'),
+				slotname = $diff.attr('data-slotname');
+
+		this.document.contents()
+			.find('[data-boom-chunk="' + type + '"][data-boom-slot-name="' + slotname + '"]')
+			.html($diff.html());
+		}
 	},
 
 	watchForDialogs: function() {

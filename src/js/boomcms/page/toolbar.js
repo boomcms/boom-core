@@ -11,6 +11,23 @@ $.widget( 'boom.pageToolbar', {
 			page = this.options.page;
 
 		this.element.contents()
+			.on('click', 'button[data-editor-time]', function() {
+				BoomCMS.Editor
+					.setTime($(this).attr('data-editor-time'))
+					.done(function() {
+						top.location.reload();
+					});
+			})
+			.on('click', 'button.b-version-info', function() {
+				var html = self.element.contents().find('#b-history-template').html();
+
+				new boomDialog({
+					msg: html,
+					width: '600px',
+					cancelButton: false,
+					title: 'Version information'
+				});
+			})
 			.on('click', '#b-page-delete', function() {
 				self.$settings.pageSettings('show', 'delete');
 				self.openPageSettings();
@@ -28,7 +45,7 @@ $.widget( 'boom.pageToolbar', {
  				self.showSettings('visibility');
 			})
 			.on('click', '.b-button-preview', function() {
-				window.BoomCMS.editor.state($(this).attr('data-preview'));
+				window.BoomCMS.Editor.state($(this).attr('data-preview'));
 			})
 			.on('click', '#b-page-template', function() {
 				self.showSettings('template');
@@ -93,6 +110,8 @@ $.widget( 'boom.pageToolbar', {
 
 	_create: function() {
 		var toolbar = this;
+
+		this.toolbarWidth = this.element.width();
 
 		this.findButtons();
 		this._toggle_view_live_button();
@@ -213,7 +232,7 @@ $.widget( 'boom.pageToolbar', {
 	*/
 	minimise: function() {
 		this.element.css({
-			width : '60px',
+			width : this.toolbarWidth,
 			'z-index' : 10000
 		});
 	},

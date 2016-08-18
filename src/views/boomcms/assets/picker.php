@@ -19,11 +19,7 @@
         <section id="b-assets-picker-filter" class="ui-front">
             <h1><?= trans('boomcms::asset.picker.filter') ?></h1>
 
-            <?= $button('accept', 'All assets', ['id' => 'b-assets-picker-all', 'class' => 'b-button-textonly']) ?>
-
-            <?= view('boomcms::assets.search.title') ?>
-            <?= view('boomcms::assets.search.type') ?>
-            <?= view('boomcms::assets.search.tag') ?>
+            <?= view('boomcms::assets.search') ?>
         </section>
 
         <?= view('boomcms::assets.pagination') ?>

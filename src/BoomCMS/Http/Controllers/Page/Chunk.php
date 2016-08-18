@@ -28,7 +28,25 @@ class Chunk extends PageController
     {
         $this->authorize('edit', $page);
 
-        $chunk = ChunkFacade::create($page, $request->except('template'));
+        if (!$request->has('force')) {
+            $latest = ChunkFacade::get($request->input('type'), $request->input('slotname'), $page);
+
+            if ($request->input('chunkId') < $latest->getId()) {
+                if ($template = $request->input('template')) {
+                    $latest->template($template);
+                }
+
+                return response([
+                    'chunkId' => $latest->getId(),
+                    'error'   => 'conflict',
+                    'html'    => view('boomcms::editor.conflict')->render(),
+                    'chunk'   => $latest->render(),
+                    'status'  => $page->getCurrentVersion()->getStatus(),
+                ], 500);
+            }
+        }
+
+        $chunk = ChunkFacade::create($page, $request->except(['template', 'chunkId', 'force']));
         $chunk->editable(true);
 
         if ($template = $request->input('template')) {
@@ -41,8 +59,9 @@ class Chunk extends PageController
         Event::fire(new ChunkWasCreated($page, $chunk));
 
         return [
-            'status' => $page->getCurrentVersion()->getStatus(),
-            'html'   => $chunk->render(),
+            'status'  => $page->getCurrentVersion()->getStatus(),
+            'html'    => $chunk->render(),
+            'chunkId' => $chunk->getId(),
         ];
     }
 }

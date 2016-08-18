@@ -14,18 +14,18 @@ interface Template
     public function create(array $attrs);
 
     /**
-     * @param int $id
+     * @param int $templateId
      *
      * @return TemplateInterface
      */
-    public function deleteById($id);
+    public function deleteById($templateId);
 
     /**
-     * @param int $id
+     * @param int $templateId
      *
      * @return TemplateInterface
      */
-    public function find($id);
+    public function find($templateId);
 
     public function findAll();
 

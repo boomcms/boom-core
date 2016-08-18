@@ -16,6 +16,7 @@ return [
         'drafts'     => 'Draft status',
         'relations'  => 'Relationships',
         'info'       => 'Page information',
+        'history'    => 'History',
     ],
     'admin' => [
         'heading'               => 'Admin settings',
@@ -36,6 +37,15 @@ return [
         'nav-cms'             => 'Children visible in CMS nav',
         'uri-prefix'          => 'Default child URI prefix',
         'grandchild-template' => 'Default grandchild template',
+        'column'              => [
+            'sequence'     => 'Manual',
+            'visible_from' => 'Date by visible from time',
+            'title'        => 'Alphabetic by title',
+        ],
+        'direction'           => [
+            'asc'  => 'Ascending',
+            'desc' => 'Descending',
+        ],
     ],
     'delete' => [
         'heading'  => 'Delete page',
@@ -72,10 +82,17 @@ return [
         'heading'   => 'Page feature image',
         'from-page' => 'Use an image from the page',
     ],
+    'history' => [
+        'heading'      => 'History',
+        'visible'      => 'Page became visible',
+        'visible-note' => 'Note: page visibility is calculated by the current visibility settings',
+    ],
     'info'    => [
-        'heading'    => 'Page information',
-        'created-by' => 'Created by',
-        'created-at' => 'Created at',
+        'heading'          => 'Page information',
+        'created-by'       => 'Created by',
+        'created-at'       => 'Created at',
+        'last-modified'    => 'Last modified',
+        'last-modified-by' => 'Last modified by',
     ],
     'navigation' => [
         'heading'   => 'Page navigation settings',

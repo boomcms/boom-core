@@ -239,6 +239,13 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals('description', $page->getDescription());
     }
 
+    public function testGetParentWithNoParentId()
+    {
+        $page = new Page([Page::ATTR_PARENT => null]);
+
+        $this->assertNull($page->getParent());
+    }
+
     public function testGetSite()
     {
         $site = new Site();

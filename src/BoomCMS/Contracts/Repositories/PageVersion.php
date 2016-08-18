@@ -11,5 +11,12 @@ interface PageVersion
      *
      * @return $this
      */
+    public function history(PageInterface $page);
+
+    /**
+     * @param PageInterface $page
+     *
+     * @return $this
+     */
     public function deleteDrafts(PageInterface $page);
 }

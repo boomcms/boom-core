@@ -7,7 +7,9 @@ use BoomCMS\Events;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\DeletePage;
 use BoomCMS\Jobs\ReorderChildPages;
+use BoomCMS\Page\History\Diff;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use BoomCMS\Support\Facades\PageVersion as PageVersionFacade;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use DateTime;
 use Illuminate\Http\Request;
@@ -47,12 +49,12 @@ class Settings extends Controller
         $templates = TemplateFacade::findValid();
 
         return view("$this->viewPrefix.children", [
-            'default_child_template'      => $page->getDefaultChildTemplateId(),
-            'default_grandchild_template' => $page->getDefaultGrandchildTemplateId(),
-            'templates'                   => $templates,
-            'child_order_column'          => $orderCol,
-            'child_order_direction'       => $orderDirection,
-            'page'                        => $page,
+            'childTemplate'      => $page->getDefaultChildTemplateId(),
+            'grandchildTemplate' => $page->getDefaultGrandchildTemplateId(),
+            'templates'          => $templates,
+            'orderColumn'        => $orderCol,
+            'orderDirection'     => $orderDirection,
+            'page'               => $page,
         ]);
     }
 
@@ -86,6 +88,24 @@ class Settings extends Controller
 
         return view("$this->viewPrefix.feature", [
             'featureImageId' => $page->getFeatureImageId(),
+        ]);
+    }
+
+    /**
+     * Show the page version history.
+     *
+     * @param Page $page
+     *
+     * @return View
+     */
+    public function getHistory(Page $page)
+    {
+        $this->authorize('editFeature', $page);
+
+        return view("$this->viewPrefix.history", [
+            'versions' => PageVersionFacade::history($page),
+            'page'     => $page,
+            'diff'     => new Diff(),
         ]);
     }
 

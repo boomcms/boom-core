@@ -22,5 +22,7 @@ $.widget('boom.pageSettingsDefault', {
 	_create: function() {
 		this.page = this.options.page;
 		this.bind();
+
+		this.element.find('time').localTime();
 	}
 });

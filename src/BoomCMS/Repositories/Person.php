@@ -57,9 +57,16 @@ class Person implements PersonRepositoryInterface, UserProvider
         return $this;
     }
 
-    public function find($id)
+    /**
+     * Returns the person with the given ID.
+     *
+     * @param int $personId
+     *
+     * @return null|PersonInterface
+     */
+    public function find($personId)
     {
-        return $this->findBy(Model::ATTR_ID, $id);
+        return $this->findBy(Model::ATTR_ID, $personId);
     }
 
     public function findAll()
@@ -119,13 +126,13 @@ class Person implements PersonRepositoryInterface, UserProvider
     }
 
     /**
-     * @param mixed $id
+     * @param int $personId
      *
      * @return null|Authenticatable
      */
-    public function retrieveById($id)
+    public function retrieveById($personId)
     {
-        return $this->find($id);
+        return $this->find($personId);
     }
 
     /**

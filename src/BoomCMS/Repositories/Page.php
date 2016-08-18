@@ -5,8 +5,8 @@ namespace BoomCMS\Repositories;
 use BoomCMS\Contracts\Models\Page as PageModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Page as PageRepositoryInterface;
-use BoomCMS\Core\Page\Finder;
 use BoomCMS\Database\Models\Page as Model;
+use BoomCMS\Page\Finder;
 use BoomCMS\Support\Facades\Router;
 
 class Page implements PageRepositoryInterface
@@ -33,9 +33,16 @@ class Page implements PageRepositoryInterface
         return $this;
     }
 
-    public function find($id)
+    /**
+     * Returns a page with the given ID.
+     *
+     * @param int $pageId
+     *
+     * @return null|PageModelInterface
+     */
+    public function find($pageId)
     {
-        return $this->model->currentVersion()->find($id);
+        return $this->model->currentVersion()->find($pageId);
     }
 
     public function findByInternalName($name)

@@ -7,10 +7,17 @@
         <div class="thumb">
             <img class="loading" />
 
-            <div class="pace loading">
+            <div class="pace progress">
                 <div>
                     <span><?= trans('boomcms::asset.loading') ?></span>
                     <div class="pace-activity"></div>
+                </div>
+            </div>
+
+            <div class="failed">
+                <div>
+                    <span class="fa fa-frown-o"></span>
+                    <p><?= trans('boomcms::asset.failed') ?></p>
                 </div>
             </div>
 

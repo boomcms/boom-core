@@ -140,6 +140,10 @@ class Page extends Model implements PageInterface
             $attrs += $oldVersion->toArray();
         }
 
+        // Chunk type and ID fields shouldn't be copied.
+        unset($attrs[PageVersion::ATTR_CHUNK_TYPE]);
+        unset($attrs[PageVersion::ATTR_CHUNK_ID]);
+
         $newVersion = new PageVersion($attrs);
         $newVersion
             ->setPage($this)
@@ -438,11 +442,11 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @return PageInterface
+     * @return null|PageInterface
      */
     public function getParent()
     {
-        return $this->parent;
+        return $this->isRoot() ? null : $this->parent;
     }
 
     /**
@@ -974,7 +978,11 @@ class Page extends Model implements PageInterface
             ->groupBy('page_id');
 
         if (Editor::isDisabled()) {
-            $query->where('embargoed_until', '<=', time());
+            $query->where('embargoed_until', '<=', Editor::getTime()->getTimestamp());
+        }
+
+        if (Editor::isHistory()) {
+            $query->where('edited_time', '<=', Editor::getTime()->getTimestamp());
         }
 
         return $query;

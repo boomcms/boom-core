@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Page\Finder;
 
-use BoomCMS\Core\Page\Finder\ExcludeInvisible as Filter;
+use BoomCMS\Page\Finder\ExcludeInvisible as Filter;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;

@@ -28,6 +28,10 @@ return [
         'format' => 'Format',
         'value'  => 'Date / time',
     ],
+    'conflict' => [
+        'exists'  => 'Your changes have not been saved to avoid overwriting changes made by another user.',
+        'options' => 'Do you want to discard your changes, overwrite the latest changes, or load the latest changes in a new window to review the situation?',
+    ],
     'chunk' => [
         'library' => [
             'heading'     => 'Asset Library',

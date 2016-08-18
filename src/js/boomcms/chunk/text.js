@@ -71,5 +71,9 @@ $.widget('ui.chunkText', $.ui.chunk,
 		this.originalContent = this.element.html();
 	},
 
-	_update_html: function() {}
+	_update_html: function() {},
+
+	_replace_html: function(html) {
+		this.element.html(html);
+	}
 });

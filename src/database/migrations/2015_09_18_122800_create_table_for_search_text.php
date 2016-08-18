@@ -1,6 +1,6 @@
 <?php
 
-use BoomCMS\Core\Page\Finder;
+use BoomCMS\Page\Finder;
 use BoomCMS\Support\Facades\Chunk;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

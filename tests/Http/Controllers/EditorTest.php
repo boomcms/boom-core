@@ -6,6 +6,7 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Editor\Editor as Editor;
 use BoomCMS\Http\Controllers\Editor as EditorController;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Mockery as m;
@@ -21,6 +22,7 @@ class EditorTest extends BaseControllerTest
             'edit'     => 1,
             'disabled' => 2,
             'preview'  => 3,
+            'history'  => 4,
         ];
 
         foreach ($states as $state => $value) {
@@ -35,6 +37,24 @@ class EditorTest extends BaseControllerTest
         }
     }
 
+    public function testPostTime()
+    {
+        $timestamp = time() - 1000;
+        $editor = m::mock(Editor::class)->makePartial();
+
+        $editor
+            ->shouldReceive('setTime')
+            ->once()
+            ->with(m::on(function (DateTime $time) use ($timestamp) {
+                return $time->getTimestamp() === $timestamp;
+            }))
+            ->andReturnSelf();
+
+        $request = new Request(['time' => $timestamp]);
+
+        $this->controller->postTime($request, $editor);
+    }
+
     public function testGetEditToolbar()
     {
         $pageId = 1;
@@ -47,7 +67,7 @@ class EditorTest extends BaseControllerTest
             ->with($pageId)
             ->andReturn($page);
 
-        $editor = m::mock(Editor::class);
+        $editor = m::mock(Editor::class)->makePartial();
         $editor->shouldReceive('isEnabled')->once()->andReturn(true);
 
         View::shouldReceive('share')
@@ -56,7 +76,7 @@ class EditorTest extends BaseControllerTest
 
         View::shouldReceive('make')
             ->once()
-            ->with('boomcms::editor.toolbar', m::any(), m::any())
+            ->with('boomcms::editor.toolbar.edit', m::any(), m::any())
             ->andReturn($view);
 
         $this->assertEquals($view, $this->controller->getToolbar($editor, $request));
@@ -74,7 +94,7 @@ class EditorTest extends BaseControllerTest
             ->with($pageId)
             ->andReturn($page);
 
-        $editor = m::mock(Editor::class);
+        $editor = m::mock(Editor::class)->makePartial();
         $editor->shouldReceive('isEnabled')->once()->andReturn(false);
 
         View::shouldReceive('share')
@@ -83,7 +103,7 @@ class EditorTest extends BaseControllerTest
 
         View::shouldReceive('make')
             ->once()
-            ->with('boomcms::editor.toolbar_preview', m::any(), m::any())
+            ->with('boomcms::editor.toolbar.preview', m::any(), m::any())
             ->andReturn($view);
 
         $this->assertEquals($view, $this->controller->getToolbar($editor, $request));

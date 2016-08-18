@@ -50,10 +50,10 @@
 				width: 440
 			}).done(function() {
 				$.post(url, dialog.contents.find('form').serialize())
-				.done(function(response) {
-					new boomNotification("Page embargo saved").show();
-					promise.resolve(response);
-				});
+					.done(function(response) {
+						new boomNotification("Page embargo saved").show();
+						promise.resolve(response);
+					});
 			});
 
 			return promise;

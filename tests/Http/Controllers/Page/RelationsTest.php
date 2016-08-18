@@ -3,6 +3,8 @@
 namespace BoomCMS\Tests\Http\Controllers;
 
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Events\PageRelationshipAdded;
+use BoomCMS\Events\PageRelationshipRemoved;
 use BoomCMS\Http\Controllers\Page\Relations as Controller;
 use Mockery as m;
 
@@ -37,6 +39,8 @@ class RelationsTest extends BaseControllerTest
             ->once()
             ->with($this->related);
 
+        $this->expectsEvents(PageRelationshipRemoved::class);
+
         $this->controller->destroy($this->page, $this->related);
     }
 
@@ -46,6 +50,8 @@ class RelationsTest extends BaseControllerTest
             ->shouldReceive('addRelation')
             ->once()
             ->with($this->related);
+
+        $this->expectsEvents(PageRelationshipAdded::class);
 
         $this->controller->store($this->page, $this->related);
     }

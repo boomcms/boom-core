@@ -6,10 +6,99 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion as Version;
 use BoomCMS\Database\Models\Person;
 use DateTime;
+use Mockery as m;
 
 class PageVersionTest extends AbstractModelTestCase
 {
     protected $model = Version::class;
+
+    public function testGetChunkType()
+    {
+        $type = 'test';
+        $version = new Version([Version::ATTR_CHUNK_TYPE => $type]);
+
+        $this->assertEquals($type, $version->getChunkType());
+    }
+
+    public function testGetId()
+    {
+        $chunkId = 1;
+        $version = new Version([Version::ATTR_CHUNK_ID => $chunkId]);
+
+        $this->assertEquals($chunkId, $version->getChunkId());
+    }
+
+    public function testGetNext()
+    {
+        $pageId = 1;
+        $editedAt = time() - 1000;
+        $next = new Version();
+
+        $version = m::mock($this->model)->makePartial();
+        $version->{Version::ATTR_PAGE} = $pageId;
+        $version->{Version::ATTR_EDITED_AT} = $editedAt;
+
+        $version
+            ->shouldReceive('where')
+            ->once()
+            ->with(Version::ATTR_PAGE, $pageId)
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('where')
+            ->once()
+            ->with(Version::ATTR_EDITED_AT, '>', $editedAt)
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with(Version::ATTR_EDITED_AT, 'asc')
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($next);
+
+        $this->assertEquals($next, $version->getNext());
+    }
+
+    public function testGetPrevious()
+    {
+        $pageId = 1;
+        $editedAt = time() - 1000;
+        $prev = new Version();
+
+        $version = m::mock($this->model)->makePartial();
+        $version->{Version::ATTR_PAGE} = $pageId;
+        $version->{Version::ATTR_EDITED_AT} = $editedAt;
+
+        $version
+            ->shouldReceive('where')
+            ->once()
+            ->with(Version::ATTR_PAGE, $pageId)
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('where')
+            ->once()
+            ->with(Version::ATTR_EDITED_AT, '<', $editedAt)
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with(Version::ATTR_EDITED_AT, 'desc')
+            ->andReturnSelf();
+
+        $version
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($prev);
+
+        $this->assertEquals($prev, $version->getPrevious());
+    }
 
     public function testIsPublishedIfEmbargoedTimeIsPast()
     {
@@ -39,6 +128,26 @@ class PageVersionTest extends AbstractModelTestCase
         $this->assertNotEquals('published', $version->status());
     }
 
+    public function testIsPublishedWithTimeParameter()
+    {
+        $time = new DateTime('@'.time() - 1000);
+
+        $published = new Version([Version::ATTR_EMBARGOED_UNTIL => $time->getTimestamp() - 10]);
+        $this->assertTrue($published->isPublished($time));
+        $this->assertEquals('published', $published->status($time));
+    }
+
+    public function testIsNotPublishedWithTimeParameter()
+    {
+        $time = new DateTime('@'.time());
+        $published = new Version([
+            Version::ATTR_EMBARGOED_UNTIL => time() + 1000,
+        ]);
+
+        $this->assertFalse($published->isPublished($time));
+        $this->assertNotEquals('published', $published->status($time));
+    }
+
     public function testIsDraftIfNoEmbargoTime()
     {
         $version = new Version(['embargoed_until' => null]);
@@ -58,6 +167,15 @@ class PageVersionTest extends AbstractModelTestCase
         $version = new Version(['embargoed_until' => time() + 10]);
         $this->assertTrue($version->isEmbargoed());
         $this->assertEquals('embargoed', $version->status());
+    }
+
+    public function testIsEmbargoedWithTimeParameterIfEmbargoInFuture()
+    {
+        $time = new DateTime('@'.time() + 1000);
+        $version = new Version([Version::ATTR_EMBARGOED_UNTIL => $time->getTimestamp() + 10]);
+
+        $this->assertTrue($version->isEmbargoed($time));
+        $this->assertEquals('embargoed', $version->status($time));
     }
 
     /**
@@ -153,5 +271,30 @@ class PageVersionTest extends AbstractModelTestCase
         $version->title = ' <b>test</b> ';
 
         $this->assertEquals('test', $version->title);
+    }
+
+    public function isContentChangeIfChunkTypeAndChunkId()
+    {
+        $version = new Version([
+            Version::ATTR_CHUNK_TYPE => 'text',
+            Version::ATTR_CHUNK_ID   => 1,
+        ]);
+
+        $this->assertTrue($version->isContentChange());
+    }
+
+    public function testIsContentChangeReturnsFalse()
+    {
+        $not = [
+            [Version::ATTR_CHUNK_ID => 1],
+            [Version::ATTR_CHUNK_TYPE => 'text'],
+            [],
+        ];
+
+        foreach ($not as $attrs) {
+            $version = new Version($attrs);
+
+            $this->assertFalse($version->isContentChange());
+        }
     }
 }

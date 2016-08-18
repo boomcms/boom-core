@@ -46,13 +46,15 @@ class Tag implements TagRepositoryInterface
     }
 
     /**
-     * @param int $id
+     * Returns the tag with the given ID.
      *
-     * @return TagInterface
+     * @param int $tagId
+     *
+     * @return null|TagInterface
      */
-    public function find($id)
+    public function find($tagId)
     {
-        return $this->model->find($id);
+        return $this->model->find($tagId);
     }
 
     /**
