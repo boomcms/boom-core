@@ -20,6 +20,7 @@ return [
         'tag-placeholder' => 'Type a tag name',
         'title'           => 'Search by asset name',
         'type'            => 'Filter by asset type',
+        'extension'       => 'Filter by file extension',
     ],
     'sort' => [
         'last_modified desc' => 'Most recent',

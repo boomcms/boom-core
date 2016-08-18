@@ -20,6 +20,13 @@ interface Asset
     public function createVersionFromFile(AssetInterface $asset, UploadedFile $file);
 
     /**
+     * Returns the extensions which exist in the database
+     *
+     * @return array
+     */
+    public function extensions();
+
+    /**
      * Retrive an asset by ID.
      *
      * @param int $assetId

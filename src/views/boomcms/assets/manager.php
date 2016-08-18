@@ -19,15 +19,7 @@
 	</div>
 
 	<div id="b-assets-filters">
-		<span>
-			<button id="b-assets-all" class="b-button">
-				<?= trans('All assets') ?>
-			</button>
-		</span>
-
-        <?= view('boomcms::assets.search.title') ?>
-        <?= view('boomcms::assets.search.type') ?>
-        <?= view('boomcms::assets.search.tag') ?>
+        <?= view('boomcms::assets.search') ?>
         <?= view('boomcms::assets.search.sort') ?>
 	</div>
 

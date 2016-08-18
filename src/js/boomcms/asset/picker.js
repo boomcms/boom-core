@@ -40,12 +40,6 @@ function boomAssetPicker(currentAsset, filters) {
 				uploadFinished: function(e, data) {
 					assetPicker.assetsUploaded(data.result);
 				}
-			})
-			.end()
-			.on('click', '#b-assets-picker-all', function() {
-				assetPicker.element
-					.assetSearch('clearFilters')
-					.assetSearch('getAssets');
 			});
 	};
 

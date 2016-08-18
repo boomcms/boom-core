@@ -11,6 +11,7 @@ class Query extends BaseQuery
         'title'                      => Finder\TitleContains::class,
         'titleordescriptioncontains' => Finder\TitleOrDescriptionContains::class,
         'type'                       => Finder\Type::class,
+        'extension'                  => Finder\Extension::class,
     ];
 
     public function count()

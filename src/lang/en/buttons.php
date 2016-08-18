@@ -7,6 +7,7 @@ return [
     'add-tag'               => 'Add tag',
     'add-tag-group'         => 'Add tag group',
     'add-tags'              => 'Add tags',
+    'all-assets'            => 'All assets',
     'cancel'                => 'Cancel',
     'clear-filters'         => 'Clear filters',
     'clear-selection'       => 'Clear selection',

@@ -21,6 +21,12 @@
 				.on('click', '#b-assets-all', function(event) {
 					assetSearch.removeFilters();
 					assetSearch.getAssets();
+				})
+				.on('change', 'select[name=type], select[name=extension]', function() {
+					var $this = $(this);
+
+					assetSearch.addFilter($this.attr('name'), $this.val());
+					assetSearch.getAssets();
 				});
 
 			this.$titleFilter = this.element
@@ -42,11 +48,6 @@
 						assetSearch.updateTagFilters(data.tags);
 					}
 				});
-
-			this.$typeFilter.on('change', function() {
-				assetSearch.addFilter('type', $(this).val());
-				assetSearch.getAssets();
-			});
 		},
 
 		_create: function() {
