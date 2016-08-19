@@ -36,7 +36,7 @@
 						height: '160px',
 						width: Math.floor(160 * this.model.getAspectRatio()) + 'px'
 					})
-					.attr('data-aspect-ratio', this.model.getAspectRatio())
+					.attr('data-aspect-ratio', this.model.getAspectRatio());
 			}
 
 			return this;

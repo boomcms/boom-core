@@ -21,7 +21,7 @@
         </div>
 
         <div class="b-asset-details">
-            <h2><%= asset.getTitle() %>></h2>
+            <h2><%= asset.getTitle() %></h2>
 
             <p>
                 <?//= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />

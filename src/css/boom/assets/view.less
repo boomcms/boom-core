@@ -1,5 +1,16 @@
 #b-assets-view {
 	overflow: hidden;
+	position: absolute;
+	top: 6rem;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	.b-settings-content {
+		> * {
+			display: none;
+		}
+	}
 
 	&-files {
 		ul {
@@ -65,6 +76,55 @@
 
 		.b-tag {
 			background: @white;
+		}
+	}
+
+	#b-assets-view-edit {
+		position: relative;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+
+		.image-container {
+			position: relative;
+		}
+
+		#b-imageeditor-image, .jcrop-active {
+			max-width: 100%;
+			max-height: 50vh;
+			width: auto;
+			height: auto;
+		}
+
+		.crop-tools {
+			display: none;
+			padding-left: 1em;
+
+			.aspect-ratio {
+				p {
+					margin: 0 0 0 1em;
+				}
+
+				select {
+					float: none;
+					width: calc(~"100% - 1em");
+				}
+			}
+		}
+
+		.jcrop-vline, .jcrop-hline {
+			background-image: none;
+		}
+
+		.b-button {
+			.text-small;
+			border: 0;
+			min-width: 0;
+			height: auto;
+
+			&:hover, &:focus {
+				background: none;
+			}
 		}
 	}
 }

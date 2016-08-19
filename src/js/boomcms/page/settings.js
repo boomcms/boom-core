@@ -6,7 +6,7 @@ $.widget('boom.pageSettings', {
 			.on('click', 'a', function(e) {
 				e.preventDefault();
 			})
-			.on('click', '.b-page-settings-close', function() {
+			.on('click', '.b-settings-close', function() {
 				pageSettings.close();
 			})
 			.on('click', 'a[data-b-page-setting]', function() {
@@ -27,8 +27,8 @@ $.widget('boom.pageSettings', {
 
 	_create: function() {
 		this.page = this.options.page;
-		this.$menu = this.element.find('.b-page-settings-menu');
-		this.$content = this.element.find('.b-page-settings-content');
+		this.$menu = this.element.find('.b-settings-menu');
+		this.$content = this.element.find('.b-settings-content');
 
 		this.bind();
 	},
@@ -54,7 +54,7 @@ $.widget('boom.pageSettings', {
 
 	show: function(section) {
 		var pageSettings = this,
-			$div = $('<div class="b-page-settings-content"></div>');
+			$div = $('<div class="b-settings-content"></div>');
 
 		this.$menu
 			.find('li')

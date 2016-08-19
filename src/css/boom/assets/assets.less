@@ -38,6 +38,19 @@
 	&-content {
 		overflow: hidden;
 
+		&.view-asset {
+			#b-assets-view-thumbs {
+				z-index: -1;
+				transition: all 1s;
+
+				.thumb {
+					max-height: 0;
+					transition: max-height 1s ease-out;
+					overflow: hidden;
+				}
+			}
+		}
+
 		img {
 			border: none;
 		}

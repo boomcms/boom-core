@@ -48987,7 +48987,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			.on('click', 'a', function(e) {
 				e.preventDefault();
 			})
-			.on('click', '.b-page-settings-close', function() {
+			.on('click', '.b-settings-close', function() {
 				pageSettings.close();
 			})
 			.on('click', 'a[data-b-page-setting]', function() {
@@ -49008,8 +49008,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	_create: function() {
 		this.page = this.options.page;
-		this.$menu = this.element.find('.b-page-settings-menu');
-		this.$content = this.element.find('.b-page-settings-content');
+		this.$menu = this.element.find('.b-settings-menu');
+		this.$content = this.element.find('.b-settings-content');
 
 		this.bind();
 	},
@@ -49035,7 +49035,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	show: function(section) {
 		var pageSettings = this,
-			$div = $('<div class="b-page-settings-content"></div>');
+			$div = $('<div class="b-settings-content"></div>');
 
 		this.$menu
 			.find('li')
@@ -49325,7 +49325,7 @@ $.widget( 'boom.pageToolbar', {
 		this.$settingsContainer = this.element.contents().find('#b-page-settings-toolbar');
 
 		this.$settings = this.$settingsContainer
-			.find('.b-page-settings')
+			.find('.b-settings')
 			.pageSettings({
 				page: toolbar.options.page,
 				close: function() {
@@ -52889,7 +52889,9 @@ $.widget('ui.chunkPageVisibility', {
 
 		initialize: function() {
 			this.router = new BoomCMS.AssetManager.Router({assets: this.assets});
+
 			this.uploader = this.$('#b-assets-upload-form');
+			this.$content = this.$('#b-assets-content');
 
 			this.listenTo(this.assets, 'select', this.select);
 			this.listenTo(this.assets, 'view', this.viewAsset);
@@ -52935,31 +52937,21 @@ $.widget('ui.chunkPageVisibility', {
 		},
 
 		viewAsset: function(asset) {
-			var assetManager = this;
+			var assetManager = this,
+				viewClass = 'view-asset',
+				view = new BoomCMS.AssetManager.ViewAsset({model: asset}).render();
 
-			new boomAssetEditor(asset, assetManager.uploader)
-				.always(function() {
-					assetManager.router.navigate('');
-				});
+			this.$content.prepend(view.$el);
+			this.$content.addClass(viewClass);
+
+			view.$el.on('remove', function() {
+				assetManager.router.navigate('');
+				assetManager.$content.removeClass(viewClass);
+			});
 		}
 	});
 }(Backbone, BoomCMS));
 ;(function($, Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.AssetManager.AssetView = Backbone.View.extend({
-		tagName: 'div',
-
-		initialize: function() {
-
-		},
-
-		render: function() {
-
-			return this;
-		}
-	});
-}(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
 	'use strict';
 
 //	BoomCMS.AssetManager.Filters = Backbone.View.extend({
@@ -53026,7 +53018,7 @@ $.widget('ui.chunkPageVisibility', {
 						height: '160px',
 						width: Math.floor(160 * this.model.getAspectRatio()) + 'px'
 					})
-					.attr('data-aspect-ratio', this.model.getAspectRatio())
+					.attr('data-aspect-ratio', this.model.getAspectRatio());
 			}
 
 			return this;
@@ -53043,124 +53035,152 @@ $.widget('ui.chunkPageVisibility', {
 		}
 	});
 }(jQuery, Backbone, BoomCMS));
-;function boomAssetEditor(asset, uploader) {
-    this.asset = asset;
-    this.uploader = uploader;
+;(function($, Backbone, BoomCMS) {
+	'use strict';
 
-    boomAssetEditor.prototype.bind = function(dialog) {
-        var asset = this.asset,
-            assetEditor = this;
+	BoomCMS.AssetManager.ViewAsset = Backbone.View.extend({
+		tagName: 'div',
 
-        dialog.contents
-			.on('click', '.b-assets-delete', function() {
-				asset.destroy();
-			})
-			.on('click', '.b-assets-download', function(e) {
-				e.preventDefault();
-				selection.download();
-			})
-            .on('click', '.b-assets-replace', function(e) {
-                var uploadFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
+		bind: function() {
+			var view = this,
+				asset = this.model;
 
-                e.preventDefault();
+			this.$el
+				.find('#b-tags')
+				.assetTagSearch({
+					addTag: function(e, tag) {
+						asset.addTag(tag);
+					},
+					removeTag: function(e, tag) {
+						asset.removeTag(tag);
+					}
+				})
+				.end()
+				.on('click', '.b-settings-close', function(e) {
+					view.close(e);
+				})
+				.on('click', '.b-settings-menu a', function(e) {
+					var $this = $(this),
+						href = $this.attr('href'),
+						$target;
 
-                assetEditor.uploader.assetUploader('replacesAsset', asset);
-                assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
-                    assetEditor.reloadPreviewImage();
-                    uploadFinished(e, data);
+					if (href === '#') {
+						return;
+					}
 
-                    // Restore the previous event handler.
-                    assetEditor.uploader.assetUploader('option', 'uploadFinished', uploadFinished);
-                });
+					$target = view.$(href);
 
-                assetEditor.uploader.show();
-            })
-            .on('click', '.b-assets-revert', function(e) {
-                e.preventDefault();
+					if ($target.length) {
+						e.preventDefault();
 
-                assetEditor.revertTo($(this).attr('data-version-id'));
-            })
-			.on('click', '.b-assets-openeditor', function(e) {
-				e.preventDefault();
-		
-				new boomImageEditor(asset.getUrl() + '?' + new Date().getTime())
-					.done(function(blob) {
-						assetEditor.replaceWithBlob(blob);
+						view.$('.b-settings-menu li').removeClass('selected');
+						$this.parent().addClass('selected');
+
+						view.$('.b-settings-content > *').hide();
+						$target.show();
+					}
+				})
+				.on('click', '.b-assets-delete', function() {
+					asset.destroy();
+				})
+				.on('click', '.b-assets-download', function(e) {
+					e.preventDefault();
+					asset.download();
+				})
+				.on('click', '.b-assets-replace', function(e) {
+					var uploadFinished = view.uploader.assetUploader('option', 'uploadFinished');
+
+					e.preventDefault();
+
+					view.uploader.assetUploader('replacesAsset', asset);
+					view.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
+						view.reloadPreviewImage();
+						uploadFinished(e, data);
+
+						// Restore the previous event handler.
+						view.uploader.assetUploader('option', 'uploadFinished', uploadFinished);
 					});
-			})
-			.on('click', '.b-assets-save', function() {
-				assetEditor.selection
-					.save(assetEditor.dialog.contents.find('form').serialize())
-					.done(function() {
-						new boomNotification("Asset details saved").show();
-					});
-			})
-			.on('focus', '#thumbnail', function() {
-				var $this = $(this);
 
-				new boomAssetPicker(new BoomCMS.Asset({id: $this.val()}))
-					.done(function(asset) {
-						$this.val(asset.getId());
-					});
+					view.uploader.show();
+				})
+				.on('click', '.b-assets-revert', function(e) {
+					e.preventDefault();
+
+					view.revertTo($(this).attr('data-version-id'));
+				})
+				.on('click', '.b-assets-openeditor', function(e) {
+					e.preventDefault();
+
+					new boomImageEditor(asset.getUrl() + '?' + new Date().getTime())
+						.done(function(blob) {
+							view.replaceWithBlob(blob);
+						});
+				})
+				.on('click', '.b-assets-save', function() {
+					view.selection
+						.save(view.dialog.contents.find('form').serialize())
+						.done(function() {
+							new boomNotification("Asset details saved").show();
+						});
+				})
+				.on('focus', '#thumbnail', function() {
+					var $this = $(this);
+
+					new boomAssetPicker(new BoomCMS.Asset({id: $this.val()}))
+						.done(function(asset) {
+							$this.val(asset.getId());
+						});
+				});
+
+			this.$('#b-assets-view-edit').imageEditor({
+				imageUrl: asset.getUrl()
 			});
-    };
+		},
 
-    boomAssetEditor.prototype.open = function() {
-        var assetEditor = this;
+		close: function(e) {
+			e.preventDefault();
 
-		this.asset.on('destroy', function() {
-			assetEditor.dialog.cancel();
-		});
+			this.$el.remove();
+		},
 
-        this.dialog = new boomDialog({
-			title : 'Edit Asset',
-			url : '/boomcms/asset/' + assetEditor.asset.id,
-			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
-			closeButton: false,
-			onLoad: function() {
-                assetEditor.bind(assetEditor.dialog);
+		initialize: function() {
+			this.listenTo(this.model, 'destroy', function(e) {
+				this.close(e);
+			});
+		},
 
-				assetEditor.dialog.contents
-					.find('.boom-tabs')
-					.tabs()
-					.end()
-					.find('#b-tags')
-					.assetTagSearch({
-						addTag: function(e, tag) {
-							assetEditor.selection.addTag(tag);
-						},
-						removeTag: function(e, tag) {
-							assetEditor.selection.removeTag(tag);
-						}
-					});
-			}
-		});
+		reloadPreviewImage: function() {
+			var $img = this.dialog.contents.find('.b-assets-preview img');
 
-        return this.dialog;
-    };
+			$img.attr("src", $img.attr('src') + '?' + new Date().getTime());
+		},
 
-    boomAssetEditor.prototype.reloadPreviewImage = function() {
-        var $img = this.dialog.contents.find('.b-assets-preview img');
+		render: function() {
+			var view = this;
 
-        $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
-    };
+			this.$el
+				.load(this.model.url(), function() {
+					view.bind();
+				});
+
+			return this;
+		},
 	
-	boomAssetEditor.prototype.replaceWithBlob = function(blob) {
-		this.asset.replaceWith(blob);
-	};
+		replaceWithBlob: function(blob) {
+			this.model.replaceWith(blob);
+		},
 
-    boomAssetEditor.prototype.revertTo = function(versionId) {
-        var assetEditor = this;
+		revertTo: function(versionId) {
+			var assetEditor = this;
 
-        this.selection.revertToVersion(versionId)
-            .done(function() {
-                new boomNotification("This asset has been reverted to the previous version").show();
-                assetEditor.reloadPreviewImage();
-            });
-    };
-
-    return this.open();
-};
+			this.selection.revertToVersion(versionId)
+				.done(function() {
+					new boomNotification("This asset has been reverted to the previous version").show();
+					assetEditor.reloadPreviewImage();
+				});
+		}
+	});
+}(jQuery, Backbone, BoomCMS));
 ;(function($, BoomCMS) {
 	'use strict';
 
@@ -53876,7 +53896,250 @@ function Row() {
 		this.input.assetTagAutocomplete('setIgnoreTags', this.tags);
 		this._trigger('update', null, {tags : this.tags});
 	}
-});;$.widget('boom.groupPermissionsEditor', {
+});;(function($) {
+	'use strict';
+
+	$.widget('boom.imageEditor', {
+		imageSelector: '#b-imageeditor-image',
+		cropButtonSelector: '#b-imageeditor-crop',
+		isCropping: false,
+
+		bind: function() {
+			var imageEditor = this;
+
+			this.$toolbar = this.element.find('#b-imageeditor-toolbar');
+
+			this.element
+				.on('click', '#b-imageeditor-rotate-left', function() {
+					Caman(imageEditor.imageSelector, function () {
+						this.rotate(-90).render();
+						imageEditor.saveImageDimensions();
+					});
+				})
+				.on('click', '#b-imageeditor-rotate-right', function() {
+					Caman(imageEditor.imageSelector, function () {
+						this.rotate(90).render();
+						imageEditor.saveImageDimensions();
+					});
+				})
+				.on('click', '#b-imageeditor-crop-cancel', function() {
+					imageEditor.hideCropTool();
+				})
+				.on('click', this.cropButtonSelector, function() {
+					if (imageEditor.isCropping) {
+						imageEditor.hideCropTool();
+					} else {
+						imageEditor.showCropTool();
+					}
+
+					$(this).blur();
+				})
+				.on('click', '#b-imageeditor-revert', function() {
+					imageEditor.loadImage();
+				})
+				.on('change', '.crop-tools select', function() {
+					var $this = $(this);
+
+					imageEditor.$cropImage.Jcrop({
+						aspectRatio: $this.find(':selected').val()
+					});
+				});
+		},
+
+		blobToBase64: function(blob) {
+			var deferred = new $.Deferred();
+
+			var reader = new window.FileReader();
+			reader.readAsDataURL(blob); 
+			reader.onloadend = function() {
+				deferred.resolve(reader.result);                
+			};
+
+			return deferred;
+		},
+
+		_create: function() {
+			this.imageUrl = this.options.imageUrl;
+
+			this.createCanvas();
+			this.bind();
+		},
+
+		createCanvas: function() {
+			this.$cropImage = $('<img>').css('display', 'none');
+			this.$cropImage.appendTo(this.element.find('.image-container'));
+
+			this.loadImage();
+		},
+
+		cropImage: function(x, y, width, height) {
+			var imageEditor = this,
+				canvas = this.element.find('canvas').get(0),
+				deferred = new $.Deferred();
+
+			this.getImageBase64().done(function(base64) {
+				var img = new Image(),
+					context = canvas.getContext('2d');
+
+				if (canvas.width > width) {
+					canvas.width = width;
+				}
+
+				if (canvas.height > height) {
+					canvas.height = height;
+				}
+
+				img.onload = function() {
+					context.clearRect(0, 0, canvas.width, canvas.height);
+					context.drawImage(img, x, y, width, height, 0, 0, width, height);
+					deferred.resolve('');
+				};
+
+				img.src = base64;
+				imageEditor.saveImageDimensions();
+			});
+
+			return deferred;
+		},
+
+		getImageBase64: function() {
+			var imageEditor = this,
+				deferred = new $.Deferred();
+
+			this.getImageBlob().done(function(blob) {
+				imageEditor.blobToBase64(blob).done(function(base64) {
+					deferred.resolve(base64);
+				});
+			});
+
+			return deferred;
+		},
+
+		getImageBlob: function() {
+			var deferred = new $.Deferred();
+
+			this.element.find(this.imageSelector).get(0).toBlob(function(blob) {
+				deferred.resolve(blob);
+			});
+
+			return deferred;
+		},
+
+		hideCropTool: function() {
+			this.isCropping = false;
+
+			// Using the Jcrop destroy method causing a JS error when we try to crop again.
+			// So we manually remove the data and DOM element instead.
+			this.$cropImage.removeData('Jcrop');
+			this.element.find('.jcrop-active').remove();
+
+			this.$toolbar
+				.children('.b-button')
+				.not(this.cropButtonSelector)
+				.prop('disabled', false);
+
+			this.toggleCropTools();
+
+			this.$canvas.show();
+		},
+
+		loadImage: function() {
+			var imageEditor = this,
+				$el = this.element,
+				$image = $el.find(this.imageSelector);
+
+			if ($image.is('canvas')) {
+				$image.replaceWith($('<img />').attr('id', this.imageSelector.replace('#', '')));
+				$image = $el.find(this.imageSelector);
+			}
+
+			$image.attr('src', this.imageUrl).on('load', function() {
+				imageEditor.saveImageDimensions();
+
+				Caman(imageEditor.imageSelector, function () {
+					imageEditor.$canvas = $el.find('canvas:first-of-type');
+					imageEditor.canvas = imageEditor.$canvas[0];
+
+					imageEditor.element
+						.find('.crop-tools select')
+						.append(
+							$('<option>')
+								.val(parseFloat(imageEditor.imageWidth / imageEditor.imageHeight))
+								.text('Initial')
+						);
+				});
+			});
+		},
+
+		saveImageDimensions: function() {
+			this.imageWidth = this.element.find(this.imageSelector).width();
+			this.imageHeight = this.element.find(this.imageSelector).height();
+			this.aspectRatio = this.imageWidth / this.imageHeight;
+		},
+
+		showCropTool: function() {
+			var $el = this.element,
+				imageEditor = this;
+
+			this.$toolbar
+				.children('.b-button')
+				.not(this.cropButtonSelector)
+				.prop('disabled', true);
+
+			this.isCropping = true;
+			this.toggleCropTools();
+
+			this.getImageBase64()
+				.done(function(base64) {
+					var crop = {};
+
+					imageEditor.$cropImage
+						.attr('src', base64)
+						.on('load', function() {
+							imageEditor.$cropImage
+								.Jcrop({
+									boxWidth: imageEditor.imageWidth,
+									boxHeight: imageEditor.imageHeight,
+									setSelect: [
+										0,
+										0,
+										imageEditor.$cropImage[0].naturalWidth,
+										imageEditor.$cropImage[0].naturalHeight
+									],
+									onChange: function(c) {
+										crop = c;
+									},
+									aspectRatio: $el.find('.crop-tools select option:selected').val()
+								});
+
+							$el
+								.find('.jcrop-active canvas')
+								.css({
+									width: imageEditor.imageWidth,
+									height: imageEditor.imageHeight
+								});
+
+							imageEditor.$canvas.hide();
+						});
+
+					$el.one('click', '#b-imageeditor-crop-accept', function() {
+						if (crop !== {}) {
+							imageEditor
+								.cropImage(crop.x, crop.y, crop.w, crop.h)
+								.done(function() {
+									imageEditor.hideCropTool();
+								});
+						}
+					});
+				});
+		},
+
+		toggleCropTools: function() {
+			this.$toolbar.find('.crop-tools').slideToggle();
+		}
+	});
+}(jQuery));
+;$.widget('boom.groupPermissionsEditor', {
 	group : null,
 
 	bind: function() {
@@ -53973,273 +54236,7 @@ function Row() {
 				}
 			});
 	}
-});;function boomImageEditor(imageUrl) {
-	this.imageUrl = imageUrl;
-	this.imageSelector = '#b-imageeditor-image';
-	this.cropButtonSelector = '#b-imageeditor-crop';
-	this.deferred = new $.Deferred();
-	this.isCropping = false;
-	
-	boomImageEditor.prototype.bind = function() {
-		var imageEditor = this;
-		
-		this.$toolbar = this.$element.find('#b-imageeditor-toolbar');
-		
-		this.$element
-			.on('click', '#b-imageeditor-rotate-left', function() {
-				Caman(imageEditor.imageSelector, function () {
-					this.rotate(-90).render();
-					imageEditor.saveImageDimensions();
-				});
-			})
-			.on('click', '#b-imageeditor-rotate-right', function() {
-				Caman(imageEditor.imageSelector, function () {
-					this.rotate(90).render();
-					imageEditor.saveImageDimensions();
-				});
-			})
-			.on('click', '#b-imageeditor-crop-cancel', function() {
-				imageEditor.hideCropTool();
-			})
-			.on('click', this.cropButtonSelector, function() {
-				if (imageEditor.isCropping) {
-					imageEditor.hideCropTool();
-				} else {
-					imageEditor.showCropTool();
-				}
-		
-				$(this).blur();
-			})
-			.on('click', '#b-imageeditor-revert', function() {
-				imageEditor.loadImage();
-			})
-			.on('change', '.crop-tools select', function() {
-				var $this = $(this);
-
-				imageEditor.$cropImage.Jcrop({
-					aspectRatio: $this.find(':selected').val()
-				});
-			});
-	};
-	
-	boomImageEditor.prototype.blobToBase64 = function(blob) {
-		var deferred = new $.Deferred();
-
-		var reader = new window.FileReader();
-		reader.readAsDataURL(blob); 
-		reader.onloadend = function() {
-			deferred.resolve(reader.result);                
-		};
-		
-		return deferred;
-	};
-	
-	boomImageEditor.prototype.createCanvas = function() {
-		var imageEditor = this,
-			$el = this.$element;
-
-		this.$cropImage = $('<img>').css('display', 'none');
-
-		$el
-			.find('#b-imageeditor')
-			.append(this.$cropImage)
-			.end();
-	
-		this.loadImage();
-	};
-	
-	boomImageEditor.prototype.cropImage = function(x, y, width, height) {
-		var imageEditor = this,
-			canvas = this.$element.find('canvas').get(0),
-			deferred = new $.Deferred();
-
-		this.getImageBase64().done(function(base64) {
-			var img = new Image(),
-				context = canvas.getContext('2d');
-
-			if (canvas.width > width) {
-				canvas.width = width;
-			}
-			
-			if (canvas.height > height) {
-				canvas.height = height;
-			}
-
-			img.onload = function() {
-				context.clearRect(0, 0, canvas.width, canvas.height);
-				context.drawImage(img, x, y, width, height, 0, 0, width, height);
-				deferred.resolve('');
-			};
-
-			img.src = base64;
-			imageEditor.saveImageDimensions();
-		});
-		
-		return deferred;
-	};
-	
-	boomImageEditor.prototype.getImageBase64 = function() {
-		var imageEditor = this,
-			deferred = new $.Deferred();
-		
-		this.getImageBlob().done(function(blob) {
-			imageEditor.blobToBase64(blob).done(function(base64) {
-				deferred.resolve(base64);
-			});
-		});
-
-		return deferred;
-	};
-	
-	boomImageEditor.prototype.getImageBlob = function() {
-		var deferred = new $.Deferred();
-
-		this.$element.find(this.imageSelector).get(0).toBlob(function(blob) {
-			deferred.resolve(blob);
-		});
-
-		return deferred;
-	};
-	
-	boomImageEditor.prototype.hideCropTool = function() {
-		this.isCropping = false;
-
-		// Using the Jcrop destroy method causing a JS error when we try to crop again.
-		// So we manually remove the data and DOM element instead.
-		this.$cropImage.removeData('Jcrop');
-		this.$element.find('.jcrop-active').remove();
-
-		this.$toolbar
-			.children('.b-button')
-			.not(this.cropButtonSelector)
-			.prop('disabled', false);
-	
-		this.toggleCropTools();
-
-		this.$canvas.show();
-	};
-	
-	boomImageEditor.prototype.loadImage = function() {
-		var imageEditor = this,
-			$el = this.$element,
-			$image = $el.find(this.imageSelector);
-	
-		if ($image.is('canvas')) {
-			$image.replaceWith($('<img />').attr('id', this.imageSelector.replace('#', '')));
-			$image = $el.find(this.imageSelector);
-		}
-
-		$image.attr('src', this.imageUrl).on('load', function() {
-			imageEditor.saveImageDimensions();
-			
-			Caman(imageEditor.imageSelector, function () {
-				imageEditor.$canvas = $el.find('canvas:first-of-type');
-				imageEditor.canvas = imageEditor.$canvas[0];
-				
-				imageEditor.$element
-					.find('.crop-tools select')
-					.append(
-						$('<option>')
-							.val(parseFloat(imageEditor.imageWidth / imageEditor.imageHeight))
-							.text('Initial')
-					);
-			});
-		});
-	};
-	
-	boomImageEditor.prototype.open = function() {
-		var imageEditor = this;
-
-		this.dialog = new boomDialog({
-			width: document.documentElement.clientWidth < 1024? '100%' : 1024,
-			height: document.documentElement.clientHeight < 768? document.documentElement.clientHeight : 768,
-			title: 'Image editor',
-			msg: $('#b-image-editor-template').html(),
-			onLoad: function() {
-				imageEditor.$element = imageEditor.dialog.contents;
-				imageEditor.createCanvas();
-				imageEditor.bind();
-			}
-		})
-		.done(function() {
-			imageEditor.getImageBlob().then(function(blob) {
-				imageEditor.deferred.resolve(blob);
-			});
-		});
-		
-		return this.deferred;
-	};
-	
-	boomImageEditor.prototype.saveImageDimensions = function() {
-		this.imageWidth = this.$element.find(this.imageSelector).width();
-		this.imageHeight = this.$element.find(this.imageSelector).height();
-		this.aspectRatio = this.imageWidth / this.imageHeight;
-	};
-	
-	boomImageEditor.prototype.showCropTool = function() {
-		var $el = this.dialog.contents,
-			imageEditor = this;
-
-		this.$toolbar
-			.children('.b-button')
-			.not(this.cropButtonSelector)
-			.prop('disabled', true);
-	
-		this.isCropping = true;
-		this.toggleCropTools();
-
-		this.getImageBase64()
-			.done(function(base64) {
-				var crop = {};
-
-				imageEditor.$cropImage
-					.attr('src', base64)
-					.on('load', function() {
-
-						imageEditor.$cropImage
-							.Jcrop({
-								boxWidth: imageEditor.imageWidth,
-								boxHeight: imageEditor.imageHeight,
-								setSelect: [
-									0,
-									0,
-									imageEditor.$cropImage[0].naturalWidth,
-									imageEditor.$cropImage[0].naturalHeight
-								],
-								onChange: function(c) {
-									crop = c;
-								},
-								aspectRatio: $el.find('.crop-tools select option:selected').val()
-							});
-
-						$el
-							.find('.jcrop-active canvas')
-							.css({
-								width: imageEditor.imageWidth,
-								height: imageEditor.imageHeight
-							});
-
-						imageEditor.$canvas.hide();
-					});
-
-				$el.one('click', '#b-imageeditor-crop-accept', function() {
-					if (crop !== {}) {
-						imageEditor
-							.cropImage(crop.x, crop.y, crop.w, crop.h)
-							.done(function() {
-								imageEditor.hideCropTool();
-							});
-					}
-				});
-			});
-	};
-	
-	boomImageEditor.prototype.toggleCropTools = function() {
-		this.$toolbar.find('.crop-tools').slideToggle();
-	};
-	
-	return this.open();
-};;$(document).ready(function() {
+});;$(document).ready(function() {
 	$('.b-approvals-publish').on('click', function(e) {
 		e.preventDefault();
 

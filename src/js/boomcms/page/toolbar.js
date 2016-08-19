@@ -126,7 +126,7 @@ $.widget( 'boom.pageToolbar', {
 		this.$settingsContainer = this.element.contents().find('#b-page-settings-toolbar');
 
 		this.$settings = this.$settingsContainer
-			.find('.b-page-settings')
+			.find('.b-settings')
 			.pageSettings({
 				page: toolbar.options.page,
 				close: function() {

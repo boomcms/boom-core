@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'close'                   => 'Close',
     'attributes'              => 'Attributes',
     'info'                    => 'Info',
     'tags'                    => 'Tags',
@@ -24,6 +25,8 @@ return [
     'downloads'               => 'Downloads',
     'edited-by'               => 'Edited by',
     'edited-at'               => 'Edited at',
+    'delete'                  => 'Delete asset',
+    'edit-image'              => 'Edit image',
     'picker'                  => [
         'current' => 'Current Asset',
         'upload'  => 'Upload Asset',

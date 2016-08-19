@@ -82,7 +82,9 @@
 
 		initialize: function() {
 			this.router = new BoomCMS.AssetManager.Router({assets: this.assets});
+
 			this.uploader = this.$('#b-assets-upload-form');
+			this.$content = this.$('#b-assets-content');
 
 			this.listenTo(this.assets, 'select', this.select);
 			this.listenTo(this.assets, 'view', this.viewAsset);
@@ -128,12 +130,17 @@
 		},
 
 		viewAsset: function(asset) {
-			var assetManager = this;
+			var assetManager = this,
+				viewClass = 'view-asset',
+				view = new BoomCMS.AssetManager.ViewAsset({model: asset}).render();
 
-			new boomAssetEditor(asset, assetManager.uploader)
-				.always(function() {
-					assetManager.router.navigate('');
-				});
+			this.$content.prepend(view.$el);
+			this.$content.addClass(viewClass);
+
+			view.$el.on('remove', function() {
+				assetManager.router.navigate('');
+				assetManager.$content.removeClass(viewClass);
+			});
 		}
 	});
 }(Backbone, BoomCMS));
