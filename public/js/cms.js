@@ -49075,8 +49075,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	this.deferred = $.Deferred().always(function() {
 		$(top.window).trigger('boom:dialog:close');
-
-		dialog.cleanup();
 	});
 
 	this.buttons = {
@@ -49106,6 +49104,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	boomDialog.prototype.cancel = function() {
 		dialog.deferred.rejectWith(this.dialog);
+		dialog.cleanup();
 	};
 
 	boomDialog.prototype.cleanup = function() {
@@ -49117,6 +49116,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	boomDialog.prototype.close = function() {
 		dialog.deferred.resolveWith(this.dialog);
+		dialog.cleanup();
 	};
 
 	boomDialog.prototype.configureButtons = function(options) {
