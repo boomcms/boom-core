@@ -63,13 +63,8 @@
 
 			this.initialFilters = this.postData;
 
-			this.assets.on('sync', function() {
-				assetSearch.renderGrid();
-			});
-
 			this.bind();
 			this.setAssetsPerPage();
-			this.getAssets();
 		},
 
 		getAssets: function() {
@@ -81,6 +76,7 @@
 				reset: true,
 				success: function(collection, response, options) {
 					assetSearch.initPagination(response.total);
+					assetSearch.renderGrid();
 				}
 			});
 		},
@@ -131,24 +127,8 @@
 				$el.append(thumbnail.render().el);
 			});
 
-			$el
-				.justifyAssets()
-				.find('[data-asset]')
-				.each(function() {
-					var $this = $(this),
-						asset = new BoomCMS.Asset({id: $this.attr('data-asset')}),
-						url  = asset.getUrl('thumb', $this.width(), $this.height()) + '?' + Math.floor(Date.now() / 1000),
-						loadingClass = 'loading';
+			$el.justifyAssets();
 
-					$this.find('img')
-						.attr('src', url)
-						.on('load', function() {
-							$(this).parent().removeClass(loadingClass);
-						})
-						.on('error', function() {
-							$(this).parent().removeClass(loadingClass).addClass('failed');
-						});
-				});
 		},
 
 		setAssetsPerPage: function() {

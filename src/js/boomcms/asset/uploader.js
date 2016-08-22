@@ -40,7 +40,6 @@ $.widget('boom.assetUploader', {
 	},
 
 	close: function() {
-		this.notify('');
 		this.element.hide();
 	},
 

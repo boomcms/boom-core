@@ -4,19 +4,32 @@
 	BoomCMS.AssetManager.Router = Backbone.Router.extend({
 		routes: {
 			'': 'home',
-			'asset/:asset': 'viewAsset'
+			'upload': 'upload',
+			'asset/:asset': 'viewAsset',
+			'asset/:asset/:section': 'viewAsset'
 		},
 
 		initialize: function(options) {
 			this.assets = options.assets;
 		},
 
-		viewAsset: function(id) {
+		viewAsset: function(id, section) {
 			var asset = this.assets.get(id);
 
-			asset.trigger('view', asset);
+			if (asset === undefined) {
+				asset = new BoomCMS.Asset({id: id});
+				this.assets.add(asset);
+			}
+
+			asset.trigger('view', asset, section);
 		},
 
-		home: function() {}
+		home: function() {
+			this.trigger('home');
+		},
+
+		upload: function() {
+			this.trigger('upload');
+		}
 	});
 }(Backbone, BoomCMS));

@@ -17,6 +17,7 @@ return [
     'conflict-inspect'      => 'Inspect',
     'crop'                  => 'Crop',
     'delete'                => 'Delete',
+    'delete-asset'          => 'Delete asset',
     'delete-template'       => 'Delete template',
     'download'              => 'Download',
     'edit-page'             => 'Edit page',

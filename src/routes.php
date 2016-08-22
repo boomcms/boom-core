@@ -36,13 +36,15 @@ Route::group(['middleware' => [
 
             Route::get('asset-manager', 'Assets\AssetManager@index');
             Route::resource('asset', 'Asset\AssetController');
+            Route::delete('asset', 'Asset\AssetController@destroy');
+            Route::post('asset/{asset}/replace', 'Asset\AssetController@replace');
+            Route::post('asset/{asset}/revert', 'Asset\AssetController@revert');
 
             Route::group([
                 'prefix'    => 'assets',
                 'namespace' => 'Assets',
             ], function () {
                 Route::post('save/{asset}', 'AssetManager@save');
-                Route::post('replace/{asset}', 'AssetManager@replace');
                 Route::post('revert/{asset}', 'AssetManager@revert');
                 Route::post('tags/add', 'Tags@add');
                 Route::post('tags/remove', 'Tags@remove');
@@ -117,7 +119,7 @@ Route::group(['middleware' => [
 Route::group(['prefix' => 'asset'], function () {
     Route::get('version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
-        'middleware' => [Middleware\RequireLogin::class],
+        'middleware' => ['web', Middleware\RequireLogin::class],
         'uses'       => function ($versionId, $width = null, $height = null) {
             $asset = Asset::findByVersionId($versionId);
 

@@ -42,15 +42,25 @@
 				margin-bottom: 2rem;
 			}
 
-			&.b-setting-delete a {
-				background: @red;
-				color: @white;
+			&.b-setting-delete {
+				&.selected a {
+					color: @black;
 
-				&:hover, &:focus {
+					&:hover, &:focus {
+						color: @black;
+					}
+				}
+
+				a {
+					background: @red;
 					color: @white;
 
-					span {
-						color: @black;
+					&:hover, &:focus {
+						color: @white;
+
+						span {
+							color: @black;
+						}
 					}
 				}
 			}

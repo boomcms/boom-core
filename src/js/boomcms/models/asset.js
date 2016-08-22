@@ -5,6 +5,10 @@
 		urlRoot: BoomCMS.urlRoot + 'asset',
 
 		getAspectRatio: function() {
+			if (!this.getHeight()) {
+				return 1;
+			}
+
 			return this.getWidth() / this.getHeight();
 		},
 
@@ -55,9 +59,20 @@
 				url: this.urlRoot + '/' + this.getId() + '/replace',
 				processData: false,
 				contentType: false,
-				type: 'POST'
+				type: 'post'
 			}).done(function() {
-				asset.trigger('change');
+				asset.trigger('replace');
+			});
+		},
+
+		revertToVersion: function(versionId) {
+			var asset = this;
+
+			return $.post(this.urlRoot + '/' + this.getId() + '/revert', {
+				version_id: versionId
+			})
+			.done(function() {
+				asset.trigger('revert');
 			});
 		}
 	});

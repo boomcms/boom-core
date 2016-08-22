@@ -331,6 +331,14 @@ class Asset extends Model implements AssetInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isVideo()
+    {
+        return $this->getType() == 'video';
+    }
+
+    /**
      * @param string $credits
      *
      * @return $this

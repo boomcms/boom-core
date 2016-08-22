@@ -61,6 +61,8 @@ function boomAssetPicker(currentAsset, filters) {
 	boomAssetPicker.prototype.loadPicker = function() {
 		var assetPicker = this;
 
+		this.assets = new BoomCMS.Collections.Assets();
+
 		this.dialog = new boomDialog({
 			url : this.url,
 			onLoad: function() {
@@ -78,8 +80,11 @@ function boomAssetPicker(currentAsset, filters) {
 				}
 
 				assetPicker.dialog.contents.assetSearch({
-					filters: assetPicker.filters
+					filters: assetPicker.filters,
+					assets: assetPicker.assets
 				});
+
+				assetPicker.dialog.contents.assetSearch('getAssets');
 
 				assetPicker.bind();
 

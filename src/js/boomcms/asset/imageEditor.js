@@ -45,11 +45,16 @@
 					imageEditor.$cropImage.Jcrop({
 						aspectRatio: $this.find(':selected').val()
 					});
+				})
+				.on('click', '.b-imageeditor-save', function() {
+					imageEditor.getImageBlob().done(function(blob) {
+						imageEditor._trigger('save', null, blob);
+					});
 				});
 		},
 
 		blobToBase64: function(blob) {
-			var deferred = new $.Deferred();
+			var deferred = $.Deferred();
 
 			var reader = new window.FileReader();
 			reader.readAsDataURL(blob); 
@@ -60,9 +65,7 @@
 			return deferred;
 		},
 
-		_create: function() {
-			this.imageUrl = this.options.imageUrl;
-
+		_init: function() {
 			this.createCanvas();
 			this.bind();
 		},
@@ -77,7 +80,7 @@
 		cropImage: function(x, y, width, height) {
 			var imageEditor = this,
 				canvas = this.element.find('canvas').get(0),
-				deferred = new $.Deferred();
+				deferred = $.Deferred();
 
 			this.getImageBase64().done(function(base64) {
 				var img = new Image(),
@@ -106,7 +109,7 @@
 
 		getImageBase64: function() {
 			var imageEditor = this,
-				deferred = new $.Deferred();
+				deferred = $.Deferred();
 
 			this.getImageBlob().done(function(blob) {
 				imageEditor.blobToBase64(blob).done(function(base64) {
@@ -118,7 +121,7 @@
 		},
 
 		getImageBlob: function() {
-			var deferred = new $.Deferred();
+			var deferred = $.Deferred();
 
 			this.element.find(this.imageSelector).get(0).toBlob(function(blob) {
 				deferred.resolve(blob);
@@ -141,8 +144,6 @@
 				.prop('disabled', false);
 
 			this.toggleCropTools();
-
-			this.$canvas.show();
 		},
 
 		loadImage: function() {
@@ -151,11 +152,15 @@
 				$image = $el.find(this.imageSelector);
 
 			if ($image.is('canvas')) {
-				$image.replaceWith($('<img />').attr('id', this.imageSelector.replace('#', '')));
+				var $new = $('#b-imageeditor-original')
+					.clone()
+					.attr('id', this.imageSelector.replace('#', ''));
+
+				$image.replaceWith($new);
 				$image = $el.find(this.imageSelector);
 			}
 
-			$image.attr('src', this.imageUrl).on('load', function() {
+			$image.on('load', function() {
 				imageEditor.saveImageDimensions();
 
 				Caman(imageEditor.imageSelector, function () {
@@ -220,8 +225,6 @@
 									width: imageEditor.imageWidth,
 									height: imageEditor.imageHeight
 								});
-
-							imageEditor.$canvas.hide();
 						});
 
 					$el.one('click', '#b-imageeditor-crop-accept', function() {

@@ -34,7 +34,7 @@ class AssetVersion extends Model
 
     public function getAsset()
     {
-        return $this->belongsTo(Asset::class, $this->getAssetId())->first();
+        return $this->belongsTo(Asset::class, self::ATTR_ASSET, Asset::ATTR_ID)->first();
     }
 
     /**

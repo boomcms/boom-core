@@ -1,11 +1,8 @@
 $.widget('boom.justifyAssets', {
-	$el : null,
 	targetRightOffset : null,
 	windowWidth : null,
 
-	_create: function() {
-		this.$el = $(this.element);
-
+	_init: function() {
 		this._setDimensions();
 		this.justify();
 	},
@@ -23,13 +20,13 @@ $.widget('boom.justifyAssets', {
 			self = this,
 			rows = 0;
 
-		if (this.$el.children().length > 1) {
-			this.$el.children().each(function(index, element) {
+		if (this.element.children().length > 1) {
+			this.element.children().each(function(index, element) {
 				var $child = $(element);
 
 				$child.offset = self._getOffset($child);
 
-				if ( ! $child.css('height') || ! $child.attr('data-aspect-ratio')) {
+				if (!$child.css('height') || ! $child.attr('data-aspect-ratio')) {
 					$child.remove();
 					return true;
 				}
@@ -46,7 +43,7 @@ $.widget('boom.justifyAssets', {
 
 			var lastRowGap = currentRow.determineGap(this.targetRightOffset);
 
-			if (lastRowGap <= (this.$el.outerWidth(true) * 0.75)) {
+			if (lastRowGap <= (this.element.outerWidth(true) * 0.75)) {
 				currentRow.expandTo(self.targetRightOffset);
 			} else if (rows > 1) {
 				prevRow.merge(currentRow);
@@ -56,7 +53,7 @@ $.widget('boom.justifyAssets', {
 
 	_setDimensions: function() {
 		this.windowWidth = $(window).width();
-		this.targetRightOffset = (this.windowWidth - (this.$el.offset().left + this.$el.innerWidth()));
+		this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
 	}
 });
 

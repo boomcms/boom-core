@@ -62,27 +62,17 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '#b-page-settings', function() {
 				self.settingsAreOpen() ? self.closePageSettings() : self.showSettings();
 			})
-			.on('click', '#b-page-version-status', function() {
-				var $this = $(this),
-					clicks = $this.data('clicks');
-
-				$this.data('clicks', clicks ? ++clicks : 1);
-
-				if ($this.data('clicks') === 2) {
-					$this.data('clicks', 0);
-
-					page.publish().done(function(data) {
-						self.status.set(data);
-						$this.blur();
-					});
-				} else {
-					setTimeout(function() {
-						if ($this.data('clicks') === 1) {
-							$this.data('clicks', 0);
-							self.showSettings('drafts');
-						}
-					}, 200);
-				}
+			.find('#b-page-version-status')
+			.dblclick()
+			.end()
+			.on('sclick', '#b-page-version-status', function() {
+				self.showSettings('drafts');	
+			})
+			.on('dclick', '#b-page-version-status', function() {
+				page.publish().done(function(data) {
+					self.status.set(data);
+					$(this).blur();
+				});		
 			})
 			.on('mouseup', '#b-menu a', function() {
 				// Clicking a link in the menu but opening in a new tab causes the menu to close.

@@ -26,14 +26,9 @@ class AssetManager extends Controller
     {
         $this->request = $request;
 
-        if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
+        if (!$this->request->is('*/picker')) {
             $this->authorize('manageAssets', Router::getActiveSite());
         }
-    }
-
-    public function postDelete()
-    {
-        AssetFacade::delete($this->request->input('assets'));
     }
 
     public function getDownload()
@@ -81,39 +76,6 @@ class AssetManager extends Controller
         return view($this->viewPrefix.'picker');
     }
 
-    public function replace(Asset $asset)
-    {
-        list($validFiles, $errors) = $this->validateFileUpload();
-
-        foreach ($validFiles as $file) {
-            $asset->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
-            AssetFacade::save($asset);
-            AssetFacade::createVersionFromFile($asset, $file);
-
-            return [$asset->getId()];
-        }
-
-        if (count($errors)) {
-            return new JsonResponse($errors, 500);
-        }
-    }
-
-    public function revert(Asset $asset)
-    {
-        AssetFacade::revert($asset, $this->request->input('version_id'));
-    }
-
-    public function save(Asset $asset)
-    {
-        $asset
-            ->setTitle($this->request->input('title'))
-            ->setDescription($this->request->input('description'))
-            ->setCredits($this->request->input('credits'))
-            ->setThumbnailAssetId($this->request->input('thumbnail_asset_id'));
-
-        AssetFacade::save($asset);
-    }
-
     public function postUpload(Site $site)
     {
         $assetIds = [];
@@ -134,30 +96,5 @@ class AssetManager extends Controller
         }
 
         return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
-    }
-
-    protected function validateFileUpload()
-    {
-        $validFiles = $errors = [];
-
-        foreach ($this->request->file() as $files) {
-            foreach ($files as $file) {
-                if (!$file->isValid()) {
-                    $errors[] = $file->getErrorMessage();
-                    continue;
-                }
-
-                $type = AssetHelper::typeFromMimetype($file->getMimetype());
-
-                if ($type === null) {
-                    $errors[] = "File {$file->getClientOriginalName()} is of an unsuported type: {$file->getMimetype()}";
-                    continue;
-                }
-
-                $validFiles[] = $file;
-            }
-        }
-
-        return [$validFiles, $errors];
     }
 }

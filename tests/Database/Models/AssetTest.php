@@ -110,6 +110,18 @@ class AssetTest extends AbstractModelTestCase
         $this->assertFalse($empty->isImage());
     }
 
+    public function testIsVideo()
+    {
+        $video = new Asset([Asset::ATTR_TYPE => 'video']);
+        $this->assertTrue($video->isVideo());
+
+        $image = new Asset([Asset::ATTR_TYPE => 'image']);
+        $this->assertFalse($image->isVideo());
+
+        $empty = new Asset();
+        $this->assertFalse($empty->isVideo());
+    }
+
     public function testGetMetadata()
     {
         $metadata = ['key1' => 'value1'];

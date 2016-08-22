@@ -8,10 +8,33 @@
 */
 
 (function($) {
+	'use strict';
 
-	/**
-	@function
-	*/
+	$.fn.dblclick = function() {
+		var $this = $(this);
+
+		$this.on('click', function() {
+			var clicks = $this.data('clicks');
+
+			$this.data('clicks', clicks ? ++clicks : 1);
+
+			if ($this.data('clicks') === 2) {
+				$this.data('clicks', 0);
+
+				$this.trigger('dclick');
+			} else {
+				setTimeout(function() {
+					if ($this.data('clicks') === 1) {
+						$this.data('clicks', 0);
+						$this.trigger('sclick');
+					}
+				}, 200);
+			}
+		});
+
+		return this;
+	};
+
 	$.fn.ui = function() {
 		this.find('.boom-datepicker').datetimepicker({
 			format: 'd F Y H:i'
@@ -36,4 +59,30 @@
 			});
 		}
 	};
-})( jQuery );
+
+	$.fn.boomTabs = function() {
+		var selectedClass = 'selected';
+
+		$(this).on('click', function(e) {
+			var $link = $(this),
+				href = $link.attr('href'),
+				$target;
+
+			if (href === '#') {
+				return;
+			}
+
+			$target = $(href);
+
+			if ($target.length) {
+				e.preventDefault();
+
+				$link.parents('ul').find('li').removeClass(selectedClass);
+				$link.parent().addClass(selectedClass);
+
+				$target.parent().children().removeClass(selectedClass);
+				$target.addClass(selectedClass);
+			}
+		});
+	};
+})(jQuery);

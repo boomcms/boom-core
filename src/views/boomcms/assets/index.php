@@ -34,10 +34,9 @@
 	</div>
 
     <div id="b-assets-content">
+        <?= view('boomcms::assets.upload') ?>
         <?= view('boomcms::assets.thumbs') ?>
     </div>
-
-	<?= view('boomcms::assets.upload') ?>
 </div>
 
 <script type="text/javascript">

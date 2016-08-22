@@ -13,23 +13,21 @@
 			});
 		},
 
-		delete: function() {
-			var selection = this,
-				deleted = new $.Deferred(),
-				confirmation,
-				message = this.hasMultipleIds()? 'Are you sure you wanted to delete these assets?' : 'Are you sure you want to delete this asset?'
+		destroy: function() {
+			var assets = this;
 
-			confirmation = new boomConfirmation('Please confirm', message);
-			confirmation.done(function() {
-				$.post(selection.url + 'delete', {
-					assets : selection.assets
-				})
-				.done(function() {
-					deleted.resolve();
+			return $.ajax({
+				url: this.url,
+				type: 'delete',
+				data: {
+					'assets[]': this.getAssetIds()
+				}
+			})
+			.done(function() {
+				assets.each(function(model) {
+					model.trigger('destroy');
 				});
 			});
-
-			return deleted;
 		},
 	
 		download: function() {
@@ -62,16 +60,14 @@
 			return data.assets;
 		},
 
+		getAssetIds: function() {
+			return this.pluck('id');
+		},
+
 		removeTag: function(tag) {
 			$.post(this.url + 'tags/remove', {
 				assets : this.assets,
 				tag : tag
-			});
-		},
-
-		revertToVersion: function(versionId) {
-			return $.post(this.url + 'revert/' + this.assets[0], {
-				version_id: versionId
 			});
 		},
 
