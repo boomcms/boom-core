@@ -24,7 +24,7 @@
             <h2><%= asset.getTitle() %></h2>
 
             <p>
-                <?php //= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />
+                <?php //= trans('boomcms::asset.type.'.strtolower($asset->getType()))?><br />
 
                 <% if (asset.isImage()) { %>
                     <%= asset.getWidth() %> x <%= asset.getHeight() %>

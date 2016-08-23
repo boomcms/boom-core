@@ -5,9 +5,9 @@ namespace BoomCMS\Http\Controllers\Asset;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
-use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -34,9 +34,8 @@ class AssetController extends Controller
     }
 
     /**
-     *
      * @param Request $request
-     * @param Asset $asset
+     * @param Asset   $asset
      *
      * @return JsonResponse
      */
@@ -49,7 +48,8 @@ class AssetController extends Controller
 
             AssetFacade::save($asset);
             AssetFacade::createVersionFromFile($asset, $file);
-return $asset->newQuery()->with('versions')->with('versions.editedBy')->with('uploadedBy')->find($asset->getId());
+
+            return $asset->newQuery()->with('versions')->with('versions.editedBy')->with('uploadedBy')->find($asset->getId());
 
             return $asset;
         }
@@ -61,20 +61,20 @@ return $asset->newQuery()->with('versions')->with('versions.editedBy')->with('up
 
     /**
      * @param Request $request
-     * @param Asset $asset
+     * @param Asset   $asset
      */
     public function revert(Request $request, Asset $asset)
     {
         AssetFacade::revert($asset, $request->input('version_id'));
-return $asset->newQuery()->with('versions')->with('versions.editedBy')->with('uploadedBy')->find($asset->getId());
+
+        return $asset->newQuery()->with('versions')->with('versions.editedBy')->with('uploadedBy')->find($asset->getId());
 
         return $asset;
     }
 
     /**
-     * 
      * @param Request $request
-     * @param Asset $asset
+     * @param Asset   $asset
      */
     public function update(Request $request, Asset $asset)
     {
