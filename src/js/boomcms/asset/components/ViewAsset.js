@@ -48,7 +48,7 @@
 				.on('click', '.b-assets-revert', function(e) {
 					e.preventDefault();
 
-					asset.revertToVersion($(this).attr('data-version-id'));
+					asset.revertToVersion($(this).parents('li').attr('data-version-id'));
 				})
 				.on('click', '.b-assets-save', function() {
 					asset
@@ -72,8 +72,22 @@
 			this.$el.remove();
 		},
 
-		initialize: function() {
-			var view = this;
+		displayTags: function(tags) {
+			var $tagList = this.$('.b-tags').eq(0),
+				$tagTemplate = this.$('#b-tag-template').html(),
+				$el;
+
+			for (var i = 0; i < tags.length; i++) {
+				$el = $($tagTemplate);
+				$el.find('span:first-of-type').text(tags[i]);
+
+				$tagList.append($el);
+			}
+		},
+
+		initialize: function(options) {
+			this.assets = options.assets;
+			this.template = _.template($('#b-assets-view-template').html());
 
 			this.listenTo(this.model, 'destroy', function() {
 				this.close();
@@ -85,46 +99,36 @@
 
 			this.listenTo(this.model, 'revert', function() {
 				BoomCMS.notify("This asset has been reverted to the previous version");
-
-				view.reloadPreviewImage();
 			});
+
+			this.listenTo(this.model, 'change sync revert', this.render);
 		},
 
 		initImageEditor: function() {
-			var view = this;
+			var asset = this.model;
 
 			this.$('.b-asset-imageeditor').imageEditor({
 				save: function(e, blob) {
-					view.replaceWithBlob(blob);
+					asset.replaceWith(blob);
 				}
 			});
-		},
-
-		reloadPreviewImage: function() {
-			var $img = this.$('#b-assets-view-info img:first-of-type');
-
-			if ($img.length) {
-				$img.attr("src", $img.attr('src') + '?' + new Date().getTime());
-
-				this.initImageEditor();
-			}
 		},
 
 		render: function() {
 			var view = this;
 
-			this.$el
-				.load(this.model.url(), function() {
-					view.bind();
-				view.initImageEditor();
-					view.trigger('loaded');
-				});
+			this.$el.html(this.template({
+				asset: this.model
+			}));
+
+			this.assets.getAllTags().done(function(tags) {
+				view.displayTags(tags);
+			});
+
+			this.bind();
+			this.initImageEditor();
 
 			return this;
-		},
-	
-		replaceWithBlob: function(blob) {
-			this.model.replaceWith(blob);
 		}
 	});
 }(jQuery, Backbone, BoomCMS));

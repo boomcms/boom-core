@@ -35,6 +35,9 @@ Route::group(['middleware' => [
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 
             Route::get('asset-manager', 'Assets\AssetManager@index');
+            Route::post('asset/tags/add', 'Asset\Tags@add');
+            Route::post('asset/tags/remove', 'Asset\Tags@remove');
+            Route::get('asset/tags', 'Asset\Tags@listTags');
             Route::resource('asset', 'Asset\AssetController');
             Route::delete('asset', 'Asset\AssetController@destroy');
             Route::post('asset/{asset}/replace', 'Asset\AssetController@replace');
@@ -46,9 +49,6 @@ Route::group(['middleware' => [
             ], function () {
                 Route::post('save/{asset}', 'AssetManager@save');
                 Route::post('revert/{asset}', 'AssetManager@revert');
-                Route::post('tags/add', 'Tags@add');
-                Route::post('tags/remove', 'Tags@remove');
-                Route::get('tags/list/{assets}', 'Tags@listTags');
 
                 Route::controller('', 'AssetManager');
             });

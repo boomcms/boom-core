@@ -10,7 +10,6 @@ use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class AssetController extends Controller
 {
@@ -50,8 +49,9 @@ class AssetController extends Controller
 
             AssetFacade::save($asset);
             AssetFacade::createVersionFromFile($asset, $file);
+return $asset->newQuery()->with('versions')->with('versions.editedBy')->with('uploadedBy')->find($asset->getId());
 
-            return [$asset->getId()];
+            return $asset;
         }
 
         if (count($errors)) {
@@ -66,18 +66,9 @@ class AssetController extends Controller
     public function revert(Request $request, Asset $asset)
     {
         AssetFacade::revert($asset, $request->input('version_id'));
-    }
+return $asset->newQuery()->with('versions')->with('versions.editedBy')->with('uploadedBy')->find($asset->getId());
 
-    /**
-     * @param Asset $asset
-     *
-     * @return View
-     */
-    public function show(Asset $asset)
-    {
-        return view('boomcms::assets.view', [
-            'asset' => $asset,
-        ]);
+        return $asset;
     }
 
     /**
@@ -93,6 +84,6 @@ class AssetController extends Controller
             ->setCredits($request->input(Asset::ATTR_CREDITS))
             ->setThumbnailAssetId($request->input(Asset::ATTR_THUMBNAIL_ID));
 
-        AssetFacade::save($asset);
+        return AssetFacade::save($asset);
     }
 }

@@ -7,6 +7,8 @@
 		assets: new BoomCMS.Collections.Assets(),
 		selection: new BoomCMS.Collections.Assets(),
 
+		types: {},
+
 		selectedClass: 'selected',
 		hideThumbsClass: 'hide-thumbs',
 
@@ -160,7 +162,10 @@
 
 		viewAsset: function(asset, section) {
 			var assetManager = this,
-				view = new BoomCMS.AssetManager.ViewAsset({model: asset}).render();
+				view = new BoomCMS.AssetManager.ViewAsset({
+					model: asset,
+					assets: this.assets
+				}).render();
 
 			this.$content.prepend(view.$el);
 			this.hideThumbs();

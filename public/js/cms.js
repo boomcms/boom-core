@@ -47962,6 +47962,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	BoomCMS.Asset = BoomCMS.Model.extend({
 		urlRoot: BoomCMS.urlRoot + 'asset',
+		versions: null,
 
 		getAspectRatio: function() {
 			if (!this.getHeight()) {
@@ -47971,18 +47972,76 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return this.getWidth() / this.getHeight();
 		},
 
+		getCredits: function() {
+			return this.get('credits');
+		},
+
+		getDescription: function() {
+			return this.get('description');
+		},
+
+		getDownloads: function() {
+			return this.get('downloads');
+		},
+
+		getEditedAt: function() {
+			return this.get('edited_at');
+		},
+
 		getEmbedCode: function() {
 			return $.get(this.getUrl('embed'));
+		},
+
+		getExtension: function() {
+			return this.get('extension');
+		},
+
+		getFilename: function() {
+			return this.get('filename');
 		},
 
 		getHeight: function() {
 			return parseFloat(this.get('height'));
 		},
 
+		getMetadata: function() {
+			var metadata = this.get('metadata');
+
+			return (metadata !== undefined) ? metadata : {};
+		},
+
+		getReadableFilesize: function() {
+			return this.get('readable_filesize');
+		},
+
+		getTags: function() {
+			return this.get('tags');
+		},
+
+		getThumbnailAssetId: function() {
+			return this.get('thumbnail_asset_id');
+		},
+
 		getTitle: function() {
 			return this.get('title');
 		},
-	
+
+		getType: function() {
+			return this.get('type');
+		},
+
+		getUploadedBy: function() {
+			if (this.uploadedBy === undefined) {
+				this.uploadedBy = new BoomCMS.Person(this.get('uploaded_by'));
+			}
+
+			return this.uploadedBy;
+		},
+
+		getUploadedTime: function() {
+			return this.get('uploaded_time');
+		},
+
 		getUrl: function(action, width, height) {
 			var url = '/asset/' + this.getId();
 
@@ -48007,6 +48066,38 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return parseFloat(this.get('width'));
 		},
 
+		getVersions: function() {
+			if (this.versions === null) {
+				var versions = this.get('versions');
+
+				versions = (versions !== undefined) ? versions : {};
+
+				for (var i = 0; i < versions.length; i++) {
+					versions[i] = new BoomCMS.AssetVersion(versions[i]);
+				}
+
+				this.versions = versions;
+			}
+
+			return this.versions;
+		},
+
+		hasMetadata: function() {
+			return Object.keys(this.getMetadata()).length > 1;
+		},
+
+		hasPreviousVersions: function() {
+			return this.getVersions().length > 1;
+		},
+
+		isImage: function() {
+			return this.getType() === 'image';
+		},
+
+		isVideo: function() {
+			return this.getType() === 'video';
+		},
+
 		replaceWith: function(blob) {
 			var asset = this,
 				data = new FormData();
@@ -48019,8 +48110,13 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 				processData: false,
 				contentType: false,
 				type: 'post'
-			}).done(function() {
-				asset.trigger('replace');
+			}).done(function(data) {
+				delete data.id;
+
+				asset.versions = null;
+				asset.set(data);
+
+				asset.trigger('change:image');
 			});
 		},
 
@@ -48030,9 +48126,35 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return $.post(this.urlRoot + '/' + this.getId() + '/revert', {
 				version_id: versionId
 			})
-			.done(function() {
-				asset.trigger('revert');
+			.done(function(data) {
+				delete data.id;
+
+				asset.versions = null;
+				asset.set(data);
+
+				asset.trigger('change:image');
 			});
+		}
+	});
+}(BoomCMS));
+;(function(BoomCMS) {
+	'use strict';
+
+	BoomCMS.AssetVersion = BoomCMS.Model.extend({
+		getEditedAt: function() {
+			return this.get('edited_at');
+		},
+
+		getEditedBy: function() {
+			if (this.editedBy === undefined) {
+				this.editedBy = new BoomCMS.Person(this.get('edited_by'));
+			}
+
+			return this.editedBy;
+		},
+
+		getThumbnail: function() {
+			return '/asset/version/' + this.getId() + '/200/0';
 		}
 	});
 }(BoomCMS));
@@ -48523,6 +48645,18 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 		parse: function(data) {
 			return data.assets;
+		},
+
+		getAllTags: function() {
+			var assets = this;
+
+			if (this.allTags === undefined) {
+				return $.get(this.url + '/tags').done(function(response) {
+					assets.allTags = response;
+				});
+			}
+
+			return $.Deferred().resolveWith(this.allTags);
 		},
 
 		getAssetIds: function() {
@@ -52865,6 +52999,8 @@ $.widget('ui.chunkPageVisibility', {
 		assets: new BoomCMS.Collections.Assets(),
 		selection: new BoomCMS.Collections.Assets(),
 
+		types: {},
+
 		selectedClass: 'selected',
 		hideThumbsClass: 'hide-thumbs',
 
@@ -53018,7 +53154,10 @@ $.widget('ui.chunkPageVisibility', {
 
 		viewAsset: function(asset, section) {
 			var assetManager = this,
-				view = new BoomCMS.AssetManager.ViewAsset({model: asset}).render();
+				view = new BoomCMS.AssetManager.ViewAsset({
+					model: asset,
+					assets: this.assets
+				}).render();
 
 			this.$content.prepend(view.$el);
 			this.hideThumbs();
@@ -53092,12 +53231,13 @@ $.widget('ui.chunkPageVisibility', {
 		tagName: 'div',
 
 		initialize: function() {
-			var model = this.model,
+			var view = this,
+				model = this.model,
 				$el = this.$el;
 
 			this.template = _.template($('#b-asset-thumb').html());
 
-			this.listenTo(model, 'change replace revert', this.render);
+			this.listenTo(model, 'change', this.render);
 
 			$el
 				.dblclick()
@@ -53112,20 +53252,29 @@ $.widget('ui.chunkPageVisibility', {
 				})
 				.on('click', '.edit', function(e) {
 					e.stopPropagation();
+				})
+				.on('justified', function() {
+					view.loadImage();
 				});
 		},
 
-		render: function() {
+		/**
+		 * Load the image after if has been justified
+		 * 
+		 * Ensures that an image can be loaded to the correct dimensions of the thumbnail.
+		 *
+		 * @returns {undefined}
+		 */
+		loadImage: function() {
 			var asset = this.model;
 
 			this.$el
-				.html(this.template({
-					asset: asset
-				}))
 				.find('[data-asset]')
 				.each(function() {
 					var $this = $(this),
-						url  = asset.getUrl('thumb', $this.width(), $this.height()) + '?' + Math.floor(Date.now() / 1000),
+						width = Math.round(($this.width() + 1) / 10) * 10,
+						height = Math.round(($this.height() + 1) / 10) * 10,
+						url = asset.getUrl('thumb', width, height) + '?' + asset.getEditedAt(),
 						loadingClass = 'loading';
 
 					$this.find('img')
@@ -53137,15 +53286,14 @@ $.widget('ui.chunkPageVisibility', {
 							$(this).parent().removeClass(loadingClass).addClass('failed');
 						});
 				});
+		},
 
-			if (!this.$el.attr('data-aspect-ratio')) {
-				this.$el
-					.css({
-						height: '160px',
-						width: Math.floor(160 * asset.getAspectRatio()) + 'px'
-					})
-					.attr('data-aspect-ratio', asset.getAspectRatio());
-			}
+		render: function() {
+			this.$el
+				.html(this.template({
+					asset: this.model
+				}))
+				.attr('data-aspect-ratio', this.model.getAspectRatio());
 
 			return this;
 		}
@@ -53200,7 +53348,7 @@ $.widget('ui.chunkPageVisibility', {
 				.on('click', '.b-assets-revert', function(e) {
 					e.preventDefault();
 
-					asset.revertToVersion($(this).attr('data-version-id'));
+					asset.revertToVersion($(this).parents('li').attr('data-version-id'));
 				})
 				.on('click', '.b-assets-save', function() {
 					asset
@@ -53224,8 +53372,22 @@ $.widget('ui.chunkPageVisibility', {
 			this.$el.remove();
 		},
 
-		initialize: function() {
-			var view = this;
+		displayTags: function(tags) {
+			var $tagList = this.$('.b-tags').eq(0),
+				$tagTemplate = this.$('#b-tag-template').html(),
+				$el;
+
+			for (var i = 0; i < tags.length; i++) {
+				$el = $($tagTemplate);
+				$el.find('span:first-of-type').text(tags[i]);
+
+				$tagList.append($el);
+			}
+		},
+
+		initialize: function(options) {
+			this.assets = options.assets;
+			this.template = _.template($('#b-assets-view-template').html());
 
 			this.listenTo(this.model, 'destroy', function() {
 				this.close();
@@ -53237,46 +53399,36 @@ $.widget('ui.chunkPageVisibility', {
 
 			this.listenTo(this.model, 'revert', function() {
 				BoomCMS.notify("This asset has been reverted to the previous version");
-
-				view.reloadPreviewImage();
 			});
+
+			this.listenTo(this.model, 'change sync revert', this.render);
 		},
 
 		initImageEditor: function() {
-			var view = this;
+			var asset = this.model;
 
 			this.$('.b-asset-imageeditor').imageEditor({
 				save: function(e, blob) {
-					view.replaceWithBlob(blob);
+					asset.replaceWith(blob);
 				}
 			});
-		},
-
-		reloadPreviewImage: function() {
-			var $img = this.$('#b-assets-view-info img:first-of-type');
-
-			if ($img.length) {
-				$img.attr("src", $img.attr('src') + '?' + new Date().getTime());
-
-				this.initImageEditor();
-			}
 		},
 
 		render: function() {
 			var view = this;
 
-			this.$el
-				.load(this.model.url(), function() {
-					view.bind();
-				view.initImageEditor();
-					view.trigger('loaded');
-				});
+			this.$el.html(this.template({
+				asset: this.model
+			}));
+
+			this.assets.getAllTags().done(function(tags) {
+				view.displayTags(tags);
+			});
+
+			this.bind();
+			this.initImageEditor();
 
 			return this;
-		},
-	
-		replaceWithBlob: function(blob) {
-			this.model.replaceWith(blob);
 		}
 	});
 }(jQuery, Backbone, BoomCMS));
@@ -53343,6 +53495,10 @@ $.widget('ui.chunkPageVisibility', {
 				}
 			}
 
+			this.assets.on('change:image', function() {
+				assetSearch.justify();
+			});
+
 			this.initialFilters = this.postData;
 
 			this.bind();
@@ -53388,6 +53544,10 @@ $.widget('ui.chunkPageVisibility', {
 			});
 		},
 
+		justify: function() {
+			this.element.find('#b-assets-view-thumbs').justifyAssets();
+		},
+
 		removeFilters: function() {
 			this.postData = this.initialFilters;
 
@@ -53409,8 +53569,7 @@ $.widget('ui.chunkPageVisibility', {
 				$el.append(thumbnail.render().el);
 			});
 
-			$el.justifyAssets();
-
+			this.justify();
 		},
 
 		setAssetsPerPage: function() {
@@ -53771,12 +53930,21 @@ $.widget('ui.chunkPageVisibility', {
 			this.element.children().each(function(index, element) {
 				var $child = $(element);
 
-				$child.offset = self._getOffset($child);
-
-				if (!$child.css('height') || ! $child.attr('data-aspect-ratio')) {
+				if (!$child.css('height') || !$child.attr('data-aspect-ratio')) {
 					$child.remove();
 					return true;
 				}
+
+				$child.css({
+					height: '160px',
+					width: Math.floor(160 * $child.attr('data-aspect-ratio')) + 'px'
+				});
+			});
+
+			this.element.children().each(function(index, element) {
+				var $child = $(element);
+
+				$child.offset = self._getOffset($child);
 
 				prevRow = jQuery.extend({}, currentRow);
 				currentRow.addElementToRow($child);
@@ -53838,7 +54006,8 @@ function Row() {
 
 					$el
 						.height('+=' + increaseBy)
-						.width('+=' + incWidth);
+						.width('+=' + incWidth)
+						.trigger('justified');
 				});
 			}
 

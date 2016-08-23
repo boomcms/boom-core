@@ -61,6 +61,10 @@
 				}
 			}
 
+			this.assets.on('change:image', function() {
+				assetSearch.justify();
+			});
+
 			this.initialFilters = this.postData;
 
 			this.bind();
@@ -106,6 +110,10 @@
 			});
 		},
 
+		justify: function() {
+			this.element.find('#b-assets-view-thumbs').justifyAssets();
+		},
+
 		removeFilters: function() {
 			this.postData = this.initialFilters;
 
@@ -127,8 +135,7 @@
 				$el.append(thumbnail.render().el);
 			});
 
-			$el.justifyAssets();
-
+			this.justify();
 		},
 
 		setAssetsPerPage: function() {

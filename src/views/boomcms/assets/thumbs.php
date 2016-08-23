@@ -24,13 +24,13 @@
             <h2><%= asset.getTitle() %></h2>
 
             <p>
-                <?//= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />
+                <?php //= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />
 
-                <?php /* if ($asset->isImage()): ?>
-                    <?= $asset->getWidth() ?> x <?= $asset->getHeight() ?>
-                <?php else: ?>
-                    <?= Str::filesize($asset->getFilesize()) ?>
-                <?php endif */ ?>
+                <% if (asset.isImage()) { %>
+                    <%= asset.getWidth() %> x <%= asset.getHeight() %>
+                <% } else { %>
+                    <%= asset.getReadableFilesize() %>
+                <% } %>
             </p>
         </div>
 

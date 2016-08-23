@@ -5,12 +5,13 @@
 		tagName: 'div',
 
 		initialize: function() {
-			var model = this.model,
+			var view = this,
+				model = this.model,
 				$el = this.$el;
 
 			this.template = _.template($('#b-asset-thumb').html());
 
-			this.listenTo(model, 'change replace revert', this.render);
+			this.listenTo(model, 'change', this.render);
 
 			$el
 				.dblclick()
@@ -25,20 +26,29 @@
 				})
 				.on('click', '.edit', function(e) {
 					e.stopPropagation();
+				})
+				.on('justified', function() {
+					view.loadImage();
 				});
 		},
 
-		render: function() {
+		/**
+		 * Load the image after if has been justified
+		 * 
+		 * Ensures that an image can be loaded to the correct dimensions of the thumbnail.
+		 *
+		 * @returns {undefined}
+		 */
+		loadImage: function() {
 			var asset = this.model;
 
 			this.$el
-				.html(this.template({
-					asset: asset
-				}))
 				.find('[data-asset]')
 				.each(function() {
 					var $this = $(this),
-						url  = asset.getUrl('thumb', $this.width(), $this.height()) + '?' + Math.floor(Date.now() / 1000),
+						width = Math.round(($this.width() + 1) / 10) * 10,
+						height = Math.round(($this.height() + 1) / 10) * 10,
+						url = asset.getUrl('thumb', width, height) + '?' + asset.getEditedAt(),
 						loadingClass = 'loading';
 
 					$this.find('img')
@@ -50,15 +60,14 @@
 							$(this).parent().removeClass(loadingClass).addClass('failed');
 						});
 				});
+		},
 
-			if (!this.$el.attr('data-aspect-ratio')) {
-				this.$el
-					.css({
-						height: '160px',
-						width: Math.floor(160 * asset.getAspectRatio()) + 'px'
-					})
-					.attr('data-aspect-ratio', asset.getAspectRatio());
-			}
+		render: function() {
+			this.$el
+				.html(this.template({
+					asset: this.model
+				}))
+				.attr('data-aspect-ratio', this.model.getAspectRatio());
 
 			return this;
 		}

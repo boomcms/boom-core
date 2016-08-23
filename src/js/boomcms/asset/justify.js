@@ -24,12 +24,21 @@ $.widget('boom.justifyAssets', {
 			this.element.children().each(function(index, element) {
 				var $child = $(element);
 
-				$child.offset = self._getOffset($child);
-
-				if (!$child.css('height') || ! $child.attr('data-aspect-ratio')) {
+				if (!$child.css('height') || !$child.attr('data-aspect-ratio')) {
 					$child.remove();
 					return true;
 				}
+
+				$child.css({
+					height: '160px',
+					width: Math.floor(160 * $child.attr('data-aspect-ratio')) + 'px'
+				});
+			});
+
+			this.element.children().each(function(index, element) {
+				var $child = $(element);
+
+				$child.offset = self._getOffset($child);
 
 				prevRow = jQuery.extend({}, currentRow);
 				currentRow.addElementToRow($child);
@@ -91,7 +100,8 @@ function Row() {
 
 					$el
 						.height('+=' + increaseBy)
-						.width('+=' + incWidth);
+						.width('+=' + incWidth)
+						.trigger('justified');
 				});
 			}
 

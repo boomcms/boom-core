@@ -1,20 +1,18 @@
 <?php
 
-namespace BoomCMS\Http\Controllers\Assets;
+namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Core\Asset;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Http\Controllers\Controller;
-use Illuminate\Support\Facades\View;
 
 class Tags extends Controller
 {
+    protected $role = 'manageAssets';
+
     public function listTags()
     {
-        $collection = new Asset\Collection(explode('-', $this->request->route('assets')));
-
-        return view('boomcms::assets.tags', [
-            'tags' => $collection->getTags(),
-        ]);
+        return AssetFacade::tags();
     }
 
     public function add()

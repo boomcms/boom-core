@@ -60,6 +60,18 @@
 			return data.assets;
 		},
 
+		getAllTags: function() {
+			var assets = this;
+
+			if (this.allTags === undefined) {
+				return $.get(this.url + '/tags').done(function(response) {
+					assets.allTags = response;
+				});
+			}
+
+			return $.Deferred().resolveWith(this.allTags);
+		},
+
 		getAssetIds: function() {
 			return this.pluck('id');
 		},

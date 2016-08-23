@@ -6,6 +6,7 @@ return [
     'info'           => 'Info',
     'tags'           => 'Tags',
     'extension'      => 'File extension',
+    'filename'       => 'Filename',
     'history'        => 'History',
     'history-intro'  => 'These files were previously assigned to this asset but were replaced.',
     'aspect-ratio'   => 'Aspect ratio',

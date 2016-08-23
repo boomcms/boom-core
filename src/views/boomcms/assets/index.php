@@ -39,7 +39,13 @@
     </div>
 </div>
 
+<script type="text/template" id="b-assets-view-template">
+    <?= view('boomcms::assets.view')->render() ?>
+</script>
+
 <script type="text/javascript">
+    var assetTypes = <?= json_encode(Lang::get('boomcms::asset.type')) ?>;
+
     window.onload = function() {
         new BoomCMS.AssetManager();
     };

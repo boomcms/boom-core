@@ -8,6 +8,7 @@ use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\Support\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Asset implements AssetRepositoryInterface
@@ -58,6 +59,8 @@ class Asset implements AssetRepositoryInterface
         ]);
 
         $file->move($asset->directory(), $version->id);
+
+        $asset->setVersion($version);
 
         return $version;
     }
@@ -139,5 +142,12 @@ class Asset implements AssetRepositoryInterface
         $model->save();
 
         return $model;
+    }
+
+    public function tags()
+    {
+        return DB::table('assets_tags')
+            ->distinct()
+            ->lists('tag');
     }
 }

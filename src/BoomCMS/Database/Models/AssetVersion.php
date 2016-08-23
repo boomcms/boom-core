@@ -32,6 +32,11 @@ class AssetVersion extends Model
      */
     protected $editedBy;
 
+    public function editedBy()
+    {
+        return $this->belongsTo(Person::class, static::ATTR_EDITED_BY);
+    }
+
     public function getAsset()
     {
         return $this->belongsTo(Asset::class, self::ATTR_ASSET, Asset::ATTR_ID)->first();
@@ -56,7 +61,7 @@ class AssetVersion extends Model
     public function getEditedBy()
     {
         if ($this->editedBy === null) {
-            $this->editedBy = $this->belongsTo(Person::class, static::ATTR_EDITED_BY)->first();
+            $this->editedBy = $this->editedBy()->first();
         }
 
         return $this->editedBy;
