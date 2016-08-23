@@ -3,8 +3,8 @@
 namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Core\Asset;
-use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 
 class Tags extends Controller
 {
