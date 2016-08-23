@@ -249,7 +249,7 @@
                 <p><?= trans('boomcms::asset.delete.confirm') ?></p>
 
                 <?= $button('trash-o', 'delete-asset', [
-                    'class' => 'b-button-withtext b-assets-delete'
+                    'class' => 'b-button-withtext b-assets-delete',
                 ]) ?>
             </div>
         </div>
