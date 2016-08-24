@@ -48656,7 +48656,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 				});
 			}
 
-			return $.Deferred().resolveWith(this.allTags);
+			return $.Deferred().resolve(this.allTags);
 		},
 
 		getAssetIds: function() {
