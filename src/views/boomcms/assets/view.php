@@ -10,7 +10,7 @@
                 </li>
 
                 <li class="selected">
-                    <a href="#b-assets-view-info">
+                    <a href="#b-assets-view-info" data-section="info">
                         <span class="fa fa-info"></span>
                         <?= trans('boomcms::asset.info') ?>
                     </a>
@@ -32,7 +32,7 @@
 
                 <% if (asset.hasMetadata()) { %>
                     <li>
-                        <a href="#b-assets-metadata" data-section='metadata'>
+                        <a href="#b-asset-metadata" data-section='metadata'>
                         <span class="fa fa-asterisk"></span>
                             <?= trans('boomcms::asset.metadata') ?>
                         </a>
@@ -52,6 +52,13 @@
                     <a href="<%= asset.getUrl('download') %>">
                         <span class="fa fa-download"></span>
                         <?= trans('boomcms::asset.download') ?>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#b-asset-replace" data-section="replace">
+                        <span class="fa fa-upload"></span>
+                        <?= trans('boomcms::asset.replace.heading') ?>
                     </a>
                 </li>
 
@@ -199,7 +206,7 @@
             </div>
 
             <% if (asset.hasMetadata()) { %>
-                <div id="b-assets-metadata">
+                <div id="b-asset-metadata">
                     <h1><?= trans('boomcms::asset.metadata') ?></h1>
 
                     <dl>
@@ -243,6 +250,35 @@
                     </ul>
                 </div>
             <% } %>
+
+            <div id="b-asset-replace">
+                <div class="b-assets-upload">
+                    <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
+                        <div class="b-assets-upload-container">
+                            <div class="b-assets-upload-info">
+                                <p>
+                                    <?= trans('boomcms::asset.replace.info1') ?>
+
+                                    <a class="b-assets-upload-add" href="#">
+                                        <label for="b-asset-replace-file">
+                                            <?= trans('boomcms::asset.replace.info2') ?>
+                                        </label>
+                                    </a>
+
+                                    <?= trans('boomcms::asset.replace.info3') ?>
+                                </p>
+
+                                <p class="message"></p>
+
+                                <div class="b-assets-upload-progress"></div>
+                                <?= $button('times', 'cancel', ['class' => 'b-assets-upload-cancel']) ?>
+                            </div>
+
+                            <input type="file" name="b-assets-upload-files[]" id="b-asset-replace-file" multiple min="1" max="5" />
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <div id="b-assets-delete">
                 <h1><?= trans('boomcms::asset.delete.heading') ?></h1>

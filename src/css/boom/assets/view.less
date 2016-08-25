@@ -69,6 +69,49 @@
 		}
 	}
 
+	#b-asset-metadata {
+		dl {
+			dt {
+				width: 30rem;
+			}
+
+			dd {
+				width: calc(~"100% - 30rem");
+			}
+		}
+	}
+
+	#b-asset-replace {
+		.b-assets-upload-form {
+			display: block;
+			position: relative;
+			width: calc(~"100% + 10rem");
+			height: calc(~"100vh - 6rem");
+			margin: -5rem;
+		}
+
+		.b-assets-upload-info {
+			p {
+				max-width: 100%;
+			}
+		}
+
+		.b-assets-upload-container {
+			border: 0;
+			background: @white;
+		}
+
+		a {
+			&:hover, &:focus {
+				text-decoration: none;
+			}
+		}
+
+		.b-assets-upload-cancel {
+			margin: 2.5rem auto 0 auto;
+		}
+	}
+
 	#b-assets-view-info {
 		position: relative;
 		

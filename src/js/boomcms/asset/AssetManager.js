@@ -14,8 +14,8 @@
 
 		assetsUploaded: function() {
 			this.router.navigate('home', {trigger: true});
-			this.uploader.assetUploader('reset');
 			this.uploader.assetUploader('close');
+			this.uploader.assetUploader.reset();
 		},
 
 		bind: function() {
@@ -111,7 +111,7 @@
 
 			this.router = new BoomCMS.AssetManager.Router({assets: this.assets});
 
-			this.uploader = this.$('#b-assets-upload-form');
+			this.uploader = this.$('.b-assets-upload-form').eq(0);
 			this.$content = this.$('#b-assets-content');
 
 			this.listenTo(this.assets, 'select', this.select);
@@ -161,32 +161,16 @@
 		},
 
 		viewAsset: function(asset, section) {
-			var assetManager = this,
-				view = new BoomCMS.AssetManager.ViewAsset({
+			var view = new BoomCMS.AssetManager.ViewAsset({
 					model: asset,
-					assets: this.assets
-				}).render();
+					assets: this.assets,
+					router: this.router
+				}).render(section);
 
 			this.$content.prepend(view.$el);
 			this.hideThumbs();
 
-			assetManager.router.navigate('asset/' + asset.getId());
-
-			if (section) {
-				view.on('loaded', function() {
-					view.$('a[data-section="' + section + '"]').click();
-				});
-			}
-
-			view.$el
-				.on('remove', function() {
-					assetManager.router.navigate('', {trigger: true});
-				})
-				.on('click', 'a[data-section]', function() {
-					var section = $(this).attr('data-section');
-
-					assetManager.router.navigate('asset/' + asset.getId() + '/' + section);
-				});
+			this.router.navigate('asset/' + asset.getId());
 		}
 	});
 }(Backbone, BoomCMS));

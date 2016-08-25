@@ -12,6 +12,7 @@ return [
     'cancel'                => 'Cancel',
     'clear-filters'         => 'Clear filters',
     'clear-selection'       => 'Clear selection',
+    'close-upload'          => 'Close uploader',
     'conflict-reload'       => 'Discard',
     'conflict-overwrite'    => 'Overwrite',
     'conflict-inspect'      => 'Inspect',

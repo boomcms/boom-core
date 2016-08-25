@@ -42,7 +42,6 @@ class Asset extends Model implements AssetInterface
     protected $appends = [
         'readable_filesize',
         'metadata',
-        'tagArray',
     ];
 
     protected $versionColumns = [
@@ -224,11 +223,6 @@ class Asset extends Model implements AssetInterface
         }
 
         return $this->tags;
-    }
-
-    public function getTagArrayAttribute()
-    {
-        return $this->getTags();
     }
 
     /**

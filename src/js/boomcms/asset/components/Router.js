@@ -18,6 +18,8 @@
 
 			if (asset === undefined) {
 				asset = new BoomCMS.Asset({id: id});
+				asset.fetch();
+
 				this.assets.add(asset);
 			}
 

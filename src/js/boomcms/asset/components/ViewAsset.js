@@ -54,6 +54,8 @@
 					asset
 						.set(view.$('form').serializeJSON())
 						.save();
+
+					BoomCMS.notify("Asset details saved");
 				})
 				.on('focus', '#thumbnail', function() {
 					var $this = $(this);
@@ -62,14 +64,34 @@
 						.done(function(asset) {
 							$this.val(asset.getId());
 						});
+				})
+				.on('click', 'a[data-section]', function() {
+					var section = $(this).attr('data-section');
+
+					view.router.navigate('asset/' + view.model.getId() + '/' + section);
 				});
 
+			this.$('.b-assets-upload').assetUploader({
+				asset: this.model,
+				uploadFinished: function() {
+					view.render('info');
+				}
+			});
 			this.$('.b-settings-menu a[href^=#]').boomTabs();
 			this.$('time').localTime();
 		},
 
+		bindRouter: function() {
+			var view = this;
+
+			this.router.on('viewAsset', function(asset, section) {
+				
+			});
+		},
+
 		close: function() {
 			this.$el.remove();
+			this.router.navigate('', {trigger: true});
 		},
 
 		displayTags: function(tags) {
@@ -87,21 +109,23 @@
 
 		initialize: function(options) {
 			this.assets = options.assets;
+			this.router = options.router;
+
 			this.template = _.template($('#b-assets-view-template').html());
 
 			this.listenTo(this.model, 'destroy', function() {
 				this.close();
 			});
 
-			this.listenTo(this.model, 'sync', function() {
-				BoomCMS.notify("Asset details saved");
-			});
-
 			this.listenTo(this.model, 'revert', function() {
 				BoomCMS.notify("This asset has been reverted to the previous version");
 			});
 
-			this.listenTo(this.model, 'change sync revert', this.render);
+			this.listenTo(this.model, 'change sync revert', function() {
+				this.render();
+			});
+
+			this.bindRouter();
 		},
 
 		initImageEditor: function() {
@@ -114,7 +138,7 @@
 			});
 		},
 
-		render: function() {
+		render: function(section) {
 			var view = this;
 
 			this.$el.html(this.template({
@@ -128,7 +152,15 @@
 			this.bind();
 			this.initImageEditor();
 
+			if (section) {
+				this.showSection(section);
+			}
+
 			return this;
+		},
+
+		showSection: function(section) {
+			this.$('a[data-section=' + section + ']').click();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));

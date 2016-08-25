@@ -49,9 +49,7 @@ class AssetController extends Controller
             AssetFacade::save($asset);
             AssetFacade::createVersionFromFile($asset, $file);
 
-            return $asset->newQuery()->with('versions')->with('versions.editedBy')->with('uploadedBy')->find($asset->getId());
-
-            return $asset;
+            return $this->show($asset);
         }
 
         if (count($errors)) {
@@ -67,9 +65,28 @@ class AssetController extends Controller
     {
         AssetFacade::revert($asset, $request->input('version_id'));
 
-        return $asset->newQuery()->with('versions')->with('versions.editedBy')->with('uploadedBy')->find($asset->getId());
+        return $this->show($asset);
+    }
 
-        return $asset;
+    /**
+     * @param Asset $asset
+     */
+    public function show(Asset $asset)
+    {
+        return $asset
+            ->newQuery()
+            ->with('versions')
+            ->with('versions.editedBy')
+            ->with('uploadedBy')
+            ->find($asset->getId());
+    }
+
+    /**
+     * @return array
+     */
+    public function tags(Asset $asset)
+    {
+        return $asset->getTags();
     }
 
     /**

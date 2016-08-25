@@ -39,6 +39,7 @@ Route::group(['middleware' => [
             Route::post('asset/tags/remove', 'Asset\Tags@remove');
             Route::get('asset/tags', 'Asset\Tags@listTags');
             Route::resource('asset', 'Asset\AssetController');
+            Route::get('asset/{asset}/tags', 'Asset\AssetController@tags');
             Route::delete('asset', 'Asset\AssetController@destroy');
             Route::post('asset/{asset}/replace', 'Asset\AssetController@replace');
             Route::post('asset/{asset}/revert', 'Asset\AssetController@revert');

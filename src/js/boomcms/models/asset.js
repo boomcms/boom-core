@@ -56,7 +56,15 @@
 		},
 
 		getTags: function() {
-			return this.get('tags');
+			var asset = this;
+
+			if (this.tags === undefined) {
+				return $.get(this.url + '/tags').done(function(response) {
+					asset.tags = response;
+				});
+			}
+
+			return $.Deferred.resolve(this.tags);
 		},
 
 		getThumbnailAssetId: function() {
