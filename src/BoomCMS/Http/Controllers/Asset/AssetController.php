@@ -101,6 +101,8 @@ class AssetController extends Controller
             ->setCredits($request->input(Asset::ATTR_CREDITS))
             ->setThumbnailAssetId($request->input(Asset::ATTR_THUMBNAIL_ID));
 
-        return AssetFacade::save($asset);
+        AssetFacade::save($asset);
+
+        return $this->show($asset);
     }
 }

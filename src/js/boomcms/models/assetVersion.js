@@ -7,11 +7,7 @@
 		},
 
 		getEditedBy: function() {
-			if (this.editedBy === undefined) {
-				this.editedBy = new BoomCMS.Person(this.get('edited_by'));
-			}
-
-			return this.editedBy;
+			return new BoomCMS.Person(this.get('edited_by'));
 		},
 
 		getThumbnail: function() {

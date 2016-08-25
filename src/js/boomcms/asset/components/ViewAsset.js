@@ -25,26 +25,6 @@
 				.on('click', '.b-assets-delete', function() {
 					asset.destroy();
 				})
-				.on('click', '.b-assets-download', function(e) {
-					e.preventDefault();
-					asset.download();
-				})
-				.on('click', '.b-assets-replace', function(e) {
-					var uploadFinished = view.uploader.assetUploader('option', 'uploadFinished');
-
-					e.preventDefault();
-
-					view.uploader.assetUploader('replacesAsset', asset);
-					view.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
-						view.reloadPreviewImage();
-						uploadFinished(e, data);
-
-						// Restore the previous event handler.
-						view.uploader.assetUploader('option', 'uploadFinished', uploadFinished);
-					});
-
-					view.uploader.show();
-				})
 				.on('click', '.b-assets-revert', function(e) {
 					e.preventDefault();
 
@@ -72,11 +52,12 @@
 				});
 
 			this.$('.b-assets-upload').assetUploader({
-				asset: this.model,
-				uploadFinished: function() {
-					view.render('info');
+				asset: asset,
+				uploadFinished: function(e, data) {
+					asset.set(data.result);
 				}
 			});
+
 			this.$('.b-settings-menu a[href^=#]').boomTabs();
 			this.$('time').localTime();
 		},
@@ -121,7 +102,11 @@
 				BoomCMS.notify("This asset has been reverted to the previous version");
 			});
 
-			this.listenTo(this.model, 'change sync revert', function() {
+			this.listenTo(this.model, 'change:versions change:image revert', function() {
+				this.render('info');
+			});
+
+			this.listenTo(this.model, 'sync', function() {
 				this.render();
 			});
 

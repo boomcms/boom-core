@@ -111,7 +111,7 @@
 
 			this.router = new BoomCMS.AssetManager.Router({assets: this.assets});
 
-			this.uploader = this.$('.b-assets-upload-form').eq(0);
+			this.uploader = this.$('> .b-assets-upload .b-assets-upload-form').eq(0);
 			this.$content = this.$('#b-assets-content');
 
 			this.listenTo(this.assets, 'select', this.select);

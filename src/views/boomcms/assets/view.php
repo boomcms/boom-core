@@ -48,17 +48,17 @@
                     </li>
                 <% } %>
 
-                <li class='group'>
-                    <a href="<%= asset.getUrl('download') %>">
-                        <span class="fa fa-download"></span>
-                        <?= trans('boomcms::asset.download') ?>
-                    </a>
-                </li>
-
                 <li>
                     <a href="#b-asset-replace" data-section="replace">
                         <span class="fa fa-upload"></span>
                         <?= trans('boomcms::asset.replace.heading') ?>
+                    </a>
+                </li>
+
+                <li class='group'>
+                    <a href="<%= asset.getUrl('download') %>">
+                        <span class="fa fa-download"></span>
+                        <?= trans('boomcms::asset.download') ?>
                     </a>
                 </li>
 

@@ -47962,7 +47962,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	BoomCMS.Asset = BoomCMS.Model.extend({
 		urlRoot: BoomCMS.urlRoot + 'asset',
-		versions: null,
 
 		getAspectRatio: function() {
 			if (!this.getHeight()) {
@@ -48039,11 +48038,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		},
 
 		getUploadedBy: function() {
-			if (this.uploadedBy === undefined) {
-				this.uploadedBy = new BoomCMS.Person(this.get('uploaded_by'));
-			}
-
-			return this.uploadedBy;
+			return new BoomCMS.Person(this.get('uploaded_by'));
 		},
 
 		getUploadedTime: function() {
@@ -48075,19 +48070,14 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		},
 
 		getVersions: function() {
-			if (this.versions === null) {
-				var versions = this.get('versions');
+			var versions = this.get('versions') || [],
+				assetVersions = [];
 
-				versions = (versions !== undefined) ? versions : {};
-
-				for (var i = 0; i < versions.length; i++) {
-					versions[i] = new BoomCMS.AssetVersion(versions[i]);
-				}
-
-				this.versions = versions;
+			for (var i = 0; i < versions.length; i++) {
+				assetVersions.push(new BoomCMS.AssetVersion(versions[i]));
 			}
 
-			return this.versions;
+			return assetVersions;
 		},
 
 		hasMetadata: function() {
@@ -48095,7 +48085,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		},
 
 		hasPreviousVersions: function() {
-			return this.getVersions().length > 1;
+			return Object.keys(this.getVersions()).length > 1;
 		},
 
 		isImage: function() {
@@ -48121,9 +48111,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			}).done(function(data) {
 				delete data.id;
 
-				asset.versions = null;
 				asset.set(data);
-
 				asset.trigger('change:image');
 			});
 		},
@@ -48137,9 +48125,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			.done(function(data) {
 				delete data.id;
 
-				asset.versions = null;
 				asset.set(data);
-
 				asset.trigger('change:image');
 			});
 		}
@@ -48154,11 +48140,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		},
 
 		getEditedBy: function() {
-			if (this.editedBy === undefined) {
-				this.editedBy = new BoomCMS.Person(this.get('edited_by'));
-			}
-
-			return this.editedBy;
+			return new BoomCMS.Person(this.get('edited_by'));
 		},
 
 		getThumbnail: function() {
@@ -53111,7 +53093,7 @@ $.widget('ui.chunkPageVisibility', {
 
 			this.router = new BoomCMS.AssetManager.Router({assets: this.assets});
 
-			this.uploader = this.$('.b-assets-upload-form').eq(0);
+			this.uploader = this.$('> .b-assets-upload .b-assets-upload-form').eq(0);
 			this.$content = this.$('#b-assets-content');
 
 			this.listenTo(this.assets, 'select', this.select);
@@ -53319,26 +53301,6 @@ $.widget('ui.chunkPageVisibility', {
 				.on('click', '.b-assets-delete', function() {
 					asset.destroy();
 				})
-				.on('click', '.b-assets-download', function(e) {
-					e.preventDefault();
-					asset.download();
-				})
-				.on('click', '.b-assets-replace', function(e) {
-					var uploadFinished = view.uploader.assetUploader('option', 'uploadFinished');
-
-					e.preventDefault();
-
-					view.uploader.assetUploader('replacesAsset', asset);
-					view.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
-						view.reloadPreviewImage();
-						uploadFinished(e, data);
-
-						// Restore the previous event handler.
-						view.uploader.assetUploader('option', 'uploadFinished', uploadFinished);
-					});
-
-					view.uploader.show();
-				})
 				.on('click', '.b-assets-revert', function(e) {
 					e.preventDefault();
 
@@ -53366,11 +53328,12 @@ $.widget('ui.chunkPageVisibility', {
 				});
 
 			this.$('.b-assets-upload').assetUploader({
-				asset: this.model,
-				uploadFinished: function() {
-					view.render('info');
+				asset: asset,
+				uploadFinished: function(e, data) {
+					asset.set(data.result);
 				}
 			});
+
 			this.$('.b-settings-menu a[href^=#]').boomTabs();
 			this.$('time').localTime();
 		},
@@ -53415,7 +53378,11 @@ $.widget('ui.chunkPageVisibility', {
 				BoomCMS.notify("This asset has been reverted to the previous version");
 			});
 
-			this.listenTo(this.model, 'change sync revert', function() {
+			this.listenTo(this.model, 'change:versions change:image revert', function() {
+				this.render('info');
+			});
+
+			this.listenTo(this.model, 'sync', function() {
 				this.render();
 			});
 

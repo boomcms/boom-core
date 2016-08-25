@@ -3,7 +3,6 @@
 
 	BoomCMS.Asset = BoomCMS.Model.extend({
 		urlRoot: BoomCMS.urlRoot + 'asset',
-		versions: null,
 
 		getAspectRatio: function() {
 			if (!this.getHeight()) {
@@ -80,11 +79,7 @@
 		},
 
 		getUploadedBy: function() {
-			if (this.uploadedBy === undefined) {
-				this.uploadedBy = new BoomCMS.Person(this.get('uploaded_by'));
-			}
-
-			return this.uploadedBy;
+			return new BoomCMS.Person(this.get('uploaded_by'));
 		},
 
 		getUploadedTime: function() {
@@ -116,19 +111,14 @@
 		},
 
 		getVersions: function() {
-			if (this.versions === null) {
-				var versions = this.get('versions');
+			var versions = this.get('versions') || [],
+				assetVersions = [];
 
-				versions = (versions !== undefined) ? versions : {};
-
-				for (var i = 0; i < versions.length; i++) {
-					versions[i] = new BoomCMS.AssetVersion(versions[i]);
-				}
-
-				this.versions = versions;
+			for (var i = 0; i < versions.length; i++) {
+				assetVersions.push(new BoomCMS.AssetVersion(versions[i]));
 			}
 
-			return this.versions;
+			return assetVersions;
 		},
 
 		hasMetadata: function() {
@@ -136,7 +126,7 @@
 		},
 
 		hasPreviousVersions: function() {
-			return this.getVersions().length > 1;
+			return Object.keys(this.getVersions()).length > 1;
 		},
 
 		isImage: function() {
@@ -162,9 +152,7 @@
 			}).done(function(data) {
 				delete data.id;
 
-				asset.versions = null;
 				asset.set(data);
-
 				asset.trigger('change:image');
 			});
 		},
@@ -178,9 +166,7 @@
 			.done(function(data) {
 				delete data.id;
 
-				asset.versions = null;
 				asset.set(data);
-
 				asset.trigger('change:image');
 			});
 		}
