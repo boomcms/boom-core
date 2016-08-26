@@ -72,7 +72,6 @@ class AssetController extends Controller
     }
 
     /**
-     * 
      * @param Site $site
      *
      * @return JsonResponse|array
