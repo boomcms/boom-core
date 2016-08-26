@@ -327,7 +327,7 @@ class Settings extends Controller
 
         if ($page->isVisibleAtAnyTime()) {
             $visibleFrom = $request->input('visible_from') > 0 ?
-                new DateTime($visibleFrom)
+                new DateTime($request->input('visible_from'))
                 : null;
 
             $visibleTo = ($request->has('toggle_visible_to')) ?
