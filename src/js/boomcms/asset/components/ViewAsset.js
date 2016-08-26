@@ -40,7 +40,7 @@
 				.on('focus', '#thumbnail', function() {
 					var $this = $(this);
 
-					new boomAssetPicker(new BoomCMS.Asset({id: $this.val()}))
+					new boomAssetPicker(asset)
 						.done(function(asset) {
 							$this.val(asset.getId());
 						});
@@ -49,6 +49,10 @@
 					var section = $(this).attr('data-section');
 
 					view.router.navigate('asset/' + view.model.getId() + '/' + section);
+
+					if (section === 'tags') {
+						view.showTags();
+					}
 				});
 
 			this.$('.b-assets-upload').assetUploader({
@@ -132,21 +136,27 @@
 		},
 
 		render: function(section) {
-			var view = this;
-
 			this.$el.html(this.template({
 				asset: this.model,
 				section: section
 			}));
 
-			this.assets.getAllTags().done(function(tags) {
-				view.displayTags(tags);
-			});
+			if (section === 'tags') {
+				this.showTags();
+			}
 
 			this.bind();
 			this.initImageEditor();
 
 			return this;
+		},
+
+		showTags: function() {
+			var view = this;
+
+			this.assets.getAllTags().done(function(tags) {
+				view.displayTags(tags);
+			});
 		}
 	});
 }(jQuery, Backbone, BoomCMS));
