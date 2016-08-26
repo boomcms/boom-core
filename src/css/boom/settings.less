@@ -43,17 +43,17 @@
 			}
 
 			&.b-setting-delete {
-				&.selected a {
-					color: @black;
-
-					&:hover, &:focus {
-						color: @black;
-					}
-				}
-
 				a {
 					background: @red;
 					color: @white;
+
+					&.selected {
+						color: @black;
+
+						&:hover, &:focus {
+							color: @black;
+						}
+					}
 
 					&:hover, &:focus {
 						color: @white;
@@ -65,15 +65,15 @@
 				}
 			}
 
-			&.selected a {
-				background: @white;
-			}
-
 			a {
 				display: block;
 				color: @darkest-grey;
 				text-decoration: none;
 				padding: 1.5rem 5rem;
+
+				&.selected {
+					background: @white;
+				}
 
 				span {
 					display: inline-block;

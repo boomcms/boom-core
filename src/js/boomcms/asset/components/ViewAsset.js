@@ -55,6 +55,8 @@
 				asset: asset,
 				uploadFinished: function(e, data) {
 					asset.set(data.result);
+
+					view.render('info');
 				}
 			});
 
@@ -66,7 +68,7 @@
 			var view = this;
 
 			this.router.on('viewAsset', function(asset, section) {
-				
+
 			});
 		},
 
@@ -88,7 +90,13 @@
 			}
 		},
 
+		getSection: function() {
+			return this.$('a[data-section].selected').attr('data-section');
+		},
+
 		initialize: function(options) {
+			var view = this;
+
 			this.assets = options.assets;
 			this.router = options.router;
 
@@ -99,15 +107,15 @@
 			});
 
 			this.listenTo(this.model, 'revert', function() {
-				BoomCMS.notify("This asset has been reverted to the previous version");
+				BoomCMS.notify('This asset has been reverted to the previous version');
 			});
 
-			this.listenTo(this.model, 'change:versions change:image revert', function() {
+			this.listenTo(this.model, 'change:image revert', function(e) {
 				this.render('info');
 			});
 
 			this.listenTo(this.model, 'sync', function() {
-				this.render();
+				this.render(view.getSection());
 			});
 
 			this.bindRouter();
@@ -127,7 +135,8 @@
 			var view = this;
 
 			this.$el.html(this.template({
-				asset: this.model
+				asset: this.model,
+				section: section
 			}));
 
 			this.assets.getAllTags().done(function(tags) {
@@ -137,15 +146,7 @@
 			this.bind();
 			this.initImageEditor();
 
-			if (section) {
-				this.showSection(section);
-			}
-
 			return this;
-		},
-
-		showSection: function(section) {
-			this.$('a[data-section=' + section + ']').click();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));

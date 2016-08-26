@@ -77,10 +77,10 @@
 			if ($target.length) {
 				e.preventDefault();
 
-				$link.parents('ul').find('li').removeClass(selectedClass);
-				$link.parent().addClass(selectedClass);
+				$link.parents('ul').find('a').removeClass(selectedClass);
+				$link.addClass(selectedClass);
 
-				$target.parent().children().removeClass(selectedClass);
+				$target.siblings().removeClass(selectedClass);
 				$target.addClass(selectedClass);
 			}
 		});

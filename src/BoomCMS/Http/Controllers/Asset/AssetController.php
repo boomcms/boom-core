@@ -3,13 +3,16 @@
 namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Database\Models\Asset;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
+use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
@@ -66,6 +69,34 @@ class AssetController extends Controller
         AssetFacade::revert($asset, $request->input('version_id'));
 
         return $this->show($asset);
+    }
+
+    /**
+     * 
+     * @param Site $site
+     *
+     * @return JsonResponse|array
+     */
+    public function store(Request $request, Site $site)
+    {
+        $assetIds = [];
+
+        list($validFiles, $errors) = $this->validateAssetUpload($request);
+
+        foreach ($validFiles as $file) {
+            $asset = new Asset();
+            $asset
+                ->setSite($site)
+                ->setUploadedTime(new DateTime('now'))
+                ->setUploadedBy(Auth::user())
+                ->setTitle($file->getClientOriginalName())
+                ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
+
+            $assetIds[] = AssetFacade::save($asset)->getId();
+            AssetFacade::createVersionFromFile($asset, $file);
+        }
+
+        return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
     }
 
     /**

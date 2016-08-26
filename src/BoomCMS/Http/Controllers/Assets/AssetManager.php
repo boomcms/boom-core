@@ -2,16 +2,10 @@
 
 namespace BoomCMS\Http\Controllers\Assets;
 
-use BoomCMS\Database\Models\Asset;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Router;
-use BoomCMS\Support\Helpers\Asset as AssetHelper;
-use DateTime;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use ZipArchive;
 
@@ -74,27 +68,5 @@ class AssetManager extends Controller
     public function picker()
     {
         return view($this->viewPrefix.'picker');
-    }
-
-    public function postUpload(Site $site)
-    {
-        $assetIds = [];
-
-        list($validFiles, $errors) = $this->validateFileUpload();
-
-        foreach ($validFiles as $file) {
-            $asset = new Asset();
-            $asset
-                ->setSite($site)
-                ->setUploadedTime(new DateTime('now'))
-                ->setUploadedBy(Auth::user())
-                ->setTitle($file->getClientOriginalName())
-                ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
-
-            $assetIds[] = AssetFacade::save($asset)->getId();
-            AssetFacade::createVersionFromFile($asset, $file);
-        }
-
-        return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
     }
 }

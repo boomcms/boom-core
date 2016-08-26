@@ -26,6 +26,8 @@
 				})
 				.on('click', '.edit', function(e) {
 					e.stopPropagation();
+
+					model.trigger('view', model);
 				})
 				.on('justified', function() {
 					view.loadImage();

@@ -5,9 +5,8 @@
 		uploaderOptions: {
 			/**
 			@type string
-			@default '/boomcms/assets/upload'
 			*/
-			url: BoomCMS.urlRoot + 'asset/upload',
+			url: BoomCMS.urlRoot + 'asset',
 
 			/**
 			@type string
@@ -52,7 +51,7 @@
 			this.originalMessage = this.dropArea.find('.message').html();
 
 			if (this.options.asset !== undefined) {
-				this.uploaderOptions.url = BoomCMS.urlRoot +  'asset/' + this.options.asset.getId() + '/replace',
+				this.uploaderOptions.url += '/' + this.options.asset.getId() + '/replace',
 				this.uploaderOptions.singleFileUploads = true;
 			}
 

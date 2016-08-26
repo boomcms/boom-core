@@ -48836,10 +48836,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			if ($target.length) {
 				e.preventDefault();
 
-				$link.parents('ul').find('li').removeClass(selectedClass);
-				$link.parent().addClass(selectedClass);
+				$link.parents('ul').find('a').removeClass(selectedClass);
+				$link.addClass(selectedClass);
 
-				$target.parent().children().removeClass(selectedClass);
+				$target.siblings().removeClass(selectedClass);
 				$target.addClass(selectedClass);
 			}
 		});
@@ -52995,9 +52995,9 @@ $.widget('ui.chunkPageVisibility', {
 		hideThumbsClass: 'hide-thumbs',
 
 		assetsUploaded: function() {
-			this.router.navigate('home', {trigger: true});
+			this.router.navigate('', {trigger: true});
 			this.uploader.assetUploader('close');
-			this.uploader.assetUploader.reset();
+			this.uploader.assetUploader('reset');
 		},
 
 		bind: function() {
@@ -53046,12 +53046,11 @@ $.widget('ui.chunkPageVisibility', {
 						assetManager.getAssets();
 					}
 				})
-				.on('click', '#b-assets-upload-close', function(e) {
+				.on('click', '.b-assets-upload-close', function(e) {
 					e.preventDefault();
 
 					assetManager.uploader.assetUploader('close');
-					assetManager.showThumbs();
-					assetManager.router.navigate('home');
+					assetManager.router.navigate('', {trigger: true});
 				});
 		},
 
@@ -53093,8 +53092,8 @@ $.widget('ui.chunkPageVisibility', {
 
 			this.router = new BoomCMS.AssetManager.Router({assets: this.assets});
 
-			this.uploader = this.$('> .b-assets-upload .b-assets-upload-form').eq(0);
 			this.$content = this.$('#b-assets-content');
+			this.uploader = this.$content.find('> .b-assets-upload .b-assets-upload-form').eq(0);
 
 			this.listenTo(this.assets, 'select', this.select);
 			this.listenTo(this.assets, 'view', this.viewAsset);
@@ -53152,7 +53151,7 @@ $.widget('ui.chunkPageVisibility', {
 			this.$content.prepend(view.$el);
 			this.hideThumbs();
 
-			this.router.navigate('asset/' + asset.getId());
+//			this.router.navigate('asset/' + asset.getId());
 		}
 	});
 }(Backbone, BoomCMS));
@@ -53170,7 +53169,6 @@ $.widget('ui.chunkPageVisibility', {
 		routes: {
 			'': 'home',
 			'upload': 'upload',
-			'asset/:asset': 'viewAsset',
 			'asset/:asset/:section': 'viewAsset'
 		},
 
@@ -53180,7 +53178,7 @@ $.widget('ui.chunkPageVisibility', {
 
 		viewAsset: function(id, section) {
 			var asset = this.assets.get(id);
-
+console.log('viewAsset from router', section);
 			if (asset === undefined) {
 				asset = new BoomCMS.Asset({id: id});
 				asset.fetch();
@@ -53228,6 +53226,8 @@ $.widget('ui.chunkPageVisibility', {
 				})
 				.on('click', '.edit', function(e) {
 					e.stopPropagation();
+
+					model.trigger('view', model);
 				})
 				.on('justified', function() {
 					view.loadImage();
@@ -53331,6 +53331,8 @@ $.widget('ui.chunkPageVisibility', {
 				asset: asset,
 				uploadFinished: function(e, data) {
 					asset.set(data.result);
+
+					view.render('info');
 				}
 			});
 
@@ -53342,7 +53344,7 @@ $.widget('ui.chunkPageVisibility', {
 			var view = this;
 
 			this.router.on('viewAsset', function(asset, section) {
-				
+
 			});
 		},
 
@@ -53364,7 +53366,13 @@ $.widget('ui.chunkPageVisibility', {
 			}
 		},
 
+		getSection: function() {
+			return this.$('a[data-section].selected').attr('data-section');
+		},
+
 		initialize: function(options) {
+			var view = this;
+
 			this.assets = options.assets;
 			this.router = options.router;
 
@@ -53375,15 +53383,15 @@ $.widget('ui.chunkPageVisibility', {
 			});
 
 			this.listenTo(this.model, 'revert', function() {
-				BoomCMS.notify("This asset has been reverted to the previous version");
+				BoomCMS.notify('This asset has been reverted to the previous version');
 			});
 
-			this.listenTo(this.model, 'change:versions change:image revert', function() {
+			this.listenTo(this.model, 'change:image revert', function(e) {
 				this.render('info');
 			});
 
 			this.listenTo(this.model, 'sync', function() {
-				this.render();
+				this.render(view.getSection());
 			});
 
 			this.bindRouter();
@@ -53403,7 +53411,8 @@ $.widget('ui.chunkPageVisibility', {
 			var view = this;
 
 			this.$el.html(this.template({
-				asset: this.model
+				asset: this.model,
+				section: section
 			}));
 
 			this.assets.getAllTags().done(function(tags) {
@@ -53413,15 +53422,7 @@ $.widget('ui.chunkPageVisibility', {
 			this.bind();
 			this.initImageEditor();
 
-			if (section) {
-				this.showSection(section);
-			}
-
 			return this;
-		},
-
-		showSection: function(section) {
-			this.$('a[data-section=' + section + ']').click();
 		}
 	});
 }(jQuery, Backbone, BoomCMS));
@@ -53553,6 +53554,10 @@ $.widget('ui.chunkPageVisibility', {
 			var $el = this.element.find('#b-assets-view-thumbs');
 
 			$el.html('');
+
+			if (!this.assets.length) {
+				return $el.html(this.element.find('#b-assets-none-template').html());
+			}
 
 			this.assets.each(function(asset) {
 				var thumbnail = new BoomCMS.AssetManager.Thumbnail({
@@ -53753,9 +53758,8 @@ $.widget('ui.chunkPageVisibility', {
 		uploaderOptions: {
 			/**
 			@type string
-			@default '/boomcms/assets/upload'
 			*/
-			url: BoomCMS.urlRoot + 'asset/upload',
+			url: BoomCMS.urlRoot + 'asset',
 
 			/**
 			@type string
@@ -53800,7 +53804,7 @@ $.widget('ui.chunkPageVisibility', {
 			this.originalMessage = this.dropArea.find('.message').html();
 
 			if (this.options.asset !== undefined) {
-				this.uploaderOptions.url = BoomCMS.urlRoot +  'asset/' + this.options.asset.getId() + '/replace',
+				this.uploaderOptions.url += '/' + this.options.asset.getId() + '/replace',
 				this.uploaderOptions.singleFileUploads = true;
 			}
 

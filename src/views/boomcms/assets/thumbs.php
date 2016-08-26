@@ -1,6 +1,8 @@
-<div id="b-assets-view-thumbs">
+<div id="b-assets-view-thumbs"></div>
+
+<script type="text/template" id="b-assets-none-template">
     <p id="b-assets-none"><?= trans('boomcms::asset.none') ?></p>
-</div>
+</script>
 
 <script type="text/template" id="b-asset-thumb">
     <div class="thumb" data-asset="<%= asset.getId() %>" tabindex="0">
@@ -34,7 +36,7 @@
             </p>
         </div>
 
-        <a href="#asset/<%= asset.getId() %>" class="edit">
+        <a href="#" class="edit">
             <span class="fa fa-edit"></span>
         </a>
     </div>

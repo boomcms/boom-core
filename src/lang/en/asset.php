@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'all'            => 'All assets',
     'close'          => 'Close',
     'attributes'     => 'Attributes',
     'info'           => 'Info',

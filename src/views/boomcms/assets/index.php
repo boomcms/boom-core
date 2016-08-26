@@ -23,7 +23,7 @@
 	<div id="b-assets-filters">
 		<span>
 			<button id="b-assets-all" class="b-button">
-				<?= trans('All assets') ?>
+				<?= trans('boomcms::asset.all') ?>
 			</button>
 		</span>
 
@@ -40,7 +40,7 @@
 </div>
 
 <script type="text/template" id="b-assets-view-template">
-    <?= view('boomcms::assets.view')->render() ?>
+    <?= view('boomcms::assets.view') ?>
 </script>
 
 <script type="text/javascript">

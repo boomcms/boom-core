@@ -127,6 +127,10 @@
 
 			$el.html('');
 
+			if (!this.assets.length) {
+				return $el.html(this.element.find('#b-assets-none-template').html());
+			}
+
 			this.assets.each(function(asset) {
 				var thumbnail = new BoomCMS.AssetManager.Thumbnail({
 					model: asset

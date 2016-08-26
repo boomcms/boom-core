@@ -9,22 +9,22 @@
                     </a>
                 </li>
 
-                <li class="selected">
-                    <a href="#b-assets-view-info" data-section="info">
+                <li>
+                    <a href="#b-assets-view-info"<% if (!section || section === 'info') { %> class="selected"<% } %> data-section="info">
                         <span class="fa fa-info"></span>
                         <?= trans('boomcms::asset.info') ?>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#b-assets-view-attributes" data-section='attributes'>
+                    <a href="#b-assets-view-attributes"<% if (section === 'attributes') { %> class="selected"<% } %> data-section='attributes'>
                         <span class="fa fa-cogs"></span>
                         <?= trans('boomcms::asset.attributes') ?>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#b-asset-tags" data-section='tags'>
+                    <a href="#b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
                         <span class="fa fa-tags"></span>
                         <?= trans('boomcms::asset.tags') ?>
                     </a>
@@ -32,7 +32,7 @@
 
                 <% if (asset.hasMetadata()) { %>
                     <li>
-                        <a href="#b-asset-metadata" data-section='metadata'>
+                        <a href="#b-asset-metadata"<% if (section === 'metadata') { %> class="selected"<% } %> data-section='metadata'>
                         <span class="fa fa-asterisk"></span>
                             <?= trans('boomcms::asset.metadata') ?>
                         </a>
@@ -41,7 +41,7 @@
 
                 <% if (asset.hasPreviousVersions()) { %>
                     <li>
-                        <a href="#b-assets-view-files" data-section='history'>
+                        <a href="#b-assets-view-files"<% if (section === 'history') { %> class="selected"<% } %> data-section='history'>
                         <span class="fa fa-history"></span>
                             <?= trans('boomcms::asset.history') ?>
                         </a>
@@ -49,7 +49,7 @@
                 <% } %>
 
                 <li>
-                    <a href="#b-asset-replace" data-section="replace">
+                    <a href="#b-asset-replace"<% if (section === 'replace') { %> class="selected"<% } %> data-section="replace">
                         <span class="fa fa-upload"></span>
                         <?= trans('boomcms::asset.replace.heading') ?>
                     </a>
@@ -63,7 +63,7 @@
                 </li>
 
                 <li class="b-setting-delete">
-                    <a href="#b-assets-delete" data-section='delete'>
+                    <a href="#b-assets-delete"<% if (section === 'delete') { %> class="selected"<% } %> data-section='delete'>
                         <span class="fa fa-trash-o"></span>
                         <?= trans('boomcms::asset.delete.heading') ?>
                     </a>
@@ -78,7 +78,7 @@
         </div>
 
         <div class="b-settings-content">
-            <div id="b-assets-view-attributes">
+            <div id="b-assets-view-attributes"<% if (section === 'attributes') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.attributes') ?></h1>
 
                 <form>
@@ -108,7 +108,7 @@
                 <?= $button('save', 'save-changes', ['class' => 'b-assets-save b-button-withtext']) ?>
             </div>
 
-            <div id="b-assets-view-info" class="selected">
+            <div id="b-assets-view-info"<% if (!section || section === 'info') { %> class="selected"<% } %>>
                 <h1><%= asset.getTitle() %></h1>
 
                 <% if (asset.isVideo()) { %>
@@ -193,7 +193,7 @@
                 </dl>
             </div>
 
-            <div id="b-asset-tags">
+            <div id="b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.tags') ?></h1>
 
                 <ul class="b-tags">
@@ -206,7 +206,7 @@
             </div>
 
             <% if (asset.hasMetadata()) { %>
-                <div id="b-asset-metadata">
+                <div id="b-asset-metadata"<% if (section === 'metadata') { %> class="selected"<% } %>>
                     <h1><?= trans('boomcms::asset.metadata') ?></h1>
 
                     <dl>
@@ -221,7 +221,7 @@
             <% } %>
 
             <% if (asset.hasPreviousVersions()) { %>
-                <div id="b-assets-view-files">
+                <div id="b-assets-view-files"<% if (section === 'history') { %> class="selected"<% } %>>
                     <h1><?= trans('boomcms::asset.history') ?></h1>
                     <p><?= trans('boomcms::asset.history-intro') ?></p>
 
@@ -251,7 +251,7 @@
                 </div>
             <% } %>
 
-            <div id="b-asset-replace">
+            <div id="b-asset-replace"<% if (section === 'replace') { %> class="selected"<% } %>>
                 <div class="b-assets-upload">
                     <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
                         <div class="b-assets-upload-container">
@@ -280,7 +280,7 @@
                 </div>
             </div>
 
-            <div id="b-assets-delete">
+            <div id="b-assets-delete"<% if (section === 'delete') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.delete.heading') ?></h1>
                 <p><?= trans('boomcms::asset.delete.confirm') ?></p>
 
