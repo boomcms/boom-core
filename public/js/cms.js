@@ -48641,12 +48641,14 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			var assets = this;
 
 			if (this.allTags === undefined) {
+				this.allTags = $.Deferred();
+
 				return $.get(this.url + '/tags').done(function(response) {
-					assets.allTags = response;
+					assets.allTags.resolve(response);
 				});
 			}
 
-			return $.Deferred().resolve(this.allTags);
+			return this.allTags;
 		},
 
 		getAssetIds: function() {
