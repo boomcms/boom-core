@@ -48013,14 +48013,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return this.get('readable_filesize');
 		},
 
-		getTags: function() {
-			if (this.tags === undefined) {
-				this.tags =  $.get(this.urlRoot + '/' + this.getId() + '/tags');
-			}
-
-			return this.tags;
-		},
-
 		getThumbnailAssetId: function() {
 			return this.get('thumbnail_asset_id');
 		},
@@ -48580,9 +48572,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		comparator: 'name',
 
 		addTag: function(tag) {
-			$.post(this.url + 'tags/add', {
-				assets : this.assets,
-				tag : tag
+			return $.post(this.url + '/tags', {
+				assets: this.getAssetIds(),
+				tag: tag
 			});
 		},
 
@@ -48633,9 +48625,11 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return data.assets;
 		},
 
-		getAllTags: function() {
+		getTags: function() {
 			if (this.allTags === undefined) {
-				this.allTags = $.get(this.url + '/tags');
+				this.allTags = $.get(this.url + '/tags', {
+					assets: this.getAssetIds()
+				});
 			}
 
 			return this.allTags;
@@ -48646,9 +48640,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		},
 
 		removeTag: function(tag) {
-			$.post(this.url + 'tags/remove', {
-				assets : this.assets,
-				tag : tag
+			return $.ajax(this.url + '/tags', {
+				type: 'delete',
+				data: {
+					assets: this.getAssetIds(),
+					tag: tag
+				}
 			});
 		},
 
@@ -53142,15 +53139,20 @@ $.widget('ui.chunkPageVisibility', {
 
 		viewAsset: function(asset, section) {
 			var view = new BoomCMS.AssetManager.ViewAsset({
-					model: asset,
-					assets: this.assets,
-					router: this.router
-				}).render(section);
+				model: asset,
+				assets: this.assets,
+				router: this.router
+			});
 
+			this.router
+				.navigate('asset/' + asset.getId() + '/info')
+				.once('home', function() {
+					view.close();
+				});
+
+			view.render(section);
 			this.$content.prepend(view.$el);
 			this.hideThumbs();
-
-			this.router.navigate('asset/' + asset.getId() + '/info');
 		}
 	});
 }(Backbone, BoomCMS));
@@ -53278,22 +53280,13 @@ $.widget('ui.chunkPageVisibility', {
 
 	BoomCMS.AssetManager.ViewAsset = Backbone.View.extend({
 		tagName: 'div',
+		tagsDisplayed: false,
 
 		bind: function() {
 			var view = this,
 				asset = this.model;
 
 			this.$el
-				.find('#b-tags')
-				.assetTagSearch({
-					addTag: function(e, tag) {
-						asset.addTag(tag);
-					},
-					removeTag: function(e, tag) {
-						asset.removeTag(tag);
-					}
-				})
-				.end()
 				.on('click', '.b-settings-close', function(e) {
 					view.close(e);
 				})
@@ -53357,7 +53350,8 @@ $.widget('ui.chunkPageVisibility', {
 		},
 
 		displayTags: function(tags) {
-			var $tagList = this.$('.b-tags').eq(0),
+			var view = this,
+				$tagList = this.$('.b-tags').eq(0),
 				$tagTemplate = this.$('#b-tag-template').html(),
 				$el;
 
@@ -53372,6 +53366,13 @@ $.widget('ui.chunkPageVisibility', {
 
 				$tagList.append($el);
 			}
+
+			this.$el
+				.on('click', '.b-tags a', function(e) {
+					e.preventDefault();
+
+					view.toggleTag($(this));
+				});
 		},
 
 		getSection: function() {
@@ -53383,6 +53384,7 @@ $.widget('ui.chunkPageVisibility', {
 
 			this.assets = options.assets;
 			this.router = options.router;
+			this.collection = new BoomCMS.Collections.Assets([this.model]);
 
 			this.template = _.template($('#b-assets-view-template').html());
 
@@ -53432,21 +53434,34 @@ $.widget('ui.chunkPageVisibility', {
 		},
 
 		showTags: function() {
-			var view = this,
-				allTags = this.assets.getAllTags();
+			if (this.tagsDisplayed === false) {
+				var view = this,
+					allTags = new BoomCMS.Collections.Assets([]).getTags();
 
-			allTags.done(function(tags) {
-				view.displayTags(tags);
-			});
+				allTags.done(function(tags) {
+					view.displayTags(tags);
+				});
 
-			$.when(allTags, this.model.getTags()).done(function(response1, response2) {
-				if (typeof response2[0] !== 'undefined') {
-					var tags = response2[0];
+				$.when(allTags, this.collection.getTags()).done(function(response1, response2) {
+					if (typeof response2[0] !== 'undefined') {
+						var tags = response2[0];
 
-					for (var i = 0; i < tags.length; i++) {
-						view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
-					};
-				}
+						for (var i = 0; i < tags.length; i++) {
+							view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
+						};
+					}
+				});
+
+				this.tagsDisplayed = true;
+			}
+		},
+
+		toggleTag: function($a) {
+			var activeClass = 'active',
+				funcName = $a.hasClass(activeClass) ? 'removeTag' : 'addTag';
+
+			this.collection[funcName]($a.attr('data-tag')).done(function() {
+				$a.toggleClass(activeClass).blur();
 			});
 		}
 	});
@@ -53932,8 +53947,32 @@ $.widget('ui.chunkPageVisibility', {
 	targetRightOffset : null,
 	windowWidth : null,
 
+	closeRemainingGap: function() {
+		var lastRowGap = this.currentRow.determineGap(this.targetRightOffset);
+
+		if (lastRowGap <= (this.element.outerWidth(true) * 0.75)) {
+			this.currentRow.expandTo(this.targetRightOffset);
+		} else if (this.rows > 1) {
+			this.prevRow.merge(currentRow);
+		}
+	},
+
+	_create: function() {
+		var justifyAssets = this,
+			resizeTimeout;
+
+		this.window.on('resize', function() {
+			if (resizeTimeout !== undefined) {
+				clearTimeout(resizeTimeout);
+			}
+
+			resizeTimeout = setTimeout(function() {
+				justifyAssets.justify();
+			}, 50);
+		});
+	},
+
 	_init: function() {
-		this._setDimensions();
 		this.justify();
 	},
 
@@ -53944,55 +53983,56 @@ $.widget('ui.chunkPageVisibility', {
 		return offset;
 	},
 
+	hasElements: function() {
+		return this.element.children().length > 1;
+	},
+
 	justify: function() {
-		var currentRow = new Row(),
-			prevRow,
-			self = this,
-			rows = 0;
+		this.currentRow = new Row();
+		this.prevRow = null;
+		this.rows = 0;
+		this.windowWidth = $(window).width();
+		this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
 
-		if (this.element.children().length > 1) {
-			this.element.children().each(function(index, element) {
-				var $child = $(element);
-
-				if (!$child.css('height') || !$child.attr('data-aspect-ratio')) {
-					$child.remove();
-					return true;
-				}
-
-				$child.css({
-					height: '160px',
-					width: Math.floor(160 * $child.attr('data-aspect-ratio')) + 'px'
-				});
-			});
-
-			this.element.children().each(function(index, element) {
-				var $child = $(element);
-
-				$child.offset = self._getOffset($child);
-
-				prevRow = jQuery.extend({}, currentRow);
-				currentRow.addElementToRow($child);
-
-				if (currentRow.isAtStart() && index > 0) {
-					rows++;
-					prevRow.expandTo(self.targetRightOffset);
-				}
-
-			});
-
-			var lastRowGap = currentRow.determineGap(this.targetRightOffset);
-
-			if (lastRowGap <= (this.element.outerWidth(true) * 0.75)) {
-				currentRow.expandTo(self.targetRightOffset);
-			} else if (rows > 1) {
-				prevRow.merge(currentRow);
-			}
+		if (this.hasElements()) {
+			this.resetInitialDimensions();
+			this.resizeElements();
+			this.closeRemainingGap();
 		}
 	},
 
-	_setDimensions: function() {
-		this.windowWidth = $(window).width();
-		this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
+	resetInitialDimensions: function() {
+		this.element.children().each(function(index, element) {
+			var $child = $(element);
+
+			if (!$child.css('height') || !$child.attr('data-aspect-ratio')) {
+				$child.remove();
+				return true;
+			}
+
+			$child.css({
+				height: '160px',
+				width: Math.floor(160 * $child.attr('data-aspect-ratio')) + 'px'
+			});
+		});
+	},
+
+	resizeElements: function() {
+		var justifyAssets = this;
+
+		this.element.children().each(function(index, element) {
+			var $child = $(element);
+
+			$child.offset = justifyAssets._getOffset($child);
+
+			justifyAssets.prevRow = jQuery.extend({}, justifyAssets.currentRow);
+			justifyAssets.currentRow.addElementToRow($child);
+
+			if (justifyAssets.currentRow.isAtStart() && index > 0) {
+				this.rows++;
+				justifyAssets.prevRow.expandTo(justifyAssets.targetRightOffset);
+			}
+		});
 	}
 });
 

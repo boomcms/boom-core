@@ -7,9 +7,9 @@
 		comparator: 'name',
 
 		addTag: function(tag) {
-			$.post(this.url + 'tags/add', {
-				assets : this.assets,
-				tag : tag
+			return $.post(this.url + '/tags', {
+				assets: this.getAssetIds(),
+				tag: tag
 			});
 		},
 
@@ -60,9 +60,11 @@
 			return data.assets;
 		},
 
-		getAllTags: function() {
+		getTags: function() {
 			if (this.allTags === undefined) {
-				this.allTags = $.get(this.url + '/tags');
+				this.allTags = $.get(this.url + '/tags', {
+					assets: this.getAssetIds()
+				});
 			}
 
 			return this.allTags;
@@ -73,9 +75,12 @@
 		},
 
 		removeTag: function(tag) {
-			$.post(this.url + 'tags/remove', {
-				assets : this.assets,
-				tag : tag
+			return $.ajax(this.url + '/tags', {
+				type: 'delete',
+				data: {
+					assets: this.getAssetIds(),
+					tag: tag
+				}
 			});
 		},
 

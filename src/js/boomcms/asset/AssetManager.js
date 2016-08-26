@@ -161,15 +161,20 @@
 
 		viewAsset: function(asset, section) {
 			var view = new BoomCMS.AssetManager.ViewAsset({
-					model: asset,
-					assets: this.assets,
-					router: this.router
-				}).render(section);
+				model: asset,
+				assets: this.assets,
+				router: this.router
+			});
 
+			this.router
+				.navigate('asset/' + asset.getId() + '/info')
+				.once('home', function() {
+					view.close();
+				});
+
+			view.render(section);
 			this.$content.prepend(view.$el);
 			this.hideThumbs();
-
-			this.router.navigate('asset/' + asset.getId() + '/info');
 		}
 	});
 }(Backbone, BoomCMS));

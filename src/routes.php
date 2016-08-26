@@ -34,25 +34,21 @@ Route::group(['middleware' => [
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 
-            Route::get('asset-manager', 'Assets\AssetManager@index');
-            Route::post('asset/tags/add', 'Asset\Tags@add');
-            Route::post('asset/tags/remove', 'Asset\Tags@remove');
-            Route::get('asset/tags', 'Asset\Tags@listTags');
-            Route::resource('asset', 'Asset\AssetController');
-            Route::get('asset/{asset}/tags', 'Asset\AssetController@tags');
-            Route::delete('asset', 'Asset\AssetController@destroy');
-            Route::post('asset/{asset}/replace', 'Asset\AssetController@replace');
-            Route::post('asset/{asset}/revert', 'Asset\AssetController@revert');
-
             Route::group([
-                'prefix'    => 'assets',
-                'namespace' => 'Assets',
+                'prefix'    => 'asset',
+                'namespace' => 'Asset',
             ], function () {
-                Route::post('save/{asset}', 'AssetManager@save');
-                Route::post('revert/{asset}', 'AssetManager@revert');
-
-                Route::controller('', 'AssetManager');
+                Route::get('{asset}/tags', 'AssetController@tags');
+                Route::delete('', 'AssetController@destroy');
+                Route::post('{asset}/replace', 'AssetController@replace');
+                Route::post('{asset}/revert', 'AssetController@revert');
+                Route::get('tags', 'TagsController@listTags');
+                Route::post('tags', 'TagsController@add');
+                Route::delete('tags', 'TagsController@remove');
             });
+
+            Route::get('asset-manager', 'AssetManagerController@index');
+            Route::resource('asset', 'Asset\AssetController');
 
             Route::group([
                 'namespace'  => 'People',

@@ -1,15 +1,14 @@
 <?php
 
-namespace BoomCMS\Http\Controllers\Assets;
+namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use ZipArchive;
 
-class AssetManager extends Controller
+class AssetManagerController extends Controller
 {
     /**
      * @var string

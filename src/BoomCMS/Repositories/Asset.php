@@ -143,11 +143,4 @@ class Asset implements AssetRepositoryInterface
 
         return $model;
     }
-
-    public function tags()
-    {
-        return DB::table('assets_tags')
-            ->distinct()
-            ->lists('tag');
-    }
 }

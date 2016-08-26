@@ -54,14 +54,6 @@
 			return this.get('readable_filesize');
 		},
 
-		getTags: function() {
-			if (this.tags === undefined) {
-				this.tags =  $.get(this.urlRoot + '/' + this.getId() + '/tags');
-			}
-
-			return this.tags;
-		},
-
 		getThumbnailAssetId: function() {
 			return this.get('thumbnail_asset_id');
 		},

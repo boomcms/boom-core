@@ -3,22 +3,13 @@
 
 	BoomCMS.AssetManager.ViewAsset = Backbone.View.extend({
 		tagName: 'div',
+		tagsDisplayed: false,
 
 		bind: function() {
 			var view = this,
 				asset = this.model;
 
 			this.$el
-				.find('#b-tags')
-				.assetTagSearch({
-					addTag: function(e, tag) {
-						asset.addTag(tag);
-					},
-					removeTag: function(e, tag) {
-						asset.removeTag(tag);
-					}
-				})
-				.end()
 				.on('click', '.b-settings-close', function(e) {
 					view.close(e);
 				})
@@ -82,7 +73,8 @@
 		},
 
 		displayTags: function(tags) {
-			var $tagList = this.$('.b-tags').eq(0),
+			var view = this,
+				$tagList = this.$('.b-tags').eq(0),
 				$tagTemplate = this.$('#b-tag-template').html(),
 				$el;
 
@@ -97,6 +89,13 @@
 
 				$tagList.append($el);
 			}
+
+			this.$el
+				.on('click', '.b-tags a', function(e) {
+					e.preventDefault();
+
+					view.toggleTag($(this));
+				});
 		},
 
 		getSection: function() {
@@ -108,6 +107,7 @@
 
 			this.assets = options.assets;
 			this.router = options.router;
+			this.collection = new BoomCMS.Collections.Assets([this.model]);
 
 			this.template = _.template($('#b-assets-view-template').html());
 
@@ -157,21 +157,34 @@
 		},
 
 		showTags: function() {
-			var view = this,
-				allTags = this.assets.getAllTags();
+			if (this.tagsDisplayed === false) {
+				var view = this,
+					allTags = new BoomCMS.Collections.Assets([]).getTags();
 
-			allTags.done(function(tags) {
-				view.displayTags(tags);
-			});
+				allTags.done(function(tags) {
+					view.displayTags(tags);
+				});
 
-			$.when(allTags, this.model.getTags()).done(function(response1, response2) {
-				if (typeof response2[0] !== 'undefined') {
-					var tags = response2[0];
+				$.when(allTags, this.collection.getTags()).done(function(response1, response2) {
+					if (typeof response2[0] !== 'undefined') {
+						var tags = response2[0];
 
-					for (var i = 0; i < tags.length; i++) {
-						view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
-					};
-				}
+						for (var i = 0; i < tags.length; i++) {
+							view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
+						};
+					}
+				});
+
+				this.tagsDisplayed = true;
+			}
+		},
+
+		toggleTag: function($a) {
+			var activeClass = 'active',
+				funcName = $a.hasClass(activeClass) ? 'removeTag' : 'addTag';
+
+			this.collection[funcName]($a.attr('data-tag')).done(function() {
+				$a.toggleClass(activeClass).blur();
 			});
 		}
 	});
