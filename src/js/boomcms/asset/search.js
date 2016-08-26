@@ -160,6 +160,11 @@
 		sortBy: function(sort) {
 			this.postData['order'] = sort;
 			this.getAssets();
+		},
+
+		updateTagFilters: function(tags) {
+			this.addFilter('tag', tags);
+			this.getAssets();
 		}
 	});
 }(jQuery, BoomCMS));

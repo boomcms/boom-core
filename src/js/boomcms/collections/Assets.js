@@ -61,14 +61,8 @@
 		},
 
 		getAllTags: function() {
-			var assets = this;
-
 			if (this.allTags === undefined) {
-				this.allTags = $.Deferred();
-
-				return $.get(this.url + '/tags').done(function(response) {
-					assets.allTags.resolve(response);
-				});
+				this.allTags = $.get(this.url + '/tags');
 			}
 
 			return this.allTags;

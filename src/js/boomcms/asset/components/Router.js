@@ -14,7 +14,7 @@
 
 		viewAsset: function(id, section) {
 			var asset = this.assets.get(id);
-console.log('viewAsset from router', section);
+
 			if (asset === undefined) {
 				asset = new BoomCMS.Asset({id: id});
 				asset.fetch();

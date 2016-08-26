@@ -55,15 +55,11 @@
 		},
 
 		getTags: function() {
-			var asset = this;
-
 			if (this.tags === undefined) {
-				return $.get(this.url + '/tags').done(function(response) {
-					asset.tags = response;
-				});
+				this.tags =  $.get(this.urlRoot + '/' + this.getId() + '/tags');
 			}
 
-			return $.Deferred.resolve(this.tags);
+			return this.tags;
 		},
 
 		getThumbnailAssetId: function() {

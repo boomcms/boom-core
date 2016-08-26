@@ -88,7 +88,12 @@
 
 			for (var i = 0; i < tags.length; i++) {
 				$el = $($tagTemplate);
-				$el.find('span:first-of-type').text(tags[i]);
+
+				$el
+					.find('a')
+					.attr('data-tag', tags[i])
+					.find('span:first-of-type')
+					.text(tags[i]);
 
 				$tagList.append($el);
 			}
@@ -152,10 +157,21 @@
 		},
 
 		showTags: function() {
-			var view = this;
+			var view = this,
+				allTags = this.assets.getAllTags();
 
-			this.assets.getAllTags().done(function(tags) {
+			allTags.done(function(tags) {
 				view.displayTags(tags);
+			});
+
+			$.when(allTags, this.model.getTags()).done(function(response1, response2) {
+				if (typeof response2[0] !== 'undefined') {
+					var tags = response2[0];
+
+					for (var i = 0; i < tags.length; i++) {
+						view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
+					};
+				}
 			});
 		}
 	});

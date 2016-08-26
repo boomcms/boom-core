@@ -169,7 +169,7 @@
 			this.$content.prepend(view.$el);
 			this.hideThumbs();
 
-//			this.router.navigate('asset/' + asset.getId());
+			this.router.navigate('asset/' + asset.getId() + '/info');
 		}
 	});
 }(Backbone, BoomCMS));

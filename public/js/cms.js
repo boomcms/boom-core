@@ -48014,15 +48014,11 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		},
 
 		getTags: function() {
-			var asset = this;
-
 			if (this.tags === undefined) {
-				return $.get(this.url + '/tags').done(function(response) {
-					asset.tags = response;
-				});
+				this.tags =  $.get(this.urlRoot + '/' + this.getId() + '/tags');
 			}
 
-			return $.Deferred.resolve(this.tags);
+			return this.tags;
 		},
 
 		getThumbnailAssetId: function() {
@@ -48638,14 +48634,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		},
 
 		getAllTags: function() {
-			var assets = this;
-
 			if (this.allTags === undefined) {
-				this.allTags = $.Deferred();
-
-				return $.get(this.url + '/tags').done(function(response) {
-					assets.allTags.resolve(response);
-				});
+				this.allTags = $.get(this.url + '/tags');
 			}
 
 			return this.allTags;
@@ -53160,7 +53150,7 @@ $.widget('ui.chunkPageVisibility', {
 			this.$content.prepend(view.$el);
 			this.hideThumbs();
 
-//			this.router.navigate('asset/' + asset.getId());
+			this.router.navigate('asset/' + asset.getId() + '/info');
 		}
 	});
 }(Backbone, BoomCMS));
@@ -53187,7 +53177,7 @@ $.widget('ui.chunkPageVisibility', {
 
 		viewAsset: function(id, section) {
 			var asset = this.assets.get(id);
-console.log('viewAsset from router', section);
+
 			if (asset === undefined) {
 				asset = new BoomCMS.Asset({id: id});
 				asset.fetch();
@@ -53373,7 +53363,12 @@ console.log('viewAsset from router', section);
 
 			for (var i = 0; i < tags.length; i++) {
 				$el = $($tagTemplate);
-				$el.find('span:first-of-type').text(tags[i]);
+
+				$el
+					.find('a')
+					.attr('data-tag', tags[i])
+					.find('span:first-of-type')
+					.text(tags[i]);
 
 				$tagList.append($el);
 			}
@@ -53437,10 +53432,21 @@ console.log('viewAsset from router', section);
 		},
 
 		showTags: function() {
-			var view = this;
+			var view = this,
+				allTags = this.assets.getAllTags();
 
-			this.assets.getAllTags().done(function(tags) {
+			allTags.done(function(tags) {
 				view.displayTags(tags);
+			});
+
+			$.when(allTags, this.model.getTags()).done(function(response1, response2) {
+				if (typeof response2[0] !== 'undefined') {
+					var tags = response2[0];
+
+					for (var i = 0; i < tags.length; i++) {
+						view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
+					};
+				}
 			});
 		}
 	});
@@ -53606,6 +53612,11 @@ console.log('viewAsset from router', section);
 
 		sortBy: function(sort) {
 			this.postData['order'] = sort;
+			this.getAssets();
+		},
+
+		updateTagFilters: function(tags) {
+			this.addFilter('tag', tags);
 			this.getAssets();
 		}
 	});
