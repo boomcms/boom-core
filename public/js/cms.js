@@ -48897,10 +48897,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	this.deferred = $.Deferred().always(function() {
 		$(top.window).trigger('boom:dialog:close');
-
-		setTimeout(function() {
-			dialog.cleanup();
-		}, 0);
 	});
 
 	this.buttons = {
@@ -48930,6 +48926,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	boomDialog.prototype.cancel = function() {
 		dialog.deferred.rejectWith(this.dialog);
+		dialog.cleanup();
 	};
 
 	boomDialog.prototype.cleanup = function() {
@@ -48941,6 +48938,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	boomDialog.prototype.close = function() {
 		dialog.deferred.resolveWith(this.dialog);
+		dialog.cleanup();
 	};
 
 	boomDialog.prototype.configureButtons = function(options) {
@@ -49031,7 +49029,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	};
 
 	this.open();
-};function boomAlert(message) {
+}
+;function boomAlert(message) {
 	this.message = message;
 
 	boomAlert.prototype.open = function() {
@@ -50225,6 +50224,22 @@ $.widget( 'boom.pageToolbar', {
 				});
 		},
 
+		addToList: function(page) {
+			var $li = $('<li>');
+
+			$('<span>').addClass('title').text(page.getTitle()).appendTo($li),
+			$('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
+			$('<a>')
+				.attr('href', '#')
+				.addClass('fa fa-trash-o')
+				.data('page', page)
+				.html('<span>Remove</span>')
+				.appendTo($li);
+
+			this.element.find('ul').append($li);
+			this.element.find('.current').show();
+		},
+
 		bind: function() {
 			var editor = this,
 				page = this.page;
@@ -50239,27 +50254,19 @@ $.widget( 'boom.pageToolbar', {
 		},
 
 		_create: function() {
-			var $ul = this.element.find('ul'),
-				$current = this.element.find('.current');
+			var relations = this,
+				page = this.options.page;
 
-			this.page = this.options.page;
+			this.page = page;
 			this.pages = new BoomCMS.Collections.Pages();
 
-			this.pages.on('add', function(page) {
-				var $li = $('<li>');
-
-				$('<span>').addClass('title').text(page.getTitle()).appendTo($li),
-				$('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
-				$('<a>')
-					.attr('href', '#')
-					.addClass('fa fa-trash-o')
-					.data('page', page)
-					.html('<span>Remove</span>')
-					.appendTo($li);
-
-				$ul.append($li);
-				$current.show();
-			});
+			this.pages
+				.on('add', function(page) {
+					relations.addToList(page);
+				})
+				.on('remove', function() {
+					page.removeRelatedPage(page);	
+				});
 
 			this.getRelatedPages();
 			this.bind();
@@ -50272,14 +50279,14 @@ $.widget( 'boom.pageToolbar', {
 		removeRelatedPage: function($a) {
 			var $el = this.element,
 				$relatedPages = $el.find('ul'),
-				$current = $el.find('.current');
+				$current = $el.find('.current'),
+				pages = this.pages,
+				page = $a.data('page');
 
-			this.page.removeRelatedPage($a.data('page'))
-				.done(function() {
-					$a.parent().remove();
-
-					$relatedPages.find('li').length ? $current.show() : $current.hide();
-				});
+			this.pages.remove(page);
+			
+			$a.parent().remove();
+			$relatedPages.find('li').length ? $current.show() : $current.hide();
 		}
 	});
 }(jQuery, BoomCMS));;(function($, BoomCMS) {

@@ -3,10 +3,6 @@ function boomDialog(options) {
 
 	this.deferred = $.Deferred().always(function() {
 		$(top.window).trigger('boom:dialog:close');
-
-		setTimeout(function() {
-			dialog.cleanup();
-		}, 0);
 	});
 
 	this.buttons = {
@@ -36,6 +32,7 @@ function boomDialog(options) {
 
 	boomDialog.prototype.cancel = function() {
 		dialog.deferred.rejectWith(this.dialog);
+		dialog.cleanup();
 	};
 
 	boomDialog.prototype.cleanup = function() {
@@ -47,6 +44,7 @@ function boomDialog(options) {
 
 	boomDialog.prototype.close = function() {
 		dialog.deferred.resolveWith(this.dialog);
+		dialog.cleanup();
 	};
 
 	boomDialog.prototype.configureButtons = function(options) {
