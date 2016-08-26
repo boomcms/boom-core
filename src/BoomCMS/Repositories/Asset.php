@@ -8,7 +8,6 @@ use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\Support\File;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Asset implements AssetRepositoryInterface

@@ -77,7 +77,7 @@ class Collection
                 ->whereIn('asset_id', $this->getAssetIds())
                 ->havingRaw(DB::raw('count(distinct asset_id) ='.count($this->getAssetIds())));
         }
-    
+
         return $query->lists('tag');
     }
 
