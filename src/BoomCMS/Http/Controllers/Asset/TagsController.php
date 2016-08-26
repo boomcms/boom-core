@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class TagsController extends Controller
 {
-
     /**
      * @var Collection
      */
