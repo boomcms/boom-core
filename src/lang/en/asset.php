@@ -36,7 +36,7 @@ return [
         ],
         'delete'   => [
             'heading' => 'Delete assets',
-            'confirm' => 'Are you sure you want to delete the selected assets?', 
+            'confirm' => 'Are you sure you want to delete the selected assets?',
         ],
     ],
     'select'         => [
