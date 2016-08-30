@@ -80,35 +80,4 @@ class Autocomplete extends Controller
 
         return $results;
     }
-
-    public function getPageTags()
-    {
-        $group = $this->request->query('group') ?: null;
-
-        // Build a query to find tags matching on path.
-        $query = DB::table('tags')
-            ->select('tags.name', 'tags.id')
-            ->join('pages_tags', 'tags.id', '=', 'pages_tags.tag_id')
-            ->where('name', 'like', "%{$this->text}%")
-            ->where('group', '=', $group)
-            ->orderBy(DB::raw('length(tags.name)'), 'asc')
-            ->distinct(true)
-            ->limit($this->count);
-
-        if ($this->request->query('ignore')) {
-            $query->whereNotIn('tags.id', $this->request->query('ignore'));
-        }
-
-        // Get the query results.
-        $results = $query->get();
-
-        foreach ($results as &$result) {
-            $result = [
-                'label' => $result->name,
-                'value' => $result->id,
-            ];
-        }
-
-        return $results;
-    }
 }
