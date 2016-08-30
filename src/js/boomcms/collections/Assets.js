@@ -30,7 +30,7 @@
 			});
 		},
 	
-		download: function() {
+		download: function(filename) {
 			var url = this.url + 'download?',
 				assets = [];
 
@@ -39,21 +39,9 @@
 			}
 
 			url = url + assets.join('&');
+			url = url + '&filename=' + filename;
 
-			if (this.assets.length > 1) {
-				var dialog = new boomDialog({
-					msg: '<label><p>Enter the name of the download</p><input type="text" name="filename" value="BoomCMS Asset Download" /></label>',
-					width: 400,
-					id: 'b-assets-download-filename'
-				})
-				.done(function() {
-					url = url + '&filename=' + dialog.contents.find('input[name=filename]').val();
-
-					window.location = url;
-				});
-			} else {
-				window.location = url;
-			}
+			window.open(url);
 		},
 
 		getAssetIds: function() {

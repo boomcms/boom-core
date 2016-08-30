@@ -10,23 +10,23 @@
                 </li>
 
                 <li>
-                    <a href="#b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
+                    <a href="#b-asset-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
                         <span class="fa fa-tags"></span>
                         <?= trans('boomcms::asset.tags') ?>
                     </a>
                 </li>
 
                 <li class='group'>
-                    <a href="#">
+                    <a href="#b-assets-selection-download">
                         <span class="fa fa-download"></span>
-                        <?= trans('boomcms::asset.download') ?>
+                        <?= trans('boomcms::asset.selection.download.heading') ?>
                     </a>
                 </li>
 
                 <li class="b-setting-delete">
-                    <a href="#b-assets-delete"<% if (section === 'delete') { %> class="selected"<% } %> data-section='delete'>
+                    <a href="#b-assets-selection-delete"<% if (section === 'delete') { %> class="selected"<% } %> data-section='delete'>
                         <span class="fa fa-trash-o"></span>
-                        <?= trans('boomcms::asset.delete.heading') ?>
+                        <?= trans('boomcms::asset.selection.delete.heading') ?>
                     </a>
                 </li>
             </ul>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="b-settings-content">
-            <div id="b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
+            <div id="b-asset-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.tags') ?></h1>
 
                 <ul class="b-tags">
@@ -51,9 +51,20 @@
                 </form>
             </div>
 
-            <div id="b-assets-delete"<% if (section === 'delete') { %> class="selected"<% } %>>
-                <h1><?= trans('boomcms::asset.delete.heading') ?></h1>
-                <p><?= trans('boomcms::asset.delete.confirm') ?></p>
+            <div id="b-assets-selection-download"<% if (section === 'download') { %> class="selected"<% } %>>
+                <h1><?= trans('boomcms::asset.selection.download.heading') ?></h1>
+
+                <form id="b-assets-download-filename">
+                    <label>
+                        <p><?= trans('boomcms::asset.selection.download.filename') ?></p>
+                        <input type="text" name="filename" value="<?= trans('boomcms::asset.selection.download.default') ?>" />
+                    </label>
+                </form>
+            </div>
+
+            <div id="b-assets-selection-delete"<% if (section === 'delete') { %> class="selected"<% } %>>
+                <h1><?= trans('boomcms::asset.selection.delete.heading') ?></h1>
+                <p><?= trans('boomcms::asset.selection.delete.confirm') ?></p>
 
                 <?= $button('trash-o', 'delete-asset', [
                     'class' => 'b-button-withtext b-assets-delete',

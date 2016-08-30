@@ -28,6 +28,17 @@ return [
     'edited-by'      => 'Edited by',
     'edited-at'      => 'Edited at',
     'edit-image'     => 'Edit image',
+    'selection'      => [
+        'download' => [
+            'heading'  => 'Download assets',
+            'filename' => 'Enter the name of the download',
+            'default'  => 'BoomCMS Asset Download',
+        ],
+        'delete'   => [
+            'heading' => 'Delete assets',
+            'confirm' => 'Are you sure you want to delete the selected assets?', 
+        ],
+    ],
     'select'         => [
         'all'  => 'Select all',
         'none' => 'Select none',

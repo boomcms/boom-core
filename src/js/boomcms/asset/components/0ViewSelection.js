@@ -25,6 +25,13 @@
 					if (section === 'tags') {
 						view.showTags();
 					}
+				})
+				.on('submit', '#b-assets-download-filename', function(e) {
+					e.preventDefault();
+
+					var filename = $(this).find('input[name=filename]').val();
+
+					selection.download(filename);
 				});
 
 			this.$('.b-settings-menu a[href^=#]').boomTabs();
