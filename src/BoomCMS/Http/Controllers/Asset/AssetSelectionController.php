@@ -54,5 +54,4 @@ class AssetSelectionController extends Controller
 
         return $response;
     }
-
 }
