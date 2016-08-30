@@ -48600,7 +48600,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 				assets = [];
 
 			for (var i = 0; i < this.models.length; i++) {
-				assets[i] = 'asset[]=' + this.models[i].getId();
+				assets[i] = 'assets[]=' + this.models[i].getId();
 			}
 
 			url = url + assets.join('&');
@@ -53116,7 +53116,7 @@ $.widget('ui.chunkPageVisibility', {
 					e.preventDefault();
 
 					var filename = $(this).find('input[name=filename]').val();
-console.log(filename);
+
 					selection.download(filename);
 				});
 

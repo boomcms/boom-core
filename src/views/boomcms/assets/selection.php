@@ -10,7 +10,7 @@
                 </li>
 
                 <li>
-                    <a href="#b-asset-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
+                    <a href="#b-assets-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
                         <span class="fa fa-tags"></span>
                         <?= trans('boomcms::asset.tags') ?>
                     </a>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="b-settings-content">
-            <div id="b-asset-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
+            <div id="b-assets-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.tags') ?></h1>
 
                 <ul class="b-tags">

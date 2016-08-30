@@ -35,7 +35,7 @@
 				assets = [];
 
 			for (var i = 0; i < this.models.length; i++) {
-				assets[i] = 'asset[]=' + this.models[i].getId();
+				assets[i] = 'assets[]=' + this.models[i].getId();
 			}
 
 			url = url + assets.join('&');

@@ -25,7 +25,7 @@ class AssetSelectionController extends Controller
 
     public function download()
     {
-        $assets = AssetFacade::find($this->request->input('asset'));
+        $assets = AssetFacade::find($this->request->input('assets'));
 
         if (count($assets) === 1) {
             return Response::download(
