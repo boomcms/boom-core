@@ -17,7 +17,7 @@
                 </li>
 
                 <li class='group'>
-                    <a href="#b-assets-selection-download">
+                    <a href="#b-assets-selection-download" data-section="download">
                         <span class="fa fa-download"></span>
                         <?= trans('boomcms::asset.selection.download.heading') ?>
                     </a>
@@ -59,6 +59,11 @@
                         <p><?= trans('boomcms::asset.selection.download.filename') ?></p>
                         <input type="text" name="filename" value="<?= trans('boomcms::asset.selection.download.default') ?>" />
                     </label>
+
+                    <?= $button('download', 'download', [
+                        'type'  => 'submit',
+                        'class' => 'b-button-withtext',
+                    ]) ?>
                 </form>
             </div>
 
@@ -66,7 +71,13 @@
                 <h1><?= trans('boomcms::asset.selection.delete.heading') ?></h1>
                 <p><?= trans('boomcms::asset.selection.delete.confirm') ?></p>
 
-                <?= $button('trash-o', 'delete-asset', [
+                <ul>
+                    <% for (var i = 0; i < selection.models.length; i++) { %>
+                        <li><%= selection.models[i].getTitle() %></li>
+                    <% } %>
+                </ul>
+
+                <?= $button('trash-o', 'delete-assets', [
                     'class' => 'b-button-withtext b-assets-delete',
                 ]) ?>
             </div>

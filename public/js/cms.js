@@ -48596,17 +48596,17 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		},
 	
 		download: function(filename) {
-			var url = this.url + 'download?',
+			var url = this.url + '/download?',
 				assets = [];
 
-			for (var i = 0; i < this.assets.length; i++) {
-				assets[i] = 'asset[]=' + this.assets[i];
+			for (var i = 0; i < this.models.length; i++) {
+				assets[i] = 'asset[]=' + this.models[i].getId();
 			}
 
 			url = url + assets.join('&');
 			url = url + '&filename=' + filename;
 
-			window.open(url);
+			window.location = url;
 		},
 
 		getAssetIds: function() {
@@ -53116,6 +53116,8 @@ $.widget('ui.chunkPageVisibility', {
 					e.preventDefault();
 
 					var filename = $(this).find('input[name=filename]').val();
+console.log(filename);
+					selection.download(filename);
 				});
 
 			this.$('.b-settings-menu a[href^=#]').boomTabs();

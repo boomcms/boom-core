@@ -20,13 +20,6 @@ class AssetController extends Controller
 
     protected $role = 'manageAssets';
 
-    public function destroy(Request $request, Asset $asset = null)
-    {
-        $assetIds = ($asset->getId()) ? [$asset->getId()] : $request->input('assets');
-
-        AssetFacade::delete($assetIds);
-    }
-
     // Needs to not require the manageAssets role. Move to another controller.
     public function index(Request $request)
     {
@@ -109,14 +102,6 @@ class AssetController extends Controller
             ->with('versions.editedBy')
             ->with('uploadedBy')
             ->find($asset->getId());
-    }
-
-    /**
-     * @return array
-     */
-    public function tags(Asset $asset)
-    {
-        return $asset->getTags();
     }
 
     /**

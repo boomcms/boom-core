@@ -38,8 +38,8 @@ Route::group(['middleware' => [
                 'prefix'    => 'asset',
                 'namespace' => 'Asset',
             ], function () {
-                Route::get('{asset}/tags', 'AssetController@tags');
-                Route::delete('', 'AssetController@destroy');
+                Route::get('download', 'AssetSelectionController@download');
+                Route::delete('', 'AssetSelectionController@destroy');
                 Route::post('{asset}/replace', 'AssetController@replace');
                 Route::post('{asset}/revert', 'AssetController@revert');
                 Route::get('tags', 'TagsController@listTags');
@@ -47,6 +47,7 @@ Route::group(['middleware' => [
                 Route::delete('tags', 'TagsController@remove');
             });
 
+            
             Route::get('asset-manager', 'AssetManagerController@index');
             Route::resource('asset', 'Asset\AssetController');
 

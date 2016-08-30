@@ -30,7 +30,7 @@
 					e.preventDefault();
 
 					var filename = $(this).find('input[name=filename]').val();
-
+console.log(filename);
 					selection.download(filename);
 				});
 
