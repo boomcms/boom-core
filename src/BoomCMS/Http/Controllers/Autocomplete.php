@@ -16,13 +16,6 @@ class Autocomplete extends Controller
     public $count;
 
     /**
-     * Array of matches to be output.
-     *
-     * @var array
-     */
-    public $results = [];
-
-    /**
      * The text to search for.
      *
      * @var string
