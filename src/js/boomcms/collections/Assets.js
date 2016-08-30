@@ -56,8 +56,12 @@
 			}
 		},
 
-		parse: function(data) {
-			return data.assets;
+		getAssetIds: function() {
+			return this.pluck('id');
+		},
+
+		getIdString: function() {
+			return this.getAssetIds().join(',');
 		},
 
 		getTags: function() {
@@ -70,8 +74,8 @@
 			return this.allTags;
 		},
 
-		getAssetIds: function() {
-			return this.pluck('id');
+		parse: function(data) {
+			return data.assets;
 		},
 
 		removeTag: function(tag) {

@@ -22,15 +22,11 @@
 			var assetManager = this;
 
 			this.$el
-				.on('click', '#b-button-multiaction-delete', function() {
-					BoomCMS
-						.confirm('Please confirm', 'Are you sure you want to delete the selected assets?')
-						.done(function() {
-							assetManager.selection.destroy();
-						});
+				.on('click', '#b-assets-selection-delete', function() {
+					assetManager.viewSelection(assetManager.selection, 'delete');
 				})
-				.on('click', '#b-button-multiaction-download', function() {
-					assetManager.selection.download();
+				.on('click', '#b-assets-selection-download', function() {
+					assetManager.viewSelection(assetManager.selection, 'download');
 				})
 				.on('click', '#b-assets-select-all', function() {
 					assetManager.selectAll();
@@ -42,8 +38,8 @@
 
 					$(this).blur();
 				})
-				.on('click', '#b-button-multiaction-tag', function() {
-					assetManager.selection.tag();
+				.on('click', '#b-assets-selection-tag', function() {
+					assetManager.viewSelection(assetManager.selection, 'tags');
 				})
 				.on('click', '#b-assets-upload', function() {
 					assetManager.router.navigate('upload', {trigger: true});
@@ -119,6 +115,7 @@
 				assetManager.getAssets();
 				assetManager.clearSelection();
 			});
+
 			this.listenTo(this.selection, 'reset update', this.toggleButtons);
 
 			this.$el.assetSearch({assets: this.assets});
@@ -149,7 +146,7 @@
 		},
 
 		toggleButtons: function() {
-			var buttons = $('[id|=b-button-multiaction]');
+			var buttons = this.$('.b-assets-multi');
 
 			buttons.prop('disabled', this.selection.length ? false : true);
 		},
@@ -167,7 +164,25 @@
 			});
 
 			this.router
-				.navigate('asset/' + asset.getId() + '/info')
+				.navigate('asset/' + asset.getId() + '/' + section)
+				.once('home', function() {
+					view.close();
+				});
+
+			view.render(section);
+			this.$content.prepend(view.$el);
+			this.hideThumbs();
+		},
+
+		viewSelection: function(selection, section) {
+			var view = new BoomCMS.AssetManager.ViewSelection({
+				selection: selection,
+				assets: this.assets,
+				router: this.router
+			});
+
+			this.router
+				.navigate('selection/' + selection.getIdString() + '/' + section)
 				.once('home', function() {
 					view.close();
 				});

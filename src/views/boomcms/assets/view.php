@@ -1,4 +1,4 @@
-<div id="b-assets-view">
+<div class="b-assets-view">
     <div class="b-settings">
         <div class="b-settings-menu">
             <ul>

@@ -48621,8 +48621,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			}
 		},
 
-		parse: function(data) {
-			return data.assets;
+		getAssetIds: function() {
+			return this.pluck('id');
+		},
+
+		getIdString: function() {
+			return this.getAssetIds().join(',');
 		},
 
 		getTags: function() {
@@ -48635,8 +48639,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return this.allTags;
 		},
 
-		getAssetIds: function() {
-			return this.pluck('id');
+		parse: function(data) {
+			return data.assets;
 		},
 
 		removeTag: function(tag) {
@@ -52921,15 +52925,11 @@ $.widget('ui.chunkPageVisibility', {
 			var assetManager = this;
 
 			this.$el
-				.on('click', '#b-button-multiaction-delete', function() {
-					BoomCMS
-						.confirm('Please confirm', 'Are you sure you want to delete the selected assets?')
-						.done(function() {
-							assetManager.selection.destroy();
-						});
+				.on('click', '#b-assets-selection-delete', function() {
+					assetManager.viewSelection(assetManager.selection, 'delete');
 				})
-				.on('click', '#b-button-multiaction-download', function() {
-					assetManager.selection.download();
+				.on('click', '#b-assets-selection-download', function() {
+					assetManager.viewSelection(assetManager.selection, 'download');
 				})
 				.on('click', '#b-assets-select-all', function() {
 					assetManager.selectAll();
@@ -52941,8 +52941,8 @@ $.widget('ui.chunkPageVisibility', {
 
 					$(this).blur();
 				})
-				.on('click', '#b-button-multiaction-tag', function() {
-					assetManager.selection.tag();
+				.on('click', '#b-assets-selection-tag', function() {
+					assetManager.viewSelection(assetManager.selection, 'tags');
 				})
 				.on('click', '#b-assets-upload', function() {
 					assetManager.router.navigate('upload', {trigger: true});
@@ -53018,6 +53018,7 @@ $.widget('ui.chunkPageVisibility', {
 				assetManager.getAssets();
 				assetManager.clearSelection();
 			});
+
 			this.listenTo(this.selection, 'reset update', this.toggleButtons);
 
 			this.$el.assetSearch({assets: this.assets});
@@ -53048,7 +53049,7 @@ $.widget('ui.chunkPageVisibility', {
 		},
 
 		toggleButtons: function() {
-			var buttons = $('[id|=b-button-multiaction]');
+			var buttons = this.$('.b-assets-multi');
 
 			buttons.prop('disabled', this.selection.length ? false : true);
 		},
@@ -53066,7 +53067,25 @@ $.widget('ui.chunkPageVisibility', {
 			});
 
 			this.router
-				.navigate('asset/' + asset.getId() + '/info')
+				.navigate('asset/' + asset.getId() + '/' + section)
+				.once('home', function() {
+					view.close();
+				});
+
+			view.render(section);
+			this.$content.prepend(view.$el);
+			this.hideThumbs();
+		},
+
+		viewSelection: function(selection, section) {
+			var view = new BoomCMS.AssetManager.ViewSelection({
+				selection: selection,
+				assets: this.assets,
+				router: this.router
+			});
+
+			this.router
+				.navigate('selection/' + selection.getIdString() + '/' + section)
 				.once('home', function() {
 					view.close();
 				});
@@ -53077,6 +53096,150 @@ $.widget('ui.chunkPageVisibility', {
 		}
 	});
 }(Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
+	'use strict';
+
+	BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
+		tagName: 'div',
+		tagsDisplayed: false,
+		templateSelector: '#b-assets-selection-template',
+
+		bind: function() {
+			var view = this,
+				selection = this.selection;
+
+			this.$el
+				.on('click', '.b-settings-close', function(e) {
+					view.close(e);
+				})
+				.on('click', '.b-assets-delete', function() {
+					selection.destroy();
+				})
+				.on('click', 'a[data-section]', function() {
+					var section = $(this).attr('data-section');
+
+					view.router.navigate('selection/' + selection.getIdString() + '/' + section);
+
+					if (section === 'tags') {
+						view.showTags();
+					}
+				});
+
+			this.$('.b-settings-menu a[href^=#]').boomTabs();
+			this.$('time').localTime();
+		},
+
+		close: function() {
+			this.$el.remove();
+			this.router.navigate('', {trigger: true});
+		},
+
+		displayTags: function(tags) {
+			var view = this,
+				$tagList = this.$('.b-tags').eq(0),
+				$tagTemplate = this.$('#b-tag-template').html(),
+				$el;
+
+			for (var i = 0; i < tags.length; i++) {
+				$el = $($tagTemplate);
+
+				$el
+					.find('a')
+					.attr('data-tag', tags[i])
+					.find('span:first-of-type')
+					.text(tags[i]);
+
+				$tagList.append($el);
+			}
+
+			this.$el
+				.on('click', '.b-tags a', function(e) {
+					e.preventDefault();
+
+					view.toggleTag($(this));
+				});
+		},
+
+		getSection: function() {
+			return this.$('a[data-section].selected').attr('data-section');
+		},
+
+		init: function(options) {
+			this.assets = options.assets;
+			this.router = options.router;
+
+			this.template = _.template($(this.templateSelector).html());
+
+			this.listenTo(this.selection, 'destroy', function() {
+				this.close();
+			});
+		},
+
+		initialize: function(options) {
+			this.selection = options.selection;
+
+			this.init(options);
+		},
+
+		initImageEditor: function() {
+			var asset = this.model;
+
+			this.$('.b-asset-imageeditor').imageEditor({
+				save: function(e, blob) {
+					asset.replaceWith(blob);
+				}
+			});
+		},
+
+		render: function(section) {
+			this.$el.html(this.template({
+				selection: this.selection,
+				section: section
+			}));
+
+			if (section === 'tags') {
+				this.showTags();
+			}
+
+			this.bind();
+			this.initImageEditor();
+
+			return this;
+		},
+
+		showTags: function() {
+			if (this.tagsDisplayed === false) {
+				var view = this,
+					allTags = new BoomCMS.Collections.Assets([]).getTags();
+
+				allTags.done(function(tags) {
+					view.displayTags(tags);
+				});
+
+				$.when(allTags, this.selection.getTags()).done(function(response1, response2) {
+					if (typeof response2[0] !== 'undefined') {
+						var tags = response2[0];
+
+						for (var i = 0; i < tags.length; i++) {
+							view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
+						};
+					}
+				});
+
+				this.tagsDisplayed = true;
+			}
+		},
+
+		toggleTag: function($a) {
+			var activeClass = 'active',
+				funcName = $a.hasClass(activeClass) ? 'removeTag' : 'addTag';
+
+			this.selection[funcName]($a.attr('data-tag')).done(function() {
+				$a.toggleClass(activeClass).blur();
+			});
+		}
+	});
+}(jQuery, Backbone, BoomCMS));
 ;(function($, Backbone, BoomCMS) {
 	'use strict';
 
@@ -53091,7 +53254,8 @@ $.widget('ui.chunkPageVisibility', {
 		routes: {
 			'': 'home',
 			'upload': 'upload',
-			'asset/:asset/:section': 'viewAsset'
+			'asset/:asset/:section': 'viewAsset',
+			'selection/:selection/:section': 'viewSelection'
 		},
 
 		initialize: function(options) {
@@ -53147,6 +53311,7 @@ $.widget('ui.chunkPageVisibility', {
 					model.trigger('view', model);
 				})
 				.on('click', '.edit', function(e) {
+					e.preventDefault();
 					e.stopPropagation();
 
 					model.trigger('view', model);
@@ -53196,24 +53361,22 @@ $.widget('ui.chunkPageVisibility', {
 			return this;
 		}
 	});
-}(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
+}(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
 	'use strict';
 
-	BoomCMS.AssetManager.ViewAsset = Backbone.View.extend({
+	BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
 		tagName: 'div',
 		tagsDisplayed: false,
+		templateSelector: '#b-assets-view-template',
 
 		bind: function() {
 			var view = this,
 				asset = this.model;
 
+			BoomCMS.AssetManager.ViewSelection.prototype.bind.call(this);
+
 			this.$el
-				.on('click', '.b-settings-close', function(e) {
-					view.close(e);
-				})
-				.on('click', '.b-assets-delete', function() {
-					asset.destroy();
-				})
 				.on('click', '.b-assets-revert', function(e) {
 					e.preventDefault();
 
@@ -53233,15 +53396,6 @@ $.widget('ui.chunkPageVisibility', {
 						.done(function(asset) {
 							$this.val(asset.getId());
 						});
-				})
-				.on('click', 'a[data-section]', function() {
-					var section = $(this).attr('data-section');
-
-					view.router.navigate('asset/' + view.model.getId() + '/' + section);
-
-					if (section === 'tags') {
-						view.showTags();
-					}
 				});
 
 			this.$('.b-assets-upload').assetUploader({
@@ -53252,80 +53406,26 @@ $.widget('ui.chunkPageVisibility', {
 					view.render('info');
 				}
 			});
-
-			this.$('.b-settings-menu a[href^=#]').boomTabs();
-			this.$('time').localTime();
-		},
-
-		bindRouter: function() {
-			var view = this;
-
-			this.router.on('viewAsset', function(asset, section) {
-
-			});
-		},
-
-		close: function() {
-			this.$el.remove();
-			this.router.navigate('', {trigger: true});
-		},
-
-		displayTags: function(tags) {
-			var view = this,
-				$tagList = this.$('.b-tags').eq(0),
-				$tagTemplate = this.$('#b-tag-template').html(),
-				$el;
-
-			for (var i = 0; i < tags.length; i++) {
-				$el = $($tagTemplate);
-
-				$el
-					.find('a')
-					.attr('data-tag', tags[i])
-					.find('span:first-of-type')
-					.text(tags[i]);
-
-				$tagList.append($el);
-			}
-
-			this.$el
-				.on('click', '.b-tags a', function(e) {
-					e.preventDefault();
-
-					view.toggleTag($(this));
-				});
-		},
-
-		getSection: function() {
-			return this.$('a[data-section].selected').attr('data-section');
 		},
 
 		initialize: function(options) {
 			var view = this;
 
-			this.assets = options.assets;
-			this.router = options.router;
-			this.collection = new BoomCMS.Collections.Assets([this.model]);
+			this.init(options);
 
-			this.template = _.template($('#b-assets-view-template').html());
-
-			this.listenTo(this.model, 'destroy', function() {
-				this.close();
-			});
+			this.selection = new BoomCMS.Collections.Assets([this.model]);
 
 			this.listenTo(this.model, 'revert', function() {
 				BoomCMS.notify('This asset has been reverted to the previous version');
 			});
 
-			this.listenTo(this.model, 'change:image revert', function(e) {
+			this.listenTo(this.model, 'change:image revert', function() {
 				this.render('info');
 			});
 
 			this.listenTo(this.model, 'sync', function() {
 				this.render(view.getSection());
 			});
-
-			this.bindRouter();
 		},
 
 		initImageEditor: function() {
@@ -53352,38 +53452,6 @@ $.widget('ui.chunkPageVisibility', {
 			this.initImageEditor();
 
 			return this;
-		},
-
-		showTags: function() {
-			if (this.tagsDisplayed === false) {
-				var view = this,
-					allTags = new BoomCMS.Collections.Assets([]).getTags();
-
-				allTags.done(function(tags) {
-					view.displayTags(tags);
-				});
-
-				$.when(allTags, this.collection.getTags()).done(function(response1, response2) {
-					if (typeof response2[0] !== 'undefined') {
-						var tags = response2[0];
-
-						for (var i = 0; i < tags.length; i++) {
-							view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
-						};
-					}
-				});
-
-				this.tagsDisplayed = true;
-			}
-		},
-
-		toggleTag: function($a) {
-			var activeClass = 'active',
-				funcName = $a.hasClass(activeClass) ? 'removeTag' : 'addTag';
-
-			this.collection[funcName]($a.attr('data-tag')).done(function() {
-				$a.toggleClass(activeClass).blur();
-			});
 		}
 	});
 }(jQuery, Backbone, BoomCMS));

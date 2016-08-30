@@ -5,7 +5,8 @@
 		routes: {
 			'': 'home',
 			'upload': 'upload',
-			'asset/:asset/:section': 'viewAsset'
+			'asset/:asset/:section': 'viewAsset',
+			'selection/:selection/:section': 'viewSelection'
 		},
 
 		initialize: function(options) {

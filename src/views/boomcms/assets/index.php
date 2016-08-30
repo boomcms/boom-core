@@ -7,13 +7,13 @@
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
 		<div id="b-assets-buttons">
 			<?= $button('upload', 'upload', ['id' => 'b-assets-upload']) ?>
-			<?= $button('trash-o', 'delete', ['id' => 'b-button-multiaction-delete', 'disabled' => 'disabled']) ?>
-			<?= $button('download', 'download', ['id' => 'b-button-multiaction-download', 'disabled' => 'disabled']) ?>
-			<?= $button('tags', 'add-tags', ['id' => 'b-button-multiaction-tag', 'disabled' => 'disabled']) ?>
+			<?= $button('trash-o', 'delete', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-delete', 'disabled' => 'disabled']) ?>
+			<?= $button('download', 'download', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-download', 'disabled' => 'disabled']) ?>
+			<?= $button('tags', 'add-tags', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-tag', 'disabled' => 'disabled']) ?>
 
-            <a href="#" id="b-assets-select-all"><?= trans('Select all') ?></a>
+            <a href="#" id="b-assets-select-all"><?= trans('boomcms::asset.select.all') ?></a>
             &nbsp;:&nbsp;
-            <a href="#" id="b-assets-select-none"><?= trans('Select none') ?></a>
+            <a href="#" id="b-assets-select-none"><?= trans('boomcms::asset.select.none') ?></a>
 
             <?= $button('search', 'search-assets', ['id' => 'b-assets-search', 'class' => 'b-button-withtext']) ?>
             <?= view('boomcms::assets.pagination') ?>
@@ -41,6 +41,10 @@
 
 <script type="text/template" id="b-assets-view-template">
     <?= view('boomcms::assets.view') ?>
+</script>
+
+<script type="text/template" id="b-assets-selection-template">
+    <?= view('boomcms::assets.selection') ?>
 </script>
 
 <script type="text/javascript">

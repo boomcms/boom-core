@@ -28,6 +28,10 @@ return [
     'edited-by'      => 'Edited by',
     'edited-at'      => 'Edited at',
     'edit-image'     => 'Edit image',
+    'select'         => [
+        'all'  => 'Select all',
+        'none' => 'Select none',
+    ],
     'delete'         => [
         'heading' => 'Delete asset',
         'confirm' => 'Are you sure you want to delete this asset?',
