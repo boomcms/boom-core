@@ -53613,7 +53613,7 @@ $.widget('ui.chunkPageVisibility', {
 		setAssetsPerPage: function() {
 			var rowHeight = 200,
 				avgAspectRatio = 1.5,
-				height = this.element.find('#b-assets-view-thumbs').height(),
+				height = this.element.find('#b-assets-content').height(),
 				rows = Math.ceil(height / rowHeight),
 				perrow = Math.ceil(document.documentElement.clientWidth / (rowHeight * avgAspectRatio)),
 				perpage = Math.ceil(rows * perrow);
