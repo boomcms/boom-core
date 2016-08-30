@@ -19,13 +19,6 @@ $.widget('boom.assetTagSearch',  {
 	bind: function() {
 		var tagSearch = this;
 
-		this.input
-			.assetTagAutocomplete({
-				complete: function(e, data) {
-					tagSearch.addTag(data.tag);
-				}
-			});
-
 		this.element.find('button').on('click', function(e) {
 			e.preventDefault();
 
