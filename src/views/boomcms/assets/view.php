@@ -157,7 +157,7 @@
 
                 <dl>
                     <dt><?= trans('boomcms::asset.type-heading') ?></dt>
-                    <dd><%= assetTypes[asset.getType()] %></dd>
+                    <dd><%= BoomCMS.assetTypes[asset.getType()] %></dd>
 
                     <dt><?= trans('boomcms::asset.filename') ?></dt>
                     <dd><%= asset.getFilename() %></dd>

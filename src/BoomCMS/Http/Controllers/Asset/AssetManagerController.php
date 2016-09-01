@@ -1,8 +1,9 @@
 <?php
 
-namespace BoomCMS\Http\Controllers;
+namespace BoomCMS\Http\Controllers\Asset;
 
-use BoomCMS\Support\Facades\Router;
+use BoomCMS\Http\Controllers\Controller;
+use Illuminate\View\View;
 
 class AssetManagerController extends Controller
 {
@@ -11,18 +12,15 @@ class AssetManagerController extends Controller
      */
     protected $viewPrefix = 'boomcms::assets.';
 
+    protected $role = 'manageAssets';
+
     /**
      * Display the asset manager.
+     *
+     * @return View
      */
     public function index()
     {
-        $this->authorize('manageAssets', Router::getActiveSite());
-
         return view($this->viewPrefix.'index');
-    }
-
-    public function picker()
-    {
-        return view($this->viewPrefix.'picker');
     }
 }

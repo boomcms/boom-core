@@ -47,8 +47,8 @@ Route::group(['middleware' => [
                 Route::delete('tags', 'TagsController@remove');
             });
 
-
-            Route::get('asset-manager', 'AssetManagerController@index');
+            Route::get('asset-picker', 'Asset\AssetPickerController@index');
+            Route::get('asset-manager', 'Asset\AssetManagerController@index');
             Route::resource('asset', 'Asset\AssetController');
 
             Route::group([

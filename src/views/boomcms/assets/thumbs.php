@@ -26,7 +26,7 @@
             <h2><%= asset.getTitle() %></h2>
 
             <p>
-                <%= assetTypes[asset.getType()] %><br />
+                <%= BoomCMS.assetTypes[asset.getType()] %><br />
 
                 <% if (asset.isImage()) { %>
                     <%= asset.getWidth() %> x <%= asset.getHeight() %>
