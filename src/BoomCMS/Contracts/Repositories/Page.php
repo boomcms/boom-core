@@ -59,7 +59,7 @@ interface Page
 
     /**
      * @param SiteInterface $site
-     * @param array|string        $uri
+     * @param array|string  $uri
      *
      * @return Collection|PageInterface
      */

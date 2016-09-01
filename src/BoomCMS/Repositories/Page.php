@@ -73,7 +73,7 @@ class Page implements PageRepositoryInterface
 
     /**
      * @param SiteInterface $site
-     * @param array|string        $uri
+     * @param array|string  $uri
      *
      * @return null|Model|Collection
      */
@@ -106,7 +106,7 @@ class Page implements PageRepositoryInterface
      * Find a page by site and URI.
      *
      * @param SiteInterface $site
-     * @param array|string        $uri
+     * @param array|string  $uri
      *
      * @return null|Model|Collection
      */
