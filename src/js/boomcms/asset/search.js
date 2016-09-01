@@ -27,9 +27,10 @@
 
 					assetSearch.addFilter($this.attr('name'), $this.val());
 					assetSearch.getAssets();
-				});
-
-			this.element
+				})
+				.on('change', '#b-assets-sortby', function(event) {
+					assetSearch.sortBy(this.value);
+				})
 				.find('#b-assets-filter-title')
 				.assetTitleFilter({
 					search: function(event, ui) {

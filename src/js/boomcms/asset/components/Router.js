@@ -26,6 +26,12 @@
 			asset.trigger('view', asset, section);
 		},
 
+		viewSelection: function(selection, section) {
+			var assetIds = selection.split(',');
+
+			this.trigger('selection', assetIds, section);
+		},
+
 		home: function() {
 			this.trigger('home');
 		},

@@ -74,13 +74,19 @@
 		},
 
 		init: function(options) {
+			var view = this;
+
 			this.assets = options.assets;
 			this.router = options.router;
 
 			this.template = _.template($(this.templateSelector).html());
 
+			this.listenTo(this.selection, 'sync', function() {
+				this.render(view.getSection());
+			});
+
 			this.listenTo(this.selection, 'destroy', function() {
-				this.close();
+				view.close();
 			});
 		},
 

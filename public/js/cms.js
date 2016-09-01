@@ -52907,6 +52907,8 @@ $.widget('ui.chunkPageVisibility', {
 			this.router.navigate('', {trigger: true});
 			this.uploader.assetUploader('close');
 			this.uploader.assetUploader('reset');
+
+			this.getAssets();
 		},
 
 		bind: function() {
@@ -52963,6 +52965,18 @@ $.widget('ui.chunkPageVisibility', {
 			var assetManager = this;
 
 			this.router
+				.on('selection', function(assetIds, section) {
+					assetManager.selection.reset();
+
+					for (var i = 0; i < assetIds.length; i++) {
+						var asset = new BoomCMS.Asset({id: assetIds[i]});
+						asset.fetch();
+
+						assetManager.selection.add(asset);
+					}
+
+					assetManager.viewSelection(assetManager.selection, section);
+				})
 				.on('upload', function() {
 					assetManager.uploader.show();
 					assetManager.hideThumbs();
@@ -52996,7 +53010,6 @@ $.widget('ui.chunkPageVisibility', {
 			var assetManager = this;
 
 			this.router = new BoomCMS.AssetManager.Router({assets: this.assets});
-
 			this.$content = this.$('#b-assets-content');
 			this.uploader = this.$content.find('> .b-assets-upload .b-assets-upload-form').eq(0);
 
@@ -53016,6 +53029,7 @@ $.widget('ui.chunkPageVisibility', {
 
 		showThumbs: function() {
 			this.$content.removeClass(this.hideThumbsClass);
+			this.uploader.hide();
 		},
 
 		selectAll: function() {
@@ -53160,13 +53174,19 @@ $.widget('ui.chunkPageVisibility', {
 		},
 
 		init: function(options) {
+			var view = this;
+
 			this.assets = options.assets;
 			this.router = options.router;
 
 			this.template = _.template($(this.templateSelector).html());
 
+			this.listenTo(this.selection, 'sync', function() {
+				this.render(view.getSection());
+			});
+
 			this.listenTo(this.selection, 'destroy', function() {
-				this.close();
+				view.close();
 			});
 		},
 
@@ -53268,6 +53288,12 @@ $.widget('ui.chunkPageVisibility', {
 			}
 
 			asset.trigger('view', asset, section);
+		},
+
+		viewSelection: function(selection, section) {
+			var assetIds = selection.split(',');
+
+			this.trigger('selection', assetIds, section);
 		},
 
 		home: function() {
@@ -53417,10 +53443,6 @@ $.widget('ui.chunkPageVisibility', {
 			this.listenTo(this.model, 'change:image revert', function() {
 				this.render('info');
 			});
-
-			this.listenTo(this.model, 'sync', function() {
-				this.render(view.getSection());
-			});
 		},
 
 		initImageEditor: function() {
@@ -53479,9 +53501,10 @@ $.widget('ui.chunkPageVisibility', {
 
 					assetSearch.addFilter($this.attr('name'), $this.val());
 					assetSearch.getAssets();
-				});
-
-			this.element
+				})
+				.on('change', '#b-assets-sortby', function(event) {
+					assetSearch.sortBy(this.value);
+				})
 				.find('#b-assets-filter-title')
 				.assetTitleFilter({
 					search: function(event, ui) {
@@ -54122,61 +54145,106 @@ function Row() {
 
 		return ($el.offset.top >= (this.elements[this.elements.length - 1].offset.top + $el.height()));
 	};
-};$.widget('boom.assetTagSearch',  {
-	tags : [],
+};(function($, BoomCMS) {
+	'use strict';
 
-	addTag: function(tag) {
-		this.tags.push(tag);
+	$.widget('boom.assetTagSearch',  {
+		assets: new BoomCMS.Collections.Assets(),
+		tags : [],
 
-		var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag + '"></a></li>');
+		addTag: function(tag) {
+			this.tags.push(tag);
 
-		if (this.tagList.children().length) {
-			$newTag.insertBefore(this.tagList.children().last());
-		} else {
-			$newTag.prependTo(this.tagList);
+			var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag + '"></a></li>');
+
+			if (this.tagList.children().length) {
+				$newTag.insertBefore(this.tagList.children().last());
+			} else {
+				$newTag.prependTo(this.tagList);
+			}
+
+			this._trigger('addTag', null, tag);
+			this.update();
+		},
+
+		autocompleteSource: function(request, response) {
+			this.assets.getTags().done(function(tags) {
+				response(tags);
+			});
+		},
+
+		bind: function() {
+			var tagSearch = this;
+
+			this.assets.getTags().done(function(tags) {
+				tagSearch.element.find('input[type=text]').autocomplete({
+					source: tags,
+					minLength: 0,
+					select: function(event, ui) {
+						event.preventDefault();
+
+						tagSearch.element.find('input[type=text]').val('');
+						tagSearch.addTag(ui.item.value);
+					}
+				});
+			});
+
+			this.element
+				.find('button')
+				.on('click', function(e) {
+					e.preventDefault();
+
+					tagSearch.addTag(tagSearch.input.val());
+					tagSearch.input.val('');
+				})
+				.end()
+				.on('click', '.b-tag-remove', function() {
+					tagSearch.removeTag($(this));
+				})
+				.on('keypress', function(e) {
+					// Add a tag when the enter key is pressed.
+					// This allows us to add a tag which doesn't already exist.
+					if (e.which === $.ui.keyCode.ENTER && tagSearch.element.val()) {
+						e.preventDefault();
+
+						var tags, i;
+
+						// If the text entered contains commas then it will be treated as a list of tags with each one 'completed'
+						tags = tagSearch.element.val().split(',');
+
+						for (i = 0; i < tags.length; i++) {
+							tagSearch.tagSelected(tags[i]);
+						}
+
+						tagSearch.element.val('');
+						tagSearch.element.autocomplete('close');
+					}
+				});
+		},
+
+		_create: function() {
+			this.tagList = this.element.find('ul');
+			this.input = this.element.find('input');
+
+			this.bind();
+		},
+
+		removeTag: function($a) {
+			var tag = $a.attr('data-tag');
+
+			$a.parent().remove();
+			this.tags.splice(this.tags.indexOf(tag));
+
+			this._trigger('removeTag', null, tag);
+			this.update();
+		},
+
+		update: function() {
+			this._trigger('update', null, {tags : this.tags});
 		}
-
-		this._trigger('addTag', null, tag);
-		this.update();
-	},
-
-	bind: function() {
-		var tagSearch = this;
-
-		this.element.find('button').on('click', function(e) {
-			e.preventDefault();
-
-			tagSearch.addTag(tagSearch.input.val());
-			tagSearch.input.val('');
-		});
-
-		this.element.on('click', '.b-tag-remove', function() {
-			tagSearch.removeTag($(this));
-		});
-	},
-
-	_create: function() {
-		this.tagList = this.element.find('ul');
-		this.input = this.element.find('input');
-
-		this.bind();
-	},
-
-	removeTag: function($a) {
-		var tag = $a.attr('data-tag');
-
-		$a.parent().remove();
-		this.tags.splice(this.tags.indexOf(tag));
-
-		this._trigger('removeTag', null, tag);
-		this.update();
-	},
-
-	update: function() {
-		this.input.assetTagAutocomplete('setIgnoreTags', this.tags);
-		this._trigger('update', null, {tags : this.tags});
-	}
-});;(function($) {
+	});
+}(jQuery, BoomCMS));
+;(function($) {
 	'use strict';
 
 	$.widget('boom.imageEditor', {

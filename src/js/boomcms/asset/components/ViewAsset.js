@@ -58,10 +58,6 @@
 			this.listenTo(this.model, 'change:image revert', function() {
 				this.render('info');
 			});
-
-			this.listenTo(this.model, 'sync', function() {
-				this.render(view.getSection());
-			});
 		},
 
 		initImageEditor: function() {
