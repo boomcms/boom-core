@@ -8,6 +8,7 @@ use BoomCMS\Contracts\Repositories\Page as PageRepositoryInterface;
 use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Page\Finder;
 use BoomCMS\Support\Facades\Router;
+use Illuminate\Database\Eloquent\Collection;
 
 class Page implements PageRepositoryInterface
 {
@@ -59,9 +60,9 @@ class Page implements PageRepositoryInterface
     }
 
     /**
-     * @param string $uri
+     * @param array|string $uri
      *
-     * @return null|Model
+     * @return null|Model|Collection
      */
     public function findByPrimaryUri($uri)
     {
@@ -72,24 +73,27 @@ class Page implements PageRepositoryInterface
 
     /**
      * @param SiteInterface $site
-     * @param string        $uri
+     * @param array|string        $uri
      *
-     * @return null|Model
+     * @return null|Model|Collection
      */
     public function findBySiteAndPrimaryUri(SiteInterface $site, $uri)
     {
-        return $this->model
-            ->where(Model::ATTR_SITE, '=', $site->getId())
-            ->where(Model::ATTR_PRIMARY_URI, '=', $uri)
-            ->first();
+        $query = $this->model->where(Model::ATTR_SITE, '=', $site->getId());
+
+        if (is_array($uri)) {
+            return $query->where(Model::ATTR_PRIMARY_URI, 'in', $uri)->get();
+        }
+
+        return $query->where(Model::ATTR_PRIMARY_URI, '=', $uri)->first();
     }
 
     /**
      * Find a page by URI.
      *
-     * @param string $uri
+     * @param array|string $uri
      *
-     * @return Page
+     * @return Moel|Collection
      */
     public function findByUri($uri)
     {
@@ -102,18 +106,22 @@ class Page implements PageRepositoryInterface
      * Find a page by site and URI.
      *
      * @param SiteInterface $site
-     * @param string        $uri
+     * @param array|string        $uri
      *
-     * @return null|Model
+     * @return null|Model|Collection
      */
     public function findBySiteAndUri(SiteInterface $site, $uri)
     {
-        return $this->model
+        $query = $this->model
             ->join('page_urls', 'page_urls.page_id', '=', 'pages.id')
-            ->where('location', '=', $uri)
-            ->where('pages.'.Model::ATTR_SITE, '=', $site->getId())
             ->select('pages.*')
-            ->first();
+            ->where('pages.'.Model::ATTR_SITE, '=', $site->getId());
+
+        if (is_array($uri)) {
+            return $query->where('location', 'in', $uri)->get();
+        }
+
+        return $query->where('location', '=', $uri)->first();
     }
 
     /**

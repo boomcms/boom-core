@@ -4,6 +4,7 @@ namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 interface Page
 {
@@ -43,24 +44,24 @@ interface Page
     public function findByParentId($parentId);
 
     /**
-     * @param string $uri
+     * @param array|string $uri
      *
-     * @return PageInterface
+     * @return Collection|PageInterface
      */
     public function findByPrimaryUri($uri);
 
     /**
-     * @param string $uri
+     * @param array|string $uri
      *
-     * @return PageInterface
+     * @return Collection|PageInterface
      */
     public function findByUri($uri);
 
     /**
      * @param SiteInterface $site
-     * @param string        $uri
+     * @param array|string        $uri
      *
-     * @return PageInterface
+     * @return Collection|PageInterface
      */
     public function findBySiteAndUri(SiteInterface $site, $uri);
 
