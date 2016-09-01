@@ -89,6 +89,30 @@ class PageTest extends AbstractTestCase
         $this->assertEquals($this->page, $this->repository->findBySiteAndPrimaryUri($this->site, $uri));
     }
 
+    public function testFindBySiteAndPrimaryUriWithArray()
+    {
+        $uris = ['test1', 'test2'];
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with(Page::ATTR_SITE, '=', $this->site->getId())
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with(Page::ATTR_PRIMARY_URI, 'in', $uris)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn([$this->page, $this->page]);
+
+        $this->assertEquals([$this->page, $this->page], $this->repository->findBySiteAndPrimaryUri($this->site, $uris));
+    }
+
     public function testFindByUri()
     {
         $uri = 'test';
@@ -136,6 +160,42 @@ class PageTest extends AbstractTestCase
             ->andReturn($this->page);
 
         $this->assertEquals($this->page, $this->repository->findBySiteAndUri($this->site, $uri));
+    }
+
+    public function testFindBySiteAndUriWithArray()
+    {
+        $uris = ['test1', 'test2'];
+
+        $this->model
+            ->shouldReceive('join')
+            ->once()
+            ->with('page_urls', 'page_urls.page_id', '=', 'pages.id')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with('pages.site_id', '=', $this->site->getId())
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with('location', 'in', $uris)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('select')
+            ->once()
+            ->with('pages.*')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn([$this->page, $this->page]);
+
+        $this->assertEquals([$this->page, $this->page], $this->repository->findBySiteAndUri($this->site, $uris));
     }
 
     public function testInternalNameExists()
