@@ -57,68 +57,6 @@
 			display: inline-block;
 			float: left;
 		}
-
-		ul {
-			margin: -0.75rem 0.75rem 0.75rem -0.75rem;
-			display: inline-block;
-			float: left;
-
-			li {
-				padding: 0.75rem;
-				display: inline-block;
-				float: left;
-			}
-
-			a {
-				border: 1px solid @light-grey;
-				padding: 0.75rem 4rem 0.75rem 0.75rem;
-				min-width: 15rem;
-				text-decoration: none;
-				color: @black;
-				display: block;
-				overflow: hidden;
-				position: relative;
-
-				.remove, .add {
-					display: none;
-					position: absolute;
-					top: 50%;
-					right: 1.5rem;
-					transform: translateY(-50%);
-					line-height: 1px;
-				}
-
-				.add {
-					display: inline-block;
-				}
-
-				&:hover, &:focus {
-					background: @blue;
-					color: @white;
-					border-color: @blue;
-				}
-
-				&.active {
-					background: @blue;
-					color: @white;
-					border-color: @blue;
-
-					&:hover, &:focus {
-						.remove {
-							color: @red;
-						}
-					}
-
-					.add {
-						display: none;
-					}
-
-					.remove {
-						display: inline-block;
-					}
-				}
-			}
-		}
 	}
 
 	.b-tags-newgroup {

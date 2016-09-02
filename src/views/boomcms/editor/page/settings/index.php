@@ -1,7 +1,7 @@
-<div class='b-page-settings'>
-    <div class="b-page-settings-menu">
+<div class='b-settings'>
+    <div class="b-settings-menu">
         <ul>
-            <li class="b-page-settings-close">
+            <li class="b-settings-close">
                 <a href="#">
                     <span class="fa fa-close"></span>
                     <?= trans('boomcms::settings.menu.close') ?>
@@ -118,7 +118,7 @@
             </div>
 
             <?php if (Gate::allows('delete', $page)): ?>
-                <li>
+                <li class="b-setting-delete">
                     <a href="#" data-b-page-setting="delete">
                         <span class="fa fa-trash-o"></span>
                         <?= trans('boomcms::settings.menu.delete') ?>
@@ -134,7 +134,7 @@
         </a>
     </div>
 
-    <div class="b-page-settings-content">
+    <div class="b-settings-content">
         <?= view('boomcms::editor.page.settings.info', ['page' => $page]) ?>
     </div>
 </div>

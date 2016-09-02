@@ -1,12 +1,33 @@
 $.widget('boom.justifyAssets', {
-	$el : null,
 	targetRightOffset : null,
 	windowWidth : null,
 
-	_create: function() {
-		this.$el = $(this.element);
+	closeRemainingGap: function() {
+		var lastRowGap = this.currentRow.determineGap(this.targetRightOffset);
 
-		this._setDimensions();
+		if (lastRowGap <= (this.element.outerWidth(true) * 0.75)) {
+			this.currentRow.expandTo(this.targetRightOffset);
+		} else if (this.rows > 1) {
+			this.prevRow.merge(currentRow);
+		}
+	},
+
+	_create: function() {
+		var justifyAssets = this,
+			resizeTimeout;
+
+		this.window.on('resize', function() {
+			if (resizeTimeout !== undefined) {
+				clearTimeout(resizeTimeout);
+			}
+
+			resizeTimeout = setTimeout(function() {
+				justifyAssets.justify();
+			}, 50);
+		});
+	},
+
+	_init: function() {
 		this.justify();
 	},
 
@@ -17,46 +38,56 @@ $.widget('boom.justifyAssets', {
 		return offset;
 	},
 
+	hasElements: function() {
+		return this.element.children().length > 1;
+	},
+
 	justify: function() {
-		var currentRow = new Row(),
-			prevRow,
-			self = this,
-			rows = 0;
+		this.currentRow = new Row();
+		this.prevRow = null;
+		this.rows = 0;
+		this.windowWidth = $(window).width();
+		this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
 
-		if (this.$el.children().length > 1) {
-			this.$el.children().each(function(index, element) {
-				var $child = $(element);
-
-				$child.offset = self._getOffset($child);
-
-				if ( ! $child.css('height') || ! $child.attr('data-aspect-ratio')) {
-					$child.remove();
-					return true;
-				}
-
-				prevRow = jQuery.extend({}, currentRow);
-				currentRow.addElementToRow($child);
-
-				if (currentRow.isAtStart() && index > 0) {
-					rows++;
-					prevRow.expandTo(self.targetRightOffset);
-				}
-
-			});
-
-			var lastRowGap = currentRow.determineGap(this.targetRightOffset);
-
-			if (lastRowGap <= (this.$el.outerWidth(true) * 0.75)) {
-				currentRow.expandTo(self.targetRightOffset);
-			} else if (rows > 1) {
-				prevRow.merge(currentRow);
-			}
+		if (this.hasElements()) {
+			this.resetInitialDimensions();
+			this.resizeElements();
+			this.closeRemainingGap();
 		}
 	},
 
-	_setDimensions: function() {
-		this.windowWidth = $(window).width();
-		this.targetRightOffset = (this.windowWidth - (this.$el.offset().left + this.$el.innerWidth()));
+	resetInitialDimensions: function() {
+		this.element.children().each(function(index, element) {
+			var $child = $(element);
+
+			if (!$child.css('height') || !$child.attr('data-aspect-ratio')) {
+				$child.remove();
+				return true;
+			}
+
+			$child.css({
+				height: '160px',
+				width: Math.floor(160 * $child.attr('data-aspect-ratio')) + 'px'
+			});
+		});
+	},
+
+	resizeElements: function() {
+		var justifyAssets = this;
+
+		this.element.children().each(function(index, element) {
+			var $child = $(element);
+
+			$child.offset = justifyAssets._getOffset($child);
+
+			justifyAssets.prevRow = jQuery.extend({}, justifyAssets.currentRow);
+			justifyAssets.currentRow.addElementToRow($child);
+
+			if (justifyAssets.currentRow.isAtStart() && index > 0) {
+				this.rows++;
+				justifyAssets.prevRow.expandTo(justifyAssets.targetRightOffset);
+			}
+		});
 	}
 });
 
@@ -94,7 +125,8 @@ function Row() {
 
 					$el
 						.height('+=' + increaseBy)
-						.width('+=' + incWidth);
+						.width('+=' + incWidth)
+						.trigger('justified');
 				});
 			}
 

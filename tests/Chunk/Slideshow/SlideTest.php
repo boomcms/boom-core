@@ -36,6 +36,7 @@ class SlideTest extends AbstractTestCase
         $asset = $slide->getAsset();
 
         $this->assertInstanceOf(Asset::class, $asset);
-        $this->assertEquals($attrs, $asset->toArray());
+        $this->assertEquals($attrs[Asset::ATTR_ID], $asset->getId());
+        $this->assertEquals($attrs[Asset::ATTR_TITLE], $asset->getTitle());
     }
 }

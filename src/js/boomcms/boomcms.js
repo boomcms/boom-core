@@ -37,6 +37,7 @@
 				}
 			});
 
+			this.assetTypes = options.assetTypes || {};
 			this.user = options.user;
 
 			// Used in the login / password reset forms. To be extended to other forms.

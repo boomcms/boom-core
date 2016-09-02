@@ -59,6 +59,8 @@ class Asset implements AssetRepositoryInterface
 
         $file->move($asset->directory(), $version->id);
 
+        $asset->setVersion($version);
+
         return $version;
     }
 

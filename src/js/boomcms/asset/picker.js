@@ -7,7 +7,7 @@ function boomAssetPicker(currentAsset, filters) {
 
 	this.filters = filters ? filters : {};
 
-	boomAssetPicker.prototype.url = '/boomcms/assets/picker';
+	boomAssetPicker.prototype.url = BoomCMS.urlRoot + 'asset-picker';
 
 	boomAssetPicker.prototype.assetsUploaded = function(assetIds) {
 		if (assetIds.length === 1) {
@@ -21,14 +21,11 @@ function boomAssetPicker(currentAsset, filters) {
 	boomAssetPicker.prototype.bind = function() {
 		var assetPicker = this;
 
+		this.assets.on('select', function(data) {
+			assetPicker.pick(data.asset);
+		});
+
 		this.picker
-			.on('click', '.thumb', function(e) {
-				e.preventDefault();
-
-				var assetId = $(this).attr('data-asset');
-
-				assetPicker.pick(new BoomCMS.Asset({id: assetId}));
-			})
 			.on('click', '#b-assets-picker-close', function() {
 				assetPicker.cancel();
 			})
@@ -61,14 +58,17 @@ function boomAssetPicker(currentAsset, filters) {
 	boomAssetPicker.prototype.loadPicker = function() {
 		var assetPicker = this;
 
+		this.assets = new BoomCMS.Collections.Assets();
+
 		this.dialog = new boomDialog({
-			url : this.url,
+			url: this.url,
 			onLoad: function() {
 				assetPicker.dialog.contents.parent().css({
 					position: 'fixed',
 					height: '100vh',
 					width: '100vw',
-					transform: 'none'
+					transform: 'none',
+					overflow: 'visible'
 				});
 
 				assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
@@ -78,9 +78,11 @@ function boomAssetPicker(currentAsset, filters) {
 				}
 
 				assetPicker.dialog.contents.assetSearch({
-					filters: assetPicker.filters
+					filters: assetPicker.filters,
+					assets: assetPicker.assets
 				});
 
+				assetPicker.dialog.contents.assetSearch('getAssets');
 				assetPicker.bind();
 
 				if (assetPicker.currentAsset && assetPicker.currentAsset.getId() > 0) {

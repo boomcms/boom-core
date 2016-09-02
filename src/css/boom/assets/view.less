@@ -1,23 +1,43 @@
-#b-assets-view {
+.b-assets-view {
 	overflow: hidden;
+	position: fixed;
+	top: 6rem;
+	left: 0;
+	right: 0;
+	bottom: 0;
 
-	&-files {
+	.b-settings-content {
+		> * {
+			display: none;
+
+			&.selected {
+				display: block;
+			}
+		}
+	}
+
+	#b-assets-view-files {
 		ul {
 			padding-left: 0;
 
 			li {
 				list-style-type: none;
 				overflow: hidden;
-
-				+ li {
-					margin-top: 15px;
-				}
+				margin-top: 5rem;
 
 				div {
 					display: inline-block;
 					float: left;
-					width: 50%;
 					vertical-align: top;
+
+					&:first-of-type {
+						width: 20rem;
+					}
+
+					&:nth-of-type(2) {
+						width: calc(~"100% - 20rem");
+						padding-left: 5rem;
+					}
 				}
 
 				h3 {
@@ -29,27 +49,8 @@
 					display: block;
 					margin-top: 5px;
 				}
-
-				button {
-					margin-left: -15px;
-				}
 			}
 		}
-	}
-
-	.b-assets-preview, .boom-tabs {
-		display: inline-block;
-		vertical-align: top;
-		float: left;
-	}
-
-	.b-assets-preview {
-		width: 400px;
-		margin-right: 2rem;
-	}
-
-	.boom-tabs {
-		width: calc(~"100% - 2rem - 400px");
 	}
 
 	.b-buttons {
@@ -65,6 +66,111 @@
 
 		.b-tag {
 			background: @white;
+		}
+	}
+
+	#b-asset-metadata {
+		dl {
+			dt {
+				width: 30rem;
+			}
+
+			dd {
+				width: calc(~"100% - 30rem");
+			}
+		}
+	}
+
+	#b-asset-replace {
+		.b-assets-upload-form {
+			display: block;
+			position: relative;
+			width: calc(~"100% + 10rem");
+			height: calc(~"100vh - 6rem");
+			margin: -5rem;
+		}
+
+		.b-assets-upload-info {
+			p {
+				max-width: 100%;
+			}
+		}
+
+		.b-assets-upload-container {
+			border: 0;
+			background: @white;
+		}
+
+		a {
+			&:hover, &:focus {
+				text-decoration: none;
+			}
+		}
+
+		.b-assets-upload-cancel {
+			margin: 2.5rem auto 0 auto;
+		}
+	}
+
+	#b-assets-view-info {
+		position: relative;
+		
+		.image-container {
+			position: relative;
+		}
+
+		img, .jcrop-active, video, canvas {
+			max-width: 100%;
+			max-height: 50vh;
+			width: auto;
+			height: auto;
+			margin-bottom: 5rem;
+		}
+
+		.jcrop-active {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 2;
+		}
+
+		#b-imageeditor-original {
+			display: none;
+		}
+
+		.crop-tools {
+			display: none;
+
+			.aspect-ratio {
+				p {
+					margin: 1rem 0;
+				}
+
+				select {
+					float: none;
+					width: calc(~"100% - 1em");
+					max-width: 20rem;
+				}
+			}
+		}
+
+		.jcrop-vline, .jcrop-hline {
+			background-image: none;
+		}
+
+		#b-imageeditor-toolbar {
+			margin: -5rem 0 5rem 0;
+
+			.b-button {
+				.text-small;
+				border: 0;
+				min-width: 0;
+				height: auto;
+
+				&:hover, &:focus {
+					background: none;
+				}
+			}
 		}
 	}
 }

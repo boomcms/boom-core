@@ -1,5 +1,5 @@
-#b-assets-upload {
-	&-add {
+.b-assets-upload {
+	form {
 		color: @red;
 
 		label {
@@ -9,6 +9,10 @@
 			padding-right: 0;
 			cursor: pointer;
 			overflow: inherit;
+		}
+
+		a {
+			color: @red;
 		}
 	}
 
@@ -53,7 +57,7 @@
 		}
 	}
 
-	&-progress, &-file, &-cancel {
+	&-progress, &-cancel, input[type=file] {
 		display: none;
 	}
 }

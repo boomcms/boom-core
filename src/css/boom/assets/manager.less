@@ -3,7 +3,7 @@
 
 	#b-topbar {
 		position: fixed;
-		z-index: 2;
+		z-index: 3;
 	}
 
 	#b-assets-search {
@@ -20,7 +20,7 @@
 		top: 0;
 		right: 0;
 		bottom: 0;
-		z-index: 2;
+		z-index: 5;
 		background: @lightest-grey;
 		padding: 0.5rem 1.5rem;
 		transform: translateX(100%);
@@ -91,23 +91,22 @@
 		float: right;
 	}
 
-	#b-assets-upload-form {
-		position: fixed;
-		top: 0;
+	.b-assets-upload-form {
+		position: absolute;
+		top: 6rem;
 		left: 0;
 		bottom: 0;
 		right: 0;
-		z-index: 100001;
 		background: @lightest-grey;
 		display: none;
 
-		#b-assets-upload-container {
+		.b-assets-upload-container {
 			width: 100%;
 			height: 100%;
 			margin: 0;
 		}
 
-		#b-assets-upload-close {
+		.b-assets-upload-close {
 			position: absolute;
 			right: 2em;
 			bottom: 2em;

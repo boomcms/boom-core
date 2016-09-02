@@ -41,22 +41,6 @@ class Autocomplete extends Controller
         return $query->lists('title');
     }
 
-    public function getAssetTags()
-    {
-        $query = DB::table('assets_tags')
-            ->select('tag')
-            ->where('tag', 'like', "%$this->text%")
-            ->orderBy(DB::raw('length(tag)'), 'asc')
-            ->distinct(true)
-            ->limit($this->count);
-
-        if ($this->request->input('ignore')) {
-            $query->whereNotIn('tag', $this->request->input('ignore'));
-        }
-
-        return $query->lists('tag');
-    }
-
     public function getPageTitles()
     {
         $results = [];

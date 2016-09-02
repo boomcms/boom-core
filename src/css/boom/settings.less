@@ -1,10 +1,13 @@
-.b-page-settings {
+/*
+	Settings interface, used for editing page settings and assets.
+*/
+.b-settings {
 	background: @white;
 	color: @darkest-grey;
 	width: 100%;
 	height: 100%;
 
-	.b-page-settings-menu {
+	.b-settings-menu {
 		background: @lightest-grey;
 		display: inline-block;
 		width: 35rem;
@@ -35,12 +38,31 @@
 			list-style-type: none;
 			position: relative;
 
-			&.b-page-settings-close {
+			&.b-settings-close {
 				margin-bottom: 2rem;
 			}
 
-			&.selected a {
-				background: @white;
+			&.b-setting-delete {
+				a {
+					background: @red;
+					color: @white;
+
+					&.selected {
+						color: @black;
+
+						&:hover, &:focus {
+							color: @black;
+						}
+					}
+
+					&:hover, &:focus {
+						color: @white;
+
+						span {
+							color: @black;
+						}
+					}
+				}
 			}
 
 			a {
@@ -48,6 +70,10 @@
 				color: @darkest-grey;
 				text-decoration: none;
 				padding: 1.5rem 5rem;
+
+				&.selected {
+					background: @white;
+				}
 
 				span {
 					display: inline-block;
@@ -59,29 +85,20 @@
 				&:hover, &:focus {
 					color: @red;
 				}
-
-				&[data-b-page-setting="delete"] {
-					background: @red;
-					color: @white;
-
-					&:hover, &:focus {
-						span {
-							color: @black;
-						}
-					}
-				}
 			}
 		}
 	}
 
-	.b-page-settings-content {
+	.b-settings-content {
 		display: inline-block;
 		width: 100%;
 		max-width: calc(~"100% - 35rem");
-		float: left;
 		max-height: 100%;
+		float: left;
 		overflow-y: auto;
 		padding: 5rem;
+		background: @white;
+		position: relative;
 
 		h1, h2, p {
 			max-width: 700px;
@@ -128,7 +145,7 @@
 		}
 
 		.b-button {
-			margin-top: 1.5em;
+			margin-top: 1.5rem;
 			color: @darkest-grey;
 
 			&[disabled] {
@@ -161,39 +178,85 @@
 			max-height: 400px;
 		}
 	}
-}
 
-#b-page-settings-toolbar {
-	position: fixed;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	left: 0;
-	max-width: 0;
-	width: 100vw;
-	padding-left: 60px;
-	transition: all 1s;
-	overflow: hidden;
+	.b-tags {
+		margin: -0.75rem 0.75rem 0.75rem -0.75rem;
+		display: inline-block;
+		float: left;
+		padding: 0;
 
-	&.open {
-		max-width: 5000px;
-		transition: all 1s;
+		li {
+			padding: 0.75rem;
+			display: inline-block;
+			float: left;
+		}
+
+		a {
+			border: 1px solid @light-grey;
+			padding: 0.75rem 4rem 0.75rem 0.75rem;
+			min-width: 15rem;
+			text-decoration: none;
+			color: @black;
+			display: block;
+			overflow: hidden;
+			position: relative;
+
+			.remove, .add {
+				display: none;
+				position: absolute;
+				top: 50%;
+				right: 1.5rem;
+				transform: translateY(-50%);
+				line-height: 1px;
+			}
+
+			.add {
+				display: inline-block;
+			}
+
+			&:hover, &:focus {
+				background: @blue;
+				color: @white;
+				border-color: @blue;
+				text-decoration: none;
+			}
+
+			&.active {
+				background: @blue;
+				color: @white;
+				border-color: @blue;
+
+				&:hover, &:focus {
+					.remove {
+						color: @red;
+					}
+				}
+
+				.add {
+					display: none;
+				}
+
+				.remove {
+					display: inline-block;
+				}
+			}
+		}
 	}
 }
 
 @media all and (max-width: 900px) {
-	.b-page-settings {
-		.b-page-settings-menu li a, .b-page-settings-content {
+	.b-settings {
+		.b-settings-menu li a, .b-settings-content {
 			padding-left: 2rem;
 			padding-right: 2rem;
 		}
 
-		.b-page-settings-menu {
+		.b-settings-menu {
 			width: 30rem;
 			padding: 2rem 0;
 		}
 
-		.b-page-settings-content {
+		.b-settings-content {
 			max-width: calc(~"100% - 30rem");
 			padding: 2rem;
 		}
@@ -201,8 +264,8 @@
 }
 
 @media all and (max-width: 768px) {
-	.b-page-settings {
-		.b-page-settings-menu {
+	.b-settings {
+		.b-settings-menu {
 			max-width: 10rem;
 			transition: max-width 0.5s;
 
@@ -214,7 +277,7 @@
 				max-width: calc(~"100vw - 6rem");
 				transition: max-width 0.5s;
 
-				+ .b-page-settings-content {
+				+ .b-settings-content {
 					max-width: calc(~"100% - 30rem");
 					transition: max-width 0.5s;
 				}
@@ -272,7 +335,7 @@
 			}
 		}
 
-		.b-page-settings-content {
+		.b-settings-content {
 			max-width: calc(~"100% - 10rem");
 			transition: max-width 0.5s;
 		}

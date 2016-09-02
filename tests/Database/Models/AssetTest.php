@@ -110,14 +110,16 @@ class AssetTest extends AbstractModelTestCase
         $this->assertFalse($empty->isImage());
     }
 
-    public function testGetMetadata()
+    public function testIsVideo()
     {
-        $metadata = ['key1' => 'value1'];
-        $asset = $this->mockVersionedAttribute(['metadata' => $metadata]);
-        $this->assertEquals($metadata, $asset->getMetadata());
+        $video = new Asset([Asset::ATTR_TYPE => 'video']);
+        $this->assertTrue($video->isVideo());
 
-        $asset = $this->mockVersionedAttribute([]);
-        $this->assertEquals([], $asset->getMetadata());
+        $image = new Asset([Asset::ATTR_TYPE => 'image']);
+        $this->assertFalse($image->isVideo());
+
+        $empty = new Asset();
+        $this->assertFalse($empty->isVideo());
     }
 
     public function testGetMimetype()
@@ -159,16 +161,6 @@ class AssetTest extends AbstractModelTestCase
         $asset = new Asset([Asset::ATTR_UPLOADED_AT => $now->getTimestamp()]);
         $this->assertInstanceOf(DateTime::class, $asset->getUploadedTime());
         $this->assertEquals($now->getTimestamp(), $asset->getUploadedTime()->getTimestamp());
-    }
-
-    public function testHasMetadata()
-    {
-        $metadata = ['key1' => 'value1'];
-        $asset = $this->mockVersionedAttribute(['metadata' => $metadata]);
-        $this->assertTrue($asset->hasMetadata());
-
-        $asset = $this->mockVersionedAttribute([]);
-        $this->assertFalse($asset->hasMetadata());
     }
 
     public function testSetSite()

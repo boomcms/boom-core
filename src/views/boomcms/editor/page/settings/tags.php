@@ -1,7 +1,7 @@
 <div id="b-page-tags">
     <h1><?= trans('boomcms::settings.tags.heading') ?></h1>
 
-    <ul>
+    <ul class="b-tags">
         <?php if (!isset($all[''])): ?>
             <li>
                 <h2><?= trans('boomcms::settings.tags.free') ?></h2>
@@ -44,13 +44,5 @@
         </form>
     </script>
 
-    <script type="text/template" id="b-tag-template">
-        <li>
-            <a href="#">
-                <span></span>
-                <span class='fa fa-times remove'></span>
-                <span class='fa fa-plus add'></span>
-            </a>
-        </li>        
-    </script>
+    <?= view('boomcms::tags.tag') ?>
 </div>

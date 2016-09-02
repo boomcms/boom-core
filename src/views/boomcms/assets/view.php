@@ -1,128 +1,295 @@
-<div id="b-assets-view">
-    <div class="b-assets-preview">
-        <img src="<?= $assetURL(['asset' => $asset, 'action' => 'thumb', 'height' => 300]) ?>">
+<div class="b-assets-view">
+    <div class="b-settings">
+        <div class="b-settings-menu">
+            <ul>
+                <li class="b-settings-close">
+                    <a href="#">
+                        <span class="fa fa-close"></span>
+                        <?= trans('boomcms::asset.close') ?>
+                    </a>
+                </li>
 
-        <div class="b-buttons">
-            <?= $button('trash-o', 'Delete', ['class' => 'b-assets-delete']) ?>
-            <?= $button('download', 'Download', ['class' => 'b-assets-download']) ?>
-            <?= $button('refresh', 'Replace', ['class' => 'b-assets-replace']) ?>
+                <li>
+                    <a href="#b-assets-view-info"<% if (!section || section === 'info') { %> class="selected"<% } %> data-section="info">
+                        <span class="fa fa-info"></span>
+                        <?= trans('boomcms::asset.info') ?>
+                    </a>
+                </li>
 
-            <?php if ($asset->isImage()): ?>
-                <?= $button('edit', trans('boomcms::asset.openeditor'), ['class' => 'b-assets-openeditor b-button-withtext']) ?>
-            <?php endif ?>
+                <li>
+                    <a href="#b-assets-view-attributes"<% if (section === 'attributes') { %> class="selected"<% } %> data-section='attributes'>
+                        <span class="fa fa-cogs"></span>
+                        <?= trans('boomcms::asset.attributes') ?>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
+                        <span class="fa fa-tags"></span>
+                        <?= trans('boomcms::asset.tags') ?>
+                    </a>
+                </li>
+
+                <% if (asset.hasMetadata()) { %>
+                    <li>
+                        <a href="#b-asset-metadata"<% if (section === 'metadata') { %> class="selected"<% } %> data-section='metadata'>
+                        <span class="fa fa-asterisk"></span>
+                            <?= trans('boomcms::asset.metadata') ?>
+                        </a>
+                    </li>
+                <% } %>
+
+                <% if (asset.hasPreviousVersions()) { %>
+                    <li>
+                        <a href="#b-assets-view-files"<% if (section === 'history') { %> class="selected"<% } %> data-section='history'>
+                        <span class="fa fa-history"></span>
+                            <?= trans('boomcms::asset.history') ?>
+                        </a>
+                    </li>
+                <% } %>
+
+                <li>
+                    <a href="#b-asset-replace"<% if (section === 'replace') { %> class="selected"<% } %> data-section="replace">
+                        <span class="fa fa-upload"></span>
+                        <?= trans('boomcms::asset.replace.heading') ?>
+                    </a>
+                </li>
+
+                <li class='group'>
+                    <a href="<%= asset.getUrl('download') %>">
+                        <span class="fa fa-download"></span>
+                        <?= trans('boomcms::asset.download') ?>
+                    </a>
+                </li>
+
+                <li class="b-setting-delete">
+                    <a href="#b-assets-delete"<% if (section === 'delete') { %> class="selected"<% } %> data-section='delete'>
+                        <span class="fa fa-trash-o"></span>
+                        <?= trans('boomcms::asset.delete.heading') ?>
+                    </a>
+                </li>
+            </ul>
+
+            <a href="#" class="toggle">
+                <span class="fa fa-caret-right"></span>
+                <span class="fa fa-caret-left"></span>
+                <span class="text">Toggle menu</span>
+            </a>
         </div>
-    </div>
 
-    <div class="boom-tabs">
-        <ul>
-            <li><a href="#b-assets-view-info"><?= trans('Info') ?></a></li>
-            <li><a href="#b-assets-view-attributes"><?= trans('Attributes') ?></a></li>
-            <li><a href="#b-tags"><?= trans('Tags') ?></a></li>
+        <div class="b-settings-content">
+            <div id="b-assets-view-attributes"<% if (section === 'attributes') { %> class="selected"<% } %>>
+                <h1><?= trans('boomcms::asset.attributes') ?></h1>
 
-            <?php if ($asset->hasMetadata()): ?>
-                <li><a href="#b-assets-metadata"><?= trans('boomcms::asset.metadata') ?></a></li>
-            <?php endif ?>
-
-            <?php if ($asset->hasPreviousVersions()): ?>
-                <li><a href="#b-assets-view-files"><?= trans('boomcms::asset.previous_versions') ?></a></li>
-            <?php endif ?>
-        </ul>
-
-        <div id="b-assets-view-attributes">
-            <form>
-                <label>
-                    <?= trans('Title') ?>
-                    <input type="text" id="title" name="title" value="<?= $asset->getTitle() ?>" />
-                </label>
-
-                <label>
-                    <?= trans('Description') ?>
-                    <textarea id="description" name="description"><?= $asset->getDescription() ?></textarea>
-                </label>
-
-                <label>
-                    <?= trans('Credits') ?>
-                    <textarea id="credits" name="credits"><?= $asset->getCredits() ?></textarea>
-                </label>
-
-                <?php if (!$asset->isImage()): ?>
-                    <label for="thumbnail">Thumbnail
-                        <input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->getThumbnailAssetId() ?>" size="4" />
+                <form>
+                    <label>
+                        <?= trans('boomcms::asset.title') ?>
+                        <input type="text" id="title" name="title" value="<%= asset.getTitle() %>" />
                     </label>
-                <?php endif ?>
-            </form>
 
-            <?= $button('save', 'save-changes', ['class' => 'b-assets-save b-button-withtext']) ?>
-        </div>
+                    <label>
+                        <?= trans('boomcms::asset.description') ?>
+                        <textarea id="description" name="description"><%= asset.getDescription() %></textarea>
+                    </label>
 
-        <div id="b-assets-view-info">
-            <dl>
-                <dt><?= trans('Type') ?></dt>
-                <dd><?= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?></dd>
+                    <label>
+                        <?= trans('boomcms::asset.credits') ?>
+                        <textarea id="credits" name="credits"><%= asset.getCredits() %></textarea>
+                    </label>
 
-                <dt><?= trans('boomcms::asset.extension') ?></dt>
-                <dd><?= $asset->getExtension() ?></dd>
+                    <% if (!asset.isImage()) { %>
+                        <label for="thumbnail">
+                            <?= trans('boomcms::asset.thumbnail') ?>
+                            <input type="text" id="thumbnail" name="thumbnail_asset_id" value="<%= asset.getThumbnailAssetId() %>" size="4" />
+                        </label>
+                    <% } %>
+                </form>
 
-                <dt><?= trans('Filesize') ?></dt>
-                <dd><span id='filesize'><?= Str::filesize($asset->getFilesize()) ?></dd>
+                <?= $button('save', 'save-changes', ['class' => 'b-assets-save b-button-withtext']) ?>
+            </div>
 
-                <?php if ($asset->isImage()): ?>
-                    <dt><?= trans('Dimensions') ?></dt>
-                    <dd><?= $asset->getWidth() ?> x <?= $asset->getHeight() ?></dd>
-                <?php endif ?>
+            <div id="b-assets-view-info"<% if (!section || section === 'info') { %> class="selected"<% } %>>
+                <h1><%= asset.getTitle() %></h1>
 
-                <?php if ($uploader = $asset->getUploadedBy()): ?>
-                    <dt><?= trans('Uploaded by') ?></dt>
-                    <dd><?= $uploader->getName() ?></dd>
-                <?php endif ?>
+                <% if (asset.isVideo()) { %>
+                    <video
+                        src="<%= asset.getUrl() + '?' + asset.getEditedAt() %>"
+                        controls
+                        poster="<%= asset.getUrl('thumb') + '?' +asset.getEditedAt() %>"
+                    ></video>
+                <% } else if (asset.isImage()) { %>
+                    <div class="b-asset-imageeditor">
+                        <img id="b-imageeditor-original" src="<%= asset.getUrl()+ '?' + asset.getEditedAt() %>" />
 
-                <dt><?= trans('Uploaded on') ?></dt>
-                <dd><?= $asset->getUploadedTime()->format('d F Y h:i:s') ?></dd>
+                        <div class="image-container">
+                            <img id="b-imageeditor-image" src="<%= asset.getUrl()+ '?' + asset.getEditedAt() %>" />
+                        </div>
 
-                <?php if (!$asset->isImage()): ?>
-                    <dt><?= trans('Downloads') ?></dt>
-                    <dd><?= $asset->getDownloads() ?></dd>
-                <?php endif ?>
-            </dl>
-        </div>
+                        <div id="b-imageeditor-toolbar">
+                            <?= $button('rotate-left', 'rotate-left', ['id' => 'b-imageeditor-rotate-left']) ?>
+                            <?= $button('rotate-right', 'rotate-right', ['id' => 'b-imageeditor-rotate-right']) ?>
+                            <?= $button('crop', 'crop', ['id' => 'b-imageeditor-crop']) ?>
+                            <?= $button('save', 'save-changes', ['class' => 'b-imageeditor-save b-button-withtext']) ?>
+                            <?= $button('refresh', 'image-revert', ['id' => 'b-imageeditor-revert', 'class' => 'b-button-withtext']) ?>
 
-        <?= view('boomcms::assets.tags', ['tags' => $asset->getTags()]) ?>
+                            <div class="crop-tools">
+                                <label class="aspect-ratio">
+                                    <p><?= trans('boomcms::asset.aspect-ratio') ?></p>
 
-        <?php if ($asset->hasMetadata()): ?>
-            <div id="b-assets-metadata">
+                                    <select>
+                                        <option value="">Fluid</option>
+                                        <option value="1">1/1</option>
+                                        <option value="1.33333">4/3</option>
+                                        <option value="0.5">1/2</option>
+                                        <option value="0.75">3/4</option>
+                                        <option value="1.77778">16/9</option>
+                                    </select>
+                                </label>
+
+                                <?= $button('check', 'accept-crop', ['id' => 'b-imageeditor-crop-accept', 'class' => 'b-button-withtext']) ?>
+                                <?= $button('times', 'cancel', ['id' => 'b-imageeditor-crop-cancel', 'class' => 'b-button-withtext']) ?>
+                             </div>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <img src="<%= asset.getUrl('thumb', 500) %>">
+                <% } %>
+
                 <dl>
-                    <?php foreach ($asset->getMetadata() as $key => $value): ?>
-                        <dt><?= $key ?></dt>
-                        <dd><?= $value ?></dd>
-                    <?php endforeach ?>
+                    <dt><?= trans('boomcms::asset.type-heading') ?></dt>
+                    <dd><%= BoomCMS.assetTypes[asset.getType()] %></dd>
+
+                    <dt><?= trans('boomcms::asset.filename') ?></dt>
+                    <dd><%= asset.getFilename() %></dd>
+
+                    <dt><?= trans('boomcms::asset.extension') ?></dt>
+                    <dd><%= asset.getExtension() %></dd>
+
+                    <dt><?= trans('boomcms::asset.filesize') ?></dt>
+                    <dd><span id='filesize'><%= asset.getReadableFilesize() %></dd>
+
+                    <% if (asset.isImage()) { %>
+                        <dt><?= trans('boomcms::asset.dimensions') ?></dt>
+                        <dd><%= asset.getWidth() %> x <%= asset.getHeight() %></dd>
+                    <% } %>
+
+                    <% if (asset.getUploadedBy()) { %>
+                        <dt><?= trans('boomcms::asset.uploaded-by') ?></dt>
+                        <dd>
+                            <%= asset.getUploadedBy().getName() %>&nbsp;
+                            <small><%= asset.getUploadedBy().getEmail() %></small>
+                        </dd>
+                    <% } %>
+
+                    <dt><?= trans('boomcms::asset.uploaded-on') ?></dt>
+                    <dd>
+                        <time datetime="<%= moment.unix(asset.getUploadedTime()).format() %>"></time>
+                    </dd>
+
+                    <% if (!asset.isImage()) { %>
+                        <dt><?= trans('boomcms::asset.downloads') ?></dt>
+                        <dd><%= asset.getDownloads() %></dd>
+                    <% } %>
                 </dl>
             </div>
-        <?php endif ?>
 
-        <?php if ($asset->hasPreviousVersions()): ?>
-            <div id="b-assets-view-files">
-                <p><?= trans('boomcms::asset.previous_versions_intro') ?></p>
+            <div id="b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
+                <h1><?= trans('boomcms::asset.tags') ?></h1>
 
-                <ul>
-                    <?php foreach ($asset->getVersions() as $version): ?>
-                        <li>
-                            <div>
-                                <img src="<?= URL::route('asset-version', ['id' => $version->getId(), 'width' => '200', 'height' => 0]) ?>" />
-                            </div>
-
-                            <div>
-                                <h3>Edited by</h3>
-                                <p><?= $version->getEditedBy()->getName() ?></p>
-
-                                <h3>Edited at</h3>
-                                <time datetime="<?= $version->getEditedAt()->format('c') ?>"><?= $version->getEditedAt()->format('d F Y H:i') ?></time>
-
-                                <?= $button('undo', 'Revert to this version', ['class' => 'b-button-withtext b-assets-revert', 'data-version-id' => $version->getId()]) ?>
-                            </div>
-                        </li>
-                    <?php endforeach ?>
+                <ul class="b-tags">
                 </ul>
+
+                <form class="b-tags-add">
+                    <input type="text" value="" class="b-tags-add-name" />
+                    <?= $button('plus', 'add-tag') ?>
+                </form>
             </div>
-        <?php endif  ?>
+
+            <% if (asset.hasMetadata()) { %>
+                <div id="b-asset-metadata"<% if (section === 'metadata') { %> class="selected"<% } %>>
+                    <h1><?= trans('boomcms::asset.metadata') ?></h1>
+
+                    <dl>
+                        <% var metadata = asset.getMetadata() %>
+
+                        <% for (var key in metadata) { %>
+                            <dt><%= key %></dt>
+                            <dd><%= metadata[key] %></dd>
+                        <% } %>
+                    </dl>
+                </div>
+            <% } %>
+
+            <% if (asset.hasPreviousVersions()) { %>
+                <div id="b-assets-view-files"<% if (section === 'history') { %> class="selected"<% } %>>
+                    <h1><?= trans('boomcms::asset.history') ?></h1>
+                    <p><?= trans('boomcms::asset.history-intro') ?></p>
+
+                    <ul>
+                        <% var versions = asset.getVersions() %>
+                        <% for (var i = 0; i < versions.length; i++) { %>
+                            <li data-version-id="<%= versions[i].getId() %>">
+                                <div>
+                                    <img src="<%= versions[i].getThumbnail() %>" />
+                                </div>
+
+                                <div>
+                                    <h3><?= trans('boomcms::asset.edited-by') ?></h3>
+                                    <p>
+                                        <%= versions[i].getEditedBy().getName() %>&nbsp;
+                                        <small><%= versions[i].getEditedBy().getEmail() %></small>
+                                    </p>
+
+                                    <h3><?= trans('boomcms::asset.edited-at') ?></h3>
+                                    <time datetime="<%= moment.unix(versions[i].getEditedAt()).format() %>"></time>
+
+                                    <?= $button('undo', 'asset-revert', ['class' => 'b-button-withtext b-assets-revert']) ?>
+                                </div>
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
+            <% } %>
+
+            <div id="b-asset-replace"<% if (section === 'replace') { %> class="selected"<% } %>>
+                <div class="b-assets-upload">
+                    <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
+                        <div class="b-assets-upload-container">
+                            <div class="b-assets-upload-info">
+                                <p>
+                                    <?= trans('boomcms::asset.replace.info1') ?>
+
+                                    <a class="b-assets-upload-add" href="#">
+                                        <label for="b-asset-replace-file">
+                                            <?= trans('boomcms::asset.replace.info2') ?>
+                                        </label>
+                                    </a>
+
+                                    <?= trans('boomcms::asset.replace.info3') ?>
+                                </p>
+
+                                <p class="message"></p>
+
+                                <div class="b-assets-upload-progress"></div>
+                                <?= $button('times', 'cancel', ['class' => 'b-assets-upload-cancel']) ?>
+                            </div>
+
+                            <input type="file" name="b-assets-upload-files[]" id="b-asset-replace-file" multiple min="1" max="5" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="b-assets-delete"<% if (section === 'delete') { %> class="selected"<% } %>>
+                <h1><?= trans('boomcms::asset.delete.heading') ?></h1>
+                <p><?= trans('boomcms::asset.delete.confirm') ?></p>
+
+                <?= $button('trash-o', 'delete-asset', [
+                    'class' => 'b-button-withtext b-assets-delete',
+                ]) ?>
+            </div>
+        </div>
     </div>
 </div>
+
+<?= view('boomcms::tags.tag') ?>

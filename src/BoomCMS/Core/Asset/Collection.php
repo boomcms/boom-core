@@ -68,12 +68,17 @@ class Collection
      */
     public function getTags()
     {
-        return DB::table('assets_tags')
+        $query = DB::table('assets_tags')
             ->select('tag')
-            ->whereIn('asset_id', $this->getAssetIds())
-            ->groupBy('tag')
-            ->havingRaw(DB::raw('count(distinct asset_id) ='.count($this->getAssetIds())))
-            ->lists('tag');
+            ->groupBy('tag');
+
+        if (!empty($this->getAssetIds())) {
+            $query
+                ->whereIn('asset_id', $this->getAssetIds())
+                ->havingRaw(DB::raw('count(distinct asset_id) ='.count($this->getAssetIds())));
+        }
+
+        return $query->lists('tag');
     }
 
     /**

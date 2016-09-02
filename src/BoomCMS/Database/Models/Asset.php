@@ -5,6 +5,7 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Foundation\Database\Model;
+use BoomCMS\Support\Str;
 use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,6 +38,11 @@ class Asset extends Model implements AssetInterface
      * @var AssetVersion
      */
     protected $latestVersion;
+
+    protected $appends = [
+        'readable_filesize',
+        'metadata',
+    ];
 
     protected $versionColumns = [
         'asset_id'   => '',
@@ -177,10 +183,7 @@ class Asset extends Model implements AssetInterface
         return $this->getLatestVersion()->getId();
     }
 
-    /**
-     * @return array
-     */
-    public function getMetadata()
+    public function getMetadataAttribute()
     {
         return $this->getLatestVersion()->getMetadata();
     }
@@ -196,6 +199,11 @@ class Asset extends Model implements AssetInterface
     public function getOriginalFilename()
     {
         return $this->getLatestVersion()->getFilename();
+    }
+
+    public function getReadableFilesizeAttribute()
+    {
+        return Str::filesize($this->getFilesize());
     }
 
     public function getTags()
@@ -244,7 +252,7 @@ class Asset extends Model implements AssetInterface
     public function getUploadedBy()
     {
         if ($this->uploadedBy === null) {
-            $this->uploadedBy = $this->belongsTo(Person::class, 'uploaded_by')->first();
+            $this->uploadedBy = $this->uploadedBy()->first();
         }
 
         return $this->uploadedBy;
@@ -255,38 +263,12 @@ class Asset extends Model implements AssetInterface
         return (new DateTime())->setTimestamp($this->{self::ATTR_UPLOADED_AT});
     }
 
-    public function getVersions()
-    {
-        return $this->versions()
-            ->orderBy(AssetVersion::ATTR_EDITED_AT, 'desc')
-            ->where(AssetVersion::ATTR_ID, '!=', $this->getLatestVersionId())
-            ->get();
-    }
-
     /**
      * @return int
      */
     public function getWidth()
     {
         return (int) $this->getLatestVersion()->getWidth();
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasMetadata()
-    {
-        return !empty($this->getMetadata());
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasPreviousVersions()
-    {
-        return $this->versions()
-            ->where('id', '!=', $this->getLatestVersionId())
-            ->exists();
     }
 
     public function hasThumbnail()
@@ -309,7 +291,15 @@ class Asset extends Model implements AssetInterface
      */
     public function isImage()
     {
-        return $this->getType() == 'image';
+        return $this->getType() === 'image';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVideo()
+    {
+        return $this->getType() === 'video';
     }
 
     /**
@@ -418,8 +408,26 @@ class Asset extends Model implements AssetInterface
             ->whereNull('av2.id');
     }
 
+    public function uploadedBy()
+    {
+        return $this->belongsTo(Person::class, 'uploaded_by');
+    }
+
     public function versions()
     {
-        return $this->hasMany(AssetVersion::class);
+        return $this->hasMany(AssetVersion::class)
+            ->orderBy(AssetVersion::ATTR_EDITED_AT, 'desc');
+    }
+
+    /**
+     * Convert the model instance to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $attributes = $this->attributesToArray();
+
+        return array_merge($this->getLatestVersion()->toArray(), $attributes, $this->relationsToArray());
     }
 }

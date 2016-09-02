@@ -34,22 +34,22 @@ Route::group(['middleware' => [
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 
-            Route::get('asset-manager', 'Assets\AssetManager@index');
-
             Route::group([
-                'prefix'    => 'assets',
-                'namespace' => 'Assets',
+                'prefix'    => 'asset',
+                'namespace' => 'Asset',
             ], function () {
-                Route::get('view/{asset}', 'AssetManager@view');
-                Route::post('save/{asset}', 'AssetManager@save');
-                Route::post('replace/{asset}', 'AssetManager@replace');
-                Route::post('revert/{asset}', 'AssetManager@revert');
-                Route::post('tags/add', 'Tags@add');
-                Route::post('tags/remove', 'Tags@remove');
-                Route::get('tags/list/{assets}', 'Tags@listTags');
-
-                Route::controller('', 'AssetManager');
+                Route::get('download', 'AssetSelectionController@download');
+                Route::delete('', 'AssetSelectionController@destroy');
+                Route::post('{asset}/replace', 'AssetController@replace');
+                Route::post('{asset}/revert', 'AssetController@revert');
+                Route::get('tags', 'TagsController@listTags');
+                Route::post('tags', 'TagsController@add');
+                Route::delete('tags', 'TagsController@remove');
             });
+
+            Route::get('asset-picker', 'Asset\AssetPickerController@index');
+            Route::get('asset-manager', 'Asset\AssetManagerController@index');
+            Route::resource('asset', 'Asset\AssetController');
 
             Route::group([
                 'namespace'  => 'People',
@@ -117,7 +117,7 @@ Route::group(['middleware' => [
 Route::group(['prefix' => 'asset'], function () {
     Route::get('version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
-        'middleware' => [Middleware\RequireLogin::class],
+        'middleware' => ['web', Middleware\RequireLogin::class],
         'uses'       => function ($versionId, $width = null, $height = null) {
             $asset = Asset::findByVersionId($versionId);
 

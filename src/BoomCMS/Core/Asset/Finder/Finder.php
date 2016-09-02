@@ -19,7 +19,10 @@ class Finder extends BaseFinder
 
     public function __construct()
     {
-        $this->query = (new Model())->withLatestVersion();
+        $this->query = (new Model())->withLatestVersion()
+            ->with('versions')
+            ->with('versions.editedBy')
+            ->with('uploadedBy');
     }
 
     public function setOrderBy($field, $direction = null)

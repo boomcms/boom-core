@@ -1,11 +1,12 @@
 #b-assets-view-thumbs {
 	overflow: hidden;
-	background: @lightest-grey;
-	margin: 0.25rem -0.5rem 0.25rem 0.25rem;
+	padding: 0.25rem;
 	width: 100vw;
+	position: relative;
+	z-index: 2;
 
 	> div {
-		margin: 0.25rem;
+		margin: 0.75rem;
 		display: inline-block;
 		position: relative;
 		overflow: hidden;
@@ -20,6 +21,10 @@
 		position: relative;
 		display: block;
 		cursor: pointer;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
 
 		&.loading {
 			img {
