@@ -96,16 +96,6 @@
 			this.init(options);
 		},
 
-		initImageEditor: function() {
-			var asset = this.model;
-
-			this.$('.b-asset-imageeditor').imageEditor({
-				save: function(e, blob) {
-					asset.replaceWith(blob);
-				}
-			});
-		},
-
 		render: function(section) {
 			this.$el.html(this.template({
 				selection: this.selection,
@@ -117,7 +107,6 @@
 			}
 
 			this.bind();
-			this.initImageEditor();
 
 			return this;
 		},
