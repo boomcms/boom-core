@@ -126,7 +126,7 @@
 
 						for (var i = 0; i < tags.length; i++) {
 							view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
-						};
+						}
 					}
 				});
 
