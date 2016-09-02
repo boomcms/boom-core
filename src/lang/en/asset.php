@@ -28,6 +28,7 @@ return [
     'edited-by'      => 'Edited by',
     'edited-at'      => 'Edited at',
     'edit-image'     => 'Edit image',
+    'unsupported'    => 'File :filename is of an unsuported type: :mimetype',
     'selection'      => [
         'download' => [
             'heading'  => 'Download assets',

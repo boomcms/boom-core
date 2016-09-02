@@ -4,6 +4,7 @@ namespace BoomCMS\Foundation\Http;
 
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 
 trait ValidatesAssetUpload
 {
@@ -15,13 +16,18 @@ trait ValidatesAssetUpload
             foreach ($files as $file) {
                 if (!$file->isValid()) {
                     $errors[] = $file->getErrorMessage();
+
                     continue;
                 }
 
                 $type = AssetHelper::typeFromMimetype($file->getMimetype());
 
                 if ($type === null) {
-                    $errors[] = "File {$file->getClientOriginalName()} is of an unsuported type: {$file->getMimetype()}";
+                    $errors[] = Lang::get('boomcms::asset.unsupported', [
+                        'filename' =>  $file->getClientOriginalName(),
+                        'mimetype' => $file->getMimetype(),
+                    ]);
+
                     continue;
                 }
 
