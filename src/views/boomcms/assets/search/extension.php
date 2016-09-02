@@ -2,7 +2,7 @@
     <h2><?= trans('boomcms::asset.search.extension') ?></h2>
 
     <select id="b-assets-extensions" name="extension">
-        <option value="">
+        <option value="0">
             <?= trans('boomcms::asset.search.extension') ?>
         </option>
 

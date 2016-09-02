@@ -53473,6 +53473,8 @@ $.widget('ui.chunkPageVisibility', {
 	$.widget('boom.assetSearch', {
 		listUrl: BoomCMS.urlRoot + 'assets/get',
 
+		initialFilters: {},
+
 		postData: {
 			page: 1,
 			order: 'last_modified desc'
@@ -53489,7 +53491,6 @@ $.widget('ui.chunkPageVisibility', {
 			this.element
 				.on('click', '#b-assets-all', function() {
 					assetSearch.removeFilters();
-					assetSearch.getAssets();
 				})
 				.on('change', 'select[name=type], select[name=extension]', function() {
 					var $this = $(this);
@@ -53535,7 +53536,9 @@ $.widget('ui.chunkPageVisibility', {
 				assetSearch.justify();
 			});
 
-			this.initialFilters = this.postData;
+			for (var key in this.postData) {
+				this.initialFilters[key] = this.postData[key];
+			}
 
 			this.bind();
 			this.setAssetsPerPage();
@@ -53587,9 +53590,14 @@ $.widget('ui.chunkPageVisibility', {
 		},
 
 		removeFilters: function() {
-			this.postData = this.initialFilters;
+			this.postData = {};
 
-			this.element.find('#b-assets-types').val(0);
+			for (var key in this.initialFilters) {
+				this.postData[key] = this.initialFilters[key];
+			}
+
+			this.element.find('#b-assets-types, #b-assets-extensions').val(0);
+			this.element.find('#b-tags-search li').remove();
 
 			this.getAssets();
 		},
