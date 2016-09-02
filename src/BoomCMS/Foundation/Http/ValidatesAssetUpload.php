@@ -24,7 +24,7 @@ trait ValidatesAssetUpload
 
                 if ($type === null) {
                     $errors[] = Lang::get('boomcms::asset.unsupported', [
-                        'filename' =>  $file->getClientOriginalName(),
+                        'filename' => $file->getClientOriginalName(),
                         'mimetype' => $file->getMimetype(),
                     ]);
 
