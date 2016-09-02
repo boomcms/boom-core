@@ -68,7 +68,7 @@ function boomAssetPicker(currentAsset, filters) {
 					height: '100vh',
 					width: '100vw',
 					transform: 'none',
-					overflow: 'visible',
+					overflow: 'visible'
 				});
 
 				assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');

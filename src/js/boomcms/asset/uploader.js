@@ -31,7 +31,9 @@
 			var assetUploader = this;
 
 			this.cancelButton.on('click', function() {
-				assetUploader.fileData.jqXHR && assetUploader.fileData.jqXHR.abort();
+				if (assetUploader.fileData.jqXHR !== undefined) {
+					assetUploader.fileData.jqXHR.abort();
+				}
 
 				$(this).hide();
 				assetUploader.progressBar.progressbar('destroy');
@@ -118,7 +120,7 @@
 				errors = $.parseJSON(data.jqXHR.responseText),
 				i;
 
-			for (i in errors) {
+			for (i = 0; i < errors.length; i++) {
 				message = message + errors[i] + '<br />';
 			}
 
