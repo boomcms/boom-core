@@ -49,6 +49,11 @@
 				.on('click', '#b-assets-search', function() {
 					$('#b-assets-filters').toggleClass('visible');
 					$(this).toggleClass('open');
+				})						
+				.on('keydown', '.thumb', function(e) {
+					if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
+						$(this).parent().data('model').destroy();
+					}
 				});
 
 			this.uploader
@@ -132,6 +137,7 @@
 			this.listenTo(this.selection, 'reset update', this.toggleButtons);
 
 			this.$el.assetSearch({assets: this.assets});
+
 			this.bind();
 			this.bindRoutes();
 		},

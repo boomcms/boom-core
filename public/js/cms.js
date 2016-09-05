@@ -52941,6 +52941,11 @@ $.widget('ui.chunkPageVisibility', {
 				.on('click', '#b-assets-search', function() {
 					$('#b-assets-filters').toggleClass('visible');
 					$(this).toggleClass('open');
+				})						
+				.on('keydown', '.thumb', function(e) {
+					if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
+						$(this).parent().data('model').destroy();
+					}
 				});
 
 			this.uploader
@@ -53024,6 +53029,7 @@ $.widget('ui.chunkPageVisibility', {
 			this.listenTo(this.selection, 'reset update', this.toggleButtons);
 
 			this.$el.assetSearch({assets: this.assets});
+
 			this.bind();
 			this.bindRoutes();
 		},
@@ -53318,6 +53324,7 @@ $.widget('ui.chunkPageVisibility', {
 			this.listenTo(model, 'change', this.render);
 
 			$el
+				.data('model', model)
 				.dblclick()
 				.on('sclick', function() {
 					model.trigger('select', {
@@ -53328,14 +53335,26 @@ $.widget('ui.chunkPageVisibility', {
 				.on('dclick', function() {
 					model.trigger('view', model);
 				})
+				.on('keypress', '.edit', function(e) {
+					if (e.which === $.ui.keyCode.ENTER) {
+						model.trigger('view', model);
+					}
+				})
 				.on('click', '.edit', function(e) {
 					e.preventDefault();
-					e.stopPropagation();
 
 					model.trigger('view', model);
 				})
 				.on('justified', function() {
 					view.loadImage();
+				})
+				.on('keypress', '.thumb', function(e) {
+					if (e.which === $.ui.keyCode.ENTER) {
+						model.trigger('select', {
+							asset: model,
+							$el: $el
+						});
+					}
 				});
 		},
 

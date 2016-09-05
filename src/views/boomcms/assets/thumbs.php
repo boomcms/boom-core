@@ -5,8 +5,8 @@
 </script>
 
 <script type="text/template" id="b-asset-thumb">
-    <div class="thumb" data-asset="<%= asset.getId() %>" tabindex="0">
-        <img class="loading" />
+    <a class="thumb" data-asset="<%= asset.getId() %>" tabindex="0">
+        <img class="loading" alt="">
 
         <div class="pace progress">
             <div>
@@ -35,9 +35,9 @@
                 <% } %>
             </p>
         </div>
+    </a>
 
-        <a href="#" class="edit">
-            <span class="fa fa-edit"></span>
-        </a>
-    </div>
+    <a href="#" class="edit" tabindex="0">
+        <span class="fa fa-edit"></span>
+    </a>
 </script>

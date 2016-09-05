@@ -14,6 +14,7 @@
 			this.listenTo(model, 'change', this.render);
 
 			$el
+				.data('model', model)
 				.dblclick()
 				.on('sclick', function() {
 					model.trigger('select', {
@@ -24,14 +25,26 @@
 				.on('dclick', function() {
 					model.trigger('view', model);
 				})
+				.on('keypress', '.edit', function(e) {
+					if (e.which === $.ui.keyCode.ENTER) {
+						model.trigger('view', model);
+					}
+				})
 				.on('click', '.edit', function(e) {
 					e.preventDefault();
-					e.stopPropagation();
 
 					model.trigger('view', model);
 				})
 				.on('justified', function() {
 					view.loadImage();
+				})
+				.on('keypress', '.thumb', function(e) {
+					if (e.which === $.ui.keyCode.ENTER) {
+						model.trigger('select', {
+							asset: model,
+							$el: $el
+						});
+					}
 				});
 		},
 

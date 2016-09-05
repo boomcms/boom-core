@@ -20,6 +20,14 @@ class AssetController extends Controller
 
     protected $role = 'manageAssets';
 
+    /**
+     * @param Asset $asset
+     */
+    public function destroy(Asset $asset)
+    {
+        AssetFacade::delete([$asset->getId()]);
+    }
+
     // Needs to not require the manageAssets role. Move to another controller.
     public function index(Request $request)
     {

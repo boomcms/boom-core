@@ -46,10 +46,9 @@
 			}
 		}
 
-		.edit {
-			display: none;
+		+ .edit {
 			position: absolute;
-			top: 0.5rem;
+			top: -1000%;
 			left: 0.5rem;
 			z-index: 3;
 			color: @white;
@@ -58,6 +57,7 @@
 
 			&:hover, &:focus {
 				color: @red;
+				top: 0.5rem;
 			}
 
 			&:before {
@@ -74,8 +74,8 @@
 				transition: all 1.5s ease-out;
 			}
 
-			.edit {
-				display: block;
+			+ .edit {
+				top: 0.5rem;
 			}
 		}
 
