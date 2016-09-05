@@ -130,7 +130,7 @@
                             <?= $button('rotate-right', 'rotate-right', ['id' => 'b-imageeditor-rotate-right']) ?>
                             <?= $button('crop', 'crop', ['id' => 'b-imageeditor-crop']) ?>
                             <?= $button('save', 'save-changes', ['class' => 'b-imageeditor-save b-button-withtext']) ?>
-                            <?= $button('refresh', 'image-revert', ['id' => 'b-imageeditor-revert', 'class' => 'b-button-withtext']) ?>
+                            <?= $button('chevron-circle-left', 'asset-undo', ['id' => 'b-imageeditor-revert', 'class' => 'b-button-withtext']) ?>
 
                             <div class="crop-tools">
                                 <label class="aspect-ratio">
