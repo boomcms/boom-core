@@ -53116,6 +53116,7 @@ $.widget('ui.chunkPageVisibility', {
 	'use strict';
 
 	BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
+		routePrefix: 'selection',
 		tagName: 'div',
 		tagsDisplayed: false,
 		templateSelector: '#b-assets-selection-template',
@@ -53164,7 +53165,7 @@ $.widget('ui.chunkPageVisibility', {
 				.on('click', 'a[data-section]', function() {
 					var section = $(this).attr('data-section');
 
-					view.router.navigate('selection/' + selection.getIdString() + '/' + section);
+					view.router.navigate(view.routePrefix + '/' + selection.getIdString() + '/' + section);
 
 					if (section === 'tags') {
 						view.showTags();
@@ -53422,6 +53423,7 @@ $.widget('ui.chunkPageVisibility', {
 	'use strict';
 
 	BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
+		routePrefix: 'asset',
 		tagName: 'div',
 		tagsDisplayed: false,
 		templateSelector: '#b-assets-view-template',

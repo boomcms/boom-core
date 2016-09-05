@@ -2,6 +2,7 @@
 	'use strict';
 
 	BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
+		routePrefix: 'asset',
 		tagName: 'div',
 		tagsDisplayed: false,
 		templateSelector: '#b-assets-view-template',
