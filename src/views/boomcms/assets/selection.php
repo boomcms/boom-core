@@ -40,15 +40,7 @@
 
         <div class="b-settings-content">
             <div id="b-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
-                <h1><?= trans('boomcms::asset.tags') ?></h1>
-
-                <ul class="b-tags">
-                </ul>
-
-                <form class="b-tags-add">
-                    <input type="text" value="" class="b-tags-add-name" />
-                    <?= $button('plus', 'add-tag') ?>
-                </form>
+                <?= view('boomcms::assets.tags') ?>
             </div>
 
             <div id="b-selection-download"<% if (section === 'download') { %> class="selected"<% } %>>

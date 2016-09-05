@@ -6,11 +6,41 @@
 		tagsDisplayed: false,
 		templateSelector: '#b-assets-selection-template',
 
+		addTag: function(tag) {
+			if (!tag) {
+				return;
+			}
+
+			var $tagList = this.$('.b-tags').eq(0),
+				$tagTemplate = this.$('#b-tag-template').html(),
+				$el = $($tagTemplate);
+
+			return $el
+				.find('a')
+				.attr('data-tag', tag)
+				.find('span:first-of-type')
+				.text(tag)
+				.end()
+				.end()
+				.insertBefore($tagList.find('.b-tags-add').parent());
+		},
+
 		bind: function() {
 			var view = this,
 				selection = this.selection;
 
 			this.$el
+				.on('submit', '.b-tags-add', function(e) {
+					e.preventDefault();
+
+					var $input = $(this).find('input[type=text]'),
+						$el = view.addTag($input.val());
+
+					if ($el !== undefined) {
+						view.toggleTag($el.find('a'));
+						$input.val('');
+					}
+				})
 				.on('click', '.b-settings-close', function(e) {
 					view.close(e);
 				})
@@ -44,21 +74,10 @@
 		},
 
 		displayTags: function(tags) {
-			var view = this,
-				$tagList = this.$('.b-tags').eq(0),
-				$tagTemplate = this.$('#b-tag-template').html(),
-				$el;
+			var view = this;
 
 			for (var i = 0; i < tags.length; i++) {
-				$el = $($tagTemplate);
-
-				$el
-					.find('a')
-					.attr('data-tag', tags[i])
-					.find('span:first-of-type')
-					.text(tags[i]);
-
-				$tagList.append($el);
+				view.addTag(tags[i]);
 			}
 
 			this.$el
