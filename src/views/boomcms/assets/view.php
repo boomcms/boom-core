@@ -235,7 +235,9 @@
                                     <h3><?= trans('boomcms::asset.edited-at') ?></h3>
                                     <time datetime="<%= moment.unix(versions[i].getEditedAt()).format() %>"></time>
 
-                                    <?= $button('undo', 'asset-revert', ['class' => 'b-button-withtext b-assets-revert']) ?>
+                                    <% if (i > 0) { %>
+                                        <?= $button('undo', 'asset-revert', ['class' => 'b-button-withtext b-assets-revert']) ?>
+                                    <% } %>
                                 </div>
                             </li>
                         <% } %>
