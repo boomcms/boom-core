@@ -154,11 +154,12 @@
 		},
 
 		setAssetsPerPage: function() {
-			var rowHeight = 200,
+			var $thumbs = this.element.find('#b-assets-view-thumbs'),
+				rowHeight = 200,
 				avgAspectRatio = 1.5,
-				height = this.element.find('#b-assets-content').height(),
+				height = $thumbs.height(),
 				rows = Math.ceil(height / rowHeight),
-				perrow = Math.ceil(document.documentElement.clientWidth / (rowHeight * avgAspectRatio)),
+				perrow = Math.ceil($thumbs.width() / (rowHeight * avgAspectRatio)),
 				perpage = Math.ceil(rows * perrow);
 
 			if (perpage < 30) {
