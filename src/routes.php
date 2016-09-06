@@ -163,6 +163,7 @@ Route::any('{location}.{format?}', [
     'middleware' => [
         'web',
         Middleware\RoutePage::class,
+        Middleware\CheckPageAcl::class,
         Middleware\InsertCMSToolbar::class,
     ],
     'uses' => 'BoomCMS\Http\Controllers\PageController@show',

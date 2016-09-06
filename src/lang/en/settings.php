@@ -2,6 +2,7 @@
 
 return [
     'menu' => [
+        'acl'        => 'Page access control',
         'close'      => 'Close settings window',
         'delete'     => 'Delete page',
         'navigation' => 'Navigation',
@@ -17,6 +18,17 @@ return [
         'relations'  => 'Relationships',
         'info'       => 'Page information',
         'history'    => 'History',
+    ],
+    'acl'   => [
+        'heading'        => 'Page access control',
+        'description'    => 'Restrict access to this page to certain user groups only',
+        'is-enabled'     => 'Enable access control',
+        'enabled'        => 'Yes',
+        'disabled'       => 'No',
+        'select-groups'  => 'Select which groups can view this page',
+        'select-groups2' => 'If no groups are specified then the page will be visible to all logged in users',
+        'select-groups3' => 'If groups are specificed then the page will only be visible to members of those groups, the page creator, and page managers',
+        'select-groups4' => 'These settings take precendence over the ability to edit a page (you must be able to view to edit). Take care that you don\'t prevent yourself from viewing the page',
     ],
     'admin' => [
         'heading'               => 'Admin settings',

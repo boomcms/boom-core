@@ -14,6 +14,7 @@ return [
     'editSearchBasic'      => 'Edit settings - search (basic)',
     'editTemplate'         => 'Edit template',
     'editUrls'             => 'Edit URLs',
+    'editAcl'              => 'Edit page access control',
     'manageApprovals'      => 'View the list of pages pending approval',
     'manageAssets'         => 'Asset manager - view and edit',
     'managePages'          => 'Page manager - view and edit',

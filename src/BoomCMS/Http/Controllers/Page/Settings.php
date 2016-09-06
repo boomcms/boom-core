@@ -8,6 +8,7 @@ use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\DeletePage;
 use BoomCMS\Jobs\ReorderChildPages;
 use BoomCMS\Page\History\Diff;
+use BoomCMS\Support\Facades\Group as GroupFacade;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\PageVersion as PageVersionFacade;
 use BoomCMS\Support\Facades\Template as TemplateFacade;

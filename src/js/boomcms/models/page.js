@@ -23,6 +23,10 @@
 			return promise;
 		},
 
+		addAclGroup: function(groupId) {
+			return $.post(this.baseUrl + 'acl/' + groupId);
+		},
+
 		addTag: function(group, tag) {
 			return $.post(this.baseUrl + 'tags', {
 				group : group,
@@ -104,6 +108,13 @@
 			return $.post(url);
 		},
 
+		removeAclGroup: function(groupId) {
+			return $.ajax({
+				type: 'delete',
+				url: this.baseUrl + 'acl/' + groupId
+			});
+		},
+
 		removeRelatedPage: function(page) {
 			return $.ajax({
 				type: 'delete',
@@ -137,15 +148,25 @@
 			return $.post(this.baseUrl + 'settings/' + section, data);
 		},
 
+		setEnableAcl: function(enabled) {
+			return $.ajax({
+				type: 'put',
+				url: this.baseUrl + 'acl',
+				data: {
+					enabled: enabled
+				}
+			});
+		},
+
 		setFeatureImage: function(asset) {
 			return $.post(this.baseUrl + 'settings/feature', {
-				feature_image_id : asset.getId()
+				feature_image_id: asset.getId()
 			});
 		},
 
 		setTitle: function(title) {
 			return $.post(this.baseUrl + 'version/title', {
-				title : title
+				title: title
 			});
 		},
 

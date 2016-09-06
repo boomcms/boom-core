@@ -48233,6 +48233,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return promise;
 		},
 
+		addAclGroup: function(groupId) {
+			return $.post(this.baseUrl + 'acl/' + groupId);
+		},
+
 		addTag: function(group, tag) {
 			return $.post(this.baseUrl + 'tags', {
 				group : group,
@@ -48314,6 +48318,13 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return $.post(url);
 		},
 
+		removeAclGroup: function(groupId) {
+			return $.ajax({
+				type: 'delete',
+				url: this.baseUrl + 'acl/' + groupId
+			});
+		},
+
 		removeRelatedPage: function(page) {
 			return $.ajax({
 				type: 'delete',
@@ -48347,15 +48358,28 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return $.post(this.baseUrl + 'settings/' + section, data);
 		},
 
+		setEnableAcl: function(enabled) {
+			return $.ajax({
+				type: 'put',
+				url: this.baseUrl + 'acl',
+				data: {
+					enabled: enabled
+				}
+			});
+			return $.post(this.baseUrl + 'acl', {
+				enabled: enabled
+			});
+		},
+
 		setFeatureImage: function(asset) {
 			return $.post(this.baseUrl + 'settings/feature', {
-				feature_image_id : asset.getId()
+				feature_image_id: asset.getId()
 			});
 		},
 
 		setTitle: function(title) {
 			return $.post(this.baseUrl + 'version/title', {
-				title : title
+				title: title
 			});
 		},
 
@@ -49696,7 +49720,65 @@ $.widget( 'boom.pageToolbar', {
 		}
 	});
 }(BoomCMS));
-;$.widget('boom.pageSettingsChildren', {
+;$.widget('boom.pageSettingsDefault', {
+	bind: function() {
+		var settingsEditor = this,
+			section = settingsEditor.options.section;
+
+		this.element
+			.on('click', '.b-button-cancel', function(e) {
+				e.preventDefault();
+
+				settingsEditor.options.settings.show(section);
+			})
+			.on('click', '.b-button-save', function(e) {
+				e.preventDefault();
+
+				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
+					.done(function() {
+						new boomNotification('Page settings saved').show();
+					});
+			});
+	},
+
+	_create: function() {
+		this.page = this.options.page;
+		this.bind();
+
+		this.element.find('time').localTime();
+	}
+});;$.widget('boom.pageSettingsAcl', $.boom.pageSettingsDefault, {
+	bind: function() {
+		var settings = this,
+			page = this.options.page;
+
+		this.element
+			.find('select[multiple]')
+			.chosen()
+			.change(function(event, data) {
+				if (typeof(data.selected) !== 'undefined') {
+					return page.addAclGroup(data.selected);
+				}
+
+				return page.removeAclGroup(data.selected);
+			});
+
+		this.element.on('change', 'select[name=b-page-acl-toggle]', function() {
+			settings.toggleGroups();
+
+			page.setEnableAcl($(this).val() === '1');
+		});
+
+		this.toggleGroups();
+	},
+
+	toggleGroups: function() {
+		var val = this.element.find('select[name=b-page-acl-toggle]').val(),
+			$groups = this.element.find('#b-page-acl-groups');
+
+		(val === '1') ? $groups.show() : $groups.hide();
+	}
+});;$.widget('boom.pageSettingsChildren', {
 	bind: function() {
 		var settingsEditor = this,
 			page = this.options.page,
@@ -49777,33 +49859,6 @@ $.widget( 'boom.pageToolbar', {
 		this.sortUrl = this.options.page.baseUrl + 'settings/sort-children';
 
 		this.bind();
-	}
-});;$.widget('boom.pageSettingsDefault', {
-	bind: function() {
-		var settingsEditor = this,
-			section = settingsEditor.options.section;
-
-		this.element
-			.on('click', '.b-button-cancel', function(e) {
-				e.preventDefault();
-
-				settingsEditor.options.settings.show(section);
-			})
-			.on('click', '.b-button-save', function(e) {
-				e.preventDefault();
-
-				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
-					.done(function() {
-						new boomNotification('Page settings saved').show();
-					});
-			});
-	},
-
-	_create: function() {
-		this.page = this.options.page;
-		this.bind();
-
-		this.element.find('time').localTime();
 	}
 });;$.widget('boom.pageSettingsDelete', {
 	bind: function() {

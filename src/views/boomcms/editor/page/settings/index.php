@@ -84,8 +84,17 @@
             <?php if (Gate::allows('editAdmin', $page)): ?>
                 <li>
                     <a href="#" data-b-page-setting="admin">
-                        <span class="fa fa-lock"></span>
+                        <span class="fa fa-asterisk"></span>
                         <?= trans('boomcms::settings.menu.admin') ?>
+                    </a>
+                </li>
+            <?php endif ?>
+
+            <?php if (Gate::allows('editAcl', $page)): ?>
+                <li>
+                    <a href="#" data-b-page-setting="acl">
+                        <span class="fa fa-lock"></span>
+                        <?= trans('boomcms::settings.menu.acl') ?>
                     </a>
                 </li>
             <?php endif ?>

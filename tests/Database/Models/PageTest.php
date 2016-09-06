@@ -11,11 +11,27 @@ use BoomCMS\Support\Helpers\URL as URLHelper;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 use Mockery as m;
 
 class PageTest extends AbstractModelTestCase
 {
     protected $model = Page::class;
+
+    public function testAclEnabled()
+    {
+        $values = [
+            null => false,
+            1    => true,
+            0    => false,
+        ];
+
+        foreach ($values as $value => $enabled) {
+            $page = new Page([Page::ATTR_ENABLE_ACL => $value]);
+
+            $this->assertEquals($enabled, $page->aclEnabled());
+        }
+    }
 
     public function testCanBeDeleted()
     {
@@ -30,6 +46,42 @@ class PageTest extends AbstractModelTestCase
 
             $this->assertEquals($canBeDeleted, $page->canBeDeleted());
         }
+    }
+
+    public function testGetAclGroupIds()
+    {
+        $groupIds = [1, 2];
+        $pageId = 1;
+        $page = m::mock(Page::class)->makePartial();
+
+        $page
+            ->shouldReceive('getId')
+            ->once()
+            ->andReturn($pageId);
+
+        $query = DB::shouldReceive('table')
+            ->once()
+            ->with('page_acl')
+            ->andReturnSelf();
+
+        $query = DB::shouldReceive('select')
+            ->once()
+            ->with('group_id')
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->with('page_id', $pageId)
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('lists')
+            ->once()
+            ->with('group_id')
+            ->andReturn($groupIds);
+
+        $page->getAclGroupIds();
     }
 
     public function testGetAddPageBehaviour()

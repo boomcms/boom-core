@@ -5,10 +5,13 @@ namespace BoomCMS\Page;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Foundation\Finder\Finder as BaseFinder;
 use BoomCMS\Foundation\Query as BaseQuery;
+use BoomCMS\Support\Facades\Router;
+use Illuminate\Support\Facades\Auth;
 
 class Query extends BaseQuery
 {
     protected $filterAliases = [
+        'acl'                 => Finder\Acl::class,
         'excludeinvisible'    => Finder\ExcludeInvisible::class,
         'ignorepages'         => Finder\IgnorePages::class,
         'not'                 => Finder\IgnorePages::class,
@@ -38,6 +41,9 @@ class Query extends BaseQuery
         if (!isset($params['excludeinvisible'])) {
             $params['excludeinvisible'] = null;
         }
+
+        // Always include the ACL filter.
+        $params['acl'] = [Router::getActiveSite(), Auth::user()];
 
         $this->params = $params;
     }
