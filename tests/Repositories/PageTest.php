@@ -254,7 +254,7 @@ class PageTest extends AbstractTestCase
                 ->andReturn(null);
         }
 
-        $this->repository->recurse($this->model, function(Page $page) {
+        $this->repository->recurse($this->model, function (Page $page) {
             $page->save();
         });
     }

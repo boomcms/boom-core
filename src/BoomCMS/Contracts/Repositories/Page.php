@@ -69,7 +69,7 @@ interface Page
      * Recurse through a section of the page tree and apply a function.
      *
      * @param PageInterface $page
-     * @param callable $closure
+     * @param callable      $closure
      *
      * @return void
      */
