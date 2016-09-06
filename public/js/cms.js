@@ -49125,11 +49125,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			$div = $('<div class="b-settings-content"></div>');
 
 		this.$menu
-			.find('li')
+			.find('a')
 			.removeClass('selected')
 			.end()
 			.find('a[data-b-page-setting=' + section + ']')
-			.parent('li')
 			.addClass('selected');
 
 		this.$content.replaceWith($div);

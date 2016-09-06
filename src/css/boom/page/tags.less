@@ -42,11 +42,19 @@
 		padding: 0;
 		overflow: hidden;
 		list-style-type: none;
+		display: block;
+		float: none;
 	}
 
 	> ul {
 		> li {
 			overflow: hidden;
+			display: block;
+			float: none;
+
+			ul {
+				margin: -.75rem 0 0 -0.75rem;
+			}
 			
 			+ li {
 				margin-top: 5rem;
