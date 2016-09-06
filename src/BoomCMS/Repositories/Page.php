@@ -139,6 +139,25 @@ class Page implements PageRepositoryInterface
     }
 
     /**
+     * @param PageModelInterface $page
+     * @param callable           $closure
+     *
+     * @return void
+     */
+    public function recurse(PageModelInterface $page, callable $closure)
+    {
+        $children = $this->findByParentId($page->getId());
+
+        if (!empty($children)) {
+            foreach ($children as $child) {
+                $this->recurse($child, $closure);
+            }
+        }
+
+        $closure($page);
+    }
+
+    /**
      * Save a page.
      *
      * @param PageModelInterface $page

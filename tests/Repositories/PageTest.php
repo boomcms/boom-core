@@ -216,4 +216,46 @@ class PageTest extends AbstractTestCase
 
         $this->assertEquals($exists, $this->repository->internalNameExists($name));
     }
+
+    public function testRecurse()
+    {
+        $pageId = 1;
+        $children = [m::mock(Page::class), m::mock(Page::class)];
+
+        $this->repository
+            ->shouldReceive('findByParentId')
+            ->once()
+            ->with($pageId)
+            ->andReturn($children);
+
+        $this->model
+            ->shouldReceive('getId')
+            ->once()
+            ->andReturn($pageId);
+
+        $this->model
+            ->shouldReceive('save')
+            ->once();
+
+        foreach ($children as $i => $child) {
+            $child
+                ->shouldReceive('getId')
+                ->once()
+                ->andReturn($i);
+
+            $child
+                ->shouldReceive('save')
+                ->once();
+
+            $this->repository
+                ->shouldReceive('findByParentId')
+                ->once()
+                ->with($i)
+                ->andReturn(null);
+        }
+
+        $this->repository->recurse($this->model, function (Page $page) {
+            $page->save();
+        });
+    }
 }
