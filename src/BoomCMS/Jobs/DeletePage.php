@@ -22,7 +22,7 @@ class DeletePage extends Command
     protected $options;
 
     /**
-     * @param Page $page
+     * @param Page  $page
      * @param array $options
      */
     public function __construct(Page $page, array $options = [])
@@ -58,7 +58,7 @@ class DeletePage extends Command
 
     protected function deleteAll()
     {
-        PageFacade::recurse($this->page, function(Page $page) {
+        PageFacade::recurse($this->page, function (Page $page) {
             $this->delete($page);
         });
     }
@@ -97,7 +97,6 @@ class DeletePage extends Command
     }
 
     /**
-     * 
      * @return bool
      */
     protected function urlsShouldBeReassigned()
