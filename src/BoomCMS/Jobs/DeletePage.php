@@ -21,6 +21,10 @@ class DeletePage extends Command
      */
     protected $options;
 
+    /**
+     * @param Page $page
+     * @param array $options
+     */
     public function __construct(Page $page, array $options = [])
     {
         $this->page = $page;
@@ -29,11 +33,9 @@ class DeletePage extends Command
 
     public function handle()
     {
-        $this->deleteChildren();
-        $this->reassignURLs();
-
-        PageFacade::delete($this->page);
-        Event::fire(new PageWasDeleted($this->page));
+        $this->childrenShouldBeMoved() ?
+            $this->keepChildren()
+            : $this->deleteAll();
     }
 
     /**
@@ -45,31 +47,61 @@ class DeletePage extends Command
             && $this->options['reparentChildrenTo'] > 0;
     }
 
-    protected function deleteChildren()
+    /**
+     * @param Page $page
+     */
+    protected function delete(Page $page)
     {
-        if (!$this->childrenShouldBeMoved()) {
-            Bus::dispatch(new DeletePageChildren($this->page));
-        } else {
-            $children = PageFacade::findByParentId($this->page->getId());
-            $newParent = PageFacade::find($this->options['reparentChildrenTo']);
+        PageFacade::delete($page);
+        Event::fire(new PageWasDeleted($page));
+    }
 
-            foreach ($children as $child) {
-                $child->setParent($newParent);
-                PageFacade::save($child);
-            }
+    protected function deleteAll()
+    {
+        PageFacade::recurse($this->page, function(Page $page) {
+            $this->delete($page);
+        });
+    }
+
+    protected function keepChildren()
+    {
+        $this->reparentChildren();
+
+        if ($this->urlsShouldBeReassigned()) {
+            $this->reassignURLs();
+        }
+
+        $this->delete($this->page);
+    }
+
+    protected function reparentChildren()
+    {
+        $children = PageFacade::findByParentId($this->page->getId());
+        $newParent = PageFacade::find($this->options['reparentChildrenTo']);
+
+        foreach ($children as $child) {
+            $child->setParent($newParent);
+            PageFacade::save($child);
         }
     }
 
     protected function reassignURLs()
     {
-        if (isset($this->options['redirectTo']) && $this->options['redirectTo'] > 0) {
-            $redirectTo = PageFacade::find($this->options['redirectTo']);
+        $redirectTo = PageFacade::find($this->options['redirectTo']);
 
-            if ($redirectTo) {
-                foreach ($this->page->getUrls() as $url) {
-                    Bus::dispatch(new ReassignURL($url, $redirectTo));
-                }
+        if ($redirectTo !== null) {
+            foreach ($this->page->getUrls() as $url) {
+                Bus::dispatch(new ReassignURL($url, $redirectTo));
             }
         }
+    }
+
+    /**
+     * 
+     * @return bool
+     */
+    protected function urlsShouldBeReassigned()
+    {
+        return isset($this->options['redirectTo']) && $this->options['redirectTo'] > 0;
     }
 }

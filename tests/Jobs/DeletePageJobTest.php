@@ -6,7 +6,6 @@ use BoomCMS\Database\Models\Page as PageModel;
 use BoomCMS\Jobs;
 use BoomCMS\Support\Facades\Page;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Mockery as m;
 
@@ -24,10 +23,17 @@ class DeletePageJobTest extends AbstractTestCase
             $page = $this->validPage();
             $job = new Jobs\DeletePage($page, $o);
 
-            Page::shouldReceive('delete')->zeroOrMoreTimes();
-            Event::shouldReceive('fire')->zeroOrMoreTimes();
+            Page::shouldReceive('findByParentId')
+                ->once()
+                ->with($page->getId())
+                ->andReturn(null);
 
-            Bus::shouldReceive('dispatch')->once()->with(m::type(Jobs\DeletePageChildren::class));
+            Page::shouldReceive('delete')
+                ->once()
+                ->with($page);
+
+            Page::shouldDeferMissing();
+            Event::shouldReceive('fire')->once();
 
             $job->handle();
         }
