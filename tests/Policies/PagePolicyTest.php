@@ -113,7 +113,7 @@ class PagePolicyTest extends AbstractTestCase
         $groups = [new Group(), new Group()];
         $groups[0]->id = 1;
         $groups[1]->id = 2;
-        
+
         $person = m::mock(Person::class);
         $person
             ->shouldReceive('getGroups')

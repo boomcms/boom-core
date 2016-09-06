@@ -234,7 +234,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Returns an array of IDs for groups which can view this page
+     * Returns an array of IDs for groups which can view this page.
      *
      * @return array
      */
@@ -245,7 +245,6 @@ class Page extends Model implements PageInterface
             ->where('page_id', $this->getId())
             ->lists('group_id');
     }
-        
 
     /**
      * @return int

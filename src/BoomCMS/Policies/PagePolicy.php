@@ -58,7 +58,7 @@ class PagePolicy extends BoomCMSPolicy
      * Whether the page can be viewed.
      *
      * @param Person $person
-     * @param Page $page
+     * @param Page   $page
      *
      * @return bool
      */

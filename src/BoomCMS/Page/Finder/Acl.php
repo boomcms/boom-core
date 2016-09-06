@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Page\Finder;
 
-use BoomCMS\Contracts\Models\Site;
 use BoomCMS\Contracts\Models\Person;
+use BoomCMS\Contracts\Models\Site;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,7 +21,7 @@ class Acl extends Filter
     protected $site;
 
     /**
-     * @param Site $site
+     * @param Site        $site
      * @param Person|null $person
      */
     public function __construct(Site $site, Person $person = null)
@@ -41,7 +41,7 @@ class Acl extends Filter
             ->on('pages.id', '=', 'page_acl.page_id')
             ->leftJoin('group_person')
             ->on('page_acl.group_id', '=', 'group_person.group_id')
-            ->where(function(Builder $where) {
+            ->where(function (Builder $where) {
                 $where
                     ->where(Page::ATTR_CREATED_BY, $this->person->getId())
                     ->orWhereNull('page_acl.group_id')

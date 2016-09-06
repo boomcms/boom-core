@@ -5,8 +5,8 @@ namespace BoomCMS\Tests\Http\Middleware;
 use BoomCMS\Http\Middleware\CheckPageAcl;
 use BoomCMS\Routing\Router;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Http\Request;
 use Illuminate\Auth\Access\Gate;
+use Illuminate\Http\Request;
 use Mockery as m;
 
 class CheckPageAclTest extends AbstractTestCase
@@ -43,7 +43,8 @@ class CheckPageAclTest extends AbstractTestCase
             ->with('view', $this->page)
             ->andReturn(true);
 
-        $this->middleware->handle(new Request(), function() {});
+        $this->middleware->handle(new Request(), function () {
+        });
     }
 
     public function testPageCanBeViewed()

@@ -4,7 +4,6 @@ namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Events\PageRelationshipAdded;
-use BoomCMS\Events\PageRelationshipRemoved;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use Illuminate\Support\Facades\Event;
@@ -21,7 +20,7 @@ class Acl extends Controller
     }
 
     /**
-     * @param Page $page
+     * @param Page  $page
      * @param Group $group
      */
     public function destroy(Page $page, Group $group)
@@ -41,7 +40,7 @@ class Acl extends Controller
     {
         $this->auth();
 
-        return view("boomcms::editor.page.settings.acl", [
+        return view('boomcms::editor.page.settings.acl', [
             'page'      => $page,
             'allGroups' => GroupFacade::findAll(),
             'groupIds'  => $page->getAclGroupIds(),

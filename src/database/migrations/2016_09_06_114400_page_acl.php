@@ -34,7 +34,7 @@ class PageACL extends Migration
             $table->primary(['page_id', 'group_id']);
         });
 
-        Schema::table('pages', function(Blueprint $table) {
+        Schema::table('pages', function (Blueprint $table) {
             $table->boolean(Page::ATTR_ENABLE_ACL)->default(false);
         });
 
@@ -53,7 +53,7 @@ class PageACL extends Migration
     {
         Schema::drop('page_acl');
 
-        Schema::table('pages', function(Blueprint $table) {
+        Schema::table('pages', function (Blueprint $table) {
             $table->dropColumn(Page::ATTR_ENABLE_ACL);
         });
 
