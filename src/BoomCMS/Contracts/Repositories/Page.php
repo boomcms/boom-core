@@ -66,6 +66,16 @@ interface Page
     public function findBySiteAndUri(SiteInterface $site, $uri);
 
     /**
+     * Recurse through a section of the page tree and apply a function.
+     *
+     * @param PageInterface $page
+     * @param callable $closure
+     *
+     * @return void
+     */
+    public function recurse(PageInterface $page, callable $closure);
+
+    /**
      * @param PageInterface $page
      *
      * @return PageInterface
