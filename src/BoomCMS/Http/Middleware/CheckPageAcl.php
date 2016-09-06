@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 class CheckPageAcl
 {
     /**
-     *
      * @var Gate
      */
     protected $gate;
@@ -23,7 +22,7 @@ class CheckPageAcl
 
     /**
      * @param Router $router
-     * @param Gate $gate
+     * @param Gate   $gate
      */
     public function __construct(Router $router, Gate $gate)
     {
