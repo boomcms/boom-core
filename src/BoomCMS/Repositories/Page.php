@@ -139,9 +139,8 @@ class Page implements PageRepositoryInterface
     }
 
     /**
-     * 
      * @param PageModelInterface $page
-     * @param callable $closure
+     * @param callable           $closure
      *
      * @return void
      */
