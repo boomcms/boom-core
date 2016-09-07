@@ -52,12 +52,15 @@
 			this.uploadForm = this.element;
 			this.originalMessage = this.dropArea.find('.message').html();
 
+			this.bind();
+		},
+
+		_init: function() {
 			if (this.options.asset !== undefined) {
 				this.uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
 				this.uploaderOptions.singleFileUploads = true;
 			}
-
-			this.bind();
+			
 			this.initUploader();
 		},
 
