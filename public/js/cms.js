@@ -53507,6 +53507,9 @@ $.widget('ui.chunkPageVisibility', {
 						.done(function(asset) {
 							$this.val(asset.getId());
 						});
+				})
+				.on('remove', function() {
+					this.$('.b-assets-upload').assetUploader('reset');
 				});
 
 			this.$('.b-assets-upload').assetUploader({
