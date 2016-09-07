@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Page\Finder;
 
-use BoomCMS\Contracts\Models\Site;
 use BoomCMS\Contracts\Models\Person;
+use BoomCMS\Contracts\Models\Site;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,7 +21,7 @@ class Acl extends Filter
     protected $site;
 
     /**
-     * @param Site $site
+     * @param Site        $site
      * @param Person|null $person
      */
     public function __construct(Site $site, Person $person = null)

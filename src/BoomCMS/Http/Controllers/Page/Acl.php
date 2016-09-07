@@ -21,7 +21,7 @@ class Acl extends Controller
     }
 
     /**
-     * @param Page $page
+     * @param Page  $page
      * @param Group $group
      */
     public function destroy(Page $page, Group $group)
@@ -44,7 +44,7 @@ class Acl extends Controller
     {
         $this->auth($page);
 
-        return view("boomcms::editor.page.settings.acl", [
+        return view('boomcms::editor.page.settings.acl', [
             'page'      => $page,
             'allGroups' => GroupFacade::findAll(),
             'groupIds'  => $page->getAclGroupIds(),

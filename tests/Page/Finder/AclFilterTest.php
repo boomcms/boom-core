@@ -97,7 +97,7 @@ class AclFilterTest extends AbstractTestCase
         $this->query
             ->shouldReceive('where')
             ->once()
-            ->with(m::on(function($closure) use($personId) {
+            ->with(m::on(function ($closure) use ($personId) {
                 $this->query
                     ->shouldReceive('where')
                     ->once()
