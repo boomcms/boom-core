@@ -39,7 +39,7 @@ class Acl extends Filter
         return $query
             ->leftJoin('page_acl', 'pages.id', '=', 'page_acl.page_id')
             ->leftJoin('group_person', 'page_acl.group_id', '=', 'group_person.group_id')
-            ->where(function(Builder $where) {
+            ->where(function (Builder $where) {
                 $where
                     ->where(Page::ATTR_CREATED_BY, $this->person->getId())
                     ->orWhereNull('page_acl.group_id')

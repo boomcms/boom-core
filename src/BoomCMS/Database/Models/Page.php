@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Database\Models;
 
-use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\PageVersion as PageVersionInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;

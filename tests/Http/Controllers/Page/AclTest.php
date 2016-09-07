@@ -6,7 +6,6 @@ use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Http\Controllers\Page\Acl as Controller;
 use BoomCMS\Support\Facades\Page as PageFacade;
-use Illuminate\Http\Request;
 use Mockery as m;
 
 class AclTest extends BaseControllerTest
@@ -49,7 +48,7 @@ class AclTest extends BaseControllerTest
 
         PageFacade::shouldReceive('recurse')
             ->once()
-            ->with($this->page, m::on(function($closure) {
+            ->with($this->page, m::on(function ($closure) {
                 $closure($this->page);
 
                 return true;
@@ -69,7 +68,7 @@ class AclTest extends BaseControllerTest
 
         PageFacade::shouldReceive('recurse')
             ->once()
-            ->with($this->page, m::on(function($closure) {
+            ->with($this->page, m::on(function ($closure) {
                 $closure($this->page);
 
                 return true;

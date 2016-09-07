@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Asset;
-use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Site;
@@ -52,7 +51,7 @@ class PageTest extends AbstractModelTestCase
     {
         $groupId = 1;
         $page = m::mock(Page::class)->makePartial();
-        
+
         $query = DB::shouldReceive('table')
             ->once()
             ->with('page_acl')
@@ -74,7 +73,7 @@ class PageTest extends AbstractModelTestCase
     {
         $groupId = 1;
         $page = m::mock(Page::class)->makePartial();
-        
+
         $query = DB::shouldReceive('table')
             ->once()
             ->with('page_acl')
