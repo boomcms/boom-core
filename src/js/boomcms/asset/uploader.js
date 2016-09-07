@@ -53,7 +53,7 @@
 			this.originalMessage = this.dropArea.find('.message').html();
 
 			if (this.options.asset !== undefined) {
-				this.uploaderOptions.url += '/' + this.options.asset.getId() + '/replace',
+				this.uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
 				this.uploaderOptions.singleFileUploads = true;
 			}
 
@@ -86,7 +86,7 @@
 		},
 
 		notify: function(message) {
-			if ( ! message) {
+			if (!message) {
 				message = this.originalMessage;
 			}
 

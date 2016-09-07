@@ -4,11 +4,7 @@
             <div class="b-assets-upload-info">
                 <p>
                     Drag and drop files here, or
-
-                    <a class="b-assets-upload-add" href="#">
-                        <label for="b-assets-upload-file">select files</label>
-                    </a>
-
+                    <label for="b-assets-upload-file">select files</label>
                     to start uploading.
                 </p>
 

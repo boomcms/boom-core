@@ -252,13 +252,9 @@
                             <div class="b-assets-upload-info">
                                 <p>
                                     <?= trans('boomcms::asset.replace.info1') ?>
-
-                                    <a class="b-assets-upload-add" href="#">
-                                        <label for="b-asset-replace-file">
-                                            <?= trans('boomcms::asset.replace.info2') ?>
-                                        </label>
-                                    </a>
-
+                                    <label for="b-asset-replace-file">
+                                        <?= trans('boomcms::asset.replace.info2') ?>
+                                    </label>
                                     <?= trans('boomcms::asset.replace.info3') ?>
                                 </p>
 
