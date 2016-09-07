@@ -7,6 +7,20 @@ use DateTime;
 interface Page
 {
     /**
+     * Whether ACL is enabled.
+     *
+     * @return bool
+     */
+    public function aclEnabled();
+
+    /**
+     * Add a group which can view this page.
+     *
+     * @param int $groupId
+     */
+    public function addAclGroupId($groupId);
+
+    /**
      * Add a related page.
      *
      * @param Page $page
@@ -53,6 +67,11 @@ interface Page
      * @return int
      */
     public function countChildren();
+
+    /**
+     * @return array
+     */
+    public function getAclGroupIds();
 
     /**
      * @return int
@@ -268,6 +287,13 @@ interface Page
     public function markUpdatesAsPendingApproval();
 
     /**
+     * Remove a group from being able to view this page.
+     *
+     * @param int $groupId
+     */
+    public function removeAclGroupId($groupId);
+
+    /**
      * Remove the relationship with another page.
      *
      * @param Page $page
@@ -284,6 +310,13 @@ interface Page
      * @return $this
      */
     public function removeTag(Tag $tag);
+
+    /**
+     * Set whether ACL is enabled for the page.
+     *
+     * @param bool $enabled
+     */
+    public function setAclEnabled($enabled);
 
     /**
      * @param int $value

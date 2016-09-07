@@ -28,8 +28,12 @@ class CreatePageTest extends AbstractTestCase
 
         $this->newPage = m::mock(Page::class.'[addVersion]');
 
-        $this->parent = $this->validPage();
+        $this->parent = m::mock(Page::class)->makePartial();
         $this->parent->{Page::ATTR_CHILD_TEMPLATE} = 1;
+
+        $this->parent
+            ->shouldReceive('getAclGroupIds')
+            ->andReturn([]);
 
         $this->expectsEvents(PageWasCreated::class);
     }

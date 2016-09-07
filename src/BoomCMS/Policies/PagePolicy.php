@@ -55,6 +55,41 @@ class PagePolicy extends BoomCMSPolicy
     }
 
     /**
+     * Whether the page can be viewed.
+     *
+     * @param Person $person
+     * @param Page   $page
+     *
+     * @return bool
+     */
+    public function view(Person $person, Page $page)
+    {
+        if (!$page->aclEnabled()) {
+            return true;
+        }
+
+        if ($page->wasCreatedBy($person) || $this->managesPages()) {
+            return true;
+        }
+
+        $aclGroupIds = $page->getAclGroupIds();
+
+        if (empty($aclGroupIds)) {
+            return true;
+        }
+
+        $groups = $person->getGroups();
+
+        foreach ($groups as $group) {
+            if (in_array($group->getId(), $aclGroupIds)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Whether the user has the 'managePages' role.
      *
      * @return bool

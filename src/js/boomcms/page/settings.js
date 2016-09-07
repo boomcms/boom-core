@@ -47,6 +47,8 @@ $.widget('boom.pageSettings', {
 				return prefix + 'version/template';
 			case 'drafts':
 				return prefix + 'version/status';
+			case 'acl':
+				return prefix + 'acl';
 			default:
 				return prefix + 'settings/' + section;
 		}

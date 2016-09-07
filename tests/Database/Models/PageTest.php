@@ -11,11 +11,89 @@ use BoomCMS\Support\Helpers\URL as URLHelper;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 use Mockery as m;
 
 class PageTest extends AbstractModelTestCase
 {
     protected $model = Page::class;
+
+    public function testAclEnabled()
+    {
+        $values = [
+            null => false,
+            1    => true,
+            0    => false,
+        ];
+
+        foreach ($values as $value => $enabled) {
+            $page = new Page([Page::ATTR_ENABLE_ACL => $value]);
+
+            $this->assertEquals($enabled, $page->aclEnabled());
+        }
+    }
+
+    /**
+     * @depends testAclEnabled
+     */
+    public function testSetAclEnabled()
+    {
+        $page = new Page();
+
+        $page->setAclEnabled(true);
+        $this->assertTrue($page->aclEnabled());
+
+        $page->setAclEnabled(false);
+        $this->assertFalse($page->aclEnabled());
+    }
+
+    public function testAddAclGroupId()
+    {
+        $groupId = 1;
+        $page = m::mock(Page::class)->makePartial();
+
+        $query = DB::shouldReceive('table')
+            ->once()
+            ->with('page_acl')
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('insert')
+            ->once()
+            ->with([
+                'page_id'  => $page->getId(),
+                'group_id' => $groupId,
+            ])
+            ->andReturnSelf();
+
+        $page->addAclGroupId($groupId);
+    }
+
+    public function testRemoveAclGroupId()
+    {
+        $groupId = 1;
+        $page = m::mock(Page::class)->makePartial();
+
+        $query = DB::shouldReceive('table')
+            ->once()
+            ->with('page_acl')
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->with([
+                'page_id'  => $page->getId(),
+                'group_id' => $groupId,
+            ])
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('delete')
+            ->once();
+
+        $page->removeAclGroupId($groupId);
+    }
 
     public function testCanBeDeleted()
     {
@@ -30,6 +108,43 @@ class PageTest extends AbstractModelTestCase
 
             $this->assertEquals($canBeDeleted, $page->canBeDeleted());
         }
+    }
+
+    public function testGetAclGroupIds()
+    {
+        $groupIds = [1, 2];
+        $pageId = 1;
+        $page = m::mock(Page::class)->makePartial();
+
+        $page
+            ->shouldReceive('getId')
+            ->once()
+            ->andReturn($pageId);
+
+        $query = DB::shouldReceive('table')
+            ->once()
+            ->with('page_acl')
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('select')
+            ->once()
+            ->with('group_id')
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->with('page_id', $pageId)
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('pluck')
+            ->once()
+            ->with('group_id')
+            ->andReturn($groupIds);
+
+        $page->getAclGroupIds();
     }
 
     public function testGetAddPageBehaviour()

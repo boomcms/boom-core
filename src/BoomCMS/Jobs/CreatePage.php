@@ -60,6 +60,7 @@ class CreatePage extends Command
                 'visible_in_nav_cms'          => $this->parent->childrenAreVisibleInCmsNav(),
                 'children_visible_in_nav'     => $this->parent->childrenAreVisibleInNav(),
                 'children_visible_in_nav_cms' => $this->parent->childrenAreVisibleInCmsNav(),
+                'enable_acl'                  => $this->parent->aclEnabled(),
             ];
         }
 
@@ -70,6 +71,14 @@ class CreatePage extends Command
             'title'           => $this->title,
             'embargoed_until' => time(),
         ]);
+
+        if ($this->parent) {
+            $groupIds = $this->parent->getAclGroupIds();
+
+            foreach ($groupIds as $groupId) {
+                $page->addAclGroupId($groupId);
+            }
+        }
 
         Event::fire(new PageWasCreated($page, $this->parent));
 
