@@ -42,6 +42,7 @@
 				asset: asset,
 				uploadFinished: function(e, data) {
 					asset.set(data.result);
+					asset.trigger('change:image');
 
 					view.render('info');
 				}
