@@ -60,6 +60,8 @@
 				this.uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
 				this.uploaderOptions.singleFileUploads = true;
 			}
+
+			this.uploaderOptions.dropZone = this.element;
 			
 			this.initUploader();
 		},

@@ -53512,21 +53512,6 @@ $.widget('ui.chunkPageVisibility', {
 				.on('remove', function() {
 					this.$('.b-assets-upload').assetUploader('reset');
 				});
-		},
-
-		initialize: function(options) {
-			var  view = this,
-				asset =	this.model;
-
-			this.selection = new BoomCMS.Collections.Assets([this.model]);
-
-			this.listenTo(this.model, 'revert', function() {
-				BoomCMS.notify('This asset has been reverted to the previous version');
-			});
-
-			this.listenTo(this.model, 'change:image revert', function() {
-				this.render('info');
-			});
 
 			this.$('.b-assets-upload').assetUploader({
 				asset: asset,
@@ -53535,6 +53520,18 @@ $.widget('ui.chunkPageVisibility', {
 
 					view.render('info');
 				}
+			});
+		},
+
+		initialize: function(options) {
+			this.selection = new BoomCMS.Collections.Assets([this.model]);
+
+			this.listenTo(this.model, 'revert', function() {
+				BoomCMS.notify('This asset has been reverted to the previous version');
+			});
+
+			this.listenTo(this.model, 'change:image revert', function() {
+				this.render('info');
 			});
 
 			this.init(options);
@@ -53968,6 +53965,8 @@ $.widget('ui.chunkPageVisibility', {
 				this.uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
 				this.uploaderOptions.singleFileUploads = true;
 			}
+
+			this.uploaderOptions.dropZone = this.element;
 			
 			this.initUploader();
 		},
