@@ -53415,6 +53415,7 @@ $.widget('ui.chunkPageVisibility', {
 				})
 				.on('click', '.edit', function(e) {
 					e.preventDefault();
+					e.stopPropagation();
 
 					model.trigger('view', model);
 				})
