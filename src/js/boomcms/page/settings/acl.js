@@ -11,13 +11,13 @@ $.widget('boom.pageSettingsAcl', $.boom.pageSettingsDefault, {
 					return page.addAclGroup(data.selected);
 				}
 
-				return page.removeAclGroup(data.selected);
+				return page.removeAclGroup(data.deselected);
 			});
 
 		this.element.on('change', 'select[name=b-page-acl-toggle]', function() {
 			settings.toggleGroups();
 
-			page.setEnableAcl($(this).val() === '1');
+			page.setEnableAcl($(this).val());
 		});
 
 		this.toggleGroups();

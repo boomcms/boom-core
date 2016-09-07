@@ -2,12 +2,12 @@
 
 namespace BoomCMS\Http\Controllers\Page;
 
+use BoomCMS\Contracts\Models\Group;
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Events\PageRelationshipAdded;
-use BoomCMS\Events\PageRelationshipRemoved;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\Group as GroupFacade;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class Acl extends Controller
@@ -27,7 +27,10 @@ class Acl extends Controller
     public function destroy(Page $page, Group $group)
     {
         $this->auth($page);
-        $page->removeAclGroup($group);
+
+        PageFacade::recurse($page, function($p) use($group) {
+            $p->removeAclGroupId($group->getId());
+        });
     }
 
     /**
@@ -39,7 +42,7 @@ class Acl extends Controller
      */
     public function index(Page $page)
     {
-        $this->auth();
+        $this->auth($page);
 
         return view("boomcms::editor.page.settings.acl", [
             'page'      => $page,
@@ -50,13 +53,31 @@ class Acl extends Controller
 
     /**
      * @param Page $page
-     * @param Page $related
+     * @param Group $group
      */
-    public function store(Page $page, Page $related)
+    public function store(Page $page, Group $group)
     {
         $this->auth($page);
-        $page->addRelation($related);
 
-        Event::fire(new PageRelationshipAdded($page, $related));
+        PageFacade::recurse($page, function($p) use($group) {
+            $p->addAclGroupId($group->getId());
+        });
+    }
+
+    /**
+     * @param Request $request
+     * @param Page $page
+     */
+    public function update(Request $request, Page $page)
+    {
+        $this->auth($page);
+
+        $enabled = ($request->input('enabled') === '1');
+
+        PageFacade::recurse($page, function($p) use($enabled) {
+            $p->setAclEnabled($enabled);
+
+            PageFacade::save($p);
+        });
     }
 }

@@ -21,7 +21,7 @@ return [
     ],
     'acl'   => [
         'heading'        => 'Page access control',
-        'description'    => 'Restrict access to this page to certain user groups only',
+        'description'    => 'Restrict access to this page to certain user groups only. Changing these settings will apply changes to all descendent pages as well.',
         'is-enabled'     => 'Enable access control',
         'enabled'        => 'Yes',
         'disabled'       => 'No',

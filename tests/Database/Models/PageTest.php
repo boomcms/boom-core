@@ -3,6 +3,7 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Asset;
+use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Site;
@@ -31,6 +32,68 @@ class PageTest extends AbstractModelTestCase
 
             $this->assertEquals($enabled, $page->aclEnabled());
         }
+    }
+
+    /**
+     * @depends testAclEnabled
+     */
+    public function testSetAclEnabled()
+    {
+        $page = new Page();
+
+        $page->setAclEnabled(true);
+        $this->assertTrue($page->aclEnabled());
+
+        $page->setAclEnabled(false);
+        $this->assertFalse($page->aclEnabled());
+    }
+
+    public function testAddAclGroupId()
+    {
+        $groupId = 1;
+        $page = m::mock(Page::class)->makePartial();
+        
+        $query = DB::shouldReceive('table')
+            ->once()
+            ->with('page_acl')
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('insert')
+            ->once()
+            ->with([
+                'page_id'  => $page->getId(),
+                'group_id' => $groupId,
+            ])
+            ->andReturnSelf();
+
+        $page->addAclGroupId($groupId);
+    }
+
+    public function testRemoveAclGroupId()
+    {
+        $groupId = 1;
+        $page = m::mock(Page::class)->makePartial();
+        
+        $query = DB::shouldReceive('table')
+            ->once()
+            ->with('page_acl')
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('where')
+            ->once()
+            ->with([
+                'page_id'  => $page->getId(),
+                'group_id' => $groupId,
+            ])
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('delete')
+            ->once();
+
+        $page->removeAclGroupId($groupId);
     }
 
     public function testCanBeDeleted()
@@ -64,7 +127,8 @@ class PageTest extends AbstractModelTestCase
             ->with('page_acl')
             ->andReturnSelf();
 
-        $query = DB::shouldReceive('select')
+        $query
+            ->shouldReceive('select')
             ->once()
             ->with('group_id')
             ->andReturnSelf();
@@ -76,7 +140,7 @@ class PageTest extends AbstractModelTestCase
             ->andReturnSelf();
 
         $query
-            ->shouldReceive('lists')
+            ->shouldReceive('pluck')
             ->once()
             ->with('group_id')
             ->andReturn($groupIds);

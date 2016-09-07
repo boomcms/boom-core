@@ -108,6 +108,11 @@ Route::group(['middleware' => [
                 Route::post('relations/{related}', 'Relations@store');
                 Route::delete('relations/{related}', 'Relations@destroy');
 
+                Route::get('acl', 'Acl@index');
+                Route::put('acl', 'Acl@update');
+                Route::post('acl/{group}', 'Acl@store');
+                Route::delete('acl/{group}', 'Acl@destroy');
+
                 Route::controller('', 'PageController');
             });
         });

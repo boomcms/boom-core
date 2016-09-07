@@ -85,25 +85,13 @@ class AclFilterTest extends AbstractTestCase
         $this->query
             ->shouldReceive('leftJoin')
             ->once()
-            ->with('page_acl')
-            ->andReturnSelf();
-
-        $this->query
-            ->shouldReceive('on')
-            ->once()
-            ->with('pages.id', '=', 'page_acl.page_id')
+            ->with('group_person', 'page_acl.group_id', '=', 'group_person.group_id')
             ->andReturnSelf();
 
         $this->query
             ->shouldReceive('leftJoin')
             ->once()
-            ->with('group_person')
-            ->andReturnSelf();
-
-        $this->query
-            ->shouldReceive('on')
-            ->once()
-            ->with('page_acl.group_id', '=', 'group_person.group_id')
+            ->with('page_acl', 'pages.id', '=', 'page_acl.page_id')
             ->andReturnSelf();
 
         $this->query

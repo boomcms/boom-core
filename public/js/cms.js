@@ -48366,9 +48366,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 					enabled: enabled
 				}
 			});
-			return $.post(this.baseUrl + 'acl', {
-				enabled: enabled
-			});
 		},
 
 		setFeatureImage: function(asset) {
@@ -49139,6 +49136,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 				return prefix + 'version/template';
 			case 'drafts':
 				return prefix + 'version/status';
+			case 'acl':
+				return prefix + 'acl';
 			default:
 				return prefix + 'settings/' + section;
 		}
@@ -49760,13 +49759,13 @@ $.widget( 'boom.pageToolbar', {
 					return page.addAclGroup(data.selected);
 				}
 
-				return page.removeAclGroup(data.selected);
+				return page.removeAclGroup(data.deselected);
 			});
 
 		this.element.on('change', 'select[name=b-page-acl-toggle]', function() {
 			settings.toggleGroups();
 
-			page.setEnableAcl($(this).val() === '1');
+			page.setEnableAcl($(this).val());
 		});
 
 		this.toggleGroups();

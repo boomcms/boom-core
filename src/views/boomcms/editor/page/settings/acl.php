@@ -21,7 +21,7 @@
         <p><?= trans('boomcms::settings.acl.select-groups2') ?></p>
         <p><?= trans('boomcms::settings.acl.select-groups3') ?></p>
         <p><?= trans('boomcms::settings.acl.select-groups4') ?></p>
-        
+
         <select name="groups[]" multiple>
             <?php foreach ($allGroups as $group): ?>
                 <option value="<?= $group->getId() ?>"<?= in_array($group->getId(), $groupIds) ? ' selected' : '' ?>><?= $group->getName() ?></option>

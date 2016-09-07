@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Database\Models;
 
+use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\PageVersion as PageVersionInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
@@ -115,6 +116,22 @@ class Page extends Model implements PageInterface
     public function aclEnabled()
     {
         return $this->{self::ATTR_ENABLE_ACL} === true;
+    }
+
+    /**
+     * @param int $groupId
+     *
+     * @return $this
+     */
+    public function addAclGroupId($groupId)
+    {
+        DB::table('page_acl')
+            ->insert([
+                'page_id'  => $this->getId(),
+                'group_id' => $groupId,
+            ]);
+
+        return $this;
     }
 
     public function addRelation(PageInterface $page)
@@ -243,9 +260,8 @@ class Page extends Model implements PageInterface
         return DB::table('page_acl')
             ->select('group_id')
             ->where('page_id', $this->getId())
-            ->lists('group_id');
+            ->pluck('group_id');
     }
-        
 
     /**
      * @return int
@@ -618,6 +634,23 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
+    /**
+     * @param int $groupId
+     *
+     * @return $this
+     */
+    public function removeAclGroupId($groupId)
+    {
+        DB::table('page_acl')
+            ->where([
+                'page_id'  => $this->getId(),
+                'group_id' => $groupId,
+            ])
+            ->delete();
+
+        return $this;
+    }
+
     public function removeRelation(PageInterface $page)
     {
         $this->relations()->detach($page);
@@ -640,6 +673,18 @@ class Page extends Model implements PageInterface
     public function relations()
     {
         return $this->belongsToMany(self::class, 'pages_relations', 'page_id', 'related_page_id');
+    }
+
+    /**
+     * @param bool $enabled
+     *
+     * @return $this
+     */
+    public function setAclEnabled($enabled)
+    {
+        $this->{self::ATTR_ENABLE_ACL} = $enabled;
+
+        return $this;
     }
 
     /**
