@@ -53512,18 +53512,12 @@ $.widget('ui.chunkPageVisibility', {
 				.on('remove', function() {
 					this.$('.b-assets-upload').assetUploader('reset');
 				});
-
-			this.$('.b-assets-upload').assetUploader({
-				asset: asset,
-				uploadFinished: function(e, data) {
-					asset.set(data.result);
-
-					view.render('info');
-				}
-			});
 		},
 
 		initialize: function(options) {
+			var  view = this,
+				asset =	this.model;
+
 			this.selection = new BoomCMS.Collections.Assets([this.model]);
 
 			this.listenTo(this.model, 'revert', function() {
@@ -53532,6 +53526,15 @@ $.widget('ui.chunkPageVisibility', {
 
 			this.listenTo(this.model, 'change:image revert', function() {
 				this.render('info');
+			});
+
+			this.$('.b-assets-upload').assetUploader({
+				asset: asset,
+				uploadFinished: function(e, data) {
+					asset.set(data.result);
+
+					view.render('info');
+				}
 			});
 
 			this.init(options);
