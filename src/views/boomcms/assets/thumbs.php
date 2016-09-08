@@ -5,7 +5,7 @@
 </script>
 
 <script type="text/template" id="b-asset-thumb">
-    <a class="thumb" data-asset="<%= asset.getId() %>" tabindex="0">
+    <a class="thumb loading" data-asset="<%= asset.getId() %>" tabindex="0">
         <img class="loading" alt="">
 
         <div class="pace progress">
