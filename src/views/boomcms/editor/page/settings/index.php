@@ -8,8 +8,8 @@
                 </a>
             </li>
 
-            <li class="selected">
-                <a href="#" data-b-page-setting="info">
+            <li>
+                <a class='selected' href="#" data-b-page-setting="info">
                     <span class="fa fa-info"></span>
                     <?= trans('boomcms::settings.menu.info') ?>
                 </a>
