@@ -73,14 +73,6 @@ class Group implements GroupRepositoryInterface
             ->get();
     }
 
-    /**
-     * @param SiteModelInterface $site
-     * @param array              $groupIds
-     */
-    public function findBySiteExcluding(SiteModelInterface $site, array $groupIds)
-    {
-    }
-
     public function save(GroupModelInterface $group)
     {
         return $group->save();
