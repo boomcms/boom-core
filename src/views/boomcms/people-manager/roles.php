@@ -9,7 +9,8 @@
     <tbody>
         <?php foreach ($roles as $role): ?>
             <tr data-id="<?= $role->id ?>">
-                <td><?= trans('boomcms::roles.'.$role->name) ?></td>
+                <?php $key = 'boomcms::roles.'.$role->name ?>
+                <td><?= Lang::has($key) ? trans($key) : ucfirst(preg_replace('/([A-Z])/', ' $1', $role->name)) ?></td>
 
                 <td>
                     <input type="radio" id="allow-<?= $role->id ?>" value="1" name="<?= $role->id ?>" />
