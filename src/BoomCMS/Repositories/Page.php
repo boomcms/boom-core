@@ -126,6 +126,7 @@ class Page implements PageRepositoryInterface
     public function internalNameExists($name)
     {
         return $this->model
+            ->withTrashed()
             ->where(Model::ATTR_INTERNAL_NAME, $name)
             ->exists();
     }
