@@ -204,6 +204,11 @@ class PageTest extends AbstractTestCase
         $exists = true;
 
         $this->model
+            ->shouldReceive('withTrashed')
+            ->once()
+            ->andReturnSelf();
+
+        $this->model
             ->shouldReceive('where')
             ->once()
             ->with('internal_name', $name)
