@@ -34,6 +34,7 @@ class TemplateServiceProvider extends ServiceProvider
             $init = $theme->getDirectory().DIRECTORY_SEPARATOR.'init.php';
 
             $this->loadViewsFrom($views, $theme->getName());
+            $this->loadViewsFrom($views.'/boomcms', 'boomcms');
             $this->loadViewsFrom($views.'/chunks', 'boomcms.chunks');
 
             if (file_exists($init)) {
