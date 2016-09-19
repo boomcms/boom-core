@@ -71,6 +71,24 @@ class GroupTest extends AbstractTestCase
         $this->assertEquals($group, $this->repository->find($id));
     }
 
+    public function testFindAll()
+    {
+        $group = new GroupModel();
+
+        $this->model
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with('name', 'asc')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn([$group]);
+
+        $this->assertEquals([$group], $this->repository->findAll());
+    }
+
     public function testFindBySite()
     {
         $site = new Site();
