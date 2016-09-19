@@ -139,6 +139,7 @@ function boomLinkPicker(link, options) {
 	};
 
 	boomLinkPicker.prototype.onLoad = function(dialog) {
+		this.dialog = dialog;
 		this.$el = dialog.contents;
 		this.internal = this.$el.find('#b-linkpicker-add-internal');
 		this.external = this.$el.find('#b-linkpicker-add-external');
