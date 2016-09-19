@@ -10,21 +10,22 @@ use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Auth\AuthManager;
 use Illuminate\Cache\Repository as Cache;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Mockery as m;
 
 class ProviderTest extends AbstractTestCase
 {
     /**
-     * @var AuthManager
-     */
-    protected $auth;
-
-    /**
      * @var Cache
      */
     protected $cache;
+
+    /**
+     * @var Gate
+     */
+    protected $gate;
+
     /**
      * @var Provider
      */
@@ -34,9 +35,9 @@ class ProviderTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->auth = m::mock(AuthManager::class)->makePartial();
+        $this->gate = m::mock(Gate::class);
         $this->cache = m::mock(Cache::class);
-        $this->provider = m::mock(Provider::class, [$this->auth, $this->cache])->makePartial();
+        $this->provider = m::mock(Provider::class, [$this->gate, $this->cache])->makePartial();
     }
 
     public function testAllowedToEditWithoutPageIsTrue()
@@ -59,14 +60,14 @@ class ProviderTest extends AbstractTestCase
 
         Editor::shouldReceive('isEnabled')->twice()->andReturn(true);
 
-        $this->auth
-            ->shouldReceive('check')
+        $this->gate
+            ->shouldReceive('allows')
             ->once()
             ->with('edit', $page)
             ->andReturn(false);
 
-        $this->auth
-            ->shouldReceive('check')
+        $this->gate
+            ->shouldReceive('allows')
             ->once()
             ->with('edit', $page)
             ->andReturn(true);

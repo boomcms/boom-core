@@ -8,28 +8,28 @@ use BoomCMS\Database\Models\Chunk\BaseChunk as ChunkModel;
 use BoomCMS\Database\Models\PageVersion as VersionModel;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Router;
-use Illuminate\Auth\AuthManager;
 use Illuminate\Cache\Repository as Cache;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 class Provider
 {
-    /**
-     * @var AuthManager
-     */
-    protected $auth;
-
     /**
      * @var Cache
      */
     protected $cache;
 
     /**
+     * @var Gate
+     */
+    protected $gate;
+
+    /**
      * @param AuthManager $auth
      * @param Store       $cache
      */
-    public function __construct(AuthManager $auth, Cache $cache)
+    public function __construct(Gate $gate, Cache $cache)
     {
-        $this->auth = $auth;
+        $this->gate = $gate;
         $this->cache = $cache;
     }
 
@@ -67,7 +67,7 @@ class Provider
             return true;
         }
 
-        return Editor::isEnabled() && $this->auth->check('edit', $page);
+        return Editor::isEnabled() && $this->gate->allows('edit', $page);
     }
 
     /**
