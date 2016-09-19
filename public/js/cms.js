@@ -50389,7 +50389,8 @@ $.widget( 'boom.pageToolbar', {
 						.done(function(link) {
 							settingsEditor.deleteOptions.reparentChildrenTo = link.getPageId();
 
-							$this.closest('label')
+							$this
+								.closest('label')
 								.find('.target span')
 								.text(link.getTitle());
 						})
@@ -50436,8 +50437,8 @@ $.widget( 'boom.pageToolbar', {
 			redirectTo = this.element.find('input[name=urls]').val();
 
 		return {
-			reparentChildrenTo: (reparentChildrenTo === 0) ? 0 : reparentChildrenTo,
-			redirectTo: (redirectTo ===0) ? 0 : redirectTo
+			reparentChildrenTo: (reparentChildrenTo === 0) ? 0 : this.deleteOptions['reparentChildrenTo'],
+			redirectTo: (redirectTo ===0) ? 0 : this.deleteOptions['redirectTo']
 		};
 	}
 });;$.widget('boom.pageSettingsDrafts', {
