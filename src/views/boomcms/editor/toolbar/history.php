@@ -11,13 +11,15 @@
     <?php if (isset($previous)): ?>
         <?php $compare = $diff->compare($version, $previous) ?>
 
-        <div class="summary">
-            <span class="fa fa-<?= $compare->getIcon() ?>"></span>
+        <?php if ($compare): ?>
+            <div class="summary">
+                <span class="fa fa-<?= $compare->getIcon() ?>"></span>
 
-            <p>
-                <?= $compare ?>
-            </p>
-        </div>
+                <p>
+                    <?= $compare ?>
+                </p>
+            </div>
+        <?php endif ?>
 
         <button data-editor-time="<?= $previous->getEditedTime()->getTimestamp() ?>">
             <span class="fa fa-step-backward"></span>
