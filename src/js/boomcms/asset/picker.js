@@ -32,7 +32,7 @@ function boomAssetPicker(currentAsset, filters) {
 			.on('click', '#b-assets-picker-current-remove', function() {
 				assetPicker.pick(new BoomCMS.Asset());
 			})
-			.find('#b-assets-upload-form')
+			.find('.b-assets-upload-form')
 			.assetUploader({
 				uploadFinished: function(e, data) {
 					assetPicker.assetsUploaded(data.result);
