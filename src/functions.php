@@ -47,7 +47,7 @@ if (!function_exists('meta_og')) {
             <meta property='og:description' content='$description'";
 
         if ($page->hasFeatureImage()) {
-            $url = Route::url('asset', ['asset' => $page->getFeatureImage()]);
+            $url = URL::route('asset', ['asset' => $page->getFeatureImage()]);
 
             $html .= "<meta property='og:image' content='$url'>";
         }
