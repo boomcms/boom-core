@@ -94,8 +94,6 @@ module.exports = function(grunt) {
 					'src/js/boomcms/chunk/slideshow/editor.js',
 					'src/js/boomcms/chunk/linkset/editor.js',
 					'src/js/boomcms/chunk/asset/editor.js',
-					'src/js/boomcms/chunk/pageTags.js',
-					'src/js/boomcms/chunk/pageVisibility.js',
 					'src/js/boomcms/chunk/link.js',
 					'src/js/boomcms/chunk/location.js',
 					'src/js/boomcms/chunk/location/editor.js',

@@ -49729,18 +49729,30 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 				currentPage : self.page
 			})
 			.end()
-			.find('.b-chunk-pagetags')
+			.find('.b-page-tags')
 			.each(function() {
-				$(this).chunkPageTags({
-					currentPage : self.page
-				});
+				var $this = $(this);
+
+				$this
+					.addClass(BoomCMS.editableClass)
+					.on('click', function(e) {
+						e.preventDefault();
+
+						window.BoomCMS.page.toolbar.showSettings('tags');
+					});
 			})
 			.end()
-			.find('.b-chunk-pagevisibility')
+			.find('.b-page-visibility')
 			.each(function() {
-				$(this).chunkPageVisibility({
-					currentPage : self.page
-				});
+				var $this = $(this);
+
+				$this
+					.addClass(BoomCMS.editableClass)
+					.on('click', function(e) {
+						e.preventDefault();
+
+						window.BoomCMS.page.toolbar.showSettings('visibility');
+					});
 			})
 			.end()
 			.find('.b-page-featureimage')
@@ -52507,59 +52519,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
 	return this.open();
 }
-;/**
- * Enables opening the page tag editor by clicking on a list of tags in the page.
- */
-$.widget('ui.chunkPageTags', {
-
-	_create: function() {
-		var chunkPageTags = this;
-
-		this.element
-			.addClass(BoomCMS.editableClass)
-			.on('click', function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-
-				new boomPageTagEditor(chunkPageTags.options.currentPage)
-					.done(function() {
-
-						// The tag list could be a filtered list or have other logic around it's generation
-						// So to update the list do an AJAX call for the window location and list the element contents.
-						chunkPageTags.element.load(top.location + '  .b-chunk-pagetags > *');
-					});
-			});
-	}
-});;/**
- * Enables opening the page visibility editor by clicking on an element in the page.
- */
-$.widget('ui.chunkPageVisibility', {
-	bind: function() {
-		var chunkPageVisibility = this;
-
-		this.element
-			.addClass(BoomCMS.editableClass)
-			.on('click', function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-
-				new boomPageVisibilityEditor(chunkPageVisibility.options.currentPage)
-					.done(function() {
-						$.get(top.location.href).done(function(response) {
-							var newElement = $(response).find('.b-chunk-pagevisibility');
-
-							chunkPageVisibility.element.replaceWith(newElement);
-							chunkPageVisibility.element = newElement;
-							chunkPageVisibility.bind();
-						});
-					});
-			});
-	},
-
-	_create: function() {
-		this.bind();
-	}
-});;$.widget('ui.chunkLink', $.ui.chunk, {
+;$.widget('ui.chunkLink', $.ui.chunk, {
 	edit: function() {
 		var chunkLink = this,
 			link = new boomLink(this.getUrl(), this.getTargetPageId(), this.getText());

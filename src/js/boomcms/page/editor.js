@@ -58,18 +58,30 @@ $.widget( 'boom.pageEditor', {
 				currentPage : self.page
 			})
 			.end()
-			.find('.b-chunk-pagetags')
+			.find('.b-page-tags')
 			.each(function() {
-				$(this).chunkPageTags({
-					currentPage : self.page
-				});
+				var $this = $(this);
+
+				$this
+					.addClass(BoomCMS.editableClass)
+					.on('click', function(e) {
+						e.preventDefault();
+
+						window.BoomCMS.page.toolbar.showSettings('tags');
+					});
 			})
 			.end()
-			.find('.b-chunk-pagevisibility')
+			.find('.b-page-visibility')
 			.each(function() {
-				$(this).chunkPageVisibility({
-					currentPage : self.page
-				});
+				var $this = $(this);
+
+				$this
+					.addClass(BoomCMS.editableClass)
+					.on('click', function(e) {
+						e.preventDefault();
+
+						window.BoomCMS.page.toolbar.showSettings('visibility');
+					});
 			})
 			.end()
 			.find('.b-page-featureimage')
