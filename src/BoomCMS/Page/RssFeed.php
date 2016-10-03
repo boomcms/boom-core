@@ -3,6 +3,7 @@
 namespace BoomCMS\Page;
 
 use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Helpers;
 use Thujohn\Rss\Rss;
 
@@ -40,7 +41,7 @@ class RssFeed
         $feed->item([
             'guid'              => $page->url(),
             'title'             => $page->getTitle(),
-            'description|cdata' => $page->getDescription(),
+            'description|cdata' => Chunk::get('text', 'standfirst', $page)->text(),
             'link'              => $page->url(),
             'pubDate'           => $page->isVisible() ? $page->getVisibleFrom()->format('r') : null,
             'author|cdata'      => empty($authors) ? null : implode(',', $authors),
