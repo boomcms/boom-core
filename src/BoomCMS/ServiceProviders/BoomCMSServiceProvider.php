@@ -64,6 +64,8 @@ class BoomCMSServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        include __DIR__.'/../../functions.php';
+
         $this->app->singleton(BoomCMS::class, function () {
             return new BoomCMS();
         });
