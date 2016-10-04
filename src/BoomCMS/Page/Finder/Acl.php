@@ -44,7 +44,8 @@ class Acl extends Filter
                     ->where(Page::ATTR_CREATED_BY, $this->person->getId())
                     ->orWhereNull('page_acl.group_id')
                     ->orWhere('group_person.person_id', $this->person->getId());
-            });
+            })
+            ->groupBy('pages.id');
     }
 
     public function shouldBeApplied()

@@ -95,6 +95,12 @@ class AclFilterTest extends AbstractTestCase
             ->andReturnSelf();
 
         $this->query
+            ->shouldReceive('groupBy')
+            ->once()
+            ->with('pages.id')
+            ->andReturnSelf();
+
+        $this->query
             ->shouldReceive('where')
             ->once()
             ->with(m::on(function ($closure) use ($personId) {
