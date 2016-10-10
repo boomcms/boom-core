@@ -12,6 +12,7 @@ class Query extends BaseQuery
 {
     protected $filterAliases = [
         'acl'                 => Finder\Acl::class,
+        'alltags'             => Finder\AllTags::class,
         'excludeinvisible'    => Finder\ExcludeInvisible::class,
         'ignorepages'         => Finder\IgnorePages::class,
         'not'                 => Finder\IgnorePages::class,
