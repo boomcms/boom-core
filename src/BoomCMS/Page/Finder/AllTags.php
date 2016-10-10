@@ -10,7 +10,7 @@ class AllTags extends Tag
 {
     public function build(Builder $query)
     {
-        $tagIds = array_map(function(TagInterface $tag) {
+        $tagIds = array_map(function (TagInterface $tag) {
             return $tag->getId();
         }, $this->tags);
 

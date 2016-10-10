@@ -44,7 +44,7 @@ class AllTagsTest extends AbstractTestCase
         $query
             ->shouldReceive('having')
             ->once()
-            ->with(m::on(function(Expression $expression) {
+            ->with(m::on(function (Expression $expression) {
                 return $expression->getValue() === 'count(distinct pages_tags.tag_id)';
             }), '=', 2)
             ->andReturnSelf();
