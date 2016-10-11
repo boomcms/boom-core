@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-gb" class="boom">
-    <?= view('boomcms::head', ['title' => trans('Login')]) ?>
+    <?= view('boomcms::head', ['title' => trans('boomcms::auth.login.title')]) ?>
 
     <body id='b-login'>
         <div>
@@ -37,12 +37,12 @@
                     <p>
                         <label class="b-remember-me-label">
                             <input type="checkbox" name="remember" class="b-remember-me" value='1' />
-                            <?= trans('Keep me signed in') ?> (<?= trans('until you log out') ?>)
+                            <?= trans('boomcms::auto.login.remmeber') ?>
                         </label>
                     </p>
 
-                    <input type='submit' value='<?= trans('Login') ?>' />
-                    <a id='b-login-recover-link' href='<?= URL::route('password') ?>'>I've forgotten my password</a>
+                    <input type='submit' value='<?= trans('boomcms::auth.login.title') ?>' />
+                    <a id='b-login-recover-link' href='<?= URL::route('password') ?>'><?= trans('boomcms::auth.login.recover') ?></a>
                 </fieldset>
             </form>
         </div>

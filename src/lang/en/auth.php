@@ -2,8 +2,11 @@
 
 return [
     'login'  => [
+        'title'    => 'Login',
         'email'    => 'Email address',
         'password' => 'Password',
+        'remember' => 'Stay logged in until I log out',
+        'recover'  => 'I\'ve forgotten my password',
     ],
     'reset'  => [
         'title'            => 'Password reset',
