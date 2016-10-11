@@ -37,7 +37,7 @@
                     <p>
                         <label class="b-remember-me-label">
                             <input type="checkbox" name="remember" class="b-remember-me" value='1' />
-                            <?= trans('boomcms::auth.login.remmeber') ?>
+                            <?= trans('boomcms::auth.login.remember') ?>
                         </label>
                     </p>
 
