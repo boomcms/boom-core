@@ -7,7 +7,7 @@
             <div id="logo"></div>
 
             <form name="login-form" action="<?= URL::route('login') ?>" method="post">
-                <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
+                <?= csrf_field() ?>
 
                 <fieldset>
                     <?php if (count($errors)): ?>
