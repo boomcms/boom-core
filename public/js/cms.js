@@ -54040,7 +54040,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 				.on('click', '#b-assets-all', function() {
 					assetSearch.removeFilters();
 				})
-				.on('change', 'select[name=type], select[name=extension]', function() {
+				.on('change', 'select[name=type], select[name=extension], select[name=uploadedby]', function() {
 					var $this = $(this);
 
 					assetSearch.addFilter($this.attr('name'), $this.val());
@@ -54144,7 +54144,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 				this.postData[key] = this.initialFilters[key];
 			}
 
-			this.element.find('#b-assets-types, #b-assets-extensions').val(0);
+			this.element.find('#b-assets-types, #b-assets-extensions, select[name=uploadedby]').val(0);
 			this.element.find('#b-tags-search li').remove();
 
 			this.getAssets();

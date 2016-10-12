@@ -4,6 +4,7 @@ namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
+use BoomCMS\Database\Models\Person;
 use BoomCMS\Repositories\Asset as AssetRepository;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
@@ -75,5 +76,43 @@ class AssetTest extends AbstractTestCase
         $repository = new AssetRepository(new Asset(), $model);
 
         $this->assertEquals($version, $repository->findVersion(1));
+    }
+
+    public function testUploaders()
+    {
+        $repository = new AssetRepository(new Asset(), new AssetVersion());
+        $people = [];
+        $model = m::mock(Person::class);
+
+        $model
+            ->shouldReceive('select')
+            ->once()
+            ->with('people.*')
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('join')
+            ->once()
+            ->with('assets', Asset::ATTR_UPLOADED_BY, '=', 'people.id')
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('groupBy')
+            ->once()
+            ->with('people.id')
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with(Person::ATTR_NAME)
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn($people);
+
+        $this->assertEquals($people, $repository->uploaders($model));
     }
 }

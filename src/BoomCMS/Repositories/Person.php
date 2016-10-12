@@ -66,7 +66,7 @@ class Person implements PersonRepositoryInterface, UserProvider
      */
     public function find($personId)
     {
-        return $this->findBy(Model::ATTR_ID, $personId);
+        return $this->model->find($personId);
     }
 
     public function findAll()

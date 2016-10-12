@@ -6,7 +6,9 @@ use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
+use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\Support\File;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -141,5 +143,22 @@ class Asset implements AssetRepositoryInterface
         $model->save();
 
         return $model;
+    }
+
+    /**
+     * Returns a Collection of People who have uploaded assets.
+     *
+     * @return Collection
+     */
+    public function uploaders(PersonModel $model = null)
+    {
+        $model = $model ?: new PersonModel();
+
+        return $model
+            ->select('people.*')
+            ->join('assets', AssetModel::ATTR_UPLOADED_BY, '=', 'people.id')
+            ->groupBy('people.id')
+            ->orderBy(PersonModel::ATTR_NAME)
+            ->get();
     }
 }

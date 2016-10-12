@@ -66,6 +66,7 @@ return [
         'title'           => 'Search by asset name',
         'type'            => 'Filter by asset type',
         'extension'       => 'Filter by file extension',
+        'uploaded-by'     => 'Filter by uploader',
     ],
     'sort' => [
         'uploaded_time desc' => 'Upload time: most recent first',

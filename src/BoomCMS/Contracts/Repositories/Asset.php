@@ -4,7 +4,9 @@ namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Database\Models\Asset as AssetObject;
+use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\Database\Models\AssetVersion;
+use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface Asset
@@ -54,4 +56,11 @@ interface Asset
      * @param AssetObject $asset
      */
     public function save(AssetObject $asset);
+
+    /**
+     * Returns the users who have uploaded assets.
+     *
+     * @return Collection
+     */
+    public function uploaders(PersonModel $model = null);
 }
