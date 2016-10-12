@@ -117,6 +117,11 @@
                         controls
                         poster="<%= asset.getUrl('thumb') + '?' +asset.getEditedAt() %>"
                     ></video>
+                <% } else if (asset.isAudio()) { %>
+                    <audio
+                        src="<%= asset.getUrl() + '?' + asset.getEditedAt() %>"
+                        controls
+                    ></audio>
                 <% } else if (asset.isImage()) { %>
                     <div class="b-asset-imageeditor">
                         <img id="b-imageeditor-original" src="<%= asset.getUrl()+ '?' + asset.getEditedAt() %>" />

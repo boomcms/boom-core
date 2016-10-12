@@ -117,6 +117,10 @@
 			return Object.keys(this.getVersions()).length > 1;
 		},
 
+		isAudio: function() {
+			return this.getType() === 'audio';
+		},
+
 		isImage: function() {
 			return this.getType() === 'image';
 		},
