@@ -38,7 +38,7 @@ class AllTagsTest extends AbstractTestCase
         $query
             ->shouldReceive('groupBy')
             ->once()
-            ->with('pages_tags.tag_id')
+            ->with('pages.id')
             ->andReturnSelf();
 
         $query

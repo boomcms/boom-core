@@ -17,7 +17,7 @@ class AllTags extends Tag
         return $query
             ->join('pages_tags', 'pages.id', '=', 'pages_tags.page_id')
             ->whereIn('pages_tags.tag_id', $tagIds)
-            ->groupBy('pages_tags.tag_id')
+            ->groupBy('pages.id')
             ->having(DB::raw('count(distinct pages_tags.tag_id)'), '=', count($tagIds));
     }
 }
