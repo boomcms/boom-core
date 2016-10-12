@@ -19,16 +19,6 @@
 
                     asset.revertToVersion($(this).parents('li').attr('data-version-id'));
                 })
-                .on('click', '#b-assets-thumbnail-change', function(e) {
-                    e.preventDefault();
-console.log('click');
-                    new boomAssetPicker(asset.getThumbnailAssetId())
-                        .done(function(thumbnail) {
-                            asset
-                                .set('thumbnail_asset_id', thumbnail.getId())
-                                .save();
-                        });
-                })
                 .on('click', '.b-assets-save', function() {
                     asset
                         .set(view.$('form').serializeJSON())
@@ -52,6 +42,8 @@ console.log('click');
         },
 
         initialize: function(options) {
+            var asset = this.model;
+
             this.selection = new BoomCMS.Collections.Assets([this.model]);
 
             this.listenTo(this.model, 'revert', function() {
@@ -61,6 +53,18 @@ console.log('click');
             this.listenTo(this.model, 'change:image revert', function() {
                 this.render('info');
             });
+
+            this.$el
+                .on('click', '#b-assets-thumbnail-change', function(e) {
+                    e.preventDefault();
+
+                    new boomAssetPicker(asset.getThumbnailAssetId())
+                        .done(function(thumbnail) {
+                            asset
+                                .set('thumbnail_asset_id', thumbnail.getId())
+                                .save();
+                        });
+                });
 
             this.init(options);
         },

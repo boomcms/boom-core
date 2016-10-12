@@ -4,6 +4,9 @@ namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Contracts\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
+use Intervention\Image\Constraint;
+use Intervention\Image\ImageCache;
+use Intervention\Image\ImageManager;
 use Illuminate\Http\Response;
 
 class BaseController extends Controller
@@ -49,8 +52,35 @@ class BaseController extends Controller
 
     public function thumb($width = null, $height = null)
     {
+        if (!$this->asset->hasThumbnail()) {
+            return $this->response
+                ->header('Content-type', 'image/png')
+                ->setContent(readfile(__DIR__."/../../../../../public/img/extensions/{$this->asset->getExtension()}.png"));
+        }
+
+        $thumbnail = $this->asset->getThumbnail();
+        $filename = $thumbnail->getFilename();
+        $im = new ImageManager();
+
+        if ($width || $height) {
+            $image = $im->cache(function (ImageCache $cache) use ($width, $height, $filename) {
+                $width = empty($width) ? null : $width;
+                $height = empty($height) ? null : $height;
+
+                return $cache
+                    ->make($filename)
+                    ->resize($width, $height, function (Constraint $constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('image/png');
+                });
+        } else {
+            $image = $im->make($filename)->encode();
+        }
+
         return $this->response
-            ->header('Content-type', 'image/png')
-            ->setContent(readfile(__DIR__."/../../../../../public/img/extensions/{$this->asset->getExtension()}.png"));
+                ->header('content-type', $thumbnail->getMimetype())
+                ->setContent($image);
     }
 }

@@ -227,7 +227,7 @@ class Asset extends Model implements AssetInterface
 
     public function getThumbnail()
     {
-        return $this->hasOne(static::class, 'thumbnail_asset_id', 'asset_id');
+        return $this->belongsTo(static::class, 'thumbnail_asset_id', 'id')->first();
     }
 
     /**

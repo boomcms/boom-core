@@ -111,9 +111,9 @@
             </div>
 
             <% if (!asset.isImage()) { %>
-                <div id="b-assets-view-thumbnail">
+                <div id="b-assets-view-thumbnail"<% if (!section || section === 'thumbnail') { %> class="selected"<% } %>>
                     <h1><?= trans('boomcms::asset.thumbnail') ?></h1>
-                    <img src="<%= asset.getUrl('thumb') %>" alt="<?= trans('boomcms::asset.thumbnail.heading') ?>">
+                    <img src="<%= asset.getUrl('thumb', 500) %>?<%= Date.now() %>" alt="<?= trans('boomcms::asset.thumbnail.heading') ?>">
 
                     <?= $button('image', 'change-thumbnail', [
                         'id'    => 'b-assets-thumbnail-change',
