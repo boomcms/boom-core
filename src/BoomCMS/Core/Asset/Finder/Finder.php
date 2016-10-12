@@ -15,7 +15,7 @@ class Finder extends BaseFinder
         'title',
         'downloads',
         'filesize',
-        'uploaded_time'
+        'uploaded_time',
     ];
 
     protected $orderByAliases = [
