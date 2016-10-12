@@ -117,7 +117,7 @@
 
                     <?= $button('image', 'change-thumbnail', [
                         'id'    => 'b-assets-thumbnail-change',
-                        'class' => 'b-button-withtext'
+                        'class' => 'b-button-withtext',
                     ]) ?>
                 </div>
             <% } %>

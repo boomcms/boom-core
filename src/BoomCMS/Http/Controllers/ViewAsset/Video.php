@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Http\Response\Stream;
-use Intervention\Image\ImageManager;
 
 class Video extends BaseController
 {

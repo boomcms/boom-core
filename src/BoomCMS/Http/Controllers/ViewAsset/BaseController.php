@@ -4,10 +4,10 @@ namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Contracts\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageCache;
 use Intervention\Image\ImageManager;
-use Illuminate\Http\Response;
 
 class BaseController extends Controller
 {
@@ -74,7 +74,7 @@ class BaseController extends Controller
                         $constraint->upsize();
                     })
                     ->encode('image/png');
-                });
+            });
         } else {
             $image = $im->make($filename)->encode();
         }
