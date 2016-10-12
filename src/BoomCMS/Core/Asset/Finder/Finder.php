@@ -10,10 +10,16 @@ class Finder extends BaseFinder
     /**
      * @var array
      */
-    protected $allowedOrderByColumns = ['last_modified', 'title', 'downloads', 'filesize', 'uploaded_time'];
+    protected $allowedOrderByColumns = [
+        'last_modified',
+        'title',
+        'downloads',
+        'filesize',
+        'uploaded_time'
+    ];
 
     protected $orderByAliases = [
-        'last_modified' => 'assets.uploaded_time',
+        'last_modified' => 'version.edited_at',
         'filesize'      => 'version.filesize',
     ];
 

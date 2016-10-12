@@ -68,8 +68,10 @@ return [
         'extension'       => 'Filter by file extension',
     ],
     'sort' => [
-        'last_modified desc' => 'Most recent',
-        'last_modified asc'  => 'Oldest',
+        'uploaded_time desc' => 'Upload time: most recent first',
+        'uploaded_time asc'  => 'Upload time: oldest first',
+        'last_modified desc' => 'Last modified: most recent first',
+        'last_modified asc'  => 'Last modified: oldest first',
         'title asc'          => 'Title A - Z',
         'title desc'         => 'Title Z - A',
         'filesize asc'       => 'Size (smallest)',
