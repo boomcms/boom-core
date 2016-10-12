@@ -23,6 +23,15 @@
                     </a>
                 </li>
 
+                <% if (!asset.isImage()) { %>
+                    <li>
+                        <a href="#b-assets-view-thumbnail"<% if (section === 'thumbnail') { %> class="selected"<% } %> data-section='thumbnail'>
+                            <span class="fa fa-image"></span>
+                            <?= trans('boomcms::asset.thumbnail') ?>
+                        </a>
+                    </li>
+                <% } %>
+
                 <li>
                     <a href="#b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
                         <span class="fa fa-tags"></span>
@@ -96,17 +105,22 @@
                         <?= trans('boomcms::asset.credits') ?>
                         <textarea id="credits" name="credits"><%= asset.getCredits() %></textarea>
                     </label>
-
-                    <% if (!asset.isImage()) { %>
-                        <label for="thumbnail">
-                            <?= trans('boomcms::asset.thumbnail') ?>
-                            <input type="text" id="thumbnail" name="thumbnail_asset_id" value="<%= asset.getThumbnailAssetId() %>" size="4" />
-                        </label>
-                    <% } %>
                 </form>
 
                 <?= $button('save', 'save-changes', ['class' => 'b-assets-save b-button-withtext']) ?>
             </div>
+
+            <% if (!asset.isImage()) { %>
+                <div id="b-assets-view-thumbnail">
+                    <h1><?= trans('boomcms::asset.thumbnail') ?></h1>
+                    <img src="<%= asset.getUrl('thumb') %>" alt="<?= trans('boomcms::asset.thumbnail.heading') ?>">
+
+                    <?= $button('image', 'change-thumbnail', [
+                        'id'    => 'b-assets-thumbnail-change',
+                        'class' => 'b-button-withtext'
+                    ]) ?>
+                </div>
+            <% } %>
 
             <div id="b-assets-view-info"<% if (!section || section === 'info') { %> class="selected"<% } %>>
                 <h1><%= asset.getTitle() %></h1>

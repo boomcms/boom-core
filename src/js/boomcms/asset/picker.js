@@ -98,7 +98,7 @@ function boomAssetPicker(currentAsset, filters) {
 
 	boomAssetPicker.prototype.open = function() {
 		this.loadPicker();
-
+console.log('asset picker open');
 		return this.deferred;
 	};
 

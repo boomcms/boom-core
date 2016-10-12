@@ -11,6 +11,7 @@ return [
     'asset-revert'          => 'Revert to this version',
     'asset-undo'            => 'Undo changes',
     'cancel'                => 'Cancel',
+    'change-thumbnail'      => 'Change thumbnail',
     'clear-filters'         => 'Clear filters',
     'clear-selection'       => 'Clear selection',
     'close-upload'          => 'Close uploader',
