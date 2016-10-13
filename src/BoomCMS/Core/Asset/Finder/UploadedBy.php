@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 class UploadedBy extends BaseFilter
 {
     /**
-     * @var Person $person
+     * @var Person
      */
     protected $person;
 
@@ -31,6 +31,6 @@ class UploadedBy extends BaseFilter
 
     public function shouldBeApplied()
     {
-        return ($this->person instanceof Person);
+        return $this->person instanceof Person;
     }
 }

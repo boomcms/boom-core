@@ -4,8 +4,8 @@ namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Database\Models\Asset as AssetObject;
-use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\Database\Models\AssetVersion;
+use BoomCMS\Database\Models\Person as PersonModel;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
