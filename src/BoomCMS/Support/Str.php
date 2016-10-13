@@ -95,8 +95,8 @@ abstract class Str extends BaseStr
      */
     public static function storifyEmbed($text)
     {
-        $matchString = "/\<p\>(https?\:\/\/(?:www\.)?storify\.com\/(?:[^\/]+)\/(?:[^\/]+))\/?\<\/p\>/i";
-        $replaceString = '<script type="text/javascript" src="${1}.js"></script>';
+        $matchString = "/\<p\>(https?\:\/\/)?(?:www\.)?(storify\.com\/(?:[^\/]+)\/(?:[^\/]+))\/?\<\/p\>/im";
+        $replaceString = '<div class="storify"><iframe src="//$2/embed?border=false" allowtransparency="true"></iframe><script src="//$2.js?border=false"></script><noscript>[<a href="//$2" target="_blank">View on Storify</a>]</noscript></div>';
 
         return \preg_replace($matchString, $replaceString, $text);
     }
