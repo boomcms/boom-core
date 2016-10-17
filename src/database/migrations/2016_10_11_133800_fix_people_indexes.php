@@ -21,7 +21,7 @@ class FixPeopleIndexes extends Migration
             if ($doctrineTable->hasIndex('people_email_unique')) {
                 $table->dropUnique('people_email_unique');
             }
-            
+
             $table->dropUnique('deleted_at');
             $table->unique(['email', 'deleted_at']);
         });
