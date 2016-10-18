@@ -6,7 +6,10 @@
 
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
 		<div id="b-assets-buttons">
-			<?= $button('upload', 'upload', ['id' => 'b-assets-upload']) ?>
+            <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
+    			<?= $button('upload', 'upload', ['id' => 'b-assets-upload']) ?>
+            <?php endif ?>
+
 			<?= $button('trash-o', 'delete', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-delete', 'disabled' => 'disabled']) ?>
 			<?= $button('download', 'download', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-download', 'disabled' => 'disabled']) ?>
 			<?= $button('tags', 'add-tags', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-tag', 'disabled' => 'disabled']) ?>
@@ -26,7 +29,10 @@
 	</div>
 
     <div id="b-assets-content">
-        <?= view('boomcms::assets.upload') ?>
+        <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
+            <?= view('boomcms::assets.upload') ?>
+        <?php endif ?>
+
         <?= view('boomcms::assets.thumbs') ?>
     </div>
 </div>

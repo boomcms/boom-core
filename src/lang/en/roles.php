@@ -24,4 +24,5 @@ return [
     'manageTemplates'      => 'Manage templates',
     'publish'              => 'Publish page',
     'toolbar'              => 'See the CMS editor toolbar',
+    'uploadAssets'         => 'Upload assets',
 ];

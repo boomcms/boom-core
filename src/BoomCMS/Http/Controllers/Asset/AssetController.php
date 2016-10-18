@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
@@ -18,17 +19,16 @@ class AssetController extends Controller
 {
     use ValidatesAssetUpload;
 
-    protected $role = 'manageAssets';
-
     /**
      * @param Asset $asset
      */
     public function destroy(Asset $asset)
     {
+        $this->authorize('manageAssets', Router::getActiveSite());
+
         AssetFacade::delete([$asset->getId()]);
     }
 
-    // Needs to not require the manageAssets role. Move to another controller.
     public function index(Request $request)
     {
         return [
@@ -45,6 +45,8 @@ class AssetController extends Controller
      */
     public function replace(Request $request, Asset $asset)
     {
+        $this->authorize('manageAssets', Router::getActiveSite());
+
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
@@ -67,6 +69,8 @@ class AssetController extends Controller
      */
     public function revert(Request $request, Asset $asset)
     {
+        $this->authorize('manageAssets', Router::getActiveSite());
+
         AssetFacade::revert($asset, $request->input('version_id'));
 
         return $this->show($asset);
@@ -79,6 +83,8 @@ class AssetController extends Controller
      */
     public function store(Request $request, Site $site)
     {
+        $this->authorize('uploadAssets', Router::getActiveSite());
+
         $assetIds = [];
 
         list($validFiles, $errors) = $this->validateAssetUpload($request);
@@ -104,6 +110,8 @@ class AssetController extends Controller
      */
     public function show(Asset $asset)
     {
+        $this->authorize('manageAssets', Router::getActiveSite());
+
         return $asset
             ->newQuery()
             ->with('versions')
@@ -118,6 +126,8 @@ class AssetController extends Controller
      */
     public function update(Request $request, Asset $asset)
     {
+        $this->authorize('manageAssets', Router::getActiveSite());
+
         $asset
             ->setTitle($request->input(Asset::ATTR_TITLE))
             ->setDescription($request->input(Asset::ATTR_DESCRIPTION))
