@@ -12,9 +12,9 @@ class Album extends Model implements AlbumInterface
 {
     use SingleSite;
 
-    const ATTR_NAME        = 'name';
-    const ATTR_SITE        = 'site_id';
-    const ATTR_SLUG        = 'slug';
+    const ATTR_NAME = 'name';
+    const ATTR_SITE = 'site_id';
+    const ATTR_SLUG = 'slug';
     const ATTR_ASSET_COUNT = 'asset_count';
 
     protected $table = 'albums';
@@ -88,7 +88,7 @@ class Album extends Model implements AlbumInterface
         $name = trim(strip_tags($value));
 
         $this->attributes[self::ATTR_NAME] = $name;
-        $this->attributes[self::ATTR_SLUG] = Str::unique(Str::slug($name), function($slug) {
+        $this->attributes[self::ATTR_SLUG] = Str::unique(Str::slug($name), function ($slug) {
             return !$this->where('slug', $slug)->exists();
         });
     }
