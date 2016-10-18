@@ -109,6 +109,7 @@ class AssetController extends Controller
             ->with('versions')
             ->with('versions.editedBy')
             ->with('uploadedBy')
+            ->with('albums')
             ->find($asset->getId());
     }
 

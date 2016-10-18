@@ -1,4 +1,4 @@
-<h1><?= trans('boomcms::asset.tags') ?></h1>
+<h1><?= trans('boomcms::asset.albums') ?></h1>
 
 <ul class="b-tags">
     <li>

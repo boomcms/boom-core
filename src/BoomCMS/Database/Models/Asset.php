@@ -10,7 +10,6 @@ use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class Asset extends Model implements AssetInterface
@@ -204,17 +203,6 @@ class Asset extends Model implements AssetInterface
     public function getReadableFilesizeAttribute()
     {
         return Str::filesize($this->getFilesize());
-    }
-
-    public function getTags()
-    {
-        if ($this->tags === null) {
-            $this->tags = DB::table('assets_tags')
-                ->where('asset_id', '=', $this->getId())
-                ->lists('tag');
-        }
-
-        return $this->tags;
     }
 
     /**

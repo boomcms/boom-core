@@ -4,7 +4,6 @@
     BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
         routePrefix: 'asset',
         tagName: 'div',
-        tagsDisplayed: false,
         templateSelector: '#b-assets-view-template',
 
         bind: function() {
@@ -84,10 +83,6 @@
                 asset: this.model,
                 section: section
             }));
-
-            if (section === 'tags') {
-                this.showTags();
-            }
 
             this.bind();
             this.initImageEditor();

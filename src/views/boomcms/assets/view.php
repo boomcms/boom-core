@@ -33,9 +33,9 @@
                 <% } %>
 
                 <li>
-                    <a href="#b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
-                        <span class="fa fa-tags"></span>
-                        <?= trans('boomcms::asset.tags') ?>
+                    <a href="#b-asset-albums"<% if (section === 'albums') { %> class="selected"<% } %> data-section='albums'>
+                        <span class="fa fa-book"></span>
+                        <?= trans('boomcms::asset.albums') ?>
                     </a>
                 </li>
 
@@ -212,8 +212,8 @@
                 </dl>
             </div>
 
-            <div id="b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
-                <?= view('boomcms::assets.tags') ?>
+            <div id="b-asset-albums"<% if (section === 'albums') { %> class="selected"<% } %>>
+                <?= view('boomcms::assets.albums') ?>
             </div>
 
             <% if (asset.hasMetadata()) { %>

@@ -10,9 +10,9 @@
                 </li>
 
                 <li>
-                    <a href="#b-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
-                        <span class="fa fa-tags"></span>
-                        <?= trans('boomcms::asset.tags') ?>
+                    <a href="#b-selection-albums"<% if (section === 'albums') { %> class="selected"<% } %> data-section='albums'>
+                        <span class="fa fa-albums"></span>
+                        <?= trans('boomcms::asset.albums') ?>
                     </a>
                 </li>
 
@@ -39,8 +39,8 @@
         </div>
 
         <div class="b-settings-content">
-            <div id="b-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
-                <?= view('boomcms::assets.tags') ?>
+            <div id="b-selection-albums"<% if (section === 'albums') { %> class="selected"<% } %>>
+                <?= view('boomcms::assets.albums') ?>
             </div>
 
             <div id="b-selection-download"<% if (section === 'download') { %> class="selected"<% } %>>

@@ -1,43 +1,48 @@
 (function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.AssetManager.Router = Backbone.Router.extend({
-		routes: {
-			'': 'home',
-			'upload': 'upload',
-			'asset/:asset/:section': 'viewAsset',
-			'selection/:selection/:section': 'viewSelection'
-		},
+    BoomCMS.AssetManager.Router = Backbone.Router.extend({
+        routes: {
+            '': 'home',
+            'upload': 'upload',
+            'asset/:asset/:section': 'viewAsset',
+            'selection/:selection/:section': 'viewSelection',
+            'albums': 'viewAlbums'
+        },
 
-		initialize: function(options) {
-			this.assets = options.assets;
-		},
+        initialize: function(options) {
+            this.assets = options.assets;
+        },
 
-		viewAsset: function(id, section) {
-			var asset = this.assets.get(id);
+        viewAlbums: function() {
+            this.trigger('albums');
+        },
 
-			if (asset === undefined) {
-				asset = new BoomCMS.Asset({id: id});
-				asset.fetch();
+        viewAsset: function(id, section) {
+            var asset = this.assets.get(id);
 
-				this.assets.add(asset);
-			}
+            if (asset === undefined) {
+                asset = new BoomCMS.Asset({id: id});
+                asset.fetch();
 
-			asset.trigger('view', asset, section);
-		},
+                this.assets.add(asset);
+            }
 
-		viewSelection: function(selection, section) {
-			var assetIds = selection.split(',');
+            asset.trigger('view', asset, section);
+        },
 
-			this.trigger('selection', assetIds, section);
-		},
+        viewSelection: function(selection, section) {
+            var assetIds = selection.split(',');
 
-		home: function() {
-			this.trigger('home');
-		},
+            this.trigger('selection', assetIds, section);
+        },
 
-		upload: function() {
-			this.trigger('upload');
-		}
-	});
+        home: function() {
+            this.trigger('home');
+        },
+
+        upload: function() {
+            this.trigger('upload');
+        }
+    });
 }(Backbone, BoomCMS));

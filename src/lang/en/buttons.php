@@ -61,5 +61,7 @@ return [
         'visible'   => 'This page is visible. The content displayed will depend on which version of the page is published',
     ],
     'upload'                => 'Upload files',
+    'view-albums'           => 'Albums',
+    'view-assets'           => 'Assets',
     'view-edit'             => 'View / edit',
 ];

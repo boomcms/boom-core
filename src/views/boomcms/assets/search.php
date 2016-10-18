@@ -3,4 +3,4 @@
 <?= view('boomcms::assets.search.type') ?>
 <?= view('boomcms::assets.search.extension') ?>
 <?= view('boomcms::assets.search.uploaded-by') ?>
-<?= view('boomcms::assets.search.tag') ?>
+<?= view('boomcms::assets.search.album') ?>

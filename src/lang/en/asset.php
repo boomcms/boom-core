@@ -1,11 +1,11 @@
 <?php
 
 return [
+    'albums'         => 'Albums',
     'all'            => 'All assets',
     'close'          => 'Close',
     'attributes'     => 'Attributes',
     'info'           => 'Info',
-    'tags'           => 'Tags',
     'extension'      => 'File extension',
     'filename'       => 'Filename',
     'history'        => 'History',
@@ -60,13 +60,13 @@ return [
         'info3'   => 'to upload.',
     ],
     'search'         => [
-        'sort'            => 'Sort assets by',
-        'tag'             => 'Filter by tag',
-        'tag-placeholder' => 'Type a tag name',
-        'title'           => 'Search by asset name',
-        'type'            => 'Filter by asset type',
-        'extension'       => 'Filter by file extension',
-        'uploaded-by'     => 'Filter by uploader',
+        'sort'              => 'Sort assets by',
+        'album'             => 'Filter by album',
+        'album-placeholder' => 'Type an album name',
+        'title'             => 'Search by asset name',
+        'type'              => 'Filter by asset type',
+        'extension'         => 'Filter by file extension',
+        'uploaded-by'       => 'Filter by uploader',
     ],
     'sort' => [
         'uploaded_time desc' => 'Upload time: most recent first',
