@@ -41,7 +41,7 @@ class ConvertAssetTagsToAlbums extends Migration
         foreach ($tags as $tag) {
             if (!empty($tag)) {
                 $albums[$tag] = Album::create([
-                    Album::ATTR_NAME => $tag
+                    Album::ATTR_NAME => $tag,
                 ]);
 
                 $assets = Asset::join('assets_tags', 'assets.id', '=', 'assets_tags.asset_id')
@@ -81,6 +81,5 @@ class ConvertAssetTagsToAlbums extends Migration
      */
     public function down()
     {
-        
     }
 }
