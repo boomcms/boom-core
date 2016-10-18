@@ -13,7 +13,7 @@ class AddUploadAssetsRole extends Migration
     public function up()
     {
         $upload = Role::create([
-            'name' => 'uploadAssets'
+            'name' => 'uploadAssets',
         ]);
 
         $manage = Role::where('name', 'manageAssets')->first();
