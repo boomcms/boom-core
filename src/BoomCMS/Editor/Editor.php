@@ -16,11 +16,6 @@ class Editor
 
     public static $default = self::EDIT;
 
-    /**
-     * @var Page
-     */
-    protected $activePage;
-
     protected $state;
     protected $statePersistenceKey = 'editor_state';
     protected $timePersistenceKey = 'editor_time';
