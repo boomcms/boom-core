@@ -19,9 +19,9 @@ class EditorServiceProvider extends ServiceProvider
     {
         $activePage = $router->getActivePage();
 
-        $this->app->singleton(Editor::class, function () use($guard, $session, $activePage) {
+        $this->app->singleton(Editor::class, function () use ($guard, $session,$activePage) {
             $default = ($guard->check() && $activePage && $guard->user()->can('toolbar', $activePage)) ? Editor::EDIT : Editor::DISABLED;
-            
+
             return new Editor($session, $default);
         });
     }

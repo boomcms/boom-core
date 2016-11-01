@@ -12,7 +12,6 @@ use Mockery as m;
 class EditorTest extends AbstractTestCase
 {
     /**
-     *
      * @var Store
      */
     protected $session;

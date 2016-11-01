@@ -45,7 +45,7 @@ class Editor
 
     /**
      * @param Store $session
-     * @param int $default
+     * @param int   $default
      */
     public function __construct(Store $session, $default = self::DISABLED)
     {
