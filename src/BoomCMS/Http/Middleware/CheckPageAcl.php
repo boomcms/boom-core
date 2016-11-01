@@ -18,7 +18,6 @@ class CheckPageAcl
     protected $gate;
 
     /**
-     *
      * @var Guard
      */
     protected $guard;
