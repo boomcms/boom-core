@@ -2,7 +2,10 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Editor;
+use BoomCMS\Editor\Editor;
+use BoomCMS\Routing\Router;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Session\Store;
 use Illuminate\Support\ServiceProvider;
 
 class EditorServiceProvider extends ServiceProvider
@@ -12,10 +15,14 @@ class EditorServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(Guard $guard, Store $session, Router $router)
     {
-        $this->app->singleton('boomcms.editor', function ($app) {
-            return new Editor\Editor($app['auth'], $app['session']);
+        $activePage = $router->getActivePage();
+
+        $this->app->singleton(Editor::class, function () use($guard, $session, $activePage) {
+            $default = ($guard->check() && $activePage && $guard->user()->can('toolbar', $activePage)) ? Editor::EDIT : Editor::DISABLED;
+            
+            return new Editor($session, $default);
         });
     }
 

@@ -5,55 +5,69 @@ namespace BoomCMS\Tests\Editor;
 use BoomCMS\Editor\Editor;
 use BoomCMS\Tests\AbstractTestCase;
 use DateTime;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Session\Store;
 use InvalidArgumentException;
+use Mockery as m;
 
 class EditorTest extends AbstractTestCase
 {
+    /**
+     *
+     * @var Store
+     */
+    protected $session;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->session = m::mock(Store::class)->makePartial();
+    }
+
     public function testIsEnabledIfHasEditState()
     {
-        $editor = $this->getEditor(['hasState']);
+        $editor = $this->getEditor();
 
         $editor
-            ->expects($this->once())
-            ->method('hasState')
-            ->with($this->equalTo(Editor::EDIT))
-            ->will($this->returnValue(true));
+            ->shouldReceive('hasState')
+            ->once()
+            ->with(Editor::EDIT)
+            ->andReturn(true);
 
         $this->assertTrue($editor->isEnabled());
     }
 
     public function testIsHistoryIfHasHistoryState()
     {
-        $editor = $this->getEditor(['hasState']);
+        $editor = $this->getEditor();
 
         $editor
-            ->expects($this->once())
-            ->method('hasState')
-            ->with($this->equalTo(Editor::HISTORY))
-            ->will($this->returnValue(true));
+            ->shouldReceive('hasState')
+            ->once()
+            ->with(Editor::HISTORY)
+            ->andReturn(true);
 
         $this->assertTrue($editor->isHistory());
     }
 
     public function testEnableIsAliasForSettingStateToEdit()
     {
-        $editor = $this->getEditor(['setState']);
+        $editor = $this->getEditor();
 
         $editor
-            ->expects($this->once())
-            ->method('setState')
-            ->with($this->equalTo(Editor::EDIT));
+            ->shouldReceive('setState')
+            ->once()
+            ->with(Editor::EDIT);
 
         $editor->enable();
     }
 
     public function testGetTimeReturnsCurrentTimeByDefault()
     {
-        Session::forget('editor_time');
-
-        $editor = new Editor();
+        $editor = $this->getEditor();
         $editor->setState(Editor::HISTORY);
+
+        $this->session->forget('editor_time');
 
         $this->assertEquals(time(), $editor->getTime()->getTimestamp());
     }
@@ -61,9 +75,9 @@ class EditorTest extends AbstractTestCase
     public function testGetTimeReturnsSavedTime()
     {
         $time = time() - 1000;
-        Session::put('editor_time', $time);
+        $this->session->put('editor_time', $time);
 
-        $editor = new Editor();
+        $editor = $this->getEditor();
         $editor->setState(Editor::HISTORY);
 
         $this->assertEquals($time, $editor->getTime()->getTimestamp());
@@ -71,7 +85,7 @@ class EditorTest extends AbstractTestCase
 
     public function testGetTimeReturnsCurrentTimeIfNotInHistoryMode()
     {
-        $editor = new Editor();
+        $editor = $this->getEditor();
 
         foreach ([Editor::DISABLED, Editor::EDIT, Editor::PREVIEW] as $state) {
             $editor->setState($state);
@@ -82,32 +96,32 @@ class EditorTest extends AbstractTestCase
 
     public function testPreviewIsAliasForSettingStateToPreview()
     {
-        $editor = $this->getEditor(['setState']);
+        $editor = $this->getEditor();
 
         $editor
-            ->expects($this->once())
-            ->method('setState')
-            ->with($this->equalTo(Editor::PREVIEW));
+            ->shouldReceive('setState')
+            ->once()
+            ->with(Editor::PREVIEW);
 
         $editor->preview();
     }
 
     public function testDisableIsAliasForSettingStateToDisabled()
     {
-        $editor = $this->getEditor(['setState']);
+        $editor = $this->getEditor();
 
         $editor
-            ->expects($this->once())
-            ->method('setState')
-            ->with($this->equalTo(Editor::DISABLED));
+            ->shouldReceive('setState')
+            ->once()
+            ->with(Editor::DISABLED);
 
         $editor->disable();
     }
 
     public function testSetStatThrowsExceptionForInvalidStates()
     {
-        $editor = new Editor();
-        $invalidStates = [0, null, 4, 'invalid'];
+        $editor = $this->getEditor();
+        $invalidStates = [0, null, 5, 'invalid'];
 
         foreach ($invalidStates as $state) {
             $this->setExpectedException(InvalidArgumentException::class);
@@ -117,15 +131,15 @@ class EditorTest extends AbstractTestCase
 
     public function testSetTimeWithTime()
     {
-        $editor = $this->getEditor(['setState']);
+        $editor = $this->getEditor();
         $timestamp = time() - 1000;
 
         $editor
-            ->expects($this->once())
-            ->method('setState')
-            ->with($this->equalTo(Editor::HISTORY));
+            ->shouldReceive('setState')
+            ->once()
+            ->with(Editor::HISTORY);
 
-        Session::shouldReceive('put')
+        $this->session->shouldReceive('put')
             ->once()
             ->with('editor_time', $timestamp);
 
@@ -134,23 +148,21 @@ class EditorTest extends AbstractTestCase
 
     public function testSetTimeNull()
     {
-        $editor = $this->getEditor(['setState']);
+        $editor = $this->getEditor();
 
         $editor
-            ->expects($this->never())
-            ->method('setState');
+            ->shouldReceive('setState')
+            ->never();
 
-        Session::shouldReceive('put')
+        $this->session->shouldReceive('put')
             ->once()
             ->with('editor_time', null);
 
         $editor->setTime(null);
     }
 
-    protected function getEditor($methods = null)
+    protected function getEditor()
     {
-        return $this->getMockBuilder(Editor::class)
-            ->setMethods($methods)
-            ->getMock();
+        return m::mock(Editor::class, [$this->session])->makePartial();
     }
 }

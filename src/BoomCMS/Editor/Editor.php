@@ -3,8 +3,7 @@
 namespace BoomCMS\Editor;
 
 use DateTime;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Session\Store;
 use InvalidArgumentException;
 
 class Editor
@@ -14,12 +13,29 @@ class Editor
     const PREVIEW = 3;
     const HISTORY = 4;
 
-    public static $default = self::EDIT;
+    /**
+     * @var SessionManager
+     */
+    protected $session;
 
+    /**
+     * @var int
+     */
     protected $state;
+
+    /**
+     * @var string
+     */
     protected $statePersistenceKey = 'editor_state';
+
+    /**
+     * @var string
+     */
     protected $timePersistenceKey = 'editor_time';
 
+    /**
+     * @var array
+     */
     protected $validStates = [
         self::EDIT,
         self::DISABLED,
@@ -27,11 +43,14 @@ class Editor
         self::HISTORY,
     ];
 
-    public function __construct()
+    /**
+     * @param Store $session
+     * @param int $default
+     */
+    public function __construct(Store $session, $default = self::DISABLED)
     {
-        $this->state = (Auth::check()) ?
-            Session::get($this->statePersistenceKey, static::$default)
-            : static::DISABLED;
+        $this->session = $session;
+        $this->state = $session->get($this->statePersistenceKey, $default);
     }
 
     /**
@@ -66,7 +85,7 @@ class Editor
             return new DateTime('now');
         }
 
-        $timestamp = Session::get($this->timePersistenceKey, time());
+        $timestamp = $this->session->get($this->timePersistenceKey, time());
 
         return (new DateTime())->setTimestamp($timestamp);
     }
@@ -148,7 +167,7 @@ class Editor
 
         $this->state = $state;
 
-        Session::put($this->statePersistenceKey, $state);
+        $this->session->put($this->statePersistenceKey, $state);
 
         return $this;
     }
@@ -164,7 +183,7 @@ class Editor
     {
         $timestamp = $time ? $time->getTimestamp() : null;
 
-        Session::put($this->timePersistenceKey, $timestamp);
+        $this->session->put($this->timePersistenceKey, $timestamp);
 
         if ($time) {
             $this->setState(static::HISTORY);
