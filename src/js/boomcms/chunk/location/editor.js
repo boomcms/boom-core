@@ -47,7 +47,6 @@ function boomChunkLocationEditor(pageId, slotname, options) {
 		return {
 			title: this.getTitle(),
 			address: this.getAddress(),
-			postcode: this.getPostcode(),
 			lat: latLng.lat,
 			lng: latLng.lng
 		};
