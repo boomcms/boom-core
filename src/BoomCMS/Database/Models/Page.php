@@ -15,6 +15,7 @@ use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -124,11 +125,13 @@ class Page extends Model implements PageInterface
      */
     public function addAclGroupId($groupId)
     {
-        DB::table('page_acl')
-            ->insert([
-                'page_id'  => $this->getId(),
-                'group_id' => $groupId,
-            ]);
+        try {
+            DB::table('page_acl')
+                ->insert([
+                    'page_id'  => $this->getId(),
+                    'group_id' => $groupId,
+                ]);
+        } catch (QueryException $e) {}
 
         return $this;
     }
