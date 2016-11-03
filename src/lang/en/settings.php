@@ -80,15 +80,23 @@ return [
             'redirect-target'      => 'Redirect URLs to: ',
         ],
     ],
-    'draft-status' => [
+    'draft' => [
         'heading'        => 'Draft status',
         'intro'          => 'When you edit the template or content of a page your changes will be saved as a draft and won\'t appear on the live site until published.',
-        'draft'          => 'The latest version of this page is in <strong>draft</strong> and <strong>will not be visible on the live site</strong>',
-        'pending'        => 'The latest version of this page is current <strong>pending approval</strong> by someone with publish permissions for this page',
-        'embargoed'      => 'The latest version of this page is <strong>embargoed</strong> and will become published at <strong>:date</strong>',
-        'published'      => 'There are no drafts for this page. All edits are <strong>published</strong>',
-        'latest'         => 'This version was created by :name (:email) on :date at :time',
-        'last-published' => 'The page was last published on :date at :time',
+        'draft'          => 'The latest version of this page is in <strong>draft</strong> and <strong>will not be visible on the live site</strong>.',
+        'pending'        => 'The latest version of this page is current <strong>pending approval</strong> by someone with publish permissions for this page.',
+        'embargoed'      => 'The latest version of this page is <strong>embargoed</strong> and will become published at <strong>:date</strong>.',
+        'published'      => 'There are no drafts for this page. All edits are <strong>published</strong>.',
+        'latest'         => 'This version was created by :name (:email) on :date at :time.',
+        'last-published' => 'The page was last published on :date at :time.',
+        'options'        => [
+            'heading' => 'Publish options'
+        ],
+        'preview'        => [
+            'heading'               => 'Preview',
+            'description-draft'     => 'View the current version before publishing. Other invisible pages will still be displayed.',
+            'description-invisible' => 'View the published content despite the page being invisible.',
+        ],
     ],
     'feature' => [
         'heading'   => 'Page feature image',
