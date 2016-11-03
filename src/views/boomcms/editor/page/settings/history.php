@@ -23,6 +23,8 @@
                                 <time datetime="<?= $version->getEditedTime()->format('c') ?>">
                                     <?= $version->getEditedTime()->format('d M Y h:i') ?>
                                 </time>
+
+                                <span class="fa fa-angle-double-right"></span>
                             </a>
 
                             <span class="status">
