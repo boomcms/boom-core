@@ -24,7 +24,7 @@
                         .set(view.$('form').serializeJSON())
                         .save();
 
-                    BoomCMS.notify("Asset details saved");
+                    BoomCMS.notify('Asset details saved');
                 })
                 .on('remove', function() {
                     this.$('.b-assets-upload').assetUploader('reset');
@@ -58,7 +58,7 @@
                 .on('click', '#b-assets-thumbnail-change', function(e) {
                     e.preventDefault();
 
-                    new boomAssetPicker(asset.getThumbnailAssetId())
+                    BoomCMS.AssetPicker(asset.getThumbnailAssetId())
                         .done(function(thumbnail) {
                             asset
                                 .set('thumbnail_asset_id', thumbnail.getId())

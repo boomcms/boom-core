@@ -1,71 +1,75 @@
-function boomLink(url, pageId, title) {
-	this.url = url? url : "";
-	this.pageId = pageId? pageId : 0;
-	this.title = title? title : "";
+(function(BoomCMS) {
+    'use strict';
 
-	boomLink.prototype.isAsset = function() {
-		return this.getUrl().indexOf('/asset/') === 0;
-	};
+    BoomCMS.Link = function(url, pageId, title) {
+        this.url = url? url : '';
+        this.pageId = pageId? pageId : 0;
+        this.title = title? title : '';
 
-	boomLink.prototype.isExternal = function() {
-		return this.getUrl() !== "" && this.getUrl().substring(0,1) !== '/';
-	};
+        BoomCMS.Link.prototype.isAsset = function() {
+            return this.getUrl().indexOf('/asset/') === 0;
+        };
 
-	boomLink.prototype.isHttp = function() {
-		return this.url.substring(0,7) === 'http://';
-	};
+        BoomCMS.Link.prototype.isExternal = function() {
+            return this.getUrl() !== '' && this.getUrl().substring(0,1) !== '/';
+        };
 
-	boomLink.prototype.isHttps = function() {
-		return this.url.substring(0,8) === 'https://';
-	};
+        BoomCMS.Link.prototype.isHttp = function() {
+            return this.url.substring(0,7) === 'http://';
+        };
 
-	boomLink.prototype.isInternal = function() {
-		return this.pageId > 0 || this.getUrl().substring(0,1) === '/';
-	};
+        BoomCMS.Link.prototype.isHttps = function() {
+            return this.url.substring(0,8) === 'https://';
+        };
 
-	boomLink.prototype.isMailto = function() {
-		return this.url.substring(0,7) === 'mailto:';
-	};
+        BoomCMS.Link.prototype.isInternal = function() {
+            return this.pageId > 0 || this.getUrl().substring(0,1) === '/';
+        };
 
-	boomLink.prototype.isTel = function() {
-		return this.url.substring(0,4) === 'tel:';
-	};
+        BoomCMS.Link.prototype.isMailto = function() {
+            return this.url.substring(0,7) === 'mailto:';
+        };
 
-	boomLink.prototype.getAsset = function() {
-		var assetId = this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, "$1");
+        BoomCMS.Link.prototype.isTel = function() {
+            return this.url.substring(0,4) === 'tel:';
+        };
 
-		return new BoomCMS.Asset({id: assetId});
-	};
+        BoomCMS.Link.prototype.getAsset = function() {
+            var assetId = this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, '$1');
 
-	boomLink.prototype.getAssetAction = function() {
-		if (this.isAsset()) {
-			return this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, "$3");
-		}
-	};
+            return new BoomCMS.Asset({id: assetId});
+        };
 
-	boomLink.prototype.getUrl = function() {
-		if (this.isTel()) {
-			return this.getTelUrl();
-		}
+        BoomCMS.Link.prototype.getAssetAction = function() {
+            if (this.isAsset()) {
+                return this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, '$3');
+            }
+        };
 
-		return (this.url === 'http://') ? '' : this.makeUrlRelative();
-	};
+        BoomCMS.Link.prototype.getUrl = function() {
+            if (this.isTel()) {
+                return this.getTelUrl();
+            }
 
-	boomLink.prototype.getPageId = function() {
-		return this.pageId;
-	};
+            return (this.url === 'http://') ? '' : this.makeUrlRelative();
+        };
 
-	boomLink.prototype.getTelUrl = function() {
-		return 'tel:' + this.url.replace(/[^+\d]+/g, '');
-	};
+        BoomCMS.Link.prototype.getPageId = function() {
+            return this.pageId;
+        };
 
-	boomLink.prototype.getTitle = function() {
-		return this.title;
-	};
-	
-	boomLink.prototype.makeUrlRelative = function() {
-		return (this.url.indexOf(window.location.hostname) > -1) ?
-			this.url.replace(/^https?:\/\//, '').replace(window.location.hostname, '') :
-			this.url;
-	};
-};
+        BoomCMS.Link.prototype.getTelUrl = function() {
+            return 'tel:' + this.url.replace(/[^+\d]+/g, '');
+        };
+
+        BoomCMS.Link.prototype.getTitle = function() {
+            return this.title;
+        };
+
+        BoomCMS.Link.prototype.makeUrlRelative = function() {
+            return (this.url.indexOf(window.location.hostname) > -1) ?
+                this.url.replace(/^https?:\/\//, '').replace(window.location.hostname, '') :
+                this.url;
+        };
+    };
+}(BoomCMS));

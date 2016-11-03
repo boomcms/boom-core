@@ -8,12 +8,12 @@
 */
 
 (function($) {
-	'use strict';
+    'use strict';
 
-	$.fn.dblclick = function() {
-		var $this = $(this);
+    $.fn.dblclick = function() {
+        var $this = $(this);
 
-		$this.each(function() {
+        $this.each(function() {
             var $el = $(this);
 
             $el.on('click', function() {
@@ -36,57 +36,57 @@
             });
         });
 
-		return this;
-	};
+        return this;
+    };
 
-	$.fn.ui = function() {
-		this.find('.boom-datepicker').datetimepicker({
-			format: 'd F Y H:i'
-		});
+    $.fn.ui = function() {
+        this.find('.boom-datepicker').datetimepicker({
+            format: 'd F Y H:i'
+        });
 
-		this.find('time').localTime();
+        this.find('time').localTime();
 
-		return this;
-	};
+        return this;
+    };
 
-	$.fn.localTime = function() {
-		var $this = $(this);
+    $.fn.localTime = function() {
+        var $this = $(this);
 
-		if ($this.length) {
-			var tz = BoomCMS.getTimezone();
+        if ($this.length) {
+            var tz = BoomCMS.getTimezone();
 
-			$this.each(function() {
-				var $el = $(this),
-					time = moment($el.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
+            $this.each(function() {
+                var $el = $(this),
+                    time = moment($el.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
 
-				$el.text(time);
-			});
-		}
-	};
+                $el.text(time);
+            });
+        }
+    };
 
-	$.fn.boomTabs = function() {
-		var selectedClass = 'selected';
+    $.fn.boomTabs = function() {
+        var selectedClass = 'selected';
 
-		$(this).on('click', function(e) {
-			var $link = $(this),
-				href = $link.attr('href'),
-				$target;
+        $(this).on('click', function(e) {
+            var $link = $(this),
+                href = $link.attr('href'),
+                $target;
 
-			if (href === '#') {
-				return;
-			}
+            if (href === '#') {
+                return;
+            }
 
-			$target = $(href);
+            $target = $(href);
 
-			if ($target.length) {
-				e.preventDefault();
+            if ($target.length) {
+                e.preventDefault();
 
-				$link.parents('ul').find('a').removeClass(selectedClass);
-				$link.addClass(selectedClass);
+                $link.parents('ul').find('a').removeClass(selectedClass);
+                $link.addClass(selectedClass);
 
-				$target.siblings().removeClass(selectedClass);
-				$target.addClass(selectedClass);
-			}
-		});
-	};
+                $target.siblings().removeClass(selectedClass);
+                $target.addClass(selectedClass);
+            }
+        });
+    };
 })(jQuery);

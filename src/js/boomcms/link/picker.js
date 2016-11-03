@@ -1,260 +1,264 @@
-function boomLinkPicker(link, options) {
-	this.deferred = new $.Deferred();
-	this.link = link? link : new boomLink();
+(function($, BoomCMS) {
+    'use strict';
 
-	this.defaultOptions = {
-		internal: true,
-		text: false,
-		remove: false,
-		external: true,
-		asset: true
-	};
+    BoomCMS.LinkPicker = function(link, options) {
+        this.deferred = new $.Deferred();
+        this.link = link? link : new BoomCMS.Link();
 
-	this.options = $.extend(this.defaultOptions, options);
+        this.defaultOptions = {
+            internal: true,
+            text: false,
+            remove: false,
+            external: true,
+            asset: true
+        };
 
-	boomLinkPicker.prototype.bind = function() {
-		var linkPicker = this;
+        this.options = $.extend(this.defaultOptions, options);
 
-		this.externalTypeSelector
-			.on('change', function() {
-				var type = linkPicker.externalTypeSelector.val(),
-					val = linkPicker.externalUrl.val();
+        BoomCMS.LinkPicker.prototype.bind = function() {
+            var linkPicker = this;
 
-				if (type === 'http' || type === 'https') {
-					linkPicker.externalUrl.autocomplete('enable');
-				} else {
-					linkPicker.externalUrl.autocomplete('disable');
-				}
+            this.externalTypeSelector
+                .on('change', function() {
+                    var type = linkPicker.externalTypeSelector.val(),
+                        val = linkPicker.externalUrl.val();
 
-				if (val === 'http://') {
-					linkPicker.externalUrl.val('');
-				}
+                    if (type === 'http' || type === 'https') {
+                        linkPicker.externalUrl.autocomplete('enable');
+                    } else {
+                        linkPicker.externalUrl.autocomplete('disable');
+                    }
 
-				linkPicker.externalUrl.focus();
-				linkPicker.externalUrl[0].setSelectionRange(0, val.length);
-			});
+                    if (val === 'http://') {
+                        linkPicker.externalUrl.val('');
+                    }
 
-		this.externalUrl.autocomplete({
-			appendTo: linkPicker.$el.find('#b-linkpicker-add-external form'),
-			source: function(request, response) {
-				if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
-					if (linkPicker.externalUrl.val()) {
-						$.ajax({
-							url: '/boomcms/autocomplete/page-titles',
-							dataType: 'json',
-							data: {
-								text : linkPicker.externalUrl.val()
-							}
-						})
-						.done(function(data) {
-							response(data);
-						});
-					}
-				}
-			},
-			select: function(event, ui) {
-				event.preventDefault();
+                    linkPicker.externalUrl.focus();
+                    linkPicker.externalUrl[0].setSelectionRange(0, val.length);
+                });
 
-				linkPicker.externalUrl.val(ui.item.value);
-			}
-		});
+            this.externalUrl.autocomplete({
+                appendTo: linkPicker.$el.find('#b-linkpicker-add-external form'),
+                source: function(request, response) {
+                    if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
+                        if (linkPicker.externalUrl.val()) {
+                            $.ajax({
+                                url: '/boomcms/autocomplete/page-titles',
+                                dataType: 'json',
+                                data: {
+                                    text : linkPicker.externalUrl.val()
+                                }
+                            })
+                            .done(function(data) {
+                                response(data);
+                            });
+                        }
+                    }
+                },
+                select: function(event, ui) {
+                    event.preventDefault();
 
-		this.$el
-			.find('.boom-tree')
-			.pageTree({
-				onPageSelect: function(link) {
-					linkPicker.pick(link);
-					linkPicker.dialog.cancel();
-				}
-			});
+                    linkPicker.externalUrl.val(ui.item.value);
+                }
+            });
 
-		this.$el
-			.on('click', '#b-linkpicker-remove', function(e) {
-				e.preventDefault();
+            this.$el
+                .find('.boom-tree')
+                .pageTree({
+                    onPageSelect: function(link) {
+                        linkPicker.pick(link);
+                        linkPicker.dialog.cancel();
+                    }
+                });
 
-				linkPicker.deferred.resolve(new boomLink());
-				linkPicker.dialog.cancel();
-			})
-			.on('click', '#b-linkpicker-asset-select', function() {
-				new boomAssetPicker(linkPicker.link.getAsset())
-					.done(function(asset) {
-						var action = linkPicker.asset.find('option:selected').val();
+            this.$el
+                .on('click', '#b-linkpicker-remove', function(e) {
+                    e.preventDefault();
 
-						linkPicker.externalUrl.val(asset.getUrl(action));
-						linkPicker.setAssetPreview(asset);
-					});
-			})
-			.on('focus', '#b-linkpicker-add-asset select', function() {
-				var $this = $(this);
+                    linkPicker.deferred.resolve(new BoomCMS.Link());
+                    linkPicker.dialog.cancel();
+                })
+                .on('click', '#b-linkpicker-asset-select', function() {
+                    BoomCMS.AssetPicker(linkPicker.link.getAsset())
+                        .done(function(asset) {
+                            var action = linkPicker.asset.find('option:selected').val();
 
-				$this.data('previous', $this.find('option:selected').val());
-			})
-			.on('change', '#b-linkpicker-add-asset select', function() {
-				if (linkPicker.link.isAsset()) {
-					var $this = $(this),
-						action = $this.find('option:selected').val(),
-						url = linkPicker.externalUrl.val().replace($this.data('previous'), action);
+                            linkPicker.externalUrl.val(asset.getUrl(action));
+                            linkPicker.setAssetPreview(asset);
+                        });
+                })
+                .on('focus', '#b-linkpicker-add-asset select', function() {
+                    var $this = $(this);
 
-						linkPicker.externalUrl.val(url);
-				}
-			});
-	};
+                    $this.data('previous', $this.find('option:selected').val());
+                })
+                .on('change', '#b-linkpicker-add-asset select', function() {
+                    if (linkPicker.link.isAsset()) {
+                        var $this = $(this),
+                            action = $this.find('option:selected').val(),
+                            url = linkPicker.externalUrl.val().replace($this.data('previous'), action);
 
-	boomLinkPicker.prototype.getExternalLink = function() {
-		var url = this.externalUrl.val(),
-			linkText;
-	
-		linkText = (this.options.text && this.textInput.val()) ?
-			this.textInput.val() :
-			url.replace('mailto:', '').replace('tel:', '');
+                        linkPicker.externalUrl.val(url);
+                    }
+                });
+        };
 
-		if (url.indexOf(window.location.hostname) === -1) {
-			switch(this.externalTypeSelector.val()) {
-				case 'http':
-					if (url.substring(0, 7) !== 'http://'
-							&& url.substring(0, 8) !== 'https://'
-							&& url.substring(0, 1) !== '/'
-							&& url.substring(0, 1) !== '#')
-					{
-						url = 'http://' + url;
-					}
+        BoomCMS.LinkPicker.prototype.getExternalLink = function() {
+            var url = this.externalUrl.val(),
+                linkText;
 
-					break;
-				case 'mailto':
-					if (url.substring(0, 7) !== 'mailto:') {
-						url = 'mailto:' + url;
-					}
+            linkText = (this.options.text && this.textInput.val()) ?
+                this.textInput.val() :
+                url.replace('mailto:', '').replace('tel:', '');
 
-					break;
-				case 'tel':
-					if (url.substring(0, 4) !== 'tel:') {
-						url = 'tel:' + url.replace(' ', '');
-					}
+            if (url.indexOf(window.location.hostname) === -1) {
+                switch(this.externalTypeSelector.val()) {
+                case 'http':
+                    if (url.substring(0, 7) !== 'http://'
+                                && url.substring(0, 8) !== 'https://'
+                                && url.substring(0, 1) !== '/'
+                                && url.substring(0, 1) !== '#')
+                        {
+                        url = 'http://' + url;
+                    }
 
-					break;
-			}
-		}
+                    break;
+                case 'mailto':
+                    if (url.substring(0, 7) !== 'mailto:') {
+                        url = 'mailto:' + url;
+                    }
 
-		return new boomLink(url, 0, linkText);
-	};
+                    break;
+                case 'tel':
+                    if (url.substring(0, 4) !== 'tel:') {
+                        url = 'tel:' + url.replace(' ', '');
+                    }
 
-	boomLinkPicker.prototype.onLoad = function(dialog) {
-		this.dialog = dialog;
-		this.$el = dialog.contents;
-		this.internal = this.$el.find('#b-linkpicker-add-internal');
-		this.external = this.$el.find('#b-linkpicker-add-external');
-		this.asset = this.$el.find('#b-linkpicker-add-asset');
-		this.externalTypeSelector = this.external.find('select');
-		this.externalUrl = this.external.find('input');
-		this.textInput = this.$el.find('#b-linkpicker-text input[type=text]');
+                    break;
+                }
+            }
 
-		this.$el.find('.boom-tabs').tabs();
+            return new BoomCMS.Link(url, 0, linkText);
+        };
 
-		this.toggleOptions();
-		this.setupInternal();
-		this.setupExternalUrl();
-		this.setupText();
-		this.setupAssetLink();
-		this.bind();
-	};
+        BoomCMS.LinkPicker.prototype.onLoad = function(dialog) {
+            this.dialog = dialog;
+            this.$el = dialog.contents;
+            this.internal = this.$el.find('#b-linkpicker-add-internal');
+            this.external = this.$el.find('#b-linkpicker-add-external');
+            this.asset = this.$el.find('#b-linkpicker-add-asset');
+            this.externalTypeSelector = this.external.find('select');
+            this.externalUrl = this.external.find('input');
+            this.textInput = this.$el.find('#b-linkpicker-text input[type=text]');
 
-	boomLinkPicker.prototype.open = function() {
-		var linkPicker = this;
+            this.$el.find('.boom-tabs').tabs();
 
-		new boomDialog({
-			msg : $('#b-linkpicker-container').html(),
-			id : 'b-linkpicker',
-			width : 600,
-			closeButton: this.options.external || this.options.text || this.options.asset,
-			onLoad: function(dialog) {
-				linkPicker.onLoad(dialog);
-			}
-		})
-		.done(function() {
-			linkPicker.pick(linkPicker.getExternalLink());
-		})
-		.fail(function() {
-			linkPicker.deferred.reject();
-		});
+            this.toggleOptions();
+            this.setupInternal();
+            this.setupExternalUrl();
+            this.setupText();
+            this.setupAssetLink();
+            this.bind();
+        };
 
-		return this.deferred;
-	};
+        BoomCMS.LinkPicker.prototype.open = function() {
+            var linkPicker = this;
 
-	boomLinkPicker.prototype.pick = function(link) {
-		this.deferred.resolve(link);
-	};
+            new BoomCMS.Dialog({
+                msg : $('#b-linkpicker-container').html(),
+                id : 'b-linkpicker',
+                width : 600,
+                closeButton: this.options.external || this.options.text || this.options.asset,
+                onLoad: function(dialog) {
+                    linkPicker.onLoad(dialog);
+                }
+            })
+            .done(function() {
+                linkPicker.pick(linkPicker.getExternalLink());
+            })
+            .fail(function() {
+                linkPicker.deferred.reject();
+            });
 
-	boomLinkPicker.prototype.setAssetPreview = function(asset) {
-		this.asset.find('img').attr('src', asset.getUrl('thumb'));
-	};
+            return this.deferred;
+        };
 
-	boomLinkPicker.prototype.setupAssetLink = function() {
-		if (this.link.isAsset()) {
-			this.setAssetPreview(this.link.getAsset());
+        BoomCMS.LinkPicker.prototype.pick = function(link) {
+            this.deferred.resolve(link);
+        };
 
-			this.asset
-				.find('select')
-				.find('option')
-				.removeAttr('selected')
-				.end()
-				.find('option[value="' + this.link.getAssetAction() + '"]')
-				.attr('selected', 'selected');
+        BoomCMS.LinkPicker.prototype.setAssetPreview = function(asset) {
+            this.asset.find('img').attr('src', asset.getUrl('thumb'));
+        };
 
-			$('a[href=#b-linkpicker-add-asset]').click();
-		}
-	};
+        BoomCMS.LinkPicker.prototype.setupAssetLink = function() {
+            if (this.link.isAsset()) {
+                this.setAssetPreview(this.link.getAsset());
 
-	boomLinkPicker.prototype.setupExternalUrl = function() {
-		var url = this.link.url;
+                this.asset
+                    .find('select')
+                    .find('option')
+                    .removeAttr('selected')
+                    .end()
+                    .find('option[value="' + this.link.getAssetAction() + '"]')
+                    .attr('selected', 'selected');
 
-		if (this.link.isMailto()) {
-			url = url.replace('mailto:', '');
-			this.externalTypeSelector.val('mailto');
-		} else if (this.link.isTel()) {
-			url = url.replace('tel:', '');
-			this.externalTypeSelector.val('tel');
-		} else {
-			url = this.link.getUrl();
-			this.externalTypeSelector.val('http');
-		}
+                $('a[href=#b-linkpicker-add-asset]').click();
+            }
+        };
 
-		this.externalUrl.val(url);
+        BoomCMS.LinkPicker.prototype.setupExternalUrl = function() {
+            var url = this.link.url;
 
-		if (url !== "" && !this.link.isAsset()) {
-			$('a[href=#b-linkpicker-add-external]').click();
-		}
-	};
+            if (this.link.isMailto()) {
+                url = url.replace('mailto:', '');
+                this.externalTypeSelector.val('mailto');
+            } else if (this.link.isTel()) {
+                url = url.replace('tel:', '');
+                this.externalTypeSelector.val('tel');
+            } else {
+                url = this.link.getUrl();
+                this.externalTypeSelector.val('http');
+            }
 
-	boomLinkPicker.prototype.setupInternal = function() {
-		var pageId = this.link.getPageId();
+            this.externalUrl.val(url);
 
-		if (pageId) {
-			this.internal.find('input').val(pageId);
-		}
-	};
+            if (url !== '' && !this.link.isAsset()) {
+                $('a[href=#b-linkpicker-add-external]').click();
+            }
+        };
 
-	boomLinkPicker.prototype.setupText = function() {
-		if (this.options.text) {
-			this.$el
-				.find('#b-linkpicker-text input[type=text]')
-				.val(link.getTitle());
-		}
-	};
+        BoomCMS.LinkPicker.prototype.setupInternal = function() {
+            var pageId = this.link.getPageId();
 
-	boomLinkPicker.prototype.toggleOptions = function() {
-		var toggle = ['remove', 'external', 'internal', 'text', 'asset'],
-			i, option;
+            if (pageId) {
+                this.internal.find('input').val(pageId);
+            }
+        };
 
-		for (i = 0; i < toggle.length; i++) {
-			option = toggle[i];
+        BoomCMS.LinkPicker.prototype.setupText = function() {
+            if (this.options.text) {
+                this.$el
+                    .find('#b-linkpicker-text input[type=text]')
+                    .val(link.getTitle());
+            }
+        };
 
-			if (!this.options[option]) {
-				var selector = '.toggle-' + option;
+        BoomCMS.LinkPicker.prototype.toggleOptions = function() {
+            var toggle = ['remove', 'external', 'internal', 'text', 'asset'],
+                i, option;
 
-				this.$el.find(selector).hide();
-			}
-		}
-	};
+            for (i = 0; i < toggle.length; i++) {
+                option = toggle[i];
 
-	return this.open();
-}
+                if (!this.options[option]) {
+                    var selector = '.toggle-' + option;
+
+                    this.$el.find(selector).hide();
+                }
+            }
+        };
+
+        return this.open();
+    };
+}($, BoomCMS));

@@ -7,72 +7,72 @@ Editable timestamps
 */
 $.widget('ui.chunkTimestamp', $.ui.chunk,
 
-	/**
-	@lends $.ui.chunkTimestamp
-	*/
-	{
+    /**
+    @lends $.ui.chunkTimestamp
+    */
+    {
 
-	format : '',
+        format : '',
 
-	timestamp : '',
+        timestamp : '',
 
-	_create: function() {
-		this.format = this.element.attr('data-boom-format');
-		this.timestamp = this.element.attr('data-boom-timestamp');
-		this.formatIsEditable = (this.element.attr('data-boom-formatIsEditable') === '1');
+        _create: function() {
+            this.format = this.element.attr('data-boom-format');
+            this.timestamp = this.element.attr('data-boom-timestamp');
+            this.formatIsEditable = (this.element.attr('data-boom-formatIsEditable') === '1');
 
-		$.ui.chunk.prototype._create.call(this);
-	},
+            $.ui.chunk.prototype._create.call(this);
+        },
 
-	edit: function() {
-		var self = this,
-			data = this.getData();
+        edit: function() {
+            var self = this,
+                data = this.getData();
 
-		this.dialog = new boomDialog({
-			url: this.options.currentPage.baseUrl + 'chunk/edit?slotname=' + self.options.name + '&type=timestamp',
-			width: 400,
-			title: 'Edit date / time',
-			onLoad: function() {
-				if (self.formatIsEditable) {
-					data.format && $('#format').val(data.format);
-				} else {
-					self.dialog.contents.find('label:first-of-type').hide();
-				}
+            this.dialog = new BoomCMS.Dialog({
+                url: this.options.currentPage.baseUrl + 'chunk/edit?slotname=' + self.options.name + '&type=timestamp',
+                width: 400,
+                title: 'Edit date / time',
+                onLoad: function() {
+                    if (self.formatIsEditable) {
+                        data.format && $('#format').val(data.format);
+                    } else {
+                        self.dialog.contents.find('label:first-of-type').hide();
+                    }
 
-				var time = (data.timestamp)? new Date(data.timestamp * 1000) : new Date();
+                    var time = (data.timestamp)? new Date(data.timestamp * 1000) : new Date();
 
-				$( "#timestamp" ).datepicker('setDate', time);
-			},
-			destroy: function(){
-				self.destroy();
-			}
-		}).done(function() {
-			var	format = $('#format').val(),
-				stringDate = $('#timestamp').val(),
-				dateyDate = new Date(stringDate),
-				timestamp = (dateyDate.valueOf() / 1000) - (dateyDate.getTimezoneOffset() * 60);
+                    $( '#timestamp' ).datepicker('setDate', time);
+                },
+                destroy: function(){
+                    self.destroy();
+                }
+            }).done(function() {
+                var    format = $('#format').val(),
+                    stringDate = $('#timestamp').val(),
+                    dateyDate = new Date(stringDate),
+                    timestamp = (dateyDate.valueOf() / 1000) - (dateyDate.getTimezoneOffset() * 60);
 
-			self.insert(format, timestamp);
-		})
-		.always(function() {
-			self.bind();
-		});
-	},
+                self.insert(format, timestamp);
+            })
+        .always(function() {
+            self.bind();
+        });
+        },
 
-	insert: function(format, timestamp) {
-		if (this.formatIsEditable) {
-			this.format = format;
-		}
+        insert: function(format, timestamp) {
+            if (this.formatIsEditable) {
+                this.format = format;
+            }
 
-		this.timestamp = timestamp;
+            this.timestamp = timestamp;
 
-		return this._save();
-	},
+            return this._save();
+        },
 
-	getData: function(){
-		return {
-			format : this.format,
-			timestamp: this.timestamp
-		};
-	}
-});
+        getData: function(){
+            return {
+                format : this.format,
+                timestamp: this.timestamp
+            };
+        }
+    });

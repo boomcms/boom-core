@@ -1,8 +1,8 @@
 (function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Collections.Templates = Backbone.Collection.extend({
-		model: BoomCMS.Template,
-		url: BoomCMS.urlRoot + 'template'
-	});
+    BoomCMS.Collections.Templates = Backbone.Collection.extend({
+        model: BoomCMS.Template,
+        url: BoomCMS.urlRoot + 'template'
+    });
 }(Backbone, BoomCMS));

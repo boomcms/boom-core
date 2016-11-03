@@ -1,217 +1,221 @@
-function boomChunkLinksetEditor(pageId, slotname, options) {
-	this.pageId = pageId;
-	this.slotname = slotname;
-	this.options = options;
-	this.deferred = new $.Deferred();
+(function(BoomCMS) {
+    'use strict';
 
-	this.toggle = {
-		title: '#b-linkset-title',
-		linkAssets: '.b-linkset-asset',
-		linkText: '.b-linkset-text'
-	};
+    BoomCMS.ChunkLinksetEditor = function(pageId, slotname, options) {
+        this.pageId = pageId;
+        this.slotname = slotname;
+        this.options = options;
+        this.deferred = new $.Deferred();
 
-	boomChunkLinksetEditor.prototype.addDeleteButtons = function() {
-		this.$links.find('li').each(function() {
-			var $this = $(this);
+        this.toggle = {
+            title: '#b-linkset-title',
+            linkAssets: '.b-linkset-asset',
+            linkText: '.b-linkset-text'
+        };
 
-			if ( ! $this.find('.delete').length) {
-				var $delete = $('<a class="delete fa fa-trash-o" href="#"></a>').appendTo($this);
-			}
-		});
-	};
+        BoomCMS.ChunkLinksetEditor.prototype.addDeleteButtons = function() {
+            this.$links.find('li').each(function() {
+                var $this = $(this);
 
-	boomChunkLinksetEditor.prototype.addLink = function() {
-		var linksetEditor = this;
+                if ( ! $this.find('.delete').length) {
+                    $('<a class="delete fa fa-trash-o" href="#"></a>').appendTo($this);
+                }
+            });
+        };
 
-		new boomLinkPicker()
-			.done(function(link) {
-				var $a = $('<a href="#"></a>')
-					.attr('data-page-id', link.getPageId())
-					.attr('data-title', link.getTitle())
-					.attr('data-url', link.getUrl())
-					.attr('data-asset', '')
-					.text(link.getTitle());
+        BoomCMS.ChunkLinksetEditor.prototype.addLink = function() {
+            var linksetEditor = this;
 
-				linksetEditor.$links.append($('<li></li>').append($a));
-				linksetEditor.dialog.contents.find('#b-linkset-links .none').hide();
-				linksetEditor.addDeleteButtons();
-				linksetEditor.editLink($a);
-			});
-	};
+            new BoomCMS.LinkPicker()
+                .done(function(link) {
+                    var $a = $('<a href="#"></a>')
+                        .attr('data-page-id', link.getPageId())
+                        .attr('data-title', link.getTitle())
+                        .attr('data-url', link.getUrl())
+                        .attr('data-asset', '')
+                        .text(link.getTitle());
 
-	boomChunkLinksetEditor.prototype.bind = function() {
-		var linksetEditor = this;
+                    linksetEditor.$links.append($('<li></li>').append($a));
+                    linksetEditor.dialog.contents.find('#b-linkset-links .none').hide();
+                    linksetEditor.addDeleteButtons();
+                    linksetEditor.editLink($a);
+                });
+        };
 
-		for (var property in this.toggle) {
-			if (!this.options[property]) {
-				this.dialog.contents.find(this.toggle[property]).hide();
-			}
-		}
+        BoomCMS.ChunkLinksetEditor.prototype.bind = function() {
+            var linksetEditor = this;
 
-		this.$links = this.dialog.contents.find('#b-linkset-links ul');
+            for (var property in this.toggle) {
+                if (!this.options[property]) {
+                    this.dialog.contents.find(this.toggle[property]).hide();
+                }
+            }
 
-		this.addDeleteButtons();
+            this.$links = this.dialog.contents.find('#b-linkset-links ul');
 
-		this.$links
-			.on('click', '.b-linkset-link', function() {
-				linksetEditor.editLink($(this));
-			});
+            this.addDeleteButtons();
 
-		this.dialog.contents
-			.on('click', '#b-linkset-add', function() {
-				linksetEditor.addLink();
-			})
-			.on('click', '.delete', function() {
-				linksetEditor.deleteLink($(this).parent());
-			})
-			.on('keyup change', '#b-linkset-current form input[type=text]', function() {
-				var $this = $(this),
-					name = $this.attr('name'),
-					val = $this.val();
+            this.$links
+                .on('click', '.b-linkset-link', function() {
+                    linksetEditor.editLink($(this));
+                });
 
-				linksetEditor.currentLink.attr('data-' + name, val);
+            this.dialog.contents
+                .on('click', '#b-linkset-add', function() {
+                    linksetEditor.addLink();
+                })
+                .on('click', '.delete', function() {
+                    linksetEditor.deleteLink($(this).parent());
+                })
+                .on('keyup change', '#b-linkset-current form input[type=text]', function() {
+                    var $this = $(this),
+                        name = $this.attr('name'),
+                        val = $this.val();
 
-				if (name === 'title') {
-					linksetEditor.currentLink.text(val);
-				}
-			})
-			.on('click', '.b-linkset-target button', function(e) {
-				e.preventDefault();
+                    linksetEditor.currentLink.attr('data-' + name, val);
 
-				linksetEditor.editLinkTarget();
-			})
-			.on('click', '#b-linkset-delete', function() {
-				linksetEditor.deferred.resolveWith({});
-				linksetEditor.dialog.cancel();
-			})
-			.on('click', '.b-linkset-asset a', function() {
-				linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
-			})
-			.find('ul')
-			.sortable();
-	};
+                    if (name === 'title') {
+                        linksetEditor.currentLink.text(val);
+                    }
+                })
+                .on('click', '.b-linkset-target button', function(e) {
+                    e.preventDefault();
 
-	boomChunkLinksetEditor.prototype.editAsset = function(currentAsset) {
-		var linksetEditor = this;
+                    linksetEditor.editLinkTarget();
+                })
+                .on('click', '#b-linkset-delete', function() {
+                    linksetEditor.deferred.resolveWith({});
+                    linksetEditor.dialog.cancel();
+                })
+                .on('click', '.b-linkset-asset a', function() {
+                    linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
+                })
+                .find('ul')
+                .sortable();
+        };
 
-		new boomAssetPicker(currentAsset)
-			.done(function(asset) {
-				linksetEditor.currentLink.attr('data-asset', asset.getId());
-				linksetEditor.toggleLinkAsset(asset);
-			});
-	};
+        BoomCMS.ChunkLinksetEditor.prototype.editAsset = function(currentAsset) {
+            var linksetEditor = this;
 
-	boomChunkLinksetEditor.prototype.editLink = function($a) {
-		this.currentLink = $a;
+            BoomCMS.AssetPicker(currentAsset)
+                .done(function(asset) {
+                    linksetEditor.currentLink.attr('data-asset', asset.getId());
+                    linksetEditor.toggleLinkAsset(asset);
+                });
+        };
 
-		this.dialog.contents
-			.find('#b-linkset-current')
-			.find('.default')
-			.hide()
-			.end()
-			.find('form')
-			.show()
-			.find('.b-linkset-target input[type=text]')
-			.val($a.attr('data-url'))
-			.end()
-			.find('.b-linkset-title input[type=text]')
-			.val($a.attr('data-title'))
-			.end()
-			.find('.b-linkset-text input[type=text]')
-			.val($a.attr('data-text'))
-			.end();
+        BoomCMS.ChunkLinksetEditor.prototype.editLink = function($a) {
+            this.currentLink = $a;
 
-		this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
-	};
+            this.dialog.contents
+                .find('#b-linkset-current')
+                .find('.default')
+                .hide()
+                .end()
+                .find('form')
+                .show()
+                .find('.b-linkset-target input[type=text]')
+                .val($a.attr('data-url'))
+                .end()
+                .find('.b-linkset-title input[type=text]')
+                .val($a.attr('data-title'))
+                .end()
+                .find('.b-linkset-text input[type=text]')
+                .val($a.attr('data-text'))
+                .end();
 
-	boomChunkLinksetEditor.prototype.editLinkTarget = function() {
-		var linksetEditor = this,
-			link = new boomLink(this.currentLink.attr('data-url'), this.currentLink.attr('data-page-id'));
+            this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
+        };
 
-		new boomLinkPicker(link)
-			.done(function(link) {
-				linksetEditor.currentLink
-					.attr('data-page-id', link.getPageId())
-					.attr('data-url', link.getUrl());
+        BoomCMS.ChunkLinksetEditor.prototype.editLinkTarget = function() {
+            var linksetEditor = this,
+                link = new BoomCMS.Link(this.currentLink.attr('data-url'), this.currentLink.attr('data-page-id'));
 
-				linksetEditor.dialog.contents.find('.b-linkset-target input').val(link.getUrl());
-			});
-	};
+            new BoomCMS.LinkPicker(link)
+                .done(function(link) {
+                    linksetEditor.currentLink
+                        .attr('data-page-id', link.getPageId())
+                        .attr('data-url', link.getUrl());
 
-	boomChunkLinksetEditor.prototype.deleteLink = function($li) {
-		$li.fadeOut(200, function() {
-			$li.remove();
-		});
-	};
+                    linksetEditor.dialog.contents.find('.b-linkset-target input').val(link.getUrl());
+                });
+        };
 
-	boomChunkLinksetEditor.prototype.getData = function() {
-		return {
-			links: this.getLinks(),
-			title: this.dialog.contents.find('#b-linkset-title input').val()
-		};
-	};
+        BoomCMS.ChunkLinksetEditor.prototype.deleteLink = function($li) {
+            $li.fadeOut(200, function() {
+                $li.remove();
+            });
+        };
 
-	boomChunkLinksetEditor.prototype.getLinks = function() {
-		var links = [];
+        BoomCMS.ChunkLinksetEditor.prototype.getData = function() {
+            return {
+                links: this.getLinks(),
+                title: this.dialog.contents.find('#b-linkset-title input').val()
+            };
+        };
 
-		this.$links.find('a:not(.delete)').each(function() {
-			var $this = $(this);
+        BoomCMS.ChunkLinksetEditor.prototype.getLinks = function() {
+            var links = [];
 
-			links.push({
-				target_page_id: $this.attr('data-page-id'),
-				url: $this.attr('data-url'),
-				title: $this.attr('data-title'),
-				asset_id: $this.attr('data-asset'),
-				text: $this.attr('data-text')
-			});
-		});
+            this.$links.find('a:not(.delete)').each(function() {
+                var $this = $(this);
 
-		return links;
-	};
+                links.push({
+                    target_page_id: $this.attr('data-page-id'),
+                    url: $this.attr('data-url'),
+                    title: $this.attr('data-title'),
+                    asset_id: $this.attr('data-asset'),
+                    text: $this.attr('data-text')
+                });
+            });
 
-	boomChunkLinksetEditor.prototype.open = function() {
-		var linksetEditor = this;
+            return links;
+        };
 
-		this.dialog = new boomDialog({
-			url: '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=linkset',
-			title: 'Edit linkset',
-			id: 'b-linkset-editor',
-			width: 900,
-			onLoad: function() {
-				linksetEditor.bind();
-			}
-		})
-		.done(function() {
-			linksetEditor.deferred.resolve(linksetEditor.getData());
-		})
-		.fail(function() {
-			linksetEditor.deferred.reject();
-		});
+        BoomCMS.ChunkLinksetEditor.prototype.open = function() {
+            var linksetEditor = this;
 
-		return this.deferred;
-	};
+            this.dialog = new BoomCMS.Dialog({
+                url: '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=linkset',
+                title: 'Edit linkset',
+                id: 'b-linkset-editor',
+                width: 900,
+                onLoad: function() {
+                    linksetEditor.bind();
+                }
+            })
+            .done(function() {
+                linksetEditor.deferred.resolve(linksetEditor.getData());
+            })
+            .fail(function() {
+                linksetEditor.deferred.reject();
+            });
 
-	boomChunkLinksetEditor.prototype.toggleLinkAsset = function(asset) {
-		var $linksetAsset = this.dialog.contents.find('.b-linkset-asset');
+            return this.deferred;
+        };
 
-		if (asset && asset.getId() > 0) {
-			$linksetAsset
-				.find('.none')
-				.hide()
-				.end()
-				.find('.set')
-				.show()
-				.find('img')
-				.attr('src', asset.getUrl('view', 500));
-		} else {
-			$linksetAsset
-				.find('.none')
-				.show()
-				.end()
-				.find('.set')
-				.hide();
-		}
-	};
+        BoomCMS.ChunkLinksetEditor.prototype.toggleLinkAsset = function(asset) {
+            var $linksetAsset = this.dialog.contents.find('.b-linkset-asset');
 
-	return this.open();
-}
+            if (asset && asset.getId() > 0) {
+                $linksetAsset
+                    .find('.none')
+                    .hide()
+                    .end()
+                    .find('.set')
+                    .show()
+                    .find('img')
+                    .attr('src', asset.getUrl('view', 500));
+            } else {
+                $linksetAsset
+                    .find('.none')
+                    .show()
+                    .end()
+                    .find('.set')
+                    .hide();
+            }
+        };
+
+        return this.open();
+    };
+}(BoomCMS));

@@ -21,7 +21,7 @@ $.widget( 'boom.pageToolbar', {
             .on('click', 'button.b-version-info', function() {
                 var html = self.element.contents().find('#b-history-template').html();
 
-                new boomDialog({
+                new BoomCMS.Dialog({
                     msg: html,
                     width: '600px',
                     cancelButton: false,
@@ -38,7 +38,7 @@ $.widget( 'boom.pageToolbar', {
                         top.location = response.url;
                     })
                     .fail(function(response) {
-                        new boomAlert(response);
+                        BoomCMS.alert(response);
                     });
             })
             .find('.b-page-visibility')
@@ -74,13 +74,13 @@ $.widget( 'boom.pageToolbar', {
             .dblclick()
             .end()
             .on('sclick', '#b-page-version-status', function() {
-                self.showSettings('drafts');	
+                self.showSettings('drafts');    
             })
             .on('dclick', '#b-page-version-status', function() {
                 page.publish().done(function(data) {
                     self.status.set(data);
                     $(this).blur();
-                });		
+                });        
             })
             .on('mouseup', '#b-menu a', function() {
                 // Clicking a link in the menu but opening in a new tab causes the menu to close.
@@ -152,7 +152,7 @@ $.widget( 'boom.pageToolbar', {
                                 });
 
                                 $el.replaceWith(function () {
-                                    return $("<img />", attrs).attr('src', asset.getUrl());
+                                    return $('<img />', attrs).attr('src', asset.getUrl());
                                 });
                             }
                         } else {
@@ -163,7 +163,7 @@ $.widget( 'boom.pageToolbar', {
                 templateSave: function() {
                     toolbar.status.set('draft');
 
-                    new boomConfirmation('Reload page?', "Do you want to reload the page to view the new template?")
+                    new BoomCMS.Confirmation('Reload page?', 'Do you want to reload the page to view the new template?')
                         .done(function() {
                             top.location.reload();
                         });
@@ -178,7 +178,7 @@ $.widget( 'boom.pageToolbar', {
                     );
                 },
                 deleteSave: function(event, response) {
-                    new boomNotification('Page deleted, redirecting to parent').show();
+                    BoomCMS.Notification('Page deleted, redirecting to parent').show();
 
                     setTimeout(function() {
                         top.location = response;
@@ -267,7 +267,7 @@ $.widget( 'boom.pageToolbar', {
     supportRequest: function() {
         var url = '/boomcms/support', dialog;
 
-        dialog = new boomDialog({
+        dialog = new BoomCMS.Dialog({
             url: url,
             title: 'Submit support request',
             width: 600,
@@ -289,7 +289,7 @@ $.widget( 'boom.pageToolbar', {
         .done(function() {
             $.post(url, dialog.contents.find('form').serialize());
 
-            new boomNotification('Your message has been sent').show();
+            BoomCMS.Notification('Your message has been sent').show();
         });
     },
 

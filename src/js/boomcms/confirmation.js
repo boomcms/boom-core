@@ -1,16 +1,20 @@
-function boomConfirmation(title, message) {
-	this.title = title;
-	this.message = message;
+(function(BoomCMS) {
+    'use strict';
 
-	boomConfirmation.prototype.open = function() {
-		var confirmation = this;
+    BoomCMS.Confirmation = function(title, message) {
+        this.title = title;
+        this.message = message;
 
-		return new boomDialog({
-			title : confirmation.title,
-			msg : '<p>' + confirmation.message + '</p>',
-			width : 300
-		});
-	};
+        BoomCMS.Confirmation.prototype.open = function() {
+            var confirmation = this;
 
-	return this.open();
-}
+            return new BoomCMS.Dialog({
+                title : confirmation.title,
+                msg : '<p>' + confirmation.message + '</p>',
+                width : 300
+            });
+        };
+
+        return this.open();
+    };
+}(BoomCMS));

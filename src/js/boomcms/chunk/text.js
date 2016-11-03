@@ -7,73 +7,73 @@ Editable text slots
 */
 $.widget('ui.chunkText', $.ui.chunk,
 
-	/**
-	@lends $.ui.chunkText
-	*/
-	{
+    /**
+    @lends $.ui.chunkText
+    */
+    {
 
-	content : '',
+        content : '',
 
-	_create: function() {
-		var element = this.element.find('.chunk-text');
-		this.element = (element.length)? $(element[0]) : this.element;
+        _create: function() {
+            var element = this.element.find('.chunk-text');
+            this.element = (element.length)? $(element[0]) : this.element;
 
-		$.ui.chunk.prototype._create.call(this);
-	},
+            $.ui.chunk.prototype._create.call(this);
+        },
 
-	bind: function() {
-		var element = this.element,
-			self = this;
+        bind: function() {
+            var element = this.element,
+                self = this;
 
-		this.setOriginalContent();
+            this.setOriginalContent();
 
-		$.ui.chunk.prototype.bind.call(this);
+            $.ui.chunk.prototype.bind.call(this);
 
-		element.textEditor({
-			edit: function() {
-				if (!self.hasContent()) {
-					self.remove();
-					self.element.text('Default text.');
-				} else if (self.isEdited()) {
-					self._save();
-					self.setOriginalContent();
-				}
+            element.textEditor({
+                edit: function() {
+                    if (!self.hasContent()) {
+                        self.remove();
+                        self.element.text('Default text.');
+                    } else if (self.isEdited()) {
+                        self._save();
+                        self.setOriginalContent();
+                    }
 
-				$.ui.chunk.prototype.bind.call(self);
-			}
-		});
-	},
+                    $.ui.chunk.prototype.bind.call(self);
+                }
+            });
+        },
 
-	edit: function() {},
+        edit: function() {},
 
-	/**
-	Get the chunk HTML, escaped and cleaned.
-	*/
-	getData: function(){
-		var $content = this.element.find('.slot-content');
+    /**
+    Get the chunk HTML, escaped and cleaned.
+    */
+        getData: function(){
+            var $content = this.element.find('.slot-content');
 
-		this.content = ($content.length)? $content.html() : this.element.html();
+            this.content = ($content.length)? $content.html() : this.element.html();
 
-		return {
-			text : this.content
-		};
-	},
+            return {
+                text : this.content
+            };
+        },
 
-	hasContent: function() {
-		return this.element.text() !== '' || this.element.find('img').length > 0;
-	},
+        hasContent: function() {
+            return this.element.text() !== '' || this.element.find('img').length > 0;
+        },
 
-	isEdited: function() {
-		return this.originalContent !== this.element.html();
-	},
+        isEdited: function() {
+            return this.originalContent !== this.element.html();
+        },
 
-	setOriginalContent: function() {
-		this.originalContent = this.element.html();
-	},
+        setOriginalContent: function() {
+            this.originalContent = this.element.html();
+        },
 
-	_update_html: function() {},
+        _update_html: function() {},
 
-	_replace_html: function(html) {
-		this.element.html(html);
-	}
-});
+        _replace_html: function(html) {
+            this.element.html(html);
+        }
+    });

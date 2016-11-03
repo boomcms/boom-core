@@ -1,138 +1,140 @@
-function boomDialog(options) {
-	var dialog = this;
+(function(BoomCMS) {
+    'use strict';
 
-	this.deferred = $.Deferred().always(function() {
-		$(top.window).trigger('boom:dialog:close');
-	});
+    BoomCMS.Dialog = function(options) {
+        var dialog = this;
 
-	this.buttons = {
-		close: 'Okay',
-		cancel: 'Cancel'
-	};
+        this.deferred = $.Deferred().always(function() {
+            $(top.window).trigger('boom:dialog:close');
+        });
 
-	this.options = $.extend({
-		width: 'auto',
-		cancelButton : true,
-		closeButton : true,
-		autoOpen: true,
-		modal: true,
-		resizable: false,
-		draggable: false,
-		closeOnEscape: false,
-		buttons : [],
-		dialogClass : 'b-dialog',
-		boomDialog: this
-	}, options);
+        this.buttons = {
+            close: 'Okay',
+            cancel: 'Cancel'
+        };
 
-	boomDialog.prototype.always = function(callback) {
-		dialog.deferred.always(callback);
+        this.options = $.extend({
+            width: 'auto',
+            cancelButton : true,
+            closeButton : true,
+            autoOpen: true,
+            modal: true,
+            resizable: false,
+            draggable: false,
+            closeOnEscape: false,
+            buttons : [],
+            dialogClass : 'b-dialog',
+            boomDialog: this
+        }, options);
 
-		return this;
-	};
+        BoomCMS.Dialog.prototype.always = function(callback) {
+            dialog.deferred.always(callback);
 
-	boomDialog.prototype.cancel = function() {
-		dialog.deferred.rejectWith(this.dialog);
-		dialog.cleanup();
-	};
+            return this;
+        };
 
-	boomDialog.prototype.cleanup = function() {
-		if (this.contents) {
-			this.contents.remove();
-			this.contents = null;
-		}
-	};
+        BoomCMS.Dialog.prototype.cancel = function() {
+            dialog.deferred.rejectWith(this.dialog);
+            dialog.cleanup();
+        };
 
-	boomDialog.prototype.close = function() {
-		dialog.deferred.resolveWith(this.dialog);
-		dialog.cleanup();
-	};
+        BoomCMS.Dialog.prototype.cleanup = function() {
+            if (this.contents) {
+                this.contents.remove();
+                this.contents = null;
+            }
+        };
 
-	boomDialog.prototype.configureButtons = function(options) {
-		var dialog = this;
+        BoomCMS.Dialog.prototype.close = function() {
+            dialog.deferred.resolveWith(this.dialog);
+            dialog.cleanup();
+        };
 
-		for (var button in dialog.buttons) {
-			if (options[button + 'Button']) {
-				dialog.options.buttons.push({
-					text: dialog.buttons[button],
-					class: 'b-button-' + button,
-					click: dialog[button]
-				});
-			}
-		}
-	};
+        BoomCMS.Dialog.prototype.configureButtons = function(options) {
+            var dialog = this;
 
-	boomDialog.prototype.done = function(callback) {
-		this.deferred.done(callback);
+            for (var button in dialog.buttons) {
+                if (options[button + 'Button']) {
+                    dialog.options.buttons.push({
+                        text: dialog.buttons[button],
+                        class: 'b-button-' + button,
+                        click: dialog[button]
+                    });
+                }
+            }
+        };
 
-		return this;
-	};
+        BoomCMS.Dialog.prototype.done = function(callback) {
+            this.deferred.done(callback);
 
-	boomDialog.prototype.fail = function(callback) {
-		this.deferred.fail(callback);
+            return this;
+        };
 
-		return this;
-	};
+        BoomCMS.Dialog.prototype.fail = function(callback) {
+            this.deferred.fail(callback);
 
-	boomDialog.prototype.init = function() {
-		var boomDialog = this;
+            return this;
+        };
 
-		$(top.window).trigger('boom:dialog:open');
+        BoomCMS.Dialog.prototype.init = function() {
+            $(top.window).trigger('boom:dialog:open');
 
-		this
-			.contents
-			.dialog(this.options)
-			.ui();
+            this
+                .contents
+                .dialog(this.options)
+                .ui();
 
-		$(document).on('keydown', function(e) {
-			if (e.which === $.ui.keyCode.ESCAPE) {
-				boomDialog.cancel();
-				e.stopPropagation();
-			}
-		});
-	};
+            $(document).on('keydown', function(e) {
+                if (e.which === $.ui.keyCode.ESCAPE) {
+                    BoomCMS.Dialog.cancel();
+                    e.stopPropagation();
+                }
+            });
+        };
 
-	boomDialog.prototype.open = function() {
-		var self = this,
-			$div = $('<div></div>');
+        BoomCMS.Dialog.prototype.open = function() {
+            var self = this,
+                $div = $('<div></div>');
 
-		if (this.options.id) {
-			$div.attr('id', this.options.id);
-		}
+            if (this.options.id) {
+                $div.attr('id', this.options.id);
+            }
 
-		this.contents = $div.appendTo($(document).contents().find('body'));
+            this.contents = $div.appendTo($(document).contents().find('body'));
 
-		this.configureButtons(this.options);
+            this.configureButtons(this.options);
 
-		if (this.options.url && this.options.url.length) {
-			if (this.contents.hasClass('ui-dialog-content')) {
-				this.contents.dialog('open');
-			} else {
-				setTimeout(function() {
-					self.contents.load(self.options.url, function(response, status, xhr) {
-						if (xhr.status === 200) {
-							self.init();
+            if (this.options.url && this.options.url.length) {
+                if (this.contents.hasClass('ui-dialog-content')) {
+                    this.contents.dialog('open');
+                } else {
+                    setTimeout(function() {
+                        self.contents.load(self.options.url, function(response, status, xhr) {
+                            if (xhr.status === 200) {
+                                self.init();
 
-							if ($.isFunction(self.options.onLoad)) {
-								self.options.onLoad.apply(self.dialog);
-							}
-						} else {
-							self.deferred.reject(response, xhr.status);
-						} 
-					});
-				}, 100);
-			}
+                                if ($.isFunction(self.options.onLoad)) {
+                                    self.options.onLoad.apply(self.dialog);
+                                }
+                            } else {
+                                self.deferred.reject(response, xhr.status);
+                            } 
+                        });
+                    }, 100);
+                }
 
-		} else if (this.options.msg.length) {
-			setTimeout(function() {
-				self.contents.html(self.options.msg);
-				self.init();
+            } else if (this.options.msg.length) {
+                setTimeout(function() {
+                    self.contents.html(self.options.msg);
+                    self.init();
 
-				if ($.isFunction(self.options.onLoad)) {
-					self.options.onLoad(self);
-				}
-			}, 100);
-		}
-	};
+                    if ($.isFunction(self.options.onLoad)) {
+                        self.options.onLoad(self);
+                    }
+                }, 100);
+            }
+        };
 
-	this.open();
-}
+        this.open();
+    };
+}(BoomCMS));

@@ -9,8 +9,7 @@
         },
 
         add: function() {
-            var promise = new $.Deferred(),
-                page_id = this.getId();
+            var promise = new $.Deferred();
 
             $.post(this.baseUrl + 'add', function(response) {
                 if (response.url) {
@@ -43,19 +42,18 @@
         },
 
         embargo: function() {
-            var page = this,
-                url = this.baseUrl + 'version/embargo',
+            var url = this.baseUrl + 'version/embargo',
                 promise = new $.Deferred(),
                 dialog;
 
-            dialog = new boomDialog({
+            dialog = new BoomCMS.Dialog({
                 url: url,
                 title: 'Page embargo',
                 width: 440
             }).done(function() {
                 $.post(url, dialog.contents.find('form').serialize())
                     .done(function(response) {
-                        new boomNotification("Page embargo saved").show();
+                        BoomCMS.Notification('Page embargo saved').show();
                         promise.resolve(response);
                     });
             });
@@ -130,10 +128,10 @@
         },
 
         revertToPublished: function() {
-            var	promise = new $.Deferred(),
+            var    promise = new $.Deferred(),
                 baseUrl = this.baseUrl;
 
-            new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
+            new BoomCMS.Confirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
                 .done(function() {
                     $.post(baseUrl + 'discard')
                         .done(function() {

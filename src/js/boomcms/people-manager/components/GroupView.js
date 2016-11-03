@@ -1,39 +1,39 @@
 (function($, Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.PeopleManager.GroupView = Backbone.View.extend({
-		tagName: 'div',
-		template: _.template($('#b-group-edit').html()),
+    BoomCMS.PeopleManager.GroupView = Backbone.View.extend({
+        tagName: 'div',
+        template: _.template($('#b-group-edit').html()),
 
-		events: {
-			'click h2, h2 + a': 'editName',
-			'blur h2': 'save'
-		},
+        events: {
+            'click h2, h2 + a': 'editName',
+            'blur h2': 'save'
+        },
 
-		editName: function(e) {
-			e.preventDefault();
+        editName: function(e) {
+            e.preventDefault();
 
-			this.$name
-				.removeClass(BoomCMS.editableClass)
-				.focus();
-		},
+            this.$name
+                .removeClass(BoomCMS.editableClass)
+                .focus();
+        },
 
-		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
+        render: function() {
+            this.$el.html(this.template(this.model.toJSON()));
 
-			this.$name = this.$('h2').addClass(BoomCMS.editableClass);
-			this.$('#b-group-roles').groupPermissionsEditor({group: this.model});
+            this.$name = this.$('h2').addClass(BoomCMS.editableClass);
+            this.$('#b-group-roles').groupPermissionsEditor({group: this.model});
 
-			return this;
-		},
+            return this;
+        },
 
-		save: function(e) {
-			e.preventDefault();
+        save: function(e) {
+            e.preventDefault();
 
-			this.model.set('name', this.$name.text());
-			this.$name.addClass(BoomCMS.editableClass);
+            this.model.set('name', this.$name.text());
+            this.$name.addClass(BoomCMS.editableClass);
 
-			this.model.save();
-		}
-	});
+            this.model.save();
+        }
+    });
 }(jQuery, Backbone, BoomCMS));
