@@ -6,8 +6,8 @@
             });
 
             $('body').pageEditor({
-                page_id : <?= $page->getId() ?>,
-                editable : <?= (int) ($editor->isEnabled() && Gate::allows('edit', $page)) ?>,
+                page: new window.BoomCMS.Page(<?= $page->toJson() ?>),
+                editable: <?= (int) ($editor->isEnabled() && Gate::allows('edit', $page)) ?>
             });
         });
         //]]>

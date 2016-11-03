@@ -1,177 +1,187 @@
 (function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Page = BoomCMS.Model.extend({
-		urlRoot: BoomCMS.urlRoot + 'page',
+    BoomCMS.Page = BoomCMS.Model.extend({
+        urlRoot: BoomCMS.urlRoot + 'page',
 
-		initialize: function() {
-			this.baseUrl = this.urlRoot + '/' + this.getId() + '/';
-		},
+        initialize: function() {
+            this.baseUrl = this.urlRoot + '/' + this.getId() + '/';
+        },
 
-		add: function() {
-			var promise = new $.Deferred(),
-				page_id = this.getId();
+        add: function() {
+            var promise = new $.Deferred(),
+                page_id = this.getId();
 
-			$.post(this.baseUrl + 'add', function(response) {
-				if (response.url) {
-					promise.resolve(response);
-				} else {
-					promise.reject(response);
-				}
-			});
+            $.post(this.baseUrl + 'add', function(response) {
+                if (response.url) {
+                    promise.resolve(response);
+                } else {
+                    promise.reject(response);
+                }
+            });
 
-			return promise;
-		},
+            return promise;
+        },
 
-		addAclGroup: function(groupId) {
-			return $.post(this.baseUrl + 'acl/' + groupId);
-		},
+        addAclGroup: function(groupId) {
+            return $.post(this.baseUrl + 'acl/' + groupId);
+        },
 
-		addTag: function(group, tag) {
-			return $.post(this.baseUrl + 'tags', {
-				group : group,
-				tag : tag
-			});
-		},
+        addTag: function(group, tag) {
+            return $.post(this.baseUrl + 'tags', {
+                group : group,
+                tag : tag
+            });
+        },
 
-		addRelatedPage: function(relatedPageId) {
-			return $.post(this.baseUrl + 'relations/' + relatedPageId);
-		},
+        addRelatedPage: function(relatedPageId) {
+            return $.post(this.baseUrl + 'relations/' + relatedPageId);
+        },
 
-		delete: function(options) {
-			return $.post(this.baseUrl + 'settings/delete', options);
-		},
+        delete: function(options) {
+            return $.post(this.baseUrl + 'settings/delete', options);
+        },
 
-		embargo: function() {
-			var page = this,
-				url = this.baseUrl + 'version/embargo',
-				promise = new $.Deferred(),
-				dialog;
+        embargo: function() {
+            var page = this,
+                url = this.baseUrl + 'version/embargo',
+                promise = new $.Deferred(),
+                dialog;
 
-			dialog = new boomDialog({
-				url: url,
-				title: 'Page embargo',
-				width: 440
-			}).done(function() {
-				$.post(url, dialog.contents.find('form').serialize())
-					.done(function(response) {
-						new boomNotification("Page embargo saved").show();
-						promise.resolve(response);
-					});
-			});
+            dialog = new boomDialog({
+                url: url,
+                title: 'Page embargo',
+                width: 440
+            }).done(function() {
+                $.post(url, dialog.contents.find('form').serialize())
+                    .done(function(response) {
+                        new boomNotification("Page embargo saved").show();
+                        promise.resolve(response);
+                    });
+            });
 
-			return promise;
-		},
+            return promise;
+        },
 
-		hasChildren: function() {
-			return this.get('has_children') === true;
-		},
+        hasChildren: function() {
+            return this.get('has_children') === true;
+        },
 
-		getLastEdited: function() {
-			return this.get('edited_time');
-		},
+        getLastEdited: function() {
+            return this.get('edited_time');
+        },
 
-		getParentId: function() {
-			return this.get('parent_id');
-		},
+        getParentId: function() {
+            return this.get('parent_id');
+        },
 
-		getTitle: function() {
-			return this.get('title');
-		},
+        getTitle: function() {
+            return this.get('title');
+        },
 
-		getUrl: function() {
-			return this.get('url');
-		},
+        getUrl: function() {
+            return this.get('url');
+        },
 
-		isRoot: function() {
-			return this.get('parent_id') === null;
-		},
+        isRoot: function() {
+            return this.get('parent_id') === null;
+        },
 
-		isVisible: function() {
-			return this.get('visible') === 1;
-		},
+        isVisible: function() {
+            return this.get('visible') === 1;
+        },
 
-		publish: function() {
-			var promise = new $.Deferred();
+        publish: function() {
+            var promise = new $.Deferred();
 
-			$.post(this.baseUrl + 'version/embargo')
-				.done(function(response) {
-					promise.resolve(response);
-				});
+            $.post(this.baseUrl + 'version/embargo')
+                .done(function(response) {
+                    promise.resolve(response);
+                });
 
-			return promise;
-		},
+            return promise;
+        },
 
-		requestApproval: function() {
-			var url = this.baseUrl + 'version/request_approval';
+        requestApproval: function() {
+            var url = this.baseUrl + 'version/request_approval';
 
-			return $.post(url);
-		},
+            return $.post(url);
+        },
 
-		removeAclGroup: function(groupId) {
-			return $.ajax({
-				type: 'delete',
-				url: this.baseUrl + 'acl/' + groupId
-			});
-		},
+        removeAclGroup: function(groupId) {
+            return $.ajax({
+                type: 'delete',
+                url: this.baseUrl + 'acl/' + groupId
+            });
+        },
 
-		removeRelatedPage: function(page) {
-			return $.ajax({
-				type: 'delete',
-				url: this.baseUrl + 'relations/' + page.getId()
-			});
-		},
+        removeRelatedPage: function(page) {
+            return $.ajax({
+                type: 'delete',
+                url: this.baseUrl + 'relations/' + page.getId()
+            });
+        },
 
-		removeTag: function(tagId) {
-			return $.ajax({
-				type: 'delete',
-				url: this.baseUrl + 'tags/' + tagId
-			});
-		},
+        removeTag: function(tagId) {
+            return $.ajax({
+                type: 'delete',
+                url: this.baseUrl + 'tags/' + tagId
+            });
+        },
 
-		revertToPublished: function() {
-			var	promise = new $.Deferred(),
-				baseUrl = this.baseUrl;
+        revertToPublished: function() {
+            var	promise = new $.Deferred(),
+                baseUrl = this.baseUrl;
 
-			new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
-				.done(function() {
-					$.post(baseUrl + 'discard')
-						.done(function() {
-							promise.resolve();
-						});
-				});
+            new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
+                .done(function() {
+                    $.post(baseUrl + 'discard')
+                        .done(function() {
+                            promise.resolve();
+                        });
+                });
 
-			return promise;
-		},
+            return promise;
+        },
 
-		saveSettings: function(section, data) {
-			return $.post(this.baseUrl + 'settings/' + section, data);
-		},
+        saveSettings: function(section, data) {
+            return $.post(this.baseUrl + 'settings/' + section, data);
+        },
 
-		setEnableAcl: function(enabled) {
-			return $.ajax({
-				type: 'put',
-				url: this.baseUrl + 'acl',
-				data: {
-					enabled: enabled
-				}
-			});
-		},
+        setEnableAcl: function(enabled) {
+            return $.ajax({
+                type: 'put',
+                url: this.baseUrl + 'acl',
+                data: {
+                    enabled: enabled
+                }
+            });
+        },
 
-		setFeatureImage: function(asset) {
-			return $.post(this.baseUrl + 'settings/feature', {
-				feature_image_id: asset.getId()
-			});
-		},
+        setFeatureImage: function(asset) {
+            return $.post(this.baseUrl + 'settings/feature', {
+                feature_image_id: asset.getId()
+            });
+        },
 
-		setTitle: function(title) {
-			return $.post(this.baseUrl + 'version/title', {
-				title: title
-			});
-		},
+        setTitle: function(title) {
+            return $.post(this.baseUrl + 'version/title', {
+                title: title
+            });
+        },
 
-		setTemplate: function(templateId) {
-			return $.post(this.baseUrl + 'version/template/' + templateId);
-		}
-	});
+        setTemplate: function(templateId) {
+            return $.post(this.baseUrl + 'version/template/' + templateId);
+        },
+
+        toggleVisibility: function() {
+            var visible = this.isVisible() ? 0 : 1;
+
+            this.set('visible', visible);
+
+            return $.post(BoomCMS.urlRoot + 'page/' + this.getId() + '/settings/visibility', {
+                visible: visible
+            });
+        }
+    });
 }(BoomCMS));

@@ -13,24 +13,28 @@
 	$.fn.dblclick = function() {
 		var $this = $(this);
 
-		$this.on('click', function() {
-			var clicks = $this.data('clicks');
+		$this.each(function() {
+            var $el = $(this);
 
-			$this.data('clicks', clicks ? ++clicks : 1);
+            $el.on('click', function() {
+                var clicks = $el.data('clicks');
 
-			if ($this.data('clicks') === 2) {
-				$this.data('clicks', 0);
+                $el.data('clicks', clicks ? ++clicks : 1);
 
-				$this.trigger('dclick');
-			} else {
-				setTimeout(function() {
-					if ($this.data('clicks') === 1) {
-						$this.data('clicks', 0);
-						$this.trigger('sclick');
-					}
-				}, 200);
-			}
-		});
+                if ($el.data('clicks') > 1) {
+                    $el.data('clicks', 0);
+
+                    $el.trigger('dclick');
+                } else {
+                    setTimeout(function() {
+                        if ($el.data('clicks') === 1) {
+                            $el.data('clicks', 0);
+                            $el.trigger('sclick');
+                        }
+                    }, 200);
+                }
+            });
+        });
 
 		return this;
 	};
