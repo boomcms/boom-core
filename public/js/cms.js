@@ -48349,102 +48349,102 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	return moment;
 }));
 ;(function($, Backbone) {
-	'use strict';
+    'use strict';
 
-	function BoomCMS() {
-		this.editableClass = 'b-editable';
-		this.urlRoot = '/boomcms/';
-		this.Collections = {};
+    function BoomCMS() {
+        this.editableClass = 'b-editable';
+        this.urlRoot = '/boomcms/';
+        this.Collections = {};
 
-		this.Model = Backbone.Model.extend({
-			addRelationship: function(type, id) {
-				return $.ajax({
-					url: this.urlRoot + '/' + this.id + '/' + type + '/' + id,
-					type: 'put'
-				});
-			},
+        this.Model = Backbone.Model.extend({
+            addRelationship: function(type, id) {
+                return $.ajax({
+                    url: this.urlRoot + '/' + this.id + '/' + type + '/' + id,
+                    type: 'put'
+                });
+            },
 
-			getId: function() {
-				return this.id;
-			},
+            getId: function() {
+                return this.id;
+            },
 
-			removeRelationship: function(type, id) {
-				return $.ajax({
-					type: 'delete',
-					url: this.urlRoot + '/' + this.id + '/' + type + '/' + id
-				});
-			}
-		}),
+            removeRelationship: function(type, id) {
+                return $.ajax({
+                    type: 'delete',
+                    url: this.urlRoot + '/' + this.id + '/' + type + '/' + id
+                });
+            }
+        }),
 
-		BoomCMS.prototype.init = function(options) {
-			if (typeof(top.$) === 'undefined') {
-				top.$ = $;
-			}
+        BoomCMS.prototype.init = function(options) {
+            if (typeof(top.$) === 'undefined') {
+                top.$ = $;
+            }
 
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				}
-			});
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
-			this.assetTypes = options.assetTypes || {};
-			this.user = options.user;
+            this.assetTypes = options.assetTypes || {};
+            this.user = options.user;
 
-			// Used in the login / password reset forms. To be extended to other forms.
-			$('.input input')
-				.on('input paste change keyup', function() {
-					var $this = $(this),
-						className = 'has-content';
+            // Used in the login / password reset forms. To be extended to other forms.
+            $('.input input')
+                .on('input paste change keyup', function() {
+                    var $this = $(this),
+                        className = 'has-content';
 
-					$this.val() ? $this.addClass(className) : $this.removeClass(className);
-				}).trigger('input');
+                    $this.val() ? $this.addClass(className) : $this.removeClass(className);
+                }).trigger('input');
 
-			$('#b-topbar, body').ui();
-		};
+            $('#b-topbar, body').ui();
+        };
 
-		BoomCMS.prototype.confirm = function(title, message) {
-			return new boomConfirmation(title, message);
-		};
+        BoomCMS.prototype.confirm = function(title, message) {
+            return new BoomCMS.Confirmation(title, message);
+        };
 
-		BoomCMS.prototype.getTimezone = function() {
-			var key = 'boomcms.timezone';
+        BoomCMS.prototype.getTimezone = function() {
+            var key = 'boomcms.timezone';
 
-			if (!sessionStorage.getItem(key)) {
-			  var tz = jstz.determine() || 'UTC';
+            if (!sessionStorage.getItem(key)) {
+                var tz = jstz.determine() || 'UTC';
 
-			  sessionStorage.setItem(key, tz.name());
-			}
+                sessionStorage.setItem(key, tz.name());
+            }
 
-			return sessionStorage.getItem(key);
-		};
+            return sessionStorage.getItem(key);
+        };
 
-		BoomCMS.prototype.notify = function(message) {
-			new boomNotification(message).show();
-		};
-	}
+        BoomCMS.prototype.notify = function(message) {
+            BoomCMS.Notification(message).show();
+        };
+    }
 
-	window.BoomCMS = top.BoomCMS = new BoomCMS();
+    window.BoomCMS = top.BoomCMS = new BoomCMS();
 }(jQuery, Backbone));
 ;(function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Editor = {
-		url: BoomCMS.urlRoot + 'editor/',
+    BoomCMS.Editor = {
+        url: BoomCMS.urlRoot + 'editor/',
 
-		setTime: function(time) {
-			return $.post(this.url + 'time', {time: time});
-		},
+        setTime: function(time) {
+            return $.post(this.url + 'time', {time: time});
+        },
 
-		state: function(state, url) {
-			$.post(this.url + 'state', {state: state}, function() {
-				if (url) {
-					top.location = url;
-				} else {
-					top.location.reload();
-				}
-			});
-		}
-	};
+        state: function(state, url) {
+            $.post(this.url + 'state', {state: state}, function() {
+                if (url) {
+                    top.location = url;
+                } else {
+                    top.location.reload();
+                }
+            });
+        }
+    };
 }(BoomCMS));
 ;(function(BoomCMS) {
     'use strict';
@@ -48617,92 +48617,95 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     });
 }(BoomCMS));
 ;(function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.AssetVersion = BoomCMS.Model.extend({
-		getEditedAt: function() {
-			return this.get('edited_at');
-		},
+    BoomCMS.AssetVersion = BoomCMS.Model.extend({
+        getEditedAt: function() {
+            return this.get('edited_at');
+        },
 
-		getEditedBy: function() {
-			return new BoomCMS.Person(this.get('edited_by'));
-		},
+        getEditedBy: function() {
+            return new BoomCMS.Person(this.get('edited_by'));
+        },
 
-		getThumbnail: function() {
-			return '/asset/version/' + this.getId() + '/200/0';
-		}
-	});
+        getThumbnail: function() {
+            return '/asset/version/' + this.getId() + '/200/0';
+        }
+    });
 }(BoomCMS));
-;function boomChunk(page_id, type, slotname) {
-	this.page_id = page_id;
-	this.slotname = slotname;
-	this.type = type;
-	this.urlPrefix = '/boomcms/page/' + this.page_id + '/chunk/';
+;(function($, BoomCMS) {
+    'use strict';
 
-	/**
-	 * To remove a chunk save it with no data.
-	 *
-	 * @param string template
-	 * @returns {jqXHR}
-	 */
-	boomChunk.prototype.delete = function(template) {
-		return this.save({
-			template: template,
-			force: true
-		});
-	};
+    BoomCMS.Chunk = function(page_id, type, slotname) {
+        this.page_id = page_id;
+        this.slotname = slotname;
+        this.type = type;
+        this.urlPrefix = '/boomcms/page/' + this.page_id + '/chunk/';
 
-	boomChunk.prototype.save = function(data) {
-		data.slotname = this.slotname;
-		data.type = this.type;
+        /**
+         * To remove a chunk save it with no data.
+         *
+         * @param string template
+         * @returns {jqXHR}
+         */
+        BoomCMS.Chunk.prototype.delete = function(template) {
+            return this.save({
+                template: template,
+                force: true
+            });
+        };
 
-		return $.post(this.urlPrefix + 'save', data);
-	};
-}
-;(function(Backbone, BoomCMS) {
-	'use strict';
+        BoomCMS.Chunk.prototype.save = function(data) {
+            data.slotname = this.slotname;
+            data.type = this.type;
 
-	BoomCMS.Group = BoomCMS.Model.extend({
-		urlRoot: BoomCMS.urlRoot + 'group',
+            return $.post(this.urlPrefix + 'save', data);
+        };
+    };
+}($, BoomCMS));;(function(Backbone, BoomCMS) {
+    'use strict';
 
-		defaults: {
-			id: null
-		},
+    BoomCMS.Group = BoomCMS.Model.extend({
+        urlRoot: BoomCMS.urlRoot + 'group',
 
-		initialize: function() {
-			var roles = Backbone.Collection.extend({
-				url: this.url() + '/roles'
-			});
+        defaults: {
+            id: null
+        },
 
-			this.roles = new roles();
-		},
+        initialize: function() {
+            var roles = Backbone.Collection.extend({
+                url: this.url() + '/roles'
+            });
 
-		addRole: function(roleId, allowed, pageId) {
-			return this.roles.create({
-				role_id : roleId,
-				allowed: allowed,
-				page_id: pageId
-			});
-		},
+            this.roles = new roles();
+        },
 
-		getName: function() {
-			return this.get('name');
-		},
+        addRole: function(roleId, allowed, pageId) {
+            return this.roles.create({
+                role_id : roleId,
+                allowed: allowed,
+                page_id: pageId
+            });
+        },
 
-		getRoles: function(pageId) {
-			return this.roles.fetch({data: {page_id: pageId}});
-		},
+        getName: function() {
+            return this.get('name');
+        },
 
-		removeRole: function(roleId, pageId) {
-			return $.ajax({
-				type: 'delete',
-				url: this.roles.url + '/' + roleId,
-				data: {
-					page_id : pageId
-				}
-			});
-		}
-	});
+        getRoles: function(pageId) {
+            return this.roles.fetch({data: {page_id: pageId}});
+        },
+
+        removeRole: function(roleId, pageId) {
+            return $.ajax({
+                type: 'delete',
+                url: this.roles.url + '/' + roleId,
+                data: {
+                    page_id : pageId
+                }
+            });
+        }
+    });
 }(Backbone, BoomCMS));
 ;(function(BoomCMS) {
     'use strict';
@@ -48715,8 +48718,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         add: function() {
-            var promise = new $.Deferred(),
-                page_id = this.getId();
+            var promise = new $.Deferred();
 
             $.post(this.baseUrl + 'add', function(response) {
                 if (response.url) {
@@ -48749,19 +48751,18 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         embargo: function() {
-            var page = this,
-                url = this.baseUrl + 'version/embargo',
+            var url = this.baseUrl + 'version/embargo',
                 promise = new $.Deferred(),
                 dialog;
 
-            dialog = new boomDialog({
+            dialog = new BoomCMS.Dialog({
                 url: url,
                 title: 'Page embargo',
                 width: 440
             }).done(function() {
                 $.post(url, dialog.contents.find('form').serialize())
                     .done(function(response) {
-                        new boomNotification("Page embargo saved").show();
+                        BoomCMS.Notification('Page embargo saved').show();
                         promise.resolve(response);
                     });
             });
@@ -48836,10 +48837,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         revertToPublished: function() {
-            var	promise = new $.Deferred(),
+            var    promise = new $.Deferred(),
                 baseUrl = this.baseUrl;
 
-            new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
+            new BoomCMS.Confirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
                 .done(function() {
                     $.post(baseUrl + 'discard')
                         .done(function() {
@@ -48892,379 +48893,383 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     });
 }(BoomCMS));
 ;(function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Person = BoomCMS.Model.extend({
-		urlRoot: BoomCMS.urlRoot + 'person',
+    BoomCMS.Person = BoomCMS.Model.extend({
+        urlRoot: BoomCMS.urlRoot + 'person',
 
-		initialize: function() {
-			var person = this;
+        initialize: function() {
+            var person = this;
 
-			this.groups = new BoomCMS.Collections.Groups(this.get('groups'));
-			this.sites = new BoomCMS.Collections.Sites(this.get('sites'));
+            this.groups = new BoomCMS.Collections.Groups(this.get('groups'));
+            this.sites = new BoomCMS.Collections.Sites(this.get('sites'));
 
-			this.groups
-				.on('add', function(group) {
-					person.addRelationship('group', group.getId());
-				})
-				.on('remove', function(group) {
-					person.removeRelationship('group', group.getId());
-				});
+            this.groups
+                .on('add', function(group) {
+                    person.addRelationship('group', group.getId());
+                })
+                .on('remove', function(group) {
+                    person.removeRelationship('group', group.getId());
+                });
 
-			this.sites
-				.on('add', function(site) {
-					person.addRelationship('site', site.getId());
-				})
-				.on('remove', function(site) {
-					person.removeRelationship('site', site.getId());
-				});
-		},
+            this.sites
+                .on('add', function(site) {
+                    person.addRelationship('site', site.getId());
+                })
+                .on('remove', function(site) {
+                    person.removeRelationship('site', site.getId());
+                });
+        },
 
-		addGroup: function(group) {
-			return this.groups.add(group);
-		},
+        addGroup: function(group) {
+            return this.groups.add(group);
+        },
 
-		addSite: function(site) {
-			return this.sites.add(site);
-		},
+        addSite: function(site) {
+            return this.sites.add(site);
+        },
 
-		getEmail: function() {
-			return this.get('email');
-		},
+        getEmail: function() {
+            return this.get('email');
+        },
 
-		getGroups: function() {
-			return this.groups;
-		},
+        getGroups: function() {
+            return this.groups;
+        },
 
-		getLastLogin: function() {
-			return this.get('last_login');
-		},
+        getLastLogin: function() {
+            return this.get('last_login');
+        },
 
-		getName: function() {
-			return this.get('name');
-		},
+        getName: function() {
+            return this.get('name');
+        },
 
-		isEnabled: function() {
-			return this.get('enabled') === true;
-		},
+        isEnabled: function() {
+            return this.get('enabled') === true;
+        },
 
-		isSuperuser: function() {
-			return this.get('superuser') === true;
-		},
+        isSuperuser: function() {
+            return this.get('superuser') === true;
+        },
 
-		removeGroup: function(group) {
-			this.groups.remove(group);
-		},
+        removeGroup: function(group) {
+            this.groups.remove(group);
+        },
 
-		removeSite: function(site) {
-			return this.sites.remove(site);
-		}
-	});
+        removeSite: function(site) {
+            return this.sites.remove(site);
+        }
+    });
 }(BoomCMS));
 ;(function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Site = BoomCMS.Model.extend({
-		urlRoot: BoomCMS.urlRoot + 'site',
+    BoomCMS.Site = BoomCMS.Model.extend({
+        urlRoot: BoomCMS.urlRoot + 'site',
 
-		defaults: {
-			id: null
-		},
+        defaults: {
+            id: null
+        },
 
-		getName: function() {
-			return this.get('name');
-		}
-	});
+        getName: function() {
+            return this.get('name');
+        }
+    });
 }(BoomCMS));
 ;(function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Template = BoomCMS.Model.extend({
-		urlRoot: BoomCMS.urlRoot + 'template',
-		needsSave: false,
+    BoomCMS.Template = BoomCMS.Model.extend({
+        urlRoot: BoomCMS.urlRoot + 'template',
+        needsSave: false,
 
-		fileExists: function() {
-			return this.get('file_exists');
-		},
+        fileExists: function() {
+            return this.get('file_exists');
+        },
 
-		initialize: function() {
-			this.pages = new BoomCMS.Collections.Pages();
+        initialize: function() {
+            this.pages = new BoomCMS.Collections.Pages();
 
-			this.listenTo(this, 'change', function() {
-				this.needsSave = true;
-			});
+            this.listenTo(this, 'change', function() {
+                this.needsSave = true;
+            });
 
-			this.listenTo(this, 'sync', function() {
-				this.needsSave = false;
-			});
-		},
+            this.listenTo(this, 'sync', function() {
+                this.needsSave = false;
+            });
+        },
 
-		getDescription: function() {
-			return this.get('description');
-		},
+        getDescription: function() {
+            return this.get('description');
+        },
 
-		getFilename: function() {
-			return this.get('filename');
-		},
+        getFilename: function() {
+            return this.get('filename');
+        },
 
-		getName: function() {
-			return this.get('name');
-		},
+        getName: function() {
+            return this.get('name');
+        },
 
-		getPages: function() {
-			this.pages.findByTemplate(this);
-		},
+        getPages: function() {
+            this.pages.findByTemplate(this);
+        },
 
-		getTheme: function() {
-			return this.get('theme');
-		}
-	});
+        getTheme: function() {
+            return this.get('theme');
+        }
+    });
 }(BoomCMS));
-;function boomPageUrl(id, pageId) {
-	this.id = id;
-	this.pageId = pageId;
+;(function($, BoomCMS) {
+    'use strict';
 
-	boomPageUrl.prototype.add = function(location) {
-		var deferred = new $.Deferred(),
-			pageId = this.pageId;
+    BoomCMS.PageUrl = function(id, pageId) {
+        this.id = id;
+        this.pageId = pageId;
 
-		$.post('/boomcms/page/' + pageId + '/urls', {location : location})
-			.done(function(response) {
-				if (response) {
-					if (typeof response.existing_url_id !== 'undefined') {
-						var url = new boomPageUrl(response.existing_url_id, pageId);
-						url.move()
-							.done(function() {
-								deferred.resolve();
-							});
-					}
-				} else {
-					deferred.resolve();
-				}
-			});
+        BoomCMS.PageUrl.prototype.add = function(location) {
+            var deferred = new $.Deferred(),
+                pageId = this.pageId;
 
-		return deferred;
-	};
+            $.post('/boomcms/page/' + pageId + '/urls', {location : location})
+                .done(function(response) {
+                    if (response) {
+                        if (typeof response.existing_url_id !== 'undefined') {
+                            var url = BoomCMS.PageUrl(response.existing_url_id, pageId);
+                            url.move()
+                                .done(function() {
+                                    deferred.resolve();
+                                });
+                        }
+                    } else {
+                        deferred.resolve();
+                    }
+                });
 
-	boomPageUrl.prototype.delete = function() {
-		var url = this,
-			deferred = new $.Deferred(),
-			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!');
+            return deferred;
+        };
 
-			confirmation
-			.done(function() {
-				$.ajax({
-					type: 'delete',
-					url: '/boomcms/page/' + url.pageId + '/urls/' + url.id
-				})
-				.done(function() {
-					deferred.resolve();
-				});
-			});
+        BoomCMS.PageUrl.prototype.delete = function() {
+            var url = this,
+                deferred = new $.Deferred(),
+                confirmation = new BoomCMS.Confirmation('Please confirm', 'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!');
 
-		return deferred;
-	};
+            confirmation
+                .done(function() {
+                    $.ajax({
+                        type: 'delete',
+                        url: '/boomcms/page/' + url.pageId + '/urls/' + url.id
+                    })
+                    .done(function() {
+                        deferred.resolve();
+                    });
+                });
 
-	boomPageUrl.prototype.makePrimary = function() {
-		return $.post('/boomcms/page/' + this.pageId + '/urls/' + this.id + '/make-primary');
-	};
+            return deferred;
+        };
 
-	boomPageUrl.prototype.move = function() {
-		var deferred = new $.Deferred(),
-			move_dialog,
-			form_url = '/boomcms/page/' + this.pageId + '/urls/' + this.id + '/move',
-			dialog;
+        BoomCMS.PageUrl.prototype.makePrimary = function() {
+            return $.post('/boomcms/page/' + this.pageId + '/urls/' + this.id + '/make-primary');
+        };
 
-		dialog = new boomDialog({
-			url : form_url,
-			title : 'Move url',
-			deferred: deferred,
-			width : '500px'
-		});
-		dialog.done(function() {
-			$.post(form_url)
-				.done(function(response) {
-					deferred.resolve(response);
-				});
-		});
+        BoomCMS.PageUrl.prototype.move = function() {
+            var deferred = new $.Deferred(),
+                form_url = '/boomcms/page/' + this.pageId + '/urls/' + this.id + '/move',
+                dialog;
 
-		return deferred;
-	};
-}
+            dialog = new BoomCMS.Dialog({
+                url : form_url,
+                title : 'Move url',
+                deferred: deferred,
+                width : '500px'
+            });
+
+            dialog.done(function() {
+                $.post(form_url)
+                    .done(function(response) {
+                        deferred.resolve(response);
+                    });
+            });
+
+            return deferred;
+        };
+    };
+}($, BoomCMS));
 ;(function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Collections.Assets = Backbone.Collection.extend({
-		model: BoomCMS.Asset,
-		url: BoomCMS.urlRoot + 'asset',
-		comparator: 'name',
+    BoomCMS.Collections.Assets = Backbone.Collection.extend({
+        model: BoomCMS.Asset,
+        url: BoomCMS.urlRoot + 'asset',
+        comparator: 'name',
 
-		addTag: function(tag) {
-			return $.post(this.url + '/tags', {
-				assets: this.getAssetIds(),
-				tag: tag
-			});
-		},
+        addTag: function(tag) {
+            return $.post(this.url + '/tags', {
+                assets: this.getAssetIds(),
+                tag: tag
+            });
+        },
 
-		destroy: function() {
-			var assets = this;
+        destroy: function() {
+            var assets = this;
 
-			return $.ajax({
-				url: this.url,
-				type: 'delete',
-				data: {
-					'assets[]': this.getAssetIds()
-				}
-			})
-			.done(function() {
-				assets.each(function(model) {
-					model.trigger('destroy');
-				});
-			});
-		},
-	
-		download: function(filename) {
-			var url = this.url + '/download?',
-				assets = [];
+            return $.ajax({
+                url: this.url,
+                type: 'delete',
+                data: {
+                    'assets[]': this.getAssetIds()
+                }
+            })
+            .done(function() {
+                assets.each(function(model) {
+                    model.trigger('destroy');
+                });
+            });
+        },
+    
+        download: function(filename) {
+            var url = this.url + '/download?',
+                assets = [];
 
-			for (var i = 0; i < this.models.length; i++) {
-				assets[i] = 'assets[]=' + this.models[i].getId();
-			}
+            for (var i = 0; i < this.models.length; i++) {
+                assets[i] = 'assets[]=' + this.models[i].getId();
+            }
 
-			url = url + assets.join('&');
-			url = url + '&filename=' + filename;
+            url = url + assets.join('&');
+            url = url + '&filename=' + filename;
 
-			window.location = url;
-		},
+            window.location = url;
+        },
 
-		getAssetIds: function() {
-			return this.pluck('id');
-		},
+        getAssetIds: function() {
+            return this.pluck('id');
+        },
 
-		getIdString: function() {
-			return this.getAssetIds().join(',');
-		},
+        getIdString: function() {
+            return this.getAssetIds().join(',');
+        },
 
-		getTags: function() {
-			if (this.allTags === undefined) {
-				this.allTags = $.get(this.url + '/tags', {
-					assets: this.getAssetIds()
-				});
-			}
+        getTags: function() {
+            if (this.allTags === undefined) {
+                this.allTags = $.get(this.url + '/tags', {
+                    assets: this.getAssetIds()
+                });
+            }
 
-			return this.allTags;
-		},
+            return this.allTags;
+        },
 
-		parse: function(data) {
-			return data.assets;
-		},
+        parse: function(data) {
+            return data.assets;
+        },
 
-		removeTag: function(tag) {
-			return $.ajax(this.url + '/tags', {
-				type: 'delete',
-				data: {
-					assets: this.getAssetIds(),
-					tag: tag
-				}
-			});
-		},
+        removeTag: function(tag) {
+            return $.ajax(this.url + '/tags', {
+                type: 'delete',
+                data: {
+                    assets: this.getAssetIds(),
+                    tag: tag
+                }
+            });
+        },
 
-		tag: function() {
-			var assetSelection = this,
-				url = this.url + 'tags/list/' + this.assets.join('-'),
-				dialog;
+        tag: function() {
+            var assetSelection = this,
+                url = this.url + 'tags/list/' + this.assets.join('-'),
+                dialog;
 
-			dialog = new boomDialog({
-				url: url,
-				title: 'Asset tags',
-				width: 440,
-				cancelButton : false,
-				onLoad: function() {
-					dialog.contents.find('#b-tags').assetTagSearch({
-						addTag: function(e, tag) {
-							assetSelection.addTag(tag);
-						},
-						removeTag: function(e, tag) {
-							assetSelection.removeTag(tag);
-						}
-					});
-				}
-			});
-		}
-	});
+            dialog = new BoomCMS.Dialog({
+                url: url,
+                title: 'Asset tags',
+                width: 440,
+                cancelButton : false,
+                onLoad: function() {
+                    dialog.contents.find('#b-tags').assetTagSearch({
+                        addTag: function(e, tag) {
+                            assetSelection.addTag(tag);
+                        },
+                        removeTag: function(e, tag) {
+                            assetSelection.removeTag(tag);
+                        }
+                    });
+                }
+            });
+        }
+    });
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Collections.Groups = Backbone.Collection.extend({
-		model: BoomCMS.Group,
-		url: BoomCMS.urlRoot + 'group',
-		comparator: 'name'	
-	});
+    BoomCMS.Collections.Groups = Backbone.Collection.extend({
+        model: BoomCMS.Group,
+        url: BoomCMS.urlRoot + 'group',
+        comparator: 'name'    
+    });
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Collections.Pages = Backbone.Collection.extend({
-		model: BoomCMS.Page,
-		url: BoomCMS.urlRoot + 'page',
+    BoomCMS.Collections.Pages = Backbone.Collection.extend({
+        model: BoomCMS.Page,
+        url: BoomCMS.urlRoot + 'page',
 
-		findBy: function(data) {
-			this.fetch({
-				remove: false,
-				data: data
-			});
-		},
+        findBy: function(data) {
+            this.fetch({
+                remove: false,
+                data: data
+            });
+        },
 
-		findByRelatedTo: function(page) {
-			this.findBy({
-				relatedto: page.getId(),
-				excludeinvisible: false
-			});
-		},
+        findByRelatedTo: function(page) {
+            this.findBy({
+                relatedto: page.getId(),
+                excludeinvisible: false
+            });
+        },
 
-		findByParent: function(page) {
-			var parentId = (page === null) ? null : page.getId();
+        findByParent: function(page) {
+            var parentId = (page === null) ? null : page.getId();
 
-			this.findBy({
-				parent: parentId,
-				excludeinvisible: false
-			});
-		},
+            this.findBy({
+                parent: parentId,
+                excludeinvisible: false
+            });
+        },
 
-		findByTemplate: function(template) {
-			this.findBy({
-				template: template.getId(),
-				excludeinvisible: false
-			});
-		}
-	});
+        findByTemplate: function(template) {
+            this.findBy({
+                template: template.getId(),
+                excludeinvisible: false
+            });
+        }
+    });
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Collections.People = Backbone.Collection.extend({
-		model: BoomCMS.Person,
-		url: BoomCMS.urlRoot + 'person',
-		comparator: 'name'
-	});
+    BoomCMS.Collections.People = Backbone.Collection.extend({
+        model: BoomCMS.Person,
+        url: BoomCMS.urlRoot + 'person',
+        comparator: 'name'
+    });
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Collections.Sites = Backbone.Collection.extend({
-		model: BoomCMS.Site,
-		url: BoomCMS.urlRoot + 'site',
-		comparator: 'name'
-	});
+    BoomCMS.Collections.Sites = Backbone.Collection.extend({
+        model: BoomCMS.Site,
+        url: BoomCMS.urlRoot + 'site',
+        comparator: 'name'
+    });
 }(Backbone, window.BoomCMS));
 ;(function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Collections.Templates = Backbone.Collection.extend({
-		model: BoomCMS.Template,
-		url: BoomCMS.urlRoot + 'template'
-	});
+    BoomCMS.Collections.Templates = Backbone.Collection.extend({
+        model: BoomCMS.Template,
+        url: BoomCMS.urlRoot + 'template'
+    });
 }(Backbone, BoomCMS));
 ;/**
 @fileOverview jQuery plugins written specifically for Boom.
@@ -49276,12 +49281,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 */
 
 (function($) {
-	'use strict';
+    'use strict';
 
-	$.fn.dblclick = function() {
-		var $this = $(this);
+    $.fn.dblclick = function() {
+        var $this = $(this);
 
-		$this.each(function() {
+        $this.each(function() {
             var $el = $(this);
 
             $el.on('click', function() {
@@ -49304,528 +49309,536 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             });
         });
 
-		return this;
-	};
+        return this;
+    };
 
-	$.fn.ui = function() {
-		this.find('.boom-datepicker').datetimepicker({
-			format: 'd F Y H:i'
-		});
+    $.fn.ui = function() {
+        this.find('.boom-datepicker').datetimepicker({
+            format: 'd F Y H:i'
+        });
 
-		this.find('time').localTime();
+        this.find('time').localTime();
 
-		return this;
-	};
+        return this;
+    };
 
-	$.fn.localTime = function() {
-		var $this = $(this);
+    $.fn.localTime = function() {
+        var $this = $(this);
 
-		if ($this.length) {
-			var tz = BoomCMS.getTimezone();
+        if ($this.length) {
+            var tz = BoomCMS.getTimezone();
 
-			$this.each(function() {
-				var $el = $(this),
-					time = moment($el.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
+            $this.each(function() {
+                var $el = $(this),
+                    time = moment($el.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
 
-				$el.text(time);
-			});
-		}
-	};
+                $el.text(time);
+            });
+        }
+    };
 
-	$.fn.boomTabs = function() {
-		var selectedClass = 'selected';
+    $.fn.boomTabs = function() {
+        var selectedClass = 'selected';
 
-		$(this).on('click', function(e) {
-			var $link = $(this),
-				href = $link.attr('href'),
-				$target;
+        $(this).on('click', function(e) {
+            var $link = $(this),
+                href = $link.attr('href'),
+                $target;
 
-			if (href === '#') {
-				return;
-			}
+            if (href === '#') {
+                return;
+            }
 
-			$target = $(href);
+            $target = $(href);
 
-			if ($target.length) {
-				e.preventDefault();
+            if ($target.length) {
+                e.preventDefault();
 
-				$link.parents('ul').find('a').removeClass(selectedClass);
-				$link.addClass(selectedClass);
+                $link.parents('ul').find('a').removeClass(selectedClass);
+                $link.addClass(selectedClass);
 
-				$target.siblings().removeClass(selectedClass);
-				$target.addClass(selectedClass);
-			}
-		});
-	};
+                $target.siblings().removeClass(selectedClass);
+                $target.addClass(selectedClass);
+            }
+        });
+    };
 })(jQuery);
-;function boomNotification(message) {
-	this.message = message;
+;(function($, BoomCMS) {
+    'use strict';
 
-	boomNotification.prototype.$document = $(top.document);
+    BoomCMS.Notification = function(message) {
+        this.message = message;
 
-	boomNotification.prototype.show = function() {
-		var notified = false,
-			waitingApproval = false,
-			timer,
-			notification = this,
-			message = this.message;
+        BoomCMS.Notification.prototype.$document = $(top.document);
 
-		if ("Notification" in window && Notification.permission !== 'denied') {
-			waitingApproval = true;
+        BoomCMS.Notification.prototype.show = function() {
+            var notified = false,
+                waitingApproval = false,
+                timer,
+                notification = this,
+                message = this.message;
 
-			Notification.requestPermission(function (permission) {
-				waitingApproval = false;
+            if ('Notification' in window && Notification.permission !== 'denied') {
+                waitingApproval = true;
 
-				if (permission === "granted") {
-					var n = new Notification('BoomCMS', {
-						body: message,
-						icon: '/vendor/boomcms/boom-core/img/logo-sq.png',
-						requireInteraction: false
-					});
+                Notification.requestPermission(function (permission) {
+                    waitingApproval = false;
 
-					notified = true;
-	
-					setTimeout(function() {
-						n.close();
-					}, 3000);
-				}
-			});
-		}
+                    if (permission === 'granted') {
+                        var n = new Notification('BoomCMS', {
+                            body: message,
+                            icon: '/vendor/boomcms/boom-core/img/logo-sq.png',
+                            requireInteraction: false
+                        });
 
-		var timer = setInterval(function() {
-			if ( ! waitingApproval && ! notified) {
-				notification.showFallback(message);
-				clearInterval(timer);
-			}
-		}, 100);
-	};
+                        notified = true;
 
-	boomNotification.prototype.showFallback = function(message) {
-		$.jGrowl(message);
-	};
-};;function boomDialog(options) {
-	var dialog = this;
+                        setTimeout(function() {
+                            n.close();
+                        }, 3000);
+                    }
+                });
+            }
 
-	this.deferred = $.Deferred().always(function() {
-		$(top.window).trigger('boom:dialog:close');
-	});
+            timer = setInterval(function() {
+                if ( ! waitingApproval && ! notified) {
+                    notification.showFallback(message);
+                    clearInterval(timer);
+                }
+            }, 100);
+        };
 
-	this.buttons = {
-		close: 'Okay',
-		cancel: 'Cancel'
-	};
+        BoomCMS.Notification.prototype.showFallback = function(message) {
+            $.jGrowl(message);
+        };
+    };
+}($, BoomCMS));
+;(function(BoomCMS) {
+    'use strict';
 
-	this.options = $.extend({
-		width: 'auto',
-		cancelButton : true,
-		closeButton : true,
-		autoOpen: true,
-		modal: true,
-		resizable: false,
-		draggable: false,
-		closeOnEscape: false,
-		buttons : [],
-		dialogClass : 'b-dialog',
-		boomDialog: this
-	}, options);
+    BoomCMS.Dialog = function(options) {
+        var dialog = this;
 
-	boomDialog.prototype.always = function(callback) {
-		dialog.deferred.always(callback);
+        this.deferred = $.Deferred().always(function() {
+            $(top.window).trigger('boom:dialog:close');
+        });
 
-		return this;
-	};
+        this.buttons = {
+            close: 'Okay',
+            cancel: 'Cancel'
+        };
 
-	boomDialog.prototype.cancel = function() {
-		dialog.deferred.rejectWith(this.dialog);
-		dialog.cleanup();
-	};
+        this.options = $.extend({
+            width: 'auto',
+            cancelButton : true,
+            closeButton : true,
+            autoOpen: true,
+            modal: true,
+            resizable: false,
+            draggable: false,
+            closeOnEscape: false,
+            buttons : [],
+            dialogClass : 'b-dialog',
+            boomDialog: this
+        }, options);
 
-	boomDialog.prototype.cleanup = function() {
-		if (this.contents) {
-			this.contents.remove();
-			this.contents = null;
-		}
-	};
+        BoomCMS.Dialog.prototype.always = function(callback) {
+            dialog.deferred.always(callback);
 
-	boomDialog.prototype.close = function() {
-		dialog.deferred.resolveWith(this.dialog);
-		dialog.cleanup();
-	};
+            return this;
+        };
 
-	boomDialog.prototype.configureButtons = function(options) {
-		var dialog = this;
+        BoomCMS.Dialog.prototype.cancel = function() {
+            dialog.deferred.rejectWith(this.dialog);
+            dialog.cleanup();
+        };
 
-		for (var button in dialog.buttons) {
-			if (options[button + 'Button']) {
-				dialog.options.buttons.push({
-					text: dialog.buttons[button],
-					class: 'b-button-' + button,
-					click: dialog[button]
-				});
-			}
-		}
-	};
+        BoomCMS.Dialog.prototype.cleanup = function() {
+            if (this.contents) {
+                this.contents.remove();
+                this.contents = null;
+            }
+        };
 
-	boomDialog.prototype.done = function(callback) {
-		this.deferred.done(callback);
+        BoomCMS.Dialog.prototype.close = function() {
+            dialog.deferred.resolveWith(this.dialog);
+            dialog.cleanup();
+        };
 
-		return this;
-	};
+        BoomCMS.Dialog.prototype.configureButtons = function(options) {
+            var dialog = this;
 
-	boomDialog.prototype.fail = function(callback) {
-		this.deferred.fail(callback);
+            for (var button in dialog.buttons) {
+                if (options[button + 'Button']) {
+                    dialog.options.buttons.push({
+                        text: dialog.buttons[button],
+                        class: 'b-button-' + button,
+                        click: dialog[button]
+                    });
+                }
+            }
+        };
 
-		return this;
-	};
+        BoomCMS.Dialog.prototype.done = function(callback) {
+            this.deferred.done(callback);
 
-	boomDialog.prototype.init = function() {
-		var boomDialog = this;
+            return this;
+        };
 
-		$(top.window).trigger('boom:dialog:open');
+        BoomCMS.Dialog.prototype.fail = function(callback) {
+            this.deferred.fail(callback);
 
-		this
-			.contents
-			.dialog(this.options)
-			.ui();
+            return this;
+        };
 
-		$(document).on('keydown', function(e) {
-			if (e.which === $.ui.keyCode.ESCAPE) {
-				boomDialog.cancel();
-				e.stopPropagation();
-			}
-		});
-	};
+        BoomCMS.Dialog.prototype.init = function() {
+            $(top.window).trigger('boom:dialog:open');
 
-	boomDialog.prototype.open = function() {
-		var self = this,
-			$div = $('<div></div>');
+            this
+                .contents
+                .dialog(this.options)
+                .ui();
 
-		if (this.options.id) {
-			$div.attr('id', this.options.id);
-		}
+            $(document).on('keydown', function(e) {
+                if (e.which === $.ui.keyCode.ESCAPE) {
+                    BoomCMS.Dialog.cancel();
+                    e.stopPropagation();
+                }
+            });
+        };
 
-		this.contents = $div.appendTo($(document).contents().find('body'));
+        BoomCMS.Dialog.prototype.open = function() {
+            var self = this,
+                $div = $('<div></div>');
 
-		this.configureButtons(this.options);
+            if (this.options.id) {
+                $div.attr('id', this.options.id);
+            }
 
-		if (this.options.url && this.options.url.length) {
-			if (this.contents.hasClass('ui-dialog-content')) {
-				this.contents.dialog('open');
-			} else {
-				setTimeout(function() {
-					self.contents.load(self.options.url, function(response, status, xhr) {
-						if (xhr.status === 200) {
-							self.init();
+            this.contents = $div.appendTo($(document).contents().find('body'));
 
-							if ($.isFunction(self.options.onLoad)) {
-								self.options.onLoad.apply(self.dialog);
-							}
-						} else {
-							self.deferred.reject(response, xhr.status);
-						} 
-					});
-				}, 100);
-			}
+            this.configureButtons(this.options);
 
-		} else if (this.options.msg.length) {
-			setTimeout(function() {
-				self.contents.html(self.options.msg);
-				self.init();
+            if (this.options.url && this.options.url.length) {
+                if (this.contents.hasClass('ui-dialog-content')) {
+                    this.contents.dialog('open');
+                } else {
+                    setTimeout(function() {
+                        self.contents.load(self.options.url, function(response, status, xhr) {
+                            if (xhr.status === 200) {
+                                self.init();
 
-				if ($.isFunction(self.options.onLoad)) {
-					self.options.onLoad(self);
-				}
-			}, 100);
-		}
-	};
+                                if ($.isFunction(self.options.onLoad)) {
+                                    self.options.onLoad.apply(self.dialog);
+                                }
+                            } else {
+                                self.deferred.reject(response, xhr.status);
+                            } 
+                        });
+                    }, 100);
+                }
 
-	this.open();
-}
-;function boomAlert(message) {
-	this.message = message;
+            } else if (this.options.msg.length) {
+                setTimeout(function() {
+                    self.contents.html(self.options.msg);
+                    self.init();
 
-	boomAlert.prototype.open = function() {
-		var alert = this;
+                    if ($.isFunction(self.options.onLoad)) {
+                        self.options.onLoad(self);
+                    }
+                }, 100);
+            }
+        };
 
-		return new boomDialog({
-			msg : alert.message,
-			cancelButton : false
-		});
-	};
+        this.open();
+    };
+}(BoomCMS));;(function(BoomCMS) {
+    'use strict';
+  
+    BoomCMS.alert = function(message) {
+        return new BoomCMS.Dialog({
+            msg : message,
+            cancelButton : false
+        });
+    };
+}(BoomCMS));
+;(function(BoomCMS) {
+    'use strict';
 
-	return this.open();
-};function boomConfirmation(title, message) {
-	this.title = title;
-	this.message = message;
+    BoomCMS.Confirmation = function(title, message) {
+        this.title = title;
+        this.message = message;
 
-	boomConfirmation.prototype.open = function() {
-		var confirmation = this;
+        BoomCMS.Confirmation.prototype.open = function() {
+            var confirmation = this;
 
-		return new boomDialog({
-			title : confirmation.title,
-			msg : '<p>' + confirmation.message + '</p>',
-			width : 300
-		});
-	};
+            return new BoomCMS.Dialog({
+                title : confirmation.title,
+                msg : '<p>' + confirmation.message + '</p>',
+                width : 300
+            });
+        };
 
-	return this.open();
-};$.widget('boom.pageStatus', {
-	_create: function() {
-		this.set(this.element.text().trim());
-	},
+        return this.open();
+    };
+}(BoomCMS));
+;$.widget('boom.pageStatus', {
+    _create: function() {
+        this.set(this.element.text().trim());
+    },
 
-	_get_abbreviated_status: function(status) {
-		switch(status) {
-			case 'published':
-				return "pub'd";
-			case 'draft':
-				return 'draft';
-			case 'embargoed':
-				return "emb'd";
-			case 'pending approval':
-				return "pen'd";
-		}
-	},
+    _get_abbreviated_status: function(status) {
+        switch(status) {
+        case 'published':
+            return 'pub\'d';
+        case 'draft':
+            return 'draft';
+        case 'embargoed':
+            return 'emb\'d';
+        case 'pending approval':
+            return 'pen\'d';
+        }
+    },
 
-	set: function(status) {
-		this.element
-			.text(this._get_abbreviated_status(status))
-			.attr('data-status', status)
-			.attr('title', status.ucfirst());
+    set: function(status) {
+        this.element
+            .text(this._get_abbreviated_status(status))
+            .attr('data-status', status)
+            .attr('title', status.ucfirst());
 
-		if (status === 'draft' || status === 'embargoed') {
-			this.element.attr('title', this.element.attr('title') + ' (double click to publish)');
-		}
-	}
+        if (status === 'draft' || status === 'embargoed') {
+            this.element.attr('title', this.element.attr('title') + ' (double click to publish)');
+        }
+    }
 });;$.widget('boom.pageSettings', {
-	bind: function() {
-		var pageSettings = this;
+    bind: function() {
+        var pageSettings = this;
 
-		this.$menu
-			.on('click', 'a', function(e) {
-				e.preventDefault();
-			})
-			.on('click', '.b-settings-close', function() {
-				pageSettings.close();
-			})
-			.on('click', 'a[data-b-page-setting]', function() {
-				pageSettings.show($(this).attr('data-b-page-setting'));
-			})
-			.on('click', '.toggle', function() {
-				pageSettings.toggleMenu();
-			});
-	},
+        this.$menu
+            .on('click', 'a', function(e) {
+                e.preventDefault();
+            })
+            .on('click', '.b-settings-close', function() {
+                pageSettings.close();
+            })
+            .on('click', 'a[data-b-page-setting]', function() {
+                pageSettings.show($(this).attr('data-b-page-setting'));
+            })
+            .on('click', '.toggle', function() {
+                pageSettings.toggleMenu();
+            });
+    },
 
-	close: function() {
-		if (typeof(this.options.close) === 'function') {
-			this.options.close();
-		} else {
-			this.element.hide();
-		}
-	},
+    close: function() {
+        if (typeof(this.options.close) === 'function') {
+            this.options.close();
+        } else {
+            this.element.hide();
+        }
+    },
 
-	_create: function() {
-		this.page = this.options.page;
-		this.$menu = this.element.find('.b-settings-menu');
-		this.$content = this.element.find('.b-settings-content');
+    _create: function() {
+        this.page = this.options.page;
+        this.$menu = this.element.find('.b-settings-menu');
+        this.$content = this.element.find('.b-settings-content');
 
-		this.bind();
-	},
+        this.bind();
+    },
 
-	getUrl: function(section) {
-		var prefix = '/boomcms/page/' + this.page.getId() + '/';
+    getUrl: function(section) {
+        var prefix = '/boomcms/page/' + this.page.getId() + '/';
 
-		switch (section) {
-			case 'urls':
-				return  prefix + 'urls';
-			case 'relations':
-				return prefix + 'relations';
-			case 'tags':
-				return prefix + 'tags';
-			case 'template':
-				return prefix + 'version/template';
-			case 'drafts':
-				return prefix + 'version/status';
-			case 'acl':
-				return prefix + 'acl';
-			default:
-				return prefix + 'settings/' + section;
-		}
-	},
+        switch (section) {
+        case 'urls':
+            return  prefix + 'urls';
+        case 'relations':
+            return prefix + 'relations';
+        case 'tags':
+            return prefix + 'tags';
+        case 'template':
+            return prefix + 'version/template';
+        case 'drafts':
+            return prefix + 'version/status';
+        case 'acl':
+            return prefix + 'acl';
+        default:
+            return prefix + 'settings/' + section;
+        }
+    },
 
-	show: function(section) {
-		var pageSettings = this,
-			$div = $('<div class="b-settings-content"></div>');
+    show: function(section) {
+        var pageSettings = this,
+            $div = $('<div class="b-settings-content"></div>');
 
-		this.$menu
-			.find('a')
-			.removeClass('selected')
-			.end()
-			.find('a[data-b-page-setting=' + section + ']')
-			.addClass('selected');
+        this.$menu
+            .find('a')
+            .removeClass('selected')
+            .end()
+            .find('a[data-b-page-setting=' + section + ']')
+            .addClass('selected');
 
-		this.$content.replaceWith($div);
-		this.$content = $div;
+        this.$content.replaceWith($div);
+        this.$content = $div;
 
-		this.$content.load(this.getUrl(section), function() {
-			var widget = 'pageSettings' + section.ucfirst();
+        this.$content.load(this.getUrl(section), function() {
+            var widget = 'pageSettings' + section.ucfirst();
 
-			pageSettings.$content.ui();
+            pageSettings.$content.ui();
 
-			if (typeof(pageSettings.$content[widget]) !== 'function') {
-				widget = 'pageSettingsDefault';
-			}
+            if (typeof(pageSettings.$content[widget]) !== 'function') {
+                widget = 'pageSettingsDefault';
+            }
 
-			pageSettings.$content[widget]({
-				page: pageSettings.page,
-				section: section,
-				settings: pageSettings,
-				done: function(event, data) {
-					pageSettings._trigger('save', event, data);
-					pageSettings._trigger(section + 'Save', event, data);
-				}
-			});
-		});
-	},
+            pageSettings.$content[widget]({
+                page: pageSettings.page,
+                section: section,
+                settings: pageSettings,
+                done: function(event, data) {
+                    pageSettings._trigger('save', event, data);
+                    pageSettings._trigger(section + 'Save', event, data);
+                }
+            });
+        });
+    },
 
-	toggleMenu: function() {
-		this.$menu.toggleClass('open');
-	}
+    toggleMenu: function() {
+        this.$menu.toggleClass('open');
+    }
 });;$.widget( 'boom.pageEditor', {
-	elements : {},
+    elements : {},
 
-	openDialogs : 0,
+    openDialogs : 0,
 
-	options : {
-		editable : false
-	},
+    options : {
+        editable : false
+    },
 
-	_create: function() {
-		this.page = this.options.page;
-		window.BoomCMS.page = this.page;
+    _create: function() {
+        this.page = this.options.page;
+        window.BoomCMS.page = this.page;
 
-		this.document = $(top.document);
+        this.document = $(top.document);
 
-		this.page.toolbar = this.toolbar = this.document
-			.find('#b-editor-iframe')
-			.pageToolbar({ // This should probably be called editorIframe as we're calling this on the iframe. Then we need another widget which is specifically for the toolbar.
-				page : this.page,
-				publishable : this.options.publishable
-			})
-			.data('boom-pageToolbar');
+        this.page.toolbar = this.toolbar = this.document
+            .find('#b-editor-iframe')
+            .pageToolbar({ // This should probably be called editorIframe as we're calling this on the iframe. Then we need another widget which is specifically for the toolbar.
+                page : this.page,
+                publishable : this.options.publishable
+            })
+            .data('boom-pageToolbar');
 
-		this.watchForDialogs();
+        this.watchForDialogs();
 
-		this.showTextDiff();
+        this.showTextDiff();
 
-		if (this.options.editable) {
-			this.createChunks();
-		}
-	},
+        if (this.options.editable) {
+            this.createChunks();
+        }
+    },
 
-	createChunks: function() {
-		var self = this;
+    createChunks: function() {
+        var self = this;
 
-		this.document.contents()
-			.find('[data-boom-chunk]')
-			.each(function() {
-				var $this = $(this),
-					type = $this.data('boom-chunk'),
-					widgetName = 'chunk' + type.ucfirst();
+        this.document.contents()
+            .find('[data-boom-chunk]')
+            .each(function() {
+                var $this = $(this),
+                    type = $this.data('boom-chunk'),
+                    widgetName = 'chunk' + type.ucfirst();
 
-				$this[widgetName]({
-					type : type,
-					name : $this.data('boom-slot-name'),
-					template : $this.data('boom-slot-template'),
-					id : $this.data('boom-target')? parseInt($this.data('boom-target'), 10) : 0,
-					page : $this.data('boom-page'),
-					currentPage : self.page,
-					chunkId : $this.data('boom-chunk-id')
-				});
-			})
-			.end()
-			.find('#b-page-title')
-			.pageTitle({
-				currentPage : self.page
-			})
-			.end()
-			.find('.b-page-tags')
-			.each(function() {
-				var $this = $(this);
+                $this[widgetName]({
+                    type : type,
+                    name : $this.data('boom-slot-name'),
+                    template : $this.data('boom-slot-template'),
+                    id : $this.data('boom-target')? parseInt($this.data('boom-target'), 10) : 0,
+                    page : $this.data('boom-page'),
+                    currentPage : self.page,
+                    chunkId : $this.data('boom-chunk-id')
+                });
+            })
+            .end()
+            .find('#b-page-title')
+            .pageTitle({
+                currentPage : self.page
+            })
+            .end()
+            .find('.b-page-tags')
+            .each(function() {
+                var $this = $(this);
 
-				$this
-					.addClass(BoomCMS.editableClass)
-					.on('click', function(e) {
-						e.preventDefault();
+                $this
+                    .addClass(BoomCMS.editableClass)
+                    .on('click', function(e) {
+                        e.preventDefault();
 
-						window.BoomCMS.page.toolbar.showSettings('tags');
-					});
-			})
-			.end()
-			.find('.b-page-visibility')
-			.each(function() {
-				var $this = $(this);
+                        window.BoomCMS.page.toolbar.showSettings('tags');
+                    });
+            })
+            .end()
+            .find('.b-page-visibility')
+            .each(function() {
+                var $this = $(this);
 
-				$this
-					.addClass(BoomCMS.editableClass)
-					.on('click', function(e) {
-						e.preventDefault();
+                $this
+                    .addClass(BoomCMS.editableClass)
+                    .on('click', function(e) {
+                        e.preventDefault();
 
-						window.BoomCMS.page.toolbar.showSettings('visibility');
-					});
-			})
-			.end()
-			.find('.b-page-featureimage')
-			.each(function() {
-				var $this = $(this);
+                        window.BoomCMS.page.toolbar.showSettings('visibility');
+                    });
+            })
+            .end()
+            .find('.b-page-featureimage')
+            .each(function() {
+                var $this = $(this);
 
-				$this
-					.addClass(BoomCMS.editableClass)
-					.on('click', function(e) {
-						e.preventDefault();
+                $this
+                    .addClass(BoomCMS.editableClass)
+                    .on('click', function(e) {
+                        e.preventDefault();
 
-						window.BoomCMS.page.toolbar.showSettings('feature');
-					});
-			});
-	},
+                        window.BoomCMS.page.toolbar.showSettings('feature');
+                    });
+            });
+    },
 
-	showTextDiff: function() {
-		var $diff = this.toolbar.element.contents().find('#b-history-diff');
+    showTextDiff: function() {
+        var $diff = this.toolbar.element.contents().find('#b-history-diff');
 
-		if ($diff.length) {
-			var type = $diff.attr('data-type'),
-				slotname = $diff.attr('data-slotname');
+        if ($diff.length) {
+            var type = $diff.attr('data-type'),
+                slotname = $diff.attr('data-slotname');
 
-		this.document.contents()
-			.find('[data-boom-chunk="' + type + '"][data-boom-slot-name="' + slotname + '"]')
-			.html($diff.html());
-		}
-	},
+            this.document.contents()
+            .find('[data-boom-chunk="' + type + '"][data-boom-slot-name="' + slotname + '"]')
+            .html($diff.html());
+        }
+    },
 
-	watchForDialogs: function() {
-		var editor = this,
-			toolbar = this.page.toolbar;
+    watchForDialogs: function() {
+        var editor = this,
+            toolbar = this.page.toolbar;
 
-		$(top.window)
-			.on('boom:dialog:open', function() {
-				editor.openDialogs++;
+        $(top.window)
+            .on('boom:dialog:open', function() {
+                editor.openDialogs++;
 
-				if (editor.openDialogs === 1) {
-					toolbar.maximise();
-					toolbar.hide();
-					editor.document.find('body').css('overflow', 'hidden');
-				}
-			})
-			.on('boom:dialog:close', function() {
-				editor.openDialogs--;
+                if (editor.openDialogs === 1) {
+                    toolbar.maximise();
+                    toolbar.hide();
+                    editor.document.find('body').css('overflow', 'hidden');
+                }
+            })
+            .on('boom:dialog:close', function() {
+                editor.openDialogs--;
 
-				if (editor.openDialogs === 0) {
-					toolbar.minimise();
-					toolbar.show();
-					editor.document.find('body').css('overflow', 'auto');
-				}
-			});
-	}
+                if (editor.openDialogs === 0) {
+                    toolbar.minimise();
+                    toolbar.show();
+                    editor.document.find('body').css('overflow', 'auto');
+                }
+            });
+    }
 });;/**
 * Common functionality for the embedded CMS toolbar
 * @class
@@ -49849,7 +49862,7 @@ $.widget( 'boom.pageToolbar', {
             .on('click', 'button.b-version-info', function() {
                 var html = self.element.contents().find('#b-history-template').html();
 
-                new boomDialog({
+                new BoomCMS.Dialog({
                     msg: html,
                     width: '600px',
                     cancelButton: false,
@@ -49866,7 +49879,7 @@ $.widget( 'boom.pageToolbar', {
                         top.location = response.url;
                     })
                     .fail(function(response) {
-                        new boomAlert(response);
+                        BoomCMS.alert(response);
                     });
             })
             .find('.b-page-visibility')
@@ -49902,13 +49915,13 @@ $.widget( 'boom.pageToolbar', {
             .dblclick()
             .end()
             .on('sclick', '#b-page-version-status', function() {
-                self.showSettings('drafts');	
+                self.showSettings('drafts');    
             })
             .on('dclick', '#b-page-version-status', function() {
                 page.publish().done(function(data) {
                     self.status.set(data);
                     $(this).blur();
-                });		
+                });        
             })
             .on('mouseup', '#b-menu a', function() {
                 // Clicking a link in the menu but opening in a new tab causes the menu to close.
@@ -49980,7 +49993,7 @@ $.widget( 'boom.pageToolbar', {
                                 });
 
                                 $el.replaceWith(function () {
-                                    return $("<img />", attrs).attr('src', asset.getUrl());
+                                    return $('<img />', attrs).attr('src', asset.getUrl());
                                 });
                             }
                         } else {
@@ -49991,7 +50004,7 @@ $.widget( 'boom.pageToolbar', {
                 templateSave: function() {
                     toolbar.status.set('draft');
 
-                    new boomConfirmation('Reload page?', "Do you want to reload the page to view the new template?")
+                    new BoomCMS.Confirmation('Reload page?', 'Do you want to reload the page to view the new template?')
                         .done(function() {
                             top.location.reload();
                         });
@@ -50006,7 +50019,7 @@ $.widget( 'boom.pageToolbar', {
                     );
                 },
                 deleteSave: function(event, response) {
-                    new boomNotification('Page deleted, redirecting to parent').show();
+                    BoomCMS.Notification('Page deleted, redirecting to parent').show();
 
                     setTimeout(function() {
                         top.location = response;
@@ -50095,7 +50108,7 @@ $.widget( 'boom.pageToolbar', {
     supportRequest: function() {
         var url = '/boomcms/support', dialog;
 
-        dialog = new boomDialog({
+        dialog = new BoomCMS.Dialog({
             url: url,
             title: 'Submit support request',
             width: 600,
@@ -50117,7 +50130,7 @@ $.widget( 'boom.pageToolbar', {
         .done(function() {
             $.post(url, dialog.contents.find('form').serialize());
 
-            new boomNotification('Your message has been sent').show();
+            BoomCMS.Notification('Your message has been sent').show();
         });
     },
 
@@ -50146,876 +50159,872 @@ $.widget( 'boom.pageToolbar', {
     }
 });
 ;(function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	$.widget('boom.pageTree', {
-		expandedClass: 'expanded',
+    $.widget('boom.pageTree', {
+        expandedClass: 'expanded',
 
-		options : {
-			onPageSelect: function() {}
-		},
+        options : {
+            onPageSelect: function() {}
+        },
 
-		addPageToList: function(page) {
-			var parentId = page.getParentId(),
-				$ul = page.isRoot() ? this.element : this.element.find('ul[parent-id=' + parentId + ']'),
-				$li = $('<li></li>').data('page', page).appendTo($ul);
+        addPageToList: function(page) {
+            var parentId = page.getParentId(),
+                $ul = page.isRoot() ? this.element : this.element.find('ul[parent-id=' + parentId + ']'),
+                $li = $('<li></li>').data('page', page).appendTo($ul);
 
-			$('<a></a>')
-				.attr('href', page.getUrl())
-				.attr('data-page-id', page.getId())
-				.text(page.getTitle())
-				.appendTo($li);
+            $('<a></a>')
+                .attr('href', page.getUrl())
+                .attr('data-page-id', page.getId())
+                .text(page.getTitle())
+                .appendTo($li);
 
-			if (page.hasChildren()) {
-				this.makeExpandable($li);
-			}
+            if (page.hasChildren()) {
+                this.makeExpandable($li);
+            }
 
-			if (typeof(this.options.active) !== 'undefined') {
-				$ul
-					.find('a[data-page-id=' + this.options.active + ']')
-					.addClass('active');
-			}
+            if (typeof(this.options.active) !== 'undefined') {
+                $ul
+                    .find('a[data-page-id=' + this.options.active + ']')
+                    .addClass('active');
+            }
 
-			this._trigger('add', null, $li);
-		},
+            this._trigger('add', null, $li);
+        },
 
-		bind: function() {
-			var pageTree = this;
+        bind: function() {
+            var pageTree = this;
 
-			this.pages = new BoomCMS.Collections.Pages();
-			this.pages.on('add', function(page) {
-				pageTree.addPageToList(page);
-			});
+            this.pages = new BoomCMS.Collections.Pages();
+            this.pages.on('add', function(page) {
+                pageTree.addPageToList(page);
+            });
 
-			this.element
-				.on('click', 'a[data-page-id]', function(e) {
-					e.preventDefault();
+            this.element
+                .on('click', 'a[data-page-id]', function(e) {
+                    e.preventDefault();
 
-					pageTree.itemClick($(this));
-				})
-				.on('click', '.b-tree-toggle', function(e) {
-					e.preventDefault();
+                    pageTree.itemClick($(this));
+                })
+                .on('click', '.b-tree-toggle', function(e) {
+                    e.preventDefault();
 
-					var $this = $(this);
+                    var $this = $(this);
 
-					if (!$this.hasClass(pageTree.expandedClass)) {
-						pageTree.showChildren($this.closest('li'));
-					} else {
-						pageTree.hideChildren($this.closest('li'));
-					}
-				});
-		},
+                    if (!$this.hasClass(pageTree.expandedClass)) {
+                        pageTree.showChildren($this.closest('li'));
+                    } else {
+                        pageTree.hideChildren($this.closest('li'));
+                    }
+                });
+        },
 
-		_create: function() {
-			this.bind();
-			this.getChildren(null, this.element);
-		},
+        _create: function() {
+            this.bind();
+            this.getChildren(null, this.element);
+        },
 
-		itemClick: function($node) {
-			this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('data-page-id'), $node.text()));
-		},
+        itemClick: function($node) {
+            this.options.onPageSelect(new BoomCMS.Link($node.attr('href'), $node.attr('data-page-id'), $node.text()));
+        },
 
-		getChildren: function(page) {
-			this.pages.findByParent(page);
-		},
+        getChildren: function(page) {
+            this.pages.findByParent(page);
+        },
 
-		hideChildren: function($li) {
-			$li.find('> .b-tree-toggle').removeClass(this.expandedClass);
+        hideChildren: function($li) {
+            $li.find('> .b-tree-toggle').removeClass(this.expandedClass);
 
-			$li.find('> ul').hide();
-		},
+            $li.find('> ul').hide();
+        },
 
-		makeExpandable: function($li) {
-			if (!$li.find('.b-tree-toggle').length) {
-				$('<span />')
-					.addClass('b-tree-toggle')
-					.prependTo($li);
-			}
-		},
+        makeExpandable: function($li) {
+            if (!$li.find('.b-tree-toggle').length) {
+                $('<span />')
+                    .addClass('b-tree-toggle')
+                    .prependTo($li);
+            }
+        },
 
-		showChildren: function($li) {
-			var $ul = $li.find('> ul');
+        showChildren: function($li) {
+            var $ul = $li.find('> ul');
 
-			if ($ul.length === 0) {
-				var page = $li.data('page'),
-					$ul = $('<ul></ul>').attr('parent-id', page.getId());
+            if ($ul.length === 0) {
+                var page = $li.data('page');
 
-				$li.append($ul);
-				this.getChildren(page);
-			}
+                $ul = $('<ul></ul>').attr('parent-id', page.getId());
+                $li.append($ul);
 
-			$li.find('> .b-tree-toggle').addClass(this.expandedClass);
+                this.getChildren(page);
+            }
 
-			$ul.show();
-		}
-	});
+            $li.find('> .b-tree-toggle').addClass(this.expandedClass);
+
+            $ul.show();
+        }
+    });
 }(BoomCMS));
 ;$.widget('boom.pageSettingsDefault', {
-	bind: function() {
-		var settingsEditor = this,
-			section = settingsEditor.options.section;
+    bind: function() {
+        var settingsEditor = this,
+            section = settingsEditor.options.section;
 
-		this.element
-			.on('click', '.b-button-cancel', function(e) {
-				e.preventDefault();
+        this.element
+            .on('click', '.b-button-cancel', function(e) {
+                e.preventDefault();
 
-				settingsEditor.options.settings.show(section);
-			})
-			.on('click', '.b-button-save', function(e) {
-				e.preventDefault();
+                settingsEditor.options.settings.show(section);
+            })
+            .on('click', '.b-button-save', function(e) {
+                e.preventDefault();
 
-				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
-					.done(function() {
-						new boomNotification('Page settings saved').show();
-					});
-			});
-	},
+                settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
+                    .done(function() {
+                        BoomCMS.Notification('Page settings saved').show();
+                    });
+            });
+    },
 
-	_create: function() {
-		this.page = this.options.page;
-		this.bind();
+    _create: function() {
+        this.page = this.options.page;
+        this.bind();
 
-		this.element.find('time').localTime();
-	}
+        this.element.find('time').localTime();
+    }
 });;$.widget('boom.pageSettingsAcl', $.boom.pageSettingsDefault, {
-	bind: function() {
-		var settings = this,
-			page = this.options.page;
+    bind: function() {
+        var settings = this,
+            page = this.options.page;
 
-		this.element
-			.find('select[multiple]')
-			.chosen()
-			.change(function(event, data) {
-				if (typeof(data.selected) !== 'undefined') {
-					return page.addAclGroup(data.selected);
-				}
+        this.element
+            .find('select[multiple]')
+            .chosen()
+            .change(function(event, data) {
+                if (typeof(data.selected) !== 'undefined') {
+                    return page.addAclGroup(data.selected);
+                }
 
-				return page.removeAclGroup(data.deselected);
-			});
+                return page.removeAclGroup(data.deselected);
+            });
 
-		this.element.on('change', 'select[name=b-page-acl-toggle]', function() {
-			settings.toggleGroups();
+        this.element.on('change', 'select[name=b-page-acl-toggle]', function() {
+            settings.toggleGroups();
 
-			page.setEnableAcl($(this).val());
-		});
+            page.setEnableAcl($(this).val());
+        });
 
-		this.toggleGroups();
-	},
+        this.toggleGroups();
+    },
 
-	toggleGroups: function() {
-		var val = this.element.find('select[name=b-page-acl-toggle]').val(),
-			$groups = this.element.find('#b-page-acl-groups');
+    toggleGroups: function() {
+        var val = this.element.find('select[name=b-page-acl-toggle]').val(),
+            $groups = this.element.find('#b-page-acl-groups');
 
-		(val === '1') ? $groups.show() : $groups.hide();
-	}
+        (val === '1') ? $groups.show() : $groups.hide();
+    }
 });;$.widget('boom.pageSettingsChildren', {
-	bind: function() {
-		var settingsEditor = this,
-			page = this.options.page,
-			pages = new BoomCMS.Collections.Pages();
+    bind: function() {
+        var settingsEditor = this,
+            page = this.options.page,
+            pages = new BoomCMS.Collections.Pages();
 
-		this.element
-			.on('change', 'select[name="children_ordering_policy"]', function() {
-				if ($(this).find('option:selected').val() === 'sequence') {
-					settingsEditor.$reorderButton.show();
-				} else {
-					settingsEditor.$reorderButton.hide();
-				}
-			})
-			.on('click', '#b-page-settings-children-reorder', function(e) {
-				e.preventDefault();
+        this.element
+            .on('change', 'select[name="children_ordering_policy"]', function() {
+                if ($(this).find('option:selected').val() === 'sequence') {
+                    settingsEditor.$reorderButton.show();
+                } else {
+                    settingsEditor.$reorderButton.hide();
+                }
+            })
+            .on('click', '#b-page-settings-children-reorder', function(e) {
+                e.preventDefault();
 
-				// Don't use pages.findByParent()
-				// We need to preserve the order that the results are returned in.
-				$.get(pages.url, {
-						parent: page.id,
-						excludeinvisible: false
-					})
-					.done(function(pages) {
-						var sortDialog = new boomDialog({
-							msg: "<div></div>",
-							title: 'Reorder child pages',
-							width: 'auto',
-							open: function() {
-								var $ul = $('<ul>')
-									.attr('id', 'b-page-settings-children-sort')
-									.appendTo(sortDialog.contents);
+                // Don't use pages.findByParent()
+                // We need to preserve the order that the results are returned in.
+                $.get(pages.url, {
+                    parent: page.id,
+                    excludeinvisible: false
+                })
+                    .done(function(pages) {
+                        var sortDialog = new BoomCMS.Dialog({
+                            msg: '<div></div>',
+                            title: 'Reorder child pages',
+                            width: 'auto',
+                            open: function() {
+                                var $ul = $('<ul>')
+                                    .attr('id', 'b-page-settings-children-sort')
+                                    .appendTo(sortDialog.contents);
 
-								for (var i = 0; i < pages.length; i++) {
-									$('<li>')
-										.attr('data-id', pages[i].id)
-										.append(
-											$('<span>')
-												.addClass('title fa fa-bars')
-												.text(pages[i].title)
-										)
-										.appendTo($ul);
-								}
+                                for (var i = 0; i < pages.length; i++) {
+                                    $('<li>')
+                                        .attr('data-id', pages[i].id)
+                                        .append(
+                                            $('<span>')
+                                                .addClass('title fa fa-bars')
+                                                .text(pages[i].title)
+                                        )
+                                        .appendTo($ul);
+                                }
 
-								$ul.sortable();
-							}
-						});
+                                $ul.sortable();
+                            }
+                        });
 
-						sortDialog.done(function() {
-							var sequences = sortDialog.contents.find('li').map(function() {
-								return $(this).attr('data-id');
-							}).get();
+                        sortDialog.done(function() {
+                            var sequences = sortDialog.contents.find('li').map(function() {
+                                return $(this).attr('data-id');
+                            }).get();
 
-							$.post(settingsEditor.sortUrl, {sequences: sequences})
-								.done(function() {
-									new boomNotification('Child page ordering saved').show();
-								});
-						});
-					});
-			})
-			.on('click', '.b-button-cancel', function(e) {
-				e.preventDefault();
+                            $.post(settingsEditor.sortUrl, {sequences: sequences})
+                                .done(function() {
+                                    BoomCMS.Notification('Child page ordering saved').show();
+                                });
+                        });
+                    });
+            })
+            .on('click', '.b-button-cancel', function(e) {
+                e.preventDefault();
 
-				settingsEditor.options.settings.show('children');
-			})
-			.on('click', '.b-button-save', function(e) {
-				e.preventDefault();
+                settingsEditor.options.settings.show('children');
+            })
+            .on('click', '.b-button-save', function(e) {
+                e.preventDefault();
 
-				page
-					.saveSettings('children', settingsEditor.element.find('form').serialize())
-					.done(function() {
-						new boomNotification('Child page settings saved').show();
-					});
-			});
-	},
+                page
+                    .saveSettings('children', settingsEditor.element.find('form').serialize())
+                    .done(function() {
+                        BoomCMS.Notification('Child page settings saved').show();
+                    });
+            });
+    },
 
-	_create: function() {
-		this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
-		this.sortUrl = this.options.page.baseUrl + 'settings/sort-children';
+    _create: function() {
+        this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
+        this.sortUrl = this.options.page.baseUrl + 'settings/sort-children';
 
-		this.bind();
-	}
+        this.bind();
+    }
 });;$.widget('boom.pageSettingsDelete', {
-	bind: function() {
-		var settingsEditor = this,
-			page = this.page;
+    bind: function() {
+        var settingsEditor = this,
+            page = this.page;
 
-		this.deleteOptions = {
-			redirectTo: 0,
-			reparentChildrenTo: 0
-		};
+        this.deleteOptions = {
+            redirectTo: 0,
+            reparentChildrenTo: 0
+        };
 
-		this.element
-			.on('change', 'input[type=radio]', function() {
-				$(this).closest('section')
-					.find('.target')
-					.toggle();
-			})
-			.on('change', 'input[name=urls]', function() {
-				var $this = $(this);
+        this.element
+            .on('change', 'input[type=radio]', function() {
+                $(this).closest('section')
+                    .find('.target')
+                    .toggle();
+            })
+            .on('change', 'input[name=urls]', function() {
+                var $this = $(this);
 
-				if ($this.val() === '1' && settingsEditor.deleteOptions.redirectTo === 0) {
-					new boomLinkPicker(null, {external: false, asset: false})
-						.done(function(link) {
-							settingsEditor.deleteOptions.redirectTo = link.getPageId();
-							
-							$this.closest('label')
-								.find('.target span')
-								.text(link.getTitle());
-						})
-						.fail(function() {
-								settingsEditor.element
-									.find('input[type=radio][name=urls][value=0]')
-									.prop('checked', true);
-						});
-				}
-			})
-			.on('change', 'input[name=children]', function() {
-				var $this = $(this);
+                if ($this.val() === '1' && settingsEditor.deleteOptions.redirectTo === 0) {
+                    new BoomCMS.LinkPicker(null, {external: false, asset: false})
+                        .done(function(link) {
+                            settingsEditor.deleteOptions.redirectTo = link.getPageId();
+                            
+                            $this.closest('label')
+                                .find('.target span')
+                                .text(link.getTitle());
+                        })
+                        .fail(function() {
+                            settingsEditor.element
+                                    .find('input[type=radio][name=urls][value=0]')
+                                    .prop('checked', true);
+                        });
+                }
+            })
+            .on('change', 'input[name=children]', function() {
+                var $this = $(this);
 
-				if ($this.val() === '1' && settingsEditor.deleteOptions.reparentChildrenTo === 0) {
-					new boomLinkPicker(null, {external: false, asset: false})
-						.done(function(link) {
-							settingsEditor.deleteOptions.reparentChildrenTo = link.getPageId();
+                if ($this.val() === '1' && settingsEditor.deleteOptions.reparentChildrenTo === 0) {
+                    new BoomCMS.LinkPicker(null, {external: false, asset: false})
+                        .done(function(link) {
+                            settingsEditor.deleteOptions.reparentChildrenTo = link.getPageId();
 
-							$this
-								.closest('label')
-								.find('.target span')
-								.text(link.getTitle());
-						})
-						.fail(function() {
-							settingsEditor.element
-								.find('input[type=radio][name=children][value=0]')
-								.prop('checked', true);
-						});
-				}
-			})
-			.on('click', 'a.edit', function() {
-				var $this = $(this),
-					option = $this.attr('data-option'),
-					link = new boomLink(null, settingsEditor.deleteOptions[option], $this.siblings('span').text());
+                            $this
+                                .closest('label')
+                                .find('.target span')
+                                .text(link.getTitle());
+                        })
+                        .fail(function() {
+                            settingsEditor.element
+                                .find('input[type=radio][name=children][value=0]')
+                                .prop('checked', true);
+                        });
+                }
+            })
+            .on('click', 'a.edit', function() {
+                var $this = $(this),
+                    option = $this.attr('data-option'),
+                    link = new BoomCMS.Link(null, settingsEditor.deleteOptions[option], $this.siblings('span').text());
 
-					new boomLinkPicker(link, {external: false, asset: false})
-						.done(function(link) {
-							settingsEditor.deleteOptions[option] = link.getPageId();
-							
-							$this.closest('label')
-								.find('.target')
-								.show()
-								.find('span')
-								.text(link.getTitle());
-						});
-			})
-			.on('click', '#b-page-delete-confirm', function(e) {
-				e.preventDefault();
+                new BoomCMS.LinkPicker(link, {external: false, asset: false})
+                        .done(function(link) {
+                            settingsEditor.deleteOptions[option] = link.getPageId();
+                            
+                            $this.closest('label')
+                                .find('.target')
+                                .show()
+                                .find('span')
+                                .text(link.getTitle());
+                        });
+            })
+            .on('click', '#b-page-delete-confirm', function(e) {
+                e.preventDefault();
 
-				page.delete(settingsEditor.getDeleteOptions())
-					.done(function(response) {
-						settingsEditor._trigger('done', null, response);
-					});
-			});
-	},
+                page.delete(settingsEditor.getDeleteOptions())
+                    .done(function(response) {
+                        settingsEditor._trigger('done', null, response);
+                    });
+            });
+    },
 
-	_create: function() {
-		this.page = this.options.page;
-		this.bind();
-	},
+    _create: function() {
+        this.page = this.options.page;
+        this.bind();
+    },
 
-	getDeleteOptions: function() {
-		var reparentChildrenTo = this.element.find('input[name=children]').val(),
-			redirectTo = this.element.find('input[name=urls]').val();
+    getDeleteOptions: function() {
+        var reparentChildrenTo = this.element.find('input[name=children]').val(),
+            redirectTo = this.element.find('input[name=urls]').val();
 
-		return {
-			reparentChildrenTo: (reparentChildrenTo === 0) ? 0 : this.deleteOptions['reparentChildrenTo'],
-			redirectTo: (redirectTo ===0) ? 0 : this.deleteOptions['redirectTo']
-		};
-	}
+        return {
+            reparentChildrenTo: (reparentChildrenTo === 0) ? 0 : this.deleteOptions['reparentChildrenTo'],
+            redirectTo: (redirectTo ===0) ? 0 : this.deleteOptions['redirectTo']
+        };
+    }
 });;$.widget('boom.pageSettingsDrafts', {
-	bind: function() {
-		var draftSettings = this,
-			page = this.options.page;
+    bind: function() {
+        var draftSettings = this,
+            page = this.options.page;
 
-		this.element
-			.on('click', '.b-page-publish', function() {
-				page.publish()
-					.done(function(status) {
-						draftSettings.update({
-							action: 'publish',
-							status: status
-						});
-					});
-			})
-			.on('click', '.b-page-embargo', function() {
-				page.embargo()
-					.done(function(status) {
-						draftSettings.update({
-							action: 'embargo',
-							status: status
-						});
-					});
-			})
-			.on('click', '.b-page-revert', function() {
-				page.revertToPublished()
-					.done(function(status) {
-						draftSettings.update({
-							action: 'revert',
-							status: status
-						});
-					});
-			})
-			.on('click', '.b-page-request-approval', function() {
-				page.requestApproval()
-					.done(function(status) {
-						draftSettings.update({
-							action: 'request approval',
-							status: status
-						});
-					});
-			})
-			.on('click', '.b-page-preview', function() {
-				window.BoomCMS.Editor.state('preview', $(this).attr('data-url'));
-			});
-	},
+        this.element
+            .on('click', '.b-page-publish', function() {
+                page.publish()
+                    .done(function(status) {
+                        draftSettings.update({
+                            action: 'publish',
+                            status: status
+                        });
+                    });
+            })
+            .on('click', '.b-page-embargo', function() {
+                page.embargo()
+                    .done(function(status) {
+                        draftSettings.update({
+                            action: 'embargo',
+                            status: status
+                        });
+                    });
+            })
+            .on('click', '.b-page-revert', function() {
+                page.revertToPublished()
+                    .done(function(status) {
+                        draftSettings.update({
+                            action: 'revert',
+                            status: status
+                        });
+                    });
+            })
+            .on('click', '.b-page-request-approval', function() {
+                page.requestApproval()
+                    .done(function(status) {
+                        draftSettings.update({
+                            action: 'request approval',
+                            status: status
+                        });
+                    });
+            })
+            .on('click', '.b-page-preview', function() {
+                window.BoomCMS.Editor.state('preview', $(this).attr('data-url'));
+            });
+    },
 
-	_create: function() {
-		this.bind();
-	},
-	
-	update: function(status) {
-		this._trigger('done', null, status);
-		this.options.settings.show('drafts');
-	}
+    _create: function() {
+        this.bind();
+    },
+    
+    update: function(status) {
+        this._trigger('done', null, status);
+        this.options.settings.show('drafts');
+    }
 });;$.widget('boom.pageSettingsFeature', {
-	changed: false,
+    changed: false,
 
-	getImagesInPage: function() {
-		return top.$('body:first-of-type')
-			.find('img[src^="/asset/"]')
-			.map(function() {
-				var $this = $(this),
-					assetId,
-					src = $this.attr('src').replace(/\/asset\/(\d+)(.*?)/, "$1");
+    getImagesInPage: function() {
+        return top.$('body:first-of-type')
+            .find('img[src^="/asset/"]')
+            .map(function() {
+                var $this = $(this),
+                    src = $this.attr('src').replace(/\/asset\/(\d+)(.*?)/, '$1');
 
-				return src.indexOf('/')? src : src.substring(0, src.indexOf('/'));
-			});
-	},
+                return src.indexOf('/')? src : src.substring(0, src.indexOf('/'));
+            });
+    },
 
-	bind: function() {
-		var pageFeatureEditor = this,
-			$imagesInPageContainer = this.element.find('.images-in-page');
+    bind: function() {
+        var pageFeatureEditor = this,
+            $imagesInPageContainer = this.element.find('.images-in-page');
 
-		this.element
-			.on('click', '#b-page-feature-remove', function() {
-				pageFeatureEditor.removeFeature();
-			})
-			.on('click', '#b-page-feature-edit', function() {
-				new boomAssetPicker(pageFeatureEditor.currentImage)
-					.done(function(asset) {
-						pageFeatureEditor.setFeature(asset);
-					});
-			})
-			.on('click', '.b-button-cancel', function() {
-				pageFeatureEditor.setFeature(pageFeatureEditor.intial);
-				pageFeatureEditor.changed = false;
-			}).on('click', '.b-button-save', function() {
-				pageFeatureEditor.save();
-			})
-			.on('click', '.b-page-feature-set', function() {
-				pageFeatureEditor.setFeature(new BoomCMS.Asset({id: $(this).attr('data-asset-id')}));
-			});
+        this.element
+            .on('click', '#b-page-feature-remove', function() {
+                pageFeatureEditor.removeFeature();
+            })
+            .on('click', '#b-page-feature-edit', function() {
+                BoomCMS.AssetPicker(pageFeatureEditor.currentImage)
+                    .done(function(asset) {
+                        pageFeatureEditor.setFeature(asset);
+                    });
+            })
+            .on('click', '.b-button-cancel', function() {
+                pageFeatureEditor.setFeature(pageFeatureEditor.intial);
+                pageFeatureEditor.changed = false;
+            }).on('click', '.b-button-save', function() {
+                pageFeatureEditor.save();
+            })
+            .on('click', '.b-page-feature-set', function() {
+                pageFeatureEditor.setFeature(new BoomCMS.Asset({id: $(this).attr('data-asset-id')}));
+            });
 
-		if (this.imagesInPage.length) {
-			for (var i = 0; i < this.imagesInPage.length; i++) {
-				var asset = new BoomCMS.Asset({id: this.imagesInPage[i]});
+        if (this.imagesInPage.length) {
+            for (var i = 0; i < this.imagesInPage.length; i++) {
+                var asset = new BoomCMS.Asset({id: this.imagesInPage[i]});
 
-				$imagesInPageContainer.append("<li><a href='#' class='b-page-feature-set' data-asset-id='" + asset.getId() + "'><img src='" + asset.getUrl() + "' /></a></li>");
-			}
-		} else {
-			$imagesInPageContainer.parent('section').hide();
-		}
+                $imagesInPageContainer.append('<li><a href=\'#\' class=\'b-page-feature-set\' data-asset-id=\'' + asset.getId() + '\'><img src=\'' + asset.getUrl() + '\' /></a></li>');
+            }
+        } else {
+            $imagesInPageContainer.parent('section').hide();
+        }
 
-		if (!this.currentImage.getId()) {
-			this.hasNoFeatureImage();
-		}
-	},
+        if (!this.currentImage.getId()) {
+            this.hasNoFeatureImage();
+        }
+    },
 
-	_create: function() {
-		this.currentImage = this.initial = new BoomCMS.Asset({id: this.element.find('#b-page-feature-current').attr('src').replace(/\/asset\/(\d+)(.*)/, "$1")});
-		this.imagesInPage = this.getImagesInPage();
-		this.bind();
-	},
+    _create: function() {
+        this.currentImage = this.initial = new BoomCMS.Asset({id: this.element.find('#b-page-feature-current').attr('src').replace(/\/asset\/(\d+)(.*)/, '$1')});
+        this.imagesInPage = this.getImagesInPage();
+        this.bind();
+    },
 
-	hasNoFeatureImage: function() {
-		this.element.find('#b-page-feature-current').hide();
-		this.element.find('#b-page-feature-remove').prop('disabled', true);
-		this.element.find('#b-page-feature-none').show();
-	},
+    hasNoFeatureImage: function() {
+        this.element.find('#b-page-feature-current').hide();
+        this.element.find('#b-page-feature-remove').prop('disabled', true);
+        this.element.find('#b-page-feature-none').show();
+    },
 
-	removeFeature: function() {
-		this.setFeature(new BoomCMS.Asset());
-	},
+    removeFeature: function() {
+        this.setFeature(new BoomCMS.Asset());
+    },
 
-	save: function() {
-		var pageFeatureEditor = this;
+    save: function() {
+        var pageFeatureEditor = this;
 
-		if (this.changed) {
-			pageFeatureEditor.options.page.setFeatureImage(this.currentImage)
-				.done(function(response) {
-					new boomNotification('Page feature image saved').show();
-			
-					pageFeatureEditor._trigger('done', null, pageFeatureEditor.currentImage);
-				});
-		}
-	},
+        if (this.changed) {
+            pageFeatureEditor.options.page.setFeatureImage(this.currentImage)
+                .done(function() {
+                    BoomCMS.Notification('Page feature image saved').show();
+            
+                    pageFeatureEditor._trigger('done', null, pageFeatureEditor.currentImage);
+                });
+        }
+    },
 
-	setFeature: function(asset) {
-		if (asset && asset.getId() !== this.currentImage.getId()) {
-			this.changed = true;
-			this.currentImage = asset;
+    setFeature: function(asset) {
+        if (asset && asset.getId() !== this.currentImage.getId()) {
+            this.changed = true;
+            this.currentImage = asset;
 
-			if (asset.getId()) {
-				this.element.find('#b-page-feature-current').attr('src', asset.getUrl('thumb', 500)).show();
-				this.element.find('#b-page-feature-remove').prop('disabled', false);
-				this.element.find('#b-page-feature-none').hide();
-			}
-		}
+            if (asset.getId()) {
+                this.element.find('#b-page-feature-current').attr('src', asset.getUrl('thumb', 500)).show();
+                this.element.find('#b-page-feature-remove').prop('disabled', false);
+                this.element.find('#b-page-feature-none').hide();
+            }
+        }
 
-		if (!asset || !asset.getId()) {
-			this.hasNoFeatureImage();
-		}
-	}
+        if (!asset || !asset.getId()) {
+            this.hasNoFeatureImage();
+        }
+    }
 });;$.widget('boom.pageSettingsHistory', $.boom.pageSettingsDefault, {
-	bind: function() {
-		this.element.on('click', 'a[data-timestamp]', function() {
-			BoomCMS.Editor.setTime($(this).attr('data-timestamp')).done(function(response) {
-				top.location.reload();
-			});
-		});
-	}
+    bind: function() {
+        this.element.on('click', 'a[data-timestamp]', function() {
+            BoomCMS.Editor.setTime($(this).attr('data-timestamp')).done(function() {
+                top.location.reload();
+            });
+        });
+    }
 });;$.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
-	bindReparent: function() {
-		var settingsEditor = this;
+    bindReparent: function() {
+        var settingsEditor = this;
 
-		this.element
-			.on('click', '.b-navigation-reparent', function(e) {
-				var current = settingsEditor.element.find('input[name=parent_id]').val();
+        this.element
+            .on('click', '.b-navigation-reparent', function(e) {
+                var current = settingsEditor.element.find('input[name=parent_id]').val();
 
-				e.preventDefault();
+                e.preventDefault();
 
-				new boomLinkPicker(new boomLink(null, current), {
-						external: false,
-						asset: false
-					})
-					.done(function(link) {
-						settingsEditor.element.find('input[name=parent_id]').val(link.getPageId());
-				
-						settingsEditor.element
-							.find('.title')
-							.text(link.getTitle())
-							.end()
-							.find('.uri')
-							.text(link.getUrl());
-					});
-			});
-	},
+                new BoomCMS.LinkPicker(new BoomCMS.Link(null, current), {
+                    external: false,
+                    asset: false
+                })
+                    .done(function(link) {
+                        settingsEditor.element.find('input[name=parent_id]').val(link.getPageId());
+                
+                        settingsEditor.element
+                            .find('.title')
+                            .text(link.getTitle())
+                            .end()
+                            .find('.uri')
+                            .text(link.getUrl());
+                    });
+            });
+    },
 
-	_create: function() {
-		var $el = this.element;
-		this.page = this.options.page;
-		this.bind();
-		this.bindReparent();
+    _create: function() {
+        var $el = this.element;
+        this.page = this.options.page;
+        this.bind();
+        this.bindReparent();
 
-		$el.find('.boom-tree').pageTree({
-			active: $el.find('input[name=parent_id]').val(),
-			onPageSelect: function(page) {
-				$el.find('input[name=parent_id]').val(page.pageId);
-			}
-		});
-	}
+        $el.find('.boom-tree').pageTree({
+            active: $el.find('input[name=parent_id]').val(),
+            onPageSelect: function(page) {
+                $el.find('input[name=parent_id]').val(page.pageId);
+            }
+        });
+    }
 });;(function($, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	$.widget('boom.pageSettingsRelations', {
-		addRelatedPage: function() {
-			var page = this.page,
-				pages = this.pages;
+    $.widget('boom.pageSettingsRelations', {
+        addRelatedPage: function() {
+            var page = this.page,
+                pages = this.pages;
 
-			new boomLinkPicker(new boomLink(), {
-					external: false,
-					asset: false
-				})
-				.done(function(link) {
-					page.addRelatedPage(link.getPageId())
-						.done(function() {
-							pages.add(new BoomCMS.Page({
-								id: link.getPageId(),
-								title: link.getTitle(),
-								url: link.getUrl()
-							}));
-						});
-				});
-		},
+            new BoomCMS.LinkPicker(new BoomCMS.Link(), {
+                external: false,
+                asset: false
+            })
+                .done(function(link) {
+                    page.addRelatedPage(link.getPageId())
+                        .done(function() {
+                            pages.add(new BoomCMS.Page({
+                                id: link.getPageId(),
+                                title: link.getTitle(),
+                                url: link.getUrl()
+                            }));
+                        });
+                });
+        },
 
-		addToList: function(page) {
-			var $li = $('<li>');
+        addToList: function(page) {
+            var $li = $('<li>');
 
-			$('<span>').addClass('title').text(page.getTitle()).appendTo($li),
-			$('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
-			$('<a>')
-				.attr('href', '#')
-				.addClass('fa fa-trash-o')
-				.data('page', page)
-				.html('<span>Remove</span>')
-				.appendTo($li);
+            $('<span>').addClass('title').text(page.getTitle()).appendTo($li),
+            $('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
+            $('<a>')
+                .attr('href', '#')
+                .addClass('fa fa-trash-o')
+                .data('page', page)
+                .html('<span>Remove</span>')
+                .appendTo($li);
 
-			this.element.find('ul').append($li);
-			this.element.find('.current').show();
-		},
+            this.element.find('ul').append($li);
+            this.element.find('.current').show();
+        },
 
-		bind: function() {
-			var editor = this,
-				page = this.page;
+        bind: function() {
+            var editor = this;
 
-			this.element
-				.on('click', '#b-tags-addpage', function() {
-					editor.addRelatedPage();
-				})
-				.on('click', 'li a', function() {
-					editor.removeRelatedPage($(this));
-				});
-		},
+            this.element
+                .on('click', '#b-tags-addpage', function() {
+                    editor.addRelatedPage();
+                })
+                .on('click', 'li a', function() {
+                    editor.removeRelatedPage($(this));
+                });
+        },
 
-		_create: function() {
-			var relations = this,
-				page = this.options.page;
+        _create: function() {
+            var relations = this,
+                page = this.options.page;
 
-			this.page = page;
-			this.pages = new BoomCMS.Collections.Pages();
+            this.page = page;
+            this.pages = new BoomCMS.Collections.Pages();
 
-			this.pages
-				.on('add', function(page) {
-					relations.addToList(page);
-				})
-				.on('remove', function() {
-					page.removeRelatedPage(page);	
-				});
+            this.pages
+                .on('add', function(page) {
+                    relations.addToList(page);
+                })
+                .on('remove', function() {
+                    page.removeRelatedPage(page);    
+                });
 
-			this.getRelatedPages();
-			this.bind();
-		},
+            this.getRelatedPages();
+            this.bind();
+        },
 
-		getRelatedPages: function() {
-			this.pages.findByRelatedTo(this.page);
-		},
+        getRelatedPages: function() {
+            this.pages.findByRelatedTo(this.page);
+        },
 
-		removeRelatedPage: function($a) {
-			var $el = this.element,
-				$relatedPages = $el.find('ul'),
-				$current = $el.find('.current'),
-				pages = this.pages,
-				page = $a.data('page');
+        removeRelatedPage: function($a) {
+            var $el = this.element,
+                $relatedPages = $el.find('ul'),
+                $current = $el.find('.current'),
+                page = $a.data('page');
 
-			this.pages.remove(page);
-			
-			$a.parent().remove();
-			$relatedPages.find('li').length ? $current.show() : $current.hide();
-		}
-	});
-}(jQuery, BoomCMS));;(function($, BoomCMS) {
-	'use strict';
+            this.pages.remove(page);
+            
+            $a.parent().remove();
+            $relatedPages.find('li').length ? $current.show() : $current.hide();
+        }
+    });
+}(jQuery, BoomCMS));;(function($) {
+    'use strict';
 
-	$.widget('boom.pageSettingsTags', {
-		activeClass: 'active',
+    $.widget('boom.pageSettingsTags', {
+        activeClass: 'active',
 
-		addTag: function($a) {
-			var activeClass = this.activeClass,
-				group = $a.parents('ul').attr('data-group'),
-				tag = $a.find('span:first-of-type').text();
+        addTag: function($a) {
+            var activeClass = this.activeClass,
+                group = $a.parents('ul').attr('data-group'),
+                tag = $a.find('span:first-of-type').text();
 
-			this.page
-				.addTag(group, tag)
-				.done(function(tagId) {
-					$a.attr('data-tag', tagId)
-					.addClass(activeClass);
-				});
-		},
+            this.page
+                .addTag(group, tag)
+                .done(function(tagId) {
+                    $a.attr('data-tag', tagId)
+                    .addClass(activeClass);
+                });
+        },
 
-		addTagGroup: function(name) {
-			if (name) {
-				var $newGroup = $('<li><h2>' + name + '</h2><ul data-group="' + name + '"></ul></li>');
+        addTagGroup: function(name) {
+            if (name) {
+                var $newGroup = $('<li><h2>' + name + '</h2><ul data-group="' + name + '"></ul></li>');
 
-				this.$list.append($newGroup);
+                this.$list.append($newGroup);
 
-				$newGroup
-					.append(this.newTagForm)
-					.find('input')
-					.focus();
-			}
-		},
+                $newGroup
+                    .append(this.newTagForm)
+                    .find('input')
+                    .focus();
+            }
+        },
 
-		bind: function() {
-			var tagEditor = this,
-				page = this.page;
+        bind: function() {
+            var tagEditor = this;
 
-			this.element
-				.on('submit', 'form', function(e) {
-					e.preventDefault();
-				})
-				.on('submit', '.b-tags-newgroup form', function() {
-					var $input = $(this).find('input[type=text]');
+            this.element
+                .on('submit', 'form', function(e) {
+                    e.preventDefault();
+                })
+                .on('submit', '.b-tags-newgroup form', function() {
+                    var $input = $(this).find('input[type=text]');
 
-					tagEditor.addTagGroup($input.val());
-					$input.val('');
-				})
-				.on('submit', '.create-tag', function() {
-					var $this = $(this),
-						group = $this.siblings('ul').attr('data-group'),
-						tag = $this.find('input').val();
+                    tagEditor.addTagGroup($input.val());
+                    $input.val('');
+                })
+                .on('submit', '.create-tag', function() {
+                    var $this = $(this),
+                        group = $this.siblings('ul').attr('data-group'),
+                        tag = $this.find('input').val();
 
-					tagEditor.createTag(group, tag);
-					$this.find('input').val('');
-				})
-				.on('click', '#b-page-tags a', function(e) {
-					e.preventDefault();
-						
-					tagEditor.toggleTag($(this));
-				});
-		},
+                    tagEditor.createTag(group, tag);
+                    $this.find('input').val('');
+                })
+                .on('click', '#b-page-tags a', function(e) {
+                    e.preventDefault();
+                        
+                    tagEditor.toggleTag($(this));
+                });
+        },
 
-		_create: function() {
-			var pageTags = this;
+        _create: function() {
+            var pageTags = this;
 
-			this.page = this.options.page;
-			this.$list = this.element.find('#b-page-tags > ul');
-			this.newTagForm = this.element.find('#b-tags-add').html();
-			this.tagTemplate = this.element.find('#b-tag-template').html();
+            this.page = this.options.page;
+            this.$list = this.element.find('#b-page-tags > ul');
+            this.newTagForm = this.element.find('#b-tags-add').html();
+            this.tagTemplate = this.element.find('#b-tag-template').html();
 
-			this.$list.find('> li').each(function() {
-				$(this).append(pageTags.newTagForm);
-			});
+            this.$list.find('> li').each(function() {
+                $(this).append(pageTags.newTagForm);
+            });
 
-			this.bind();
-		},
+            this.bind();
+        },
 
-		createTag: function(group, tag) {
-			if (tag) {
-				var $li = $(this.tagTemplate);
+        createTag: function(group, tag) {
+            if (tag) {
+                var $li = $(this.tagTemplate);
 
-				$li.find('span:first-of-type').text(tag);
+                $li.find('span:first-of-type').text(tag);
 
-				this.element
-					.find('ul[data-group="' + group + '"]')
-					.append($li);
+                this.element
+                    .find('ul[data-group="' + group + '"]')
+                    .append($li);
 
-				this.addTag($li.find('a'));
-			}
-		},
+                this.addTag($li.find('a'));
+            }
+        },
 
-		removeTag: function($a) {
-			var activeClass = this.activeClass;
+        removeTag: function($a) {
+            var activeClass = this.activeClass;
 
-			this.page
-				.removeTag($a.attr('data-tag'))
-				.done(function() {
-					$a.removeClass(activeClass);
-				});
-		},
+            this.page
+                .removeTag($a.attr('data-tag'))
+                .done(function() {
+                    $a.removeClass(activeClass);
+                });
+        },
 
-		toggleTag: function($a) {
-			var funcName = $a.hasClass(this.activeClass) ? 'removeTag' : 'addTag';
+        toggleTag: function($a) {
+            var funcName = $a.hasClass(this.activeClass) ? 'removeTag' : 'addTag';
 
-			this[funcName]($a);
-			$a.blur();
-		}
-	});
-}(jQuery, BoomCMS));
+            this[funcName]($a);
+            $a.blur();
+        }
+    });
+}(jQuery));
 ;$.widget('boom.pageSettingsTemplate', {
-	_create: function() {
-		var templateEditor = this,
-			initial = this.element.find('select option:selected').val();
+    _create: function() {
+        var templateEditor = this,
+            initial = this.element.find('select option:selected').val();
 
-		this.showDetails();
+        this.showDetails();
 
-		this.element
-			.on('change', 'select', function() {
-				templateEditor.showDetails();
-			})
-			.on('click', '.b-template-save', function(e) {
-				e.preventDefault();
-		
-				var templateId = templateEditor.element.find('select option:selected').val();
+        this.element
+            .on('change', 'select', function() {
+                templateEditor.showDetails();
+            })
+            .on('click', '.b-template-save', function(e) {
+                e.preventDefault();
+        
+                var templateId = templateEditor.element.find('select option:selected').val();
 
-				templateEditor.save(templateId);
-			})
-			.on('click', '.b-template-cancel', function(e) {
-				e.preventDefault();
+                templateEditor.save(templateId);
+            })
+            .on('click', '.b-template-cancel', function(e) {
+                e.preventDefault();
 
-				templateEditor.element.find('select').val(initial);
-			});
-	},
+                templateEditor.element.find('select').val(initial);
+            });
+    },
 
-	save: function(templateId) {
-		var templateEditor = this;
+    save: function(templateId) {
+        var templateEditor = this;
 
-		if (templateId) {
-			this.options.page.setTemplate(templateId)
-				.done(function() {
-					new boomNotification('Page template updated').show();
+        if (templateId) {
+            this.options.page.setTemplate(templateId)
+                .done(function() {
+                    BoomCMS.Notification('Page template updated').show();
 
-					templateEditor._trigger('done');
-				});
-		} else {
-			new boomAlert('You must select a template from the list');
-		}
-	},
+                    templateEditor._trigger('done');
+                });
+        } else {
+            BoomCMS.alert('You must select a template from the list');
+        }
+    },
 
-	showDetails: function() {
-		var $template = this.element.find('#template'),
-			$description = this.element.find('#description'),
-			$count = this.element.find('#count'),
-			$selected = $template.find('option:selected'),
-			description_text = $selected.data('description');
+    showDetails: function() {
+        var $template = this.element.find('#template'),
+            $description = this.element.find('#description'),
+            $count = this.element.find('#count'),
+            $selected = $template.find('option:selected'),
+            description_text = $selected.data('description');
 
-		if (description_text) {
-			$description.show().find('p').html($selected.data('description'));
-		} else {
-			$description.hide();
-		}
+        if (description_text) {
+            $description.show().find('p').html($selected.data('description'));
+        } else {
+            $description.hide();
+        }
 
-		$count.find('p').html($selected.data('count'));
-	}
+        $count.find('p').html($selected.data('count'));
+    }
 });;$.widget('boom.pageSettingsUrls', {
-	baseUrl: '/boomcms/page/{page}/urls',
+    baseUrl: '/boomcms/page/{page}/urls',
 
-	add: function() {
-		var url = new boomPageUrl(null, this.page.id),
-			urlEditor = this;
+    add: function() {
+        var url = new BoomCMS.PageUrl(null, this.page.id),
+            urlEditor = this;
 
-		url.add(this.element.find('form input[type=text]').val())
-			.done(function(response) {
-				new boomNotification('Url added').show();
+        url.add(this.element.find('form input[type=text]').val())
+            .done(function() {
+                BoomCMS.Notification('Url added').show();
 
-				urlEditor.element.load(urlEditor.list_url);
-			});
-	},
+                urlEditor.element.load(urlEditor.list_url);
+            });
+    },
 
-	bind: function() {
-		var urlEditor = this,
-			page = this.page;
+    bind: function() {
+        var urlEditor = this;
 
-		this.element
-			.on('change', '.b-urls-primary', function() {
-				var $url = $(this).closest('li'),
-					is_primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
+        this.element
+            .on('change', '.b-urls-primary', function() {
+                var $url = $(this).closest('li'),
+                    is_primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
 
-				if (is_primary) {
-					urlEditor.makePrimary($url);
-					urlEditor._trigger('done', null, $url.find('label').text());
-				}
-			})
-			.on('click', '.b-urls-remove', function(e) {
-				e.preventDefault();
+                if (is_primary) {
+                    urlEditor.makePrimary($url);
+                    urlEditor._trigger('done', null, $url.find('label').text());
+                }
+            })
+            .on('click', '.b-urls-remove', function(e) {
+                e.preventDefault();
 
-				urlEditor.delete($(e.target).closest('li'));
-			})
-			.on('submit', 'form', function(e) {
-				e.preventDefault();
+                urlEditor.delete($(e.target).closest('li'));
+            })
+            .on('submit', 'form', function(e) {
+                e.preventDefault();
 
-				urlEditor.add();
-			});
-	},
+                urlEditor.add();
+            });
+    },
 
-	_create: function() {
-		this.page = this.options.page;
-		this.list_url = this.baseUrl.replace('{page}', this.page.id);
+    _create: function() {
+        this.page = this.options.page;
+        this.list_url = this.baseUrl.replace('{page}', this.page.id);
 
-		this.bind();
-	},
+        this.bind();
+    },
 
-	delete: function($li) {
-		var id = $li.data('id'),
-			url = new boomPageUrl(id, this.page.id);
+    delete: function($li) {
+        var id = $li.data('id'),
+            url = new BoomCMS.PageUrl(id, this.page.id);
 
-		url.delete()
-			.done(function() {
-				$li.remove();
+        url.delete()
+            .done(function() {
+                $li.remove();
 
-				new boomNotification("The specified URL has been deleted").show();
-			});
-	},
+                BoomCMS.Notification('The specified URL has been deleted').show();
+            });
+    },
 
-	makePrimary: function($url) {
-		var url = new boomPageUrl($url.data('id'), this.page.id);
+    makePrimary: function($url) {
+        var url = new BoomCMS.PageUrl($url.data('id'), this.page.id);
 
-		url.makePrimary()
-			.done(function() {
-				$url
-					.parent()
-					.find('.b-page-urls-primary')
-					.removeClass('b-page-urls-primary')
-					.end()
-					.find('.b-urls-primary:checked')
-					.parent()
-					.addClass('b-page-urls-primary');
+        url.makePrimary()
+            .done(function() {
+                $url
+                    .parent()
+                    .find('.b-page-urls-primary')
+                    .removeClass('b-page-urls-primary')
+                    .end()
+                    .find('.b-urls-primary:checked')
+                    .parent()
+                    .addClass('b-page-urls-primary');
 
-				new boomNotification("The primary URL of the page has been updated").show();
-			});
-	}
+                BoomCMS.Notification('The primary URL of the page has been updated').show();
+            });
+    }
 });;$.widget('boom.pageSettingsVisibility', {
     changed: false,
     baseUrl: '/boomcms/page/{page}/settings/visibility',
@@ -51079,7 +51088,7 @@ $.widget( 'boom.pageToolbar', {
         if (this.changed) {
             $.post(this.baseUrl.replace('{page}', this.options.page.id), this.element.find('form').serialize())
                 .done(function(response) {
-                    new boomNotification('Page visibility saved').show();
+                    BoomCMS.Notification('Page visibility saved').show();
 
                     visibilityEditor._trigger('done', null, response);
                 });
@@ -51128,242 +51137,242 @@ $.widget( 'boom.pageToolbar', {
 * @name window.BoomCMS.textEditor
 */
 $.widget('boom.textEditor', {
-	/**
-	@property mode
-	@type string
-	*/
-	mode : 'block',
+    /**
+    @property mode
+    @type string
+    */
+    mode : 'block',
 
-	/**
-	* @function
-	@returns {Deferred}
-	*/
-	_create : function () {
-		var self = this,
-			element = this.element;
+    /**
+    * @function
+    @returns {Deferred}
+    */
+    _create : function () {
+        var self = this,
+            element = this.element;
 
-		self.mode = element.is('div') ? 'block' : 'inline';
-		self.mode = (element.is(':header') || element.is('.standfirst'))? 'text' : self.mode;
-		self.original_html = element.html();
+        self.mode = element.is('div') ? 'block' : 'inline';
+        self.mode = (element.is(':header') || element.is('.standfirst'))? 'text' : self.mode;
+        self.original_html = element.html();
 
-		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone(true, true).appendTo('#wysihtml5-toolbar');
+        self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone(true, true).appendTo('#wysihtml5-toolbar');
 
-		if (self.mode !== 'text') {
-			self.instance = new wysihtml5.Editor(element[0], {
-				toolbar: self.toolbar[0],
-				style: true,
-				parserRules:  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
-				useLineBreaks: (self.mode !== 'block'),
-				contentEditableMode: true,
-				autoLink: false,
-				uneditableContainerClassname: 'b-asset-embed',
-				handleTables: (self.mode === 'block'),
-				handleTabKey: false
-			});
+        if (self.mode !== 'text') {
+            self.instance = new wysihtml5.Editor(element[0], {
+                toolbar: self.toolbar[0],
+                style: true,
+                parserRules:  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
+                useLineBreaks: (self.mode !== 'block'),
+                contentEditableMode: true,
+                autoLink: false,
+                uneditableContainerClassname: 'b-asset-embed',
+                handleTables: (self.mode === 'block'),
+                handleTabKey: false
+            });
 
-			// Ensures that default text is wrapped in a paragraph
-			if (self.mode === 'block' && element.text() == element.html()) {
-				element.html($('<p></p>').text(element.text()));
-			}
-		} else {
-			element
-				.attr('contenteditable', true)
-				.on('keydown', function(event) {
-					switch(event.which) {
-						case 13:
-							event.preventDefault();
-						break;
-					}
-				});
+            // Ensures that default text is wrapped in a paragraph
+            if (self.mode === 'block' && element.text() == element.html()) {
+                element.html($('<p></p>').text(element.text()));
+            }
+        } else {
+            element
+                .attr('contenteditable', true)
+                .on('keydown', function(event) {
+                    switch(event.which) {
+                    case 13:
+                        event.preventDefault();
+                        break;
+                    }
+                });
 
-			element[0].onpaste = function(e) {
-				var html = e.clipboardData.getData('text/plain'),
-					text = $('<div>' + html + '</div>').text().replace(/\n|\r|\n\r/g, '');
+            element[0].onpaste = function(e) {
+                var html = e.clipboardData.getData('text/plain'),
+                    text = $('<div>' + html + '</div>').text().replace(/\n|\r|\n\r/g, '');
 
-				e.preventDefault();
-				top.document.execCommand("insertHTML", false, text);
-			};
-		}
+                e.preventDefault();
+                top.document.execCommand('insertHTML', false, text);
+            };
+        }
 
-		element
-			.on('focus', function() {
-				if ( ! self.toolbar.is(':visible')) {
-					self.showToolbar();
-				}
-			})
-			.on('keyup', function(e) {
- 				if (e.which === wysihtml5.ESCAPE_KEY) {
-					self.cancel(self.element);
-				}	
-			});
+        element
+            .on('focus', function() {
+                if ( ! self.toolbar.is(':visible')) {
+                    self.showToolbar();
+                }
+            })
+            .on('keyup', function(e) {
+                if (e.which === wysihtml5.ESCAPE_KEY) {
+                    self.cancel(self.element);
+                }    
+            });
 
-		this.enableAutoSave();
+        this.enableAutoSave();
 
-		if (self.mode !== 'text') {
-			$(self.instance.composer)
-				.on('before:boomdialog', function() {
-					self.disableAutoSave();
-				})
-				.on('after:boomdialog', function() {
-					self.element.focus();
-					self.enableAutoSave();
-				});
+        if (self.mode !== 'text') {
+            $(self.instance.composer)
+                .on('before:boomdialog', function() {
+                    self.disableAutoSave();
+                })
+                .on('after:boomdialog', function() {
+                    self.element.focus();
+                    self.enableAutoSave();
+                });
 
-			self.instance
-				.on('show:dialog', function(options) {
-					if (options.command == 'createBoomLink') {
-						if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
-							wysihtml5.commands.createBoomLink.exec(self.instance.composer);
-						}
+            self.instance
+                .on('show:dialog', function(options) {
+                    if (options.command == 'createBoomLink') {
+                        if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
+                            wysihtml5.commands.createBoomLink.exec(self.instance.composer);
+                        }
 
-						self.toolbar.find('[data-wysihtml5-command=createBoomLink]').removeClass('wysihtml5-command-dialog-opened');
-					}
-				})
-				.on('tableselect:composer', function(e) {
-					window.BoomCMS.page.toolbar.element.width('160px');
-					self.toolbar.parents('#b-topbar').width('160px');
-					top.$('body').first().animate({'margin-left': '160px'}, 500);
+                        self.toolbar.find('[data-wysihtml5-command=createBoomLink]').removeClass('wysihtml5-command-dialog-opened');
+                    }
+                })
+                .on('tableselect:composer', function() {
+                    window.BoomCMS.page.toolbar.element.width('160px');
+                    self.toolbar.parents('#b-topbar').width('160px');
+                    top.$('body').first().animate({'margin-left': '160px'}, 500);
 
-					$('#wysihtml5-toolbar').width('160px');
-					self.toolbar.find('[data-wysihtml5-hiddentools=table]').addClass('visible');
-				})
-				.on('tableunselect:composer', function(e) {
-					self.hideTableButtons();
-				});
-		}
+                    $('#wysihtml5-toolbar').width('160px');
+                    self.toolbar.find('[data-wysihtml5-hiddentools=table]').addClass('visible');
+                })
+                .on('tableunselect:composer', function() {
+                    self.hideTableButtons();
+                });
+        }
 
-		this.toolbar
-			.on('mousedown', '.b-editor-accept', function(event) {
-				event.preventDefault();
+        this.toolbar
+            .on('mousedown', '.b-editor-accept', function(event) {
+                event.preventDefault();
 
-				self.disableAutoSave();
-			
-				if (typeof self.instance !== 'undefined') {
-					self.instance.fire('tableunselect:composer');
-				}
+                self.disableAutoSave();
+            
+                if (typeof self.instance !== 'undefined') {
+                    self.instance.fire('tableunselect:composer');
+                }
 
-				self.element
-					.find('.wysiwyg-tmp-selected-cell')
-					.removeClass('wysiwyg-tmp-selected-cell')
-					.end()
-					.blur();
-			
-				self.apply(self.element);
-				self.enableAutoSave();
+                self.element
+                    .find('.wysiwyg-tmp-selected-cell')
+                    .removeClass('wysiwyg-tmp-selected-cell')
+                    .end()
+                    .blur();
+            
+                self.apply(self.element);
+                self.enableAutoSave();
 
-				return false;
-			})
-			.on('mousedown', '.b-editor-cancel', function(event) {
-				event.preventDefault();
-		
-				self.cancel(self.element);
-				return false;
-			})
-			.on('mousedown', '.b-editor-link', function() {
-				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
-			})
-			.on('mousedown', '.b-editor-table', function() {
-				self.disableAutoSave();
-			})
-			.on('click', '.b-editor-table', function(e) {
-				e.preventDefault();
+                return false;
+            })
+            .on('mousedown', '.b-editor-cancel', function(event) {
+                event.preventDefault();
+        
+                self.cancel(self.element);
+                return false;
+            })
+            .on('mousedown', '.b-editor-link', function() {
+                wysihtml5.commands.createBoomLink.edit(self.instance.composer);
+            })
+            .on('mousedown', '.b-editor-table', function() {
+                self.disableAutoSave();
+            })
+            .on('click', '.b-editor-table', function(e) {
+                e.preventDefault();
 
-				wysihtml5.commands.createTable.exec(self.instance.composer, 'createTable', {
-					rows: 2,
-					cols: 2
-				});
+                wysihtml5.commands.createTable.exec(self.instance.composer, 'createTable', {
+                    rows: 2,
+                    cols: 2
+                });
 
-				self.element.focus();
-				self.enableAutoSave();
-				self.instance.fire('tableselect:composer');
-			});
-	},
+                self.element.focus();
+                self.enableAutoSave();
+                self.instance.fire('tableselect:composer');
+            });
+    },
 
-	/**
-	* @function
-	@param {Object} element The element being edited.
-	*/
-	apply: function(element) {
-		var html = this.model === 'block' ? this.instance.getValue() : element.html();
+    /**
+    * @function
+    @param {Object} element The element being edited.
+    */
+    apply: function(element) {
+        var html = this.model === 'block' ? this.instance.getValue() : element.html();
 
-		window.BoomCMS.page.toolbar.minimise();
-		this.hideToolbar();
+        window.BoomCMS.page.toolbar.minimise();
+        this.hideToolbar();
 
-		if (this.mode !== 'block') {
-			html = html.replace(/<br>|\n|\r|\n\r/g, ' ');
-			element.html(html);
-		}
+        if (this.mode !== 'block') {
+            html = html.replace(/<br>|\n|\r|\n\r/g, ' ');
+            element.html(html);
+        }
 
-		this._trigger('edit', html);
-	},
+        this._trigger('edit', html);
+    },
 
-	blur: function(element) {
-		this.apply(element);
-	},
+    blur: function(element) {
+        this.apply(element);
+    },
 
-	/**
-	* @function
-	@param {Object} element The element being edited.
-	*/
-	cancel: function() {
-		var textEditor = this;
+    /**
+    * @function
+    @param {Object} element The element being edited.
+    */
+    cancel: function() {
+        var textEditor = this;
 
-		this.disableAutoSave();
-		this.element.blur();
+        this.disableAutoSave();
+        this.element.blur();
 
-		if (this.hasBeenEdited()) {
-			new boomConfirmation('Cancel changes', 'Cancel all changes and exit the editor?')
-				.done(function() {
-					textEditor.element.html(textEditor.original_html);
-					textEditor.hideToolbar();
-					
-					textEditor._trigger('edit', textEditor.original_html);
-				})
-				.fail(function() {
-					textEditor.element.focus();
-					textEditor.enableAutoSave();
-				});
-		} else {
-			textEditor.hideToolbar();
-					
-			this._trigger('edit', textEditor.original_html);
-		}
-	},
+        if (this.hasBeenEdited()) {
+            new BoomCMS.Confirmation('Cancel changes', 'Cancel all changes and exit the editor?')
+                .done(function() {
+                    textEditor.element.html(textEditor.original_html);
+                    textEditor.hideToolbar();
+                    
+                    textEditor._trigger('edit', textEditor.original_html);
+                })
+                .fail(function() {
+                    textEditor.element.focus();
+                    textEditor.enableAutoSave();
+                });
+        } else {
+            textEditor.hideToolbar();
+                    
+            this._trigger('edit', textEditor.original_html);
+        }
+    },
 
-	disableAutoSave: function() {
-		this.element.unbind('blur');
-	},
+    disableAutoSave: function() {
+        this.element.unbind('blur');
+    },
 
-	enableAutoSave: function() {
-		var editor = this;
+    enableAutoSave: function() {
+        var editor = this;
 
-		this.element.on('blur', function() {
-			if ( ! editor.toolbar.children(':focus').length) {
-				editor.apply(editor.element);
-			}
-		});
-	},
+        this.element.on('blur', function() {
+            if ( ! editor.toolbar.children(':focus').length) {
+                editor.apply(editor.element);
+            }
+        });
+    },
 
-	hasBeenEdited: function() {
-		return this.element.html() !== this.original_html;
-	},
-	
-	hideTableButtons: function() {
-		window.BoomCMS.page.toolbar.element.width('60px');
-		this.toolbar.parents('#b-topbar').width('60px');
-		top.$('body').first().animate({'margin-left': '60px'}, 500);
-		$('#wysihtml5-toolbar').width('60px');
-		$('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
-	},
+    hasBeenEdited: function() {
+        return this.element.html() !== this.original_html;
+    },
+    
+    hideTableButtons: function() {
+        window.BoomCMS.page.toolbar.element.width('60px');
+        this.toolbar.parents('#b-topbar').width('60px');
+        top.$('body').first().animate({'margin-left': '60px'}, 500);
+        $('#wysihtml5-toolbar').width('60px');
+        $('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
+    },
 
-	hideToolbar: function() {
-		$('#wysihtml5-toolbar').hide().children('[data-buttonset]').hide();
-	},
+    hideToolbar: function() {
+        $('#wysihtml5-toolbar').hide().children('[data-buttonset]').hide();
+    },
 
-	showToolbar: function() {
-		this.toolbar.show();
-		$('#wysihtml5-toolbar').show().children().not(this.toolbar).hide();
-	}
+    showToolbar: function() {
+        this.toolbar.show();
+        $('#wysihtml5-toolbar').show().children().not(this.toolbar).hide();
+    }
 });;/**
 @fileOverview jQuery UI widgets for editable slots.
 */
@@ -51379,156 +51388,156 @@ Common functionality for all editable slots
 */
 $.widget('ui.chunk',
 
-	/**
-	@lends $.ui.chunk
-	*/
-	{
+    /**
+    @lends $.ui.chunk
+    */
+    {
 
-	edited : false,
+        edited : false,
 
-	bind: function() {
-		var self = this;
+        bind: function() {
+            var self = this;
 
-		this.element
-			.addClass(BoomCMS.editableClass)
-			.unbind('click')
-			.on('click', function(e) {
-				self.triggerEdit(e);
-			})
-			.on('keydown', function(e) {
-				if (e.which === 13) {
-					self.triggerEdit(e);
-				}
-			})
-			.attr('tabindex', 0);
-	},
+            this.element
+            .addClass(BoomCMS.editableClass)
+            .unbind('click')
+            .on('click', function(e) {
+                self.triggerEdit(e);
+            })
+            .on('keydown', function(e) {
+                if (e.which === 13) {
+                    self.triggerEdit(e);
+                }
+            })
+            .attr('tabindex', 0);
+        },
 
-	_create: function() {
-		this.bind();
-	},
+        _create: function() {
+            this.bind();
+        },
 
-	destroy: function() {
-		this.bind();
-	},
+        destroy: function() {
+            this.bind();
+        },
 
-	/**
-	Insert edited chunk content back into the page.
-	@function
-	*/
-	_update_html: function(html) {
-		var $html = $(html);
+    /**
+    Insert edited chunk content back into the page.
+    @function
+    */
+        _update_html: function(html) {
+            var $html = $(html);
 
-		this.element.replaceWith($html);
-		this.element = $html;
+            this.element.replaceWith($html);
+            this.element = $html;
 
-		this.bind();
+            this.bind();
 
-		top.$.event.trigger({
-			type: "boomcms:chunkload",
-			chunk: {
-				type: this.options.type,
-				name: this.options.name,
-				html: $html[0]
-			},
-			target: this.element[0]
-		});
-	},
+            top.$.event.trigger({
+                type: 'boomcms:chunkload',
+                chunk: {
+                    type: this.options.type,
+                    name: this.options.name,
+                    html: $html[0]
+                },
+                target: this.element[0]
+            });
+        },
 
-	remove: function() {
-		var self = this,
-			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name);
+        remove: function() {
+            var self = this,
+                chunk = new BoomCMS.Chunk(this.options.currentPage.id, this.options.type, this.options.name);
 
-		return chunk.delete(this.options.template)
-			.done(function(data) {
-				self._update_html(data.html);
-				window.BoomCMS.page.toolbar.status.set(data.status);
-				new boomNotification("Page content saved").show();
-			});
-	},
+            return chunk.delete(this.options.template)
+            .done(function(data) {
+                self._update_html(data.html);
+                window.BoomCMS.page.toolbar.status.set(data.status);
+                BoomCMS.Notification('Page content saved').show();
+            });
+        },
 
-	_save: function(data) {
-		var self = this,
-			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name),
-			data = data? data : this.getData();
+        _save: function(data) {
+            var self = this,
+                chunk = new BoomCMS.Chunk(this.options.currentPage.id, this.options.type, this.options.name);
 
-		data.template = this.options.template;
-		data.chunkId = this.options.chunkId;
+            data = data? data : this.getData();
+            data.template = this.options.template;
+            data.chunkId = this.options.chunkId;
 
-		return chunk.save(data)
-			.done(function(data) {
-				self.options.chunkId = data.chunkId;
+            return chunk.save(data)
+            .done(function(data) {
+                self.options.chunkId = data.chunkId;
 
-				self._update_html(data.html);
-				window.BoomCMS.page.toolbar.status.set(data.status);
+                self._update_html(data.html);
+                window.BoomCMS.page.toolbar.status.set(data.status);
 
-				new boomNotification("Page content saved").show();
-			})
-			.fail(function(response) {
-				if (response.responseJSON.error === 'conflict') {
-					self.resolveConflict(response.responseJSON, data);
-				}
-			});
-	},
+                BoomCMS.Notification('Page content saved').show();
+            })
+            .fail(function(response) {
+                if (response.responseJSON.error === 'conflict') {
+                    self.resolveConflict(response.responseJSON, data);
+                }
+            });
+        },
 
-	/**
-	 * Replace the HTML of the chunk during conflict resolution.
-	 * 
-	 * Most chunks will just call _update_html()
-	 * However, text chunks define an empty _update_html() method
-	 * So this method needs to do something useful there.
-	 *
-	 * @param {string} html
-	 * @returns {undefined}
-	 */
-	_replace_html: function(html) {
-		this._update_html(html);
-	},
+    /**
+     * Replace the HTML of the chunk during conflict resolution.
+     * 
+     * Most chunks will just call _update_html()
+     * However, text chunks define an empty _update_html() method
+     * So this method needs to do something useful there.
+     *
+     * @param {string} html
+     * @returns {undefined}
+     */
+        _replace_html: function(html) {
+            this._update_html(html);
+        },
 
-	resolveConflict: function(data, saveData) {
-		var chunk = this,
-			dialog = new boomDialog({
-				msg: data.html,
-				closeButton: false,
-				width: 500,
-				title: 'Save conflict',
-				onLoad: function() {
-					dialog.contents
-						.on('click', '#b-conflict-reload', function() {
-							chunk.options.chunkId = data.chunkId;
-							chunk._replace_html(data.chunk);
+        resolveConflict: function(data, saveData) {
+            var chunk = this,
+                dialog = new BoomCMS.Dialog({
+                    msg: data.html,
+                    closeButton: false,
+                    width: 500,
+                    title: 'Save conflict',
+                    onLoad: function() {
+                        dialog.contents
+                        .on('click', '#b-conflict-reload', function() {
+                            chunk.options.chunkId = data.chunkId;
+                            chunk._replace_html(data.chunk);
 
-							window.BoomCMS.page.toolbar.status.set(data.status);
+                            window.BoomCMS.page.toolbar.status.set(data.status);
 
-							dialog.cancel();
-						})
-						.on('click', '#b-conflict-overwrite', function() {
-							saveData.force = 1;
+                            dialog.cancel();
+                        })
+                        .on('click', '#b-conflict-overwrite', function() {
+                            saveData.force = 1;
 
-							chunk._save(saveData);
+                            chunk._save(saveData);
 
-							dialog.cancel();
-						})
-						.on('click', '#b-conflict-inspect', function() {
-							window.open(top.location);
-						});
-				}
-			});
-	},
+                            dialog.cancel();
+                        })
+                        .on('click', '#b-conflict-inspect', function() {
+                            window.open(top.location);
+                        });
+                    }
+                });
+        },
 
-	triggerEdit: function(e) {
-		e.preventDefault();
-		e.stopPropagation();
+        triggerEdit: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-		this.edit();
-		this.unbind();
-	},
+            this.edit();
+            this.unbind();
+        },
 
-	unbind: function() {
-		this.element
-			.unbind('click')
-			.unbind('keydown');
-	}
-});;/**
+        unbind: function() {
+            this.element
+            .unbind('click')
+            .unbind('keydown');
+        }
+    });;/**
 Editable text slots
 @class
 @name chunkText
@@ -51537,110 +51546,110 @@ Editable text slots
 */
 $.widget('ui.chunkText', $.ui.chunk,
 
-	/**
-	@lends $.ui.chunkText
-	*/
-	{
+    /**
+    @lends $.ui.chunkText
+    */
+    {
 
-	content : '',
+        content : '',
 
-	_create: function() {
-		var element = this.element.find('.chunk-text');
-		this.element = (element.length)? $(element[0]) : this.element;
+        _create: function() {
+            var element = this.element.find('.chunk-text');
+            this.element = (element.length)? $(element[0]) : this.element;
 
-		$.ui.chunk.prototype._create.call(this);
-	},
+            $.ui.chunk.prototype._create.call(this);
+        },
 
-	bind: function() {
-		var element = this.element,
-			self = this;
+        bind: function() {
+            var element = this.element,
+                self = this;
 
-		this.setOriginalContent();
+            this.setOriginalContent();
 
-		$.ui.chunk.prototype.bind.call(this);
+            $.ui.chunk.prototype.bind.call(this);
 
-		element.textEditor({
-			edit: function() {
-				if (!self.hasContent()) {
-					self.remove();
-					self.element.text('Default text.');
-				} else if (self.isEdited()) {
-					self._save();
-					self.setOriginalContent();
-				}
+            element.textEditor({
+                edit: function() {
+                    if (!self.hasContent()) {
+                        self.remove();
+                        self.element.text('Default text.');
+                    } else if (self.isEdited()) {
+                        self._save();
+                        self.setOriginalContent();
+                    }
 
-				$.ui.chunk.prototype.bind.call(self);
-			}
-		});
-	},
+                    $.ui.chunk.prototype.bind.call(self);
+                }
+            });
+        },
 
-	edit: function() {},
+        edit: function() {},
 
-	/**
-	Get the chunk HTML, escaped and cleaned.
-	*/
-	getData: function(){
-		var $content = this.element.find('.slot-content');
+    /**
+    Get the chunk HTML, escaped and cleaned.
+    */
+        getData: function(){
+            var $content = this.element.find('.slot-content');
 
-		this.content = ($content.length)? $content.html() : this.element.html();
+            this.content = ($content.length)? $content.html() : this.element.html();
 
-		return {
-			text : this.content
-		};
-	},
+            return {
+                text : this.content
+            };
+        },
 
-	hasContent: function() {
-		return this.element.text() !== '' || this.element.find('img').length > 0;
-	},
+        hasContent: function() {
+            return this.element.text() !== '' || this.element.find('img').length > 0;
+        },
 
-	isEdited: function() {
-		return this.originalContent !== this.element.html();
-	},
+        isEdited: function() {
+            return this.originalContent !== this.element.html();
+        },
 
-	setOriginalContent: function() {
-		this.originalContent = this.element.html();
-	},
+        setOriginalContent: function() {
+            this.originalContent = this.element.html();
+        },
 
-	_update_html: function() {},
+        _update_html: function() {},
 
-	_replace_html: function(html) {
-		this.element.html(html);
-	}
-});;$.widget('ui.chunkLinkset', $.ui.chunk, {
-	edit: function() {
-		var chunkLinkset = this;
+        _replace_html: function(html) {
+            this.element.html(html);
+        }
+    });;$.widget('ui.chunkLinkset', $.ui.chunk, {
+    edit: function() {
+        var chunkLinkset = this;
 
-		new boomChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.getOptions())
-			.done(function(data) {
-				chunkLinkset.insert(data);
-			})
-			.fail(function() {
-				chunkLinkset.destroy();
-			});
-	},
+        new BoomCMS.ChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.getOptions())
+            .done(function(data) {
+                chunkLinkset.insert(data);
+            })
+            .fail(function() {
+                chunkLinkset.destroy();
+            });
+    },
 
-	getOptions: function() {
-		var $el = this.element,
-			options = {
-				title: 'linkset-title',
-				linkAssets: 'link-asset',
-				linkText: 'link-text'
-			};
+    getOptions: function() {
+        var $el = this.element,
+            options = {
+                title: 'linkset-title',
+                linkAssets: 'link-asset',
+                linkText: 'link-text'
+            };
 
-		for (var i in options) {
-			options[i] = $el.hasClass(options[i]) || $el.find('.' + options[i]).length > 0;
-		}
+        for (var i in options) {
+            options[i] = $el.hasClass(options[i]) || $el.find('.' + options[i]).length > 0;
+        }
 
-		return options;
-	},
+        return options;
+    },
 
-	insert: function(links) {
-		if (typeof(links) === 'undefined' || links.length === 0) {
-			this.remove();
-		} else {
-			this._save(links);
-		}
-	}
+    insert: function(links) {
+        if (typeof(links) === 'undefined' || links.length === 0) {
+            this.remove();
+        } else {
+            this._save(links);
+        }
+    }
 });;/**
 @class
 @name chunkFeature
@@ -51648,219 +51657,219 @@ $.widget('ui.chunkText', $.ui.chunk,
 @memberOf $.ui
 */
 $.widget('ui.chunkFeature', $.ui.chunk,
-	/**
-	@lends $.ui.chunkFeature
-	*/
-	{
+    /**
+    @lends $.ui.chunkFeature
+    */
+    {
 
-	_bind: function() {
-		var featureChunk = this;
+        _bind: function() {
+            var featureChunk = this;
 
-		if (this.options.id > 0) {
-			this.dialog.contents.find('input[name=parent_id]').val(this.options.id);
+            if (this.options.id > 0) {
+                this.dialog.contents.find('input[name=parent_id]').val(this.options.id);
 
-			var button = $('<button />')
-				.addClass('b-button ui-helper-left b-button-withtext')
-				.text('Remove featured page')
-				.button({
-					icons: {primary : 'b-button-icon b-button-icon-delete'}
-				})
-				.click(function() {
-					featureChunk.remove();
-					featureChunk.dialog.close();
-				});
+                var button = $('<button />')
+                .addClass('b-button ui-helper-left b-button-withtext')
+                .text('Remove featured page')
+                .button({
+                    icons: {primary : 'b-button-icon b-button-icon-delete'}
+                })
+                .click(function() {
+                    featureChunk.remove();
+                    featureChunk.dialog.close();
+                });
 
-			this.dialog.contents.dialog('widget')
-				.find('.ui-dialog-buttonpane')
-				.prepend(button);
-		} else {
-			this.dialog.contents.find('input[name=parent_id]').val('');
-		}
-	},
+                this.dialog.contents.dialog('widget')
+                .find('.ui-dialog-buttonpane')
+                .prepend(button);
+            } else {
+                this.dialog.contents.find('input[name=parent_id]').val('');
+            }
+        },
 
-	edit: function() {
-		var featureEditor = this;
+        edit: function() {
+            var featureEditor = this;
 
-		if (this.options.id > 0 && this.getTargetUrl()) {
-			this.confirmation = new boomDialog({
-				width: '640px',
-				title : 'Edit feature?',
-				msg : '<p>You clicked on a feature box.</p><p>Do you want to visit the featured page or edit the feature?</p>',
-				closeButton : false,
-				buttons : [
-					{
-						text : 'Visit page',
-						class : 'b-button b-button-textonly',
-						click: function() {
-							featureEditor.viewTarget();
-						}
-					},
-					{
-						text: 'Remove the featured page',
-						class: 'b-button b-button-textonly',
-						click: function() {
-							featureEditor.remove();
-							featureEditor.confirmation.close();
-						}
-					},
-					{
-						text : 'Change the featured page',
-						class : 'b-button b-button-textonly',
-						click: function() {
-							featureEditor.editTarget();
-						}
-					}
-				]
-			})
-			.fail(function() {
-				featureEditor.bind();
-			});
-		} else {
-			this.editTarget();
-		}
-	},
+            if (this.options.id > 0 && this.getTargetUrl()) {
+                this.confirmation = new BoomCMS.Dialog({
+                    width: '640px',
+                    title : 'Edit feature?',
+                    msg : '<p>You clicked on a feature box.</p><p>Do you want to visit the featured page or edit the feature?</p>',
+                    closeButton : false,
+                    buttons : [
+                        {
+                            text : 'Visit page',
+                            class : 'b-button b-button-textonly',
+                            click: function() {
+                                featureEditor.viewTarget();
+                            }
+                        },
+                        {
+                            text: 'Remove the featured page',
+                            class: 'b-button b-button-textonly',
+                            click: function() {
+                                featureEditor.remove();
+                                featureEditor.confirmation.close();
+                            }
+                        },
+                        {
+                            text : 'Change the featured page',
+                            class : 'b-button b-button-textonly',
+                            click: function() {
+                                featureEditor.editTarget();
+                            }
+                        }
+                    ]
+                })
+            .fail(function() {
+                featureEditor.bind();
+            });
+            } else {
+                this.editTarget();
+            }
+        },
 
-	editTarget: function() {
-		var featureEditor = this;
+        editTarget: function() {
+            var featureEditor = this;
 
-		new boomLinkPicker(new boomLink(null, this.options.currentPage.id), {
-				external: false,
-				asset: false
-			})
-			.done(function(link) {
-				if (typeof(featureEditor.confirmation) !== 'undefined') {
-					featureEditor.confirmation.close();
-				}
+            new BoomCMS.LinkPicker(new BoomCMS.Link(null, this.options.currentPage.id), {
+                external: false,
+                asset: false
+            })
+            .done(function(link) {
+                if (typeof(featureEditor.confirmation) !== 'undefined') {
+                    featureEditor.confirmation.close();
+                }
 
-				featureEditor.insert(link.getPageId());
-			})
-			.fail(function() {
-				featureEditor.bind();
-			});
-	},
+                featureEditor.insert(link.getPageId());
+            })
+            .fail(function() {
+                featureEditor.bind();
+            });
+        },
 
-	getData: function() {
-		return {target_page_id : this.options.id};
-	},
+        getData: function() {
+            return {target_page_id : this.options.id};
+        },
 
-	getTargetUrl: function() {
-		return this.element.is('a')? this.element.attr('href') : this.element.find('a').attr('href');
-	},
+        getTargetUrl: function() {
+            return this.element.is('a')? this.element.attr('href') : this.element.find('a').attr('href');
+        },
 
-	/**
-	Insert the selected page into the DOM as a feature box.
-	@param {Int} rid Page RID
-	*/
-	insert: function(rid){
-		this.options.id = rid;
+    /**
+    Insert the selected page into the DOM as a feature box.
+    @param {Int} rid Page RID
+    */
+        insert: function(rid){
+            this.options.id = rid;
 
-		return this._save();
-	},
+            return this._save();
+        },
 
-	viewTarget: function() {
-		top.window.location = this.getTargetUrl();
-	}
-});;$.widget('ui.chunkAsset', $.ui.chunk, {
-	editAssetOnly: function() {
-		var chunkAsset = this;
+        viewTarget: function() {
+            top.window.location = this.getTargetUrl();
+        }
+    });;$.widget('ui.chunkAsset', $.ui.chunk, {
+    editAssetOnly: function() {
+        var chunkAsset = this;
 
-		new boomAssetPicker(this.asset, this.getPickerFilters())
-		.done(function(asset) {
-			chunkAsset.asset = asset;
+        BoomCMS.AssetPicker(this.asset, this.getPickerFilters())
+        .done(function(asset) {
+            chunkAsset.asset = asset;
 
-			if (asset.getId()) {
-				chunkAsset.save({
-					asset_id : asset.getId()
-				});
-			} else {
-				chunkAsset.remove();
-			}
-		})
-		.fail(function() {
-			chunkAsset.destroy();
-		});
-	},
+            if (asset.getId()) {
+                chunkAsset.save({
+                    asset_id : asset.getId()
+                });
+            } else {
+                chunkAsset.remove();
+            }
+        })
+        .fail(function() {
+            chunkAsset.destroy();
+        });
+    },
 
-	editAllElements: function() {
-		var chunkAsset = this;
+    editAllElements: function() {
+        var chunkAsset = this;
 
-		new boomChunkAssetEditor(this.options.page, this.options.name, {
-			caption : this.elements.caption.length > 0,
-			link : this.elements.link.length > 0,
-			title : this.elements.title.length
-		})
-		.done(function(chunkData) {
-			chunkAsset.asset = new BoomCMS.Asset({id: chunkData['asset_id']});
-			chunkAsset.save(chunkData);
-		})
-		.fail(function() {
-			chunkAsset.destroy();
-		});
-	},
+        new BoomCMS.ChunkAssetEditor(this.options.page, this.options.name, {
+            caption : this.elements.caption.length > 0,
+            link : this.elements.link.length > 0,
+            title : this.elements.title.length
+        })
+        .done(function(chunkData) {
+            chunkAsset.asset = new BoomCMS.Asset({id: chunkData['asset_id']});
+            chunkAsset.save(chunkData);
+        })
+        .fail(function() {
+            chunkAsset.destroy();
+        });
+    },
 
-	/**
-	 @function
-	 */
-	 getElements: function() {
-		var elements = {};
+    /**
+     @function
+     */
+    getElements: function() {
+        var elements = {};
 
-		var img = this.element.find('img');
-		var a = this.element.find('a');
+        var img = this.element.find('img');
+        var a = this.element.find('a');
 
-		var regExp = new RegExp("asset\/(thumb|view|download)\/" + this.assetId);
+        var regExp = new RegExp('asset\/(thumb|view|download)\/' + this.assetId);
 
-		elements.asset = this.element.find('.asset-target');
-		elements.link = this.element.hasClass('asset-link')? this.element : this.element.find('.asset-link');
-		elements.caption = this.element.hasClass('asset-caption')? this.element : this.element.find('.asset-caption');
-		elements.title = this.element.hasClass('asset-title')? this.element : this.element.find('.asset-title');
+        elements.asset = this.element.find('.asset-target');
+        elements.link = this.element.hasClass('asset-link')? this.element : this.element.find('.asset-link');
+        elements.caption = this.element.hasClass('asset-caption')? this.element : this.element.find('.asset-caption');
+        elements.title = this.element.hasClass('asset-title')? this.element : this.element.find('.asset-title');
 
-		if (! elements.asset.length) {
-			if (img.length && regExp.test(img.attr('src'))) {
-				elements.asset = img;
-			}
-			else if (a.length && regExp.test(a.attr('href'))) {
-				elements.asset = a;
-			}
+        if (! elements.asset.length) {
+            if (img.length && regExp.test(img.attr('src'))) {
+                elements.asset = img;
+            }
+            else if (a.length && regExp.test(a.attr('href'))) {
+                elements.asset = a;
+            }
 
-			if ( ! elements.asset.length) {
-				elements.asset = this.element;
-			}
-		}
+            if ( ! elements.asset.length) {
+                elements.asset = this.element;
+            }
+        }
 
-		if ( ! elements.link.length && a.length && elements.asset != a && a.attr('href') && a.attr('href') != '#' && ! regExp.test(a.attr('href'))) {
-			elements.link = a;
-		}
+        if ( ! elements.link.length && a.length && elements.asset != a && a.attr('href') && a.attr('href') != '#' && ! regExp.test(a.attr('href'))) {
+            elements.link = a;
+        }
 
-		return elements;
-	 },
+        return elements;
+    },
 
-	edit: function() {
-		this.elements = this.getElements();
-		this.asset = new BoomCMS.Asset({id: this.element.attr('data-boom-target')});
+    edit: function() {
+        this.elements = this.getElements();
+        this.asset = new BoomCMS.Asset({id: this.element.attr('data-boom-target')});
 
-		if (this.hasMetadata()) {
-			this.editAllElements();
-		} else {
-			this.editAssetOnly();
-		}
-	},
+        if (this.hasMetadata()) {
+            this.editAllElements();
+        } else {
+            this.editAssetOnly();
+        }
+    },
 
-	 getPickerFilters: function() {
-		 if (this.element.attr('data-boom-filterbytype')) {
-			 return {
-				 type : this.element.attr('data-boom-filterByType')
-			 };
-		 }
-	 },
+    getPickerFilters: function() {
+        if (this.element.attr('data-boom-filterbytype')) {
+            return {
+                type : this.element.attr('data-boom-filterByType')
+            };
+        }
+    },
 
-	hasMetadata: function() {
-		return (this.elements.caption.length || this.elements.link.length || this.elements.title.length);
-	},
+    hasMetadata: function() {
+        return (this.elements.caption.length || this.elements.link.length || this.elements.title.length);
+    },
 
-	save: function(data) {
-		this._save(data);
-		this.destroy();
-	}
+    save: function(data) {
+        this._save(data);
+        this.destroy();
+    }
 });
 ;/**
 @class
@@ -51869,51 +51878,51 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 @memberOf $.ui
 */
 $.widget('ui.chunkSlideshow', $.ui.chunk,
-	/**
-	@lends $.ui.chunkSlideshow
-	*/
-	{
+    /**
+    @lends $.ui.chunkSlideshow
+    */
+    {
 
-	/**
-	Open a slideshow dialog
-	*/
-	edit: function() {
-		var chunk = this,
-			editor = new boomChunkSlideshowEditor(this.options.page, this.options.name, {
-				title : chunk.hasClass('slide-title'),
-				caption : chunk.hasClass('slide-caption'),
-				link : chunk.hasClass('slide-link'),
-				linktext : chunk.hasClass('slide-linktext')
-			});
+    /**
+    Open a slideshow dialog
+    */
+        edit: function() {
+            var chunk = this,
+                editor = new BoomCMS.ChunkSlideshowEditor(this.options.page, this.options.name, {
+                    title : chunk.hasClass('slide-title'),
+                    caption : chunk.hasClass('slide-caption'),
+                    link : chunk.hasClass('slide-link'),
+                    linktext : chunk.hasClass('slide-linktext')
+                });
 
-		editor
-			.done(function(slides) {
-				if ( ! slides || ! slides.length) {
-					chunk.remove();
-				} else {
-					chunk.slides = slides;
-					chunk._save();
-				}
+            editor
+            .done(function(slides) {
+                if ( ! slides || ! slides.length) {
+                    chunk.remove();
+                } else {
+                    chunk.slides = slides;
+                    chunk._save();
+                }
 
-				chunk.bind();
-			})
-			.fail(function() {
-				chunk.bind();
-			});
-	},
+                chunk.bind();
+            })
+            .fail(function() {
+                chunk.bind();
+            });
+        },
 
-	hasClass: function(c) {
-		return this.element.hasClass(c) || this.element.find('.' + c).length > 0;
-	},
+        hasClass: function(c) {
+            return this.element.hasClass(c) || this.element.find('.' + c).length > 0;
+        },
 
-	/**
-	Get slideshow slide data.
-	@returns {Array}
-	*/
-	getData: function() {
-		return {slides : this.slides};
-	}
-});;/**
+    /**
+    Get slideshow slide data.
+    @returns {Array}
+    */
+        getData: function() {
+            return {slides : this.slides};
+        }
+    });;/**
 Editable timestamps
 @class
 @name chunkTimestamp
@@ -51922,2032 +51931,2047 @@ Editable timestamps
 */
 $.widget('ui.chunkTimestamp', $.ui.chunk,
 
-	/**
-	@lends $.ui.chunkTimestamp
-	*/
-	{
-
-	format : '',
-
-	timestamp : '',
-
-	_create: function() {
-		this.format = this.element.attr('data-boom-format');
-		this.timestamp = this.element.attr('data-boom-timestamp');
-		this.formatIsEditable = (this.element.attr('data-boom-formatIsEditable') === '1');
-
-		$.ui.chunk.prototype._create.call(this);
-	},
-
-	edit: function() {
-		var self = this,
-			data = this.getData();
-
-		this.dialog = new boomDialog({
-			url: this.options.currentPage.baseUrl + 'chunk/edit?slotname=' + self.options.name + '&type=timestamp',
-			width: 400,
-			title: 'Edit date / time',
-			onLoad: function() {
-				if (self.formatIsEditable) {
-					data.format && $('#format').val(data.format);
-				} else {
-					self.dialog.contents.find('label:first-of-type').hide();
-				}
-
-				var time = (data.timestamp)? new Date(data.timestamp * 1000) : new Date();
-
-				$( "#timestamp" ).datepicker('setDate', time);
-			},
-			destroy: function(){
-				self.destroy();
-			}
-		}).done(function() {
-			var	format = $('#format').val(),
-				stringDate = $('#timestamp').val(),
-				dateyDate = new Date(stringDate),
-				timestamp = (dateyDate.valueOf() / 1000) - (dateyDate.getTimezoneOffset() * 60);
-
-			self.insert(format, timestamp);
-		})
-		.always(function() {
-			self.bind();
-		});
-	},
-
-	insert: function(format, timestamp) {
-		if (this.formatIsEditable) {
-			this.format = format;
-		}
-
-		this.timestamp = timestamp;
-
-		return this._save();
-	},
-
-	getData: function(){
-		return {
-			format : this.format,
-			timestamp: this.timestamp
-		};
-	}
-});;$.widget('ui.chunkLibrary', $.ui.chunk, {
-	clearFilters: function() {
-		var $el = this.dialog.contents;
-
-		$el.find('select').prop('selectedIndex', 0);
-		$el.find('#b-tags-search li').remove();
-		$el.find('input[type=text]').val('');
-	},
-
-	edit: function() {
-		var library = this;
-
-		this.dialog = new boomDialog({
-			url: this.options.currentPage.baseUrl + 'chunk/edit?type=library&slotname=' + this.options.name,
-			width: 700,
-			onLoad: function() {
-				library.dialog.contents
-					.on('click', '.b-button.clear', function() {
-						library.clearFilters();
-					})
-					.find('#b-tags-search')
-					.assetTagSearch();
-			}
-		})
-		.always(function() {
-			library.bind();
-		})
-		.done(function() {
-			library._save(library.getData());
-		});
-	},
-
-	getData: function() {
-		var $el = this.dialog.contents;
-
-		return {
-			params: {
-				type: $el.find('#b-assets-types :selected').val(),
-				order: $el.find('#b-assets-sortby :selected').val(),
-				limit: $el.find('input[name=limit]').val(),
-				tag: $el.find('#b-tags-search [data-tag]').map(function() {
-					return $(this).attr('data-tag');
-				}).toArray()
-			}
-		};
-	}
-});;function boomChunkSlideshowEditor(page_id, slotname, options) {
-	this.page_id = page_id;
-	this.slotname = slotname;
-	this.options = options;
-
-	boomChunkSlideshowEditor.prototype.bind = function() {
-		var slideshowEditor = this;
-
-		this.toggleSections();
-
-		this.dialog.contents
-			.on('click', '#b-slideshow-editor-delete', function() {
-				slideshowEditor.deferred.resolveWith({});
-
-				slideshowEditor.dialog.close();
-			})
-			.on('change', '#b-slideshow-editor-slides input[type=radio]', function() {
-				var slide = slideshowEditor._getSlideDetails($(this));
-		
-				slide.asset = new BoomCMS.Asset({id: slide.asset_id});
-				slideshowEditor.editSlide(slide);
-			})
-			.on('click', '#b-slideshow-editor-current-delete', function(e) {
-				e.preventDefault();
-
-				slideshowEditor.deleteCurrentSlide();
-			})
-			.on('click', '#b-slideshow-editor-current form a', function(e) {
-				e.preventDefault();
-
-				var currentAssetId = $(this).find('img').attr('src').replace(/\/asset\/(\d+)(.*?)/, "$1");
-				slideshowEditor.editCurrentSlideAsset(new BoomCMS.Asset({id: currentAssetId}));
-			})
-			.on('keydown, change', '#b-slideshow-editor-current form input[type=text]', function() {
-				var $this = $(this),
-					name = $this.attr('name'),
-					val = $this.val();
-
-				slideshowEditor.getCurrentSlide().data(name, val);
-			})
-			.on('click', '#b-slideshow-editor-current .b-slideshow-link button', function(e) {
-				e.preventDefault();
-
-				var $input = $(this).parent().find('input'),
-					currentSlide = slideshowEditor.getCurrentSlide();
-
-				new boomLinkPicker(new boomLink($input.val(), currentSlide.data('page')))
-					.done(function(link) {
-						currentSlide
-							.data('url', link.getUrl())
-							.data('page', link.getPageId());
-
-						$input
-							.val(link.getUrl())
-							.blur();
-					});
-			})
-			.on('click', '#b-slideshow-editor-add', function(e) {
-				e.preventDefault();
-
-				slideshowEditor.addSlide();
-			})
-			.find('#b-slideshow-editor-slides')
-			.sortable({});
-	};
-
-	boomChunkSlideshowEditor.prototype.addSlide = function() {
-		var slideshowEditor = this;
-
-		new boomAssetPicker(null, {type: 'image'})
-			.done(function(asset) {
-				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl('view', 0, 100) + '" /></label></li>');
-
-				slideshowEditor.dialog.contents
-					.find('#b-slideshow-editor-slides')
-					.append($new_slide);
-
-				$new_slide.find('input').attr('checked', true);
-				slideshowEditor.editSlide({asset : asset});
-			});
-	};
-
-	boomChunkSlideshowEditor.prototype.deleteCurrentSlide = function() {
-		this.getCurrentSlide()
-			.parents('li')
-			.remove()
-			.end()
-			.end()
-			.find('#b-slideshow-editor-current')
-			.find('.default')
-			.show()
-			.end()
-			.find('form')
-			.hide();
-	};
-
-	boomChunkSlideshowEditor.prototype.editCurrentSlideAsset = function(currentAsset) {
-		var slideshowEditor = this;
-
-		new boomAssetPicker(currentAsset)
-			.done(function(asset) {
-				slideshowEditor.dialog.contents
-					.find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
-					.attr('src', asset.getUrl('view', 300, 0))
-					.siblings('input')
-					.attr('data-asset', asset.getId());
-			});
-	};
-
-	boomChunkSlideshowEditor.prototype.editSlide = function(slide) {
-		this.dialog.contents.find('#b-slideshow-editor-current')
-			.find('.default')
-			.hide()
-			.end()
-			.find('form')
-			.show()
-			.find('img')
-			.attr('src', slide.asset.getUrl('view', 300, 0))
-			.end()
-			.find('input[name=title]')
-			.val(slide.title)
-			.end()
-			.find('input[name=caption]')
-			.val(slide.caption)
-			.end()
-			.find('input[name=url]')
-			.val(new boomLink(slide.url).getUrl())
-			.end()
-			.find('input[name=linktext]')
-			.val(slide.linktext);
-	};
-
-	boomChunkSlideshowEditor.prototype.getAllSlideDetails = function() {
-		var slideshowEditor = this;
-
-		return this.dialog.contents
-			.find('#b-slideshow-editor-slides li')
-			.map(function(index, el) {
-				var $el = $(el);
-
-				return slideshowEditor._getSlideDetails($el.find('input'));
-			})
-			.get();
-	};
-
-	boomChunkSlideshowEditor.prototype.getCurrentSlide = function() {
-		return this.dialog.contents.find('#b-slideshow-editor-slides input[type=radio]:checked');
-	};
-
-	boomChunkSlideshowEditor.prototype._getSlideDetails = function($element) {
-		return {
-			asset_id: $element.attr('data-asset'),
-			url: $element.data('url'),
-			page: $element.data('page'),
-			caption: $element.data('caption'),
-			title: $element.data('title'),
-			linktext: $element.data('linktext')
-		};
-	};
-
-	boomChunkSlideshowEditor.prototype.open = function() {
-		var slideshowEditor = this;
-		this.deferred = new $.Deferred();
-
-		this.dialog = new boomDialog({
-			url : '/boomcms/page/' + this.page_id + '/chunk/edit?slotname=' + this.slotname + '&type=slideshow',
-			id : 'b-slideshow-editor',
-			width: 920,
-			open: function() {
-				slideshowEditor.bind();
-			}
-		})
-		.done(function() {
-			slideshowEditor.deferred.resolve(slideshowEditor.getAllSlideDetails());
-		})
-		.fail(function() {
-			slideshowEditor.deferred.reject();
-		});
-
-		return this.deferred;
-	};
-
-	boomChunkSlideshowEditor.prototype.toggleSections = function() {
-		var sections = ['title', 'caption', 'link', 'linktext'];
-
-		for (var i in sections) {
-			var section = sections[i];
-
-			if (this.options[section] === false) {
-				this.dialog.contents.find('.b-slideshow-' + section).hide();
-			}
-		}
-	};
-
-	return this.open();
-}
-;function boomChunkLinksetEditor(pageId, slotname, options) {
-	this.pageId = pageId;
-	this.slotname = slotname;
-	this.options = options;
-	this.deferred = new $.Deferred();
-
-	this.toggle = {
-		title: '#b-linkset-title',
-		linkAssets: '.b-linkset-asset',
-		linkText: '.b-linkset-text'
-	};
-
-	boomChunkLinksetEditor.prototype.addDeleteButtons = function() {
-		this.$links.find('li').each(function() {
-			var $this = $(this);
-
-			if ( ! $this.find('.delete').length) {
-				var $delete = $('<a class="delete fa fa-trash-o" href="#"></a>').appendTo($this);
-			}
-		});
-	};
-
-	boomChunkLinksetEditor.prototype.addLink = function() {
-		var linksetEditor = this;
-
-		new boomLinkPicker()
-			.done(function(link) {
-				var $a = $('<a href="#"></a>')
-					.attr('data-page-id', link.getPageId())
-					.attr('data-title', link.getTitle())
-					.attr('data-url', link.getUrl())
-					.attr('data-asset', '')
-					.text(link.getTitle());
-
-				linksetEditor.$links.append($('<li></li>').append($a));
-				linksetEditor.dialog.contents.find('#b-linkset-links .none').hide();
-				linksetEditor.addDeleteButtons();
-				linksetEditor.editLink($a);
-			});
-	};
-
-	boomChunkLinksetEditor.prototype.bind = function() {
-		var linksetEditor = this;
-
-		for (var property in this.toggle) {
-			if (!this.options[property]) {
-				this.dialog.contents.find(this.toggle[property]).hide();
-			}
-		}
-
-		this.$links = this.dialog.contents.find('#b-linkset-links ul');
-
-		this.addDeleteButtons();
-
-		this.$links
-			.on('click', '.b-linkset-link', function() {
-				linksetEditor.editLink($(this));
-			});
-
-		this.dialog.contents
-			.on('click', '#b-linkset-add', function() {
-				linksetEditor.addLink();
-			})
-			.on('click', '.delete', function() {
-				linksetEditor.deleteLink($(this).parent());
-			})
-			.on('keyup change', '#b-linkset-current form input[type=text]', function() {
-				var $this = $(this),
-					name = $this.attr('name'),
-					val = $this.val();
-
-				linksetEditor.currentLink.attr('data-' + name, val);
-
-				if (name === 'title') {
-					linksetEditor.currentLink.text(val);
-				}
-			})
-			.on('click', '.b-linkset-target button', function(e) {
-				e.preventDefault();
-
-				linksetEditor.editLinkTarget();
-			})
-			.on('click', '#b-linkset-delete', function() {
-				linksetEditor.deferred.resolveWith({});
-				linksetEditor.dialog.cancel();
-			})
-			.on('click', '.b-linkset-asset a', function() {
-				linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
-			})
-			.find('ul')
-			.sortable();
-	};
-
-	boomChunkLinksetEditor.prototype.editAsset = function(currentAsset) {
-		var linksetEditor = this;
-
-		new boomAssetPicker(currentAsset)
-			.done(function(asset) {
-				linksetEditor.currentLink.attr('data-asset', asset.getId());
-				linksetEditor.toggleLinkAsset(asset);
-			});
-	};
-
-	boomChunkLinksetEditor.prototype.editLink = function($a) {
-		this.currentLink = $a;
-
-		this.dialog.contents
-			.find('#b-linkset-current')
-			.find('.default')
-			.hide()
-			.end()
-			.find('form')
-			.show()
-			.find('.b-linkset-target input[type=text]')
-			.val($a.attr('data-url'))
-			.end()
-			.find('.b-linkset-title input[type=text]')
-			.val($a.attr('data-title'))
-			.end()
-			.find('.b-linkset-text input[type=text]')
-			.val($a.attr('data-text'))
-			.end();
-
-		this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
-	};
-
-	boomChunkLinksetEditor.prototype.editLinkTarget = function() {
-		var linksetEditor = this,
-			link = new boomLink(this.currentLink.attr('data-url'), this.currentLink.attr('data-page-id'));
-
-		new boomLinkPicker(link)
-			.done(function(link) {
-				linksetEditor.currentLink
-					.attr('data-page-id', link.getPageId())
-					.attr('data-url', link.getUrl());
-
-				linksetEditor.dialog.contents.find('.b-linkset-target input').val(link.getUrl());
-			});
-	};
-
-	boomChunkLinksetEditor.prototype.deleteLink = function($li) {
-		$li.fadeOut(200, function() {
-			$li.remove();
-		});
-	};
-
-	boomChunkLinksetEditor.prototype.getData = function() {
-		return {
-			links: this.getLinks(),
-			title: this.dialog.contents.find('#b-linkset-title input').val()
-		};
-	};
-
-	boomChunkLinksetEditor.prototype.getLinks = function() {
-		var links = [];
-
-		this.$links.find('a:not(.delete)').each(function() {
-			var $this = $(this);
-
-			links.push({
-				target_page_id: $this.attr('data-page-id'),
-				url: $this.attr('data-url'),
-				title: $this.attr('data-title'),
-				asset_id: $this.attr('data-asset'),
-				text: $this.attr('data-text')
-			});
-		});
-
-		return links;
-	};
-
-	boomChunkLinksetEditor.prototype.open = function() {
-		var linksetEditor = this;
-
-		this.dialog = new boomDialog({
-			url: '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=linkset',
-			title: 'Edit linkset',
-			id: 'b-linkset-editor',
-			width: 900,
-			onLoad: function() {
-				linksetEditor.bind();
-			}
-		})
-		.done(function() {
-			linksetEditor.deferred.resolve(linksetEditor.getData());
-		})
-		.fail(function() {
-			linksetEditor.deferred.reject();
-		});
-
-		return this.deferred;
-	};
-
-	boomChunkLinksetEditor.prototype.toggleLinkAsset = function(asset) {
-		var $linksetAsset = this.dialog.contents.find('.b-linkset-asset');
-
-		if (asset && asset.getId() > 0) {
-			$linksetAsset
-				.find('.none')
-				.hide()
-				.end()
-				.find('.set')
-				.show()
-				.find('img')
-				.attr('src', asset.getUrl('view', 500));
-		} else {
-			$linksetAsset
-				.find('.none')
-				.show()
-				.end()
-				.find('.set')
-				.hide();
-		}
-	};
-
-	return this.open();
-}
-;function boomChunkAssetEditor(pageId, slotname, visibleElements) {
-	this.pageId = pageId;
-	this.slotname = slotname;
-	this.visibleElements = visibleElements;
-
-	boomChunkAssetEditor.prototype.bind = function() {
-		var chunkAssetEditor = this;
-
-		this.assetElement.on('click', function() {
-			new boomAssetPicker(chunkAssetEditor.asset)
-				.done(function(asset) {
-					chunkAssetEditor.setAsset(asset);
-				});
-		});
-
-		this.link.on('click', 'button', function() {
-			var $this = $(this);
-
-			new boomLinkPicker(new boomLink($this.parent().find('input').val()))
-				.done(function(link) {
-					chunkAssetEditor.setLink(link.getUrl());
-				});
-		});
-	};
-
-	boomChunkAssetEditor.prototype.dialogOpened = function() {
-		this.title = this.dialog.contents.find('.b-title');
-		this.caption = this.dialog.contents.find('.b-caption');
-		this.link = this.dialog.contents.find('.b-link');
-		this.assetElement = this.dialog.contents.find('a');
-		this.asset = new BoomCMS.Asset({id: this.assetElement.attr("data-asset-id")});
-
-		this.bind();
-		this.toggleElements();
-	};
-
-	boomChunkAssetEditor.prototype.getData = function() {
-		return {
-			asset_id : this.asset.getId(),
-			caption : this.caption.find('textarea').val(),
-			url : this.link.find('input').val(),
-			title : this.title.find('textarea').val()
-		};
-	};
-
-	boomChunkAssetEditor.prototype.open = function() {
-		var chunkAssetEditor = this;
-		this.deferred = new $.Deferred();
-
-		this.dialog = new boomDialog({
-			url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=asset',
-			id : 'b-assets-chunk-editor',
-			width: 900,
-			open: function() {
-				chunkAssetEditor.dialogOpened();
-			}
-		})
-		.done(function() {
-			chunkAssetEditor.deferred.resolve(chunkAssetEditor.getData());
-		 })
-		.fail(function() {
-			chunkAssetEditor.deferred.reject();
-		 });
-
-		return this.deferred;
-	};
-
-	boomChunkAssetEditor.prototype.setAsset = function(asset) {
-		this.asset = asset;
-		this.assetElement.attr('data-asset-id', asset.getId());
-
-		var $img = this.assetElement.find('img');
-
-		if ( ! $img.length) {
-			$img = $('<img />');
-			this.assetElement.find('p').replaceWith($img);
-		}
-
-		$img.attr('src', asset.getUrl('view', 400));
-	};
-
-	boomChunkAssetEditor.prototype.setLink = function(link) {
-		this.link
-			.find('input')
-			.val(link)
-			.blur();
-	};
-
-	boomChunkAssetEditor.prototype.toggleElements = function() {
-		var elements = ['title', 'caption', 'link'],
-			i,
-			element;
-
-		for (i = 0; i < elements.length; i++) {
-			element = elements[i];
-
-			if ( ! this.visibleElements[element]) {
-				this[element].hide();
-			}
-		}
-	};
-
-	return this.open();
-}
-;$.widget('ui.chunkLink', $.ui.chunk, {
-	edit: function() {
-		var chunkLink = this,
-			link = new boomLink(this.getUrl(), this.getTargetPageId(), this.getText());
-		
-		new boomLinkPicker(link, {
-			text: this.textIsEditable(),
-			remove: link.getUrl() !== ''
-		})
-		.done(function(link) {
-			chunkLink.insert(link);
-		})
-		.fail(function() {
-			chunkLink.destroy();	
-		});
-	},
-	
-	getTargetPageId: function() {
-		return this.element.attr('data-boom-target_page_id');
-	},
-	
-	getText: function() {
-		return this.element.attr('data-boom-text');
-	},
-	
-	getUrl: function() {
-		return this.element.attr('data-boom-url');
-	},
-
-	insert: function(link) {
-		if (typeof(link) === 'undefined' || link.getUrl() === '') {
-			this.remove();
-		} else {
-			this._save({
-				links: [{
-					title: link.getTitle(),
-					url: link.getUrl(),
-					target_page_id: link.getPageId()
-				}]
-			});
-		}
-	},
-
-	textIsEditable: function() {
-		return this.element.attr('data-boom-edittext') === '1';
-	}
+    /**
+    @lends $.ui.chunkTimestamp
+    */
+    {
+
+        format : '',
+
+        timestamp : '',
+
+        _create: function() {
+            this.format = this.element.attr('data-boom-format');
+            this.timestamp = this.element.attr('data-boom-timestamp');
+            this.formatIsEditable = (this.element.attr('data-boom-formatIsEditable') === '1');
+
+            $.ui.chunk.prototype._create.call(this);
+        },
+
+        edit: function() {
+            var self = this,
+                data = this.getData();
+
+            this.dialog = new BoomCMS.Dialog({
+                url: this.options.currentPage.baseUrl + 'chunk/edit?slotname=' + self.options.name + '&type=timestamp',
+                width: 400,
+                title: 'Edit date / time',
+                onLoad: function() {
+                    if (self.formatIsEditable) {
+                        data.format && $('#format').val(data.format);
+                    } else {
+                        self.dialog.contents.find('label:first-of-type').hide();
+                    }
+
+                    var time = (data.timestamp)? new Date(data.timestamp * 1000) : new Date();
+
+                    $( '#timestamp' ).datepicker('setDate', time);
+                },
+                destroy: function(){
+                    self.destroy();
+                }
+            }).done(function() {
+                var    format = $('#format').val(),
+                    stringDate = $('#timestamp').val(),
+                    dateyDate = new Date(stringDate),
+                    timestamp = (dateyDate.valueOf() / 1000) - (dateyDate.getTimezoneOffset() * 60);
+
+                self.insert(format, timestamp);
+            })
+        .always(function() {
+            self.bind();
+        });
+        },
+
+        insert: function(format, timestamp) {
+            if (this.formatIsEditable) {
+                this.format = format;
+            }
+
+            this.timestamp = timestamp;
+
+            return this._save();
+        },
+
+        getData: function(){
+            return {
+                format : this.format,
+                timestamp: this.timestamp
+            };
+        }
+    });;$.widget('ui.chunkLibrary', $.ui.chunk, {
+    clearFilters: function() {
+        var $el = this.dialog.contents;
+
+        $el.find('select').prop('selectedIndex', 0);
+        $el.find('#b-tags-search li').remove();
+        $el.find('input[type=text]').val('');
+    },
+
+    edit: function() {
+        var library = this;
+
+        this.dialog = new BoomCMS.Dialog({
+            url: this.options.currentPage.baseUrl + 'chunk/edit?type=library&slotname=' + this.options.name,
+            width: 700,
+            onLoad: function() {
+                library.dialog.contents
+                    .on('click', '.b-button.clear', function() {
+                        library.clearFilters();
+                    })
+                    .find('#b-tags-search')
+                    .assetTagSearch();
+            }
+        })
+        .always(function() {
+            library.bind();
+        })
+        .done(function() {
+            library._save(library.getData());
+        });
+    },
+
+    getData: function() {
+        var $el = this.dialog.contents;
+
+        return {
+            params: {
+                type: $el.find('#b-assets-types :selected').val(),
+                order: $el.find('#b-assets-sortby :selected').val(),
+                limit: $el.find('input[name=limit]').val(),
+                tag: $el.find('#b-tags-search [data-tag]').map(function() {
+                    return $(this).attr('data-tag');
+                }).toArray()
+            }
+        };
+    }
+});;(function(BoomCMS) {
+    'use strict';
+
+    BoomCMS.ChunkSlideshowEditor = function(page_id, slotname, options) {
+        this.page_id = page_id;
+        this.slotname = slotname;
+        this.options = options;
+
+        BoomCMS.ChunkSlideshowEditor.prototype.bind = function() {
+            var slideshowEditor = this;
+
+            this.toggleSections();
+
+            this.dialog.contents
+                .on('click', '#b-slideshow-editor-delete', function() {
+                    slideshowEditor.deferred.resolveWith({});
+
+                    slideshowEditor.dialog.close();
+                })
+                .on('change', '#b-slideshow-editor-slides input[type=radio]', function() {
+                    var slide = slideshowEditor._getSlideDetails($(this));
+
+                    slide.asset = new BoomCMS.Asset({id: slide.asset_id});
+                    slideshowEditor.editSlide(slide);
+                })
+                .on('click', '#b-slideshow-editor-current-delete', function(e) {
+                    e.preventDefault();
+
+                    slideshowEditor.deleteCurrentSlide();
+                })
+                .on('click', '#b-slideshow-editor-current form a', function(e) {
+                    e.preventDefault();
+
+                    var currentAssetId = $(this).find('img').attr('src').replace(/\/asset\/(\d+)(.*?)/, '$1');
+                    slideshowEditor.editCurrentSlideAsset(new BoomCMS.Asset({id: currentAssetId}));
+                })
+                .on('keydown, change', '#b-slideshow-editor-current form input[type=text]', function() {
+                    var $this = $(this),
+                        name = $this.attr('name'),
+                        val = $this.val();
+
+                    slideshowEditor.getCurrentSlide().data(name, val);
+                })
+                .on('click', '#b-slideshow-editor-current .b-slideshow-link button', function(e) {
+                    e.preventDefault();
+
+                    var $input = $(this).parent().find('input'),
+                        currentSlide = slideshowEditor.getCurrentSlide();
+
+                    new BoomCMS.LinkPicker(new BoomCMS.Link($input.val(), currentSlide.data('page')))
+                        .done(function(link) {
+                            currentSlide
+                                .data('url', link.getUrl())
+                                .data('page', link.getPageId());
+
+                            $input
+                                .val(link.getUrl())
+                                .blur();
+                        });
+                })
+                .on('click', '#b-slideshow-editor-add', function(e) {
+                    e.preventDefault();
+
+                    slideshowEditor.addSlide();
+                })
+                .find('#b-slideshow-editor-slides')
+                .sortable({});
+        };
+
+        BoomCMS.ChunkSlideshowEditor.prototype.addSlide = function() {
+            var slideshowEditor = this;
+
+            BoomCMS.AssetPicker(null, {type: 'image'})
+                .done(function(asset) {
+                    var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl('view', 0, 100) + '" /></label></li>');
+
+                    slideshowEditor.dialog.contents
+                        .find('#b-slideshow-editor-slides')
+                        .append($new_slide);
+
+                    $new_slide.find('input').attr('checked', true);
+                    slideshowEditor.editSlide({asset : asset});
+                });
+        };
+
+        BoomCMS.ChunkSlideshowEditor.prototype.deleteCurrentSlide = function() {
+            this.getCurrentSlide()
+                .parents('li')
+                .remove()
+                .end()
+                .end()
+                .find('#b-slideshow-editor-current')
+                .find('.default')
+                .show()
+                .end()
+                .find('form')
+                .hide();
+        };
+
+        BoomCMS.ChunkSlideshowEditor.prototype.editCurrentSlideAsset = function(currentAsset) {
+            var slideshowEditor = this;
+
+            BoomCMS.AssetPicker(currentAsset)
+                .done(function(asset) {
+                    slideshowEditor.dialog.contents
+                        .find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
+                        .attr('src', asset.getUrl('view', 300, 0))
+                        .siblings('input')
+                        .attr('data-asset', asset.getId());
+                });
+        };
+
+        BoomCMS.ChunkSlideshowEditor.prototype.editSlide = function(slide) {
+            this.dialog.contents.find('#b-slideshow-editor-current')
+                .find('.default')
+                .hide()
+                .end()
+                .find('form')
+                .show()
+                .find('img')
+                .attr('src', slide.asset.getUrl('view', 300, 0))
+                .end()
+                .find('input[name=title]')
+                .val(slide.title)
+                .end()
+                .find('input[name=caption]')
+                .val(slide.caption)
+                .end()
+                .find('input[name=url]')
+                .val(new BoomCMS.Link(slide.url).getUrl())
+                .end()
+                .find('input[name=linktext]')
+                .val(slide.linktext);
+        };
+
+        BoomCMS.ChunkSlideshowEditor.prototype.getAllSlideDetails = function() {
+            var slideshowEditor = this;
+
+            return this.dialog.contents
+                .find('#b-slideshow-editor-slides li')
+                .map(function(index, el) {
+                    var $el = $(el);
+
+                    return slideshowEditor._getSlideDetails($el.find('input'));
+                })
+                .get();
+        };
+
+        BoomCMS.ChunkSlideshowEditor.prototype.getCurrentSlide = function() {
+            return this.dialog.contents.find('#b-slideshow-editor-slides input[type=radio]:checked');
+        };
+
+        BoomCMS.ChunkSlideshowEditor.prototype._getSlideDetails = function($element) {
+            return {
+                asset_id: $element.attr('data-asset'),
+                url: $element.data('url'),
+                page: $element.data('page'),
+                caption: $element.data('caption'),
+                title: $element.data('title'),
+                linktext: $element.data('linktext')
+            };
+        };
+
+        BoomCMS.ChunkSlideshowEditor.prototype.open = function() {
+            var slideshowEditor = this;
+            this.deferred = new $.Deferred();
+
+            this.dialog = new BoomCMS.Dialog({
+                url : '/boomcms/page/' + this.page_id + '/chunk/edit?slotname=' + this.slotname + '&type=slideshow',
+                id : 'b-slideshow-editor',
+                width: 920,
+                open: function() {
+                    slideshowEditor.bind();
+                }
+            })
+            .done(function() {
+                slideshowEditor.deferred.resolve(slideshowEditor.getAllSlideDetails());
+            })
+            .fail(function() {
+                slideshowEditor.deferred.reject();
+            });
+
+            return this.deferred;
+        };
+
+        BoomCMS.ChunkSlideshowEditor.prototype.toggleSections = function() {
+            var sections = ['title', 'caption', 'link', 'linktext'];
+
+            for (var i in sections) {
+                var section = sections[i];
+
+                if (this.options[section] === false) {
+                    this.dialog.contents.find('.b-slideshow-' + section).hide();
+                }
+            }
+        };
+
+        return this.open();
+    };
+}(BoomCMS));;(function(BoomCMS) {
+    'use strict';
+
+    BoomCMS.ChunkLinksetEditor = function(pageId, slotname, options) {
+        this.pageId = pageId;
+        this.slotname = slotname;
+        this.options = options;
+        this.deferred = new $.Deferred();
+
+        this.toggle = {
+            title: '#b-linkset-title',
+            linkAssets: '.b-linkset-asset',
+            linkText: '.b-linkset-text'
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.addDeleteButtons = function() {
+            this.$links.find('li').each(function() {
+                var $this = $(this);
+
+                if ( ! $this.find('.delete').length) {
+                    $('<a class="delete fa fa-trash-o" href="#"></a>').appendTo($this);
+                }
+            });
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.addLink = function() {
+            var linksetEditor = this;
+
+            new BoomCMS.LinkPicker()
+                .done(function(link) {
+                    var $a = $('<a href="#"></a>')
+                        .attr('data-page-id', link.getPageId())
+                        .attr('data-title', link.getTitle())
+                        .attr('data-url', link.getUrl())
+                        .attr('data-asset', '')
+                        .text(link.getTitle());
+
+                    linksetEditor.$links.append($('<li></li>').append($a));
+                    linksetEditor.dialog.contents.find('#b-linkset-links .none').hide();
+                    linksetEditor.addDeleteButtons();
+                    linksetEditor.editLink($a);
+                });
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.bind = function() {
+            var linksetEditor = this;
+
+            for (var property in this.toggle) {
+                if (!this.options[property]) {
+                    this.dialog.contents.find(this.toggle[property]).hide();
+                }
+            }
+
+            this.$links = this.dialog.contents.find('#b-linkset-links ul');
+
+            this.addDeleteButtons();
+
+            this.$links
+                .on('click', '.b-linkset-link', function() {
+                    linksetEditor.editLink($(this));
+                });
+
+            this.dialog.contents
+                .on('click', '#b-linkset-add', function() {
+                    linksetEditor.addLink();
+                })
+                .on('click', '.delete', function() {
+                    linksetEditor.deleteLink($(this).parent());
+                })
+                .on('keyup change', '#b-linkset-current form input[type=text]', function() {
+                    var $this = $(this),
+                        name = $this.attr('name'),
+                        val = $this.val();
+
+                    linksetEditor.currentLink.attr('data-' + name, val);
+
+                    if (name === 'title') {
+                        linksetEditor.currentLink.text(val);
+                    }
+                })
+                .on('click', '.b-linkset-target button', function(e) {
+                    e.preventDefault();
+
+                    linksetEditor.editLinkTarget();
+                })
+                .on('click', '#b-linkset-delete', function() {
+                    linksetEditor.deferred.resolveWith({});
+                    linksetEditor.dialog.cancel();
+                })
+                .on('click', '.b-linkset-asset a', function() {
+                    linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
+                })
+                .find('ul')
+                .sortable();
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.editAsset = function(currentAsset) {
+            var linksetEditor = this;
+
+            BoomCMS.AssetPicker(currentAsset)
+                .done(function(asset) {
+                    linksetEditor.currentLink.attr('data-asset', asset.getId());
+                    linksetEditor.toggleLinkAsset(asset);
+                });
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.editLink = function($a) {
+            this.currentLink = $a;
+
+            this.dialog.contents
+                .find('#b-linkset-current')
+                .find('.default')
+                .hide()
+                .end()
+                .find('form')
+                .show()
+                .find('.b-linkset-target input[type=text]')
+                .val($a.attr('data-url'))
+                .end()
+                .find('.b-linkset-title input[type=text]')
+                .val($a.attr('data-title'))
+                .end()
+                .find('.b-linkset-text input[type=text]')
+                .val($a.attr('data-text'))
+                .end();
+
+            this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.editLinkTarget = function() {
+            var linksetEditor = this,
+                link = new BoomCMS.Link(this.currentLink.attr('data-url'), this.currentLink.attr('data-page-id'));
+
+            new BoomCMS.LinkPicker(link)
+                .done(function(link) {
+                    linksetEditor.currentLink
+                        .attr('data-page-id', link.getPageId())
+                        .attr('data-url', link.getUrl());
+
+                    linksetEditor.dialog.contents.find('.b-linkset-target input').val(link.getUrl());
+                });
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.deleteLink = function($li) {
+            $li.fadeOut(200, function() {
+                $li.remove();
+            });
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.getData = function() {
+            return {
+                links: this.getLinks(),
+                title: this.dialog.contents.find('#b-linkset-title input').val()
+            };
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.getLinks = function() {
+            var links = [];
+
+            this.$links.find('a:not(.delete)').each(function() {
+                var $this = $(this);
+
+                links.push({
+                    target_page_id: $this.attr('data-page-id'),
+                    url: $this.attr('data-url'),
+                    title: $this.attr('data-title'),
+                    asset_id: $this.attr('data-asset'),
+                    text: $this.attr('data-text')
+                });
+            });
+
+            return links;
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.open = function() {
+            var linksetEditor = this;
+
+            this.dialog = new BoomCMS.Dialog({
+                url: '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=linkset',
+                title: 'Edit linkset',
+                id: 'b-linkset-editor',
+                width: 900,
+                onLoad: function() {
+                    linksetEditor.bind();
+                }
+            })
+            .done(function() {
+                linksetEditor.deferred.resolve(linksetEditor.getData());
+            })
+            .fail(function() {
+                linksetEditor.deferred.reject();
+            });
+
+            return this.deferred;
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.toggleLinkAsset = function(asset) {
+            var $linksetAsset = this.dialog.contents.find('.b-linkset-asset');
+
+            if (asset && asset.getId() > 0) {
+                $linksetAsset
+                    .find('.none')
+                    .hide()
+                    .end()
+                    .find('.set')
+                    .show()
+                    .find('img')
+                    .attr('src', asset.getUrl('view', 500));
+            } else {
+                $linksetAsset
+                    .find('.none')
+                    .show()
+                    .end()
+                    .find('.set')
+                    .hide();
+            }
+        };
+
+        return this.open();
+    };
+}(BoomCMS));;(function(BoomCMS) {
+    'use strict';
+
+    BoomCMS.ChunkAssetEditor = function(pageId, slotname, visibleElements) {
+        this.pageId = pageId;
+        this.slotname = slotname;
+        this.visibleElements = visibleElements;
+
+        BoomCMS.ChunkAssetEditor.prototype.bind = function() {
+            var chunkAssetEditor = this;
+
+            this.assetElement.on('click', function() {
+                BoomCMS.AssetPicker(chunkAssetEditor.asset)
+                    .done(function(asset) {
+                        chunkAssetEditor.setAsset(asset);
+                    });
+            });
+
+            this.link.on('click', 'button', function() {
+                var $this = $(this);
+
+                new BoomCMS.LinkPicker(new BoomCMS.Link($this.parent().find('input').val()))
+                    .done(function(link) {
+                        chunkAssetEditor.setLink(link.getUrl());
+                    });
+            });
+        };
+
+        BoomCMS.ChunkAssetEditor.prototype.dialogOpened = function() {
+            this.title = this.dialog.contents.find('.b-title');
+            this.caption = this.dialog.contents.find('.b-caption');
+            this.link = this.dialog.contents.find('.b-link');
+            this.assetElement = this.dialog.contents.find('a');
+            this.asset = new BoomCMS.Asset({id: this.assetElement.attr('data-asset-id')});
+
+            this.bind();
+            this.toggleElements();
+        };
+
+        BoomCMS.ChunkAssetEditor.prototype.getData = function() {
+            return {
+                asset_id : this.asset.getId(),
+                caption : this.caption.find('textarea').val(),
+                url : this.link.find('input').val(),
+                title : this.title.find('textarea').val()
+            };
+        };
+
+        BoomCMS.ChunkAssetEditor.prototype.open = function() {
+            var chunkAssetEditor = this;
+            this.deferred = new $.Deferred();
+
+            this.dialog = new BoomCMS.Dialog({
+                url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=asset',
+                id : 'b-assets-chunk-editor',
+                width: 900,
+                open: function() {
+                    chunkAssetEditor.dialogOpened();
+                }
+            })
+            .done(function() {
+                chunkAssetEditor.deferred.resolve(chunkAssetEditor.getData());
+            })
+            .fail(function() {
+                chunkAssetEditor.deferred.reject();
+            });
+
+            return this.deferred;
+        };
+
+        BoomCMS.ChunkAssetEditor.prototype.setAsset = function(asset) {
+            this.asset = asset;
+            this.assetElement.attr('data-asset-id', asset.getId());
+
+            var $img = this.assetElement.find('img');
+
+            if ( ! $img.length) {
+                $img = $('<img />');
+                this.assetElement.find('p').replaceWith($img);
+            }
+
+            $img.attr('src', asset.getUrl('view', 400));
+        };
+
+        BoomCMS.ChunkAssetEditor.prototype.setLink = function(link) {
+            this.link
+                .find('input')
+                .val(link)
+                .blur();
+        };
+
+        BoomCMS.ChunkAssetEditor.prototype.toggleElements = function() {
+            var elements = ['title', 'caption', 'link'],
+                i,
+                element;
+
+            for (i = 0; i < elements.length; i++) {
+                element = elements[i];
+
+                if ( ! this.visibleElements[element]) {
+                    this[element].hide();
+                }
+            }
+        };
+
+        return this.open();
+    };
+}(BoomCMS));;$.widget('ui.chunkLink', $.ui.chunk, {
+    edit: function() {
+        var chunkLink = this,
+            link = new BoomCMS.Link(this.getUrl(), this.getTargetPageId(), this.getText());
+        
+        new BoomCMS.LinkPicker(link, {
+            text: this.textIsEditable(),
+            remove: link.getUrl() !== ''
+        })
+        .done(function(link) {
+            chunkLink.insert(link);
+        })
+        .fail(function() {
+            chunkLink.destroy();    
+        });
+    },
+    
+    getTargetPageId: function() {
+        return this.element.attr('data-boom-target_page_id');
+    },
+    
+    getText: function() {
+        return this.element.attr('data-boom-text');
+    },
+    
+    getUrl: function() {
+        return this.element.attr('data-boom-url');
+    },
+
+    insert: function(link) {
+        if (typeof(link) === 'undefined' || link.getUrl() === '') {
+            this.remove();
+        } else {
+            this._save({
+                links: [{
+                    title: link.getTitle(),
+                    url: link.getUrl(),
+                    target_page_id: link.getPageId()
+                }]
+            });
+        }
+    },
+
+    textIsEditable: function() {
+        return this.element.attr('data-boom-edittext') === '1';
+    }
 });;$.widget('ui.chunkLocation', $.ui.chunk, {
-	edit: function() {
-		var chunk = this,
-			options = this.getOptions(),
-			editor = new boomChunkLocationEditor(this.options.page, this.options.name, options);
+    edit: function() {
+        var chunk = this,
+            options = this.getOptions(),
+            editor = new BoomCMS.ChunkLocationEditor(this.options.page, this.options.name, options);
 
-		editor
-			.done(function(data) {
-				if (data.lat != 0 && data.lng != 0) {
-					chunk._save(data);
-				} else {
-					chunk.remove();
-				}
-			})
-			.always(function() {
-				chunk.bind();
-			});
-	},
+        editor
+            .done(function(data) {
+                if (data.lat != 0 && data.lng != 0) {
+                    chunk._save(data);
+                } else {
+                    chunk.remove();
+                }
+            })
+            .always(function() {
+                chunk.bind();
+            });
+    },
 
-	getOptions: function() {
-		return {
-			address: this.element.attr('data-boom-address') === '1',
-			title: this.element.attr('data-boom-title') === '1'
-		};
-	}
+    getOptions: function() {
+        return {
+            address: this.element.attr('data-boom-address') === '1',
+            title: this.element.attr('data-boom-title') === '1'
+        };
+    }
 });
-;function boomChunkLocationEditor(pageId, slotname, options) {
-	this.pageId = pageId;
-	this.slotname = slotname;
-	this.deferred = new $.Deferred();
-	this.defaultLocation = [51.528837, -0.165653];
-	this.options = options;
-	this.title = 'Edit location';
+;(function(BoomCMS) {
+    'use strict';
 
-	boomChunkLocationEditor.prototype.bind = function() {
-		var locationEditor = this;
+    BoomCMS.ChunkLocationEditor = function(pageId, slotname, options) {
+        this.pageId = pageId;
+        this.slotname = slotname;
+        this.deferred = new $.Deferred();
+        this.defaultLocation = [51.528837, -0.165653];
+        this.options = options;
+        this.title = 'Edit location';
 
-		L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-			attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-		}).addTo(this.map);
+        BoomCMS.ChunkLocationEditor.prototype.bind = function() {
+            var locationEditor = this;
 
-		if (this.mapElement.attr('data-lat') != 0 && this.mapElement.attr('data-lng') != 0) {
-			this.setMapLocation(this.mapElement.attr('data-lat'), this.mapElement.attr('data-lng'));
-		}
+            L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
+                attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+            }).addTo(this.map);
 
-		this.map.on('click', function(e) {
-			locationEditor.setMapLocation(e.latlng.lat, e.latlng.lng);
-		});
+            if (this.mapElement.attr('data-lat') != 0 && this.mapElement.attr('data-lng') != 0) {
+                this.setMapLocation(this.mapElement.attr('data-lat'), this.mapElement.attr('data-lng'));
+            }
 
-		this.element
-			.on('click', '#b-location-set', function(e) {
-				e.preventDefault();
+            this.map.on('click', function(e) {
+                locationEditor.setMapLocation(e.latlng.lat, e.latlng.lng);
+            });
 
-				locationEditor.setMapLocationFromAddress();
-			})
-			.on('click', '#b-location-latlng', function(e) {
-				e.preventDefault();
+            this.element
+                .on('click', '#b-location-set', function(e) {
+                    e.preventDefault();
 
-				locationEditor.setMapLocationFromLatLng();
-			})
-			.on('click', '#b-location-remove', function() {
-				locationEditor.removeLocation();
-			});
-	};
+                    locationEditor.setMapLocationFromAddress();
+                })
+                .on('click', '#b-location-latlng', function(e) {
+                    e.preventDefault();
 
-	boomChunkLocationEditor.prototype.getAddress = function() {
-		return this.element.find('textarea').val();
-	};
+                    locationEditor.setMapLocationFromLatLng();
+                })
+                .on('click', '#b-location-remove', function() {
+                    locationEditor.removeLocation();
+                });
+        };
 
-	boomChunkLocationEditor.prototype.getData = function() {
-		var latLng = this.getLocation();
+        BoomCMS.ChunkLocationEditor.prototype.getAddress = function() {
+            return this.element.find('textarea').val();
+        };
 
-		return {
-			title: this.getTitle(),
-			address: this.getAddress(),
-			lat: latLng.lat,
-			lng: latLng.lng
-		};
-	};
+        BoomCMS.ChunkLocationEditor.prototype.getData = function() {
+            var latLng = this.getLocation();
 
-	boomChunkLocationEditor.prototype.getDMS = function() {
-		return this.element.find('input[name=dms]').val();
-	};
+            return {
+                title: this.getTitle(),
+                address: this.getAddress(),
+                lat: latLng.lat,
+                lng: latLng.lng
+            };
+        };
 
-	boomChunkLocationEditor.prototype.getLocation = function() {
-		return (this.marker)? this.marker.getLatLng() : {lat: 0, lng: 0};
-	};
+        BoomCMS.ChunkLocationEditor.prototype.getDMS = function() {
+            return this.element.find('input[name=dms]').val();
+        };
 
-	boomChunkLocationEditor.prototype.getSearchAddress = function() {
-		return this.element.find('input[name=search-address]').val();
-	};
+        BoomCMS.ChunkLocationEditor.prototype.getLocation = function() {
+            return (this.marker)? this.marker.getLatLng() : {lat: 0, lng: 0};
+        };
 
-	boomChunkLocationEditor.prototype.getTitle = function() {
-		return this.element.find('input[name=title]').val();
-	};
+        BoomCMS.ChunkLocationEditor.prototype.getSearchAddress = function() {
+            return this.element.find('input[name=search-address]').val();
+        };
 
-	boomChunkLocationEditor.prototype.geocode = function(location) {
-		return $.get('//nominatim.openstreetmap.org/search', {
-			q: location,
-			format: 'json',
-			limit: 1
-		});
-	};
+        BoomCMS.ChunkLocationEditor.prototype.getTitle = function() {
+            return this.element.find('input[name=title]').val();
+        };
 
-	boomChunkLocationEditor.prototype.open = function() {
-		var locationEditor = this;
+        BoomCMS.ChunkLocationEditor.prototype.geocode = function(location) {
+            return $.get('//nominatim.openstreetmap.org/search', {
+                q: location,
+                format: 'json',
+                limit: 1
+            });
+        };
 
-		this.dialog = new boomDialog({
-			url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=location',
-			id : 'b-location-editor',
-			width: 920,
-			title: this.title,
-			open: function() {
-				locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');
+        BoomCMS.ChunkLocationEditor.prototype.open = function() {
+            var locationEditor = this;
 
-				locationEditor.map = L.map(locationEditor.mapElement[0])
-					.setView(locationEditor.defaultLocation, 13);
+            this.dialog = new BoomCMS.Dialog({
+                url : '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=location',
+                id : 'b-location-editor',
+                width: 920,
+                title: this.title,
+                open: function() {
+                    locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');
 
-				locationEditor.element = locationEditor.dialog.contents;
-				locationEditor.toggleElements(locationEditor.options);
-				locationEditor.bind();
-			}
-		})
-		.done(function() {
-			locationEditor.deferred.resolve(locationEditor.getData());
-		})
-		.fail(function() {
-			locationEditor.deferred.reject();
-		});
+                    locationEditor.map = L.map(locationEditor.mapElement[0])
+                        .setView(locationEditor.defaultLocation, 13);
 
-		return this.deferred;
-	};
+                    locationEditor.element = locationEditor.dialog.contents;
+                    locationEditor.toggleElements(locationEditor.options);
+                    locationEditor.bind();
+                }
+            })
+            .done(function() {
+                locationEditor.deferred.resolve(locationEditor.getData());
+            })
+            .fail(function() {
+                locationEditor.deferred.reject();
+            });
 
-	boomChunkLocationEditor.prototype.removeLocation = function() {
-		if (this.marker) {
-			this.map
-				.removeLayer(this.marker)
-				.setView(this.defaultLocation, 13);
+            return this.deferred;
+        };
 
-			this.marker = null;
+        BoomCMS.ChunkLocationEditor.prototype.removeLocation = function() {
+            if (this.marker) {
+                this.map
+                    .removeLayer(this.marker)
+                    .setView(this.defaultLocation, 13);
 
-			this.element.find('#b-location-remove').hide();
-		}
-	};
+                this.marker = null;
 
-	boomChunkLocationEditor.prototype.setMapLocation = function(lat, lng) {
-		var locationEditor = this,
-			marker;
+                this.element.find('#b-location-remove').hide();
+            }
+        };
 
-		L.Icon.Default.imagePath = '/vendor/boomcms/boom-core/images';
+        BoomCMS.ChunkLocationEditor.prototype.setMapLocation = function(lat, lng) {
+            var locationEditor = this,
+                marker;
 
-		if (!this.marker) {
-			marker = this.marker = L.marker([lat, lng], {
-				draggable: true
-			})
-			.addTo(this.map)
-			.on('dragend', function(e) {
-				var latlng = marker.getLatLng();
+            L.Icon.Default.imagePath = '/vendor/boomcms/boom-core/images';
 
-				locationEditor.setMapLocation(latlng.lat, latlng.lng);
-			});
-		} else {
-			this.marker.setLatLng([lat, lng]);
-		}
+            if (!this.marker) {
+                marker = this.marker = L.marker([lat, lng], {
+                    draggable: true
+                })
+                .addTo(this.map)
+                .on('dragend', function() {
+                    var latlng = marker.getLatLng();
 
-		this.map.setView([lat, lng], 16);
+                    locationEditor.setMapLocation(latlng.lat, latlng.lng);
+                });
+            } else {
+                this.marker.setLatLng([lat, lng]);
+            }
 
-		this.element
-			.find('.b-lat input')
-			.val(parseFloat(lat).toFixed(6))
-			.end()
-			.find('.b-lng input')
-			.val(parseFloat(lng).toFixed(6))
-			.end()
-			.find('#b-location-remove')
-			.show();
-	};
+            this.map.setView([lat, lng], 16);
 
-	boomChunkLocationEditor.prototype.setMapLocationFromLatLng = function() {
-		var lat = this.element.find('.b-lat input').val(),
-			lng = this.element.find('.b-lng input').val();
+            this.element
+                .find('.b-lat input')
+                .val(parseFloat(lat).toFixed(6))
+                .end()
+                .find('.b-lng input')
+                .val(parseFloat(lng).toFixed(6))
+                .end()
+                .find('#b-location-remove')
+                .show();
+        };
 
-		this.setMapLocation(Dms.parseDMS(lat), Dms.parseDMS(lng));
-	};
+        BoomCMS.ChunkLocationEditor.prototype.setMapLocationFromLatLng = function() {
+            var lat = this.element.find('.b-lat input').val(),
+                lng = this.element.find('.b-lng input').val();
 
-	boomChunkLocationEditor.prototype.setMapLocationFromAddress = function() {
-		var locationEditor = this,
-			address = this.getSearchAddress();
-		
-		this.geocode(address)
-			.done(function(response) {
-				if (response.length) {
-					locationEditor.setMapLocation(response[0].lat, response[0].lon);
-				} else {
-					new boomAlert("No location was found matching the postcode supplied");
-				}
-			});
-	};
+            this.setMapLocation(Dms.parseDMS(lat), Dms.parseDMS(lng));
+        };
 
-	boomChunkLocationEditor.prototype.toggleElements = function(options) {
-		if (!options.title && !options.address) {
-			this.element.find('#b-location-details').hide();
-			return;
-		}
+        BoomCMS.ChunkLocationEditor.prototype.setMapLocationFromAddress = function() {
+            var locationEditor = this,
+                address = this.getSearchAddress();
 
-		if (!options.title) {
-			this.element.find('.b-title').hide();
-		}
+            this.geocode(address)
+                .done(function(response) {
+                    if (response.length) {
+                        locationEditor.setMapLocation(response[0].lat, response[0].lon);
+                    } else {
+                        BoomCMS.alert('No location was found matching the postcode supplied');
+                    }
+                });
+        };
 
-		if (!options.address) {
-			this.element.find('.b-address').hide();
-		}
-	};
+        BoomCMS.ChunkLocationEditor.prototype.toggleElements = function(options) {
+            if (!options.title && !options.address) {
+                this.element.find('#b-location-details').hide();
+                return;
+            }
 
-	return this.open();
-}
-;$.widget('ui.chunkHtml', $.ui.chunk, {
-	edit: function() {
-		var self = this,
-			dialog;
+            if (!options.title) {
+                this.element.find('.b-title').hide();
+            }
 
-		dialog = new boomDialog({
-			url: this.options.currentPage.baseUrl + 'chunk/edit?type=html&slotname=' + this.options.name,
-			width: 600,
-			title: 'Edit HTML'
-		}).done(function() {
-			var html = dialog.contents.find('textarea').val();
+            if (!options.address) {
+                this.element.find('.b-address').hide();
+            }
+        };
 
-			if (html.trim() !== '') {
-				self.insert(html);
-			} else {
-				self.remove();
-			}
-		})
-		.always(function() {
-			self.bind();
-		});
-	},
+        return this.open();
+    };
+}(BoomCMS));;$.widget('ui.chunkHtml', $.ui.chunk, {
+    edit: function() {
+        var self = this,
+            dialog;
 
-	getData: function() {
-		return {html : this.html};
-	},
+        dialog = new BoomCMS.Dialog({
+            url: this.options.currentPage.baseUrl + 'chunk/edit?type=html&slotname=' + this.options.name,
+            width: 600,
+            title: 'Edit HTML'
+        }).done(function() {
+            var html = dialog.contents.find('textarea').val();
 
-	/**
-	@param {Int} id Tag ID
-	*/
-	insert: function(html) {
-		this.html = html;
+            if (html.trim() !== '') {
+                self.insert(html);
+            } else {
+                self.remove();
+            }
+        })
+        .always(function() {
+            self.bind();
+        });
+    },
 
-		return this._save();
-	}
+    getData: function() {
+        return {html : this.html};
+    },
+
+    /**
+    @param {Int} id Tag ID
+    */
+    insert: function(html) {
+        this.html = html;
+
+        return this._save();
+    }
 });;$.widget('ui.chunkCalendar', $.ui.chunk, {
-	edit: function() {
-		var chunk = this,
-			options = this.getOptions(),
-			selected,
-			dialog;
+    edit: function() {
+        var chunk = this,
+            selected,
+            dialog;
 
-		dialog = new boomDialog({
-			url: this.options.currentPage.baseUrl + 'chunk/edit?type=calendar&slotname=' + this.options.name,
-			width: 700,
-			title: 'Select dates',
-			onLoad: function() {
-				var $content = dialog.contents.find('.content'),
-					$textarea = dialog.contents.find('textarea'),
-					$calendar = dialog.contents.find('.calendar'),
-					content = dialog.contents.find('textarea[name=dates]').val();
+        dialog = new BoomCMS.Dialog({
+            url: this.options.currentPage.baseUrl + 'chunk/edit?type=calendar&slotname=' + this.options.name,
+            width: 700,
+            title: 'Select dates',
+            onLoad: function() {
+                var $content = dialog.contents.find('.content'),
+                    $textarea = dialog.contents.find('textarea'),
+                    $calendar = dialog.contents.find('.calendar'),
+                    content = dialog.contents.find('textarea[name=dates]').val();
 
-				chunk.dates = content ? $.parseJSON(content) : {};
+                chunk.dates = content ? $.parseJSON(content) : {};
 
-				if (chunk.dates.length === 0) {
-					chunk.dates = {};
-				}
+                if (chunk.dates.length === 0) {
+                    chunk.dates = {};
+                }
 
-				$calendar.datepicker({
-					dateFormat: "yy-mm-dd",
-					onSelect: function(dateText, picker) {
-						selected = dateText;
+                $calendar.datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    onSelect: function(dateText) {
+                        selected = dateText;
 
-						$content.css('visibility', 'visible');
-						$textarea.val(chunk.dates[selected]).focus();
-					},
-					beforeShowDay: function(date) {
-						var year = date.getFullYear(),
-							month = ('0' + (date.getMonth() + 1)).slice(-2),
-							day = ('0' + date.getDate() ).slice(-2),
-							formatted = year + '-' + month + '-' + day,
-							className = formatted in chunk.dates ? 'hastext' : '';
+                        $content.css('visibility', 'visible');
+                        $textarea.val(chunk.dates[selected]).focus();
+                    },
+                    beforeShowDay: function(date) {
+                        var year = date.getFullYear(),
+                            month = ('0' + (date.getMonth() + 1)).slice(-2),
+                            day = ('0' + date.getDate() ).slice(-2),
+                            formatted = year + '-' + month + '-' + day,
+                            className = formatted in chunk.dates ? 'hastext' : '';
 
-						return [true, className];
-					}
-				});
+                        return [true, className];
+                    }
+                });
 
-				$textarea.on('keyup', function() {
-					var val = $(this).val();
+                $textarea.on('keyup', function() {
+                    var val = $(this).val();
 
-					if (val) {
-						chunk.dates[selected] = val;
-						$calendar.find('.ui-state-active').parent().addClass('hastext');
-					} else {
-						chunk.removeDate(selected);
-						$calendar.find('.ui-state-active').parent().removeClass('hastext');
-					}
-				});
+                    if (val) {
+                        chunk.dates[selected] = val;
+                        $calendar.find('.ui-state-active').parent().addClass('hastext');
+                    } else {
+                        chunk.removeDate(selected);
+                        $calendar.find('.ui-state-active').parent().removeClass('hastext');
+                    }
+                });
 
-				dialog.contents.on('click', '.remove', function() {
-					chunk.removeDate(selected);
-					$calendar.find('.ui-state-active').parent().removeClass('hastext');
-					$textarea.val('').blur();
-					$content.css('visibility', 'hidden');
-				});
-			}
-		})
-		.done(function() {
-			Object.keys(chunk.dates).length > 0 ? chunk._save() : chunk.remove();
-		})
-		.fail(function() {
-			chunk.destroy();
-		});
-	},
+                dialog.contents.on('click', '.remove', function() {
+                    chunk.removeDate(selected);
+                    $calendar.find('.ui-state-active').parent().removeClass('hastext');
+                    $textarea.val('').blur();
+                    $content.css('visibility', 'hidden');
+                });
+            }
+        })
+        .done(function() {
+            Object.keys(chunk.dates).length > 0 ? chunk._save() : chunk.remove();
+        })
+        .fail(function() {
+            chunk.destroy();
+        });
+    },
 
-	getData: function() {
-		return {content: this.dates};
-	},
+    getData: function() {
+        return {content: this.dates};
+    },
 
-	getOptions: function() {
-		return {};
-	},
+    getOptions: function() {
+        return {};
+    },
 
-	removeDate: function(date) {
-		delete this.dates[date];
-	}
+    removeDate: function(date) {
+        delete this.dates[date];
+    }
 });
 ;$.widget('boom.pageTitle', $.ui.chunk, {
-	lengthCounterCreated : false,
-
-	/* The length at which the title length inidcator turns red */
-	softLimit: 70,
-
-	/* The length at which the title won't save */
-	hardLimit: 100,
-
-	saveOnBlur: false,
-
-	bind: function() {
-		$.ui.chunk.prototype.bind.call(this);
-
-		var self = this,
-			element = this.element,
-			oldText = this.getTitle();
-
-		this.element.textEditor({
-			edit: function() {
-				var title = self.getTitle();
-
-				if (title !== '' && title !== oldText && title.length <= self.hardLimit) {
-					self._save(title, oldText);
-				}
-
-				oldText = title;
-				self.removeTitleLengthCounter();
-			}
-		});
-
-		this.element
-			.on('keydown change paste', function() {
-				var oldText = self.getTitle();
-
-				setTimeout(function() {
-					self.updateLengthCounter(self.getLength());
-				}, 0);
-			})
-			.on('focus', function() {
-				if (self.isUntitled()) {
-					self.element.text('');
-				}
-
-				if (!self.lengthCounterCreated) {
-					self.createLengthCounter(self.getLength());
-					self.lengthCounterCreated = true;
-				}
-			});
-	},
-
-	createLengthCounter: function() {
-		var $counter = $('<div id="b-title-length"><span></span></div>');
-
-		$(top.document)
-				.find('body')
-				.first()
-				.append($counter);
-
-		var offset = this.element.offset(),
-			title = this;
-
-		$counter
-			.css({
-				top : offset.top + 'px',
-				left : (offset.left - 110) + 'px'
-			});
-
-		$('<p><a href="#" id="b-title-help">What is this?</a></p>')
-			.appendTo($counter)
-			.on('mousedown', 'a', function() {
-				title.element.textEditor('disableAutoSave');
-			})
-			.on('keydown', function(e) {
-				if (e.which === 13) {
-					title.openHelp();
-				}
-			})
-			.on('click', function(e) {
-				e.preventDefault();
-
-				title.openHelp();
-			});
-
-		this.updateLengthCounter(this.getLength());
-	},
-
-	edit: function() {},
-
-	getCounterColorForLength: function(length) {
-		if (length >= this.softLimit) {
-			return 'red';
-		} else if (length >= this.softLimit * 0.9) {
-			return 'orange';
-		} else if (length >= this.softLimit * 0.8) {
-			return 'yellow';
-		}
-
-		return 'green';
-	},
-
-	getLength: function() {
-		return this.getTitle().length;
-	},
-
-	getTitle: function() {
-		return this.element.text().trim();
-	},
-
-	isUntitled: function() {
-		return this.getTitle() === 'Untitled';
-	},
-
-	openHelp: function() {
-		var title = this;
-
-		new boomDialog({
-			url: '/vendor/boomcms/boom-core/html/help/title_length.html',
-			width: '600px',
-			cancelButton: false
-		}).always(function() {
-			title.element.textEditor('enableAutoSave');
-			title.element.focus();
-		});
-	},
-
-	removeTitleLengthCounter: function() {
-		this.lengthCounterCreated = false;
-		$(top.document).find('#b-title-length').remove();
-	},
-
-	_save: function(title, old_title) {
-		this.options.currentPage.setTitle(title)
-			.done(function(data) {
-				if (data.location !== top.window.location) {
-					top.history.replaceState({}, title, data.location);
-					new boomNotification('Page title saved').show();
-					window.BoomCMS.page.toolbar.status.set(data.status);
-				} else {
-					new boomNotification('Page title saved').show();
-					window.BoomCMS.page.toolbar.status.set(data);
-				}
-
-				var page_title = top.$('title').text().replace(old_title, title);
-				top.$('title').text(page_title);
-			});
-	},
-
-	updateLengthCounter: function(length) {
-		$(top.document).find('#b-title-length')
-			.find('span')
-			.text(length)
-			.end()
-			.css('background-color', this.getCounterColorForLength(length));
-
-		var disable_accept_button = (length >= this.hardLimit || length === 0)? true : false;
-		var opacity = disable_accept_button? '.35' : 1;
-		$('.b-editor-accept')
-			.prop('disabled', disable_accept_button)
-			.css('opacity', opacity);
-	},
-
-	unbind: function() {}
-});;function boomLink(url, pageId, title) {
-	this.url = url? url : "";
-	this.pageId = pageId? pageId : 0;
-	this.title = title? title : "";
-
-	boomLink.prototype.isAsset = function() {
-		return this.getUrl().indexOf('/asset/') === 0;
-	};
-
-	boomLink.prototype.isExternal = function() {
-		return this.getUrl() !== "" && this.getUrl().substring(0,1) !== '/';
-	};
-
-	boomLink.prototype.isHttp = function() {
-		return this.url.substring(0,7) === 'http://';
-	};
-
-	boomLink.prototype.isHttps = function() {
-		return this.url.substring(0,8) === 'https://';
-	};
-
-	boomLink.prototype.isInternal = function() {
-		return this.pageId > 0 || this.getUrl().substring(0,1) === '/';
-	};
-
-	boomLink.prototype.isMailto = function() {
-		return this.url.substring(0,7) === 'mailto:';
-	};
-
-	boomLink.prototype.isTel = function() {
-		return this.url.substring(0,4) === 'tel:';
-	};
-
-	boomLink.prototype.getAsset = function() {
-		var assetId = this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, "$1");
-
-		return new BoomCMS.Asset({id: assetId});
-	};
-
-	boomLink.prototype.getAssetAction = function() {
-		if (this.isAsset()) {
-			return this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, "$3");
-		}
-	};
-
-	boomLink.prototype.getUrl = function() {
-		if (this.isTel()) {
-			return this.getTelUrl();
-		}
-
-		return (this.url === 'http://') ? '' : this.makeUrlRelative();
-	};
-
-	boomLink.prototype.getPageId = function() {
-		return this.pageId;
-	};
-
-	boomLink.prototype.getTelUrl = function() {
-		return 'tel:' + this.url.replace(/[^+\d]+/g, '');
-	};
-
-	boomLink.prototype.getTitle = function() {
-		return this.title;
-	};
-	
-	boomLink.prototype.makeUrlRelative = function() {
-		return (this.url.indexOf(window.location.hostname) > -1) ?
-			this.url.replace(/^https?:\/\//, '').replace(window.location.hostname, '') :
-			this.url;
-	};
-};
-;function boomLinkPicker(link, options) {
-	this.deferred = new $.Deferred();
-	this.link = link? link : new boomLink();
-
-	this.defaultOptions = {
-		internal: true,
-		text: false,
-		remove: false,
-		external: true,
-		asset: true
-	};
-
-	this.options = $.extend(this.defaultOptions, options);
-
-	boomLinkPicker.prototype.bind = function() {
-		var linkPicker = this;
-
-		this.externalTypeSelector
-			.on('change', function() {
-				var type = linkPicker.externalTypeSelector.val(),
-					val = linkPicker.externalUrl.val();
-
-				if (type === 'http' || type === 'https') {
-					linkPicker.externalUrl.autocomplete('enable');
-				} else {
-					linkPicker.externalUrl.autocomplete('disable');
-				}
-
-				if (val === 'http://') {
-					linkPicker.externalUrl.val('');
-				}
-
-				linkPicker.externalUrl.focus();
-				linkPicker.externalUrl[0].setSelectionRange(0, val.length);
-			});
-
-		this.externalUrl.autocomplete({
-			appendTo: linkPicker.$el.find('#b-linkpicker-add-external form'),
-			source: function(request, response) {
-				if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
-					if (linkPicker.externalUrl.val()) {
-						$.ajax({
-							url: '/boomcms/autocomplete/page-titles',
-							dataType: 'json',
-							data: {
-								text : linkPicker.externalUrl.val()
-							}
-						})
-						.done(function(data) {
-							response(data);
-						});
-					}
-				}
-			},
-			select: function(event, ui) {
-				event.preventDefault();
-
-				linkPicker.externalUrl.val(ui.item.value);
-			}
-		});
-
-		this.$el
-			.find('.boom-tree')
-			.pageTree({
-				onPageSelect: function(link) {
-					linkPicker.pick(link);
-					linkPicker.dialog.cancel();
-				}
-			});
-
-		this.$el
-			.on('click', '#b-linkpicker-remove', function(e) {
-				e.preventDefault();
-
-				linkPicker.deferred.resolve(new boomLink());
-				linkPicker.dialog.cancel();
-			})
-			.on('click', '#b-linkpicker-asset-select', function() {
-				new boomAssetPicker(linkPicker.link.getAsset())
-					.done(function(asset) {
-						var action = linkPicker.asset.find('option:selected').val();
-
-						linkPicker.externalUrl.val(asset.getUrl(action));
-						linkPicker.setAssetPreview(asset);
-					});
-			})
-			.on('focus', '#b-linkpicker-add-asset select', function() {
-				var $this = $(this);
-
-				$this.data('previous', $this.find('option:selected').val());
-			})
-			.on('change', '#b-linkpicker-add-asset select', function() {
-				if (linkPicker.link.isAsset()) {
-					var $this = $(this),
-						action = $this.find('option:selected').val(),
-						url = linkPicker.externalUrl.val().replace($this.data('previous'), action);
-
-						linkPicker.externalUrl.val(url);
-				}
-			});
-	};
-
-	boomLinkPicker.prototype.getExternalLink = function() {
-		var url = this.externalUrl.val(),
-			linkText;
-	
-		linkText = (this.options.text && this.textInput.val()) ?
-			this.textInput.val() :
-			url.replace('mailto:', '').replace('tel:', '');
-
-		if (url.indexOf(window.location.hostname) === -1) {
-			switch(this.externalTypeSelector.val()) {
-				case 'http':
-					if (url.substring(0, 7) !== 'http://'
-							&& url.substring(0, 8) !== 'https://'
-							&& url.substring(0, 1) !== '/'
-							&& url.substring(0, 1) !== '#')
-					{
-						url = 'http://' + url;
-					}
-
-					break;
-				case 'mailto':
-					if (url.substring(0, 7) !== 'mailto:') {
-						url = 'mailto:' + url;
-					}
-
-					break;
-				case 'tel':
-					if (url.substring(0, 4) !== 'tel:') {
-						url = 'tel:' + url.replace(' ', '');
-					}
-
-					break;
-			}
-		}
-
-		return new boomLink(url, 0, linkText);
-	};
-
-	boomLinkPicker.prototype.onLoad = function(dialog) {
-		this.dialog = dialog;
-		this.$el = dialog.contents;
-		this.internal = this.$el.find('#b-linkpicker-add-internal');
-		this.external = this.$el.find('#b-linkpicker-add-external');
-		this.asset = this.$el.find('#b-linkpicker-add-asset');
-		this.externalTypeSelector = this.external.find('select');
-		this.externalUrl = this.external.find('input');
-		this.textInput = this.$el.find('#b-linkpicker-text input[type=text]');
-
-		this.$el.find('.boom-tabs').tabs();
-
-		this.toggleOptions();
-		this.setupInternal();
-		this.setupExternalUrl();
-		this.setupText();
-		this.setupAssetLink();
-		this.bind();
-	};
-
-	boomLinkPicker.prototype.open = function() {
-		var linkPicker = this;
-
-		new boomDialog({
-			msg : $('#b-linkpicker-container').html(),
-			id : 'b-linkpicker',
-			width : 600,
-			closeButton: this.options.external || this.options.text || this.options.asset,
-			onLoad: function(dialog) {
-				linkPicker.onLoad(dialog);
-			}
-		})
-		.done(function() {
-			linkPicker.pick(linkPicker.getExternalLink());
-		})
-		.fail(function() {
-			linkPicker.deferred.reject();
-		});
-
-		return this.deferred;
-	};
-
-	boomLinkPicker.prototype.pick = function(link) {
-		this.deferred.resolve(link);
-	};
-
-	boomLinkPicker.prototype.setAssetPreview = function(asset) {
-		this.asset.find('img').attr('src', asset.getUrl('thumb'));
-	};
-
-	boomLinkPicker.prototype.setupAssetLink = function() {
-		if (this.link.isAsset()) {
-			this.setAssetPreview(this.link.getAsset());
-
-			this.asset
-				.find('select')
-				.find('option')
-				.removeAttr('selected')
-				.end()
-				.find('option[value="' + this.link.getAssetAction() + '"]')
-				.attr('selected', 'selected');
-
-			$('a[href=#b-linkpicker-add-asset]').click();
-		}
-	};
-
-	boomLinkPicker.prototype.setupExternalUrl = function() {
-		var url = this.link.url;
-
-		if (this.link.isMailto()) {
-			url = url.replace('mailto:', '');
-			this.externalTypeSelector.val('mailto');
-		} else if (this.link.isTel()) {
-			url = url.replace('tel:', '');
-			this.externalTypeSelector.val('tel');
-		} else {
-			url = this.link.getUrl();
-			this.externalTypeSelector.val('http');
-		}
-
-		this.externalUrl.val(url);
-
-		if (url !== "" && !this.link.isAsset()) {
-			$('a[href=#b-linkpicker-add-external]').click();
-		}
-	};
-
-	boomLinkPicker.prototype.setupInternal = function() {
-		var pageId = this.link.getPageId();
-
-		if (pageId) {
-			this.internal.find('input').val(pageId);
-		}
-	};
-
-	boomLinkPicker.prototype.setupText = function() {
-		if (this.options.text) {
-			this.$el
-				.find('#b-linkpicker-text input[type=text]')
-				.val(link.getTitle());
-		}
-	};
-
-	boomLinkPicker.prototype.toggleOptions = function() {
-		var toggle = ['remove', 'external', 'internal', 'text', 'asset'],
-			i, option;
-
-		for (i = 0; i < toggle.length; i++) {
-			option = toggle[i];
-
-			if (!this.options[option]) {
-				var selector = '.toggle-' + option;
-
-				this.$el.find(selector).hide();
-			}
-		}
-	};
-
-	return this.open();
-}
-;(function(Backbone, BoomCMS) {
-	'use strict';
-
-	BoomCMS.AssetManager = Backbone.View.extend({
-		el: 'body',
-
-		assets: new BoomCMS.Collections.Assets(),
-		selection: new BoomCMS.Collections.Assets(),
-
-		types: {},
-
-		selectedClass: 'selected',
-		hideThumbsClass: 'hide-thumbs',
-
-		assetsUploaded: function() {
-			this.router.navigate('', {trigger: true});
-			this.uploader.assetUploader('close');
-			this.uploader.assetUploader('reset');
-
-			this.getAssets();
-		},
-
-		bind: function() {
-			var assetManager = this;
-
-			this.$el
-				.on('click', '#b-assets-selection-delete', function() {
-					assetManager.viewSelection(assetManager.selection, 'delete');
-				})
-				.on('click', '#b-assets-selection-download', function() {
-					assetManager.viewSelection(assetManager.selection, 'download');
-				})
-				.on('click', '#b-assets-select-all', function() {
-					assetManager.selectAll();
-
-					$(this).blur();
-				})
-				.on('click', '#b-assets-select-none', function() {
-					assetManager.clearSelection();
-
-					$(this).blur();
-				})
-				.on('click', '#b-assets-selection-tag', function() {
-					assetManager.viewSelection(assetManager.selection, 'tags');
-				})
-				.on('click', '#b-assets-upload', function() {
-					assetManager.router.navigate('upload', {trigger: true});
-				})
-				.on('click', '#b-assets-search', function() {
-					$('#b-assets-filters').toggleClass('visible');
-					$(this).toggleClass('open');
-				})						
-				.on('keydown', '.thumb', function(e) {
-					if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
-						$(this).parent().data('model').destroy();
-					}
-				});
-
-			this.uploader
-				.assetUploader({
-					uploadFinished: function(e, data) {
-						assetManager.assetsUploaded(data.result);
-					},
-					uploadFailed: function() {
-						// Update asset list even though an error occurred
-						// For situations where multiple files were uploaded but one caused an error.
-						assetManager.getAssets();
-					}
-				})
-				.on('click', '.b-assets-upload-close', function(e) {
-					e.preventDefault();
-
-					assetManager.uploader.assetUploader('close');
-					assetManager.router.navigate('', {trigger: true});
-				});
-		},
-
-		bindRoutes: function() {
-			var assetManager = this;
-
-			this.router
-				.on('selection', function(assetIds, section) {
-					assetManager.selection.reset();
-
-					for (var i = 0; i < assetIds.length; i++) {
-						var asset = new BoomCMS.Asset({id: assetIds[i]});
-						asset.fetch();
-
-						assetManager.selection.add(asset);
-					}
-
-					assetManager.viewSelection(assetManager.selection, section);
-				})
-				.on('upload', function() {
-					assetManager.uploader.show();
-					assetManager.hideThumbs();
-				})
-				.on('home', function() {
-					if (assetManager.assets.length <= 1) {
-						assetManager.getAssets();
-					}
-
-					assetManager.showThumbs();
-				});
-
-			Backbone.history.start();
-		},
-
-		clearSelection: function() {
-			this.selection.reset();
-
-			this.$('#b-assets-view-thumbs .selected').removeClass(this.selectedClass);
-		},
-
-		getAssets: function() {
-			this.$el.assetSearch('getAssets');
-		},
-
-		hideThumbs: function() {
-			this.$content.addClass(this.hideThumbsClass);
-		},
-
-		initialize: function() {
-			var assetManager = this;
-
-			this.router = new BoomCMS.AssetManager.Router({assets: this.assets});
-			this.$content = this.$('#b-assets-content');
-			this.uploader = this.$content.find('> .b-assets-upload .b-assets-upload-form').eq(0);
-
-			this.listenTo(this.assets, 'select', this.select);
-			this.listenTo(this.assets, 'view', this.viewAsset);
-			this.listenTo(this.assets, 'destroy', function() {
-				assetManager.getAssets();
-				assetManager.clearSelection();
-			});
-
-			this.listenTo(this.selection, 'reset update', this.toggleButtons);
-
-			this.$el.assetSearch({assets: this.assets});
-
-			this.bind();
-			this.bindRoutes();
-		},
-
-		showThumbs: function() {
-			this.$content.removeClass(this.hideThumbsClass);
-			this.uploader.hide();
-		},
-
-		selectAll: function() {
-			var assetManager = this;
-
-			this.assets.each(function(asset) {
-				assetManager.selection.add(asset);
-			});
-
-			this.$('#b-assets-view-thumbs .thumb').addClass(this.selectedClass);
-		},
-
-		select: function(data) {
-			var $el = data.$el,
-				asset = data.asset,
-				selection = this.selection,
-				method = selection.findWhere({id: asset.getId()}) ? 'remove' : 'add';
-
-			$el.find('.thumb').toggleClass(this.selectedClass).blur();
-
-			selection[method](asset);
-		},
-
-		toggleButtons: function() {
-			var $buttons = this.$('.b-assets-multi');
-
-			$buttons.prop('disabled', this.selection.length ? false : true);
-		},
-
-		updateTagFilters: function(tags) {
-			this.addFilter('tag', tags);
-			this.getAssets();
-		},
-
-		viewAsset: function(asset, section) {
-			if (section === undefined) {
-				section = 'info';
-			}
-
-			var view = new BoomCMS.AssetManager.ViewAsset({
-				model: asset,
-				assets: this.assets,
-				router: this.router
-			});
-
-			this.router
-				.navigate('asset/' + asset.getId() + '/' + section)
-				.once('home', function() {
-					view.close();
-				});
-
-			view.render(section);
-			this.$content.prepend(view.$el);
-			this.hideThumbs();
-		},
-
-		viewSelection: function(selection, section) {
-			var view = new BoomCMS.AssetManager.ViewSelection({
-				selection: selection,
-				assets: this.assets,
-				router: this.router
-			});
-
-			this.router
-				.navigate('selection/' + selection.getIdString() + '/' + section)
-				.once('home', function() {
-					view.close();
-				});
-
-			view.render(section);
-			this.$content.prepend(view.$el);
-			this.hideThumbs();
-		}
-	});
+    lengthCounterCreated : false,
+
+    /* The length at which the title length inidcator turns red */
+    softLimit: 70,
+
+    /* The length at which the title won't save */
+    hardLimit: 100,
+
+    saveOnBlur: false,
+
+    bind: function() {
+        $.ui.chunk.prototype.bind.call(this);
+
+        var self = this,
+            oldText = this.getTitle();
+
+        this.element.textEditor({
+            edit: function() {
+                var title = self.getTitle();
+
+                if (title !== '' && title !== oldText && title.length <= self.hardLimit) {
+                    self._save(title, oldText);
+                }
+
+                oldText = title;
+                self.removeTitleLengthCounter();
+            }
+        });
+
+        this.element
+            .on('keydown change paste', function() {
+                setTimeout(function() {
+                    self.updateLengthCounter(self.getLength());
+                }, 0);
+            })
+            .on('focus', function() {
+                if (self.isUntitled()) {
+                    self.element.text('');
+                }
+
+                if (!self.lengthCounterCreated) {
+                    self.createLengthCounter(self.getLength());
+                    self.lengthCounterCreated = true;
+                }
+            });
+    },
+
+    createLengthCounter: function() {
+        var $counter = $('<div id="b-title-length"><span></span></div>');
+
+        $(top.document)
+                .find('body')
+                .first()
+                .append($counter);
+
+        var offset = this.element.offset(),
+            title = this;
+
+        $counter
+            .css({
+                top : offset.top + 'px',
+                left : (offset.left - 110) + 'px'
+            });
+
+        $('<p><a href="#" id="b-title-help">What is this?</a></p>')
+            .appendTo($counter)
+            .on('mousedown', 'a', function() {
+                title.element.textEditor('disableAutoSave');
+            })
+            .on('keydown', function(e) {
+                if (e.which === 13) {
+                    title.openHelp();
+                }
+            })
+            .on('click', function(e) {
+                e.preventDefault();
+
+                title.openHelp();
+            });
+
+        this.updateLengthCounter(this.getLength());
+    },
+
+    edit: function() {},
+
+    getCounterColorForLength: function(length) {
+        if (length >= this.softLimit) {
+            return 'red';
+        } else if (length >= this.softLimit * 0.9) {
+            return 'orange';
+        } else if (length >= this.softLimit * 0.8) {
+            return 'yellow';
+        }
+
+        return 'green';
+    },
+
+    getLength: function() {
+        return this.getTitle().length;
+    },
+
+    getTitle: function() {
+        return this.element.text().trim();
+    },
+
+    isUntitled: function() {
+        return this.getTitle() === 'Untitled';
+    },
+
+    openHelp: function() {
+        var title = this;
+
+        new BoomCMS.Dialog({
+            url: '/vendor/boomcms/boom-core/html/help/title_length.html',
+            width: '600px',
+            cancelButton: false
+        }).always(function() {
+            title.element.textEditor('enableAutoSave');
+            title.element.focus();
+        });
+    },
+
+    removeTitleLengthCounter: function() {
+        this.lengthCounterCreated = false;
+        $(top.document).find('#b-title-length').remove();
+    },
+
+    _save: function(title, old_title) {
+        this.options.currentPage.setTitle(title)
+            .done(function(data) {
+                if (data.location !== top.window.location) {
+                    top.history.replaceState({}, title, data.location);
+                    BoomCMS.Notification('Page title saved').show();
+                    window.BoomCMS.page.toolbar.status.set(data.status);
+                } else {
+                    BoomCMS.Notification('Page title saved').show();
+                    window.BoomCMS.page.toolbar.status.set(data);
+                }
+
+                var page_title = top.$('title').text().replace(old_title, title);
+                top.$('title').text(page_title);
+            });
+    },
+
+    updateLengthCounter: function(length) {
+        $(top.document).find('#b-title-length')
+            .find('span')
+            .text(length)
+            .end()
+            .css('background-color', this.getCounterColorForLength(length));
+
+        var disable_accept_button = (length >= this.hardLimit || length === 0)? true : false;
+        var opacity = disable_accept_button? '.35' : 1;
+        $('.b-editor-accept')
+            .prop('disabled', disable_accept_button)
+            .css('opacity', opacity);
+    },
+
+    unbind: function() {}
+});;(function(BoomCMS) {
+    'use strict';
+
+    BoomCMS.Link = function(url, pageId, title) {
+        this.url = url? url : '';
+        this.pageId = pageId? pageId : 0;
+        this.title = title? title : '';
+
+        BoomCMS.Link.prototype.isAsset = function() {
+            return this.getUrl().indexOf('/asset/') === 0;
+        };
+
+        BoomCMS.Link.prototype.isExternal = function() {
+            return this.getUrl() !== '' && this.getUrl().substring(0,1) !== '/';
+        };
+
+        BoomCMS.Link.prototype.isHttp = function() {
+            return this.url.substring(0,7) === 'http://';
+        };
+
+        BoomCMS.Link.prototype.isHttps = function() {
+            return this.url.substring(0,8) === 'https://';
+        };
+
+        BoomCMS.Link.prototype.isInternal = function() {
+            return this.pageId > 0 || this.getUrl().substring(0,1) === '/';
+        };
+
+        BoomCMS.Link.prototype.isMailto = function() {
+            return this.url.substring(0,7) === 'mailto:';
+        };
+
+        BoomCMS.Link.prototype.isTel = function() {
+            return this.url.substring(0,4) === 'tel:';
+        };
+
+        BoomCMS.Link.prototype.getAsset = function() {
+            var assetId = this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, '$1');
+
+            return new BoomCMS.Asset({id: assetId});
+        };
+
+        BoomCMS.Link.prototype.getAssetAction = function() {
+            if (this.isAsset()) {
+                return this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, '$3');
+            }
+        };
+
+        BoomCMS.Link.prototype.getUrl = function() {
+            if (this.isTel()) {
+                return this.getTelUrl();
+            }
+
+            return (this.url === 'http://') ? '' : this.makeUrlRelative();
+        };
+
+        BoomCMS.Link.prototype.getPageId = function() {
+            return this.pageId;
+        };
+
+        BoomCMS.Link.prototype.getTelUrl = function() {
+            return 'tel:' + this.url.replace(/[^+\d]+/g, '');
+        };
+
+        BoomCMS.Link.prototype.getTitle = function() {
+            return this.title;
+        };
+
+        BoomCMS.Link.prototype.makeUrlRelative = function() {
+            return (this.url.indexOf(window.location.hostname) > -1) ?
+                this.url.replace(/^https?:\/\//, '').replace(window.location.hostname, '') :
+                this.url;
+        };
+    };
+}(BoomCMS));
+;(function($, BoomCMS) {
+    'use strict';
+
+    BoomCMS.LinkPicker = function(link, options) {
+        this.deferred = new $.Deferred();
+        this.link = link? link : new BoomCMS.Link();
+
+        this.defaultOptions = {
+            internal: true,
+            text: false,
+            remove: false,
+            external: true,
+            asset: true
+        };
+
+        this.options = $.extend(this.defaultOptions, options);
+
+        BoomCMS.LinkPicker.prototype.bind = function() {
+            var linkPicker = this;
+
+            this.externalTypeSelector
+                .on('change', function() {
+                    var type = linkPicker.externalTypeSelector.val(),
+                        val = linkPicker.externalUrl.val();
+
+                    if (type === 'http' || type === 'https') {
+                        linkPicker.externalUrl.autocomplete('enable');
+                    } else {
+                        linkPicker.externalUrl.autocomplete('disable');
+                    }
+
+                    if (val === 'http://') {
+                        linkPicker.externalUrl.val('');
+                    }
+
+                    linkPicker.externalUrl.focus();
+                    linkPicker.externalUrl[0].setSelectionRange(0, val.length);
+                });
+
+            this.externalUrl.autocomplete({
+                appendTo: linkPicker.$el.find('#b-linkpicker-add-external form'),
+                source: function(request, response) {
+                    if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
+                        if (linkPicker.externalUrl.val()) {
+                            $.ajax({
+                                url: '/boomcms/autocomplete/page-titles',
+                                dataType: 'json',
+                                data: {
+                                    text : linkPicker.externalUrl.val()
+                                }
+                            })
+                            .done(function(data) {
+                                response(data);
+                            });
+                        }
+                    }
+                },
+                select: function(event, ui) {
+                    event.preventDefault();
+
+                    linkPicker.externalUrl.val(ui.item.value);
+                }
+            });
+
+            this.$el
+                .find('.boom-tree')
+                .pageTree({
+                    onPageSelect: function(link) {
+                        linkPicker.pick(link);
+                        linkPicker.dialog.cancel();
+                    }
+                });
+
+            this.$el
+                .on('click', '#b-linkpicker-remove', function(e) {
+                    e.preventDefault();
+
+                    linkPicker.deferred.resolve(new BoomCMS.Link());
+                    linkPicker.dialog.cancel();
+                })
+                .on('click', '#b-linkpicker-asset-select', function() {
+                    BoomCMS.AssetPicker(linkPicker.link.getAsset())
+                        .done(function(asset) {
+                            var action = linkPicker.asset.find('option:selected').val();
+
+                            linkPicker.externalUrl.val(asset.getUrl(action));
+                            linkPicker.setAssetPreview(asset);
+                        });
+                })
+                .on('focus', '#b-linkpicker-add-asset select', function() {
+                    var $this = $(this);
+
+                    $this.data('previous', $this.find('option:selected').val());
+                })
+                .on('change', '#b-linkpicker-add-asset select', function() {
+                    if (linkPicker.link.isAsset()) {
+                        var $this = $(this),
+                            action = $this.find('option:selected').val(),
+                            url = linkPicker.externalUrl.val().replace($this.data('previous'), action);
+
+                        linkPicker.externalUrl.val(url);
+                    }
+                });
+        };
+
+        BoomCMS.LinkPicker.prototype.getExternalLink = function() {
+            var url = this.externalUrl.val(),
+                linkText;
+
+            linkText = (this.options.text && this.textInput.val()) ?
+                this.textInput.val() :
+                url.replace('mailto:', '').replace('tel:', '');
+
+            if (url.indexOf(window.location.hostname) === -1) {
+                switch(this.externalTypeSelector.val()) {
+                case 'http':
+                    if (url.substring(0, 7) !== 'http://'
+                                && url.substring(0, 8) !== 'https://'
+                                && url.substring(0, 1) !== '/'
+                                && url.substring(0, 1) !== '#')
+                        {
+                        url = 'http://' + url;
+                    }
+
+                    break;
+                case 'mailto':
+                    if (url.substring(0, 7) !== 'mailto:') {
+                        url = 'mailto:' + url;
+                    }
+
+                    break;
+                case 'tel':
+                    if (url.substring(0, 4) !== 'tel:') {
+                        url = 'tel:' + url.replace(' ', '');
+                    }
+
+                    break;
+                }
+            }
+
+            return new BoomCMS.Link(url, 0, linkText);
+        };
+
+        BoomCMS.LinkPicker.prototype.onLoad = function(dialog) {
+            this.dialog = dialog;
+            this.$el = dialog.contents;
+            this.internal = this.$el.find('#b-linkpicker-add-internal');
+            this.external = this.$el.find('#b-linkpicker-add-external');
+            this.asset = this.$el.find('#b-linkpicker-add-asset');
+            this.externalTypeSelector = this.external.find('select');
+            this.externalUrl = this.external.find('input');
+            this.textInput = this.$el.find('#b-linkpicker-text input[type=text]');
+
+            this.$el.find('.boom-tabs').tabs();
+
+            this.toggleOptions();
+            this.setupInternal();
+            this.setupExternalUrl();
+            this.setupText();
+            this.setupAssetLink();
+            this.bind();
+        };
+
+        BoomCMS.LinkPicker.prototype.open = function() {
+            var linkPicker = this;
+
+            new BoomCMS.Dialog({
+                msg : $('#b-linkpicker-container').html(),
+                id : 'b-linkpicker',
+                width : 600,
+                closeButton: this.options.external || this.options.text || this.options.asset,
+                onLoad: function(dialog) {
+                    linkPicker.onLoad(dialog);
+                }
+            })
+            .done(function() {
+                linkPicker.pick(linkPicker.getExternalLink());
+            })
+            .fail(function() {
+                linkPicker.deferred.reject();
+            });
+
+            return this.deferred;
+        };
+
+        BoomCMS.LinkPicker.prototype.pick = function(link) {
+            this.deferred.resolve(link);
+        };
+
+        BoomCMS.LinkPicker.prototype.setAssetPreview = function(asset) {
+            this.asset.find('img').attr('src', asset.getUrl('thumb'));
+        };
+
+        BoomCMS.LinkPicker.prototype.setupAssetLink = function() {
+            if (this.link.isAsset()) {
+                this.setAssetPreview(this.link.getAsset());
+
+                this.asset
+                    .find('select')
+                    .find('option')
+                    .removeAttr('selected')
+                    .end()
+                    .find('option[value="' + this.link.getAssetAction() + '"]')
+                    .attr('selected', 'selected');
+
+                $('a[href=#b-linkpicker-add-asset]').click();
+            }
+        };
+
+        BoomCMS.LinkPicker.prototype.setupExternalUrl = function() {
+            var url = this.link.url;
+
+            if (this.link.isMailto()) {
+                url = url.replace('mailto:', '');
+                this.externalTypeSelector.val('mailto');
+            } else if (this.link.isTel()) {
+                url = url.replace('tel:', '');
+                this.externalTypeSelector.val('tel');
+            } else {
+                url = this.link.getUrl();
+                this.externalTypeSelector.val('http');
+            }
+
+            this.externalUrl.val(url);
+
+            if (url !== '' && !this.link.isAsset()) {
+                $('a[href=#b-linkpicker-add-external]').click();
+            }
+        };
+
+        BoomCMS.LinkPicker.prototype.setupInternal = function() {
+            var pageId = this.link.getPageId();
+
+            if (pageId) {
+                this.internal.find('input').val(pageId);
+            }
+        };
+
+        BoomCMS.LinkPicker.prototype.setupText = function() {
+            if (this.options.text) {
+                this.$el
+                    .find('#b-linkpicker-text input[type=text]')
+                    .val(link.getTitle());
+            }
+        };
+
+        BoomCMS.LinkPicker.prototype.toggleOptions = function() {
+            var toggle = ['remove', 'external', 'internal', 'text', 'asset'],
+                i, option;
+
+            for (i = 0; i < toggle.length; i++) {
+                option = toggle[i];
+
+                if (!this.options[option]) {
+                    var selector = '.toggle-' + option;
+
+                    this.$el.find(selector).hide();
+                }
+            }
+        };
+
+        return this.open();
+    };
+}($, BoomCMS));;(function(Backbone, BoomCMS) {
+    'use strict';
+
+    BoomCMS.AssetManager = Backbone.View.extend({
+        el: 'body',
+
+        assets: new BoomCMS.Collections.Assets(),
+        selection: new BoomCMS.Collections.Assets(),
+
+        types: {},
+
+        selectedClass: 'selected',
+        hideThumbsClass: 'hide-thumbs',
+
+        assetsUploaded: function() {
+            this.router.navigate('', {trigger: true});
+            this.uploader.assetUploader('close');
+            this.uploader.assetUploader('reset');
+
+            this.getAssets();
+        },
+
+        bind: function() {
+            var assetManager = this;
+
+            this.$el
+                .on('click', '#b-assets-selection-delete', function() {
+                    assetManager.viewSelection(assetManager.selection, 'delete');
+                })
+                .on('click', '#b-assets-selection-download', function() {
+                    assetManager.viewSelection(assetManager.selection, 'download');
+                })
+                .on('click', '#b-assets-select-all', function() {
+                    assetManager.selectAll();
+
+                    $(this).blur();
+                })
+                .on('click', '#b-assets-select-none', function() {
+                    assetManager.clearSelection();
+
+                    $(this).blur();
+                })
+                .on('click', '#b-assets-selection-tag', function() {
+                    assetManager.viewSelection(assetManager.selection, 'tags');
+                })
+                .on('click', '#b-assets-upload', function() {
+                    assetManager.router.navigate('upload', {trigger: true});
+                })
+                .on('click', '#b-assets-search', function() {
+                    $('#b-assets-filters').toggleClass('visible');
+                    $(this).toggleClass('open');
+                })                        
+                .on('keydown', '.thumb', function(e) {
+                    if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
+                        $(this).parent().data('model').destroy();
+                    }
+                });
+
+            this.uploader
+                .assetUploader({
+                    uploadFinished: function(e, data) {
+                        assetManager.assetsUploaded(data.result);
+                    },
+                    uploadFailed: function() {
+                        // Update asset list even though an error occurred
+                        // For situations where multiple files were uploaded but one caused an error.
+                        assetManager.getAssets();
+                    }
+                })
+                .on('click', '.b-assets-upload-close', function(e) {
+                    e.preventDefault();
+
+                    assetManager.uploader.assetUploader('close');
+                    assetManager.router.navigate('', {trigger: true});
+                });
+        },
+
+        bindRoutes: function() {
+            var assetManager = this;
+
+            this.router
+                .on('selection', function(assetIds, section) {
+                    assetManager.selection.reset();
+
+                    for (var i = 0; i < assetIds.length; i++) {
+                        var asset = new BoomCMS.Asset({id: assetIds[i]});
+                        asset.fetch();
+
+                        assetManager.selection.add(asset);
+                    }
+
+                    assetManager.viewSelection(assetManager.selection, section);
+                })
+                .on('upload', function() {
+                    assetManager.uploader.show();
+                    assetManager.hideThumbs();
+                })
+                .on('home', function() {
+                    if (assetManager.assets.length <= 1) {
+                        assetManager.getAssets();
+                    }
+
+                    assetManager.showThumbs();
+                });
+
+            Backbone.history.start();
+        },
+
+        clearSelection: function() {
+            this.selection.reset();
+
+            this.$('#b-assets-view-thumbs .selected').removeClass(this.selectedClass);
+        },
+
+        getAssets: function() {
+            this.$el.assetSearch('getAssets');
+        },
+
+        hideThumbs: function() {
+            this.$content.addClass(this.hideThumbsClass);
+        },
+
+        initialize: function() {
+            var assetManager = this;
+
+            this.router = new BoomCMS.AssetManager.Router({assets: this.assets});
+            this.$content = this.$('#b-assets-content');
+            this.uploader = this.$content.find('> .b-assets-upload .b-assets-upload-form').eq(0);
+
+            this.listenTo(this.assets, 'select', this.select);
+            this.listenTo(this.assets, 'view', this.viewAsset);
+            this.listenTo(this.assets, 'destroy', function() {
+                assetManager.getAssets();
+                assetManager.clearSelection();
+            });
+
+            this.listenTo(this.selection, 'reset update', this.toggleButtons);
+
+            this.$el.assetSearch({assets: this.assets});
+
+            this.bind();
+            this.bindRoutes();
+        },
+
+        showThumbs: function() {
+            this.$content.removeClass(this.hideThumbsClass);
+            this.uploader.hide();
+        },
+
+        selectAll: function() {
+            var assetManager = this;
+
+            this.assets.each(function(asset) {
+                assetManager.selection.add(asset);
+            });
+
+            this.$('#b-assets-view-thumbs .thumb').addClass(this.selectedClass);
+        },
+
+        select: function(data) {
+            var $el = data.$el,
+                asset = data.asset,
+                selection = this.selection,
+                method = selection.findWhere({id: asset.getId()}) ? 'remove' : 'add';
+
+            $el.find('.thumb').toggleClass(this.selectedClass).blur();
+
+            selection[method](asset);
+        },
+
+        toggleButtons: function() {
+            var $buttons = this.$('.b-assets-multi');
+
+            $buttons.prop('disabled', this.selection.length ? false : true);
+        },
+
+        updateTagFilters: function(tags) {
+            this.addFilter('tag', tags);
+            this.getAssets();
+        },
+
+        viewAsset: function(asset, section) {
+            if (section === undefined) {
+                section = 'info';
+            }
+
+            var view = new BoomCMS.AssetManager.ViewAsset({
+                model: asset,
+                assets: this.assets,
+                router: this.router
+            });
+
+            this.router
+                .navigate('asset/' + asset.getId() + '/' + section)
+                .once('home', function() {
+                    view.close();
+                });
+
+            view.render(section);
+            this.$content.prepend(view.$el);
+            this.hideThumbs();
+        },
+
+        viewSelection: function(selection, section) {
+            var view = new BoomCMS.AssetManager.ViewSelection({
+                selection: selection,
+                assets: this.assets,
+                router: this.router
+            });
+
+            this.router
+                .navigate('selection/' + selection.getIdString() + '/' + section)
+                .once('home', function() {
+                    view.close();
+                });
+
+            view.render(section);
+            this.$content.prepend(view.$el);
+            this.hideThumbs();
+        }
+    });
 }(Backbone, BoomCMS));
 ;(function($, Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
-		routePrefix: 'selection',
-		tagName: 'div',
-		tagsDisplayed: false,
-		templateSelector: '#b-assets-selection-template',
+    BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
+        routePrefix: 'selection',
+        tagName: 'div',
+        tagsDisplayed: false,
+        templateSelector: '#b-assets-selection-template',
 
-		addTag: function(tag) {
-			if (!tag) {
-				return;
-			}
+        addTag: function(tag) {
+            if (!tag) {
+                return;
+            }
 
-			var $tagList = this.$('.b-tags').eq(0),
-				$tagTemplate = this.$('#b-tag-template').html(),
-				$el = $($tagTemplate);
+            var $tagList = this.$('.b-tags').eq(0),
+                $tagTemplate = this.$('#b-tag-template').html(),
+                $el = $($tagTemplate);
 
-			return $el
-				.find('a')
-				.attr('data-tag', tag)
-				.find('span:first-of-type')
-				.text(tag)
-				.end()
-				.end()
-				.insertBefore($tagList.find('.b-tags-add').parent());
-		},
+            return $el
+                .find('a')
+                .attr('data-tag', tag)
+                .find('span:first-of-type')
+                .text(tag)
+                .end()
+                .end()
+                .insertBefore($tagList.find('.b-tags-add').parent());
+        },
 
-		bind: function() {
-			var view = this,
-				selection = this.selection;
+        bind: function() {
+            var view = this,
+                selection = this.selection;
 
-			this.$el
-				.on('submit', '.b-tags-add', function(e) {
-					e.preventDefault();
+            this.$el
+                .on('submit', '.b-tags-add', function(e) {
+                    e.preventDefault();
 
-					var $input = $(this).find('input[type=text]'),
-						$el = view.addTag($input.val());
+                    var $input = $(this).find('input[type=text]'),
+                        $el = view.addTag($input.val());
 
-					if ($el !== undefined) {
-						view.toggleTag($el.find('a'));
-						$input.val('');
-					}
-				})
-				.on('click', '.b-settings-close', function(e) {
-					view.close(e);
-				})
-				.on('click', '.b-assets-delete', function() {
-					selection.destroy();
-				})
-				.on('click', 'a[data-section]', function() {
-					var section = $(this).attr('data-section');
+                    if ($el !== undefined) {
+                        view.toggleTag($el.find('a'));
+                        $input.val('');
+                    }
+                })
+                .on('click', '.b-settings-close', function(e) {
+                    view.close(e);
+                })
+                .on('click', '.b-assets-delete', function() {
+                    selection.destroy();
+                })
+                .on('click', 'a[data-section]', function() {
+                    var section = $(this).attr('data-section');
 
-					view.router.navigate(view.routePrefix + '/' + selection.getIdString() + '/' + section);
+                    view.router.navigate(view.routePrefix + '/' + selection.getIdString() + '/' + section);
 
-					if (section === 'tags') {
-						view.showTags();
-					}
-				})
-				.on('submit', '#b-assets-download-filename', function(e) {
-					e.preventDefault();
+                    if (section === 'tags') {
+                        view.showTags();
+                    }
+                })
+                .on('submit', '#b-assets-download-filename', function(e) {
+                    e.preventDefault();
 
-					var filename = $(this).find('input[name=filename]').val();
+                    var filename = $(this).find('input[name=filename]').val();
 
-					selection.download(filename);
-				});
+                    selection.download(filename);
+                });
 
-			this.$('.b-settings-menu a[href^=#]').boomTabs();
-			this.$('time').localTime();
-		},
+            this.$('.b-settings-menu a[href^=#]').boomTabs();
+            this.$('time').localTime();
+        },
 
-		close: function() {
-			this.$el.remove();
-			this.router.navigate('', {trigger: true});
-		},
+        close: function() {
+            this.$el.remove();
+            this.router.navigate('', {trigger: true});
+        },
 
-		displayTags: function(tags) {
-			var view = this;
+        displayTags: function(tags) {
+            var view = this;
 
-			for (var i = 0; i < tags.length; i++) {
-				view.addTag(tags[i]);
-			}
+            for (var i = 0; i < tags.length; i++) {
+                view.addTag(tags[i]);
+            }
 
-			this.$el
-				.on('click', '.b-tags a', function(e) {
-					e.preventDefault();
+            this.$el
+                .on('click', '.b-tags a', function(e) {
+                    e.preventDefault();
 
-					view.toggleTag($(this));
-				});
-		},
+                    view.toggleTag($(this));
+                });
+        },
 
-		getSection: function() {
-			return this.$('a[data-section].selected').attr('data-section');
-		},
+        getSection: function() {
+            return this.$('a[data-section].selected').attr('data-section');
+        },
 
-		init: function(options) {
-			var view = this;
+        init: function(options) {
+            var view = this;
 
-			this.assets = options.assets;
-			this.router = options.router;
+            this.assets = options.assets;
+            this.router = options.router;
 
-			this.template = _.template($(this.templateSelector).html());
+            this.template = _.template($(this.templateSelector).html());
 
-			this.listenTo(this.selection, 'sync', function() {
-				this.render(view.getSection());
-			});
+            this.listenTo(this.selection, 'sync', function() {
+                this.render(view.getSection());
+            });
 
-			this.listenTo(this.selection, 'destroy', function() {
-				view.close();
-			});
-		},
+            this.listenTo(this.selection, 'destroy', function() {
+                view.close();
+            });
+        },
 
-		initialize: function(options) {
-			this.selection = options.selection;
+        initialize: function(options) {
+            this.selection = options.selection;
 
-			this.init(options);
-		},
+            this.init(options);
+        },
 
-		render: function(section) {
-			this.$el.html(this.template({
-				selection: this.selection,
-				section: section
-			}));
+        render: function(section) {
+            this.$el.html(this.template({
+                selection: this.selection,
+                section: section
+            }));
 
-			if (section === 'tags') {
-				this.showTags();
-			}
+            if (section === 'tags') {
+                this.showTags();
+            }
 
-			this.bind();
+            this.bind();
 
-			return this;
-		},
+            return this;
+        },
 
-		showTags: function() {
-			if (this.tagsDisplayed === false) {
-				var view = this,
-					allTags = new BoomCMS.Collections.Assets([]).getTags();
+        showTags: function() {
+            if (this.tagsDisplayed === false) {
+                var view = this,
+                    allTags = new BoomCMS.Collections.Assets([]).getTags();
 
-				allTags.done(function(tags) {
-					view.displayTags(tags);
-				});
+                allTags.done(function(tags) {
+                    view.displayTags(tags);
+                });
 
-				$.when(allTags, this.selection.getTags()).done(function(response1, response2) {
-					if (typeof response2[0] !== 'undefined') {
-						var tags = response2[0];
+                $.when(allTags, this.selection.getTags()).done(function(response1, response2) {
+                    if (typeof response2[0] !== 'undefined') {
+                        var tags = response2[0];
 
-						for (var i = 0; i < tags.length; i++) {
-							view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
-						}
-					}
-				});
+                        for (var i = 0; i < tags.length; i++) {
+                            view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
+                        }
+                    }
+                });
 
-				this.tagsDisplayed = true;
-			}
-		},
+                this.tagsDisplayed = true;
+            }
+        },
 
-		toggleTag: function($a) {
-			var activeClass = 'active',
-				funcName = $a.hasClass(activeClass) ? 'removeTag' : 'addTag';
+        toggleTag: function($a) {
+            var activeClass = 'active',
+                funcName = $a.hasClass(activeClass) ? 'removeTag' : 'addTag';
 
-			this.selection[funcName]($a.attr('data-tag')).done(function() {
-				$a.toggleClass(activeClass).blur();
-			});
-		}
-	});
+            this.selection[funcName]($a.attr('data-tag')).done(function() {
+                $a.toggleClass(activeClass).blur();
+            });
+        }
+    });
 }(jQuery, Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.AssetManager.Router = Backbone.Router.extend({
-		routes: {
-			'': 'home',
-			'upload': 'upload',
-			'asset/:asset/:section': 'viewAsset',
-			'selection/:selection/:section': 'viewSelection'
-		},
+    BoomCMS.AssetManager.Router = Backbone.Router.extend({
+        routes: {
+            '': 'home',
+            'upload': 'upload',
+            'asset/:asset/:section': 'viewAsset',
+            'selection/:selection/:section': 'viewSelection'
+        },
 
-		initialize: function(options) {
-			this.assets = options.assets;
-		},
+        initialize: function(options) {
+            this.assets = options.assets;
+        },
 
-		viewAsset: function(id, section) {
-			var asset = this.assets.get(id);
+        viewAsset: function(id, section) {
+            var asset = this.assets.get(id);
 
-			if (asset === undefined) {
-				asset = new BoomCMS.Asset({id: id});
-				asset.fetch();
+            if (asset === undefined) {
+                asset = new BoomCMS.Asset({id: id});
+                asset.fetch();
 
-				this.assets.add(asset);
-			}
+                this.assets.add(asset);
+            }
 
-			asset.trigger('view', asset, section);
-		},
+            asset.trigger('view', asset, section);
+        },
 
-		viewSelection: function(selection, section) {
-			var assetIds = selection.split(',');
+        viewSelection: function(selection, section) {
+            var assetIds = selection.split(',');
 
-			this.trigger('selection', assetIds, section);
-		},
+            this.trigger('selection', assetIds, section);
+        },
 
-		home: function() {
-			this.trigger('home');
-		},
+        home: function() {
+            this.trigger('home');
+        },
 
-		upload: function() {
-			this.trigger('upload');
-		}
-	});
+        upload: function() {
+            this.trigger('upload');
+        }
+    });
 }(Backbone, BoomCMS));
 ;(function($, Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.AssetManager.Thumbnail = Backbone.View.extend({
-		tagName: 'div',
+    BoomCMS.AssetManager.Thumbnail = Backbone.View.extend({
+        tagName: 'div',
 
-		initialize: function() {
-			var view = this,
-				model = this.model,
-				$el = this.$el;
+        initialize: function() {
+            var view = this,
+                model = this.model,
+                $el = this.$el;
 
-			this.template = _.template($('#b-asset-thumb').html());
+            this.template = _.template($('#b-asset-thumb').html());
 
-			this.listenTo(model, 'change', this.render);
+            this.listenTo(model, 'change', this.render);
 
-			$el
-				.data('model', model)
-				.dblclick()
-				.on('sclick', function() {
-					model.trigger('select', {
-						asset: model,
-						$el: $el
-					});
-				})
-				.on('dclick', function() {
-					model.trigger('view', model);
-				})
-				.on('keypress', '.edit', function(e) {
-					if (e.which === $.ui.keyCode.ENTER) {
-						model.trigger('view', model);
-					}
-				})
-				.on('click', '.edit', function(e) {
-					e.preventDefault();
-					e.stopPropagation();
+            $el
+                .data('model', model)
+                .dblclick()
+                .on('sclick', function() {
+                    model.trigger('select', {
+                        asset: model,
+                        $el: $el
+                    });
+                })
+                .on('dclick', function() {
+                    model.trigger('view', model);
+                })
+                .on('keypress', '.edit', function(e) {
+                    if (e.which === $.ui.keyCode.ENTER) {
+                        model.trigger('view', model);
+                    }
+                })
+                .on('click', '.edit', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-					model.trigger('view', model);
-				})
-				.on('justified', function() {
-					view.loadImage();
-				})
-				.on('keypress', '.thumb', function(e) {
-					if (e.which === $.ui.keyCode.ENTER) {
-						model.trigger('select', {
-							asset: model,
-							$el: $el
-						});
-					}
-				});
-		},
+                    model.trigger('view', model);
+                })
+                .on('justified', function() {
+                    view.loadImage();
+                })
+                .on('keypress', '.thumb', function(e) {
+                    if (e.which === $.ui.keyCode.ENTER) {
+                        model.trigger('select', {
+                            asset: model,
+                            $el: $el
+                        });
+                    }
+                });
+        },
 
-		/**
-		 * Load the image after if has been justified
-		 * 
-		 * Ensures that an image can be loaded to the correct dimensions of the thumbnail.
-		 *
-		 * @returns {undefined}
-		 */
-		loadImage: function() {
-			var asset = this.model;
+        /**
+         * Load the image after if has been justified
+         * 
+         * Ensures that an image can be loaded to the correct dimensions of the thumbnail.
+         *
+         * @returns {undefined}
+         */
+        loadImage: function() {
+            var asset = this.model;
 
-			this.$el
-				.find('[data-asset]')
-				.each(function() {
-					var $this = $(this),
-						width = Math.round(($this.width() + 1) / 10) * 10,
-						height = Math.round(($this.height() + 1) / 10) * 10,
-						url = asset.getUrl('thumb', width, height) + '?' + asset.getEditedAt(),
-						loadingClass = 'loading';
+            this.$el
+                .find('[data-asset]')
+                .each(function() {
+                    var $this = $(this),
+                        width = Math.round(($this.width() + 1) / 10) * 10,
+                        height = Math.round(($this.height() + 1) / 10) * 10,
+                        url = asset.getUrl('thumb', width, height) + '?' + asset.getEditedAt(),
+                        loadingClass = 'loading';
 
-					$this.find('img')
-						.attr('src', url)
-						.on('load', function() {
-							$(this).parent().removeClass(loadingClass);
-						})
-						.on('error', function() {
-							$(this).parent().removeClass(loadingClass).addClass('failed');
-						});
-				});
-		},
+                    $this.find('img')
+                        .attr('src', url)
+                        .on('load', function() {
+                            $(this).parent().removeClass(loadingClass);
+                        })
+                        .on('error', function() {
+                            $(this).parent().removeClass(loadingClass).addClass('failed');
+                        });
+                });
+        },
 
-		render: function() {
-			this.$el
-				.html(this.template({
-					asset: this.model
-				}))
-				.attr('data-aspect-ratio', this.model.getAspectRatio());
+        render: function() {
+            this.$el
+                .html(this.template({
+                    asset: this.model
+                }))
+                .attr('data-aspect-ratio', this.model.getAspectRatio());
 
-			return this;
-		}
-	});
+            return this;
+        }
+    });
 }(jQuery, Backbone, BoomCMS));
 ;(function($, Backbone, BoomCMS) {
     'use strict';
@@ -53975,7 +53999,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                         .set(view.$('form').serializeJSON())
                         .save();
 
-                    BoomCMS.notify("Asset details saved");
+                    BoomCMS.notify('Asset details saved');
                 })
                 .on('remove', function() {
                     this.$('.b-assets-upload').assetUploader('reset');
@@ -54009,7 +54033,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .on('click', '#b-assets-thumbnail-change', function(e) {
                     e.preventDefault();
 
-                    new boomAssetPicker(asset.getThumbnailAssetId())
+                    BoomCMS.AssetPicker(asset.getThumbnailAssetId())
                         .done(function(thumbnail) {
                             asset
                                 .set('thumbnail_asset_id', thumbnail.getId())
@@ -54048,1168 +54072,1169 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     });
 }(jQuery, Backbone, BoomCMS));
 ;(function($, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	$.widget('boom.assetSearch', {
-		listUrl: BoomCMS.urlRoot + 'assets/get',
+    $.widget('boom.assetSearch', {
+        listUrl: BoomCMS.urlRoot + 'assets/get',
 
-		initialFilters: {},
+        initialFilters: {},
 
-		postData: {
-			page: 1,
-			order: 'uploaded_time desc'
-		},
+        postData: {
+            page: 1,
+            order: 'uploaded_time desc'
+        },
 
-		addFilter: function(type, value) {
-			this.postData.page = 1;
-			this.postData[type] = value;
-		},
+        addFilter: function(type, value) {
+            this.postData.page = 1;
+            this.postData[type] = value;
+        },
 
-		bind: function() {
-			var assetSearch = this;
+        bind: function() {
+            var assetSearch = this;
 
-			this.element
-				.on('click', '#b-assets-all', function() {
-					assetSearch.removeFilters();
-				})
-				.on('change', 'select[name=type], select[name=extension], select[name=uploadedby]', function() {
-					var $this = $(this);
+            this.element
+                .on('click', '#b-assets-all', function() {
+                    assetSearch.removeFilters();
+                })
+                .on('change', 'select[name=type], select[name=extension], select[name=uploadedby]', function() {
+                    var $this = $(this);
 
-					assetSearch.addFilter($this.attr('name'), $this.val());
-					assetSearch.getAssets();
-				})
-				.on('change', '#b-assets-sortby', function(event) {
-					assetSearch.sortBy(this.value);
-				})
-				.find('#b-assets-filter-title')
-				.assetTitleFilter({
-					search: function(event, ui) {
-						assetSearch.addFilter('title', $(this).val());
-						assetSearch.getAssets();
-					},
-					select: function(event, ui) {
-						assetSearch.addFilter('title', ui.item.value);
-						assetSearch.getAssets();
-					}
-				});
+                    assetSearch.addFilter($this.attr('name'), $this.val());
+                    assetSearch.getAssets();
+                })
+                .on('change', '#b-assets-sortby', function() {
+                    assetSearch.sortBy(this.value);
+                })
+                .find('#b-assets-filter-title')
+                .assetTitleFilter({
+                    search: function() {
+                        assetSearch.addFilter('title', $(this).val());
+                        assetSearch.getAssets();
+                    },
+                    select: function(event, ui) {
+                        assetSearch.addFilter('title', ui.item.value);
+                        assetSearch.getAssets();
+                    }
+                });
 
-			this.element.find('#b-tags-search')
-				.assetTagSearch({
-					update: function(e, data) {
-						assetSearch.updateTagFilters(data.tags);
-					}
-				});
-		},
+            this.element.find('#b-tags-search')
+                .assetTagSearch({
+                    update: function(e, data) {
+                        assetSearch.updateTagFilters(data.tags);
+                    }
+                });
+        },
 
-		_create: function() {
-			var assetSearch = this;
+        _create: function() {
+            var assetSearch = this;
 
-			this.assets = this.options.assets;
+            this.assets = this.options.assets;
 
-			if (typeof(this.options.filters) !== 'undefined') {
-				for (var filter in this.options.filters) {
-					this.postData[filter] = this.options.filters[filter];
-				}
-			}
+            if (typeof(this.options.filters) !== 'undefined') {
+                for (var filter in this.options.filters) {
+                    this.postData[filter] = this.options.filters[filter];
+                }
+            }
 
-			this.assets.on('change:image', function() {
-				assetSearch.justify();
-			});
+            this.assets.on('change:image', function() {
+                assetSearch.justify();
+            });
 
-			for (var key in this.postData) {
-				this.initialFilters[key] = this.postData[key];
-			}
+            for (var key in this.postData) {
+                this.initialFilters[key] = this.postData[key];
+            }
 
-			this.bind();
-			this.setAssetsPerPage();
-		},
+            this.bind();
+            this.setAssetsPerPage();
+        },
 
-		getAssets: function() {
-			var assetSearch = this;
+        getAssets: function() {
+            var assetSearch = this;
 
-			this.postData.limit = this.perpage;
-			this.assets.fetch({
-				data: this.postData,
-				reset: true,
-				success: function(collection, response, options) {
-					assetSearch.initPagination(response.total);
-					assetSearch.renderGrid();
-				}
-			});
-		},
+            this.postData.limit = this.perpage;
+            this.assets.fetch({
+                data: this.postData,
+                reset: true,
+                success: function(collection, response) {
+                    assetSearch.initPagination(response.total);
+                    assetSearch.renderGrid();
+                }
+            });
+        },
 
-		getPage: function(page) {
-			if (this.postData.page !== page) {
-				this.postData.page = page;
-				this.getAssets();
-			}
-		},
+        getPage: function(page) {
+            if (this.postData.page !== page) {
+                this.postData.page = page;
+                this.getAssets();
+            }
+        },
 
-		initPagination: function(total) {
-			var assetManager = this,
-				$el = assetManager.element.find('.b-pagination');
+        initPagination: function(total) {
+            var assetManager = this,
+                $el = assetManager.element.find('.b-pagination');
 
-			// Max page isn't set correctly when re-initialising
-			if ($el.data('jqPagination')) {
-				$el.jqPagination('destroy');
-			}
+            // Max page isn't set correctly when re-initialising
+            if ($el.data('jqPagination')) {
+                $el.jqPagination('destroy');
+            }
 
-			$el.jqPagination({
-				paged: function(page) {
-					assetManager.getPage(page);
-				},
-				max_page: Math.ceil(total / this.postData.limit),
-				current_page: total > 0 ? this.postData.page : 0
-			});
+            $el.jqPagination({
+                paged: function(page) {
+                    assetManager.getPage(page);
+                },
+                max_page: Math.ceil(total / this.postData.limit),
+                current_page: total > 0 ? this.postData.page : 0
+            });
 
-			$el.show();
-		},
+            $el.show();
+        },
 
-		justify: function() {
-			this.element.find('#b-assets-view-thumbs').justifyAssets();
-		},
+        justify: function() {
+            this.element.find('#b-assets-view-thumbs').justifyAssets();
+        },
 
-		removeFilters: function() {
-			this.postData = {};
+        removeFilters: function() {
+            this.postData = {};
 
-			for (var key in this.initialFilters) {
-				this.postData[key] = this.initialFilters[key];
-			}
+            for (var key in this.initialFilters) {
+                this.postData[key] = this.initialFilters[key];
+            }
 
-			this.element.find('#b-assets-types, #b-assets-extensions, select[name=uploadedby]').val(0);
-			this.element.find('#b-tags-search li').remove();
+            this.element.find('#b-assets-types, #b-assets-extensions, select[name=uploadedby]').val(0);
+            this.element.find('#b-tags-search li').remove();
 
-			this.getAssets();
-		},
+            this.getAssets();
+        },
 
-		renderGrid: function() {
-			var $el = this.element.find('#b-assets-view-thumbs');
+        renderGrid: function() {
+            var $el = this.element.find('#b-assets-view-thumbs');
 
-			$el.html('');
+            $el.html('');
 
-			if (!this.assets.length) {
-				return $el.html(this.element.find('#b-assets-none-template').html());
-			}
+            if (!this.assets.length) {
+                return $el.html(this.element.find('#b-assets-none-template').html());
+            }
 
-			this.assets.each(function(asset) {
-				var thumbnail = new BoomCMS.AssetManager.Thumbnail({
-					model: asset
-				});
+            this.assets.each(function(asset) {
+                var thumbnail = new BoomCMS.AssetManager.Thumbnail({
+                    model: asset
+                });
 
-				$el.append(thumbnail.render().el);
-			});
+                $el.append(thumbnail.render().el);
+            });
 
-			this.justify();
-		},
+            this.justify();
+        },
 
-		setAssetsPerPage: function() {
-			var $thumbs = this.element.find('#b-assets-view-thumbs'),
-				rowHeight = 200,
-				avgAspectRatio = 1.5,
-				height = $thumbs.height(),
-				rows = Math.ceil(height / rowHeight),
-				perrow = Math.ceil($thumbs.width() / (rowHeight * avgAspectRatio)),
-				perpage = Math.ceil(rows * perrow);
+        setAssetsPerPage: function() {
+            var $thumbs = this.element.find('#b-assets-view-thumbs'),
+                rowHeight = 200,
+                avgAspectRatio = 1.5,
+                height = $thumbs.height(),
+                rows = Math.ceil(height / rowHeight),
+                perrow = Math.ceil($thumbs.width() / (rowHeight * avgAspectRatio)),
+                perpage = Math.ceil(rows * perrow);
 
-			if (perpage < 30) {
-				perpage = 30;
-			}
+            if (perpage < 30) {
+                perpage = 30;
+            }
 
-			this.perpage = perpage;
-		},
+            this.perpage = perpage;
+        },
 
-		sortBy: function(sort) {
-			this.postData['order'] = sort;
-			this.getAssets();
-		},
+        sortBy: function(sort) {
+            this.postData['order'] = sort;
+            this.getAssets();
+        },
 
-		updateTagFilters: function(tags) {
-			this.addFilter('tag', tags);
-			this.getAssets();
-		}
-	});
+        updateTagFilters: function(tags) {
+            this.addFilter('tag', tags);
+            this.getAssets();
+        }
+    });
 }(jQuery, BoomCMS));
-;function boomAssetPicker(currentAsset, filters) {
-	this.currentAsset = typeof(currentAsset) === 'object' ? 
-		currentAsset : new BoomCMS.Asset();
+;(function(BoomCMS) {
+    'use strict';
 
-	this.deferred = new $.Deferred();
-	this.document = $(document);
+    BoomCMS.AssetPicker = function(currentAsset, filters) {
+        this.currentAsset = typeof(currentAsset) === 'object' ? 
+            currentAsset : new BoomCMS.Asset();
 
-	this.filters = filters ? filters : {};
+        this.deferred = new $.Deferred();
+        this.document = $(document);
 
-	boomAssetPicker.prototype.url = BoomCMS.urlRoot + 'asset-picker';
+        this.filters = filters ? filters : {};
 
-	boomAssetPicker.prototype.assetsUploaded = function(assetIds) {
-		if (assetIds.length === 1) {
-			this.pick(new BoomCMS.Asset({id: assetIds[0]}));
-		} else {
-			this.clearFilters();
-			this.getAssets();
-		}
-	};
+        this.url = BoomCMS.urlRoot + 'asset-picker';
 
-	boomAssetPicker.prototype.bind = function() {
-		var assetPicker = this;
+        BoomCMS.AssetPicker.prototype.assetsUploaded = function(assetIds) {
+            if (assetIds.length === 1) {
+                this.pick(new BoomCMS.Asset({id: assetIds[0]}));
+            } else {
+                this.clearFilters();
+                this.getAssets();
+            }
+        };
 
-		this.assets.on('select', function(data) {
-			assetPicker.pick(data.asset);
-		});
+        BoomCMS.AssetPicker.prototype.bind = function() {
+            var assetPicker = this;
 
-		this.picker
-			.on('click', '#b-assets-picker-close', function() {
-				assetPicker.cancel();
-			})
-			.on('click', '#b-assets-picker-current-remove', function() {
-				assetPicker.pick(new BoomCMS.Asset());
-			})
-			.find('.b-assets-upload-form')
-			.assetUploader({
-				uploadFinished: function(e, data) {
-					assetPicker.assetsUploaded(data.result);
-				}
-			});
-	};
+            this.assets.on('select', function(data) {
+                assetPicker.pick(data.asset);
+            });
 
-	boomAssetPicker.prototype.cancel = function() {
-		this.deferred.reject();
-		this.dialog.cancel();
-	};
+            this.picker
+                .on('click', '#b-assets-picker-close', function() {
+                    assetPicker.cancel();
+                })
+                .on('click', '#b-assets-picker-current-remove', function() {
+                    assetPicker.pick(new BoomCMS.Asset());
+                })
+                .find('.b-assets-upload-form')
+                .assetUploader({
+                    uploadFinished: function(e, data) {
+                        assetPicker.assetsUploaded(data.result);
+                    }
+                });
+        };
 
-	boomAssetPicker.prototype.close = function() {
-		this.dialog.cancel();
-	};
+        BoomCMS.AssetPicker.prototype.cancel = function() {
+            this.deferred.reject();
+            this.dialog.cancel();
+        };
 
-	boomAssetPicker.prototype.hideCurrentAsset = function() {
-		this.picker
-			.find('#b-assets-picker-current')
-			.hide();
-	};
+        BoomCMS.AssetPicker.prototype.close = function() {
+            this.dialog.cancel();
+        };
 
-	boomAssetPicker.prototype.loadPicker = function() {
-		var assetPicker = this;
+        BoomCMS.AssetPicker.prototype.hideCurrentAsset = function() {
+            this.picker
+                .find('#b-assets-picker-current')
+                .hide();
+        };
 
-		this.assets = new BoomCMS.Collections.Assets();
+        BoomCMS.AssetPicker.prototype.loadPicker = function() {
+            var assetPicker = this;
 
-		this.dialog = new boomDialog({
-			url: this.url,
-			onLoad: function() {
-				assetPicker.dialog.contents.parent().css({
-					position: 'fixed',
-					height: '100vh',
-					width: '100vw',
-					transform: 'none',
-					overflow: 'visible'
-				});
+            this.assets = new BoomCMS.Collections.Assets();
 
-				assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
+            this.dialog = new BoomCMS.Dialog({
+                url: this.url,
+                onLoad: function() {
+                    assetPicker.dialog.contents.parent().css({
+                        position: 'fixed',
+                        height: '100vh',
+                        width: '100vw',
+                        transform: 'none',
+                        overflow: 'visible'
+                    });
 
-				if (typeof(assetPicker.filters.type) !== 'undefined') {
-					assetPicker.showActiveTypeFilter(assetPicker.filters.type);
-				}
+                    assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
 
-				assetPicker.dialog.contents.assetSearch({
-					filters: assetPicker.filters,
-					assets: assetPicker.assets
-				});
+                    if (typeof(assetPicker.filters.type) !== 'undefined') {
+                        assetPicker.showActiveTypeFilter(assetPicker.filters.type);
+                    }
 
-				assetPicker.dialog.contents.assetSearch('getAssets');
-				assetPicker.bind();
+                    assetPicker.dialog.contents.assetSearch({
+                        filters: assetPicker.filters,
+                        assets: assetPicker.assets
+                    });
 
-				if (assetPicker.currentAsset && assetPicker.currentAsset.getId() > 0) {
-					assetPicker.picker
-						.find('#b-assets-picker-current img')
-						.attr('src', assetPicker.currentAsset.getUrl());
-				} else {
-					assetPicker.hideCurrentAsset();
-				}
-			}
-		});
-	};
+                    assetPicker.dialog.contents.assetSearch('getAssets');
+                    assetPicker.bind();
 
-	boomAssetPicker.prototype.open = function() {
-		this.loadPicker();
+                    if (assetPicker.currentAsset && assetPicker.currentAsset.getId() > 0) {
+                        assetPicker.picker
+                            .find('#b-assets-picker-current img')
+                            .attr('src', assetPicker.currentAsset.getUrl());
+                    } else {
+                        assetPicker.hideCurrentAsset();
+                    }
+                }
+            });
+        };
 
-		return this.deferred;
-	};
+        BoomCMS.AssetPicker.prototype.open = function() {
+            this.loadPicker();
 
-	boomAssetPicker.prototype.pick = function(asset) {
-		this.deferred.resolve(asset);
+            return this.deferred;
+        };
 
-		this.close();
-	};
+        BoomCMS.AssetPicker.prototype.pick = function(asset) {
+            this.deferred.resolve(asset);
 
-	/**
-	 * Selects an option in the type filter select box to show that the type filter is active.
-	 * Used when the asset picker is opened with an active type filter.
-	 *
-	 * @param {string} type
-	 * @returns {boomAssetPicker.prototype}
-	 */
-	boomAssetPicker.prototype.showActiveTypeFilter = function(type) {
-		var assetPicker = this,
-			$types = this.dialog.contents.find('#b-assets-types');
+            this.close();
+        };
 
-		$types.find('option').each(function() {
-			var $this = $(this);
+        /**
+         * Selects an option in the type filter select box to show that the type filter is active.
+         * Used when the asset picker is opened with an active type filter.
+         *
+         * @param {string} type
+         * @returns {BoomCMS.AssetPicker.prototype}
+         */
+        BoomCMS.AssetPicker.prototype.showActiveTypeFilter = function(type) {
+            var $types = this.dialog.contents.find('#b-assets-types');
 
-			if ($this.val().toLowerCase() === type.toLowerCase()) {
-				$types.val($this.val());
-			}
-		});
+            $types.find('option').each(function() {
+                var $this = $(this);
 
-		return this;
-	};
+                if ($this.val().toLowerCase() === type.toLowerCase()) {
+                    $types.val($this.val());
+                }
+            });
 
-	return this.open();
-};;$.widget('boom.assetTitleFilter', {
-	options : {
-		delay: 400,
-		minLength: 3
-	},
+            return this;
+        };
+    };
+}(BoomCMS));
+;$.widget('boom.assetTitleFilter', {
+    options : {
+        delay: 400,
+        minLength: 3
+    },
 
-	_create: function() {
-		var element = this.element;
+    _create: function() {
+        var element = this.element;
 
-		this.options.source = function(request, response) {
-			$.ajax({
-				url: '/boomcms/autocomplete/assets',
-				dataType: 'json',
-				data: {
-					text : element.val()
-				}
-			})
-			.done(function(data) {
-				response(data);
-			});
-		};
+        this.options.source = function(request, response) {
+            $.ajax({
+                url: '/boomcms/autocomplete/assets',
+                dataType: 'json',
+                data: {
+                    text : element.val()
+                }
+            })
+            .done(function(data) {
+                response(data);
+            });
+        };
 
-		this.element.autocomplete(this.options);
-	}
+        this.element.autocomplete(this.options);
+    }
 });;(function($, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	$.widget('boom.assetUploader', {
-		uploaderOptions: {
-			/**
-			@type string
-			*/
-			url: BoomCMS.urlRoot + 'asset',
+    $.widget('boom.assetUploader', {
+        uploaderOptions: {
+            /**
+            @type string
+            */
+            url: BoomCMS.urlRoot + 'asset',
 
-			/**
-			@type string
-			@default 'json'
-			*/
-			dataType: 'json',
+            /**
+            @type string
+            @default 'json'
+            */
+            dataType: 'json',
 
-			/**
-			@type boolean
-			@default false
-			*/
-			singleFileUploads: false,
+            /**
+            @type boolean
+            @default false
+            */
+            singleFileUploads: false,
 
-			/**
-			@type Array
-			@default []
-			*/
-			formData: []
-		},
+            /**
+            @type Array
+            @default []
+            */
+            formData: []
+        },
 
-		bind: function() {
-			var assetUploader = this;
+        bind: function() {
+            var assetUploader = this;
 
-			this.cancelButton.on('click', function() {
-				if (assetUploader.fileData.jqXHR !== undefined) {
-					assetUploader.fileData.jqXHR.abort();
-				}
+            this.cancelButton.on('click', function() {
+                if (assetUploader.fileData.jqXHR !== undefined) {
+                    assetUploader.fileData.jqXHR.abort();
+                }
 
-				$(this).hide();
-				assetUploader.progressBar.progressbar('destroy');
-				assetUploader.notify('Upload was cancelled');
-			});
-		},
+                $(this).hide();
+                assetUploader.progressBar.progressbar('destroy');
+                assetUploader.notify('Upload was cancelled');
+            });
+        },
 
-		close: function() {
-			this.element.hide();
-		},
+        close: function() {
+            this.element.hide();
+        },
 
-		_create: function() {
-			this.cancelButton = this.element.find('.b-assets-upload-cancel').eq(0);
-			this.dropArea = this.element.find('.b-assets-upload-container').eq(0);
-			this.progressBar = this.element.find('.b-assets-upload-progress').eq(0);
-			this.uploadForm = this.element;
-			this.originalMessage = this.dropArea.find('.message').html();
+        _create: function() {
+            this.cancelButton = this.element.find('.b-assets-upload-cancel').eq(0);
+            this.dropArea = this.element.find('.b-assets-upload-container').eq(0);
+            this.progressBar = this.element.find('.b-assets-upload-progress').eq(0);
+            this.uploadForm = this.element;
+            this.originalMessage = this.dropArea.find('.message').html();
 
-			this.bind();
-		},
+            this.bind();
+        },
 
-		_init: function() {
-			if (this.options.asset !== undefined) {
-				this.uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
-				this.uploaderOptions.singleFileUploads = true;
-			}
+        _init: function() {
+            if (this.options.asset !== undefined) {
+                this.uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
+                this.uploaderOptions.singleFileUploads = true;
+            }
 
-			this.uploaderOptions.dropZone = this.element;
-			
-			this.initUploader();
-		},
+            this.uploaderOptions.dropZone = this.element;
+            
+            this.initUploader();
+        },
 
-		initUploader: function() {
-			var assetUploader = this,
-				uploaderOptions;
+        initUploader: function() {
+            var assetUploader = this;
 
-			this.uploadForm
-				.fileupload(this.uploaderOptions)
-				.fileupload('option', {
-					start: function(e, data) {
-						assetUploader.uploadStarted(e, data);
-					},
-					progressall: function(e, data) {
-						var percentComplete = parseInt((data.loaded / data.total * 100), 10);
+            this.uploadForm
+                .fileupload(this.uploaderOptions)
+                .fileupload('option', {
+                    start: function(e, data) {
+                        assetUploader.uploadStarted(e, data);
+                    },
+                    progressall: function(e, data) {
+                        var percentComplete = parseInt((data.loaded / data.total * 100), 10);
 
-						assetUploader.updateProgressBar(e, percentComplete);
-					},
-					done: function(e, data) {
-						assetUploader.uploadFinished(e, data);
-					},
-					fail: function(e, data) {
-						assetUploader.uploadFailed(e, data);
-					}
-				});
-		},
+                        assetUploader.updateProgressBar(e, percentComplete);
+                    },
+                    done: function(e, data) {
+                        assetUploader.uploadFinished(e, data);
+                    },
+                    fail: function(e, data) {
+                        assetUploader.uploadFailed(e, data);
+                    }
+                });
+        },
 
-		notify: function(message) {
-			if (!message) {
-				message = this.originalMessage;
-			}
+        notify: function(message) {
+            if (!message) {
+                message = this.originalMessage;
+            }
 
-			this.dropArea
-				.find('p.message')
-				.show()
-				.html(message);
-		},
+            this.dropArea
+                .find('p.message')
+                .show()
+                .html(message);
+        },
 
-		reset: function() {
-			this.progressBar
-				.css('display', 'none')
-				.progressbar('destroy');
+        reset: function() {
+            this.progressBar
+                .css('display', 'none')
+                .progressbar('destroy');
 
-			this.cancelButton.hide();
+            this.cancelButton.hide();
 
-			// If we don't call disable first then when the uploader is reintialized
-			// we end up with multiple file uploads taking place.
-			this.uploadForm.fileupload('disable').fileupload('destroy');
-			this.initUploader();
-		},
+            // If we don't call disable first then when the uploader is reintialized
+            // we end up with multiple file uploads taking place.
+            this.uploadForm.fileupload('disable').fileupload('destroy');
+            this.initUploader();
+        },
 
-		updateProgressBar: function(e, percentComplete) {
-			this.progressBar.progressbar('value', percentComplete);
+        updateProgressBar: function(e, percentComplete) {
+            this.progressBar.progressbar('value', percentComplete);
 
-			this._trigger('uploadProgress', e, [percentComplete]);
-		},
+            this._trigger('uploadProgress', e, [percentComplete]);
+        },
 
-		uploadFailed: function(e, data) {
-			var message = 'Errors occurred during file upload:<br />',
-				errors = $.parseJSON(data.jqXHR.responseText),
-				i;
+        uploadFailed: function(e, data) {
+            var message = 'Errors occurred during file upload:<br />',
+                errors = $.parseJSON(data.jqXHR.responseText),
+                i;
 
-			for (i = 0; i < errors.length; i++) {
-				message = message + errors[i] + '<br />';
-			}
+            for (i = 0; i < errors.length; i++) {
+                message = message + errors[i] + '<br />';
+            }
 
-			this.notify(message);
-			this.reset();
+            this.notify(message);
+            this.reset();
 
-			this._trigger('uploadFailed', e, data);
-		},
+            this._trigger('uploadFailed', e, data);
+        },
 
-		uploadFinished: function(e, data) {
-			this._trigger('uploadFinished', e, data);
-		},
+        uploadFinished: function(e, data) {
+            this._trigger('uploadFinished', e, data);
+        },
 
-		uploadStarted: function(e, data) {
-			this.progressBar
-				.css('display', 'block')
-				.progressbar();
+        uploadStarted: function(e, data) {
+            this.progressBar
+                .css('display', 'block')
+                .progressbar();
 
-			this.cancelButton.css('display', 'block');
+            this.cancelButton.css('display', 'block');
 
-			this.fileData = data;
+            this.fileData = data;
 
-			this._trigger('uploadStarted', e, data);
-		}
-	});
+            this._trigger('uploadStarted', e, data);
+        }
+    });
 }(jQuery, BoomCMS));
 ;$.widget('boom.justifyAssets', {
-	targetRightOffset : null,
-	windowWidth : null,
+    targetRightOffset : null,
+    windowWidth : null,
 
-	closeRemainingGap: function() {
-		var lastRowGap = this.currentRow.determineGap(this.targetRightOffset);
+    closeRemainingGap: function() {
+        var lastRowGap = this.currentRow.determineGap(this.targetRightOffset);
 
-		if (lastRowGap <= (this.element.outerWidth(true) * 0.75)) {
-			this.currentRow.expandTo(this.targetRightOffset);
-		} else if (this.rows > 1) {
-			this.prevRow.merge(currentRow);
-		}
-	},
+        if (lastRowGap <= (this.element.outerWidth(true) * 0.75)) {
+            this.currentRow.expandTo(this.targetRightOffset);
+        } else if (this.rows > 1) {
+            this.prevRow.merge(this.currentRow);
+        }
+    },
 
-	_create: function() {
-		var justifyAssets = this,
-			resizeTimeout;
+    _create: function() {
+        var justifyAssets = this,
+            resizeTimeout;
 
-		this.window.on('resize', function() {
-			if (resizeTimeout !== undefined) {
-				clearTimeout(resizeTimeout);
-			}
+        this.window.on('resize', function() {
+            if (resizeTimeout !== undefined) {
+                clearTimeout(resizeTimeout);
+            }
 
-			resizeTimeout = setTimeout(function() {
-				justifyAssets.justify();
-			}, 50);
-		});
-	},
+            resizeTimeout = setTimeout(function() {
+                justifyAssets.justify();
+            }, 50);
+        });
+    },
 
-	_init: function() {
-		this.justify();
-	},
+    _init: function() {
+        this.justify();
+    },
 
-	_getOffset: function($el) {
-		var offset = $el.offset();
-		offset.right = this.windowWidth - (offset.left + $el.outerWidth(true));
+    _getOffset: function($el) {
+        var offset = $el.offset();
+        offset.right = this.windowWidth - (offset.left + $el.outerWidth(true));
 
-		return offset;
-	},
+        return offset;
+    },
 
-	hasElements: function() {
-		return this.element.children().length > 1;
-	},
+    hasElements: function() {
+        return this.element.children().length > 1;
+    },
 
-	justify: function() {
-		this.currentRow = new Row();
-		this.prevRow = null;
-		this.rows = 0;
-		this.windowWidth = $(window).width();
-		this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
+    justify: function() {
+        this.currentRow = new Row();
+        this.prevRow = null;
+        this.rows = 0;
+        this.windowWidth = $(window).width();
+        this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
 
-		if (this.hasElements()) {
-			this.resetInitialDimensions();
-			this.resizeElements();
-			this.closeRemainingGap();
-		}
-	},
+        if (this.hasElements()) {
+            this.resetInitialDimensions();
+            this.resizeElements();
+            this.closeRemainingGap();
+        }
+    },
 
-	resetInitialDimensions: function() {
-		this.element.children().each(function(index, element) {
-			var $child = $(element);
+    resetInitialDimensions: function() {
+        this.element.children().each(function(index, element) {
+            var $child = $(element);
 
-			if (!$child.css('height') || !$child.attr('data-aspect-ratio')) {
-				$child.remove();
-				return true;
-			}
+            if (!$child.css('height') || !$child.attr('data-aspect-ratio')) {
+                $child.remove();
+                return true;
+            }
 
-			$child.css({
-				height: '160px',
-				width: Math.floor(160 * $child.attr('data-aspect-ratio')) + 'px'
-			});
-		});
-	},
+            $child.css({
+                height: '160px',
+                width: Math.floor(160 * $child.attr('data-aspect-ratio')) + 'px'
+            });
+        });
+    },
 
-	resizeElements: function() {
-		var justifyAssets = this;
+    resizeElements: function() {
+        var justifyAssets = this;
 
-		this.element.children().each(function(index, element) {
-			var $child = $(element);
+        this.element.children().each(function(index, element) {
+            var $child = $(element);
 
-			$child.offset = justifyAssets._getOffset($child);
+            $child.offset = justifyAssets._getOffset($child);
 
-			justifyAssets.prevRow = jQuery.extend({}, justifyAssets.currentRow);
-			justifyAssets.currentRow.addElementToRow($child);
+            justifyAssets.prevRow = jQuery.extend({}, justifyAssets.currentRow);
+            justifyAssets.currentRow.addElementToRow($child);
 
-			if (justifyAssets.currentRow.isAtStart() && index > 0) {
-				this.rows++;
-				justifyAssets.prevRow.expandTo(justifyAssets.targetRightOffset);
-			}
-		});
-	}
+            if (justifyAssets.currentRow.isAtStart() && index > 0) {
+                this.rows++;
+                justifyAssets.prevRow.expandTo(justifyAssets.targetRightOffset);
+            }
+        });
+    }
 });
 
 function Row() {
-	this.elements = [];
-	this.aspectRatioSum = 0;
+    this.elements = [];
+    this.aspectRatioSum = 0;
 
-	Row.prototype.addElementToRow = function($el) {
-		if (this._elementStartsRow($el)) {
-			this.elements = [];
-			this.aspectRatioSum = 0;
-		}
+    Row.prototype.addElementToRow = function($el) {
+        if (this._elementStartsRow($el)) {
+            this.elements = [];
+            this.aspectRatioSum = 0;
+        }
 
-		this.elements.push($el);
-		this.aspectRatioSum += parseFloat($el.attr('data-aspect-ratio'));
+        this.elements.push($el);
+        this.aspectRatioSum += parseFloat($el.attr('data-aspect-ratio'));
 
-		return this;
-	};
+        return this;
+    };
 
-	Row.prototype.determineGap = function(offset) {
-		return this.elements[this.elements.length - 1].offset.right - offset;
-	};
+    Row.prototype.determineGap = function(offset) {
+        return this.elements[this.elements.length - 1].offset.right - offset;
+    };
 
-	Row.prototype.expandTo = function(offset) {
-		var endOfRowGap = this.determineGap(offset) - 1;
+    Row.prototype.expandTo = function(offset) {
+        var endOfRowGap = this.determineGap(offset) - 1;
 
-		if (endOfRowGap > 0) {
-			var increaseBy = Math.floor(endOfRowGap / this.aspectRatioSum);
-			var remainder = Math.floor(endOfRowGap) - 1;
+        if (endOfRowGap > 0) {
+            var increaseBy = Math.floor(endOfRowGap / this.aspectRatioSum);
+            var remainder = Math.floor(endOfRowGap) - 1;
 
-			if (increaseBy <= endOfRowGap) {
-				$.each(this.elements, function(index, $el) {
-					var incWidth = Math.floor(increaseBy * $el.attr('data-aspect-ratio'));
-					remainder -= incWidth;
+            if (increaseBy <= endOfRowGap) {
+                $.each(this.elements, function(index, $el) {
+                    var incWidth = Math.floor(increaseBy * $el.attr('data-aspect-ratio'));
+                    remainder -= incWidth;
 
-					$el
-						.height('+=' + increaseBy)
-						.width('+=' + incWidth)
-						.trigger('justified');
-				});
-			}
+                    $el
+                        .height('+=' + increaseBy)
+                        .width('+=' + incWidth)
+                        .trigger('justified');
+                });
+            }
 
-			if (remainder > 0) {
-				while (remainder > 1) {
-					$.each(this.elements, function(index, $el) {
-						if (remainder <= 1) {
-							return false;
-						}
+            if (remainder > 0) {
+                while (remainder > 1) {
+                    $.each(this.elements, function(index, $el) {
+                        if (remainder <= 1) {
+                            return false;
+                        }
 
-						$el.css('margin-right', '+=1');
-						remainder -= 1;
-					});
-				}
-			}
-		}
-	};
+                        $el.css('margin-right', '+=1');
+                        remainder -= 1;
+                    });
+                }
+            }
+        }
+    };
 
-	Row.prototype.shrinkBy = function(size) {
+    Row.prototype.shrinkBy = function(size) {
 
-		var total_aspect_ratio = 0;
-		$.each(this.elements, function(index, $el) {
-			total_aspect_ratio += $el.data('aspect-ratio');
-		});
+        var total_aspect_ratio = 0;
+        $.each(this.elements, function(index, $el) {
+            total_aspect_ratio += $el.data('aspect-ratio');
+        });
 
-		$.each(this.elements, function(index, $el) {
-			var reduceBy = size * ($el.data('aspect-ratio') / total_aspect_ratio);
+        $.each(this.elements, function(index, $el) {
+            var reduceBy = size * ($el.data('aspect-ratio') / total_aspect_ratio);
 
-			$el
-				.width('-=' + Math.ceil(reduceBy))
-				.height('-=' + Math.ceil(reduceBy / $el.data('aspect-ratio')));
-		});
-	};
+            $el
+                .width('-=' + Math.ceil(reduceBy))
+                .height('-=' + Math.ceil(reduceBy / $el.data('aspect-ratio')));
+        });
+    };
 
-	Row.prototype.getWidth = function() {
-		var width = 0;
+    Row.prototype.getWidth = function() {
+        var width = 0;
 
-		$.each(this.elements, function(index, $el) {
-			width += $el.outerWidth(true);
-		});
+        $.each(this.elements, function(index, $el) {
+            width += $el.outerWidth(true);
+        });
 
-		return width;
-	};
+        return width;
+    };
 
-	Row.prototype.isAtStart = function() {
-		return this.elements.length <= 1;
-	};
+    Row.prototype.isAtStart = function() {
+        return this.elements.length <= 1;
+    };
 
-	Row.prototype.merge = function(row) {
-		var width = row.getWidth();
-		this.shrinkBy(width);
+    Row.prototype.merge = function(row) {
+        var width = row.getWidth();
+        this.shrinkBy(width);
 
-		var heightDif = this.elements[0].height() - row.elements[0].height();
+        var heightDif = this.elements[0].height() - row.elements[0].height();
 
-		$.each(row.elements, function(index, $el) {
-			$el.height('+=' + heightDif);
-		});
-	};
+        $.each(row.elements, function(index, $el) {
+            $el.height('+=' + heightDif);
+        });
+    };
 
-	Row.prototype._elementStartsRow = function($el) {
-		if ( ! this.elements.length) {
-			return true;
-		}
+    Row.prototype._elementStartsRow = function($el) {
+        if ( ! this.elements.length) {
+            return true;
+        }
 
-		return ($el.offset.top >= (this.elements[this.elements.length - 1].offset.top + $el.height()));
-	};
+        return ($el.offset.top >= (this.elements[this.elements.length - 1].offset.top + $el.height()));
+    };
 };(function($, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	$.widget('boom.assetTagSearch',  {
-		assets: new BoomCMS.Collections.Assets(),
-		tags : [],
+    $.widget('boom.assetTagSearch',  {
+        assets: new BoomCMS.Collections.Assets(),
+        tags : [],
 
-		addTag: function(tag) {
-			this.tags.push(tag);
+        addTag: function(tag) {
+            this.tags.push(tag);
 
-			var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag + '"></a></li>');
+            var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag + '"></a></li>');
 
-			if (this.tagList.children().length) {
-				$newTag.insertBefore(this.tagList.children().last());
-			} else {
-				$newTag.prependTo(this.tagList);
-			}
+            if (this.tagList.children().length) {
+                $newTag.insertBefore(this.tagList.children().last());
+            } else {
+                $newTag.prependTo(this.tagList);
+            }
 
-			this._trigger('addTag', null, tag);
-			this.update();
-		},
+            this._trigger('addTag', null, tag);
+            this.update();
+        },
 
-		autocompleteSource: function(request, response) {
-			this.assets.getTags().done(function(tags) {
-				response(tags);
-			});
-		},
+        autocompleteSource: function(request, response) {
+            this.assets.getTags().done(function(tags) {
+                response(tags);
+            });
+        },
 
-		bind: function() {
-			var tagSearch = this;
+        bind: function() {
+            var tagSearch = this;
 
-			this.assets.getTags().done(function(tags) {
-				tagSearch.element.find('input[type=text]').autocomplete({
-					source: tags,
-					minLength: 0,
-					select: function(event, ui) {
-						event.preventDefault();
+            this.assets.getTags().done(function(tags) {
+                tagSearch.element.find('input[type=text]').autocomplete({
+                    source: tags,
+                    minLength: 0,
+                    select: function(event, ui) {
+                        event.preventDefault();
 
-						tagSearch.element.find('input[type=text]').val('');
-						tagSearch.addTag(ui.item.value);
-					}
-				});
-			});
+                        tagSearch.element.find('input[type=text]').val('');
+                        tagSearch.addTag(ui.item.value);
+                    }
+                });
+            });
 
-			this.element
-				.find('button')
-				.on('click', function(e) {
-					e.preventDefault();
+            this.element
+                .find('button')
+                .on('click', function(e) {
+                    e.preventDefault();
 
-					tagSearch.addTag(tagSearch.input.val());
-					tagSearch.input.val('');
-				})
-				.end()
-				.on('click', '.b-tag-remove', function() {
-					tagSearch.removeTag($(this));
-				})
-				.on('keypress', function(e) {
-					// Add a tag when the enter key is pressed.
-					// This allows us to add a tag which doesn't already exist.
-					if (e.which === $.ui.keyCode.ENTER && tagSearch.element.val()) {
-						e.preventDefault();
+                    tagSearch.addTag(tagSearch.input.val());
+                    tagSearch.input.val('');
+                })
+                .end()
+                .on('click', '.b-tag-remove', function() {
+                    tagSearch.removeTag($(this));
+                })
+                .on('keypress', function(e) {
+                    // Add a tag when the enter key is pressed.
+                    // This allows us to add a tag which doesn't already exist.
+                    if (e.which === $.ui.keyCode.ENTER && tagSearch.element.val()) {
+                        e.preventDefault();
 
-						var tags, i;
+                        var tags, i;
 
-						// If the text entered contains commas then it will be treated as a list of tags with each one 'completed'
-						tags = tagSearch.element.val().split(',');
+                        // If the text entered contains commas then it will be treated as a list of tags with each one 'completed'
+                        tags = tagSearch.element.val().split(',');
 
-						for (i = 0; i < tags.length; i++) {
-							tagSearch.tagSelected(tags[i]);
-						}
+                        for (i = 0; i < tags.length; i++) {
+                            tagSearch.tagSelected(tags[i]);
+                        }
 
-						tagSearch.element.val('');
-						tagSearch.element.autocomplete('close');
-					}
-				});
-		},
+                        tagSearch.element.val('');
+                        tagSearch.element.autocomplete('close');
+                    }
+                });
+        },
 
-		_create: function() {
-			this.tagList = this.element.find('ul');
-			this.input = this.element.find('input');
+        _create: function() {
+            this.tagList = this.element.find('ul');
+            this.input = this.element.find('input');
 
-			this.bind();
-		},
+            this.bind();
+        },
 
-		removeTag: function($a) {
-			var tag = $a.attr('data-tag');
+        removeTag: function($a) {
+            var tag = $a.attr('data-tag');
 
-			$a.parent().remove();
-			this.tags.splice(this.tags.indexOf(tag));
+            $a.parent().remove();
+            this.tags.splice(this.tags.indexOf(tag));
 
-			this._trigger('removeTag', null, tag);
-			this.update();
-		},
+            this._trigger('removeTag', null, tag);
+            this.update();
+        },
 
-		update: function() {
-			this._trigger('update', null, {tags : this.tags});
-		}
-	});
+        update: function() {
+            this._trigger('update', null, {tags : this.tags});
+        }
+    });
 }(jQuery, BoomCMS));
 ;(function($) {
-	'use strict';
+    'use strict';
 
-	$.widget('boom.imageEditor', {
-		imageSelector: '#b-imageeditor-image',
-		cropButtonSelector: '#b-imageeditor-crop',
-		isCropping: false,
+    $.widget('boom.imageEditor', {
+        imageSelector: '#b-imageeditor-image',
+        cropButtonSelector: '#b-imageeditor-crop',
+        isCropping: false,
 
-		bind: function() {
-			var imageEditor = this;
+        bind: function() {
+            var imageEditor = this;
 
-			this.$toolbar = this.element.find('#b-imageeditor-toolbar');
+            this.$toolbar = this.element.find('#b-imageeditor-toolbar');
 
-			this.element
-				.on('click', '#b-imageeditor-rotate-left', function() {
-					Caman(imageEditor.imageSelector, function () {
-						this.rotate(-90).render();
-						imageEditor.saveImageDimensions();
-					});
-				})
-				.on('click', '#b-imageeditor-rotate-right', function() {
-					Caman(imageEditor.imageSelector, function () {
-						this.rotate(90).render();
-						imageEditor.saveImageDimensions();
-					});
-				})
-				.on('click', '#b-imageeditor-crop-cancel', function() {
-					imageEditor.hideCropTool();
-				})
-				.on('click', this.cropButtonSelector, function() {
-					if (imageEditor.isCropping) {
-						imageEditor.hideCropTool();
-					} else {
-						imageEditor.showCropTool();
-					}
+            this.element
+                .on('click', '#b-imageeditor-rotate-left', function() {
+                    Caman(imageEditor.imageSelector, function () {
+                        this.rotate(-90).render();
+                        imageEditor.saveImageDimensions();
+                    });
+                })
+                .on('click', '#b-imageeditor-rotate-right', function() {
+                    Caman(imageEditor.imageSelector, function () {
+                        this.rotate(90).render();
+                        imageEditor.saveImageDimensions();
+                    });
+                })
+                .on('click', '#b-imageeditor-crop-cancel', function() {
+                    imageEditor.hideCropTool();
+                })
+                .on('click', this.cropButtonSelector, function() {
+                    if (imageEditor.isCropping) {
+                        imageEditor.hideCropTool();
+                    } else {
+                        imageEditor.showCropTool();
+                    }
 
-					$(this).blur();
-				})
-				.on('click', '#b-imageeditor-revert', function() {
-					imageEditor.loadImage();
-				})
-				.on('change', '.crop-tools select', function() {
-					var $this = $(this);
+                    $(this).blur();
+                })
+                .on('click', '#b-imageeditor-revert', function() {
+                    imageEditor.loadImage();
+                })
+                .on('change', '.crop-tools select', function() {
+                    var $this = $(this);
 
-					imageEditor.$cropImage.Jcrop({
-						aspectRatio: $this.find(':selected').val()
-					});
-				})
-				.on('click', '.b-imageeditor-save', function() {
-					imageEditor.getImageBlob().done(function(blob) {
-						imageEditor._trigger('save', null, blob);
-					});
-				});
-		},
+                    imageEditor.$cropImage.Jcrop({
+                        aspectRatio: $this.find(':selected').val()
+                    });
+                })
+                .on('click', '.b-imageeditor-save', function() {
+                    imageEditor.getImageBlob().done(function(blob) {
+                        imageEditor._trigger('save', null, blob);
+                    });
+                });
+        },
 
-		blobToBase64: function(blob) {
-			var deferred = $.Deferred();
+        blobToBase64: function(blob) {
+            var deferred = $.Deferred();
 
-			var reader = new window.FileReader();
-			reader.readAsDataURL(blob); 
-			reader.onloadend = function() {
-				deferred.resolve(reader.result);                
-			};
+            var reader = new window.FileReader();
+            reader.readAsDataURL(blob); 
+            reader.onloadend = function() {
+                deferred.resolve(reader.result);                
+            };
 
-			return deferred;
-		},
+            return deferred;
+        },
 
-		_init: function() {
-			this.createCanvas();
-			this.bind();
-		},
+        _init: function() {
+            this.createCanvas();
+            this.bind();
+        },
 
-		createCanvas: function() {
-			this.$cropImage = $('<img>').css('display', 'none');
-			this.$cropImage.appendTo(this.element.find('.image-container'));
+        createCanvas: function() {
+            this.$cropImage = $('<img>').css('display', 'none');
+            this.$cropImage.appendTo(this.element.find('.image-container'));
 
-			this.loadImage();
-		},
+            this.loadImage();
+        },
 
-		cropImage: function(x, y, width, height) {
-			var imageEditor = this,
-				canvas = this.element.find('canvas').get(0),
-				deferred = $.Deferred();
+        cropImage: function(x, y, width, height) {
+            var imageEditor = this,
+                canvas = this.element.find('canvas').get(0),
+                deferred = $.Deferred();
 
-			this.getImageBase64().done(function(base64) {
-				var img = new Image(),
-					context = canvas.getContext('2d');
+            this.getImageBase64().done(function(base64) {
+                var img = new Image(),
+                    context = canvas.getContext('2d');
 
-				if (canvas.width > width) {
-					canvas.width = width;
-				}
+                if (canvas.width > width) {
+                    canvas.width = width;
+                }
 
-				if (canvas.height > height) {
-					canvas.height = height;
-				}
+                if (canvas.height > height) {
+                    canvas.height = height;
+                }
 
-				img.onload = function() {
-					context.clearRect(0, 0, canvas.width, canvas.height);
-					context.drawImage(img, x, y, width, height, 0, 0, width, height);
-					deferred.resolve('');
-				};
+                img.onload = function() {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.drawImage(img, x, y, width, height, 0, 0, width, height);
+                    deferred.resolve('');
+                };
 
-				img.src = base64;
-				imageEditor.saveImageDimensions();
-			});
+                img.src = base64;
+                imageEditor.saveImageDimensions();
+            });
 
-			return deferred;
-		},
+            return deferred;
+        },
 
-		getImageBase64: function() {
-			var imageEditor = this,
-				deferred = $.Deferred();
+        getImageBase64: function() {
+            var imageEditor = this,
+                deferred = $.Deferred();
 
-			this.getImageBlob().done(function(blob) {
-				imageEditor.blobToBase64(blob).done(function(base64) {
-					deferred.resolve(base64);
-				});
-			});
+            this.getImageBlob().done(function(blob) {
+                imageEditor.blobToBase64(blob).done(function(base64) {
+                    deferred.resolve(base64);
+                });
+            });
 
-			return deferred;
-		},
+            return deferred;
+        },
 
-		getImageBlob: function() {
-			var deferred = $.Deferred();
+        getImageBlob: function() {
+            var deferred = $.Deferred();
 
-			this.element.find(this.imageSelector).get(0).toBlob(function(blob) {
-				deferred.resolve(blob);
-			});
+            this.element.find(this.imageSelector).get(0).toBlob(function(blob) {
+                deferred.resolve(blob);
+            });
 
-			return deferred;
-		},
+            return deferred;
+        },
 
-		hideCropTool: function() {
-			this.isCropping = false;
+        hideCropTool: function() {
+            this.isCropping = false;
 
-			// Using the Jcrop destroy method causing a JS error when we try to crop again.
-			// So we manually remove the data and DOM element instead.
-			this.$cropImage.removeData('Jcrop');
-			this.element.find('.jcrop-active').remove();
+            // Using the Jcrop destroy method causing a JS error when we try to crop again.
+            // So we manually remove the data and DOM element instead.
+            this.$cropImage.removeData('Jcrop');
+            this.element.find('.jcrop-active').remove();
 
-			this.$toolbar
-				.children('.b-button')
-				.not(this.cropButtonSelector)
-				.prop('disabled', false);
+            this.$toolbar
+                .children('.b-button')
+                .not(this.cropButtonSelector)
+                .prop('disabled', false);
 
-			this.toggleCropTools();
-		},
+            this.toggleCropTools();
+        },
 
-		loadImage: function() {
-			var imageEditor = this,
-				$el = this.element,
-				$image = $el.find(this.imageSelector);
+        loadImage: function() {
+            var imageEditor = this,
+                $el = this.element,
+                $image = $el.find(this.imageSelector);
 
-			if ($image.is('canvas')) {
-				var $new = $('#b-imageeditor-original')
-					.clone()
-					.attr('id', this.imageSelector.replace('#', ''));
+            if ($image.is('canvas')) {
+                var $new = $('#b-imageeditor-original')
+                    .clone()
+                    .attr('id', this.imageSelector.replace('#', ''));
 
-				$image.replaceWith($new);
-				$image = $el.find(this.imageSelector);
-			}
+                $image.replaceWith($new);
+                $image = $el.find(this.imageSelector);
+            }
 
-			$image.on('load', function() {
-				imageEditor.saveImageDimensions();
+            $image.on('load', function() {
+                imageEditor.saveImageDimensions();
 
-				Caman(imageEditor.imageSelector, function () {
-					imageEditor.$canvas = $el.find('canvas:first-of-type');
-					imageEditor.canvas = imageEditor.$canvas[0];
+                Caman(imageEditor.imageSelector, function () {
+                    imageEditor.$canvas = $el.find('canvas:first-of-type');
+                    imageEditor.canvas = imageEditor.$canvas[0];
 
-					imageEditor.element
-						.find('.crop-tools select')
-						.append(
-							$('<option>')
-								.val(parseFloat(imageEditor.imageWidth / imageEditor.imageHeight))
-								.text('Initial')
-						);
-				});
-			});
-		},
+                    imageEditor.element
+                        .find('.crop-tools select')
+                        .append(
+                            $('<option>')
+                                .val(parseFloat(imageEditor.imageWidth / imageEditor.imageHeight))
+                                .text('Initial')
+                        );
+                });
+            });
+        },
 
-		saveImageDimensions: function() {
-			this.imageWidth = this.element.find(this.imageSelector).width();
-			this.imageHeight = this.element.find(this.imageSelector).height();
-			this.aspectRatio = this.imageWidth / this.imageHeight;
-		},
+        saveImageDimensions: function() {
+            this.imageWidth = this.element.find(this.imageSelector).width();
+            this.imageHeight = this.element.find(this.imageSelector).height();
+            this.aspectRatio = this.imageWidth / this.imageHeight;
+        },
 
-		showCropTool: function() {
-			var $el = this.element,
-				imageEditor = this;
+        showCropTool: function() {
+            var $el = this.element,
+                imageEditor = this;
 
-			this.$toolbar
-				.children('.b-button')
-				.not(this.cropButtonSelector)
-				.prop('disabled', true);
+            this.$toolbar
+                .children('.b-button')
+                .not(this.cropButtonSelector)
+                .prop('disabled', true);
 
-			this.isCropping = true;
-			this.toggleCropTools();
+            this.isCropping = true;
+            this.toggleCropTools();
 
-			this.getImageBase64()
-				.done(function(base64) {
-					var crop = {};
+            this.getImageBase64()
+                .done(function(base64) {
+                    var crop = {};
 
-					imageEditor.$cropImage
-						.attr('src', base64)
-						.on('load', function() {
-							imageEditor.$cropImage
-								.Jcrop({
-									boxWidth: imageEditor.imageWidth,
-									boxHeight: imageEditor.imageHeight,
-									setSelect: [
-										0,
-										0,
-										imageEditor.$cropImage[0].naturalWidth,
-										imageEditor.$cropImage[0].naturalHeight
-									],
-									onChange: function(c) {
-										crop = c;
-									},
-									aspectRatio: $el.find('.crop-tools select option:selected').val()
-								});
+                    imageEditor.$cropImage
+                        .attr('src', base64)
+                        .on('load', function() {
+                            imageEditor.$cropImage
+                                .Jcrop({
+                                    boxWidth: imageEditor.imageWidth,
+                                    boxHeight: imageEditor.imageHeight,
+                                    setSelect: [
+                                        0,
+                                        0,
+                                        imageEditor.$cropImage[0].naturalWidth,
+                                        imageEditor.$cropImage[0].naturalHeight
+                                    ],
+                                    onChange: function(c) {
+                                        crop = c;
+                                    },
+                                    aspectRatio: $el.find('.crop-tools select option:selected').val()
+                                });
 
-							$el
-								.find('.jcrop-active canvas')
-								.css({
-									width: imageEditor.imageWidth,
-									height: imageEditor.imageHeight
-								});
-						});
+                            $el
+                                .find('.jcrop-active canvas')
+                                .css({
+                                    width: imageEditor.imageWidth,
+                                    height: imageEditor.imageHeight
+                                });
+                        });
 
-					$el.one('click', '#b-imageeditor-crop-accept', function() {
-						if (crop !== {}) {
-							imageEditor
-								.cropImage(crop.x, crop.y, crop.w, crop.h)
-								.done(function() {
-									imageEditor.hideCropTool();
-								});
-						}
-					});
-				});
-		},
+                    $el.one('click', '#b-imageeditor-crop-accept', function() {
+                        if (crop !== {}) {
+                            imageEditor
+                                .cropImage(crop.x, crop.y, crop.w, crop.h)
+                                .done(function() {
+                                    imageEditor.hideCropTool();
+                                });
+                        }
+                    });
+                });
+        },
 
-		toggleCropTools: function() {
-			this.$toolbar.find('.crop-tools').slideToggle();
-		}
-	});
+        toggleCropTools: function() {
+            this.$toolbar.find('.crop-tools').slideToggle();
+        }
+    });
 }(jQuery));
 ;$.widget('boom.groupPermissionsEditor', {
-	group : null,
+    group : null,
 
-	bind: function() {
-		var self = this, selected_page;
+    bind: function() {
+        var self = this, selected_page;
 
-		this.element
-			.on('change', '#b-group-roles-general input[type=radio]', function() {
-				var role_id = this.name,
-					allowed = parseInt(this.value, 10);
+        this.element
+            .on('change', '#b-group-roles-general input[type=radio]', function() {
+                var role_id = this.name,
+                    allowed = parseInt(this.value, 10);
 
-				self._change(role_id, allowed, 0);
+                self._change(role_id, allowed, 0);
 
-			})
-			.on('change', '#b-group-roles-pages input[type=radio]', function() {
-				var role_id = this.name,
-					allowed = parseInt(this.value, 10),
-					page_id = selected_page;
+            })
+            .on('change', '#b-group-roles-pages input[type=radio]', function() {
+                var role_id = this.name,
+                    allowed = parseInt(this.value, 10),
+                    page_id = selected_page;
 
-				self._change(role_id, allowed, page_id);
-			});
+                self._change(role_id, allowed, page_id);
+            });
 
-		/**
-		 * Clicking on a page in the tree.
-		 * Should make a GET call to /boomcms/groups/list_roles/<group ID>?page_id=<page ID>
-		 *
-		 * This will return a json encoded array of role ID => <value>
-		 * Possible values are 1 if the role is allowed and 0 if the role is disallowed.
-		 * If nothing is set for a role then that role ID won't be in the returned array.
-		 *
-		 * The role checkboxes should then be updated if the correct values.
-		 */
-		var page_tree = this.element.find('#b-group-roles-pages .boom-tree');
+        /**
+         * Clicking on a page in the tree.
+         * Should make a GET call to /boomcms/groups/list_roles/<group ID>?page_id=<page ID>
+         *
+         * This will return a json encoded array of role ID => <value>
+         * Possible values are 1 if the role is allowed and 0 if the role is disallowed.
+         * If nothing is set for a role then that role ID won't be in the returned array.
+         *
+         * The role checkboxes should then be updated if the correct values.
+         */
+        var page_tree = this.element.find('#b-group-roles-pages .boom-tree');
 
-		page_tree.pageTree({
-			onPageSelect: function(link) {
-				$('#b-group-roles-pages .b-group-roles').show();
+        page_tree.pageTree({
+            onPageSelect: function(link) {
+                $('#b-group-roles-pages .b-group-roles').show();
 
-				selected_page = link.getPageId();
+                selected_page = link.getPageId();
 
-				self._check_inputs($('#b-group-roles-pages input[type=radio]'), -1);
+                self._check_inputs($('#b-group-roles-pages input[type=radio]'), -1);
 
-				page_tree
-					.find('a[data-page-id=' + link.getPageId() + ']')
-					.parents('.boom-tree')
-					.find('a.ui-state-active')
-					.removeClass('ui-state-active')
-					.end()
-					.end()
-					.addClass('ui-state-active');
+                page_tree
+                    .find('a[data-page-id=' + link.getPageId() + ']')
+                    .parents('.boom-tree')
+                    .find('a.ui-state-active')
+                    .removeClass('ui-state-active')
+                    .end()
+                    .end()
+                    .addClass('ui-state-active');
 
-				self._show_permissions(selected_page);
-			}
-		});
-	},
+                self._show_permissions(selected_page);
+            }
+        });
+    },
 
-	_change: function(roleId, allowed, pageId) {
-		var group = this.group;
+    _change: function(roleId, allowed, pageId) {
+        var group = this.group;
 
-		group.removeRole(roleId, pageId)
-			.done(function() {
-				if (allowed >= 0) {
-					group.addRole(roleId, allowed, pageId);
-				}
-			});
-	},
+        group.removeRole(roleId, pageId)
+            .done(function() {
+                if (allowed >= 0) {
+                    group.addRole(roleId, allowed, pageId);
+                }
+            });
+    },
 
-	_check_inputs: function(radio_buttons, value) {
-		radio_buttons
-			.filter(':checked')
-			.prop('checked', false)
-			.end()
-			.filter('[value=' + value + ']')
-			.prop('checked', true);
-	},
+    _check_inputs: function(radio_buttons, value) {
+        radio_buttons
+            .filter(':checked')
+            .prop('checked', false)
+            .end()
+            .filter('[value=' + value + ']')
+            .prop('checked', true);
+    },
 
-	_create: function() {
-		this.group = this.options.group;
-		this.bind();
+    _create: function() {
+        this.group = this.options.group;
+        this.bind();
 
-		this._check_inputs($('#b-group-roles-general input[type=radio]'), -1);
-		this._show_permissions(0);
-	},
+        this._check_inputs($('#b-group-roles-general input[type=radio]'), -1);
+        this._show_permissions(0);
+    },
 
-	_show_permissions: function(page_id) {
-		var self = this,
-			i;
+    _show_permissions: function(page_id) {
+        var self = this,
+            i;
 
-		this.group.getRoles(page_id)
-			.done(function(data) {
-				if (data.length) {
-					for (i in data) {
-						self._check_inputs($('input[name=' + data[i].id + ']'), data[i].allowed);
-					}
-				}
-			});
-	}
+        this.group.getRoles(page_id)
+            .done(function(data) {
+                if (data.length) {
+                    for (i in data) {
+                        self._check_inputs($('input[name=' + data[i].id + ']'), data[i].allowed);
+                    }
+                }
+            });
+    }
 });;$(document).ready(function() {
-	$('.b-approvals-publish').on('click', function(e) {
-		e.preventDefault();
+    $('.b-approvals-publish').on('click', function(e) {
+        e.preventDefault();
 
-		var $this = $(this), page = boom_approvals_get_page($this);
-		page.publish();
+        var $this = $(this), page = boom_approvals_get_page($this);
+        page.publish();
 
-		new boomNotification('All changes to this page are now published').show();
-		boom_approvals_remove_row($this);
-	});
+        BoomCMS.Notification('All changes to this page are now published').show();
+        boom_approvals_remove_row($this);
+    });
 
-	$('.b-approvals-reject').on('click', function(e) {
-		e.preventDefault();
+    $('.b-approvals-reject').on('click', function(e) {
+        e.preventDefault();
 
-		var $this = $(this), page = boom_approvals_get_page($this);
+        var $this = $(this), page = boom_approvals_get_page($this);
 
-		page
-			.revertToPublished()
-			.done(function() {
-				new boomNotification("This page has been reverted to it's most recent published version.").show();
-				boom_approvals_remove_row($this);
-			});
-	});
+        page
+            .revertToPublished()
+            .done(function() {
+                BoomCMS.Notification('This page has been reverted to it\'s most recent published version.').show();
+                boom_approvals_remove_row($this);
+            });
+    });
 
-	function boom_approvals_get_page($element) {
-		var page_id = $element.parents('tr').attr('data-page-id');
+    function boom_approvals_get_page($element) {
+        var page_id = $element.parents('tr').attr('data-page-id');
 
-		return new BoomCMS.Page({id: page_id});
-	}
+        return new BoomCMS.Page({id: page_id});
+    }
 
-	function boom_approvals_remove_row($element) {
-		$element.parents('tr').remove();
-	}
+    function boom_approvals_remove_row($element) {
+        $element.parents('tr').remove();
+    }
 });;/**
  * @license wysihtml v0.5.5
  * https://github.com/Voog/wysihtml
@@ -75038,7 +75063,7 @@ wysihtml5.views.View = Base.extend(
 
 			$(composer).trigger('before:boomdialog');
 
-			new boomAssetPicker()
+			BoomCMS.AssetPicker()
 				.done(function(asset) {
 					if (asset.getId() > 0) {
 						asset.getEmbedCode()
@@ -75084,15 +75109,15 @@ wysihtml5.views.View = Base.extend(
 				bm = composer.selection.getBookmark();
 
 			if (existing_link) {
-				var link = new boomLink(existing_link.href, 0, (existing_link.textContent || existing_link.innerText));
+				var link = new BoomCMS.Link(existing_link.href, 0, (existing_link.textContent || existing_link.innerText));
 				opts.link = link;
 			} else {
-				link = new boomLink();
+				link = new BoomCMS.Link();
 			}
 
 			$(composer).trigger('before:boomdialog');
 
-			new boomLinkPicker(link, {remove: link.getUrl() != ''})
+			new BoomCMS.LinkPicker(link, {remove: link.getUrl() != ''})
 				.done(function(link) {
 					var url = link.getUrl();
 
@@ -75563,93 +75588,93 @@ if (!console) {
 
 }
 ;$.widget( 'boom.pageManager', {
-	addActionButtons: function($li) {
-		$li.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
-	},
+    addActionButtons: function($li) {
+        $li.append('<div><a href=\'#\' class=\'fa fa-plus b-pages-add\'><span>Add page</span></a><a href=\'#\' class=\'fa fa-trash-o b-pages-delete\'><span>Delete page</span></a><a href=\'#\' class=\'fa fa-cog b-pages-settings\'><span>Settings</span></a></div>');
+    },
 
-	addPage: function($el) {
-		var page = $el.data('page'),
-			el = this.element;
+    addPage: function($el) {
+        var page = $el.data('page'),
+            el = this.element;
 
-		page.add()
-			.done(function(data) {
-				var newPage = new BoomCMS.Page(data);
+        page.add()
+            .done(function(data) {
+                var newPage = new BoomCMS.Page(data);
 
-				el.pageTree('addPageToList', newPage);
-				el.pageTree('makeExpandable', $el);
+                el.pageTree('addPageToList', newPage);
+                el.pageTree('makeExpandable', $el);
 
-				setTimeout(function() {
-					el.pageTree('showChildren', $el);
-				}, 0);
-			});
-	},
+                setTimeout(function() {
+                    el.pageTree('showChildren', $el);
+                }, 0);
+            });
+    },
 
-	_create: function() {
-		var pageManager = this;
+    _create: function() {
+        var pageManager = this;
 
-		this.element
-			.pageTree({
-				add: function(e, $li) {
-					pageManager.addActionButtons($li);
-				},
-				onPageSelect: function(link) {
-					window.open(link.getUrl());
-				}
-			});
+        this.element
+            .pageTree({
+                add: function(e, $li) {
+                    pageManager.addActionButtons($li);
+                },
+                onPageSelect: function(link) {
+                    window.open(link.getUrl());
+                }
+            });
 
-		this.addActionButtons(this.element.find('li'), {});
-	},
+        this.addActionButtons(this.element.find('li'), {});
+    },
 
-	deletePage: function($el) {
-		this.showPageSettings($el, 'delete');
-	},
+    deletePage: function($el) {
+        this.showPageSettings($el, 'delete');
+    },
 
-	editSettings: function($el) {
-		this.showPageSettings($el);
-	},
+    editSettings: function($el) {
+        this.showPageSettings($el);
+    },
 
-	_init: function() {
-		var pageManager = this;
+    _init: function() {
+        var pageManager = this;
 
-		this.element
-			.on('click', '.b-pages-delete', function(e) {
-				e.preventDefault();
+        this.element
+            .on('click', '.b-pages-delete', function(e) {
+                e.preventDefault();
 
-				pageManager.deletePage($(this).closest('li'));
-			})
-			.on('click', '.b-pages-add', function(e) {
-				e.preventDefault();
+                pageManager.deletePage($(this).closest('li'));
+            })
+            .on('click', '.b-pages-add', function(e) {
+                e.preventDefault();
 
-				pageManager.addPage($(this).closest('li'));
-			})
-			.on('click', '.b-pages-settings', function(e) {
-				e.preventDefault();
+                pageManager.addPage($(this).closest('li'));
+            })
+            .on('click', '.b-pages-settings', function(e) {
+                e.preventDefault();
 
-				pageManager.editSettings($(this).closest('li'));
-			});
-	},
+                pageManager.editSettings($(this).closest('li'));
+            });
+    },
 
-	showPageSettings: function($el, section) {
-		var page = $el.data('page'),
-			$settings = $('<div></div>');
+    showPageSettings: function($el, section) {
+        var page = $el.data('page'),
+            $settings = $('<div></div>');
 
-		$settings
-			.addClass('b-settings-container')
-			.appendTo($('#b-pages'))
-			.load(page.baseUrl + 'settings/index', function() {
-				$settings
-					.addClass('open')
-					.pageSettings({
-						page: page,
-						deleteSave: function() {
-							$el.remove();
-							$settings.remove();
-						}
-					});
+        $settings
+            .addClass('b-settings-container')
+            .appendTo($('#b-pages'))
+            .load(page.baseUrl + 'settings/index', function() {
+                $settings
+                    .addClass('open')
+                    .pageSettings({
+                        page: page,
+                        deleteSave: function() {
+                            $el.remove();
+                            $settings.remove();
+                        }
+                    });
 
-				if (section) {
-					$settings.pageSettings('show', 'delete');
-				}
-			});
-	}
+                if (section) {
+                    $settings.pageSettings('show', 'delete');
+                }
+            });
+    }
 });
