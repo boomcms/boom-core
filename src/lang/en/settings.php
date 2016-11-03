@@ -90,7 +90,7 @@ return [
         'latest'         => 'This version was created by :name (:email) on :date at :time.',
         'last-published' => 'The page was last published on :date at :time.',
         'options'        => [
-            'heading' => 'Publish options'
+            'heading' => 'Publish options',
         ],
         'preview'        => [
             'heading'               => 'Preview',
