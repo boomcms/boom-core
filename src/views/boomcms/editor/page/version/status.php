@@ -62,7 +62,7 @@
             </p>
 
             <?php if ($auth->check('publish', $page)): ?>
-                <?= $button('check', 'publish', ['class' => 'b-button-withtext b-page-publish']) ?>
+                <?= $button('thumbs-up', 'publish', ['class' => 'b-button-withtext b-page-publish']) ?>
 
                 <?php if ($version->isEmbargoed()): ?>
                     <?= $button('clock-o', 'embargo-change', ['class' => 'b-button-withtext b-page-embargo']) ?>
