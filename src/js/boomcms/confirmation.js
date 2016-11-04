@@ -5,7 +5,7 @@
         this.title = title;
         this.message = message;
 
-        BoomCMS.Confirmation.prototype.open = function() {
+        this.open = function() {
             var confirmation = this;
 
             return new BoomCMS.Dialog({

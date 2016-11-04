@@ -52,10 +52,6 @@
             $('#b-topbar, body').ui();
         };
 
-        BoomCMS.prototype.confirm = function(title, message) {
-            return new BoomCMS.Confirmation(title, message);
-        };
-
         BoomCMS.prototype.getTimezone = function() {
             var key = 'boomcms.timezone';
 

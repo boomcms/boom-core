@@ -120,7 +120,7 @@
             e.preventDefault();
 
             var group = this.model,
-                confirmation = BoomCMS.confirm('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
+                confirmation = BoomCMS.Confirmation('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
 
             confirmation.done(function() {
                 group.destroy();
@@ -261,7 +261,7 @@
 
             var model = this.model;
 
-            BoomCMS.confirm('Please confirm', 'Are you sure you want to delete ' + model.getName() + '?')
+            BoomCMS.Confirmation('Please confirm', 'Are you sure you want to delete ' + model.getName() + '?')
                 .done(function() {
                     model.destroy();    
                 });

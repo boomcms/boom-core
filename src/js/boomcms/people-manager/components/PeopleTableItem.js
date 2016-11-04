@@ -14,7 +14,7 @@
 
             var model = this.model;
 
-            BoomCMS.confirm('Please confirm', 'Are you sure you want to delete ' + model.getName() + '?')
+            BoomCMS.Confirmation('Please confirm', 'Are you sure you want to delete ' + model.getName() + '?')
                 .done(function() {
                     model.destroy();    
                 });
