@@ -13,18 +13,11 @@
             this.groups = options.groups;
             this.people = options.people;
 
-            this.listenTo(this.groups, 'change:id', this.editGroupOnCreate);
             this.listenTo(this.people, 'destroy', this.goBackOnPersonDelete);
         },
 
         editGroup: function(id) {
             var group = this.groups.get(id);
-
-            group.trigger('edit', group);
-        },
-
-        editGroupOnCreate: function(group) {
-            this.navigate('group/' + group.getId() + '/edit');
 
             group.trigger('edit', group);
         },

@@ -24,7 +24,7 @@
 
             this.renderGroups();
 
-            new BoomCMS.PeopleManager.Router({
+            this.router = new BoomCMS.PeopleManager.Router({
                 groups: this.groups,
                 people: this.people
             });
@@ -41,10 +41,16 @@
         createGroup: function(e) {
             e.preventDefault();
 
-            var $el = $(e.target).find('input[type=text]');
+            var router = this.router,
+                $el = $(e.target).find('input[type=text]'),
+                group;
             
-            this.groups.create({
+            group = this.groups.create({
                 name: $el.val()
+            }, {
+                success: function() {
+                    router.navigate('group/' + group.getId() + '/edit', {trigger: true});
+                }
             });
 
             $el.val('');
@@ -391,18 +397,11 @@
             this.groups = options.groups;
             this.people = options.people;
 
-            this.listenTo(this.groups, 'change:id', this.editGroupOnCreate);
             this.listenTo(this.people, 'destroy', this.goBackOnPersonDelete);
         },
 
         editGroup: function(id) {
             var group = this.groups.get(id);
-
-            group.trigger('edit', group);
-        },
-
-        editGroupOnCreate: function(group) {
-            this.navigate('group/' + group.getId() + '/edit');
 
             group.trigger('edit', group);
         },
