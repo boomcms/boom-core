@@ -4,9 +4,9 @@
     BoomCMS.Notification = function(message) {
         this.message = message;
 
-        BoomCMS.Notification.prototype.$document = $(top.document);
+        this.$document = $(top.document);
 
-        BoomCMS.Notification.prototype.show = function() {
+        this.show = function() {
             var notified = false,
                 waitingApproval = false,
                 timer,
@@ -43,8 +43,10 @@
             }, 100);
         };
 
-        BoomCMS.Notification.prototype.showFallback = function(message) {
+        this.showFallback = function(message) {
             $.jGrowl(message);
         };
+
+        return this.show();
     };
 }($, BoomCMS));

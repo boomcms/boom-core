@@ -63,10 +63,6 @@
 
             return sessionStorage.getItem(key);
         };
-
-        BoomCMS.prototype.notify = function(message) {
-            BoomCMS.Notification(message).show();
-        };
     }
 
     window.BoomCMS = top.BoomCMS = new BoomCMS();

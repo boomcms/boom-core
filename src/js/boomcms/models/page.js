@@ -53,7 +53,7 @@
             }).done(function() {
                 $.post(url, dialog.contents.find('form').serialize())
                     .done(function(response) {
-                        BoomCMS.Notification('Page embargo saved').show();
+                        BoomCMS.Notification('Page embargo saved');
                         promise.resolve(response);
                     });
             });

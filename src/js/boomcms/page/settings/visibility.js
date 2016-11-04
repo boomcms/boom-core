@@ -61,7 +61,7 @@ $.widget('boom.pageSettingsVisibility', {
         if (this.changed) {
             $.post(this.baseUrl.replace('{page}', this.options.page.id), this.element.find('form').serialize())
                 .done(function(response) {
-                    BoomCMS.Notification('Page visibility saved').show();
+                    BoomCMS.Notification('Page visibility saved');
 
                     visibilityEditor._trigger('done', null, response);
                 });

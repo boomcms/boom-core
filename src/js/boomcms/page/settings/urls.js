@@ -7,7 +7,7 @@ $.widget('boom.pageSettingsUrls', {
 
         url.add(this.element.find('form input[type=text]').val())
             .done(function() {
-                BoomCMS.Notification('Url added').show();
+                BoomCMS.Notification('Url added');
 
                 urlEditor.element.load(urlEditor.list_url);
             });
@@ -53,7 +53,7 @@ $.widget('boom.pageSettingsUrls', {
             .done(function() {
                 $li.remove();
 
-                BoomCMS.Notification('The specified URL has been deleted').show();
+                BoomCMS.Notification('The specified URL has been deleted');
             });
     },
 
@@ -71,7 +71,7 @@ $.widget('boom.pageSettingsUrls', {
                     .parent()
                     .addClass('b-page-urls-primary');
 
-                BoomCMS.Notification('The primary URL of the page has been updated').show();
+                BoomCMS.Notification('The primary URL of the page has been updated');
             });
     }
 });

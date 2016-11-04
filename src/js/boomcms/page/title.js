@@ -131,10 +131,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
             .done(function(data) {
                 if (data.location !== top.window.location) {
                     top.history.replaceState({}, title, data.location);
-                    BoomCMS.Notification('Page title saved').show();
+                    BoomCMS.Notification('Page title saved');
                     window.BoomCMS.page.toolbar.status.set(data.status);
                 } else {
-                    BoomCMS.Notification('Page title saved').show();
+                    BoomCMS.Notification('Page title saved');
                     window.BoomCMS.page.toolbar.status.set(data);
                 }
 

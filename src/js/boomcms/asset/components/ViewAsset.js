@@ -24,7 +24,7 @@
                         .set(view.$('form').serializeJSON())
                         .save();
 
-                    BoomCMS.notify('Asset details saved');
+                    BoomCMS.Notification('Asset details saved');
                 })
                 .on('remove', function() {
                     this.$('.b-assets-upload').assetUploader('reset');
@@ -47,7 +47,7 @@
             this.selection = new BoomCMS.Collections.Assets([this.model]);
 
             this.listenTo(this.model, 'revert', function() {
-                BoomCMS.notify('This asset has been reverted to the previous version');
+                BoomCMS.Notification('This asset has been reverted to the previous version');
             });
 
             this.listenTo(this.model, 'change:image revert', function() {

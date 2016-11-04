@@ -45,7 +45,7 @@
             if (this.model.needsSave === true) {
                 this.model.save();
     
-                BoomCMS.notify('Template "' + this.model.getName() + '" has been saved');
+                BoomCMS.Notification('Template "' + this.model.getName() + '" has been saved');
             }
         },
 

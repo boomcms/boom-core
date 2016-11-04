@@ -73,7 +73,7 @@ $.widget('boom.pageSettingsFeature', {
         if (this.changed) {
             pageFeatureEditor.options.page.setFeatureImage(this.currentImage)
                 .done(function() {
-                    BoomCMS.Notification('Page feature image saved').show();
+                    BoomCMS.Notification('Page feature image saved');
             
                     pageFeatureEditor._trigger('done', null, pageFeatureEditor.currentImage);
                 });

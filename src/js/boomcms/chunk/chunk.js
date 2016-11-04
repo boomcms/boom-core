@@ -76,7 +76,7 @@ $.widget('ui.chunk',
             .done(function(data) {
                 self._update_html(data.html);
                 window.BoomCMS.page.toolbar.status.set(data.status);
-                BoomCMS.Notification('Page content saved').show();
+                BoomCMS.Notification('Page content saved');
             });
         },
 
@@ -95,7 +95,7 @@ $.widget('ui.chunk',
                 self._update_html(data.html);
                 window.BoomCMS.page.toolbar.status.set(data.status);
 
-                BoomCMS.Notification('Page content saved').show();
+                BoomCMS.Notification('Page content saved');
             })
             .fail(function(response) {
                 if (response.responseJSON.error === 'conflict') {

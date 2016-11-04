@@ -29,7 +29,7 @@ $.widget('boom.pageSettingsTemplate', {
         if (templateId) {
             this.options.page.setTemplate(templateId)
                 .done(function() {
-                    BoomCMS.Notification('Page template updated').show();
+                    BoomCMS.Notification('Page template updated');
 
                     templateEditor._trigger('done');
                 });

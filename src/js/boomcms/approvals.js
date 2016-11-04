@@ -5,7 +5,7 @@ $(document).ready(function() {
         var $this = $(this), page = boom_approvals_get_page($this);
         page.publish();
 
-        BoomCMS.Notification('All changes to this page are now published').show();
+        BoomCMS.Notification('All changes to this page are now published');
         boom_approvals_remove_row($this);
     });
 
@@ -17,7 +17,7 @@ $(document).ready(function() {
         page
             .revertToPublished()
             .done(function() {
-                BoomCMS.Notification('This page has been reverted to it\'s most recent published version.').show();
+                BoomCMS.Notification('This page has been reverted to it\'s most recent published version.');
                 boom_approvals_remove_row($this);
             });
     });

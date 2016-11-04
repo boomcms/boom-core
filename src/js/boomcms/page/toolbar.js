@@ -178,7 +178,7 @@ $.widget( 'boom.pageToolbar', {
                     );
                 },
                 deleteSave: function(event, response) {
-                    BoomCMS.Notification('Page deleted, redirecting to parent').show();
+                    BoomCMS.Notification('Page deleted, redirecting to parent');
 
                     setTimeout(function() {
                         top.location = response;
@@ -289,7 +289,7 @@ $.widget( 'boom.pageToolbar', {
         .done(function() {
             $.post(url, dialog.contents.find('form').serialize());
 
-            BoomCMS.Notification('Your message has been sent').show();
+            BoomCMS.Notification('Your message has been sent');
         });
     },
 

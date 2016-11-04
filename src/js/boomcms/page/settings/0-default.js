@@ -14,7 +14,7 @@ $.widget('boom.pageSettingsDefault', {
 
                 settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
                     .done(function() {
-                        BoomCMS.Notification('Page settings saved').show();
+                        BoomCMS.Notification('Page settings saved');
                     });
             });
     },
