@@ -18,6 +18,7 @@ return [
         'initial'     => 'Initial version',
     ],
     'diff'        => [
+        'created'  => 'Created',
         'title'    => 'Title',
         'template' => 'Template',
         'chunk'    => [

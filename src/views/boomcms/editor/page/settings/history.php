@@ -73,5 +73,32 @@
                 </li>
             <?php endif ?>
         <?php endforeach ?>
+
+        <li data-status="created">
+            <div class="summary">
+                <span class="fa fa-plus"></span>
+            </div>
+
+            <div class="main">
+                <div>
+                    <?php if ($page->getCreatedTime() && $page->getCreatedTime()->getTimestamp() > 0): ?>
+                        <time datetime="<?= $page->getCreatedTime()->format('c') ?>">
+                            <?= $page->getCreatedTime()->format('d M Y h:i') ?>
+                        </time>
+                    <?php endif ?>
+
+                    <span class="status">
+                        <?= trans('boomcms::settings.history.created') ?>
+                    </span>
+                </div>
+
+                <?php if ($page->getCreatedBy()): ?>
+                    <p>
+                        <?= $page->getCreatedBy()->getName() ?>&nbsp;
+                        <small><?= $page->getCreatedBy()->getEmail() ?></small>                 
+                    </p>
+                <?php endif ?>
+            </div>
+        </li>
     </ol>
 </div>
