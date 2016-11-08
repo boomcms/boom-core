@@ -12,7 +12,7 @@
 
         this.url = BoomCMS.urlRoot + 'asset-picker';
 
-        BoomCMS.AssetPicker.prototype.assetsUploaded = function(assetIds) {
+        this.assetsUploaded = function(assetIds) {
             if (assetIds.length === 1) {
                 this.pick(new BoomCMS.Asset({id: assetIds[0]}));
             } else {
@@ -21,7 +21,7 @@
             }
         };
 
-        BoomCMS.AssetPicker.prototype.bind = function() {
+        this.bind = function() {
             var assetPicker = this;
 
             this.assets.on('select', function(data) {
@@ -43,22 +43,22 @@
                 });
         };
 
-        BoomCMS.AssetPicker.prototype.cancel = function() {
+        this.cancel = function() {
             this.deferred.reject();
             this.dialog.cancel();
         };
 
-        BoomCMS.AssetPicker.prototype.close = function() {
+        this.close = function() {
             this.dialog.cancel();
         };
 
-        BoomCMS.AssetPicker.prototype.hideCurrentAsset = function() {
+        this.hideCurrentAsset = function() {
             this.picker
                 .find('#b-assets-picker-current')
                 .hide();
         };
 
-        BoomCMS.AssetPicker.prototype.loadPicker = function() {
+        this.loadPicker = function() {
             var assetPicker = this;
 
             this.assets = new BoomCMS.Collections.Assets();
@@ -99,13 +99,13 @@
             });
         };
 
-        BoomCMS.AssetPicker.prototype.open = function() {
+        this.open = function() {
             this.loadPicker();
 
             return this.deferred;
         };
 
-        BoomCMS.AssetPicker.prototype.pick = function(asset) {
+        this.pick = function(asset) {
             this.deferred.resolve(asset);
 
             this.close();
@@ -118,7 +118,7 @@
          * @param {string} type
          * @returns {BoomCMS.AssetPicker.prototype}
          */
-        BoomCMS.AssetPicker.prototype.showActiveTypeFilter = function(type) {
+        this.showActiveTypeFilter = function(type) {
             var $types = this.dialog.contents.find('#b-assets-types');
 
             $types.find('option').each(function() {
@@ -131,5 +131,7 @@
 
             return this;
         };
+
+        return this.open();
     };
 }(BoomCMS));
