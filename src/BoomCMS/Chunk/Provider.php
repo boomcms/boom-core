@@ -24,8 +24,8 @@ class Provider
     protected $gate;
 
     /**
-     * @param Gate $gate
-     * @param Store       $cache
+     * @param Gate  $gate
+     * @param Store $cache
      */
     public function __construct(Gate $gate, Cache $cache)
     {
