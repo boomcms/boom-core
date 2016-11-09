@@ -47,8 +47,7 @@
                     assetManager.router.navigate('upload', {trigger: true});
                 })
                 .on('click', '#b-assets-search', function() {
-                    $('#b-assets-filters').toggleClass('visible');
-                    $(this).toggleClass('open');
+                    this.toggleSearch();
                 })                        
                 .on('keydown', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
@@ -57,12 +56,19 @@
                 })
                 .on('keydown', function(e) {
                     if (e.metaKey || e.ctrlKey) {
-                        if (e.which === 65) {
-                            e.preventDefault();
+                        switch (e.which) {
+                            case 65:
+                                e.preventDefault();
 
-                            (assetManager.selection.length === assetManager.assets.length) ?
-                                assetManager.clearSelection() 
-                                : assetManager.selectAll();
+                                (assetManager.selection.length === assetManager.assets.length) ?
+                                    assetManager.clearSelection()
+                                    : assetManager.selectAll();
+
+                                break;
+                            case 70:
+                                e.preventDefault();
+                                assetManager.toggleSearch();
+                                break;
                         }
                     }
                 });
@@ -183,6 +189,11 @@
             var $buttons = this.$('.b-assets-multi');
 
             $buttons.prop('disabled', this.selection.length ? false : true);
+        },
+
+        toggleSearch: function() {
+            this.$el.find('#b-assets-filters').toggleClass('visible');
+            this.$el.find('#b-assets-search').toggleClass('open');
         },
 
         updateTagFilters: function(tags) {
