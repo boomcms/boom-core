@@ -53556,10 +53556,17 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 })                        
                 .on('keydown', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
                         $(this).parent().data('model').destroy();
                     }
                 })
                 .on('keydown', function(e) {
+                    if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
+                        assetManager.viewSelection(assetManager.selection, 'delete');
+                    }
+
                     if (e.metaKey || e.ctrlKey) {
                         switch (e.which) {
                             case 65:
