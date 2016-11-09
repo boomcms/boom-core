@@ -54,6 +54,17 @@
                     if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
                         $(this).parent().data('model').destroy();
                     }
+                })
+                .on('keydown', function(e) {
+                    if (e.metaKey || e.ctrlKey) {
+                        if (e.which === 65) {
+                            e.preventDefault();
+
+                            (assetManager.selection.length === assetManager.assets.length) ?
+                                assetManager.clearSelection() 
+                                : assetManager.selectAll();
+                        }
+                    }
                 });
 
             this.uploader
