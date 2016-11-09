@@ -42,6 +42,17 @@
                         assetSearch.addFilter('title', ui.item.value);
                         assetSearch.getAssets();
                     }
+                })
+                .end()
+                .on('keydown', function(e) {
+                    switch (e.which) {
+                        case $.ui.keyCode.LEFT:
+                            assetSearch.previousPage();
+                            break;
+                        case $.ui.keyCode.RIGHT:
+                            assetSearch.nextPage();
+                            break;
+                    }
                 });
 
             this.element.find('#b-tags-search')
@@ -100,6 +111,8 @@
             var assetManager = this,
                 $el = assetManager.element.find('.b-pagination');
 
+            this.lastPage = Math.ceil(total / this.postData.limit);
+
             // Max page isn't set correctly when re-initialising
             if ($el.data('jqPagination')) {
                 $el.jqPagination('destroy');
@@ -109,7 +122,7 @@
                 paged: function(page) {
                     assetManager.getPage(page);
                 },
-                max_page: Math.ceil(total / this.postData.limit),
+                max_page: this.lastPage,
                 current_page: total > 0 ? this.postData.page : 0
             });
 
@@ -118,6 +131,22 @@
 
         justify: function() {
             this.element.find('#b-assets-view-thumbs').justifyAssets();
+        },
+
+        nextPage: function() {
+            var page = this.postData.page;
+
+            if (page < this.lastPage) {
+                this.getPage(page + 1);
+            }
+        },
+
+        previousPage: function() {
+            var page = this.postData.page;
+
+            if (page > 1) {
+                this.getPage(page - 1);
+            }
         },
 
         removeFilters: function() {
