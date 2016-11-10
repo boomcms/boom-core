@@ -3,6 +3,8 @@
 		color: @blue;
 
 		&:hover, &:focus {
+            text-decoration: none;
+
 			time {
 				text-decoration: underline;
 			}
@@ -14,11 +16,38 @@
 
 		li {
 			list-style-type: none;
-			max-width: 60rem;
+			max-width: 70rem;
 
 			+ li {
 				margin-top: 2rem;
 			}
+
+            a[data-restore] {
+                color: @black;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+
+                &:hover, &:focus {
+                    .fa {
+                        color: @red;
+                    }
+                }
+
+                span {
+                    display: block;
+
+                    &:nth-of-type(2) {
+                        position: absolute;
+                        top: -1000%;
+                    }
+                }
+
+                .fa {
+                    font-size: 2rem;
+                    color: @blue;
+                }
+            }
 
 			.summary {
 				float: left;
@@ -75,9 +104,16 @@
 				width: 8rem;
 			}
 
+            [data-restore] {
+                display: inline-block;
+                float: right;
+				width: 6rem;
+                margin-left: 4rem;
+            }
+
 			.main {
 				overflow: hidden;
-				width: calc(~"100% - 15rem");
+				width: calc(~"100% - 25rem");
 				float: right;
 
 				> div {

@@ -173,6 +173,7 @@ class Page extends Model implements PageInterface
         // Chunk type and ID fields shouldn't be copied.
         unset($attrs[PageVersion::ATTR_CHUNK_TYPE]);
         unset($attrs[PageVersion::ATTR_CHUNK_ID]);
+        unset($attrs[PageVersion::ATTR_RESTORED_FROM]);
 
         $newVersion = new PageVersion($attrs);
         $newVersion

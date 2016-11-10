@@ -22,6 +22,7 @@ class PageVersion extends Model implements PageVersionInterface
     const ATTR_PENDING_APPROVAL = 'pending_approval';
     const ATTR_CHUNK_TYPE = 'chunk_type';
     const ATTR_CHUNK_ID = 'chunk_id';
+    const ATTR_RESTORED_FROM = 'restored_from';
 
     protected $casts = [
         self::ATTR_PAGE             => 'integer',
@@ -127,6 +128,15 @@ class PageVersion extends Model implements PageVersionInterface
             ->where(self::ATTR_EDITED_AT, '<', $this->getEditedTime()->getTimestamp())
             ->orderBy(self::ATTR_EDITED_AT, 'desc')
             ->first();
+    }
+
+    /**
+     * @return null|PageVersion
+     */
+    public function getRestoredVersion()
+    {
+        return empty($this->{self::ATTR_RESTORED_FROM}) ? null
+            : self::find($this->{self::ATTR_RESTORED_FROM});
     }
 
     /**
@@ -284,6 +294,20 @@ class PageVersion extends Model implements PageVersionInterface
     public function setPage(PageInterface $page)
     {
         $this->{self::ATTR_PAGE} = $page->getId();
+
+        return $this;
+    }
+
+    /**
+     * Mark the version as being restored from another.
+     *
+     * @param PageVersionInterface $version
+     *
+     * @return $this
+     */
+    public function setRestoredFrom(PageVersionInterface $version)
+    {
+        $this->{self::ATTR_RESTORED_FROM} = $version->getId();
 
         return $this;
     }

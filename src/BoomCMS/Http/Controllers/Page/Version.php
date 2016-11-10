@@ -8,6 +8,7 @@ use BoomCMS\Events;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Support\Facades\URL as URLFacade;
+use BoomCMS\Support\Facades\PageVersion;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -84,6 +85,17 @@ class Version extends Controller
         Event::fire(new Events\PageApprovalRequested($page, auth()->user()));
 
         return $page->getCurrentVersion()->getStatus();
+    }
+
+    public function postRestore(Page $page, Request $request)
+    {
+        $this->authorize('edit', $page);
+
+        $version = PageVersion::find($page, $request->input('versionId'));
+
+        if ($version) {
+            PageVersion::restore($version);
+        }
     }
 
     /**

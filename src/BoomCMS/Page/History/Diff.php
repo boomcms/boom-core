@@ -16,6 +16,10 @@ class Diff
      */
     public function compare(PageVersion $new, PageVersion $old)
     {
+        if ($original = $new->getRestoredVersion()) {
+            return new Diff\RestoredVersion($new, $old, $original);
+        }
+
         if ($new->isContentChange()) {
             return new Diff\ChunkChange($new, $old);
         }

@@ -38,6 +38,7 @@ return [
         'embargoed'       => 'Embargo set',
         'published'       => 'Published',
         'approvalrequest' => 'Request approval',
+        'restoredversion' => 'Restored',
     ],
     'visible'   => 'Visible',
     'invisible' => 'Invisible',
