@@ -169,7 +169,7 @@ $.widget( 'boom.pageToolbar', {
                         });
                 },
                 visibilitySave: function(event, response) {
-                    toolbar.toggleVisibility(response);
+                    toolbar.toggleVisibility(response === '1');
                 },
                 urlsSave: function(event, primaryUrl) {
                     top.history.replaceState({},
