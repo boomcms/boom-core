@@ -55,9 +55,11 @@
         <section>
             <h1><?= trans('boomcms::settings.draft.options.heading') ?></h1>
             <p>
+                <?php $lastPublished = $page->getLastPublishedTime() ?>
+
                 <?= trans('boomcms::settings.draft.last-published', [
-                    'date' => $page->getLastPublishedTime()->format('l d F Y'),
-                    'time' => $page->getLastPublishedTime()->format('H:i'),
+                    'date' => $lastPublished->format('l d F Y'),
+                    'time' => $lastPublished->format('H:i'),
                 ]) ?>
             </p>
 
