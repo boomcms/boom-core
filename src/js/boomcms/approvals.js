@@ -15,7 +15,7 @@ $(document).ready(function() {
         var $this = $(this), page = boom_approvals_get_page($this);
 
         page
-            .revertToPublished()
+            .restoreTo($(this).attr('data-version-id'))
             .done(function() {
                 BoomCMS.Notification('This page has been reverted to it\'s most recent published version.');
                 boom_approvals_remove_row($this);

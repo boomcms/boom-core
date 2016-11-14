@@ -133,21 +133,6 @@
             });
         },
 
-        revertToPublished: function() {
-            var    promise = new $.Deferred(),
-                baseUrl = this.baseUrl;
-
-            new BoomCMS.Confirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
-                .done(function() {
-                    $.post(baseUrl + 'discard')
-                        .done(function() {
-                            promise.resolve();
-                        });
-                });
-
-            return promise;
-        },
-
         saveSettings: function(section, data) {
             return $.post(this.baseUrl + 'settings/' + section, data);
         },

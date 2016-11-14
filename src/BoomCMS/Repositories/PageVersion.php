@@ -32,28 +32,6 @@ class PageVersion implements PageVersionRepositoryInterface
     }
 
     /**
-     * Delete the draft versions for a page.
-     *
-     * @param PageModelInterface $page
-     *
-     * @return $this
-     */
-    public function deleteDrafts(PageModelInterface $page)
-    {
-        $this->model
-            ->where(Model::ATTR_PAGE, $page->getId())
-            ->where(function (Builder $query) {
-                $query
-                    ->whereNull(Model::ATTR_EMBARGOED_UNTIL)
-                    ->orWhere(Model::ATTR_EMBARGOED_UNTIL, '>', time());
-            })
-            ->where(Model::ATTR_EDITED_AT, '>', $page->getLastPublishedTime()->getTimestamp())
-            ->delete();
-
-        return $this;
-    }
-
-    /**
      * Find a version by page and version ID.
      *
      * @param PageModelInterface $page

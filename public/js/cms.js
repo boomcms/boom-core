@@ -48893,21 +48893,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             });
         },
 
-        revertToPublished: function() {
-            var    promise = new $.Deferred(),
-                baseUrl = this.baseUrl;
-
-            new BoomCMS.Confirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
-                .done(function() {
-                    $.post(baseUrl + 'discard')
-                        .done(function() {
-                            promise.resolve();
-                        });
-                });
-
-            return promise;
-        },
-
         saveSettings: function(section, data) {
             return $.post(this.baseUrl + 'settings/' + section, data);
         },
@@ -50583,12 +50568,9 @@ $.widget( 'boom.pageToolbar', {
                     });
             })
             .on('click', '.b-page-revert', function() {
-                page.revertToPublished()
+                page.restoreTo($(this).attr('data-version-id'))
                     .done(function(status) {
-                        draftSettings.update({
-                            action: 'revert',
-                            status: status
-                        });
+                        top.location.reload();
                     });
             })
             .on('click', '.b-page-request-approval', function() {
@@ -55351,7 +55333,7 @@ function Row() {
         var $this = $(this), page = boom_approvals_get_page($this);
 
         page
-            .revertToPublished()
+            .restoreTo($(this).attr('data-version-id'))
             .done(function() {
                 BoomCMS.Notification('This page has been reverted to it\'s most recent published version.');
                 boom_approvals_remove_row($this);

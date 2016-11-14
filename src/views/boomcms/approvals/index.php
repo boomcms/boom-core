@@ -28,7 +28,7 @@
                             <td><?= $editedBy ? $editedBy->getName() : '' ?> (<?= $editedBy ? $editedBy->getEmail() : '' ?>)</td>
                             <td><?= $page->getCurrentVersion()->getEditedTime()->format('d F Y H:i') ?></td>
                             <td><a href="#" class="b-approvals-publish">Publish</a></td>
-                            <td><a href="#" class="b-approvals-reject">Revert to published version</a></td>
+                            <td><a href="#" class="b-approvals-reject" data-version-id="<?= $page->getLastPublished()->getId() ?>">Revert to published version</a></td>
                             <td><a href="<?= $page->url() ?>">View page</a></td>
                         </tr>
                     <?php endif ?>

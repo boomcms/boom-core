@@ -55,11 +55,11 @@
         <section>
             <h1><?= trans('boomcms::settings.draft.options.heading') ?></h1>
             <p>
-                <?php $lastPublished = $page->getLastPublishedTime() ?>
+                <?php $lastPublished = $page->getLastPublished() ?>
 
                 <?= trans('boomcms::settings.draft.last-published', [
-                    'date' => $lastPublished->format('l d F Y'),
-                    'time' => $lastPublished->format('H:i'),
+                    'date' => $lastPublished->getEditedTime()->format('l d F Y'),
+                    'time' => $lastPublished->getEditedTime()->format('H:i'),
                 ]) ?>
             </p>
 
@@ -72,7 +72,10 @@
                     <?= $button('clock-o', 'embargo', ['class' => 'b-button-withtext b-page-embargo']) ?>
                 <?php endif ?>
 
-                <?= $button('undo', 'page-revert', ['class' => 'b-button-withtext b-page-revert']) ?>
+                <?= $button('undo', 'page-revert', [
+                    'class'           => 'b-button-withtext b-page-revert',
+                    'data-version-id' => $lastPublished->getId(),
+                ]) ?>
             <?php endif ?>
         </section>
     <?php endif ?>

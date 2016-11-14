@@ -165,9 +165,9 @@ interface Page
     public function getLastModified();
 
     /**
-     * @return DateTime
+     * @return PageVersion
      */
-    public function getLastPublishedTime();
+    public function getLastPublished();
 
     /**
      * @return int

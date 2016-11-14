@@ -471,13 +471,14 @@ class Page extends Model implements PageInterface
         return $this->getCurrentVersion()->getEditedTime();
     }
 
-    public function getLastPublishedTime()
+    /**
+     * Returns the last published version for the page.
+     *
+     * @return PageVersionInterface
+     */
+    public function getLastPublished()
     {
-        $m = PageVersion::forPage($this)
-            ->lastPublished()
-            ->first();
-
-        return (new DateTime())->setTimestamp($m['embargoed_until']);
+        return PageVersion::forPage($this)->lastPublished()->first();
     }
 
     public function getManualOrderPosition()

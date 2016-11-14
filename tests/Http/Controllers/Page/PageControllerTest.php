@@ -50,19 +50,4 @@ class PageControllerTest extends BaseControllerTest
 
         $this->assertEquals($page, $this->controller->postAdd($site, $parent));
     }
-
-    public function testPostDiscard()
-    {
-        $page = new Page();
-
-        $this->requireRole('edit', $page);
-
-        $this->expectsEvents(PageWasReverted::class);
-
-        PageVersionFacade::shouldReceive('deleteDrafts')
-            ->once()
-            ->with($page);
-
-        $this->controller->postDiscard($page);
-    }
 }

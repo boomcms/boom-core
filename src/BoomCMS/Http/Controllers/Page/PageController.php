@@ -35,13 +35,4 @@ class PageController extends Controller
 
         return PageFacade::find($newPage->getId());
     }
-
-    public function postDiscard(Page $page)
-    {
-        $this->authorize('edit', $page);
-
-        Event::fire(new PageWasReverted($page));
-
-        PageVersion::deleteDrafts($page);
-    }
 }

@@ -23,12 +23,9 @@ $.widget('boom.pageSettingsDrafts', {
                     });
             })
             .on('click', '.b-page-revert', function() {
-                page.revertToPublished()
+                page.restoreTo($(this).attr('data-version-id'))
                     .done(function(status) {
-                        draftSettings.update({
-                            action: 'revert',
-                            status: status
-                        });
+                        top.location.reload();
                     });
             })
             .on('click', '.b-page-request-approval', function() {
