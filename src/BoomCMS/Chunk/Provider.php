@@ -24,7 +24,7 @@ class Provider
     protected $gate;
 
     /**
-     * Array of all chunk types
+     * Array of all chunk types.
      *
      * @var array
      */
@@ -255,7 +255,7 @@ class Provider
     }
 
     /**
-     * Returns an array of chunks which have changed since a version
+     * Returns an array of chunks which have changed since a version.
      *
      * @param PageVersion $version
      *
