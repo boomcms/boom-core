@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'approvals'      => [
+        'heading' => 'Pages pending approval',
+        'none'    => 'No pages are pending approval',
+    ],
     'heading'        => 'Welcome to BoomCMS',
     'manage-account' => 'Manage account',
     'recent-pages'   => 'Recent pages',

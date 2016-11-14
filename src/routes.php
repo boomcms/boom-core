@@ -29,7 +29,6 @@ Route::group(['middleware' => [
             Route::controller('autocomplete', 'Autocomplete');
             Route::controller('editor', 'Editor');
             Route::controller('account', 'Auth\Account');
-            Route::controller('approvals', 'Approvals');
             Route::controller('settings', 'Settings');
             Route::controller('support', 'Support');
             Route::post('editor/state', 'Editor@setState');
