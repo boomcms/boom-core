@@ -97,7 +97,7 @@ class PageVersion implements PageVersionRepositoryInterface
             foreach ($chunks as $chunk) {
                 $old = Chunk::find($type, $chunk->slotname, $version);
 
-                $new = new $className;
+                $new = new $className();
                 $new->page_id = $newVersion->getPageId();
                 $new->slotname = $chunk->slotname;
                 $new->page_vid = $newVersion->getId();
