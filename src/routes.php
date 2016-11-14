@@ -23,6 +23,7 @@ Route::group(['middleware' => [
         });
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
+            Route::get('', 'Dashboard@index');
             Route::get('logout', 'Auth\AuthController@getLogout');
 
             Route::controller('autocomplete', 'Autocomplete');

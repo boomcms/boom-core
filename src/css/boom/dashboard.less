@@ -1,0 +1,61 @@
+#b-dashboard {
+    section {
+        background: @lightest-grey;
+        padding: 3rem;
+
+        h2 {
+            margin-bottom: 3rem;
+        }
+    }
+
+    .buttons {
+        overflow: hidden;
+        margin: 0 0 3rem 0;
+
+        a {
+            border: 1px solid @blue;
+            padding: 2rem;
+            min-width: 15rem;
+            display: block;
+
+            .fa {
+                margin-right: 1rem;
+            }
+
+            &:hover, &:focus {
+                background: @blue;
+                color: @white;
+            }
+        }
+    }
+
+    .recent-pages {
+        list-style-type: none;
+        padding-left: 0;
+        max-height: 40rem;
+        overflow: auto;
+
+        li {
+            + li {
+                margin-top: 3rem;
+            }
+        }
+    }
+}
+
+@media all and (min-width: 550px) {
+    #b-dashboard {
+        .buttons {
+            overflow: hidden;
+
+            a {
+                display: inline-block;
+                float: left;
+
+                + a {
+                    margin-left: 3rem;
+                }
+            }
+        }
+    }
+}
