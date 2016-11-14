@@ -69,6 +69,15 @@ class PageVersion implements PageVersionRepositoryInterface
             ->first();
     }
 
+    /**
+     * Restore an older version of a page.
+     *
+     * Creates a new version based on the old one.
+     *
+     * @param Model $version
+     *
+     * @return Model
+     */
     public function restore(Model $version)
     {
         $attrs = $version->toArray();
@@ -82,36 +91,21 @@ class PageVersion implements PageVersionRepositoryInterface
 
         $types = Chunk::since($version);
 
-        // For all the chunks that have changed since the old version:
-        // Get the chunk as it was at the old version with Chunk::find()
-        // If the chunk existed then save a new chunk with the old content.
-        // If it didn't exist then save a new chunk with no content.
-        // We only need chunk::since to return an array of [type => slotnames] rather than all chunk data.
-
         foreach ($types as $type => $chunks) {
+            $className = Chunk::getModelName($type);
+
             foreach ($chunks as $chunk) {
-                $new = clone $chunk;
+                $old = Chunk::find($type, $chunk->slotname, $version);
+
+                $new = new $className;
+                $new->page_id = $newVersion->getPageId();
+                $new->slotname = $chunk->slotname;
                 $new->page_vid = $newVersion->getId();
                 $new->save();
 
-                if ($type === 'slideshow') {
-                    $slides = $chunk->slides->get();
-
-                    foreach ($slides as $slide) {
-                        $newSlide = clone $slide;
-                        $newSlide->chunk_id = $new->getId();
-                        $newSlide->save();
-                    }
-                }
-
-                if ($type === 'linkset') {
-                    $links = $chunk->links->get();
-
-                    foreach ($links as $link) {
-                        $newLink = clone $link;
-                        $newLink->chunk_id = $new->getId();
-                        $newLink->save();
-                    }
+                if ($old !== null) {
+                    $new->fill(array_except($old->toArray(), ['page_vid']));
+                    $new->save();
                 }
             }
         }

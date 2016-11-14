@@ -35,7 +35,6 @@ class Provider
         'html',
         'text',
         'library',
-        'link',
         'linkset',
         'location',
         'slideshow',

@@ -18,6 +18,14 @@
 			list-style-type: none;
 			max-width: 70rem;
 
+            &.reverted {
+                opacity: 0.3;
+
+                &:hover, &:focus {
+                    opacity: 1;
+                }
+            }
+
 			+ li {
 				margin-top: 2rem;
 			}
@@ -98,6 +106,10 @@
 	#b-page-history {
 		ol li {
 			overflow: hidden;
+
+            &.visibility .main {
+                width: calc(~"100% - 15rem");
+            }
 
 			.summary {
 				float: left;

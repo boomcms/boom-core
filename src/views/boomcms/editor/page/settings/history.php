@@ -6,7 +6,13 @@
             <?php if (isset($versions[$i + 1])): ?>
                 <?php $compare = $diff->compare($version, $versions[$i + 1]) ?>
 
-                <li data-status="<?= $version->getStatus() ?>">
+                <?php
+                    if (isset($restoreTo) && $version->getId() === $restoreTo):
+                        unset($restoreTo);
+                    endif
+                ?>
+
+                <li<?php if (isset($restoreTo)): ?> class="reverted"<?php endif ?> data-status="<?= $version->getStatus() ?>">
                     <div class="summary">
                         <?php if ($compare): ?>
                             <span class="fa fa-<?= $compare->getIcon() ?>"></span>
@@ -81,6 +87,12 @@
                     </div>
                 </li>
             <?php endif ?>
+
+            <?php
+                if (!isset($restoreTo) && $version->getRestoredVersionId()):
+                    $restoreTo = $version->getRestoredVersionId();
+                endif;
+            ?>
         <?php endforeach ?>
 
         <li data-status="created">

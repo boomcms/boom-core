@@ -28,6 +28,7 @@ class PageVersion extends Model implements PageVersionInterface
         self::ATTR_PAGE             => 'integer',
         self::ATTR_PENDING_APPROVAL => 'boolean',
         self::ATTR_CHUNK_ID         => 'integer',
+        self::ATTR_RESTORED_FROM    => 'integer',
     ];
 
     protected $table = 'page_versions';
@@ -131,12 +132,11 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
-     * @return null|PageVersion
+     * @return int
      */
-    public function getRestoredVersion()
+    public function getRestoredVersionId()
     {
-        return empty($this->{self::ATTR_RESTORED_FROM}) ? null
-            : self::find($this->{self::ATTR_RESTORED_FROM});
+        return $this->{self::ATTR_RESTORED_FROM};
     }
 
     /**

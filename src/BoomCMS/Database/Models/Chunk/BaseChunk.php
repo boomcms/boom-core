@@ -12,8 +12,8 @@ class BaseChunk extends Model
     public function scopeGetSince(Builder $query, PageVersion $version)
     {
         return $query
-            ->select($this->table.'.*')
-            ->where($this->table.'.page_vid', '>', $version->getId())
+            ->select($this->table.'.slotname')
+            ->where($this->table.'.page_vid', '>=', $version->getId())
             ->where($this->table.'.page_id', '=', $version->getPageId())
             ->leftJoin($this->table.' as c1', function(JoinClause $join) use($version) {
                 $join
