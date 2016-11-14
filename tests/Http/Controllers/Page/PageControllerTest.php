@@ -5,11 +5,9 @@ namespace BoomCMS\Tests\Http\Controllers;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
-use BoomCMS\Events\PageWasReverted;
 use BoomCMS\Http\Controllers\Page\PageController as Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
-use BoomCMS\Support\Facades\PageVersion as PageVersionFacade;
 use Mockery as m;
 
 class PageControllerTest extends BaseControllerTest
