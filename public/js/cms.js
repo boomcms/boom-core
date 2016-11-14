@@ -48887,6 +48887,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             });
         },
 
+        restoreTo: function(versionId) {
+            return $.post(this.baseUrl + 'version/restore', {
+                versionId: versionId
+            });
+        },
+
         revertToPublished: function() {
             var    promise = new $.Deferred(),
                 baseUrl = this.baseUrl;
@@ -50705,15 +50711,28 @@ $.widget( 'boom.pageToolbar', {
             this.hasNoFeatureImage();
         }
     }
-});;$.widget('boom.pageSettingsHistory', $.boom.pageSettingsDefault, {
-    bind: function() {
-        this.element.on('click', 'a[data-timestamp]', function() {
-            BoomCMS.Editor.setTime($(this).attr('data-timestamp')).done(function() {
-                top.location.reload();
-            });
-        });
-    }
-});;$.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
+});;(function(BoomCMS) {
+    'use strict';
+
+    $.widget('boom.pageSettingsHistory', $.boom.pageSettingsDefault, {
+        bind: function() {
+            var page = this.options.page;
+
+            this.element
+                .on('click', 'a[data-timestamp]', function() {
+                    BoomCMS.Editor.setTime($(this).attr('data-timestamp')).done(function() {
+                        top.location.reload();
+                    });
+                })
+                .on('click', 'a[data-restore]', function(e) {
+                    e.preventDefault();
+
+                    page.restoreTo($(this).attr('data-restore'));
+                    top.location.reload();
+                });
+        }
+    });
+}(BoomCMS));;$.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
     bindReparent: function() {
         var settingsEditor = this;
 

@@ -127,6 +127,12 @@
             });
         },
 
+        restoreTo: function(versionId) {
+            return $.post(this.baseUrl + 'version/restore', {
+                versionId: versionId
+            });
+        },
+
         revertToPublished: function() {
             var    promise = new $.Deferred(),
                 baseUrl = this.baseUrl;

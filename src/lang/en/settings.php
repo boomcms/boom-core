@@ -107,6 +107,7 @@ return [
         'heading'      => 'History',
         'visible'      => 'Page became visible',
         'visible-note' => 'Note: page visibility is calculated by the current visibility settings',
+        'restore'      => 'Restore',
     ],
     'info'    => [
         'heading'          => 'Page information',
