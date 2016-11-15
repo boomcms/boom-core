@@ -3,17 +3,17 @@
 namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Group as GroupInterface;
+use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Traits\SingleSite;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Group extends Model implements GroupInterface
+class Group extends Model implements GroupInterface, SingleSiteInterface
 {
     use SingleSite;
     use SoftDeletes;
 
     const ATTR_NAME = 'name';
-    const ATTR_SITE = 'site_id';
     const PIVOT_ATTR_ID = 'id';
     const PIVOT_ATTR_PAGE_ID = 'page_id';
     const PIVOT_ATTR_ROLE_ID = 'role_id';

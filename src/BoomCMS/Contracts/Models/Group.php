@@ -25,11 +25,4 @@ interface Group
     public function removeRole($roleId);
 
     public function setName($name);
-
-    /**
-     * @param Site $site
-     *
-     * @return $this
-     */
-    public function setSite(Site $site);
 }

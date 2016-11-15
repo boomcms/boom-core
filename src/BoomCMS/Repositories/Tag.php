@@ -32,14 +32,13 @@ class Tag implements TagRepositoryInterface
      *
      * @return TagInterface
      */
-    public function create(SiteInterface $site, $name, $group)
+    public function create($name, $group)
     {
         if (empty($name)) {
             throw new InvalidArgumentException('Tag name must not be empty');
         }
 
         return $this->model->create([
-            Model::ATTR_SITE  => $site->getId(),
             Model::ATTR_NAME  => $name,
             Model::ATTR_GROUP => $group,
         ]);
@@ -132,6 +131,6 @@ class Tag implements TagRepositoryInterface
         $group = $group ?: null;
         $tag = $this->findByNameAndGroup($site, $name, $group);
 
-        return $tag ?: $this->create($site, $name, $group);
+        return $tag ?: $this->create($name, $group);
     }
 }

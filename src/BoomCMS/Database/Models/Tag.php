@@ -4,17 +4,17 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Collection\TagCollection;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
+use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Traits\SingleSite;
 use Illuminate\Support\Str;
 
-class Tag extends Model implements TagInterface
+class Tag extends Model implements SingleSiteInterface, TagInterface
 {
     use SingleSite;
 
     const ATTR_GROUP = 'group';
     const ATTR_NAME = 'name';
-    const ATTR_SITE = 'site_id';
     const ATTR_SLUG = 'slug';
 
     protected $table = 'tags';

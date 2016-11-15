@@ -4,7 +4,6 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
-use BoomCMS\Database\Models\Site;
 use DateTime;
 
 class AssetTest extends AbstractModelTestCase
@@ -161,15 +160,6 @@ class AssetTest extends AbstractModelTestCase
         $asset = new Asset([Asset::ATTR_UPLOADED_AT => $now->getTimestamp()]);
         $this->assertInstanceOf(DateTime::class, $asset->getUploadedTime());
         $this->assertEquals($now->getTimestamp(), $asset->getUploadedTime()->getTimestamp());
-    }
-
-    public function testSetSite()
-    {
-        $asset = new Asset();
-
-        $asset->setSite($this->site);
-
-        $this->assertEquals($this->site->getId(), $asset->{Asset::ATTR_SITE});
     }
 
     public function testSetVersion()

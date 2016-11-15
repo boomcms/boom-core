@@ -4,14 +4,11 @@ namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
-use BoomCMS\Events\PageWasReverted;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
-use BoomCMS\Support\Facades\PageVersion;
 use BoomCMS\Support\Helpers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Event;
 
 class PageController extends Controller
 {
@@ -26,12 +23,12 @@ class PageController extends Controller
      *
      * @return Page
      */
-    public function postAdd(Site $site, Page $page)
+    public function postAdd(Page $page)
     {
         $this->authorize('add', $page);
 
         $parent = $page->getAddPageParent();
-        $newPage = $this->dispatch(new CreatePage(auth()->user(), $site, $parent));
+        $newPage = $this->dispatch(new CreatePage($parent));
 
         return PageFacade::find($newPage->getId());
     }

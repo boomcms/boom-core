@@ -3,17 +3,14 @@
 namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Database\Models\Asset;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
-use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
@@ -77,11 +74,11 @@ class AssetController extends Controller
     }
 
     /**
-     * @param Site $site
+     * @param Request $request
      *
      * @return JsonResponse|array
      */
-    public function store(Request $request, Site $site)
+    public function store(Request $request)
     {
         $this->authorize('uploadAssets', Router::getActiveSite());
 
@@ -92,9 +89,6 @@ class AssetController extends Controller
         foreach ($validFiles as $file) {
             $asset = new Asset();
             $asset
-                ->setSite($site)
-                ->setUploadedTime(new DateTime('now'))
-                ->setUploadedBy(Auth::user())
                 ->setTitle($file->getClientOriginalName())
                 ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
 

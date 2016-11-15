@@ -8,6 +8,7 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
+use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
@@ -20,7 +21,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class Page extends Model implements PageInterface
+class Page extends Model implements PageInterface, SingleSiteInterface
 {
     use SingleSite;
     use SoftDeletes;
@@ -43,7 +44,7 @@ class Page extends Model implements PageInterface
     const ATTR_KEYWORDS = 'keywords';
     const ATTR_DESCRIPTION = 'description';
     const ATTR_CREATED_BY = 'created_by';
-    const ATTR_CREATED_AT = 'created_time';
+    const ATTR_CREATED_AT = 'created_at';
     const ATTR_PRIMARY_URI = 'primary_uri';
     const ATTR_FEATURE_IMAGE = 'feature_image_id';
     const ATTR_PARENT = 'parent_id';
@@ -52,7 +53,6 @@ class Page extends Model implements PageInterface
     const ATTR_DISABLE_DELETE = 'disable_delete';
     const ATTR_ADD_BEHAVIOUR = 'add_behaviour';
     const ATTR_CHILD_ADD_BEHAVIOUR = 'child_add_behaviour';
-    const ATTR_SITE = 'site_id';
     const ATTR_ENABLE_ACL = 'enable_acl';
 
     const DEFAULT_TITLE = 'Untitled';
@@ -176,10 +176,7 @@ class Page extends Model implements PageInterface
         unset($attrs[PageVersion::ATTR_RESTORED_FROM]);
 
         $newVersion = new PageVersion($attrs);
-        $newVersion
-            ->setPage($this)
-            ->setEditedAt(new DateTime('now'))
-            ->setEditedBy(Auth::user());
+        $newVersion->setPage($this);
 
         /*
          * Only make the new version a draft if the old version is published.
@@ -1056,7 +1053,7 @@ class Page extends Model implements PageInterface
         }
 
         if (Editor::isHistory()) {
-            $query->where('edited_time', '<=', Editor::getTime()->getTimestamp());
+            $query->where('version.created_at', '<=', Editor::getTime()->getTimestamp());
         }
 
         return $query;

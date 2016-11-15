@@ -83,7 +83,7 @@ class DiffTest extends AbstractTestCase
         $time = new DateTime('@'.time());
 
         $this->new->{PageVersion::ATTR_EMBARGOED_UNTIL} = $time->getTimestamp() + 1000;
-        $this->new->{PageVersion::ATTR_EDITED_AT} = $time->getTimestamp();
+        $this->new->{PageVersion::ATTR_CREATED_AT} = $time->getTimestamp();
 
         $this->old->{PageVersion::ATTR_EMBARGOED_UNTIL} = null;
 
@@ -103,10 +103,10 @@ class DiffTest extends AbstractTestCase
         $time = new DateTime('@'.time());
 
         $this->new->{PageVersion::ATTR_EMBARGOED_UNTIL} = $time->getTimestamp() + 1000;
-        $this->new->{PageVersion::ATTR_EDITED_AT} = $time->getTimestamp();
+        $this->new->{PageVersion::ATTR_CREATED_AT} = $time->getTimestamp();
 
         $this->old->{PageVersion::ATTR_EMBARGOED_UNTIL} = $time->getTimestamp() - 500;
-        $this->old->{PageVersion::ATTR_EDITED_AT} = $time->getTimestamp() - 1000;
+        $this->old->{PageVersion::ATTR_CREATED_AT} = $time->getTimestamp() - 1000;
 
         $result = $this->diff->compare($this->new, $this->old);
 
@@ -119,7 +119,7 @@ class DiffTest extends AbstractTestCase
     public function testPublishedAfterDraft()
     {
         $this->new->{PageVersion::ATTR_EMBARGOED_UNTIL} = time();
-        $this->new->{PageVersion::ATTR_EDITED_AT} = time();
+        $this->new->{PageVersion::ATTR_CREATED_AT} = time();
 
         $this->old->{PageVersion::ATTR_EMBARGOED_UNTIL} = null;
 
@@ -134,7 +134,7 @@ class DiffTest extends AbstractTestCase
     public function testPublishedAfterApprovalRequest()
     {
         $this->new->{PageVersion::ATTR_EMBARGOED_UNTIL} = time();
-        $this->new->{PageVersion::ATTR_EDITED_AT} = time();
+        $this->new->{PageVersion::ATTR_CREATED_AT} = time();
 
         $this->old->{PageVersion::ATTR_PENDING_APPROVAL} = true;
         $this->old->{PageVersion::ATTR_EMBARGOED_UNTIL} = null;
@@ -150,10 +150,10 @@ class DiffTest extends AbstractTestCase
     public function testPublishedAfterEmbargoed()
     {
         $this->new->{PageVersion::ATTR_EMBARGOED_UNTIL} = time();
-        $this->new->{PageVersion::ATTR_EDITED_AT} = time();
+        $this->new->{PageVersion::ATTR_CREATED_AT} = time();
 
         $this->old->{PageVersion::ATTR_EMBARGOED_UNTIL} = time() - 500;
-        $this->old->{PageVersion::ATTR_EDITED_AT} = time() - 1000;
+        $this->old->{PageVersion::ATTR_CREATED_AT} = time() - 1000;
 
         $result = $this->diff->compare($this->new, $this->old);
 

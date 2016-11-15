@@ -14,7 +14,7 @@ interface Tag
      *
      * @return TagInterface
      */
-    public function create(SiteInterface $site, $name, $group);
+    public function create($name, $group);
 
     /**
      * @param int $tagId

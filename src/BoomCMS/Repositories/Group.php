@@ -28,10 +28,9 @@ class Group implements GroupRepositoryInterface
      *
      * @return Model
      */
-    public function create(SiteModelInterface $site, $name)
+    public function create($name)
     {
         return $this->model->create([
-            Model::ATTR_SITE => $site->getId(),
             Model::ATTR_NAME => $name,
         ]);
     }
