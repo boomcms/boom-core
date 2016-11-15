@@ -17,7 +17,7 @@
                 </li>
 
                 <li class='group'>
-                    <a href="#b-selection-download" data-section="download">
+                    <a href="#b-selection-download"<% if (section === 'download') { %> class="selected"<% } %> data-section="download">
                         <span class="fa fa-download"></span>
                         <?= trans('boomcms::asset.selection.download.heading') ?>
                     </a>
