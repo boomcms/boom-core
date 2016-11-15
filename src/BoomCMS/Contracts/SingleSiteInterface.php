@@ -16,7 +16,7 @@ interface SingleSiteInterface
 
     /**
      * @param Builder $query
-     * @param Site $site
+     * @param Site    $site
      *
      * @return Builder
      */

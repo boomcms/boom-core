@@ -21,9 +21,9 @@ class CreationLogObserver
     }
 
     /**
-     * Set created_at and created_by on the model prior to creation
+     * Set created_at and created_by on the model prior to creation.
      *
-     * @param  Model  $model
+     * @param Model $model
      *
      * @return void
      */

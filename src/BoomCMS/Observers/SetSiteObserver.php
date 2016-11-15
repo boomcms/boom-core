@@ -2,20 +2,20 @@
 
 namespace BoomCMS\Observers;
 
-use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Contracts\SingleSiteInterface;
+use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Repositories\Site;
 use BoomCMS\Routing\Router;
 
 class SetSiteObserver
 {
     /**
-     * @var Router $router
+     * @var Router
      */
     protected $router;
 
     /**
-     * @var Site $site
+     * @var Site
      */
     protected $site;
 
@@ -33,7 +33,7 @@ class SetSiteObserver
      *
      * If a site is currently active then it is used, otherwise the default site is used.
      *
-     * @param  Model  $model
+     * @param Model $model
      *
      * @return void
      */

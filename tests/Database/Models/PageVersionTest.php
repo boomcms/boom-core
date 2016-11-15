@@ -4,7 +4,6 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion as Version;
-use BoomCMS\Database\Models\Person;
 use DateTime;
 use Mockery as m;
 

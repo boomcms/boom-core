@@ -7,7 +7,6 @@ use BoomCMS\Contracts\Repositories\PageVersion as PageVersionRepositoryInterface
 use BoomCMS\Database\Models\PageVersion as Model;
 use BoomCMS\Support\Facades\Chunk;
 use DateTime;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class PageVersion implements PageVersionRepositoryInterface

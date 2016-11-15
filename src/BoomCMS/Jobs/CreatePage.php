@@ -21,7 +21,7 @@ class CreatePage extends Command
     protected $title = Page::DEFAULT_TITLE;
 
     /**
-     * @param Page   $parent
+     * @param Page $parent
      */
     public function __construct(Page $parent = null)
     {
