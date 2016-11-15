@@ -16,7 +16,7 @@ class Diff
      */
     public function compare(PageVersion $new, PageVersion $old)
     {
-        if ($original = $new->getRestoredVersionId()) {
+        if ($new->getRestoredVersionId()) {
             return new Diff\RestoredVersion($new, $old);
         }
 
