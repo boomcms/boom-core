@@ -4,6 +4,7 @@ namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Database\Models;
 use BoomCMS\Observers\CreationLogObserver;
+use BoomCMS\Observers\DeletionLogObserver;
 use BoomCMS\Observers\SetSiteObserver;
 use BoomCMS\Events;
 use BoomCMS\Listeners;
@@ -59,5 +60,7 @@ class EventServiceProvider extends ServiceProvider
         Models\Page::observe(SetSiteObserver::class);
         Models\Tag::observe(SetSiteObserver::class);
         Models\URL::observe(SetSiteObserver::class);
+        
+        Models\Page::observe(DeletionLogObserver::class);
     }
 }
