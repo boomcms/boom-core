@@ -34,7 +34,7 @@ class TagTest extends AbstractTestCase
 
         $repository = new TagRepository($model);
 
-        $this->assertEquals($model, $repository->create($this->site, '', ''));
+        $this->assertEquals($model, $repository->create('', ''));
     }
 
     public function testCreate()
@@ -46,7 +46,6 @@ class TagTest extends AbstractTestCase
         $model
             ->shouldReceive('create')
             ->with([
-                Tag::ATTR_SITE  => $this->site->getId(),
                 Tag::ATTR_NAME  => $name,
                 Tag::ATTR_GROUP => $group,
             ])
@@ -54,7 +53,7 @@ class TagTest extends AbstractTestCase
 
         $repository = new TagRepository($model);
 
-        $this->assertEquals($model, $repository->create($this->site, $name, $group));
+        $this->assertEquals($model, $repository->create($name, $group));
     }
 
     public function testFind()
@@ -210,7 +209,7 @@ class TagTest extends AbstractTestCase
 
         $repository
             ->shouldReceive('create')
-            ->with($this->site, $name, $group)
+            ->with($name, $group)
             ->andReturn($model);
 
         $this->assertEquals($model, $repository->findOrCreate($this->site, $name, $group));

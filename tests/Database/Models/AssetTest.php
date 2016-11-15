@@ -163,15 +163,6 @@ class AssetTest extends AbstractModelTestCase
         $this->assertEquals($now->getTimestamp(), $asset->getUploadedTime()->getTimestamp());
     }
 
-    public function testSetSite()
-    {
-        $asset = new Asset();
-
-        $asset->setSite($this->site);
-
-        $this->assertEquals($this->site->getId(), $asset->{Asset::ATTR_SITE});
-    }
-
     public function testSetVersion()
     {
         $asset = new Asset();

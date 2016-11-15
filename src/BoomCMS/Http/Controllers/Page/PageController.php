@@ -26,12 +26,12 @@ class PageController extends Controller
      *
      * @return Page
      */
-    public function postAdd(Site $site, Page $page)
+    public function postAdd(Page $page)
     {
         $this->authorize('add', $page);
 
         $parent = $page->getAddPageParent();
-        $newPage = $this->dispatch(new CreatePage(auth()->user(), $site, $parent));
+        $newPage = $this->dispatch(new CreatePage($parent));
 
         return PageFacade::find($newPage->getId());
     }

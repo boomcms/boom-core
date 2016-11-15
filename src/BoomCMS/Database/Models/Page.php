@@ -8,6 +8,7 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
+use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
@@ -20,7 +21,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class Page extends Model implements PageInterface
+class Page extends Model implements PageInterface, SingleSiteInterface
 {
     use SingleSite;
     use SoftDeletes;
@@ -52,7 +53,6 @@ class Page extends Model implements PageInterface
     const ATTR_DISABLE_DELETE = 'disable_delete';
     const ATTR_ADD_BEHAVIOUR = 'add_behaviour';
     const ATTR_CHILD_ADD_BEHAVIOUR = 'child_add_behaviour';
-    const ATTR_SITE = 'site_id';
     const ATTR_ENABLE_ACL = 'enable_acl';
 
     const DEFAULT_TITLE = 'Untitled';

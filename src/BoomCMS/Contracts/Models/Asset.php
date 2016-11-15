@@ -160,15 +160,6 @@ interface Asset
     public function setDescription($description);
 
     /**
-     * Set the site that the asset belongs to.
-     *
-     * @param Site $site
-     *
-     * @return $this
-     */
-    public function setSite(Site $site);
-
-    /**
      * @param int $assetId
      *
      * @return $this

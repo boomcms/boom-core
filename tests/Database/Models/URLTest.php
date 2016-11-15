@@ -87,17 +87,6 @@ class URLTest extends AbstractModelTestCase
         $this->assertEquals(2, $url->getPageId());
     }
 
-    public function testSetSite()
-    {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
-
-        $url = new URL();
-        $url->setSite($site);
-
-        $this->assertEquals($site->getId(), $url->{URL::ATTR_SITE});
-    }
-
     public function testsetPrimary()
     {
         $url = new URL(['is_primary' => true]);

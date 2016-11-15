@@ -4,20 +4,20 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
+use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Traits\SingleSite;
 use Illuminate\Support\Facades\URL as URLFacade;
 use InvalidArgumentException;
 
-class URL extends Model implements URLInterface
+class URL extends Model implements SingleSiteInterface, URLInterface
 {
     use SingleSite;
 
     const ATTR_PAGE_ID = 'page_id';
     const ATTR_LOCATION = 'location';
     const ATTR_IS_PRIMARY = 'is_primary';
-    const ATTR_SITE = 'site_id';
 
     /**
      * @var PageInterface

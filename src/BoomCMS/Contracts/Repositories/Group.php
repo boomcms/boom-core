@@ -16,7 +16,7 @@ interface Group
      *
      * @return GroupModel
      */
-    public function create(SiteInterface $site, $name);
+    public function create($name);
 
     /**
      * @param GroupInterface $group

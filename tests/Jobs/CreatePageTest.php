@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Jobs;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Person;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -38,22 +37,7 @@ class CreatePageTest extends AbstractTestCase
         $this->expectsEvents(PageWasCreated::class);
     }
 
-    public function testSiteIdOfNewPageIsSet()
-    {
-        $this->newPage->shouldReceive('addVersion');
-
-        PageFacade::shouldReceive('create')
-            ->once()
-            ->with(m::subset([
-                Page::ATTR_SITE => $this->site->getId(),
-            ]))
-            ->andReturn($this->newPage);
-
-        $job = new CreatePage(new Person(), $this->site);
-        $job->handle();
-    }
-
-    public function testSiteIdAndParentIdAreSet()
+    public function testParentIdIsSet()
     {
         $this->newPage->shouldReceive('addVersion');
 
@@ -66,12 +50,11 @@ class CreatePageTest extends AbstractTestCase
         PageFacade::shouldReceive('create')
             ->once()
             ->with(m::subset([
-                Page::ATTR_SITE   => $this->site->getId(),
                 Page::ATTR_PARENT => $this->parent->getId(),
             ]))
             ->andReturn($this->newPage);
 
-        $job = new CreatePage(new Person(), $this->site, $this->parent);
+        $job = new CreatePage($this->parent);
         $job->handle();
     }
 
@@ -92,7 +75,7 @@ class CreatePageTest extends AbstractTestCase
             }))
             ->andReturn($this->newPage);
 
-        $job = new CreatePage(new Person(), $this->site, $this->parent);
+        $job = new CreatePage($this->parent);
         $job->handle();
     }
 
@@ -111,7 +94,7 @@ class CreatePageTest extends AbstractTestCase
             ->once()
             ->andReturn($this->newPage);
 
-        $job = new CreatePage(new Person(), $this->site, $this->parent);
+        $job = new CreatePage($this->parent);
         $job->setTitle($title);
         $job->handle();
     }

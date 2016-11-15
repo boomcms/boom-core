@@ -4,6 +4,7 @@ namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Database\Models;
 use BoomCMS\Observers\CreationLogObserver;
+use BoomCMS\Observers\SetSiteObserver;
 use BoomCMS\Events;
 use BoomCMS\Listeners;
 use Illuminate\Auth\Events\Login as LoginEvent;
@@ -52,5 +53,11 @@ class EventServiceProvider extends ServiceProvider
         Models\AssetVersion::observe(CreationLogObserver::class);
         Models\Page::observe(CreationLogObserver::class);
         Models\PageVersion::observe(CreationLogObserver::class);
+
+        Models\Asset::observe(SetSiteObserver::class);
+        Models\Group::observe(SetSiteObserver::class);
+        Models\Page::observe(SetSiteObserver::class);
+        Models\Tag::observe(SetSiteObserver::class);
+        Models\URL::observe(SetSiteObserver::class);
     }
 }

@@ -31,20 +31,17 @@ class GroupTest extends AbstractTestCase
     public function testCreate()
     {
         $newGroup = new GroupModel();
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
         $name = 'test';
 
         $this->model
             ->shouldReceive('create')
             ->once()
             ->with([
-                GroupModel::ATTR_SITE => $site->getId(),
                 GroupModel::ATTR_NAME => $name,
             ])
             ->andReturn($newGroup);
 
-        $this->assertEquals($newGroup, $this->repository->create($site, $name));
+        $this->assertEquals($newGroup, $this->repository->create($name));
     }
 
     public function testDelete()
