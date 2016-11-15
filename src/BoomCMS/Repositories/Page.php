@@ -22,7 +22,7 @@ class Page implements PageRepositoryInterface
     protected $site;
 
     /**
-     * @param Model $model
+     * @param Model         $model
      * @param SiteInterface $site
      */
     public function __construct(Model $model, SiteInterface $site)
@@ -69,7 +69,7 @@ class Page implements PageRepositoryInterface
     }
 
     /**
-     * @param array|string  $uri
+     * @param array|string $uri
      *
      * @return null|Model|Collection
      */
@@ -87,7 +87,7 @@ class Page implements PageRepositoryInterface
     /**
      * Find a page by URI.
      *
-     * @param array|string  $uri
+     * @param array|string $uri
      *
      * @return null|Model|Collection
      */

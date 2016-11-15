@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\MakeURLPrimary;

@@ -21,7 +21,7 @@ class RepositoryServiceProvider extends ServiceProvider
             return new Repositories\Asset(new Models\Asset(), new Models\AssetVersion());
         });
 
-        $this->app->singleton(Repositories\Page::class, function () use($site) {
+        $this->app->singleton(Repositories\Page::class, function () use ($site) {
             return new Repositories\Page(new Models\Page(), $site);
         });
 
@@ -37,7 +37,7 @@ class RepositoryServiceProvider extends ServiceProvider
             return new Repositories\Group();
         });
 
-        $this->app->singleton(Repositories\Tag::class, function () use($site) {
+        $this->app->singleton(Repositories\Tag::class, function () use ($site) {
             return new Repositories\Tag(new Models\Tag(), $site);
         });
 
@@ -45,7 +45,7 @@ class RepositoryServiceProvider extends ServiceProvider
             return new Repositories\Template(new Models\Template());
         });
 
-        $this->app->singleton(Repositories\URL::class, function () use($site) {
+        $this->app->singleton(Repositories\URL::class, function () use ($site) {
             return new Repositories\URL(new Models\URL(), $site);
         });
     }

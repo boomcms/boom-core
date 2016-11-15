@@ -2,10 +2,8 @@
 
 namespace BoomCMS\Tests\Link;
 
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Link;
 use BoomCMS\Support\Facades\Page;
-use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\URL;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;

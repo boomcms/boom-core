@@ -13,7 +13,6 @@ abstract class AbstractTestCase extends TestCase
     protected $baseUrl = 'localhost';
 
     /**
-     *
      * @var Site
      */
     protected $site;
@@ -34,14 +33,14 @@ abstract class AbstractTestCase extends TestCase
             return new Stubs\SettingsStore();
         });
 
-        $app->singleton(Router::class, function() use($app) {
+        $app->singleton(Router::class, function () use ($app) {
             $router = new Router($app);
             $router->setActiveSite($this->site);
 
             return $router;
         });
 
-        $app->instance(Site::class, function() {
+        $app->instance(Site::class, function () {
             return $this->site;
         });
 

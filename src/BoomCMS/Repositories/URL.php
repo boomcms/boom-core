@@ -22,7 +22,7 @@ class URL implements URLRepositoryInterface
     protected $site;
 
     /**
-     * @param Model $model
+     * @param Model        $model
      * @param SiteInteface $site
      */
     public function __construct(Model $model, SiteInterface $site)
