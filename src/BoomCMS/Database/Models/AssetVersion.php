@@ -13,8 +13,8 @@ class AssetVersion extends Model
     const ATTR_HEIGHT = 'height';
     const ATTR_FILENAME = 'filename';
     const ATTR_FILESIZE = 'filesize';
-    const ATTR_EDITED_AT = 'edited_at';
-    const ATTR_EDITED_BY = 'edited_by';
+    const ATTR_CREATED_AT = 'created_at';
+    const ATTR_CREATED_BY = 'created_by';
     const ATTR_EXTENSION = 'extension';
     const ATTR_MIME = 'mimetype';
     const ATTR_METADATA = 'metadata';
@@ -34,7 +34,7 @@ class AssetVersion extends Model
 
     public function editedBy()
     {
-        return $this->belongsTo(Person::class, static::ATTR_EDITED_BY);
+        return $this->belongsTo(Person::class, static::ATTR_CREATED_BY);
     }
 
     public function getAsset()
@@ -52,7 +52,7 @@ class AssetVersion extends Model
 
     public function getEditedAt()
     {
-        return (new DateTime())->setTimestamp($this->attributes[self::ATTR_EDITED_AT]);
+        return (new DateTime())->setTimestamp($this->attributes[self::ATTR_CREATED_AT]);
     }
 
     /**

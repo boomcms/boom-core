@@ -20,8 +20,8 @@ class Asset extends Model implements AssetInterface
     const ATTR_TITLE = 'title';
     const ATTR_DESCRIPTION = 'description';
     const ATTR_TYPE = 'type';
-    const ATTR_UPLOADED_BY = 'uploaded_by';
-    const ATTR_UPLOADED_AT = 'uploaded_time';
+    const ATTR_UPLOADED_BY = 'created_by';
+    const ATTR_UPLOADED_AT = 'created_at';
     const ATTR_THUMBNAIL_ID = 'thumbnail_asset_id';
     const ATTR_CREDITS = 'credits';
     const ATTR_DOWNLOADS = 'downloads';
@@ -45,15 +45,15 @@ class Asset extends Model implements AssetInterface
     ];
 
     protected $versionColumns = [
-        'asset_id'   => '',
-        'width'      => '',
-        'height'     => '',
-        'filesize'   => '',
-        'filename'   => '',
-        'edited_at'  => '',
-        'edited_by'  => '',
-        'version:id' => '',
-        'extension'  => '',
+        'asset_id'           => '',
+        'width'              => '',
+        'height'             => '',
+        'filesize'           => '',
+        'filename'           => '',
+        'version:created_at' => '',
+        'version:created_by' => '',
+        'version:id'         => '',
+        'extension'          => '',
     ];
 
     /**
@@ -363,25 +363,6 @@ class Asset extends Model implements AssetInterface
     }
 
     /**
-     * @param PersonInterface $person
-     *
-     * @return $this
-     */
-    public function setUploadedBy(PersonInterface $person)
-    {
-        $this->{self::ATTR_UPLOADED_BY} = $person->getId();
-
-        return $this;
-    }
-
-    public function setUploadedTime(DateTime $time)
-    {
-        $this->{self::ATTR_UPLOADED_AT} = $time->getTimestamp();
-
-        return $this;
-    }
-
-    /**
      * Set the version to use with the asset.
      *
      * @param AssetVersion $version
@@ -416,7 +397,7 @@ class Asset extends Model implements AssetInterface
     public function versions()
     {
         return $this->hasMany(AssetVersion::class)
-            ->orderBy(AssetVersion::ATTR_EDITED_AT, 'desc');
+            ->orderBy(AssetVersion::ATTR_CREATED_AT, 'desc');
     }
 
     /**

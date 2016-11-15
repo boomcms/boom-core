@@ -48,9 +48,7 @@ class CreatePage extends Command
     public function handle()
     {
         $attrs = [
-            'created_time' => time(),
-            'created_by'   => $this->createdBy->getId(),
-            'site_id'      => $this->site->getId(),
+            'site_id'    => $this->site->getId(),
         ];
 
         if ($this->parent) {

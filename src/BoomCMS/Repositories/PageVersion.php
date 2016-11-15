@@ -26,7 +26,7 @@ class PageVersion implements PageVersionRepositoryInterface
     {
         return $this->model
             ->where(Model::ATTR_PAGE, $page->getId())
-            ->orderBy(Model::ATTR_EDITED_AT, 'desc')
+            ->orderBy(Model::ATTR_CREATED_AT, 'desc')
             ->with('editedBy')
             ->get();
     }

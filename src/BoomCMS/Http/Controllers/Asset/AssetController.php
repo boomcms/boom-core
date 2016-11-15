@@ -10,10 +10,8 @@ use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
-use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
@@ -93,8 +91,6 @@ class AssetController extends Controller
             $asset = new Asset();
             $asset
                 ->setSite($site)
-                ->setUploadedTime(new DateTime('now'))
-                ->setUploadedBy(Auth::user())
                 ->setTitle($file->getClientOriginalName())
                 ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
 

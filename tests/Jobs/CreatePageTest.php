@@ -53,21 +53,6 @@ class CreatePageTest extends AbstractTestCase
         $job->handle();
     }
 
-    public function testCreatedTimeIsSet()
-    {
-        $this->newPage->shouldReceive('addVersion');
-
-        PageFacade::shouldReceive('create')
-            ->once()
-            ->with(m::subset([
-                Page::ATTR_CREATED_AT => time(),
-            ]))
-            ->andReturn($this->newPage);
-
-        $job = new CreatePage(new Person(), $this->site, null);
-        $job->handle();
-    }
-
     public function testSiteIdAndParentIdAreSet()
     {
         $this->newPage->shouldReceive('addVersion');

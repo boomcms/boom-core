@@ -36,7 +36,7 @@ class PageVersionTest extends AbstractModelTestCase
 
         $version = m::mock($this->model)->makePartial();
         $version->{Version::ATTR_PAGE} = $pageId;
-        $version->{Version::ATTR_EDITED_AT} = $editedAt;
+        $version->{Version::ATTR_CREATED_AT} = $editedAt;
 
         $version
             ->shouldReceive('where')
@@ -47,13 +47,13 @@ class PageVersionTest extends AbstractModelTestCase
         $version
             ->shouldReceive('where')
             ->once()
-            ->with(Version::ATTR_EDITED_AT, '>', $editedAt)
+            ->with(Version::ATTR_CREATED_AT, '>', $editedAt)
             ->andReturnSelf();
 
         $version
             ->shouldReceive('orderBy')
             ->once()
-            ->with(Version::ATTR_EDITED_AT, 'asc')
+            ->with(Version::ATTR_CREATED_AT, 'asc')
             ->andReturnSelf();
 
         $version
@@ -72,7 +72,7 @@ class PageVersionTest extends AbstractModelTestCase
 
         $version = m::mock($this->model)->makePartial();
         $version->{Version::ATTR_PAGE} = $pageId;
-        $version->{Version::ATTR_EDITED_AT} = $editedAt;
+        $version->{Version::ATTR_CREATED_AT} = $editedAt;
 
         $version
             ->shouldReceive('where')
@@ -83,13 +83,13 @@ class PageVersionTest extends AbstractModelTestCase
         $version
             ->shouldReceive('where')
             ->once()
-            ->with(Version::ATTR_EDITED_AT, '<', $editedAt)
+            ->with(Version::ATTR_CREATED_AT, '<', $editedAt)
             ->andReturnSelf();
 
         $version
             ->shouldReceive('orderBy')
             ->once()
-            ->with(Version::ATTR_EDITED_AT, 'desc')
+            ->with(Version::ATTR_CREATED_AT, 'desc')
             ->andReturnSelf();
 
         $version
@@ -208,26 +208,6 @@ class PageVersionTest extends AbstractModelTestCase
     {
         $version = new Version(['pending_approval' => true]);
         $this->assertTrue($version->isPendingApproval());
-    }
-
-    public function testSetEditedAt()
-    {
-        $version = new Version();
-        $time = new DateTime('now');
-
-        $this->assertEquals($version, $version->setEditedAt($time));
-        $this->assertEquals($time->getTimestamp(), $version->{Version::ATTR_EDITED_AT});
-    }
-
-    public function testSetEditedBy()
-    {
-        $version = new Version();
-
-        $person = new Person();
-        $person->{Person::ATTR_ID} = 1;
-
-        $this->assertEquals($version, $version->setEditedBy($person));
-        $this->assertEquals($person->getId(), $version->{Version::ATTR_EDITED_BY});
     }
 
     public function testSetPage()

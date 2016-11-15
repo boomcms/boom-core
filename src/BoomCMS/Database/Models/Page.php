@@ -43,7 +43,7 @@ class Page extends Model implements PageInterface
     const ATTR_KEYWORDS = 'keywords';
     const ATTR_DESCRIPTION = 'description';
     const ATTR_CREATED_BY = 'created_by';
-    const ATTR_CREATED_AT = 'created_time';
+    const ATTR_CREATED_AT = 'created_at';
     const ATTR_PRIMARY_URI = 'primary_uri';
     const ATTR_FEATURE_IMAGE = 'feature_image_id';
     const ATTR_PARENT = 'parent_id';
@@ -176,10 +176,7 @@ class Page extends Model implements PageInterface
         unset($attrs[PageVersion::ATTR_RESTORED_FROM]);
 
         $newVersion = new PageVersion($attrs);
-        $newVersion
-            ->setPage($this)
-            ->setEditedAt(new DateTime('now'))
-            ->setEditedBy(Auth::user());
+        $newVersion->setPage($this);
 
         /*
          * Only make the new version a draft if the old version is published.
@@ -1056,7 +1053,7 @@ class Page extends Model implements PageInterface
         }
 
         if (Editor::isHistory()) {
-            $query->where('edited_time', '<=', Editor::getTime()->getTimestamp());
+            $query->where('version.created_at', '<=', Editor::getTime()->getTimestamp());
         }
 
         return $query;

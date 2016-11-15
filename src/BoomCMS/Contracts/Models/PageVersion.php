@@ -96,20 +96,6 @@ interface PageVersion
     public function makeDraft();
 
     /**
-     * @param DateTime $time
-     *
-     * @return $this
-     */
-    public function setEditedAt(DateTime $time);
-
-    /**
-     * @param Person $person
-     *
-     * @return $this
-     */
-    public function setEditedBy(Person $person);
-
-    /**
      * @param Page $page
      *
      * @return $this

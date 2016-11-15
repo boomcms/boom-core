@@ -190,15 +190,6 @@ interface Asset
     public function setType($type);
 
     /**
-     * @param Person $person
-     *
-     * @return $this
-     */
-    public function setUploadedBy(Person $person);
-
-    public function setUploadedTime(DateTime $time);
-
-    /**
      * @param AssetVersion
      *
      * @return $this
