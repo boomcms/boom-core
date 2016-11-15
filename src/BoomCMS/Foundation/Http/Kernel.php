@@ -15,7 +15,6 @@ class Kernel extends HttpKernel
 {
     protected $middleware = [
         CheckForMaintenanceMode::class,
-        Middleware\RouteSite::class,
     ];
 
     /**

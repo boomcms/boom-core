@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\Page;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\MakeURLPrimary;
@@ -44,12 +43,12 @@ class Urls extends Controller
         ]);
     }
 
-    public function store(Request $request, Site $site, Page $page)
+    public function store(Request $request, Page $page)
     {
         $this->auth($page);
 
         $location = $request->input('location');
-        $url = URLFacade::findBySiteAndLocation($site, $location);
+        $url = URLFacade::findByLocation($location);
 
         if ($url && !$url->isForPage($page)) {
             // Url is being used for a different page.

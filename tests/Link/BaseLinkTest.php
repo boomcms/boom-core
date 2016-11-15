@@ -2,29 +2,14 @@
 
 namespace BoomCMS\Tests\Link;
 
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Link;
 use BoomCMS\Support\Facades\Page;
-use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\URL;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
 class BaseLinkTest extends AbstractTestCase
 {
-    /**
-     * @var Site
-     */
-    protected $site;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->site = new Site([Site::ATTR_HOSTNAME => $this->baseUrl]);
-        Router::shouldReceive('getActiveSite')->andReturn($this->site);
-    }
-
     public function testFactoryReturnsInternalLink()
     {
         $internalLinks = [
@@ -43,7 +28,7 @@ class BaseLinkTest extends AbstractTestCase
 
         URL::shouldReceive('isAvailable')
             ->times(5)
-            ->with($this->site, 'test')
+            ->with('test')
             ->andReturn(false);
 
         Page::shouldReceive('findByUri')
@@ -64,7 +49,7 @@ class BaseLinkTest extends AbstractTestCase
 
         URL::shouldReceive('isAvailable')
             ->once()
-            ->with($this->site, 'test')
+            ->with('test')
             ->andReturn(true);
 
         foreach ($internalLinks as $link) {

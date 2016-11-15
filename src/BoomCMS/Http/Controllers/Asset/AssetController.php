@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Database\Models\Asset;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
@@ -19,9 +20,9 @@ class AssetController extends Controller
     /**
      * @param Asset $asset
      */
-    public function destroy(Asset $asset)
+    public function destroy(Asset $asset, Site $site)
     {
-        $this->authorize('manageAssets', Router::getActiveSite());
+        $this->authorize('manageAssets', $site);
 
         AssetFacade::delete([$asset->getId()]);
     }
@@ -40,9 +41,9 @@ class AssetController extends Controller
      *
      * @return JsonResponse
      */
-    public function replace(Request $request, Asset $asset)
+    public function replace(Request $request, Asset $asset, Site $site)
     {
-        $this->authorize('manageAssets', Router::getActiveSite());
+        $this->authorize('manageAssets', $site);
 
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
@@ -64,9 +65,9 @@ class AssetController extends Controller
      * @param Request $request
      * @param Asset   $asset
      */
-    public function revert(Request $request, Asset $asset)
+    public function revert(Request $request, Asset $asset, Site $site)
     {
-        $this->authorize('manageAssets', Router::getActiveSite());
+        $this->authorize('manageAssets', $site);
 
         AssetFacade::revert($asset, $request->input('version_id'));
 
@@ -78,9 +79,9 @@ class AssetController extends Controller
      *
      * @return JsonResponse|array
      */
-    public function store(Request $request)
+    public function store(Request $request, Site $site)
     {
-        $this->authorize('uploadAssets', Router::getActiveSite());
+        $this->authorize('uploadAssets', $site);
 
         $assetIds = [];
 
@@ -102,9 +103,9 @@ class AssetController extends Controller
     /**
      * @param Asset $asset
      */
-    public function show(Asset $asset)
+    public function show(Asset $asset, Site $site)
     {
-        $this->authorize('manageAssets', Router::getActiveSite());
+        $this->authorize('manageAssets', $site);
 
         return $asset
             ->newQuery()
@@ -118,9 +119,9 @@ class AssetController extends Controller
      * @param Request $request
      * @param Asset   $asset
      */
-    public function update(Request $request, Asset $asset)
+    public function update(Request $request, Asset $asset, Site $site)
     {
-        $this->authorize('manageAssets', Router::getActiveSite());
+        $this->authorize('manageAssets', $site);
 
         $asset
             ->setTitle($request->input(Asset::ATTR_TITLE))

@@ -2,8 +2,6 @@
 
 namespace BoomCMS\Support\Helpers;
 
-use BoomCMS\Contracts\Models\Site;
-use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use BoomCMS\Support\Str;
 use Illuminate\Support\Facades\Request;
@@ -19,7 +17,7 @@ abstract class URL
      * @param string $base
      * @param string $title
      */
-    public static function fromTitle(Site $site, $base, $title)
+    public static function fromTitle($base, $title)
     {
         $url = static::sanitise($title);
 
@@ -30,7 +28,7 @@ abstract class URL
 
         $url = ($base == '/') ? $url : $base.$url;
 
-        return static::makeUnique($site, $url);
+        return static::makeUnique($url);
     }
 
     /**
@@ -67,7 +65,7 @@ abstract class URL
 
         $path = static::getInternalPath($relative);
 
-        return !URLFacade::isAvailable(Router::getActiveSite(), $path);
+        return !URLFacade::isAvailable($path);
     }
 
     public static function makeRelative($url)
@@ -78,15 +76,14 @@ abstract class URL
     /**
      * Increments a numeric suffix until the URL is unique.
      *
-     * @param Site   $site
      * @param string $url
      *
      * @return string
      */
-    public static function makeUnique(Site $site, $url)
+    public static function makeUnique($url)
     {
-        return Str::unique($url, function ($url) use ($site) {
-            return URLFacade::isAvailable($site, $url);
+        return Str::unique($url, function ($url) {
+            return URLFacade::isAvailable($url);
         });
     }
 

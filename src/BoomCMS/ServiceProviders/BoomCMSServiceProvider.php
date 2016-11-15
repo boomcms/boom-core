@@ -32,13 +32,13 @@ class BoomCMSServiceProvider extends ServiceProvider
 
     protected $serviceProviders = [
         ServiceProviders\TemplateServiceProvider::class,
+        ServiceProviders\RouteServiceProvider::class,
         ServiceProviders\RepositoryServiceProvider::class,
         ServiceProviders\AuthServiceProvider::class,
         ServiceProviders\EditorServiceProvider::class,
         ServiceProviders\SettingsServiceProvider::class,
         ServiceProviders\ChunkServiceProvider::class,
         ServiceProviders\EventServiceProvider::class,
-        ServiceProviders\RouteServiceProvider::class,
         HtmlServiceProvider::class,
     ];
 
