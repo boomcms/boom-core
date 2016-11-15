@@ -4,6 +4,7 @@ namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Routing\Router as BoomCMSRouter;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,7 +38,10 @@ class RouteServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(BoomCMSRouter::class, function () {
-            return new BoomCMSRouter($this->app);
+            $router = new BoomCMSRouter($this->app);
+            $router->routeHostname($this->app->make(Request::class)->getHttpHost());
+
+            return $router;
         });
     }
 }

@@ -12,19 +12,6 @@ use Mockery as m;
 
 class BaseLinkTest extends AbstractTestCase
 {
-    /**
-     * @var Site
-     */
-    protected $site;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->site = new Site([Site::ATTR_HOSTNAME => $this->baseUrl]);
-        Router::shouldReceive('getActiveSite')->andReturn($this->site);
-    }
-
     public function testFactoryReturnsInternalLink()
     {
         $internalLinks = [
@@ -43,7 +30,7 @@ class BaseLinkTest extends AbstractTestCase
 
         URL::shouldReceive('isAvailable')
             ->times(5)
-            ->with($this->site, 'test')
+            ->with('test')
             ->andReturn(false);
 
         Page::shouldReceive('findByUri')
@@ -64,7 +51,7 @@ class BaseLinkTest extends AbstractTestCase
 
         URL::shouldReceive('isAvailable')
             ->once()
-            ->with($this->site, 'test')
+            ->with('test')
             ->andReturn(true);
 
         foreach ($internalLinks as $link) {

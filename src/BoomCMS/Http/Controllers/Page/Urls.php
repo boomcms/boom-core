@@ -44,12 +44,12 @@ class Urls extends Controller
         ]);
     }
 
-    public function store(Request $request, Site $site, Page $page)
+    public function store(Request $request, Page $page)
     {
         $this->auth($page);
 
         $location = $request->input('location');
-        $url = URLFacade::findBySiteAndLocation($site, $location);
+        $url = URLFacade::findByLocation($location);
 
         if ($url && !$url->isForPage($page)) {
             // Url is being used for a different page.

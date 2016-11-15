@@ -54,16 +54,16 @@ class UrlsTest extends BaseControllerTest
         $location = 'test';
         $request = new Request(['location' => $location]);
 
-        URLFacade::shouldReceive('findBySiteAndLocation')
+        URLFacade::shouldReceive('findByLocation')
             ->once()
-            ->with($this->site, $location)
+            ->with($location)
             ->andReturnNull();
 
         URLFacade::shouldReceive('create')
             ->once()
             ->with($location, $this->page);
 
-        $this->controller->store($request, $this->site, $this->page);
+        $this->controller->store($request, $this->page);
     }
 
     public function testPostAddUrlIsInUse()
@@ -77,16 +77,16 @@ class UrlsTest extends BaseControllerTest
             ->with($this->page)
             ->andReturn(false);
 
-        URLFacade::shouldReceive('findBySiteAndLocation')
+        URLFacade::shouldReceive('findByLocation')
             ->once()
-            ->with($this->site, $location)
+            ->with($location)
             ->andReturn($this->url);
 
         URLFacade::shouldReceive('create')->never();
 
         $expected = ['existing_url_id' => $this->url->getId()];
 
-        $this->assertEquals($expected, $this->controller->store($request, $this->site, $this->page));
+        $this->assertEquals($expected, $this->controller->store($request, $this->page));
     }
 
     public function testNonPrimaryUrlIsDeleted()

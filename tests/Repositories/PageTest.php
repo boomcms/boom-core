@@ -3,9 +3,7 @@
 namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Page as PageRepository;
-use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
@@ -26,23 +24,13 @@ class PageTest extends AbstractTestCase
      */
     protected $repository;
 
-    /**
-     * @var type @var Site
-     */
-    protected $site;
-
     public function setUp()
     {
         parent::setUp();
 
         $this->model = m::mock(Page::class);
-        $this->repository = m::mock(PageRepository::class, [$this->model])->makePartial();
+        $this->repository = m::mock(PageRepository::class, [$this->model, $this->site])->makePartial();
         $this->page = m::mock(Page::class);
-
-        $this->site = new Site();
-        $this->site->{Site::ATTR_ID} = 1;
-
-        Router::shouldReceive('getActiveSite')->andReturn($this->site);
     }
 
     public function testDelete()
@@ -53,19 +41,6 @@ class PageTest extends AbstractTestCase
     }
 
     public function testFindByPrimaryUri()
-    {
-        $uri = 'test';
-
-        $this->repository
-            ->shouldReceive('findBySiteAndPrimaryUri')
-            ->once()
-            ->with($this->site, $uri)
-            ->andReturn($this->page);
-
-        $this->assertEquals($this->page, $this->repository->findByPrimaryUri($uri));
-    }
-
-    public function testFindBySiteAndPrimaryUri()
     {
         $uri = 'test';
 
@@ -86,10 +61,10 @@ class PageTest extends AbstractTestCase
             ->once()
             ->andReturn($this->page);
 
-        $this->assertEquals($this->page, $this->repository->findBySiteAndPrimaryUri($this->site, $uri));
+        $this->assertEquals($this->page, $this->repository->findByPrimaryUri($uri));
     }
 
-    public function testFindBySiteAndPrimaryUriWithArray()
+    public function testFindByPrimaryUriWithArray()
     {
         $uris = ['test1', 'test2'];
 
@@ -110,23 +85,10 @@ class PageTest extends AbstractTestCase
             ->once()
             ->andReturn([$this->page, $this->page]);
 
-        $this->assertEquals([$this->page, $this->page], $this->repository->findBySiteAndPrimaryUri($this->site, $uris));
+        $this->assertEquals([$this->page, $this->page], $this->repository->findByPrimaryUri($uris));
     }
 
     public function testFindByUri()
-    {
-        $uri = 'test';
-
-        $this->repository
-            ->shouldReceive('findBySiteAndUri')
-            ->once()
-            ->with($this->site, $uri)
-            ->andReturn($this->page);
-
-        $this->assertEquals($this->page, $this->repository->findByUri($uri));
-    }
-
-    public function testFindBySiteAndUri()
     {
         $uri = 'test';
 
@@ -159,10 +121,10 @@ class PageTest extends AbstractTestCase
             ->once()
             ->andReturn($this->page);
 
-        $this->assertEquals($this->page, $this->repository->findBySiteAndUri($this->site, $uri));
+        $this->assertEquals($this->page, $this->repository->findByUri($uri));
     }
 
-    public function testFindBySiteAndUriWithArray()
+    public function testFindByUriWithArray()
     {
         $uris = ['test1', 'test2'];
 
@@ -195,7 +157,7 @@ class PageTest extends AbstractTestCase
             ->once()
             ->andReturn([$this->page, $this->page]);
 
-        $this->assertEquals([$this->page, $this->page], $this->repository->findBySiteAndUri($this->site, $uris));
+        $this->assertEquals([$this->page, $this->page], $this->repository->findByUri($uris));
     }
 
     public function testInternalNameExists()
