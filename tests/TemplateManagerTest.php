@@ -26,7 +26,7 @@ class TemplateManagerTest extends AbstractTestCase
 
     protected function getFilesystem()
     {
-        return $this->getMock(Filesystem::class);
+        return $this->createMock(Filesystem::class);
     }
 
     protected function getTemplateRepository()

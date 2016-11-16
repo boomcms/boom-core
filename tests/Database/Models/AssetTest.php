@@ -19,7 +19,7 @@ class AssetTest extends AbstractModelTestCase
 
     public function testGetAspectRatio()
     {
-        $asset = $this->getMock(Asset::class, ['getWidth', 'getHeight']);
+        $asset = $this->createMock(Asset::class, ['getWidth', 'getHeight']);
         $asset->expects($this->any())
             ->method('getWidth')
             ->will($this->returnValue(4));
@@ -33,7 +33,7 @@ class AssetTest extends AbstractModelTestCase
 
     public function testGetAspectRatioReturnsZeroWhenAssetHasNoHeight()
     {
-        $asset = $this->getMock(Asset::class, ['getHeight']);
+        $asset = $this->createMock(Asset::class, ['getHeight']);
 
         $asset->expects($this->once())
             ->method('getHeight')
@@ -62,7 +62,7 @@ class AssetTest extends AbstractModelTestCase
 
     public function testGetFilename()
     {
-        $asset = $this->getMock(Asset::class, ['getLatestVersionId']);
+        $asset = $this->createMock(Asset::class, ['getLatestVersionId']);
         $asset->expects($this->once())
             ->method('getLatestVersionId')
             ->will($this->returnValue(1));
@@ -176,7 +176,7 @@ class AssetTest extends AbstractModelTestCase
     {
         $version = new AssetVersion($attrs);
 
-        $asset = $this->getMock(Asset::class, ['getLatestVersion']);
+        $asset = $this->createMock(Asset::class, ['getLatestVersion']);
         $asset
             ->expects($this->any())
             ->method('getLatestVersion')

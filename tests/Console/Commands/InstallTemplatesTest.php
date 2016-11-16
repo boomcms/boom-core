@@ -62,6 +62,6 @@ class InstallTemplatesTest extends AbstractTestCase
 
     protected function getCommand()
     {
-        return $this->getMock(InstallTemplates::class, ['info', 'call']);
+        return $this->createMock(InstallTemplates::class, ['info', 'call']);
     }
 }
