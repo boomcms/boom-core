@@ -18,13 +18,6 @@ abstract class Model extends BaseModel
 
     public $timestamps = false;
 
-    public function is(Model $other)
-    {
-        return (get_class($this) === get_class($other))
-            && ($this->getId() > 0)
-            && ($this->getId() === $other->getId());
-    }
-
     /**
      * @return int
      */

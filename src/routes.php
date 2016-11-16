@@ -25,12 +25,22 @@ Route::group(['middleware' => [
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
             Route::get('logout', 'Auth\AuthController@getLogout');
 
-            Route::controller('autocomplete', 'Autocomplete');
-            Route::controller('editor', 'Editor');
-            Route::controller('account', 'Auth\Account');
-            Route::controller('approvals', 'Approvals');
-            Route::controller('settings', 'Settings');
-            Route::controller('support', 'Support');
+            Route::get('autocomplete/assets', 'Autocomplete@getAssets');
+            Route::get('autocomplete/page-titles', 'Autocomplete@getPageTitles');
+
+            Route::get('editor/toolbar', 'Editor@getToolbar');
+            Route::post('editor/state', 'Editor@postState');
+            Route::post('editor/time', 'Editor@postTime');
+
+            Route::get('account', 'Auth\Account@getIndex');
+            Route::post('account', 'Auth\Account@postIndex');
+
+            Route::get('settings', 'Settings@getIndex');
+            Route::post('settings', 'Settings@postIndex');
+
+            Route::get('support', 'Support@getIndex');
+            Route::post('support', 'Support@postIndex');
+
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 
@@ -85,9 +95,37 @@ Route::group(['middleware' => [
 
             Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
                 Route::post('version/template/{template}', 'Version@postTemplate');
-                Route::controller('version', 'Version');
-                Route::controller('settings', 'Settings');
-                Route::controller('chunk', 'Chunk');
+
+                Route::get('version/embargo', 'Version@getEmbargo');
+                Route::get('version/status', 'Version@getStatus');
+                Route::get('version/template', 'Version@getTemplate');
+                Route::post('version/embargo', 'Version@postEmbargo');
+                Route::post('version/status', 'Version@postStatus');
+                Route::post('version/template', 'Version@postTemplate');
+                Route::post('version/title', 'Version@postTitle');
+
+                Route::get('settings/admin', 'Settings@getAdmin');
+                Route::get('settings/children', 'Settings@getChildren');
+                Route::get('settings/delete', 'Settings@getDelete');
+                Route::get('settings/feature', 'Settings@getFeature');
+                Route::get('settings/history', 'Settings@getHistory');
+                Route::get('settings/index', 'Settings@getIndex');
+                Route::get('settings/info', 'Settings@getInfo');
+                Route::get('settings/navigation', 'Settings@getNavigation');
+                Route::get('settings/search', 'Settings@getSearch');
+                Route::get('settings/visibility', 'Settings@getVisibility');
+
+                Route::post('settings/admin', 'Settings@postAdmin');
+                Route::post('settings/children', 'Settings@postChildren');
+                Route::post('settings/delete', 'Settings@postDelete');
+                Route::post('settings/feature', 'Settings@postFeature');
+                Route::post('settings/history', 'Settings@postHistory');
+                Route::post('settings/navigation', 'Settings@postNavigation');
+                Route::post('settings/search', 'Settings@postSearch');
+                Route::post('settings/visibility', 'Settings@postVisibility');
+
+                Route::get('chunk/edit', 'Chunk@getEdit');
+                Route::post('chunk/edit', 'Chunk@postEdit');
 
                 Route::group(['prefix' => 'urls'], function () {
                     Route::get('', 'Urls@index');
@@ -97,7 +135,6 @@ Route::group(['middleware' => [
                     Route::delete('{url}', 'Urls@destroy');
                     Route::get('{url}/move', 'Urls@getMove');
                     Route::post('{url}/move', 'Urls@postMove');
-                    Route::controller('', 'Urls');
                 });
 
                 Route::get('tags', 'Tags@view');
@@ -113,7 +150,7 @@ Route::group(['middleware' => [
                 Route::post('acl/{group}', 'Acl@store');
                 Route::delete('acl/{group}', 'Acl@destroy');
 
-                Route::controller('', 'PageController');
+                Route::get('', 'PageController@getIndex');
             });
         });
     });

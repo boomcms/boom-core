@@ -20,12 +20,16 @@ class Controller extends BaseController
      */
     protected $role;
 
-    public function __construct(Request $request, Site $site)
+    public function __construct(Site $site)
     {
-        $this->request = $request;
+        $this->middleware(function (Request $request, $next) use($site) {
+            $this->request = $request;
 
-        if ($this->role) {
-            $this->authorize($this->role, $site);
-        }
+            if ($this->role) {
+                $this->authorize($this->role, $site);
+            }
+
+            return $next($request);
+        });
     }
 }

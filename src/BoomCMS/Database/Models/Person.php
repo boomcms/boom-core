@@ -9,7 +9,7 @@ use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Traits\MultipleSites;
 use Carbon\Carbon;
-use DateTime;
+use DateTimeInterface;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -176,7 +176,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
             ->where('person_site.site_id', '=', $site->getId());
     }
 
-    protected function serializeDate(DateTime $date)
+    protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('c');
     }
@@ -258,5 +258,10 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         $this->{self::ATTR_SUPERUSER} = $superuser;
 
         return $this;
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        // TODO: implement
     }
 }

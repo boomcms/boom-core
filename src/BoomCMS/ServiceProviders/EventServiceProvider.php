@@ -9,7 +9,6 @@ use BoomCMS\Observers\CreationLogObserver;
 use BoomCMS\Observers\DeletionLogObserver;
 use BoomCMS\Observers\SetSiteObserver;
 use Illuminate\Auth\Events\Login as LoginEvent;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -46,9 +45,9 @@ class EventServiceProvider extends ServiceProvider
         ],
     ];
 
-    public function boot(Dispatcher $events)
+    public function boot()
     {
-        parent::boot($events);
+        parent::boot();
 
         Models\Asset::observe(CreationLogObserver::class);
         Models\AssetVersion::observe(CreationLogObserver::class);
