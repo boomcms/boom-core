@@ -22,7 +22,7 @@ class Controller extends BaseController
 
     public function __construct(Site $site)
     {
-        $this->middleware(function (Request $request, $next) use($site) {
+        $this->middleware(function (Request $request, $next) use ($site) {
             $this->request = $request;
 
             if ($this->role) {
