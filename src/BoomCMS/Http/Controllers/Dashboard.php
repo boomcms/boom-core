@@ -2,13 +2,14 @@
 
 namespace BoomCMS\Http\Controllers;
 
+use BoomCMS\BoomCMS;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Support\Helpers;
 use Illuminate\Support\Facades\Gate;
 
 class Dashboard extends Controller
 {
-    public function index(Site $site)
+    public function index(BoomCMS $boomcms, Site $site)
     {
         return view('boomcms::dashboard.index', [
             'person'    => auth()->user(),
@@ -19,6 +20,7 @@ class Dashboard extends Controller
             'approvals' => Gate::denies('managePages', $site) ? [] : Helpers::getPages([
                 'pendingapproval' => true,
             ]),
+            'news'      => $boomcms->getNews(),
         ]);
     }
 }

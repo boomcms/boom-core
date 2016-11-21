@@ -7,6 +7,9 @@ return [
     ],
     'heading'        => 'Welcome to BoomCMS',
     'manage-account' => 'Manage account',
+    'news'           => [
+        'heading' => 'News from BoomCMS',
+    ],
     'recent-pages'   => 'Recent pages',
     'view-site'      => 'View site',
     'welcome'        => 'Welcome :name'
