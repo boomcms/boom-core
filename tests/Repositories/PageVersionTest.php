@@ -2,12 +2,9 @@
 
 namespace BoomCMS\Tests\Repositories;
 
-use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion as VersionModel;
 use BoomCMS\Repositories\PageVersion as VersionRepository;
 use BoomCMS\Tests\AbstractTestCase;
-use DateTime;
-use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
 class PageVersionTest extends AbstractTestCase

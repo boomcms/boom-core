@@ -50709,8 +50709,10 @@ $.widget( 'boom.pageToolbar', {
                 .on('click', 'a[data-restore]', function(e) {
                     e.preventDefault();
 
-                    page.restoreTo($(this).attr('data-restore'));
-                    top.location.reload();
+                    page.restoreTo($(this).attr('data-restore'))
+                        .done(function() {
+                            top.location.reload();
+                        });
                 });
         }
     });
@@ -53553,7 +53555,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     assetManager.router.navigate('upload', {trigger: true});
                 })
                 .on('click', '#b-assets-search', function() {
-                    this.toggleSearch();
+                    assetManager.toggleSearch();
                 })                        
                 .on('keydown', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {

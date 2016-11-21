@@ -46,6 +46,12 @@ class Slideshow extends BaseChunk
                     : isset($slide['url']) ? $slide['url'] : null;
 
                 unset($slide['page']);
+
+                if (isset($slide['asset']) && is_array($slide['asset'])) {
+                    $slide['asset_id'] = $slide['asset']['id'];
+                    unset($slide['asset']);
+                }
+
                 $slide = new Slideshow\Slide($slide);
             }
         }
