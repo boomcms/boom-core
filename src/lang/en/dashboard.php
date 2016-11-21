@@ -12,5 +12,5 @@ return [
     ],
     'recent-pages'   => 'Recent pages',
     'view-site'      => 'View site',
-    'welcome'        => 'Welcome :name'
+    'welcome'        => 'Welcome :name',
 ];

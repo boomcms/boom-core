@@ -47,7 +47,7 @@ class BoomCMS
     {
         $key = 'boomcms.news';
 
-        return $this->cache->get($key, function() use($key) {
+        return $this->cache->get($key, function () use ($key) {
             $news = json_decode(file_get_contents($this->newsUrl));
 
             $this->cache->put($key, $news, 3600);
