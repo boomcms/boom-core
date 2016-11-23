@@ -13,16 +13,18 @@
 			<div id="b-page-settings-menu">
 				<?= $button('cog', 'toolbar.settings', ['id' => 'b-page-settings']) ?>
 			</div>
-
-            <button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
-                <?= $page->getCurrentVersion()->status() ?>
-            </button>
 		<?php endif ?>
 
 		<?php if (Gate::allows('publish', $page)): ?>
 			<?= $button('eye', 'toolbar.visible', ['id' => 'b-page-visible', 'class' => $page->isVisible() ? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden']) ?>
 			<?= $button('eye-slash', 'toolbar.invisible', ['id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility']) ?>
 		<?php endif ?>
+
+        <?php if (Gate::allows('edit', $page)): ?>
+            <button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
+                <?= $page->getCurrentVersion()->status() ?>
+            </button>
+        <?php endif ?>
 
 		<?php if (Gate::allows('delete', $page)) : ?>
             <?php if ($page->canBeDeleted()): ?>
