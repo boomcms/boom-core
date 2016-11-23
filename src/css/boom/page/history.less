@@ -1,6 +1,8 @@
 #b-page-history {
 	a {
 		color: @blue;
+        margin: 2rem 0;
+        display: block;
 
 		&:hover, &:focus {
             text-decoration: none;
@@ -30,16 +32,24 @@
 				margin-top: 2rem;
 			}
 
-            a[data-restore] {
+            [data-restore] {
+                display: inline-block;
                 color: @black;
                 text-align: center;
                 position: relative;
                 overflow: hidden;
+                float: right;
+                width: calc(~"100% - 8rem");
+                text-align: right;
 
                 &:hover, &:focus {
                     .fa {
                         color: @red;
                     }
+                }
+
+                + * {
+                    clear: both;
                 }
 
                 span {
@@ -58,8 +68,10 @@
             }
 
 			.summary {
-				float: left;
 				text-align: center;
+                display: inline-block;
+                float: left;
+                width: 8rem;
 
 				p {
 					.text-small;
@@ -95,14 +107,21 @@
 				}
 			}
 
-			.main p {
-				margin: 0.5rem 0 0 0;
+			.main {
+                .status {
+                    display: block;
+                    clear: both;
+                }
+
+                p {
+                    margin: 0.5rem 0 0 0;
+                }
 			}
 		}
 	}
 }
 
-@media all and (min-width: 500px) {
+@media all and (min-width: 600px) {
 	#b-page-history {
 		ol li {
 			overflow: hidden;
@@ -111,21 +130,23 @@
                 width: calc(~"100% - 15rem");
             }
 
-			.summary {
-				float: left;
-				width: 8rem;
-			}
+            a {
+                display: inline-block;
+                margin: 0;
+            }
 
             [data-restore] {
-                display: inline-block;
                 float: right;
 				width: 6rem;
-                margin-left: 4rem;
+
+                + * {
+                    clear: none;
+                }
             }
 
 			.main {
 				overflow: hidden;
-				width: calc(~"100% - 25rem");
+				width: calc(~"100% - 15rem");
 				float: right;
 
 				> div {
@@ -134,12 +155,22 @@
 					a {
 						float: left;
 					}
-
-					.status {
-						float: right;
-					}
 				}
 			}
 		}
 	}
+}
+
+@media all and (min-width: 1100px) {
+    #b-page-history {
+        ol li .main {
+            width: calc(~"100% - 25rem");
+
+            > div .status {
+                display: inline;
+                float: right;
+                clear: none;
+            }
+        }
+    }
 }
