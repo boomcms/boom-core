@@ -23,12 +23,12 @@ Route::group(['middleware' => [
         });
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
+            Route::get('', 'Dashboard@index');
             Route::get('logout', 'Auth\AuthController@getLogout');
 
             Route::controller('autocomplete', 'Autocomplete');
             Route::controller('editor', 'Editor');
             Route::controller('account', 'Auth\Account');
-            Route::controller('approvals', 'Approvals');
             Route::controller('settings', 'Settings');
             Route::controller('support', 'Support');
             Route::post('editor/state', 'Editor@setState');

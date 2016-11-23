@@ -14,7 +14,7 @@ class PasswordReset extends Controller
     protected $subject = 'BoomCMS Password Reset';
     protected $linkRequestView = 'boomcms::auth.password';
     protected $resetView = 'boomcms::auth.reset';
-    protected $redirectPath = '/';
+    protected $redirectPath = '/boomcms';
 
     /**
      * Reset the given user's password.

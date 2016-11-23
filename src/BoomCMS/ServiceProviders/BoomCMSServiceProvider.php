@@ -67,7 +67,7 @@ class BoomCMSServiceProvider extends ServiceProvider
         include __DIR__.'/../../functions.php';
 
         $this->app->singleton(BoomCMS::class, function () {
-            return new BoomCMS();
+            return new BoomCMS($this->app['cache']->store());
         });
 
         $this->registerAliases();

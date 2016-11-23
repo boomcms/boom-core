@@ -6,11 +6,6 @@ return [
         'role'     => 'managePages',
         'icon'     => 'sitemap',
     ],
-    'approvals' => [
-        'url'      => '/boomcms/approvals',
-        'role'     => 'manageApprovals',
-        'icon'     => 'thumbs-o-up',
-    ],
     'templates' => [
         'url'      => '/boomcms/template-manager',
         'role'     => 'manageTemplates',
