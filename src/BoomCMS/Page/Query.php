@@ -19,6 +19,7 @@ class Query extends BaseQuery
         'pageid'              => Finder\PageId::class,
         'parentid'            => Finder\ParentId::class,
         'parent'              => Finder\ParentPage::class,
+        'pendingapproval'     => Finder\PendingApproval::class,
         'tag'                 => Finder\Tag::class,
         'template'            => Finder\Template::class,
         'uri'                 => Finder\Uri::class,
