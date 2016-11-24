@@ -15,7 +15,7 @@ class SingleSiteTest extends AbstractTestCase
         $site = new Site();
         $site->{Site::ATTR_ID} = 1;
 
-        $single = $this->createMockForTrait(SingleSite::class);
+        $single = $this->getMockForTrait(SingleSite::class);
         $query = m::mock(Builder::class);
 
         $query
