@@ -112,7 +112,6 @@ module.exports = function(grunt) {
 					'src/js/boomcms/asset/tagSearch.js',
 					'src/js/boomcms/asset/imageEditor.js',
 					'src/js/boomcms/group/permissionsEditor.js',
-					'src/js/boomcms/approvals.js',
 					'bower_components/wysihtml/dist/wysihtml-toolbar.js',
 					'src/js/wysihtml5/parser_rules/full.js',
 					'src/js/wysihtml5/parser_rules/inline.js',

@@ -23,6 +23,7 @@ Route::group(['middleware' => [
         });
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
+            Route::get('', 'Dashboard@index');
             Route::get('logout', 'Auth\AuthController@getLogout');
 
             Route::get('autocomplete/assets', 'Autocomplete@getAssets');
@@ -40,7 +41,6 @@ Route::group(['middleware' => [
 
             Route::get('support', 'Support@getIndex');
             Route::post('support', 'Support@postIndex');
-
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 

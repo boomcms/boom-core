@@ -14,8 +14,10 @@
                 .on('click', 'a[data-restore]', function(e) {
                     e.preventDefault();
 
-                    page.restoreTo($(this).attr('data-restore'));
-                    top.location.reload();
+                    page.restoreTo($(this).attr('data-restore'))
+                        .done(function() {
+                            top.location.reload();
+                        });
                 });
         }
     });

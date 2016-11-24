@@ -3,7 +3,11 @@
 
     <ul>
         <li>
-            <a target='_top' href='/'><span class="fa fa-globe"></span><?= trans('boomcms::menu.home') ?></a>
+            <a target='_top' href='/boomcms'><span class="fa fa-home"></span><?= trans('boomcms::menu.dashboard') ?></a>
+        </li>
+
+        <li>
+            <a target='_top' href='/'><span class="fa fa-globe"></span><?= trans('boomcms::menu.view-site') ?></a>
         </li>
 
         <?php foreach (BoomCMS\Support\Menu::items() as $i => $item): ?>

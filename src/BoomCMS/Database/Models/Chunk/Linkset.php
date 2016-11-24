@@ -35,6 +35,11 @@ class Linkset extends BaseChunk
     public function setLinksAttribute($links)
     {
         foreach ($links as &$link) {
+            if (isset($link['asset']) && is_array($link['asset'])) {
+                $link['asset_id'] = $link['asset']['id'];
+                unset($link['asset']);
+            }
+
             $link = ($link instanceof Linkset\Link) ? $link : new Linkset\Link($link);
         }
 

@@ -47,7 +47,7 @@
                     assetManager.router.navigate('upload', {trigger: true});
                 })
                 .on('click', '#b-assets-search', function() {
-                    this.toggleSearch();
+                    assetManager.toggleSearch();
                 })                        
                 .on('keydown', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
