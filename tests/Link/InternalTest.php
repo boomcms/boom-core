@@ -76,12 +76,14 @@ class InternalTest extends AbstractTestCase
         $this->assertEquals($pageId, $link->url());
     }
 
-    /**
-     * @depends testUrlReturnsCorrectUrl
-     */
-    public function testGetHostnameReturnsTheHostnameOfTheCurrentSite($page)
+    public function testGetHostnameReturnsTheHostnameOfTheCurrentSite()
     {
-        PageFacade::shouldReceive('findByUri')->with('test')->andReturn($page);
+        $page = m::mock(Page::class.'[url]');
+        $page
+            ->shouldReceive('url')
+            ->andReturn("http://{$this->baseUrl}/test");
+
+        PageFacade::shouldReceive('findByUri')->once()->with('test')->andReturn($page);
 
         $link = new Link('/test');
 
