@@ -12,7 +12,7 @@ Route::group(['middleware' => [
             'namespace'  => 'Auth',
             'middleware' => [Middleware\RequireGuest::class],
         ], function () {
-            Route::get('login', ['as' => 'login', 'uses' => 'AuthController@getLogin']);
+            Route::get('login', ['as' => 'login', 'uses' => 'AuthController@showLoginForm']);
 
             // Password reset link request routes...
             Route::get('recover', ['as' => 'password', 'uses' => 'PasswordReset@getEmail']);

@@ -7,11 +7,13 @@ use BoomCMS\Tests\AbstractTestCase;
 
 class LoginPageTest extends AbstractTestCase
 {
+    protected $baseUrl = null;
+
     public function testLoginPageShouldRedirectAuthenticatedUser()
     {
         $this->actingAs(new Person());
 
-        $response = $this->call('GET', route('login'));
+        $response = $this->visitRoute('login');
 
         $this->assertResponseStatus(302, $response);
         $this->assertEquals('/', $response->getTargetUrl());
@@ -19,7 +21,7 @@ class LoginPageTest extends AbstractTestCase
 
     public function testLoginShouldLoadForGuest()
     {
-        $response = $this->call('GET', route('login'));
+        $response = $this->visitRoute('login');
 
         $this->assertResponseStatus(200, $response);
     }
