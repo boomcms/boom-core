@@ -5,8 +5,8 @@ namespace BoomCMS\Tests\Integration\Auth;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Support\Facades\Person as PersonFacade;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class LoginPageTest extends AbstractTestCase
 {
@@ -50,7 +50,7 @@ class LoginPageTest extends AbstractTestCase
         App::getFacadeRoot()['config']['auth.providers.users'] = ['provider' => 'boomcms'];
 
         $response = $this->call('POST', route('processLogin'), $credentials);
-dd($response);
+        dd($response);
         $this->assertResponseStatus(200, $response);
     }
 }
