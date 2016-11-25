@@ -36,10 +36,10 @@ class InstallTemplatesTest extends AbstractTestCase
             ->andReturn([['testTheme', 'testTemplate']]);
 
         $command = $this->getCommand();
-
-        $command->expects($this->once())
-            ->method('info')
-            ->with($this->equalTo('Installed testTemplate in theme testTheme'));
+        $command
+            ->shouldReceive('info')
+            ->once()
+            ->with('Installed testTemplate in theme testTheme');
 
         $command->fire($this->manager);
     }
@@ -52,16 +52,16 @@ class InstallTemplatesTest extends AbstractTestCase
             ->andReturn([]);
 
         $command = $this->getCommand();
-
-        $command->expects($this->once())
-            ->method('info')
-            ->with($this->equalTo('No templates to install'));
+        $command
+            ->shouldReceive('info')
+            ->once()
+            ->with('No templates to install');
 
         $command->fire($this->manager);
     }
 
     protected function getCommand()
     {
-        return $this->createMock(InstallTemplates::class, ['info', 'call']);
+        return m::mock(InstallTemplates::class)->makePartial();
     }
 }
