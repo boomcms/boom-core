@@ -15,16 +15,16 @@ Route::group(['middleware' => [
             Route::get('login', ['as' => 'login', 'uses' => 'AuthController@showLoginForm']);
 
             // Password reset link request routes...
-            Route::get('recover', ['as' => 'password', 'uses' => 'PasswordReset@getEmail']);
-            Route::post('recover', 'PasswordReset@postEmail');
-            Route::get('recover/{token}', 'PasswordReset@getReset');
-            Route::post('recover/{token}', 'PasswordReset@postReset');
+            Route::get('recover', ['as' => 'password', 'uses' => 'PasswordReset@showLinkRequestForm']);
+            Route::post('recover', 'PasswordReset@sendResetLinkEmail');
+            Route::get('recover/{token}', 'PasswordReset@showResetForm');
+            Route::post('recover/{token}', 'PasswordReset@reset');
             Route::post('login', ['as' => 'processLogin', 'uses' => 'AuthController@login']);
         });
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
             Route::get('', 'Dashboard@index');
-            Route::get('logout', 'Auth\AuthController@getLogout');
+            Route::get('logout', 'Auth\AuthController@logout');
 
             Route::get('autocomplete/assets', 'Autocomplete@getAssets');
             Route::get('autocomplete/page-titles', 'Autocomplete@getPageTitles');
