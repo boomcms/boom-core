@@ -11,6 +11,10 @@ class AuthController extends Controller
 
     protected $loginPath = '/boomcms/login';
     protected $loginView = 'boomcms::auth.login';
-    protected $guard = 'boomcms';
     protected $redirectTo = '/boomcms';
+
+    public function showLoginForm()
+    {
+        return view($this->loginView);
+    }
 }

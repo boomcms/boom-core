@@ -19,7 +19,7 @@ Route::group(['middleware' => [
             Route::post('recover', 'PasswordReset@postEmail');
             Route::get('recover/{token}', 'PasswordReset@getReset');
             Route::post('recover/{token}', 'PasswordReset@postReset');
-            Route::post('login', 'AuthController@postLogin');
+            Route::post('login', ['as' => 'processLogin', 'uses' => 'AuthController@login']);
         });
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
