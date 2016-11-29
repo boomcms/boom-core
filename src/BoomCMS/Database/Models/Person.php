@@ -7,6 +7,7 @@ use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Foundation\Database\Model;
+use BoomCMS\Notifications\ResetPasswordNotification;
 use BoomCMS\Support\Traits\MultipleSites;
 use Carbon\Carbon;
 use DateTimeInterface;
@@ -16,6 +17,7 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
 
 class Person extends Model implements PersonInterface, AuthenticatableContract, CanResetPassword
 {
@@ -23,6 +25,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     use Authorizable;
     use SoftDeletes;
     use MultipleSites;
+    use Notifiable;
 
     const ATTR_NAME = 'name';
     const ATTR_EMAIL = 'email';
@@ -260,8 +263,15 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         return $this;
     }
 
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     *
+     * @return void
+     */
     public function sendPasswordResetNotification($token)
     {
-        // TODO: implement
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
