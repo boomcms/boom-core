@@ -266,7 +266,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     /**
      * Send the password reset notification.
      *
-     * @param  string  $token
+     * @param string $token
      *
      * @return void
      */
