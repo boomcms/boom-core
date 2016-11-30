@@ -17,8 +17,8 @@ class PasswordReset extends Controller
      *
      * If no token is present, display the link request form.
      *
-     * @param  Request  $request
-     * @param  string|null  $token
+     * @param Request     $request
+     * @param string|null $token
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
