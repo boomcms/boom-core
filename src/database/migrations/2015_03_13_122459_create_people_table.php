@@ -30,7 +30,6 @@ class CreatePeopleTable extends Migration
                 ->references('id')
                 ->on('people')
                 ->onDelete('set null');
-            
         });
     }
 
