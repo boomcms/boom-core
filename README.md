@@ -1,6 +1,6 @@
 <p align="center">
-    <a href="http://www.boomcms.net" target="_blank">
-        <img src="http://www.boomcms.net/img/logo.png" alt="BoomCMS logo">
+    <a href="https://www.boomcms.net" target="_blank">
+        <img src="https://www.boomcms.net/vendor/boomcms/boom-core/img/logo.png" alt="BoomCMS logo">
     </a>
 </p>
 
