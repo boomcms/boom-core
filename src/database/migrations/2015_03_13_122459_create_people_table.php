@@ -21,6 +21,16 @@ class CreatePeopleTable extends Migration
             $table->boolean('superuser')->default(false);
             $table->rememberToken();
             $table->unique('email', 'deleted_at');
+            $table->softDeletes();
+            $table->integer('deleted_by')->unsigned()->nullable();
+            $table->timestamp(Person::ATTR_LAST_LOGIN)->nullable();
+
+            $table
+                ->foreign('deleted_by')
+                ->references('id')
+                ->on('people')
+                ->onDelete('set null');
+            
         });
     }
 
