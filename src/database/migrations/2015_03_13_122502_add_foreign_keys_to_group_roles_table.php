@@ -17,7 +17,7 @@ class AddForeignKeysToGroupRolesTable extends Migration
             $table->foreign('role_id', 'group_roles_ibfk_1')->references('id')->on('roles')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
 
-        Schema::table('groups', function(Blueprint $table) {
+        Schema::table('groups', function (Blueprint $table) {
             $table->foreign('deleted_by')->references('id')->on('people')->onDelete('set null');
         });
     }
