@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\View;
 
 class Editor extends Controller
 {
-    public function postState(Request $request, EditorObject $editor)
+    public function setState(Request $request, EditorObject $editor)
     {
         $state = $request->input('state');
         $numericState = constant(EditorObject::class.'::'.strtoupper($state));
