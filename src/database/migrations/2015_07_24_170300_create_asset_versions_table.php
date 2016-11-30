@@ -37,7 +37,7 @@ class CreateAssetVersionsTable extends Migration
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
 
-            $table->string('extension', 10);
+            $table->string('extension', 10)->nullable();
             $table->string('mimetype', 255);
             $table->text(AssetVersion::ATTR_METADATA)->nullable();
         });
