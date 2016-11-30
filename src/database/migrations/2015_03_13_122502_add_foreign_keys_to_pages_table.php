@@ -14,6 +14,7 @@ class AddForeignKeysToPagesTable extends Migration
     {
         Schema::table('pages', function (Blueprint $table) {
             $table->foreign('feature_image_id', 'pages_ibfk_1')->references('id')->on('assets')->onUpdate('CASCADE')->onDelete('SET NULL');
+            $table->foreign('deleted_by')->references('id')->on('people')->onDelete('set null');
         });
     }
 

@@ -15,7 +15,8 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->smallInteger('id', true)->unsigned();
             $table->string('name', 100)->nullable();
-            $table->boolean('deleted')->nullable()->default(0)->index('groups_deleted');
+            $table->softDeletes();
+            $table->integer('deleted_by')->unsigned()->nullable();
         });
     }
 
