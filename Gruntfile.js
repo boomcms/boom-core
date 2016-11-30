@@ -45,7 +45,6 @@ module.exports = function(grunt) {
 			},
 			dist: {
 	  			src: [
-					'bower_components/modernizr/modernizr.js',
 					'bower_components/jquery/dist/jquery.js',
 					'bower_components/jquery-ui/jquery-ui.js',
 					'bower_components/jquery.serializeJSON/jquery.serializejson.js',
