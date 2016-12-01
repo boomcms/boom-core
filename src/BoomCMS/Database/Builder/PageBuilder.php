@@ -1,15 +1,20 @@
 <?php
 
-namespace BoomCMS\Page;
+namespace BoomCMS\Database\Builder;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Foundation\Finder\Finder as BaseFinder;
-use BoomCMS\Foundation\Query as BaseQuery;
+use BoomCMS\Foundation\Database\Builder;
 use BoomCMS\Support\Facades\Router;
 use Illuminate\Support\Facades\Auth;
 
-class Query extends BaseQuery
+class PageBuilder extends Builder
 {
+    const TITLE = 'version.title';
+    const MANUAL = 'sequence';
+    const DATE = 'visible_from';
+    const EDITED = 'version.created_at';
+
     protected $filterAliases = [
         'acl'                 => Finder\Acl::class,
         'alltags'             => Finder\AllTags::class,
@@ -36,7 +41,7 @@ class Query extends BaseQuery
         'yearandmonth'        => Finder\YearAndMonth::class,
     ];
 
-    public function __construct(array $params)
+    public function __construct(PageInterface $model, array $params)
     {
         // Exclude invisible should be included by default
         // To prevent invisible pages showing up in the site to non CMS users.
@@ -47,14 +52,8 @@ class Query extends BaseQuery
         // Always include the ACL filter.
         $params['acl'] = [Router::getActiveSite(), Auth::user()];
 
+        $this->model = $model;
         $this->params = $params;
-    }
-
-    public function count()
-    {
-        $finder = $this->addFilters(new Finder\Finder(), $this->params);
-
-        return $finder->count();
     }
 
     public function configurePagination(BaseFinder $finder, array $params)
@@ -63,22 +62,14 @@ class Query extends BaseQuery
             list($column, $direction) = explode(' ', strtoupper($params['order']));
 
             if ($column && $direction) {
-                $column = constant(Finder\Finder::class.'::'.$column);
-                $direction = constant(Finder\Finder::class.'::'.$direction);
+                $column = constant(static::class.'::'.$column);
+                $direction = constant(static::class.'::'.$direction);
 
                 $params['order'] = "$column $direction";
             }
         }
 
         return parent::configurePagination($finder, $params);
-    }
-
-    public function getResults()
-    {
-        $finder = $this->addFilters(new Finder\Finder(), $this->params);
-        $finder = $this->configurePagination($finder, $this->params);
-
-        return $finder->findAll();
     }
 
     public function getNextTo(PageInterface $page, $direction)

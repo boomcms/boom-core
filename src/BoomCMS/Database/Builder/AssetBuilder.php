@@ -1,10 +1,10 @@
 <?php
 
-namespace BoomCMS\Core\Asset;
+namespace BoomCMS\Database\Builder;
 
-use BoomCMS\Foundation\Query as BaseQuery;
+use BoomCMS\Foundation\Database\Builder;
 
-class Query extends BaseQuery
+class AssetBuilder extends Builder
 {
     protected $filterAliases = [
         'tag'                        => Finder\Tag::class,
