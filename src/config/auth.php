@@ -13,8 +13,7 @@ return [
     ],
     'providers' => [
         'boomcms' => [
-            'driver' => 'eloquent',
-            'model'  => BoomCMS\Database\Models\Person::class,
+            'driver' => 'boomcms',
         ],
     ],
     'passwords' => [

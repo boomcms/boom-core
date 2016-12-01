@@ -4,9 +4,11 @@ namespace BoomCMS\Tests;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
+use BoomCMS\Repositories\Person as PersonRepository;
 use BoomCMS\Routing\Router;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase;
+use Mockery as m;
 
 abstract class AbstractTestCase extends TestCase
 {
@@ -17,6 +19,8 @@ abstract class AbstractTestCase extends TestCase
      */
     protected $site;
 
+    protected $people;
+
     /**
      * Creates the application.
      *
@@ -25,6 +29,7 @@ abstract class AbstractTestCase extends TestCase
     public function createApplication()
     {
         $this->site = new Site();
+        $this->people = m::mock(PersonRepository::class);
 
         $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
         $app->make(Kernel::class)->bootstrap();
@@ -44,6 +49,13 @@ abstract class AbstractTestCase extends TestCase
             return $this->site;
         });
 
+        $app['config']->set('auth', require __DIR__.'/../src/config/auth.php');
+        $app['config']->set('auth.providers.boomcms.driver', 'boomcms_test');
+
+        $app['auth']->provider('boomcms_test', function() {
+            return $this->people;
+        });
+        
         $app->register(Stubs\BoomCMSServiceProvider::class);
 
         require __DIR__.'/../src/routes.php';
