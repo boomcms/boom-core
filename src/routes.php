@@ -30,7 +30,7 @@ Route::group(['middleware' => [
             Route::get('autocomplete/page-titles', 'Autocomplete@getPageTitles');
 
             Route::get('editor/toolbar', 'Editor@getToolbar');
-            Route::post('editor/state', 'Editor@postState');
+            Route::post('editor/state', ['as' => 'editor.state', 'uses' => 'Editor@postState']);
             Route::post('editor/time', 'Editor@postTime');
 
             Route::get('account', 'Auth\Account@getIndex');
