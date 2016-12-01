@@ -5,7 +5,7 @@ namespace BoomCMS\Foundation\Database;
 use Illuminate\Database\Eloquent\Collection;
 use ReflectionClass;
 
-class Query
+class Builder
 {
     /**
      * @var array
