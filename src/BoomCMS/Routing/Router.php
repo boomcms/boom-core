@@ -61,7 +61,7 @@ class Router
      */
     public function routePage($path)
     {
-        $url = URL::findBySiteAndLocation($this->getActiveSite(), $path);
+        $url = URL::findByLocation($path);
 
         if ($url) {
             $page = $url->getPage();

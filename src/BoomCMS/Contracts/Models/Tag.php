@@ -35,11 +35,4 @@ interface Tag
      * @return $this
      */
     public function setName($name);
-
-    /**
-     * @param Site $site
-     *
-     * @return $this
-     */
-    public function setSite(Site $site);
 }

@@ -464,15 +464,6 @@ interface Page
     public function setSequence($sequence);
 
     /**
-     * Set the site that the page belongs to.
-     *
-     * @param Site $site
-     *
-     * @return $this
-     */
-    public function setSite(Site $site);
-
-    /**
      * @param Template $template
      *
      * @return $this

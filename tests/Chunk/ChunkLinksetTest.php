@@ -24,7 +24,7 @@ class ChunkLinksetTest extends AbstractTestCase
 
         URL::shouldReceive('isAvailable')
             ->once()
-            ->with($this->site, $path)
+            ->with($path)
             ->andReturn(false);
 
         PageFacade::shouldReceive('findByUri')
@@ -44,7 +44,7 @@ class ChunkLinksetTest extends AbstractTestCase
 
         URL::shouldReceive('isAvailable')
             ->once()
-            ->with($this->site, $path)
+            ->with($path)
             ->andReturn(false);
 
         PageFacade::shouldReceive('findByUri')
@@ -66,7 +66,7 @@ class ChunkLinksetTest extends AbstractTestCase
 
         URL::shouldReceive('isAvailable')
             ->once()
-            ->with($this->site, $path)
+            ->with($path)
             ->andReturn(false);
 
         PageFacade::shouldReceive('findByUri')
@@ -95,7 +95,7 @@ class ChunkLinksetTest extends AbstractTestCase
 
         URL::shouldReceive('isAvailable')
             ->once()
-            ->with($this->site, $path)
+            ->with($path)
             ->andReturn(false);
 
         PageFacade::shouldReceive('findByUri')

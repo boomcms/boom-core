@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\People;
 
 use BoomCMS\Database\Models\Group as GroupModel;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use Illuminate\Http\Request;
@@ -17,13 +16,13 @@ class Group extends Controller
         GroupFacade::delete($group);
     }
 
-    public function store(Request $request, Site $site)
+    public function store(Request $request)
     {
         $this->validate($request, [
             GroupModel::ATTR_NAME => 'required',
         ]);
 
-        return GroupFacade::create($site, $request->input('name'));
+        return GroupFacade::create($request->input('name'));
     }
 
     public function update(Request $request, GroupModel $group)

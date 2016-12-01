@@ -8,7 +8,6 @@ use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
 use BoomCMS\Database\Models\Person as Model;
 use BoomCMS\Exceptions\DuplicateEmailException;
-use BoomCMS\Support\Facades\Router;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Str;
@@ -26,12 +25,18 @@ class Person implements PersonRepositoryInterface, UserProvider
     protected $model;
 
     /**
+     * @var SiteInterface
+     */
+    protected $site;
+
+    /**
      * @param Model $model
      */
-    public function __construct(Model $model)
+    public function __construct(Model $model, SiteInterface $site)
     {
         $this->hasher = new Hasher();
         $this->model = $model;
+        $this->site = $site;
     }
 
     public function create(array $credentials)
@@ -114,7 +119,7 @@ class Person implements PersonRepositoryInterface, UserProvider
      */
     public function retrieveByCredentials(array $credentials)
     {
-        $query = $this->model->whereSite(Router::getActiveSite());
+        $query = $this->model->whereSite($this->site);
 
         foreach ($credentials as $key => $value) {
             if (!Str::contains($key, 'password')) {
@@ -143,10 +148,8 @@ class Person implements PersonRepositoryInterface, UserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
-        $site = Router::getActiveSite();
-
         return $this->model
-            ->whereSite($site)
+            ->whereSite($this->site)
             ->where($this->model->getKeyName(), '=', $identifier)
             ->where($this->model->getRememberTokenName(), '=', $token)
             ->first();

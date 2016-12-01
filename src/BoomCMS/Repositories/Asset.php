@@ -9,7 +9,6 @@ use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\Support\File;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Asset implements AssetRepositoryInterface
@@ -47,16 +46,14 @@ class Asset implements AssetRepositoryInterface
         $extension = File::extension($file->getClientOriginalName(), $file->getMimetype());
 
         $version = $this->version->create([
-            'asset_id'  => $asset->getId(),
-            'extension' => $extension,
-            'filesize'  => $file->getClientSize(),
-            'filename'  => $file->getClientOriginalName(),
-            'width'     => $width,
-            'height'    => $height,
-            'edited_at' => time(),
-            'edited_by' => Auth::user()->getId(),
-            'mimetype'  => $file->getMimeType(),
-            'metadata'  => File::exif($file->getRealPath()),
+            'asset_id'   => $asset->getId(),
+            'extension'  => $extension,
+            'filesize'   => $file->getClientSize(),
+            'filename'   => $file->getClientOriginalName(),
+            'width'      => $width,
+            'height'     => $height,
+            'mimetype'   => $file->getMimeType(),
+            'metadata'   => File::exif($file->getRealPath()),
         ]);
 
         $file->move($asset->directory(), $version->id);
@@ -119,8 +116,6 @@ class Asset implements AssetRepositoryInterface
         if ($version && $version->getAssetId() == $asset->getId()) {
             $attrs = $version->toArray();
             unset($attrs['id']);
-            $attrs['edited_at'] = time();
-            $attrs['edited_by'] = Auth::user()->getId();
 
             $version = $this->version->create($attrs);
 

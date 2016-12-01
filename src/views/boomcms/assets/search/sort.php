@@ -1,9 +1,9 @@
 <?php
-    $selected = isset($selected) ? $selected : 'uploaded_time desc';
+    $selected = isset($selected) ? $selected : 'uploaded_at desc';
 
     $options = [
-        'uploaded_time desc',
-        'uploaded_time asc',
+        'uploaded_at desc',
+        'uploaded_at asc',
         'last_modified desc',
         'last_modified asc',
         'title asc',

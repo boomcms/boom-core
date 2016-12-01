@@ -3,8 +3,6 @@
 namespace BoomCMS\Tests\Http\Controllers;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Site;
-use BoomCMS\Database\Models\URL;
 use BoomCMS\Http\Controllers\Page\PageController as Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -21,8 +19,6 @@ class PageControllerTest extends BaseControllerTest
     {
         $this->login();
 
-        $site = new Site();
-        $url = new URL([URL::ATTR_LOCATION => 'test']);
         $parent = m::mock(Page::class)->makePartial();
 
         $page = new Page();
@@ -46,6 +42,6 @@ class PageControllerTest extends BaseControllerTest
             ->with($page->getId())
             ->andReturn($page);
 
-        $this->assertEquals($page, $this->controller->postAdd($site, $parent));
+        $this->assertEquals($page, $this->controller->postAdd($parent));
     }
 }

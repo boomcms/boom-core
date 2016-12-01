@@ -42,6 +42,6 @@ class PdfThumbnailTest extends AbstractTestCase
 
     protected function getAsset($methods = null)
     {
-        return $this->getMock(AssetInterface::class);
+        return $this->createMock(AssetInterface::class);
     }
 }

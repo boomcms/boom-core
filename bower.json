@@ -14,15 +14,14 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.1.3",
+    "jquery": "~3.1.0",
     "datetimepicker": "2.4.5",
-    "jquery-ui": "~1.11.4",
+    "jquery-ui": "~1.12.0",
     "jquery-file-upload": "~9.9.3",
-    "jgrowl": "~1.4.2",
+    "jgrowl": "~1.4.5",
     "pushy": "~0.9.2",
     "tablesorter": "*",
     "wysihtml": "~0.5",
-    "modernizr": "~2.8.3",
     "leaflet": "~0.7.3",
     "caman": "~4.1.2",
     "jcrop": "2.0.0",

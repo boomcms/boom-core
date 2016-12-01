@@ -3,6 +3,7 @@
 namespace BoomCMS\Tests\ServiceProviders;
 
 use BoomCMS\Repositories;
+use BoomCMS\Routing\Router;
 use BoomCMS\ServiceProviders\RepositoryServiceProvider;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Foundation\Application;
@@ -14,31 +15,30 @@ class RepositoryServiceProviderTest extends AbstractTestCase
     public function testRepositoriesAreRegistered()
     {
         $expectations = [
-            'boomcms.repositories.asset'    => Repositories\Asset::class,
-            'boomcms.repositories.group'    => Repositories\Group::class,
-            'boomcms.repositories.page'     => Repositories\Page::class,
-            Repositories\PageVersion::class => Repositories\PageVersion::class,
-            'boomcms.repositories.person'   => Repositories\Person::class,
-            Repositories\Site::class        => Repositories\Site::class,
-            'boomcms.repositories.tag'      => Repositories\Tag::class,
-            'boomcms.repositories.template' => Repositories\Template::class,
-            'boomcms.repositories.url'      => Repositories\URL::class,
+            Repositories\Asset::class,
+            Repositories\Group::class,
+            Repositories\Page::class,
+            Repositories\PageVersion::class,
+            Repositories\Person::class,
+            Repositories\Tag::class,
+            Repositories\Template::class,
+            Repositories\URL::class,
         ];
 
-        $app = m::mock(Application::class);
+        $app = m::mock(Application::class)->makePartial();
 
-        foreach ($expectations as $key => $class) {
+        foreach ($expectations as $class) {
             $app
                 ->shouldReceive('singleton')
                 ->once()
-                ->with($key, m::any());
+                ->with($class, m::any());
         }
 
         $sp = new RepositoryServiceProvider($app);
-        $sp->register();
+        $sp->boot($app->make(Router::class));
 
-        foreach ($expectations as $key => $class) {
-            $this->assertInstanceOf($class, App::offsetGet($key));
+        foreach ($expectations as $class) {
+            $this->assertInstanceOf($class, App::offsetGet($class));
         }
     }
 }

@@ -7,7 +7,6 @@ use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Page as PageRepositoryInterface;
 use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Page\Finder;
-use BoomCMS\Support\Facades\Router;
 use Illuminate\Database\Eloquent\Collection;
 
 class Page implements PageRepositoryInterface
@@ -17,9 +16,19 @@ class Page implements PageRepositoryInterface
      */
     protected $model;
 
-    public function __construct(Model $model)
+    /**
+     * @var SiteInterface
+     */
+    protected $site;
+
+    /**
+     * @param Model         $model
+     * @param SiteInterface $site
+     */
+    public function __construct(Model $model, SiteInterface $site)
     {
         $this->model = $model;
+        $this->site = $site;
     }
 
     public function create(array $attrs = [])
@@ -66,20 +75,7 @@ class Page implements PageRepositoryInterface
      */
     public function findByPrimaryUri($uri)
     {
-        $site = Router::getActiveSite();
-
-        return $this->findBySiteAndPrimaryUri($site, $uri);
-    }
-
-    /**
-     * @param SiteInterface $site
-     * @param array|string  $uri
-     *
-     * @return null|Model|Collection
-     */
-    public function findBySiteAndPrimaryUri(SiteInterface $site, $uri)
-    {
-        $query = $this->model->where(Model::ATTR_SITE, '=', $site->getId());
+        $query = $this->model->where(Model::ATTR_SITE, '=', $this->site->getId());
 
         if (is_array($uri)) {
             return $query->where(Model::ATTR_PRIMARY_URI, 'in', $uri)->get();
@@ -93,29 +89,14 @@ class Page implements PageRepositoryInterface
      *
      * @param array|string $uri
      *
-     * @return Moel|Collection
-     */
-    public function findByUri($uri)
-    {
-        $site = Router::getActiveSite();
-
-        return $this->findBySiteAndUri($site, $uri);
-    }
-
-    /**
-     * Find a page by site and URI.
-     *
-     * @param SiteInterface $site
-     * @param array|string  $uri
-     *
      * @return null|Model|Collection
      */
-    public function findBySiteAndUri(SiteInterface $site, $uri)
+    public function findByUri($uri)
     {
         $query = $this->model
             ->join('page_urls', 'page_urls.page_id', '=', 'pages.id')
             ->select('pages.*')
-            ->where('pages.'.Model::ATTR_SITE, '=', $site->getId());
+            ->where('pages.'.Model::ATTR_SITE, '=', $this->site->getId());
 
         if (is_array($uri)) {
             return $query->where('location', 'in', $uri)->get();

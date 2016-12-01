@@ -10,7 +10,7 @@ class Finder extends BaseFinder
     const TITLE = 'version.title';
     const MANUAL = 'sequence';
     const DATE = 'visible_from';
-    const EDITED = 'edited_time';
+    const EDITED = 'version.created_at';
 
     public function __construct()
     {

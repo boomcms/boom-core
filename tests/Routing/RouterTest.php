@@ -69,8 +69,6 @@ class RouterTest extends AbstractTestCase
 
     public function testRoutePageByPrimaryUri()
     {
-        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
-
         Editor::shouldReceive('isDisabled')
             ->once()
             ->andReturn(true);
@@ -90,8 +88,8 @@ class RouterTest extends AbstractTestCase
         $url->shouldReceive('matches')->andReturn(true);
         $page->shouldReceive('url')->andReturn($url);
 
-        URLFacade::shouldReceive('findBySiteAndLocation')
-            ->with($this->router->getActiveSite(), $this->uri)
+        URLFacade::shouldReceive('findByLocation')
+            ->with($this->uri)
             ->once()
             ->andReturn($url);
 
@@ -107,10 +105,8 @@ class RouterTest extends AbstractTestCase
     {
         $this->setExpectedException(NotFoundHttpException::class);
 
-        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
-
-        URLFacade::shouldReceive('findBySiteAndLocation')
-            ->with($this->router->getActiveSite(), $this->uri)
+        URLFacade::shouldReceive('findByLocation')
+            ->with($this->uri)
             ->once()
             ->andReturnNull();
 
@@ -120,8 +116,6 @@ class RouterTest extends AbstractTestCase
     public function testRouteInvisiblePageIsNotFoundWhenEditorDisabled()
     {
         $this->setExpectedException(NotFoundHttpException::class);
-
-        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
 
         Editor::shouldReceive('isDisabled')
             ->once()
@@ -139,8 +133,8 @@ class RouterTest extends AbstractTestCase
             ->once()
             ->andReturn($page);
 
-        URLFacade::shouldReceive('findBySiteAndLocation')
-            ->with($this->router->getActiveSite(), $this->uri)
+        URLFacade::shouldReceive('findByLocation')
+            ->with($this->uri)
             ->once()
             ->andReturn($url);
 
@@ -149,8 +143,6 @@ class RouterTest extends AbstractTestCase
 
     public function testRouteInvisiblePageIsFoundWhenEditorEnabled()
     {
-        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
-
         Editor::shouldReceive('isDisabled')
             ->once()
             ->andReturn(false);
@@ -171,8 +163,8 @@ class RouterTest extends AbstractTestCase
             ->shouldReceive('url')
             ->andReturn($url);
 
-        URLFacade::shouldReceive('findBySiteAndLocation')
-            ->with($this->router->getActiveSite(), $this->uri)
+        URLFacade::shouldReceive('findByLocation')
+            ->with($this->uri)
             ->once()
             ->andReturn($url);
 
@@ -188,16 +180,14 @@ class RouterTest extends AbstractTestCase
     {
         $this->setExpectedException(GoneHttpException::class);
 
-        $this->router->shouldReceive('getActiveSite')->andReturn(new Site());
-
         $url = m::mock(URL::class);
         $url
             ->shouldReceive('getPage')
             ->once()
             ->andReturnNull();
 
-        URLFacade::shouldReceive('findBySiteAndLocation')
-            ->with($this->router->getActiveSite(), $this->uri)
+        URLFacade::shouldReceive('findByLocation')
+            ->with($this->uri)
             ->once()
             ->andReturn($url);
 

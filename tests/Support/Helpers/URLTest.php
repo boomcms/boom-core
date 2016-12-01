@@ -2,8 +2,6 @@
 
 namespace BoomCMS\Tests\Support\Helpers;
 
-use BoomCMS\Database\Models\Site;
-use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use BoomCMS\Support\Helpers\URL;
 use BoomCMS\Tests\AbstractTestCase;
@@ -13,17 +11,9 @@ use Mockery as m;
 
 class URLTest extends AbstractTestCase
 {
-    /**
-     * @var Site
-     */
-    protected $site;
-
     public function setUp()
     {
         parent::setUp();
-
-        $this->site = new Site([Site::ATTR_HOSTNAME => $this->baseUrl]);
-        Router::shouldReceive('getActiveSite')->andReturn($this->site);
 
         $request = m::mock(Request::class)->makePartial();
         $request->shouldReceive('getHttpHost')->andReturn($this->baseUrl);
@@ -38,10 +28,10 @@ class URLTest extends AbstractTestCase
 
         URLFacade::shouldReceive('isAvailable')
             ->once()
-            ->with($this->site, $url)
+            ->with($url)
             ->andReturn(true);
 
-        $this->assertEquals($url, URL::fromTitle($this->site, $base, $title));
+        $this->assertEquals($url, URL::fromTitle($base, $title));
     }
 
     public function testGetInternalPath()
@@ -71,7 +61,7 @@ class URLTest extends AbstractTestCase
         foreach ($urls as $url => $path) {
             URLFacade::shouldReceive('isAvailable')
                 ->once()
-                ->with($this->site, $path)
+                ->with($path)
                 ->andReturn(false);
 
             $this->assertTrue(URL::isInternal($url));
@@ -87,7 +77,7 @@ class URLTest extends AbstractTestCase
 
         URLFacade::shouldReceive('isAvailable')
             ->twice()
-            ->with($this->site, '404')
+            ->with('404')
             ->andReturn(true);
 
         foreach ($urls as $url) {

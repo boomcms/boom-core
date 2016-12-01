@@ -28,7 +28,7 @@ class Acl extends Controller
     {
         $this->auth($page);
 
-        PageFacade::recurse($page, function ($p) use ($group) {
+        PageFacade::recurse($page, function (Page $p) use ($group) {
             $p->removeAclGroupId($group->getId());
         });
     }
@@ -59,7 +59,7 @@ class Acl extends Controller
     {
         $this->auth($page);
 
-        PageFacade::recurse($page, function ($p) use ($group) {
+        PageFacade::recurse($page, function (Page $p) use ($group) {
             $p->addAclGroupId($group->getId());
         });
     }
@@ -74,7 +74,7 @@ class Acl extends Controller
 
         $enabled = ($request->input('enabled') === '1');
 
-        PageFacade::recurse($page, function ($p) use ($enabled) {
+        PageFacade::recurse($page, function (Page $p) use ($enabled) {
             $p->setAclEnabled($enabled);
 
             PageFacade::save($p);

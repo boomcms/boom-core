@@ -11,6 +11,6 @@ class PendingApproval extends Filter
     {
         return $query
             ->where('pending_approval', '=', true)
-            ->orderBy('version.edited_time', 'desc');
+            ->orderBy('version.created_at', 'desc');
     }
 }

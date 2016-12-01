@@ -54,7 +54,7 @@ class InternalTest extends AbstractTestCase
 
     public function testGetTitleReturnsPageTitle()
     {
-        $page = $this->getMock(Page::class, ['getTitle']);
+        $page = $this->createMock(Page::class, ['getTitle']);
         $page->expects($this->any())
             ->method('getTitle')
             ->will($this->returnValue('test'));

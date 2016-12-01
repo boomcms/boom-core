@@ -36,27 +36,27 @@ class AssetTest extends AbstractTestCase
     {
         $namespace = 'BoomCMS\Http\Controllers\ViewAsset\\';
 
-        $asset = $this->getMock(Asset::class, ['getExtension']);
+        $asset = $this->createMock(Asset::class, ['getExtension']);
         $asset->expects($this->any())->method('getExtension')->will($this->returnValue(null));
 
         $this->assertEquals(null, AssetHelper::controller($asset));
 
-        $pdf = $this->getMock(Asset::class, ['getExtension']);
+        $pdf = $this->createMock(Asset::class, ['getExtension']);
         $pdf->expects($this->any())->method('getExtension')->will($this->returnValue('pdf'));
 
         $this->assertEquals($namespace.'Pdf', AssetHelper::controller($pdf));
 
-        $image = $this->getMock(Asset::class, ['getType', 'getExtension']);
+        $image = $this->createMock(Asset::class, ['getType', 'getExtension']);
         $image->expects($this->any())->method('getExtension')->will($this->returnValue('png'));
         $image->expects($this->any())->method('getType')->will($this->returnValue('image'));
         $this->assertEquals($namespace.'Image', AssetHelper::controller($image));
 
-        $tiff = $this->getMock(Asset::class, ['getType', 'getExtension']);
+        $tiff = $this->createMock(Asset::class, ['getType', 'getExtension']);
         $tiff->expects($this->any())->method('getType')->will($this->returnValue('image'));
         $tiff->expects($this->any())->method('getExtension')->will($this->returnValue('tiff'));
         $this->assertEquals($namespace.'Tiff', AssetHelper::controller($tiff));
 
-        $video = $this->getMock(Asset::class, ['getType', 'getExtension']);
+        $video = $this->createMock(Asset::class, ['getType', 'getExtension']);
         $video->expects($this->any())->method('getExtension')->will($this->returnValue('mp4'));
         $video->expects($this->any())->method('getType')->will($this->returnValue('video'));
         $this->assertEquals($namespace.'Video', AssetHelper::controller($video));

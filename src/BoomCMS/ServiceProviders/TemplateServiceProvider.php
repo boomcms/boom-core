@@ -3,6 +3,7 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Core\Template\Manager as TemplateManager;
+use BoomCMS\Repositories\Template;
 use BoomCMS\Support\Helpers\Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,7 +18,7 @@ class TemplateServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $manager = new TemplateManager($this->app['files'], $this->app['boomcms.repositories.template'], $this->app['cache.store']);
+        $manager = new TemplateManager($this->app['files'], $this->app[Template::class], $this->app['cache.store']);
 
         $this->app->singleton('boomcms.template.manager', function () use ($manager) {
             return $manager;

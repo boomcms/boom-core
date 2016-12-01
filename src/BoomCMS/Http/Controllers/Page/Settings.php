@@ -100,7 +100,7 @@ class Settings extends Controller
      */
     public function getHistory(Page $page)
     {
-        $this->authorize('editFeature', $page);
+        $this->authorize('edit', $page);
 
         return view("$this->viewPrefix.history", [
             'versions' => PageVersionFacade::history($page),

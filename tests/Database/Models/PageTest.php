@@ -550,17 +550,6 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals(URLHelper::sanitise($url), $page->getAttribute(Page::ATTR_PRIMARY_URI));
     }
 
-    public function testSetSite()
-    {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
-
-        $page = new Page();
-        $page->setSite($site);
-
-        $this->assertEquals($site->getId(), $page->{Page::ATTR_SITE});
-    }
-
     public function testSetVisibleAtAnyTime()
     {
         $values = [

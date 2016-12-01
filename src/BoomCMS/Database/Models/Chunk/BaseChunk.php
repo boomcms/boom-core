@@ -15,7 +15,7 @@ class BaseChunk extends Model
             ->select($this->table.'.slotname')
             ->where($this->table.'.page_vid', '>=', $version->getId())
             ->where($this->table.'.page_id', '=', $version->getPageId())
-            ->leftJoin($this->table.' as c1', function (JoinClause $join) use ($version) {
+            ->leftJoin($this->table.' as c1', function (JoinClause $join) {
                 $join
                     ->on('c1.page_vid', '>', $this->table.'.page_vid')
                     ->on('c1.page_id', '=', $this->table.'.page_id')

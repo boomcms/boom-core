@@ -40,7 +40,7 @@ class PageVersionTest extends AbstractTestCase
         $this->model
             ->shouldReceive('orderBy')
             ->once()
-            ->with(VersionModel::ATTR_EDITED_AT, 'desc')
+            ->with(VersionModel::ATTR_CREATED_AT, 'desc')
             ->andReturnSelf();
 
         $this->model

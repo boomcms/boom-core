@@ -2,33 +2,35 @@
 
 namespace BoomCMS\Http\Controllers\Auth;
 
-use BoomCMS\Auth\Hasher;
 use BoomCMS\Http\Controllers\Controller;
-use BoomCMS\Support\Facades\Person;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 
 class PasswordReset extends Controller
 {
     use ResetsPasswords;
 
-    protected $subject = 'BoomCMS Password Reset';
-    protected $linkRequestView = 'boomcms::auth.password';
     protected $resetView = 'boomcms::auth.reset';
-    protected $redirectPath = '/boomcms';
 
     /**
-     * Reset the given user's password.
+     * Display the password reset view for the given token.
      *
-     * @param \Illuminate\Contracts\Auth\CanResetPassword $user
-     * @param string                                      $password
+     * If no token is present, display the link request form.
      *
-     * @return void
+     * @param Request     $request
+     * @param string|null $token
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function resetPassword($user, $password)
+    public function showResetForm(Request $request, $token = null)
     {
-        $user->password = (new Hasher())->make($password);
+        return view($this->resetView)->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
 
-        Person::save($user);
-        auth()->login($user);
+    public function redirectPath()
+    {
+        return route('dashboard');
     }
 }

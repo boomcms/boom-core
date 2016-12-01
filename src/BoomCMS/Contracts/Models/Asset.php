@@ -160,15 +160,6 @@ interface Asset
     public function setDescription($description);
 
     /**
-     * Set the site that the asset belongs to.
-     *
-     * @param Site $site
-     *
-     * @return $this
-     */
-    public function setSite(Site $site);
-
-    /**
      * @param int $assetId
      *
      * @return $this
@@ -188,15 +179,6 @@ interface Asset
      * @return $this
      */
     public function setType($type);
-
-    /**
-     * @param Person $person
-     *
-     * @return $this
-     */
-    public function setUploadedBy(Person $person);
-
-    public function setUploadedTime(DateTime $time);
 
     /**
      * @param AssetVersion
