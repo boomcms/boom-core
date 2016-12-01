@@ -52,10 +52,10 @@ abstract class AbstractTestCase extends TestCase
         $app['config']->set('auth', require __DIR__.'/../src/config/auth.php');
         $app['config']->set('auth.providers.boomcms.driver', 'boomcms_test');
 
-        $app['auth']->provider('boomcms_test', function() {
+        $app['auth']->provider('boomcms_test', function () {
             return $this->people;
         });
-        
+
         $app->register(Stubs\BoomCMSServiceProvider::class);
 
         require __DIR__.'/../src/routes.php';
