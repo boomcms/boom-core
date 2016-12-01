@@ -47362,113 +47362,7 @@ M:11},qf=Math.abs,rf=wb.prototype;
 // FORMATTING
 // PARSING
 // Side effect imports
-return rf.abs=Wc,rf.add=Yc,rf.subtract=Zc,rf.as=cd,rf.asMilliseconds=$e,rf.asSeconds=_e,rf.asMinutes=af,rf.asHours=bf,rf.asDays=cf,rf.asWeeks=df,rf.asMonths=ef,rf.asYears=ff,rf.valueOf=dd,rf._bubble=_c,rf.get=fd,rf.milliseconds=gf,rf.seconds=hf,rf.minutes=jf,rf.hours=kf,rf.days=lf,rf.weeks=hd,rf.months=mf,rf.years=nf,rf.humanize=md,rf.toISOString=nd,rf.toString=nd,rf.toJSON=nd,rf.locale=lc,rf.localeData=mc,rf.toIsoString=x("toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)",nd),rf.lang=Re,U("X",0,0,"unix"),U("x",0,0,"valueOf"),Z("x",Vd),Z("X",Yd),ba("X",function(a,b,c){c._d=new Date(1e3*parseFloat(a,10))}),ba("x",function(a,b,c){c._d=new Date(u(a))}),a.version="2.17.0",b(sb),a.fn=Xe,a.min=ub,a.max=vb,a.now=Le,a.utc=k,a.unix=Lc,a.months=Rc,a.isDate=g,a.locale=$a,a.invalid=o,a.duration=Ob,a.isMoment=s,a.weekdays=Tc,a.parseZone=Mc,a.localeData=bb,a.isDuration=xb,a.monthsShort=Sc,a.weekdaysMin=Vc,a.defineLocale=_a,a.updateLocale=ab,a.locales=cb,a.weekdaysShort=Uc,a.normalizeUnits=K,a.relativeTimeRounding=kd,a.relativeTimeThreshold=ld,a.calendarFormat=Ub,a.prototype=Xe,a});;/*! Pushy - v0.9.2 - 2014-9-13
-* Pushy is a responsive off-canvas navigation menu using CSS transforms & transitions.
-* https://github.com/christophery/pushy/
-* by Christopher Yee */
-
-$(function() {
-	var pushy = $('.pushy'), //menu css class
-		body = $('body'),
-		container = $('#container'), //container css class
-		push = $('.push'), //css class to add pushy capability
-		siteOverlay = $('.site-overlay'), //site overlay
-		pushyClass = "pushy-left pushy-open", //menu position & menu open class
-		pushyActiveClass = "pushy-active", //css class to toggle site overlay
-		containerClass = "container-push", //container open class
-		pushClass = "push-push", //css class to add pushy capability
-		menuBtn = $('.menu-btn, .pushy a'), //css classes to toggle the menu
-		menuSpeed = 200, //jQuery fallback menu speed
-		menuWidth = pushy.width() + "px"; //jQuery fallback menu width
-
-	function togglePushy(){
-		body.toggleClass(pushyActiveClass); //toggle site overlay
-		pushy.toggleClass(pushyClass);
-		container.toggleClass(containerClass);
-		push.toggleClass(pushClass); //css class to add pushy capability
-	}
-
-	function openPushyFallback(){
-		body.addClass(pushyActiveClass);
-		pushy.animate({left: "0px"}, menuSpeed);
-		container.animate({left: menuWidth}, menuSpeed);
-		push.animate({left: menuWidth}, menuSpeed); //css class to add pushy capability
-	}
-
-	function closePushyFallback(){
-		body.removeClass(pushyActiveClass);
-		pushy.animate({left: "-" + menuWidth}, menuSpeed);
-		container.animate({left: "0px"}, menuSpeed);
-		push.animate({left: "0px"}, menuSpeed); //css class to add pushy capability
-	}
-
-	//checks if 3d transforms are supported removing the modernizr dependency
-	cssTransforms3d = (function csstransforms3d(){
-		var el = document.createElement('p'),
-		supported = false,
-		transforms = {
-		    'webkitTransform':'-webkit-transform',
-		    'OTransform':'-o-transform',
-		    'msTransform':'-ms-transform',
-		    'MozTransform':'-moz-transform',
-		    'transform':'transform'
-		};
-
-		// Add it to the body to get the computed style
-		document.body.insertBefore(el, null);
-
-		for(var t in transforms){
-		    if( el.style[t] !== undefined ){
-		        el.style[t] = 'translate3d(1px,1px,1px)';
-		        supported = window.getComputedStyle(el).getPropertyValue(transforms[t]);
-		    }
-		}
-
-		document.body.removeChild(el);
-
-		return (supported !== undefined && supported.length > 0 && supported !== "none");
-	})();
-
-	if(cssTransforms3d){
-		//toggle menu
-		menuBtn.click(function() {
-			togglePushy();
-		});
-		//close menu when clicking site overlay
-		siteOverlay.click(function(){ 
-			togglePushy();
-		});
-	}else{
-		//jQuery fallback
-		pushy.css({left: "-" + menuWidth}); //hide menu by default
-		container.css({"overflow-x": "hidden"}); //fixes IE scrollbar issue
-
-		//keep track of menu state (open/close)
-		var state = true;
-
-		//toggle menu
-		menuBtn.click(function() {
-			if (state) {
-				openPushyFallback();
-				state = false;
-			} else {
-				closePushyFallback();
-				state = true;
-			}
-		});
-
-		//close menu when clicking site overlay
-		siteOverlay.click(function(){ 
-			if (state) {
-				openPushyFallback();
-				state = false;
-			} else {
-				closePushyFallback();
-				state = true;
-			}
-		});
-	}
-});;(function (root) {/*global exports, Intl*/
+return rf.abs=Wc,rf.add=Yc,rf.subtract=Zc,rf.as=cd,rf.asMilliseconds=$e,rf.asSeconds=_e,rf.asMinutes=af,rf.asHours=bf,rf.asDays=cf,rf.asWeeks=df,rf.asMonths=ef,rf.asYears=ff,rf.valueOf=dd,rf._bubble=_c,rf.get=fd,rf.milliseconds=gf,rf.seconds=hf,rf.minutes=jf,rf.hours=kf,rf.days=lf,rf.weeks=hd,rf.months=mf,rf.years=nf,rf.humanize=md,rf.toISOString=nd,rf.toString=nd,rf.toJSON=nd,rf.locale=lc,rf.localeData=mc,rf.toIsoString=x("toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)",nd),rf.lang=Re,U("X",0,0,"unix"),U("x",0,0,"valueOf"),Z("x",Vd),Z("X",Yd),ba("X",function(a,b,c){c._d=new Date(1e3*parseFloat(a,10))}),ba("x",function(a,b,c){c._d=new Date(u(a))}),a.version="2.17.0",b(sb),a.fn=Xe,a.min=ub,a.max=vb,a.now=Le,a.utc=k,a.unix=Lc,a.months=Rc,a.isDate=g,a.locale=$a,a.invalid=o,a.duration=Ob,a.isMoment=s,a.weekdays=Tc,a.parseZone=Mc,a.localeData=bb,a.isDuration=xb,a.monthsShort=Sc,a.weekdaysMin=Vc,a.defineLocale=_a,a.updateLocale=ab,a.locales=cb,a.weekdaysShort=Uc,a.normalizeUnits=K,a.relativeTimeRounding=kd,a.relativeTimeThreshold=ld,a.calendarFormat=Ub,a.prototype=Xe,a});;(function (root) {/*global exports, Intl*/
 /**
  * This script gives you the zone info key representing your device's time zone setting.
  *
@@ -51642,9 +51536,9 @@ $.widget( 'boom.pageToolbar', {
                 self.showSettings('template');
             })
             .on('click', '#b-menu-button', function() {
-                var $body = $('body');
+                $('body').toggleClass('menu-open');
 
-                if ($body.hasClass('pushy-active')) {
+                if ($('body').hasClass('menu-open')) {
                     $(top.window).trigger('boom:dialog:open');
                 } else {
                     $(top.window).trigger('boom:dialog:close');
@@ -51773,11 +51667,7 @@ $.widget( 'boom.pageToolbar', {
     },
 
     draftsSaved: function(event, data) {
-        if (data.action === 'revert') {
-            top.location.reload();
-        } else {
-            this.status.set(data.status);
-        }
+        this.status.set(data.status);
     },
 
     findButtons: function() {

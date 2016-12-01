@@ -59,9 +59,9 @@ $.widget( 'boom.pageToolbar', {
                 self.showSettings('template');
             })
             .on('click', '#b-menu-button', function() {
-                var $body = $('body');
+                $('body').toggleClass('menu-open');
 
-                if ($body.hasClass('pushy-active')) {
+                if ($('body').hasClass('menu-open')) {
                     $(top.window).trigger('boom:dialog:open');
                 } else {
                     $(top.window).trigger('boom:dialog:close');
