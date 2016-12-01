@@ -3,8 +3,8 @@
 namespace BoomCMS\Database\Builder;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
-use BoomCMS\Foundation\Finder\Finder as BaseFinder;
 use BoomCMS\Foundation\Database\Builder;
+use BoomCMS\Foundation\Finder\Finder as BaseFinder;
 use BoomCMS\Support\Facades\Router;
 use Illuminate\Support\Facades\Auth;
 
