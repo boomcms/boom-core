@@ -190,11 +190,7 @@ $.widget( 'boom.pageToolbar', {
     },
 
     draftsSaved: function(event, data) {
-        if (data.action === 'revert') {
-            top.location.reload();
-        } else {
-            this.status.set(data.status);
-        }
+        this.status.set(data.status);
     },
 
     findButtons: function() {
