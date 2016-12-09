@@ -25,8 +25,9 @@ class PopulateRolesTable extends Migration
         ['name' => 'edit', 'tree' => true],
         ['name' => 'editUrls', 'tree' => true],
         ['name' => 'editAcl', 'tree' => true],
-        ['name' => 'uploadAssets', 'tree' => false]
+        ['name' => 'uploadAssets', 'tree' => false],
     ];
+
     /**
      * Run the migrations.
      *

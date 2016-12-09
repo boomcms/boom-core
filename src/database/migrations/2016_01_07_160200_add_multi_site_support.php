@@ -1,6 +1,5 @@
 <?php
 
-use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Person;
