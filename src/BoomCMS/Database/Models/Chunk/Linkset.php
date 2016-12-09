@@ -43,6 +43,7 @@ class Linkset extends BaseChunk
             $link = ($link instanceof Linkset\Link) ? $link : new Linkset\Link($link);
         }
 
+        $this->attributes['links'] = $links;
         $this->links()->saveMany($links);
     }
 

@@ -23,7 +23,7 @@ class Slideshow extends BaseChunk
         return View::make($this->viewPrefix."slideshow/$this->template", [
             'title'  => $this->getTitle(),
             'slides' => $this->getSlides(),
-        ])->render();
+        ]);
     }
 
     public function hasContent()

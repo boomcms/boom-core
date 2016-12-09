@@ -39,7 +39,7 @@ class Asset extends BaseChunk
             'asset'   => function () {
                 return $this->getAsset();
             },
-        ])->render();
+        ]);
     }
 
     /**

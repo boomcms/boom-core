@@ -27,7 +27,7 @@ class Linkset extends BaseChunk
         return View::make($this->viewPrefix."linkset.$this->template", [
             'title' => $this->getTitle(),
             'links' => $this->getLinks(),
-        ])->render();
+        ]);
     }
 
     /**

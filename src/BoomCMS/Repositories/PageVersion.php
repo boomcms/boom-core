@@ -73,17 +73,13 @@ class PageVersion implements PageVersionRepositoryInterface
 
             foreach ($chunks as $chunk) {
                 $old = Chunk::find($type, $chunk->slotname, $version);
+                $attrs = ($old === null) ? [] : array_except($old->toArray(), ['id', 'page_vid']);
 
-                $new = new $className();
-                $new->page_id = $newVersion->getPageId();
-                $new->slotname = $chunk->slotname;
-                $new->page_vid = $newVersion->getId();
-                $new->save();
+                $attrs['page_id'] = $newVersion->getPageId();
+                $attrs['slotname'] = $chunk->slotname;
+                $attrs['page_vid'] = $newVersion->getId();
 
-                if ($old !== null) {
-                    $new->fill(array_except($old->toArray(), ['page_vid']));
-                    $new->save();
-                }
+                $className::create($attrs);
             }
         }
 
