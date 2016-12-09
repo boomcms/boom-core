@@ -1,6 +1,7 @@
 <?php
 
 use BoomCMS\Http\Middleware;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
@@ -156,7 +157,12 @@ Route::group(['middleware' => [
     });
 });
 
-Route::group(['prefix' => 'asset'], function () {
+Route::group([
+    'prefix'     => 'asset',
+    'middleware' => [
+        SubstituteBindings::class,
+    ],
+], function () {
     Route::get('version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
         'middleware' => ['web', Middleware\RequireLogin::class],
