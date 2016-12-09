@@ -78,7 +78,7 @@ class Collection
                 ->havingRaw(DB::raw('count(distinct asset_id) ='.count($this->getAssetIds())));
         }
 
-        return $query->lists('tag');
+        return $query->pluck('tag');
     }
 
     /**

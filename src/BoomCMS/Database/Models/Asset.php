@@ -21,7 +21,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     const ATTR_TITLE = 'title';
     const ATTR_DESCRIPTION = 'description';
     const ATTR_TYPE = 'type';
-    const ATTR_UPLOADED_BY = 'created_by';
+    const ATTR_CREATED_BY = 'created_by';
     const ATTR_UPLOADED_AT = 'created_at';
     const ATTR_THUMBNAIL_ID = 'thumbnail_asset_id';
     const ATTR_CREDITS = 'credits';
@@ -391,7 +391,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
 
     public function uploadedBy()
     {
-        return $this->belongsTo(Person::class, 'uploaded_by');
+        return $this->belongsTo(Person::class, 'created_by');
     }
 
     public function versions()

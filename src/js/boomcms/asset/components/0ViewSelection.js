@@ -65,7 +65,7 @@
                     selection.download(filename);
                 });
 
-            this.$('.b-settings-menu a[href^=#]').boomTabs();
+            this.$('.b-settings-menu a[href^="#"]').boomTabs();
             this.$('time').localTime();
         },
 

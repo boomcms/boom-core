@@ -50128,7 +50128,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getEditedAt: function() {
-            return this.get('edited_at');
+            return this.get('updated_at');
         },
 
         getEmbedCode: function() {
@@ -55419,7 +55419,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     selection.download(filename);
                 });
 
-            this.$('.b-settings-menu a[href^=#]').boomTabs();
+            this.$('.b-settings-menu a[href^="#"]').boomTabs();
             this.$('time').localTime();
         },
 

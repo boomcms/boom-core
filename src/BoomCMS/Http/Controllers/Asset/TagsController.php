@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Core\Asset\Collection;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -26,9 +27,9 @@ class TagsController extends Controller
     /**
      * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct(Site $site, Request $request)
     {
-        parent::__construct($request);
+        parent::__construct($site);
 
         $this->collection = new Collection($request->input('assets', []));
         $this->tag = $request->input('tag');
