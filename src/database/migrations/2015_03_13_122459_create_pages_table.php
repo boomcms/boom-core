@@ -43,6 +43,10 @@ class CreatePagesTable extends Migration
 
             $table->softDeletes();
             $table->integer('deleted_by')->unsigned()->nullable();
+            $table->tinyinteger(Page::ATTR_ADD_BEHAVIOUR)->default(1);
+            $table->tinyinteger(Page::ATTR_CHILD_ADD_BEHAVIOUR)->default(1);
+            $table->index(['deleted_at', 'parent_id', 'visible']);
+            $table->boolean(Page::ATTR_ENABLE_ACL)->default(false);
         });
     }
 

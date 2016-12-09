@@ -60,26 +60,18 @@ class AddMultiSiteSupport extends Migration
                 ->on('sites')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
+
+            $table->unique([Group::ATTR_SITE, Group::ATTR_NAME, 'deleted_at']);
         });
 
-        Schema::create('asset_site', function (Blueprint $table) {
-            $table
-                ->integer('asset_id')
-                ->unsigned()
-                ->references(Asset::ATTR_ID)
-                ->on('assets')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
-
+        Schema::table('assets', function (Blueprint $table) {
             $table
                 ->integer('site_id')
                 ->unsigned()
-                ->references(Site::ATTR_ID)
+                ->references('id')
                 ->on('sites')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
-
-            $table->unique(['asset_id', 'site_id']);
         });
 
         Schema::create('person_site', function (Blueprint $table) {
@@ -110,6 +102,9 @@ class AddMultiSiteSupport extends Migration
                 ->on('sites')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
+
+            $table->dropIndex('tags_group_name');
+            $table->unique(['site_id', 'name', 'group']);
         });
 
         $filename = storage_path().'/boomcms/settings.json';

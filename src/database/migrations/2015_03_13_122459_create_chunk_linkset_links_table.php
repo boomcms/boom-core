@@ -19,6 +19,7 @@ class CreateChunkLinksetLinksTable extends Migration
             $table->string('url')->nullable();
             $table->string('title', 100)->nullable();
             $table->integer('asset_id')->unsigned()->nullable();
+            $table->text('text')->nullable();
         });
     }
 

@@ -12,12 +12,14 @@ class CreateChunkTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('chunk_tags', function (Blueprint $table) {
+        Schema::create('chunk_libraries', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slotname', 50);
             $table->integer('page_vid')->unsigned();
-            $table->string('tag', 50);
             $table->unique(['page_vid', 'slotname'], 'chunk_tags_page_vid_slotname');
+            $table->integer('page_id')->unsigned();
+            $table->index(['page_id', 'page_vid']);
+            $table->text('params', 255);
         });
     }
 

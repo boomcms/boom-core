@@ -19,12 +19,20 @@ class CreatePageVersionsTable extends Migration
             $table->string('title', 100)->nullable()->default('Untitled');
             $table->smallInteger('edited_by')->unsigned()->nullable()->index('edited_by');
             $table->integer('edited_time')->unsigned()->nullable();
-            $table->boolean('published')->nullable()->default(0);
             $table->integer('embargoed_until')->unsigned()->nullable();
             $table->boolean('pending_approval')->nullable()->default(0)->index('page_versions_pending_approval');
-            $table->index(['edited_time', 'page_id'], 'page_v_aduit_time_rid_deleted');
-            $table->index(['title', 'page_id'], 'page_v_title_rid_deleted');
-            $table->index(['page_id', 'published', 'embargoed_until'], 'page_versions_page_id_published_embargoed_until');
+            $table->index('title');
+            $table->index(['page_id', 'edited_time', 'embargoed_until']);
+            $table->string(PageVersion::ATTR_CHUNK_TYPE, 15);
+            $table->integer(PageVersion::ATTR_CHUNK_ID)->unsigned();
+
+            $table
+                ->integer('restored_from')
+                ->unsigned()
+                ->references('id')
+                ->on('page_versions')
+                ->onUpdate('CASCADE')
+                ->onDelete('SET NULL');
         });
     }
 

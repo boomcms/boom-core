@@ -20,7 +20,8 @@ class CreatePeopleTable extends Migration
             $table->string('password', 60)->nullable();
             $table->boolean('superuser')->default(false);
             $table->rememberToken();
-            $table->unique('email', 'deleted_at');
+            $table->unique(['email', 'deleted_at']);
+            $table->index(['deleted_at', 'name']);
             $table->softDeletes();
             $table->integer('deleted_by')->unsigned()->nullable();
             $table->timestamp('last_login')->nullable();

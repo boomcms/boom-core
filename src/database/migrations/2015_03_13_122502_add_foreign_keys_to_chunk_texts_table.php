@@ -14,6 +14,7 @@ class AddForeignKeysToChunkTextsTable extends Migration
     {
         Schema::table('chunk_texts', function (Blueprint $table) {
             $table->foreign('page_vid', 'chunk_texts_ibfk_1')->references('id')->on('page_versions')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('page_id')->references('id')->on('pages')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

@@ -19,6 +19,8 @@ class CreateChunkTimestampsTable extends Migration
             $table->string('slotname', 50)->nullable();
             $table->integer('page_vid')->unsigned()->nullable()->index('page_vid');
             $table->unique(['slotname', 'page_vid'], 'slotname');
+            $table->integer('page_id')->unsigned();
+            $table->index(['page_id', 'page_vid']);
         });
     }
 

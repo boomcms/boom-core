@@ -14,6 +14,7 @@ class AddForeignKeysToChunkSlideshowsTable extends Migration
     {
         Schema::table('chunk_slideshows', function (Blueprint $table) {
             $table->foreign('page_vid', 'chunk_slideshows_ibfk_1')->references('id')->on('page_versions')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('page_id')->references('id')->on('pages')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
