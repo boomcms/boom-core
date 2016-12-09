@@ -3,7 +3,6 @@
 use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Person;
-use BoomCMS\Database\Models\Role;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Database\Models\URL;
@@ -128,11 +127,6 @@ class AddMultiSiteSupport extends Migration
             DB::statement("insert into asset_site (asset_id, site_id) select id, '{$site->getId()}' from assets");
             DB::statement("insert into person_site (person_id, site_id) select id, '{$site->getId()}' from people");
         }
-
-        Role::create([
-            'name'        => 'manageSites',
-            'description' => 'Manage sites',
-        ]);
     }
 
     /**
@@ -162,7 +156,5 @@ class AddMultiSiteSupport extends Migration
             $table->dropColumn(Page::ATTR_SITE);
             $table->dropUnique('page_urls_site_id_location');
         });
-
-        Role::where('name', '=', 'manageSites')->delete();
     }
 }
