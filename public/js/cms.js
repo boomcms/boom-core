@@ -50174,7 +50174,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getUploadedTime: function() {
-            return this.get('uploaded_time');
+            return this.get('created_at');
         },
 
         getUrl: function(action, width, height) {
@@ -55761,7 +55761,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         postData: {
             page: 1,
-            order: 'uploaded_time desc'
+            order: 'created_at desc'
         },
 
         addFilter: function(type, value) {

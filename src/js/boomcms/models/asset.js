@@ -71,7 +71,7 @@
         },
 
         getUploadedTime: function() {
-            return this.get('uploaded_time');
+            return this.get('created_at');
         },
 
         getUrl: function(action, width, height) {

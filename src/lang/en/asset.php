@@ -69,8 +69,8 @@ return [
         'uploaded-by'     => 'Filter by uploader',
     ],
     'sort' => [
-        'uploaded_time desc' => 'Upload time: most recent first',
-        'uploaded_time asc'  => 'Upload time: oldest first',
+        'created_at desc'    => 'Upload time: most recent first',
+        'created_at asc'     => 'Upload time: oldest first',
         'last_modified desc' => 'Last modified: most recent first',
         'last_modified asc'  => 'Last modified: oldest first',
         'title asc'          => 'Title A - Z',

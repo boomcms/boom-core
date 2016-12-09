@@ -8,7 +8,7 @@
 
         postData: {
             page: 1,
-            order: 'uploaded_time desc'
+            order: 'created_at desc'
         },
 
         addFilter: function(type, value) {
