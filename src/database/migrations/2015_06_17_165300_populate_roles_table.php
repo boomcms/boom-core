@@ -35,7 +35,7 @@ class PopulateRolesTable extends Migration
      */
     public function up()
     {
-        Role::create($this->roles);
+        Role::insert($this->roles);
     }
 
     /**
