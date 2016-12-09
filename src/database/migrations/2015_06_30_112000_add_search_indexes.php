@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 
 class AddSearchIndexes extends Migration
@@ -30,10 +29,6 @@ class AddSearchIndexes extends Migration
 
         DB::statement('alter table page_versions engine = "MyISAM"');
         DB::statement('CREATE FULLTEXT INDEX title_fulltext on page_versions(title)');
-
-        Schema::table('search_texts', function (Blueprint $table) {
-            $table->index(['page_id', 'embargoed_until']);
-        });
     }
 
     /**

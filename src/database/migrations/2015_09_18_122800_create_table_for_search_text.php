@@ -37,6 +37,7 @@ class CreateTableForSearchText extends Migration
             $table->string('title', 75)->nullable();
             $table->string('standfirst', '255')->null();
             $table->longText('text')->nullable();
+            $table->index(['page_id', 'embargoed_until']);
         });
 
         DB::statement('ALTER TABLE search_texts ENGINE = "MyISAM"');
