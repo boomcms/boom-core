@@ -58,15 +58,6 @@ $.widget( 'boom.pageToolbar', {
             .on('click', '#b-page-template', function() {
                 self.showSettings('template');
             })
-            .on('click', '#b-menu-button', function() {
-                $('body').toggleClass('menu-open');
-
-                if ($('body').hasClass('menu-open')) {
-                    $(top.window).trigger('boom:dialog:open');
-                } else {
-                    $(top.window).trigger('boom:dialog:close');
-                }
-            })
             .on('click', '#b-page-settings', function() {
                 self.settingsAreOpen() ? self.closePageSettings() : self.showSettings();
             })

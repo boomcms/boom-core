@@ -50,6 +50,22 @@
                 }).trigger('input');
 
             $('#b-topbar, body').ui();
+
+            $('#b-menu-button').on('click', function() {
+                var $body = $('body'),
+                    $window = $(top.window);
+
+                if ($body.hasClass('menu-open')) {
+                    $body.removeClass('menu-open');
+
+                    setTimeout(function() {
+                        $window.trigger('boom:dialog:close');
+                    }, 250);
+                } else {
+                    $window.trigger('boom:dialog:open');
+                    $body.addClass('menu-open');
+                }
+            });
         };
 
         BoomCMS.prototype.getTimezone = function() {

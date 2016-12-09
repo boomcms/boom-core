@@ -6,10 +6,11 @@ html.boom .b-toolbar, .b-toolbar {
 	left: 0;
 	height: 60px;
 	width: 100%;
-	overflow: hidden;
+	overflow: visible;
 	position: fixed;
 	padding-left: 80px;
 	z-index: 1000;
+    transition: width 0.25s ease-in;
 
 	+ * {
 		margin-top: 60px;
@@ -125,10 +126,10 @@ html.boom .b-toolbar.b-page-toolbar-preview {
 	padding: 0;
 }
 
-html.boom body.pushy-active, body.pushy-active {
+html.boom body.menu-open, body.menu-open {
 	.b-page-toolbar {
 		width: 250px;
-		transition: all 0.2s linear;
+		transition: width 0.25s ease-out;
 	}
 
 	.b-toolbar {
