@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 trait ListsPages
 {
-
     /**
-     * Returns a collection of pages based on the given criteria
+     * Returns a collection of pages based on the given criteria.
      *
      * @param array $params
      *
