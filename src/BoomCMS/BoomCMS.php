@@ -9,7 +9,7 @@ class BoomCMS
      *
      * @var string
      */
-    const VERSION = '5.6.3';
+    const VERSION = '5.6.4';
 
     /**
      * Returns the BoomCMS version.
