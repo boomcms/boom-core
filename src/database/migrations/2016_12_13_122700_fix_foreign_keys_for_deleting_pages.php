@@ -29,6 +29,5 @@ class FixForeignKeysForDeletingPages extends Migration
         DB::statement('alter table page_urls add constraint page_urls_ibfk_1 foreign key(page_id) references pages(id) ');
         DB::statement('alter table page_versions drop foreign key page_versions_ibfk_1 ');
         DB::statement('alter table chunk_texts drop foreign key chunk_texts_ibfk1');
-
     }
 }
