@@ -50170,7 +50170,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getUploadedBy: function() {
-            return new BoomCMS.Person(this.get('uploaded_by'));
+            return new BoomCMS.Person(this.get('created_by'));
         },
 
         getUploadedTime: function() {

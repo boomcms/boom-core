@@ -73,8 +73,8 @@
 	}
 
 	.buttons {
-		position: absolute;
-		bottom: 1rem;
+		position: fixed;
+        bottom: 1rem;
 	}
 	
 	button.b-button {
@@ -88,4 +88,12 @@
 	img {
 		max-width: 100%;
 	}
+}
+
+@media all and (min-width: 768px) {
+    .b-dialog {
+        .buttons {
+            position: absolute;
+        }
+    }
 }
