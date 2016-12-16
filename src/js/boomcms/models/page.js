@@ -101,7 +101,7 @@
         },
 
         requestApproval: function() {
-            var url = this.baseUrl + 'version/request_approval';
+            var url = this.baseUrl + 'version/request-approval';
 
             return $.post(url);
         },

@@ -5,10 +5,6 @@
 
         <?php if ($version->isDraft() && !$version->isPendingApproval()): ?>
             <p><?= trans('boomcms::settings.draft.draft') ?></p>
-
-            <?php if (!$auth->check('publish', $page)): ?>
-                <?= $button('thumbs-up', 'request-approval', ['class' => 'b-button-withtext b-page-request-approval']) ?>
-            <?php endif ?>
         <?php elseif ($version->isPendingApproval()): ?>
             <p><?= trans('boomcms::settings.draft.pending') ?></p>
         <?php elseif ($version->isEmbargoed()): ?>
@@ -63,7 +59,7 @@
                 ]) ?>
             </p>
 
-            <?php if ($auth->check('publish', $page)): ?>
+            <?php if (Gate::allows('publish', $page)): ?>
                 <?= $button('thumbs-up', 'publish', ['class' => 'b-button-withtext b-page-publish']) ?>
 
                 <?php if ($version->isEmbargoed()): ?>
@@ -76,6 +72,8 @@
                     'class'           => 'b-button-withtext b-page-revert',
                     'data-version-id' => $lastPublished->getId(),
                 ]) ?>
+            <?php else: ?>
+                <?= $button('thumbs-up', 'request-approval', ['class' => 'b-button-withtext b-page-request-approval']) ?>
             <?php endif ?>
         </section>
     <?php endif ?>

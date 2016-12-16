@@ -48,14 +48,16 @@
 
                         <?php if (count($approvals)): ?>
                             <ol class='page-list'>
-                                <li>
-                                    <a href="<?= $p->url() ?>">
-                                        <h3><?= $p->getTitle() ?></h3>
-                                        <time datetime="<?= $p->getVisibleFrom()->format('d M Y H:i') ?>"></time>
-                                        <p><?= $p->url() ?></p>
-                                        <p><?= Chunk::get('text', 'standfirst', $p)->text() ?></p>
-                                    </a>
-                                </li>
+                                <?php foreach ($approvals as $p): ?>
+                                    <li>
+                                        <a href="<?= $p->url() ?>">
+                                            <h3><?= $p->getTitle() ?></h3>
+                                            <time datetime="<?= $p->getVisibleFrom()->format('d M Y H:i') ?>"></time>
+                                            <p><?= $p->url() ?></p>
+                                            <p><?= Chunk::get('text', 'standfirst', $p)->text() ?></p>
+                                        </a>
+                                    </li>
+                                <?php endforeach ?>
                             </ol>
                         <?php else: ?>
                             <p><?= trans('boomcms::dashboard.approvals.none') ?></p>
