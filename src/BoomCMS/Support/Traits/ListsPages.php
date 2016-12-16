@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Support\Traits;
 
-use BoomCMS\Support\Facades\Helpers;
+use BoomCMS\Support\Helpers;
 use Illuminate\Database\Eloquent\Collection;
 
 trait ListsPages
