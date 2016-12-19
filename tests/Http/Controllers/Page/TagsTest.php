@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Http\Controllers;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Http\Controllers\Page\Tags as Controller;
 use BoomCMS\Support\Facades\Tag as TagFacade;
