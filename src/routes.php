@@ -106,6 +106,7 @@ Route::group(['middleware' => [
                 Route::post('version/template', 'Version@postTemplate');
                 Route::post('version/title', 'Version@postTitle');
                 Route::post('version/request-approval', 'Version@requestApproval');
+                Route::post('version/restore', 'Version@postRestore');
 
                 Route::get('settings/admin', 'Settings@getAdmin');
                 Route::get('settings/children', 'Settings@getChildren');

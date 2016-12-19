@@ -6,8 +6,6 @@ use BoomCMS\Contracts\Models\Page as PageModelInterface;
 use BoomCMS\Contracts\Repositories\PageVersion as PageVersionRepositoryInterface;
 use BoomCMS\Database\Models\PageVersion as Model;
 use BoomCMS\Support\Facades\Chunk;
-use DateTime;
-use Illuminate\Support\Facades\Auth;
 
 class PageVersion implements PageVersionRepositoryInterface
 {
@@ -57,14 +55,8 @@ class PageVersion implements PageVersionRepositoryInterface
      */
     public function restore(Model $version)
     {
-        $attrs = $version->toArray();
-
-        $newVersion = new Model($attrs);
-        $newVersion
-            ->setEditedAt(new DateTime('now'))
-            ->setEditedBy(Auth::user())
-            ->setRestoredFrom($version)
-            ->save();
+        $newVersion = new Model($version->toArray());
+        $newVersion->setRestoredFrom($version)->save();
 
         $types = Chunk::since($version);
 
