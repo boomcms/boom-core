@@ -1094,6 +1094,8 @@ class Page extends Model implements PageInterface, SingleSiteInterface
         return $query
             ->select('version.*')
             ->addSelect('version.id as version:id')
+            ->addSelect('version.created_at as version:created_at')
+            ->addSelect('version.created_by as version:created_by')
             ->addSelect('pages.*')
             ->join(DB::raw('('.$subquery->toSql().') as v2'), 'pages.id', '=', 'v2.page_id')
             ->mergeBindings($subquery)

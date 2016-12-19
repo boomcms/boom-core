@@ -50434,7 +50434,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getLastEdited: function() {
-            return this.get('edited_time');
+            return this.get('version:created_at');
         },
 
         getParentId: function() {

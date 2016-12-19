@@ -66,7 +66,7 @@
         },
 
         getLastEdited: function() {
-            return this.get('edited_time');
+            return this.get('version:created_at');
         },
 
         getParentId: function() {
