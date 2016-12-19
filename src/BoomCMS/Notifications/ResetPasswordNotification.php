@@ -15,7 +15,7 @@ class ResetPasswordNotification extends ResetPassword
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
-            ->subject(trans('boomcms:notifications.password.subject'))
+            ->subject(trans('boomcms::notifications.password.subject'))
             ->view($this->viewName, [
                 'user'  => $notifiable,
                 'token' => $this->token,
