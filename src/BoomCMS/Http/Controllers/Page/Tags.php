@@ -21,13 +21,14 @@ class Tags extends Controller
      *
      * @return int
      */
-    public function add(Request $request, Site $site, Page $page)
+    public function add(Request $request, Page $page)
     {
         $this->auth($page);
 
         $name = $request->input('tag');
         $group = $request->input('group');
-        $tag = TagFacade::findOrCreate($site, $name, $group);
+
+        $tag = TagFacade::findOrCreate($name, $group);
 
         $page->addTag($tag);
 

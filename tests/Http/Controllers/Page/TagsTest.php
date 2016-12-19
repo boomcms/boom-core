@@ -41,7 +41,6 @@ class TagsTest extends BaseControllerTest
 
     public function testAdd()
     {
-        $site = new Site();
         $name = 'test';
         $group = 'group';
 
@@ -53,10 +52,10 @@ class TagsTest extends BaseControllerTest
         $this->page->shouldReceive('addTag')->with($this->tag);
 
         TagFacade::shouldReceive('findOrCreate')
-            ->with($site, $name, $group)
+            ->with($name, $group)
             ->andReturn($this->tag);
 
-        $this->assertEquals($this->tag->getId(), $this->controller->add($request, $site, $this->page));
+        $this->assertEquals($this->tag->getId(), $this->controller->add($request, $this->page));
     }
 
     public function testRemove()
