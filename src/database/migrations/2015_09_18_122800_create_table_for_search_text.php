@@ -47,22 +47,6 @@ class CreateTableForSearchText extends Migration
         DB::statement('CREATE FULLTEXT INDEX search_texts_all on search_texts(title, standfirst, text)');
         DB::statement('ALTER TABLE chunk_texts drop index text_fulltext');
         DB::statement('ALTER TABLE page_versions drop index title_fulltext');
-
-        $finder = new Finder\Finder();
-        $finder->addFilter(new Finder\VisibleInSiteSearch());
-        $pages = $finder->findAll();
-
-        foreach ($pages as $p) {
-            DB::table('search_texts')
-                ->insert([
-                    'page_id'         => $p->getId(),
-                    'embargoed_until' => $p->getCurrentVersion()->getEmbargoedUntil()->getTimestamp(),
-                    'page_vid'        => $p->getCurrentVersion()->getId(),
-                    'title'           => $p->getTitle(),
-                    'standfirst'      => Chunk::get('text', 'standfirst', $p)->text(),
-                    'text'            => strip_tags(Chunk::get('text', 'bodycopy', $p)->text()),
-                ]);
-        }
     }
 
     /**
