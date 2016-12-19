@@ -1,21 +1,31 @@
+<?php $model = new BoomCMS\Database\Models\Asset() ?>
+
 <div class="b-assets-upload">
-	<form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
-		<div class="b-assets-upload-container">
-            <div class="b-assets-upload-info">
-                <p>
-                    <?= trans('boomcms::asset.upload.info1') ?>
-                    <label for="b-assets-upload-file"><?= trans('boomcms::asset.upload.info2') ?></label>
-                    <?= trans('boomcms::asset.upload.info3') ?>
-                </p>
+    <?php if (is_writable($model->directory())): ?>
+        <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
+            <div class="b-assets-upload-container">
+                <div class="b-assets-upload-info">
+                    <p>
+                        <?= trans('boomcms::asset.upload.info1') ?>
+                        <label for="b-assets-upload-file"><?= trans('boomcms::asset.upload.info2') ?></label>
+                        <?= trans('boomcms::asset.upload.info3') ?>
+                    </p>
 
-                <p class="message"></p>
+                    <p class="message"></p>
 
-                <div class="b-assets-upload-progress"></div>
-                <?= $button('times', 'cancel', ['class' => 'b-assets-upload-cancel']) ?>
+                    <div class="b-assets-upload-progress"></div>
+                    <?= $button('times', 'cancel', ['class' => 'b-assets-upload-cancel']) ?>
+                </div>
+
+                <input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
+                <?= $button('times', 'close-upload', ['class' => 'b-assets-upload-close b-button-withtext']) ?>
             </div>
-
-			<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
-            <?= $button('times', 'close-upload', ['class' => 'b-assets-upload-close b-button-withtext']) ?>
+        </form>
+    <?php else: ?>
+        <div class="b-assets-upload-error">
+            <p>
+                <?= trans('boomcms::asset.upload.not-writable', ['dir' => $model->directory()]) ?>
+            </p>
         </div>
-	</form>
+    <?php endif ?>
 </div>
