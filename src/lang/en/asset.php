@@ -85,6 +85,12 @@ return [
         'video'    => 'Video',
         'audio'    => 'Audio',
     ],
+    'upload'      => [
+        'heading' => 'Replace',
+        'info1'   => 'Drag and drop files here, or',
+        'info2'   => 'select files',
+        'info3'   => 'to start uploading.',
+    ],
     'loading'                => 'Loading thumbnail',
     'failed'                 => 'Unable to load thumbnail',
 ];

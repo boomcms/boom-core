@@ -3,9 +3,9 @@
 		<div class="b-assets-upload-container">
             <div class="b-assets-upload-info">
                 <p>
-                    Drag and drop files here, or
-                    <label for="b-assets-upload-file">select files</label>
-                    to start uploading.
+                    <?= trans('boomcms::asset.upload.info1') ?>
+                    <label for="b-assets-upload-file"><?= trans('boomcms::asset.upload.info2') ?></label>
+                    <?= trans('boomcms::asset.upload.info3') ?>
                 </p>
 
                 <p class="message"></p>
