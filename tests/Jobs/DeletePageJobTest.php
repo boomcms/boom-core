@@ -57,4 +57,25 @@ class DeletePageJobTest extends AbstractTestCase
 
         $job->handle();
     }
+
+    public function testUrlsAreMovedWhenDeletingChildren()
+    {
+        $page = m::mock(PageModel::class)->makePartial();
+        $redirectTo = $this->validPage(2);
+        $options = ['redirectTo' => 2];
+
+        $page
+            ->shouldReceive('getUrls')
+            ->once()
+            ->andReturn([]);
+
+        $job = new Jobs\DeletePage($page, $options);
+
+        Page::shouldReceive('recurse')->once();
+        Page::shouldReceive('find')->with($redirectTo->getId())->andReturn($redirectTo);
+
+        Event::shouldReceive('fire')->zeroOrMoreTimes();
+
+        $job->handle();
+    }
 }
