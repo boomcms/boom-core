@@ -127,6 +127,7 @@ Route::group(['middleware' => [
                 Route::post('settings/navigation', 'Settings@postNavigation');
                 Route::post('settings/search', 'Settings@postSearch');
                 Route::post('settings/visibility', 'Settings@postVisibility');
+                Route::post('settings/sort-children', 'Settings@postSortChildren');
 
                 Route::get('chunk/edit', 'Chunk@getEdit');
                 Route::post('chunk/save', 'Chunk@postSave');
