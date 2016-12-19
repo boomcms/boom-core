@@ -50686,7 +50686,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
                 .done(function(response) {
                     if (response) {
                         if (typeof response.existing_url_id !== 'undefined') {
-                            var url = BoomCMS.PageUrl(response.existing_url_id, pageId);
+                            var url = new BoomCMS.PageUrl(response.existing_url_id, pageId);
                             url.move()
                                 .done(function() {
                                     deferred.resolve();
