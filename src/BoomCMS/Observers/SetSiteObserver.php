@@ -42,7 +42,7 @@ class SetSiteObserver
         if ($model instanceof SingleSiteInterface) {
             $site = $this->router->getActiveSite() ?: $this->site->findDefault();
 
-            $model->{SingleSiteInterface::ATTR_SITE} = $site ? $site->getId() : null;
+            $model->{SingleSiteInterface::ATTR_SITE} = ($site ? $site->getId() : null);
         }
     }
 }
