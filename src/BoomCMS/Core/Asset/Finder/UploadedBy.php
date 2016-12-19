@@ -26,7 +26,7 @@ class UploadedBy extends BaseFilter
 
     public function build(Builder $query)
     {
-        return $query->where(Asset::ATTR_CREATED_BY, $this->person->getId());
+        return $query->where('assets.'.Asset::ATTR_CREATED_BY, $this->person->getId());
     }
 
     public function shouldBeApplied()
