@@ -58,7 +58,7 @@ class CreatePageTest extends AbstractTestCase
         $job->handle();
     }
 
-    public function testNewPageShouldNotHaveVisibleFromSetToBeInvisible()
+    public function testNewPageShouldHaveVisibleFromSet()
     {
         $this->newPage->shouldReceive('addVersion');
 
@@ -71,7 +71,7 @@ class CreatePageTest extends AbstractTestCase
         PageFacade::shouldReceive('create')
             ->once()
             ->with(m::on(function (array $attrs) {
-                return !isset($attrs['visible_from']);
+                return isset($attrs['visible_from']);
             }))
             ->andReturn($this->newPage);
 

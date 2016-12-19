@@ -30,7 +30,9 @@ class CreatePage extends Command
 
     public function handle()
     {
-        $attrs = [];
+        $attrs = [
+            'visible_from' => time(),
+        ];
 
         if ($this->parent) {
             $attrs += [

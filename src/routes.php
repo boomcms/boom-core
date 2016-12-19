@@ -93,6 +93,7 @@ Route::group(['middleware' => [
             ]);
 
             Route::get('page', 'Page\PageController@getIndex');
+            Route::post('page/{page}/add', 'Page\PageController@postAdd');
 
             Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
                 Route::post('version/template/{template}', 'Version@postTemplate');
