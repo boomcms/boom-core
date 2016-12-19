@@ -61,8 +61,8 @@
                 .on('add', function(page) {
                     relations.addToList(page);
                 })
-                .on('remove', function() {
-                    page.removeRelatedPage(page);    
+                .on('remove', function(related) {
+                    page.removeRelatedPage(related);    
                 });
 
             this.getRelatedPages();
