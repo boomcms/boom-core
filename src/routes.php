@@ -128,7 +128,7 @@ Route::group(['middleware' => [
                 Route::post('settings/visibility', 'Settings@postVisibility');
 
                 Route::get('chunk/edit', 'Chunk@getEdit');
-                Route::post('chunk/edit', 'Chunk@postEdit');
+                Route::post('chunk/save', 'Chunk@postSave');
 
                 Route::group(['prefix' => 'urls'], function () {
                     Route::get('', 'Urls@index');
