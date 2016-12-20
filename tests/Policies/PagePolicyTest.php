@@ -69,7 +69,6 @@ class PagePolicyTest extends AbstractTestCase
             ->with($person)
             ->andReturn(true);
 
-
         $page
             ->shouldReceive('aclEnabled')
             ->once()
