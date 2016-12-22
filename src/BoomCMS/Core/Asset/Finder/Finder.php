@@ -19,7 +19,7 @@ class Finder extends BaseFinder
     ];
 
     protected $orderByAliases = [
-        'last_modified' => 'version.edited_at',
+        'last_modified' => 'version.created_at',
         'filesize'      => 'version.filesize',
         'created_at'    => 'assets.created_at',
     ];
