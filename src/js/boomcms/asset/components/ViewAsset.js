@@ -6,6 +6,7 @@
         tagName: 'div',
         tagsDisplayed: false,
         templateSelector: '#b-assets-view-template',
+        loaded: false,
 
         bind: function() {
             var view = this,
@@ -28,6 +29,14 @@
                 })
                 .on('remove', function() {
                     this.$('.b-assets-upload').assetUploader('reset');
+                })
+                .on('click', '[data-section]', function(e) {
+                    e.preventDefault();
+
+                    var section = $(this).attr('data-section');
+
+                    view.router.navigate('asset/' + asset.getId() + '/' + section);
+                    view.render(section);
                 });
 
             this.$('.b-assets-upload').assetUploader({
@@ -89,9 +98,13 @@
                 this.showTags();
             }
 
-            this.bind();
-            this.initImageEditor();
+            if (this.loaded === false) {
+                this.bind();
+                this.initImageEditor();
 
+                this.loaded = true;
+            }
+            
             return this;
         }
     });

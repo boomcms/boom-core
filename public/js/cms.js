@@ -55661,6 +55661,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         tagName: 'div',
         tagsDisplayed: false,
         templateSelector: '#b-assets-view-template',
+        loaded: false,
 
         bind: function() {
             var view = this,
@@ -55683,6 +55684,14 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 })
                 .on('remove', function() {
                     this.$('.b-assets-upload').assetUploader('reset');
+                })
+                .on('click', '[data-section]', function(e) {
+                    e.preventDefault();
+
+                    var section = $(this).attr('data-section');
+
+                    view.router.navigate('asset/' + asset.getId() + '/' + section);
+                    view.render(section);
                 });
 
             this.$('.b-assets-upload').assetUploader({
@@ -55744,9 +55753,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 this.showTags();
             }
 
-            this.bind();
-            this.initImageEditor();
+            if (this.loaded === false) {
+                this.bind();
+                this.initImageEditor();
 
+                this.loaded = true;
+            }
+            
             return this;
         }
     });
