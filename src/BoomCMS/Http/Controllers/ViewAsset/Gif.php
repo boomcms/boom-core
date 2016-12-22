@@ -6,6 +6,11 @@ use Illuminate\Http\Response;
 
 class Gif extends BaseController
 {
+    public function crop($width = null, $height = null)
+    {
+        return $this->view($width, $height);
+    }
+
     /**
      * Gifs are not resized to ensure that animated gifs animate.
      *
