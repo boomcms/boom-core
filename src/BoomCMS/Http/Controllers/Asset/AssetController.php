@@ -130,6 +130,6 @@ class AssetController extends Controller
 
         AssetFacade::save($asset);
 
-        return $this->show($asset);
+        return $this->show($asset, $site);
     }
 }
