@@ -6,6 +6,8 @@
         'created_at asc',
         'last_modified desc',
         'last_modified asc',
+        'file_created_at desc',
+        'file_created_at asc',
         'title asc',
         'title desc',
         'filesize asc',

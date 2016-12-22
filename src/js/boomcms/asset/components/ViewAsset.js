@@ -89,10 +89,12 @@
         },
 
         render: function(section) {
-            this.$el.html(this.template({
-                asset: this.model,
-                section: section
-            }));
+            this.$el
+                .html(this.template({
+                    asset: this.model,
+                    section: section
+                }))
+                .ui();
 
             if (section === 'tags') {
                 this.showTags();

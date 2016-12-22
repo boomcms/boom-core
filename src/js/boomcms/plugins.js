@@ -40,9 +40,18 @@
     };
 
     $.fn.ui = function() {
-        this.find('.boom-datepicker').datetimepicker({
-            format: 'd F Y H:i'
-        });
+        this.find('.boom-datepicker')
+            .each(function() {
+                var $this = $(this),
+                    timestamp = $this.attr('data-timestamp');
+
+                if (timestamp) {
+                    $this.val(moment(timestamp, 'X').format('DD MMMM YYYY HH:mm'));
+                }
+            })
+            .datetimepicker({
+                format: 'd F Y H:i'
+            });
 
         this.find('time').localTime();
 

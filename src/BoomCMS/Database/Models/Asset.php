@@ -26,6 +26,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     const ATTR_THUMBNAIL_ID = 'thumbnail_asset_id';
     const ATTR_CREDITS = 'credits';
     const ATTR_DOWNLOADS = 'downloads';
+    const ATTR_FILE_CREATED_AT = 'file_created_at';
 
     public $table = 'assets';
 
@@ -38,6 +39,10 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      * @var AssetVersion
      */
     protected $latestVersion;
+
+    protected $casts = [
+        self::ATTR_FILE_CREATED_AT => 'timestamp',
+    ];
 
     protected $appends = [
         'readable_filesize',
@@ -322,6 +327,15 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function setDescription($description)
     {
         $this->{self::ATTR_DESCRIPTION} = $description;
+
+        return $this;
+    }
+
+    public function setFileCreatedAt($when = null)
+    {
+        $datetime = ($when === null) ? null : new DateTime($when);
+
+        $this->{self::ATTR_FILE_CREATED_AT} = $datetime;
 
         return $this;
     }

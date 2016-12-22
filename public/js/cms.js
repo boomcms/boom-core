@@ -50139,6 +50139,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             return this.get('extension');
         },
 
+        getFileCreatedAt: function() {
+            return this.get('file_created_at');
+        },
+
         getFilename: function() {
             return this.get('filename');
         },
@@ -50963,9 +50967,18 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     };
 
     $.fn.ui = function() {
-        this.find('.boom-datepicker').datetimepicker({
-            format: 'd F Y H:i'
-        });
+        this.find('.boom-datepicker')
+            .each(function() {
+                var $this = $(this),
+                    timestamp = $this.attr('data-timestamp');
+
+                if (timestamp) {
+                    $this.val(moment(timestamp, 'X').format('DD MMMM YYYY HH:mm'));
+                }
+            })
+            .datetimepicker({
+                format: 'd F Y H:i'
+            });
 
         this.find('time').localTime();
 
@@ -55744,10 +55757,12 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         render: function(section) {
-            this.$el.html(this.template({
-                asset: this.model,
-                section: section
-            }));
+            this.$el
+                .html(this.template({
+                    asset: this.model,
+                    section: section
+                }))
+                .ui();
 
             if (section === 'tags') {
                 this.showTags();

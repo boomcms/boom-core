@@ -105,6 +105,11 @@
                         <?= trans('boomcms::asset.credits') ?>
                         <textarea id="credits" name="credits"><%= asset.getCredits() %></textarea>
                     </label>
+
+                    <label>
+                        <?= trans('boomcms::asset.file-created-at') ?>
+                        <input type="text" name="file_created_at" class="boom-datepicker" data-timestamp="<%= asset.getFileCreatedAt() %>" />
+                    </label>
                 </form>
 
                 <?= $button('save', 'save-changes', ['class' => 'b-assets-save b-button-withtext']) ?>
