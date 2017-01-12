@@ -99,6 +99,8 @@
                 section: section
             }));
 
+            this.$el.ui();
+
             if (section === 'tags') {
                 this.showTags();
             }

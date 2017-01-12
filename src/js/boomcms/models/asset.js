@@ -67,7 +67,7 @@
         },
 
         getUploadedBy: function() {
-            return new BoomCMS.Person(this.get('created_by'));
+            return new BoomCMS.Person(this.get('uploaded_by'));
         },
 
         getUploadedTime: function() {

@@ -50170,7 +50170,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getUploadedBy: function() {
-            return new BoomCMS.Person(this.get('created_by'));
+            return new BoomCMS.Person(this.get('uploaded_by'));
         },
 
         getUploadedTime: function() {
@@ -50276,7 +50276,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
     BoomCMS.AssetVersion = BoomCMS.Model.extend({
         getEditedAt: function() {
-            return this.get('edited_at');
+            return this.get('created_at');
         },
 
         getEditedBy: function() {
@@ -55753,6 +55753,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 asset: this.model,
                 section: section
             }));
+
+            this.$el.ui();
 
             if (section === 'tags') {
                 this.showTags();
