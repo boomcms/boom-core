@@ -66,7 +66,7 @@ class Router
         if ($url) {
             $page = $url->getPage();
 
-            if (!$page) {
+            if (!$page || $page->isDeleted()) {
                 // The url is in use but doesn't have a page.
                 // The page must have been deleted.
                 throw new GoneHttpException();
