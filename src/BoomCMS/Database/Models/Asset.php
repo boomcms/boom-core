@@ -408,7 +408,11 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function toArray()
     {
         $attributes = $this->attributesToArray();
+        $version = $this->getLatestVersion()->toArray();
 
-        return array_merge($this->getLatestVersion()->toArray(), $attributes, $this->relationsToArray());
+        $attributes['edited_at'] = $version['created_at'];
+        $attributes['edited_by'] = $version['created_by'];
+
+        return array_merge($version, $attributes, $this->relationsToArray());
     }
 }

@@ -50128,7 +50128,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getEditedAt: function() {
-            return this.get('updated_at');
+            return this.get('edited_at');
         },
 
         getEmbedCode: function() {
