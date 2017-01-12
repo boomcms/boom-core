@@ -79,6 +79,11 @@ class RouterTest extends AbstractTestCase
             ->once()
             ->andReturn(true);
 
+        $page
+            ->shouldReceive('isDeleted')
+            ->once()
+            ->andReturn(false);
+
         $url = m::mock(URL::class);
         $url
             ->shouldReceive('getPage')
@@ -127,6 +132,11 @@ class RouterTest extends AbstractTestCase
             ->once()
             ->andReturn(false);
 
+        $page
+            ->shouldReceive('isDeleted')
+            ->once()
+            ->andReturn(false);
+
         $url = m::mock(URL::class);
         $url
             ->shouldReceive('getPage')
@@ -155,6 +165,11 @@ class RouterTest extends AbstractTestCase
             ->once()
             ->andReturn($page);
 
+        $page
+            ->shouldReceive('isDeleted')
+            ->once()
+            ->andReturn(false);
+
         $url
             ->shouldReceive('matches')
             ->andReturn(true);
@@ -180,11 +195,18 @@ class RouterTest extends AbstractTestCase
     {
         $this->setExpectedException(GoneHttpException::class);
 
+        $page = m::mock(Page::class);
+
+        $page
+            ->shouldReceive('isDeleted')
+            ->once()
+            ->andReturn(true);
+
         $url = m::mock(URL::class);
         $url
             ->shouldReceive('getPage')
             ->once()
-            ->andReturnNull();
+            ->andReturn($page);
 
         URLFacade::shouldReceive('findByLocation')
             ->with($this->uri)
