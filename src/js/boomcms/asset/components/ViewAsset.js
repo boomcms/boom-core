@@ -38,16 +38,6 @@
                     view.router.navigate('asset/' + asset.getId() + '/' + section);
                     view.render(section);
                 });
-
-            this.$('.b-assets-upload').assetUploader({
-                asset: asset,
-                uploadFinished: function(e, data) {
-                    asset.set(data.result);
-                    asset.trigger('change:image');
-
-                    view.render('info');
-                }
-            });
         },
 
         initialize: function(options) {
@@ -88,6 +78,21 @@
             });
         },
 
+        initUploader: function() {
+            var view = this,
+                asset = this.model;
+
+            this.$('.b-assets-upload').assetUploader({
+                asset: asset,
+                uploadFinished: function(e, data) {
+                    asset.set(data.result);
+                    asset.trigger('change:image');
+
+                    view.render('info');
+                }
+            });
+        },
+
         render: function(section) {
             this.$el.html(this.template({
                 asset: this.model,
@@ -96,6 +101,10 @@
 
             if (section === 'tags') {
                 this.showTags();
+            }
+
+            if (section === 'replace') {
+                this.initUploader();
             }
 
             if (this.loaded === false) {

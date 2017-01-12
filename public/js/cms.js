@@ -55693,16 +55693,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     view.router.navigate('asset/' + asset.getId() + '/' + section);
                     view.render(section);
                 });
-
-            this.$('.b-assets-upload').assetUploader({
-                asset: asset,
-                uploadFinished: function(e, data) {
-                    asset.set(data.result);
-                    asset.trigger('change:image');
-
-                    view.render('info');
-                }
-            });
         },
 
         initialize: function(options) {
@@ -55743,6 +55733,21 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             });
         },
 
+        initUploader: function() {
+            var view = this,
+                asset = this.model;
+
+            this.$('.b-assets-upload').assetUploader({
+                asset: asset,
+                uploadFinished: function(e, data) {
+                    asset.set(data.result);
+                    asset.trigger('change:image');
+
+                    view.render('info');
+                }
+            });
+        },
+
         render: function(section) {
             this.$el.html(this.template({
                 asset: this.model,
@@ -55751,6 +55756,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             if (section === 'tags') {
                 this.showTags();
+            }
+
+            if (section === 'replace') {
+                this.initUploader();
             }
 
             if (this.loaded === false) {
