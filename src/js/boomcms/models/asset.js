@@ -36,6 +36,10 @@
             return this.get('extension');
         },
 
+        getFileCreatedAt: function() {
+            return this.get('file_created_at');
+        },
+
         getFilename: function() {
             return this.get('filename');
         },

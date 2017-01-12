@@ -160,6 +160,13 @@ interface Asset
     public function setDescription($description);
 
     /**
+     * @param string $when
+     *
+     * @return $this
+     */
+    public function setFileCreatedAt($when);
+
+    /**
      * @param int $assetId
      *
      * @return $this
