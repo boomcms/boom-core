@@ -164,6 +164,7 @@ Route::group(['middleware' => [
 Route::group([
     'prefix'     => 'asset',
     'middleware' => [
+        'web',
         SubstituteBindings::class,
     ],
 ], function () {
