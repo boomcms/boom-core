@@ -87,7 +87,8 @@
         },
 
         getAssets: function() {
-            var assetSearch = this;
+            var assetSearch = this,
+                deferred = $.Deferred();
 
             this.postData.limit = this.perpage;
             this.assets.fetch({
@@ -96,8 +97,12 @@
                 success: function(collection, response) {
                     assetSearch.initPagination(response.total);
                     assetSearch.renderGrid();
+
+                    deferred.resolve(collection);
                 }
             });
+
+            return deferred;
         },
 
         getPage: function(page) {

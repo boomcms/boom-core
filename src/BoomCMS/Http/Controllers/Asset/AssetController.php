@@ -52,7 +52,7 @@ class AssetController extends Controller
             AssetFacade::save($asset);
             AssetFacade::createVersionFromFile($asset, $file);
 
-            return $this->show($asset);
+            return $this->show($asset, $site);
         }
 
         if (count($errors)) {
@@ -70,7 +70,7 @@ class AssetController extends Controller
 
         AssetFacade::revert($asset, $request->input('version_id'));
 
-        return $this->show($asset);
+        return $this->show($asset, $site);
     }
 
     /**
@@ -130,6 +130,6 @@ class AssetController extends Controller
 
         AssetFacade::save($asset);
 
-        return $this->show($asset);
+        return $this->show($asset, $site);
     }
 }

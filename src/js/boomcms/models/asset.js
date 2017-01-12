@@ -25,7 +25,7 @@
         },
 
         getEditedAt: function() {
-            return this.get('updated_at');
+            return this.get('edited_at');
         },
 
         getEmbedCode: function() {
@@ -67,7 +67,7 @@
         },
 
         getUploadedBy: function() {
-            return new BoomCMS.Person(this.get('created_by'));
+            return new BoomCMS.Person(this.get('uploaded_by'));
         },
 
         getUploadedTime: function() {

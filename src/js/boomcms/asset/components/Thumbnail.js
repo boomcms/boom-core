@@ -17,10 +17,9 @@
                 .data('model', model)
                 .dblclick()
                 .on('sclick', function() {
-                    model.trigger('select', {
-                        asset: model,
-                        $el: $el
-                    });
+                    model.trigger('select', model);
+
+                    $el.blur();
                 })
                 .on('dclick', function() {
                     model.trigger('view', model);
@@ -41,10 +40,9 @@
                 })
                 .on('keypress', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.ENTER) {
-                        model.trigger('select', {
-                            asset: model,
-                            $el: $el
-                        });
+                        model.trigger('select', model);
+
+                        $el.blur();
                     }
                 });
         },

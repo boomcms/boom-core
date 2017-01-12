@@ -3,7 +3,7 @@
 
     BoomCMS.AssetVersion = BoomCMS.Model.extend({
         getEditedAt: function() {
-            return this.get('edited_at');
+            return this.get('created_at');
         },
 
         getEditedBy: function() {

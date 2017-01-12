@@ -6,6 +6,7 @@
         tagName: 'div',
         tagsDisplayed: false,
         templateSelector: '#b-assets-view-template',
+        loaded: false,
 
         bind: function() {
             var view = this,
@@ -28,17 +29,15 @@
                 })
                 .on('remove', function() {
                     this.$('.b-assets-upload').assetUploader('reset');
+                })
+                .on('click', '[data-section]', function(e) {
+                    e.preventDefault();
+
+                    var section = $(this).attr('data-section');
+
+                    view.router.navigate('asset/' + asset.getId() + '/' + section);
+                    view.render(section);
                 });
-
-            this.$('.b-assets-upload').assetUploader({
-                asset: asset,
-                uploadFinished: function(e, data) {
-                    asset.set(data.result);
-                    asset.trigger('change:image');
-
-                    view.render('info');
-                }
-            });
         },
 
         initialize: function(options) {
@@ -79,19 +78,44 @@
             });
         },
 
+        initUploader: function() {
+            var view = this,
+                asset = this.model;
+
+            this.$('.b-assets-upload').assetUploader({
+                asset: asset,
+                uploadFinished: function(e, data) {
+                    asset.set(data.result);
+                    asset.trigger('change:image');
+
+                    view.render('info');
+                }
+            });
+        },
+
         render: function(section) {
             this.$el.html(this.template({
                 asset: this.model,
                 section: section
             }));
 
+            this.$el.ui();
+
             if (section === 'tags') {
                 this.showTags();
             }
 
-            this.bind();
-            this.initImageEditor();
+            if (section === 'replace') {
+                this.initUploader();
+            }
 
+            if (this.loaded === false) {
+                this.bind();
+                this.initImageEditor();
+
+                this.loaded = true;
+            }
+            
             return this;
         }
     });

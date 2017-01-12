@@ -50128,7 +50128,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getEditedAt: function() {
-            return this.get('updated_at');
+            return this.get('edited_at');
         },
 
         getEmbedCode: function() {
@@ -50170,7 +50170,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getUploadedBy: function() {
-            return new BoomCMS.Person(this.get('created_by'));
+            return new BoomCMS.Person(this.get('uploaded_by'));
         },
 
         getUploadedTime: function() {
@@ -50276,7 +50276,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
     BoomCMS.AssetVersion = BoomCMS.Model.extend({
         getEditedAt: function() {
-            return this.get('edited_at');
+            return this.get('created_at');
         },
 
         getEditedBy: function() {
@@ -55126,6 +55126,14 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         bind: function() {
             var assetManager = this;
 
+            this.selection
+                .on('add', function(asset) {
+                    assetManager.getThumb(asset).addClass(assetManager.selectedClass);
+                })
+                .on('remove', function(asset) {
+                    assetManager.getThumb(asset).removeClass(assetManager.selectedClass);
+                });
+
             this.$el
                 .on('click', '#b-assets-selection-delete', function() {
                     assetManager.viewSelection(assetManager.selection, 'delete');
@@ -55240,7 +55248,34 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         getAssets: function() {
-            this.$el.assetSearch('getAssets');
+            var assetManager = this,
+                selection = this.selection;
+
+            this.$el
+                .assetSearch('getAssets')
+                .done(function() {
+                    var remove = [];
+
+                    // Ensure that any assets in the selection are marked as selected.
+                    // If the asset thumbnail isn't in view then remove it from the selection.
+                    selection.each(function(asset) {
+                        var $thumb = assetManager.getThumb(asset);
+
+                        if ($thumb.length && !$thumb.hasClass(assetManager.selectedClass)) {
+                            $thumb.addClass(assetManager.selectedClass);
+                        } else if ($thumb.length === 0) {
+                            remove.push(asset);
+                        }
+                    });
+
+                    for (var i = 0; i < remove.length; i++) {
+                        selection.remove(remove[i]);
+                    }
+                });
+        },
+
+        getThumb: function(asset) {
+            return this.$el.find('.thumb[data-asset="' + asset.getId() + '"]');
         },
 
         hideThumbs: function() {
@@ -55284,13 +55319,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.$('#b-assets-view-thumbs .thumb').addClass(this.selectedClass);
         },
 
-        select: function(data) {
-            var $el = data.$el,
-                asset = data.asset,
-                selection = this.selection,
+        select: function(asset) {
+            var selection = this.selection,
                 method = selection.findWhere({id: asset.getId()}) ? 'remove' : 'add';
-
-            $el.find('.thumb').toggleClass(this.selectedClass).blur();
 
             selection[method](asset);
         },
@@ -55580,10 +55611,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .data('model', model)
                 .dblclick()
                 .on('sclick', function() {
-                    model.trigger('select', {
-                        asset: model,
-                        $el: $el
-                    });
+                    model.trigger('select', model);
+
+                    $el.blur();
                 })
                 .on('dclick', function() {
                     model.trigger('view', model);
@@ -55604,10 +55634,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 })
                 .on('keypress', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.ENTER) {
-                        model.trigger('select', {
-                            asset: model,
-                            $el: $el
-                        });
+                        model.trigger('select', model);
+
+                        $el.blur();
                     }
                 });
         },
@@ -55661,6 +55690,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         tagName: 'div',
         tagsDisplayed: false,
         templateSelector: '#b-assets-view-template',
+        loaded: false,
 
         bind: function() {
             var view = this,
@@ -55683,17 +55713,15 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 })
                 .on('remove', function() {
                     this.$('.b-assets-upload').assetUploader('reset');
+                })
+                .on('click', '[data-section]', function(e) {
+                    e.preventDefault();
+
+                    var section = $(this).attr('data-section');
+
+                    view.router.navigate('asset/' + asset.getId() + '/' + section);
+                    view.render(section);
                 });
-
-            this.$('.b-assets-upload').assetUploader({
-                asset: asset,
-                uploadFinished: function(e, data) {
-                    asset.set(data.result);
-                    asset.trigger('change:image');
-
-                    view.render('info');
-                }
-            });
         },
 
         initialize: function(options) {
@@ -55734,19 +55762,44 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             });
         },
 
+        initUploader: function() {
+            var view = this,
+                asset = this.model;
+
+            this.$('.b-assets-upload').assetUploader({
+                asset: asset,
+                uploadFinished: function(e, data) {
+                    asset.set(data.result);
+                    asset.trigger('change:image');
+
+                    view.render('info');
+                }
+            });
+        },
+
         render: function(section) {
             this.$el.html(this.template({
                 asset: this.model,
                 section: section
             }));
 
+            this.$el.ui();
+
             if (section === 'tags') {
                 this.showTags();
             }
 
-            this.bind();
-            this.initImageEditor();
+            if (section === 'replace') {
+                this.initUploader();
+            }
 
+            if (this.loaded === false) {
+                this.bind();
+                this.initImageEditor();
+
+                this.loaded = true;
+            }
+            
             return this;
         }
     });
@@ -55840,7 +55893,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         getAssets: function() {
-            var assetSearch = this;
+            var assetSearch = this,
+                deferred = $.Deferred();
 
             this.postData.limit = this.perpage;
             this.assets.fetch({
@@ -55849,8 +55903,12 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 success: function(collection, response) {
                     assetSearch.initPagination(response.total);
                     assetSearch.renderGrid();
+
+                    deferred.resolve(collection);
                 }
             });
+
+            return deferred;
         },
 
         getPage: function(page) {
@@ -55988,8 +56046,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         this.bind = function() {
             var assetPicker = this;
 
-            this.assets.on('select', function(data) {
-                assetPicker.pick(data.asset);
+            this.assets.on('select', function(asset) {
+                assetPicker.pick(asset);
             });
 
             this.picker

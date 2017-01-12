@@ -24,8 +24,8 @@
         this.bind = function() {
             var assetPicker = this;
 
-            this.assets.on('select', function(data) {
-                assetPicker.pick(data.asset);
+            this.assets.on('select', function(asset) {
+                assetPicker.pick(asset);
             });
 
             this.picker
