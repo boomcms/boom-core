@@ -23,6 +23,14 @@
         bind: function() {
             var assetManager = this;
 
+            this.selection
+                .on('add', function(asset) {
+                    assetManager.getThumb(asset).addClass(assetManager.selectedClass);
+                })
+                .on('remove', function(asset) {
+                    assetManager.getThumb(asset).removeClass(assetManager.selectedClass);
+                });
+
             this.$el
                 .on('click', '#b-assets-selection-delete', function() {
                     assetManager.viewSelection(assetManager.selection, 'delete');
@@ -137,7 +145,34 @@
         },
 
         getAssets: function() {
-            this.$el.assetSearch('getAssets');
+            var assetManager = this,
+                selection = this.selection;
+
+            this.$el
+                .assetSearch('getAssets')
+                .done(function() {
+                    var remove = [];
+
+                    // Ensure that any assets in the selection are marked as selected.
+                    // If the asset thumbnail isn't in view then remove it from the selection.
+                    selection.each(function(asset) {
+                        var $thumb = assetManager.getThumb(asset);
+
+                        if ($thumb.length && !$thumb.hasClass(assetManager.selectedClass)) {
+                            $thumb.addClass(assetManager.selectedClass);
+                        } else if ($thumb.length === 0) {
+                            remove.push(asset);
+                        }
+                    });
+
+                    for (var i = 0; i < remove.length; i++) {
+                        selection.remove(remove[i]);
+                    }
+                });
+        },
+
+        getThumb: function(asset) {
+            return this.$el.find('.thumb[data-asset="' + asset.getId() + '"]');
         },
 
         hideThumbs: function() {
@@ -181,13 +216,9 @@
             this.$('#b-assets-view-thumbs .thumb').addClass(this.selectedClass);
         },
 
-        select: function(data) {
-            var $el = data.$el,
-                asset = data.asset,
-                selection = this.selection,
+        select: function(asset) {
+            var selection = this.selection,
                 method = selection.findWhere({id: asset.getId()}) ? 'remove' : 'add';
-
-            $el.find('.thumb').toggleClass(this.selectedClass).blur();
 
             selection[method](asset);
         },
