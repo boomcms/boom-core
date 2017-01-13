@@ -39,7 +39,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->app->singleton(BoomCMSRouter::class, function () {
             $router = new BoomCMSRouter($this->app);
-            $router->routeHostname($this->app->make(Request::class)->getHttpHost());
+
+            if (!$this->app->runningInConsole()) {
+                $router->routeHostname($this->app->make(Request::class)->getHttpHost());
+            }
 
             return $router;
         });

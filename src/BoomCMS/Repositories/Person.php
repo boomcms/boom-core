@@ -32,7 +32,7 @@ class Person implements PersonRepositoryInterface, UserProvider
     /**
      * @param Model $model
      */
-    public function __construct(Model $model, SiteInterface $site)
+    public function __construct(Model $model, SiteInterface $site = null)
     {
         $this->hasher = new Hasher();
         $this->model = $model;

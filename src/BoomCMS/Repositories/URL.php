@@ -25,7 +25,7 @@ class URL implements URLRepositoryInterface
      * @param Model        $model
      * @param SiteInteface $site
      */
-    public function __construct(Model $model, SiteInterface $site)
+    public function __construct(Model $model, SiteInterface $site = null)
     {
         $this->model = $model;
         $this->site = $site;

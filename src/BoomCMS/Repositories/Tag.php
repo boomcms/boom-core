@@ -24,7 +24,7 @@ class Tag implements TagRepositoryInterface
      * @param Model         $model
      * @param SiteInterface $site
      */
-    public function __construct(Model $model, SiteInterface $site)
+    public function __construct(Model $model, SiteInterface $site = null)
     {
         $this->model = $model;
         $this->site = $site;
