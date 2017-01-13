@@ -65,7 +65,7 @@ class Linkset extends BaseChunk
     }
 
     /**
-     * Removes internal links to delted pages.
+     * Removes internal links to deleted pages.
      *
      * And internal links to invisible pages when the editor is disabled.
      *
