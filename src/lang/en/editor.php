@@ -37,7 +37,8 @@ return [
             'heading'     => 'Asset Library',
             'about'       => 'Specify criteria to display assets by',
             'limit'       => 'Number of assets to show',
-            'limit_about' => 'Set an (optional) limit on the number of results to be returned. Leave empty for no limit.',
+            'limit_about' => 'Set an (optional) limit on the number of results to be returned. Leave empty for no limit',
+            'tag-info'    => 'Search will only return assets which have ALL given tags',
         ],
         'location' => [
             'details'        => 'Location details',
@@ -48,7 +49,7 @@ return [
             'lat'            => 'Latitude',
             'lng'            => 'Longitude',
             'map'            => 'Map',
-            'map-desc'       => 'Set the location by clicking a point on the map.<br />Drag the marker to change the location.',
+            'map-desc'       => 'Set the location by clicking a point on the map.<br />Drag the marker to change the location',
         ],
     ],
 ];
