@@ -35,8 +35,8 @@ class MigrateFeatureChunksToLinkset extends Migration
                 'page_vid'       => $feature['page_vid'],
                 'page_id'        => $feature['page_id'],
                 'links'          => [
-                    ['target_page_id' => $feature['target_page_id']]
-                ]
+                    ['target_page_id' => $feature['target_page_id']],
+                ],
             ]);
         }
 
@@ -56,6 +56,5 @@ class MigrateFeatureChunksToLinkset extends Migration
      */
     public function down()
     {
-
     }
 }
