@@ -9,17 +9,11 @@ return [
     'calendar' => [
         'default' => 'Edit calendar',
     ],
-    'feature' => [
-       'default' => 'Feature a page here',
-    ],
     'library' => [
         'default' => 'Set criteria to search assets here',
     ],
     'linkset' => [
         'default' => 'Insert a linkset here',
-    ],
-    'link' => [
-        'default' => 'Insert a link here',
     ],
     'location' => [
         'default' => 'Insert a location here',

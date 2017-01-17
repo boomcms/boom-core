@@ -42,6 +42,9 @@ class ChunkLinksetTest extends AbstractTestCase
     {
         $path = 'test';
 
+        $page = m::mock(Page::class);
+        $page->shouldReceive('isDeleted')->once()->andReturn(true);
+
         URL::shouldReceive('isAvailable')
             ->once()
             ->with($path)
@@ -50,7 +53,7 @@ class ChunkLinksetTest extends AbstractTestCase
         PageFacade::shouldReceive('findByUri')
             ->once()
             ->with($path)
-            ->andReturn(null);
+            ->andReturn($page);
 
         $chunk = $this->chunk(['links' => [['url' => '/test']]]);
 
@@ -63,6 +66,7 @@ class ChunkLinksetTest extends AbstractTestCase
 
         $page = m::mock(Page::class);
         $page->shouldReceive('isVisible')->never();
+        $page->shouldReceive('isDeleted')->once()->andReturn(false);
 
         URL::shouldReceive('isAvailable')
             ->once()
@@ -79,7 +83,7 @@ class ChunkLinksetTest extends AbstractTestCase
         $links = $chunk->getLinks();
 
         $this->assertEquals(1, count($links));
-        $this->assertEquals($page, $links[0]->getLink()->getPage());
+        $this->assertEquals($page, $links[0]->getPage());
 
         return $page;
     }
@@ -90,6 +94,10 @@ class ChunkLinksetTest extends AbstractTestCase
 
         $page = m::mock(Page::class);
         $page->shouldReceive('isVisible')
+            ->once()
+            ->andReturn(false);
+
+        $page->shouldReceive('isDeleted')
             ->once()
             ->andReturn(false);
 

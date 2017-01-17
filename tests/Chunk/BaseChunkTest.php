@@ -66,7 +66,7 @@ class BaseChunkTest extends AbstractTestCase
 
     public function testDefaultPlaceholderTextsAreDefined()
     {
-        $types = ['asset', 'location', 'link', 'text', 'html', 'feature', 'library', 'linkset', 'slideshow', 'timestamp'];
+        $types = ['asset', 'location', 'text', 'html', 'library', 'linkset', 'slideshow', 'timestamp'];
 
         foreach ($types as $type) {
             $langKey = "boomcms::chunks.$type.default";
@@ -103,6 +103,7 @@ class BaseChunkTest extends AbstractTestCase
             'data-boom-slot-template' => null,
             'data-boom-page'          => 1,
             'data-boom-chunk-id'      => 2,
+            'data-boom-has-content'   => 1,
         ];
 
         $chunk = m::mock(BaseChunk::class, [$this->validPage(), ['id' => 2], 'test', true])->makePartial();
@@ -111,6 +112,11 @@ class BaseChunkTest extends AbstractTestCase
             ->shouldReceive('getType')
             ->once()
             ->andReturn('testType');
+
+        $chunk
+            ->shouldReceive('hasContent')
+            ->once()
+            ->andReturn(true);
 
         $this->assertEquals($requiredAttributes, $chunk->getRequiredAttributes());
     }

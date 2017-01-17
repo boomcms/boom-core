@@ -10,6 +10,7 @@
         this.toggle = {
             title: '#b-linkset-title',
             linkAssets: '.b-linkset-asset',
+            linkTitle: '.b-linkset-title',
             linkText: '.b-linkset-text'
         };
 
@@ -30,7 +31,7 @@
                 .done(function(link) {
                     var $a = $('<a href="#"></a>')
                         .attr('data-page-id', link.getPageId())
-                        .attr('data-title', link.getTitle())
+                        .attr('data-title', link.getPageId() ? '' : link.getTitle())
                         .attr('data-url', link.getUrl())
                         .attr('data-asset', '')
                         .text(link.getTitle());
@@ -56,7 +57,7 @@
             this.addDeleteButtons();
 
             this.$links
-                .on('click', '.b-linkset-link', function() {
+                .on('click', 'a[data-url]', function() {
                     linksetEditor.editLink($(this));
                 });
 
@@ -83,15 +84,37 @@
 
                     linksetEditor.editLinkTarget();
                 })
+                .on('focusin', '.b-linkset-target input', function() {
+                    linksetEditor.editLinkTarget();
+                })
                 .on('click', '#b-linkset-delete', function() {
                     linksetEditor.deferred.resolveWith({});
                     linksetEditor.dialog.cancel();
                 })
-                .on('click', '.b-linkset-asset a', function() {
+                .on('click', '.b-linkset-asset button, .b-linkset-asset img, .b-linkset-asset p', function(e) {
+                    e.preventDefault();
+
                     linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
                 })
+                .end()
                 .find('ul')
                 .sortable();
+
+            if (this.options.limit === 1) {
+                this.bindSingle();
+            }
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.bindSingle = function() {
+            var $link = this.$links.find('[data-url]');
+
+            if ($link.length === 0) {
+                $link = $('<a>');
+            }
+
+            this.editLink($link);
+            this.dialog.contents.addClass('b-linkset-single');
+            this.dialog.contents.find('#b-linkset-add').hide();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.editAsset = function(currentAsset) {
@@ -114,6 +137,10 @@
                 .end()
                 .find('form')
                 .show()
+                .find('div')
+                .removeClass()
+                .addClass($a.attr('data-page-id') ? 'optional' : '')
+                .end()
                 .find('.b-linkset-target input[type=text]')
                 .val($a.attr('data-url'))
                 .end()
@@ -133,9 +160,14 @@
 
             new BoomCMS.LinkPicker(link)
                 .done(function(link) {
+                    var $div = linksetEditor.dialog.contents.find('#b-linkset-current form > div'),
+                        className = 'optional';
+
                     linksetEditor.currentLink
                         .attr('data-page-id', link.getPageId())
                         .attr('data-url', link.getUrl());
+
+                    link.getPageId() ? $div.addClass(className) : $div.removeClass(className);
 
                     linksetEditor.dialog.contents.find('.b-linkset-target input').val(link.getUrl());
                 });
@@ -154,22 +186,37 @@
             };
         };
 
+        BoomCMS.ChunkLinksetEditor.prototype.getDialogTitle = function() {
+            return this.options.limit === 1 ? 'Edit Link': 'Edit Linkset';
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.getDialogWidth = function() {
+            return this.options.limit === 1 ? 600 : 900;
+        };
+
         BoomCMS.ChunkLinksetEditor.prototype.getLinks = function() {
-            var links = [];
+            var linksetEditor = this, links = [];
+
+            if (this.options.limit === 1) {
+                console.log(this.currentLink);
+                return [this.getLinkData(this.currentLink)];
+            };
 
             this.$links.find('a:not(.delete)').each(function() {
-                var $this = $(this);
-
-                links.push({
-                    target_page_id: $this.attr('data-page-id'),
-                    url: $this.attr('data-url'),
-                    title: $this.attr('data-title'),
-                    asset_id: $this.attr('data-asset'),
-                    text: $this.attr('data-text')
-                });
+                links.push(linksetEditor.getLinkData($(this)));
             });
 
             return links;
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.getLinkData = function($el) {
+            return {
+                target_page_id: $el.attr('data-page-id'),
+                url: $el.attr('data-url'),
+                title: $el.attr('data-title'),
+                asset_id: $el.attr('data-asset'),
+                text: $el.attr('data-text')
+            }
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.open = function() {
@@ -177,9 +224,9 @@
 
             this.dialog = new BoomCMS.Dialog({
                 url: '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=linkset',
-                title: 'Edit linkset',
+                title: this.getDialogTitle(),
                 id: 'b-linkset-editor',
-                width: 900,
+                width: this.getDialogWidth(),
                 onLoad: function() {
                     linksetEditor.bind();
                 }
@@ -202,16 +249,15 @@
                     .find('.none')
                     .hide()
                     .end()
-                    .find('.set')
-                    .show()
                     .find('img')
-                    .attr('src', asset.getUrl('view', 500));
+                    .attr('src', asset.getUrl('view', 500))
+                    .show();
             } else {
                 $linksetAsset
                     .find('.none')
                     .show()
                     .end()
-                    .find('.set')
+                    .find('img')
                     .hide();
             }
         };

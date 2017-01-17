@@ -2,53 +2,40 @@
 
 namespace BoomCMS\Database\Models\Chunk;
 
+use BoomCMS\Support\Helpers\URL;
+
 class Linkset extends BaseChunk
 {
+    const ATTR_LINKS = 'links';
+    const ATTR_TITLE = 'title';
+
     protected $table = 'chunk_linksets';
 
-    public static function create(array $attributes = [])
-    {
-        if (isset($attributes['links'])) {
-            $links = $attributes['links'];
-            unset($attributes['links']);
-        }
-
-        $linkset = parent::create($attributes);
-
-        if (isset($links)) {
-            $linkset->links = $links;
-        }
-
-        return $linkset;
-    }
-
-    public function links()
-    {
-        return $this->hasMany(Linkset\Link::class, 'chunk_linkset_id');
-    }
-
-    public function scopeWithRelations($query)
-    {
-        return $query->with('links');
-    }
+    protected $casts = [
+        self::ATTR_LINKS => 'json',
+    ];
 
     public function setLinksAttribute($links)
     {
         foreach ($links as &$link) {
-            if (isset($link['asset']) && is_array($link['asset'])) {
-                $link['asset_id'] = $link['asset']['id'];
-                unset($link['asset']);
+            if (isset($link['title'])) {
+                $link['title'] = trim(strip_tags($link['title']));
             }
 
-            $link = ($link instanceof Linkset\Link) ? $link : new Linkset\Link($link);
+            if (isset($link['text'])) {
+                $link['text'] = trim(strip_tags($link['text']));
+            }
+
+            if (isset($link['url'])) {
+                $link['url'] = URL::makeRelative($link['url']);
+            }
         }
 
-        $this->attributes['links'] = $links;
-        $this->links()->saveMany($links);
+        $this->attributes[self::ATTR_LINKS] = json_encode($links);
     }
 
     public function setTitleAttribute($value)
     {
-        $this->attributes['title'] = trim(strip_tags($value));
+        $this->attributes[self::ATTR_TITLE] = trim(strip_tags($value));
     }
 }

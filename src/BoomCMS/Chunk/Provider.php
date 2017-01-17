@@ -31,7 +31,6 @@ class Provider
     protected $types = [
         'asset',
         'calendar',
-        'feature',
         'html',
         'text',
         'library',

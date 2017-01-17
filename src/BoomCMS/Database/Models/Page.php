@@ -91,6 +91,7 @@ class Page extends Model implements PageInterface, SingleSiteInterface
         self::ATTR_VISIBLE_IN_NAV_CMS          => 'boolean',
         self::ATTR_VISIBLE                     => 'boolean',
         self::ATTR_ENABLE_ACL                  => 'boolean',
+        self::ATTR_FEATURE_IMAGE               => 'integer',
     ];
 
     /**
@@ -407,9 +408,9 @@ class Page extends Model implements PageInterface, SingleSiteInterface
         return $this->featureImage;
     }
 
-    public function getFeatureImageId()
+    public function getFeatureImageId(): int
     {
-        return $this->{self::ATTR_FEATURE_IMAGE};
+        return $this->{self::ATTR_FEATURE_IMAGE} ?? 0;
     }
 
     public function getGrandchildTemplateId()
@@ -512,7 +513,7 @@ class Page extends Model implements PageInterface, SingleSiteInterface
         return $this->getCurrentVersion()->getTemplateId();
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->getCurrentVersion()->getTitle();
     }
@@ -555,7 +556,7 @@ class Page extends Model implements PageInterface, SingleSiteInterface
      *
      * @return bool
      */
-    public function hasFeatureImage()
+    public function hasFeatureImage(): bool
     {
         return !empty($this->getFeatureImageId());
     }

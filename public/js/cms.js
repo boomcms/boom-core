@@ -48796,7 +48796,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 }
 }());
 ;//! moment-timezone.js
-//! version : 0.5.10
+//! version : 0.5.11
 //! Copyright (c) JS Foundation and other contributors
 //! license : MIT
 //! github.com/moment/moment-timezone
@@ -48816,12 +48816,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	"use strict";
 
 	// Do not load moment-timezone a second time.
-	if (moment.tz !== undefined) {
-		logError('Moment Timezone ' + moment.tz.version + ' was already loaded ' + (moment.tz.dataVersion ? 'with data from ' : 'without any data') + moment.tz.dataVersion);
-		return moment;
-	}
+	// if (moment.tz !== undefined) {
+	// 	logError('Moment Timezone ' + moment.tz.version + ' was already loaded ' + (moment.tz.dataVersion ? 'with data from ' : 'without any data') + moment.tz.dataVersion);
+	// 	return moment;
+	// }
 
-	var VERSION = "0.5.10",
+	var VERSION = "0.5.11",
 		zones = {},
 		links = {},
 		names = {},
@@ -51215,6 +51215,11 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             }
         };
 
+        BoomCMS.Dialog.prototype.remove = function() {
+            this.deferred.resolve();
+            this.contents.dialog('close');
+        };
+
         this.open();
     };
 }(BoomCMS));;(function(BoomCMS) {
@@ -53057,12 +53062,12 @@ $.widget('ui.chunk',
     */
     {
 
-        edited : false,
+    edited : false,
 
-        bind: function() {
-            var self = this;
+    bind: function() {
+        var self = this;
 
-            this.element
+        this.element
             .addClass(BoomCMS.editableClass)
             .unbind('click')
             .on('click', function(e) {
@@ -53074,74 +53079,114 @@ $.widget('ui.chunk',
                 }
             })
             .attr('tabindex', 0);
-        },
+    },
 
-        _create: function() {
-            this.bind();
-        },
+    _create: function() {
+        this.bind();
+    },
 
-        destroy: function() {
-            this.bind();
-        },
+    destroy: function() {
+        this.bind();
+    },
+
+    hasContent: function() {
+        return this.element.attr('data-boom-has-content') === '1';
+    },
+
+    linkClicked: function($a) {
+        var chunk = this;
+
+        var confirmation = new BoomCMS.Dialog({
+            width: '640px',
+            title : 'Edit content?',
+            msg : '<p>You clicked on a link in an editable area.</p><p>Do you want to follow the link or edit the content?</p>',
+            closeButton : false,
+            buttons : [
+                {
+                    text : 'Follow link',
+                    class : 'b-button b-button-textonly left',
+                    click: function() {
+                        top.window.location = $a.attr('href');
+                    }
+                },
+                {
+                    text: 'Remove the content',
+                    class: 'b-button b-button-textonly left',
+                    click: function() {
+                        chunk.remove();
+                        confirmation.remove();
+                    }
+                },
+                {
+                    text : 'Edit the content',
+                    class : 'b-button b-button-textonly left',
+                    click: function() {
+                        confirmation.remove();
+                        chunk.edit();
+                    }
+                }
+            ]
+        });
+    },
 
     /**
     Insert edited chunk content back into the page.
     @function
     */
-        _update_html: function(html) {
-            var $html = $(html);
+    _update_html: function(html) {
+        var $html = $(html);
 
-            this.element.replaceWith($html);
-            this.element = $html;
+        this.element.replaceWith($html);
+        this.element = $html;
 
-            this.bind();
+        this.bind();
 
-            top.$.event.trigger({
-                type: 'boomcms:chunkload',
-                chunk: {
-                    type: this.options.type,
-                    name: this.options.name,
-                    html: $html[0]
-                },
-                target: this.element[0]
-            });
-        },
+        top.$.event.trigger({
+            type: 'boomcms:chunkload',
+            chunk: {
+                type: this.options.type,
+                name: this.options.name,
+                html: $html[0]
+            },
+            target: this.element[0]
+        });
+    },
 
-        remove: function() {
-            var self = this,
-                chunk = new BoomCMS.Chunk(this.options.currentPage.id, this.options.type, this.options.name);
+    remove: function() {
+        var self = this,
+            chunk = new BoomCMS.Chunk(this.options.currentPage.id, this.options.type, this.options.name);
 
-            return chunk.delete(this.options.template)
-            .done(function(data) {
-                self._update_html(data.html);
-                window.BoomCMS.page.toolbar.status.set(data.status);
-                BoomCMS.Notification('Page content saved');
-            });
-        },
+        return chunk.delete(this.options.template)
+        .done(function(data) {
+            self._update_html(data.html);
+            window.BoomCMS.page.toolbar.status.set(data.status);
+            BoomCMS.Notification('Page content saved');
+        });
+    },
 
-        _save: function(data) {
-            var self = this,
-                chunk = new BoomCMS.Chunk(this.options.currentPage.id, this.options.type, this.options.name);
+    _save: function(data) {
+        var self = this,
+            chunk = new BoomCMS.Chunk(this.options.currentPage.id, this.options.type, this.options.name);
 
-            data = data? data : this.getData();
-            data.template = this.options.template;
-            data.chunkId = this.options.chunkId;
+        data = data? data : this.getData();
+        data.template = this.options.template;
+        data.chunkId = this.options.chunkId;
 
-            return chunk.save(data)
-            .done(function(data) {
-                self.options.chunkId = data.chunkId;
+        return chunk.save(data)
+        .done(function(data) {
+            self.options.chunkId = data.chunkId;
 
-                self._update_html(data.html);
-                window.BoomCMS.page.toolbar.status.set(data.status);
+            self._update_html(data.html);
+            window.BoomCMS.page.toolbar.status.set(data.status);
 
-                BoomCMS.Notification('Page content saved');
-            })
-            .fail(function(response) {
-                if (response.responseJSON.error === 'conflict') {
-                    self.resolveConflict(response.responseJSON, data);
-                }
-            });
-        },
+            BoomCMS.Notification('Page content saved');
+        })
+        .fail(function(response) {
+            if (response.responseJSON.error === 'conflict') {
+                self.resolveConflict(response.responseJSON, data);
+            }
+        });
+    },
 
     /**
      * Replace the HTML of the chunk during conflict resolution.
@@ -53153,137 +53198,149 @@ $.widget('ui.chunk',
      * @param {string} html
      * @returns {undefined}
      */
-        _replace_html: function(html) {
-            this._update_html(html);
-        },
+    _replace_html: function(html) {
+        this._update_html(html);
+    },
 
-        resolveConflict: function(data, saveData) {
-            var chunk = this,
-                dialog = new BoomCMS.Dialog({
-                    msg: data.html,
-                    closeButton: false,
-                    width: 500,
-                    title: 'Save conflict',
-                    onLoad: function() {
-                        dialog.contents
-                        .on('click', '#b-conflict-reload', function() {
-                            chunk.options.chunkId = data.chunkId;
-                            chunk._replace_html(data.chunk);
+    resolveConflict: function(data, saveData) {
+        var chunk = this,
+            dialog = new BoomCMS.Dialog({
+                msg: data.html,
+                closeButton: false,
+                width: 500,
+                title: 'Save conflict',
+                onLoad: function() {
+                    dialog.contents
+                    .on('click', '#b-conflict-reload', function() {
+                        chunk.options.chunkId = data.chunkId;
+                        chunk._replace_html(data.chunk);
 
-                            window.BoomCMS.page.toolbar.status.set(data.status);
+                        window.BoomCMS.page.toolbar.status.set(data.status);
 
-                            dialog.cancel();
-                        })
-                        .on('click', '#b-conflict-overwrite', function() {
-                            saveData.force = 1;
+                        dialog.cancel();
+                    })
+                    .on('click', '#b-conflict-overwrite', function() {
+                        saveData.force = 1;
 
-                            chunk._save(saveData);
+                        chunk._save(saveData);
 
-                            dialog.cancel();
-                        })
-                        .on('click', '#b-conflict-inspect', function() {
-                            window.open(top.location);
-                        });
-                    }
-                });
-        },
+                        dialog.cancel();
+                    })
+                    .on('click', '#b-conflict-inspect', function() {
+                        window.open(top.location);
+                    });
+                }
+            });
+    },
 
-        triggerEdit: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+    triggerEdit: function(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-            this.edit();
-            this.unbind();
-        },
+        var $el = $(e.target),
+            $a = $el.is('a') ? $el : $el.closest('a');
 
-        unbind: function() {
-            this.element
-            .unbind('click')
-            .unbind('keydown');
+        if (this.hasContent() && $a.attr('href')) {
+            this.linkClicked($a);
+        } else {
+            this.edit(e);
         }
-    });;/**
+
+        this.unbind();
+    },
+
+    unbind: function() {
+        this.element
+        .unbind('click')
+        .unbind('keydown');
+    }
+});
+;/**
 Editable text slots
 @class
 @name chunkText
 @extends $.ui.chunk
 @memberOf $.ui
 */
-$.widget('ui.chunkText', $.ui.chunk,
-
-    /**
-    @lends $.ui.chunkText
-    */
-    {
-
+$.widget('ui.chunkText', $.ui.chunk, {
         content : '',
 
-        _create: function() {
-            var element = this.element.find('.chunk-text');
-            this.element = (element.length)? $(element[0]) : this.element;
+    _create: function() {
+        var element = this.element.find('.chunk-text');
+        this.element = (element.length)? $(element[0]) : this.element;
 
-            $.ui.chunk.prototype._create.call(this);
-        },
+        $.ui.chunk.prototype._create.call(this);
+    },
 
-        bind: function() {
-            var element = this.element,
-                self = this;
+    bind: function() {
+        var element = this.element,
+            self = this;
 
-            this.setOriginalContent();
+        this.setOriginalContent();
 
-            $.ui.chunk.prototype.bind.call(this);
+        $.ui.chunk.prototype.bind.call(this);
 
-            element.textEditor({
-                edit: function() {
-                    if (!self.hasContent()) {
-                        self.remove();
-                        self.element.text('Default text.');
-                    } else if (self.isEdited()) {
-                        self._save();
-                        self.setOriginalContent();
-                    }
-
-                    $.ui.chunk.prototype.bind.call(self);
+        element.textEditor({
+            edit: function() {
+                if (!self.hasContent()) {
+                    self.remove();
+                    self.element.text('Default text.');
+                } else if (self.isEdited()) {
+                    self._save();
+                    self.setOriginalContent();
                 }
-            });
-        },
 
-        edit: function() {},
+                $.ui.chunk.prototype.bind.call(self);
+            }
+        });
+    },
+
+    edit: function() {},
 
     /**
     Get the chunk HTML, escaped and cleaned.
     */
-        getData: function(){
-            var $content = this.element.find('.slot-content');
+    getData: function(){
+        var $content = this.element.find('.slot-content');
 
-            this.content = ($content.length)? $content.html() : this.element.html();
+        this.content = ($content.length)? $content.html() : this.element.html();
 
-            return {
-                text : this.content
-            };
-        },
+        return {
+            text : this.content
+        };
+    },
 
-        hasContent: function() {
-            return this.element.text() !== '' || this.element.find('img').length > 0;
-        },
+    hasContent: function() {
+        return this.element.text() !== '' || this.element.find('img').length > 0;
+    },
 
-        isEdited: function() {
-            return this.originalContent !== this.element.html();
-        },
+    isEdited: function() {
+        return this.originalContent !== this.element.html();
+    },
 
-        setOriginalContent: function() {
-            this.originalContent = this.element.html();
-        },
+    linkClicked: function($a) {
+        if (!$a.is(this.element)) {
+            this.element.blur();
 
-        _update_html: function() {},
-
-        _replace_html: function(html) {
-            this.element.html(html);
+            top.location = $a.attr('href');
         }
-    });;$.widget('ui.chunkLinkset', $.ui.chunk, {
+    },
+
+    setOriginalContent: function() {
+        this.originalContent = this.element.html();
+    },
+
+    _update_html: function() {},
+
+    _replace_html: function(html) {
+        this.element.html(html);
+    }
+});
+;$.widget('ui.chunkLinkset', $.ui.chunk, {
     edit: function() {
         var chunkLinkset = this;
 
-        new BoomCMS.ChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.getOptions())
+        return new BoomCMS.ChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.getOptions())
             .done(function(data) {
                 chunkLinkset.insert(data);
             })
@@ -53297,12 +53354,17 @@ $.widget('ui.chunkText', $.ui.chunk,
             options = {
                 title: 'linkset-title',
                 linkAssets: 'link-asset',
-                linkText: 'link-text'
+                linkText: 'link-text',
+                linkTitle: 'link-title'
             };
 
         for (var i in options) {
-            options[i] = $el.hasClass(options[i]) || $el.find('.' + options[i]).length > 0;
+            options[i] = $el.attr('data-boom-' + options[i]) === '1'
+                || $el.hasClass(options[i])
+                || $el.find('.' + options[i]).length > 0;
         }
+
+        options.limit = parseInt($el.attr('data-boom-limit'));
 
         return options;
     },
@@ -53314,126 +53376,8 @@ $.widget('ui.chunkText', $.ui.chunk,
             this._save(links);
         }
     }
-});;/**
-@class
-@name chunkFeature
-@extends $.ui.chunk
-@memberOf $.ui
-*/
-$.widget('ui.chunkFeature', $.ui.chunk,
-    /**
-    @lends $.ui.chunkFeature
-    */
-    {
-
-        _bind: function() {
-            var featureChunk = this;
-
-            if (this.options.id > 0) {
-                this.dialog.contents.find('input[name=parent_id]').val(this.options.id);
-
-                var button = $('<button />')
-                .addClass('b-button ui-helper-left b-button-withtext')
-                .text('Remove featured page')
-                .button({
-                    icons: {primary : 'b-button-icon b-button-icon-delete'}
-                })
-                .click(function() {
-                    featureChunk.remove();
-                    featureChunk.dialog.close();
-                });
-
-                this.dialog.contents.dialog('widget')
-                .find('.ui-dialog-buttonpane')
-                .prepend(button);
-            } else {
-                this.dialog.contents.find('input[name=parent_id]').val('');
-            }
-        },
-
-        edit: function() {
-            var featureEditor = this;
-
-            if (this.options.id > 0 && this.getTargetUrl()) {
-                this.confirmation = new BoomCMS.Dialog({
-                    width: '640px',
-                    title : 'Edit feature?',
-                    msg : '<p>You clicked on a feature box.</p><p>Do you want to visit the featured page or edit the feature?</p>',
-                    closeButton : false,
-                    buttons : [
-                        {
-                            text : 'Visit page',
-                            class : 'b-button b-button-textonly',
-                            click: function() {
-                                featureEditor.viewTarget();
-                            }
-                        },
-                        {
-                            text: 'Remove the featured page',
-                            class: 'b-button b-button-textonly',
-                            click: function() {
-                                featureEditor.remove();
-                                featureEditor.confirmation.close();
-                            }
-                        },
-                        {
-                            text : 'Change the featured page',
-                            class : 'b-button b-button-textonly',
-                            click: function() {
-                                featureEditor.editTarget();
-                            }
-                        }
-                    ]
-                })
-            .fail(function() {
-                featureEditor.bind();
-            });
-            } else {
-                this.editTarget();
-            }
-        },
-
-        editTarget: function() {
-            var featureEditor = this;
-
-            new BoomCMS.LinkPicker(new BoomCMS.Link(null, this.options.currentPage.id), {
-                external: false,
-                asset: false
-            })
-            .done(function(link) {
-                if (typeof(featureEditor.confirmation) !== 'undefined') {
-                    featureEditor.confirmation.close();
-                }
-
-                featureEditor.insert(link.getPageId());
-            })
-            .fail(function() {
-                featureEditor.bind();
-            });
-        },
-
-        getData: function() {
-            return {target_page_id : this.options.id};
-        },
-
-        getTargetUrl: function() {
-            return this.element.is('a')? this.element.attr('href') : this.element.find('a').attr('href');
-        },
-
-    /**
-    Insert the selected page into the DOM as a feature box.
-    @param {Int} rid Page RID
-    */
-        insert: function(rid){
-            this.options.id = rid;
-
-            return this._save();
-        },
-
-        viewTarget: function() {
-            top.window.location = this.getTargetUrl();
-        }
-    });;$.widget('ui.chunkAsset', $.ui.chunk, {
+});
+;$.widget('ui.chunkAsset', $.ui.chunk, {
     editAssetOnly: function() {
         var chunkAsset = this;
 
@@ -53920,6 +53864,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         this.toggle = {
             title: '#b-linkset-title',
             linkAssets: '.b-linkset-asset',
+            linkTitle: '.b-linkset-title',
             linkText: '.b-linkset-text'
         };
 
@@ -53940,7 +53885,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .done(function(link) {
                     var $a = $('<a href="#"></a>')
                         .attr('data-page-id', link.getPageId())
-                        .attr('data-title', link.getTitle())
+                        .attr('data-title', link.getPageId() ? '' : link.getTitle())
                         .attr('data-url', link.getUrl())
                         .attr('data-asset', '')
                         .text(link.getTitle());
@@ -53966,7 +53911,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.addDeleteButtons();
 
             this.$links
-                .on('click', '.b-linkset-link', function() {
+                .on('click', 'a[data-url]', function() {
                     linksetEditor.editLink($(this));
                 });
 
@@ -53993,15 +53938,37 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                     linksetEditor.editLinkTarget();
                 })
+                .on('focusin', '.b-linkset-target input', function() {
+                    linksetEditor.editLinkTarget();
+                })
                 .on('click', '#b-linkset-delete', function() {
                     linksetEditor.deferred.resolveWith({});
                     linksetEditor.dialog.cancel();
                 })
-                .on('click', '.b-linkset-asset a', function() {
+                .on('click', '.b-linkset-asset button, .b-linkset-asset img, .b-linkset-asset p', function(e) {
+                    e.preventDefault();
+
                     linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
                 })
+                .end()
                 .find('ul')
                 .sortable();
+
+            if (this.options.limit === 1) {
+                this.bindSingle();
+            }
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.bindSingle = function() {
+            var $link = this.$links.find('[data-url]');
+
+            if ($link.length === 0) {
+                $link = $('<a>');
+            }
+
+            this.editLink($link);
+            this.dialog.contents.addClass('b-linkset-single');
+            this.dialog.contents.find('#b-linkset-add').hide();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.editAsset = function(currentAsset) {
@@ -54024,6 +53991,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .end()
                 .find('form')
                 .show()
+                .find('div')
+                .removeClass()
+                .addClass($a.attr('data-page-id') ? 'optional' : '')
+                .end()
                 .find('.b-linkset-target input[type=text]')
                 .val($a.attr('data-url'))
                 .end()
@@ -54043,9 +54014,14 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             new BoomCMS.LinkPicker(link)
                 .done(function(link) {
+                    var $div = linksetEditor.dialog.contents.find('#b-linkset-current form > div'),
+                        className = 'optional';
+
                     linksetEditor.currentLink
                         .attr('data-page-id', link.getPageId())
                         .attr('data-url', link.getUrl());
+
+                    link.getPageId() ? $div.addClass(className) : $div.removeClass(className);
 
                     linksetEditor.dialog.contents.find('.b-linkset-target input').val(link.getUrl());
                 });
@@ -54064,22 +54040,37 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             };
         };
 
+        BoomCMS.ChunkLinksetEditor.prototype.getDialogTitle = function() {
+            return this.options.limit === 1 ? 'Edit Link': 'Edit Linkset';
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.getDialogWidth = function() {
+            return this.options.limit === 1 ? 600 : 900;
+        };
+
         BoomCMS.ChunkLinksetEditor.prototype.getLinks = function() {
-            var links = [];
+            var linksetEditor = this, links = [];
+
+            if (this.options.limit === 1) {
+                console.log(this.currentLink);
+                return [this.getLinkData(this.currentLink)];
+            };
 
             this.$links.find('a:not(.delete)').each(function() {
-                var $this = $(this);
-
-                links.push({
-                    target_page_id: $this.attr('data-page-id'),
-                    url: $this.attr('data-url'),
-                    title: $this.attr('data-title'),
-                    asset_id: $this.attr('data-asset'),
-                    text: $this.attr('data-text')
-                });
+                links.push(linksetEditor.getLinkData($(this)));
             });
 
             return links;
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.getLinkData = function($el) {
+            return {
+                target_page_id: $el.attr('data-page-id'),
+                url: $el.attr('data-url'),
+                title: $el.attr('data-title'),
+                asset_id: $el.attr('data-asset'),
+                text: $el.attr('data-text')
+            }
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.open = function() {
@@ -54087,9 +54078,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.dialog = new BoomCMS.Dialog({
                 url: '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=linkset',
-                title: 'Edit linkset',
+                title: this.getDialogTitle(),
                 id: 'b-linkset-editor',
-                width: 900,
+                width: this.getDialogWidth(),
                 onLoad: function() {
                     linksetEditor.bind();
                 }
@@ -54112,23 +54103,23 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     .find('.none')
                     .hide()
                     .end()
-                    .find('.set')
-                    .show()
                     .find('img')
-                    .attr('src', asset.getUrl('view', 500));
+                    .attr('src', asset.getUrl('view', 500))
+                    .show();
             } else {
                 $linksetAsset
                     .find('.none')
                     .show()
                     .end()
-                    .find('.set')
+                    .find('img')
                     .hide();
             }
         };
 
         return this.open();
     };
-}(BoomCMS));;(function(BoomCMS) {
+}(BoomCMS));
+;(function(BoomCMS) {
     'use strict';
 
     BoomCMS.ChunkAssetEditor = function(pageId, slotname, visibleElements) {
@@ -54235,53 +54226,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         return this.open();
     };
-}(BoomCMS));;$.widget('ui.chunkLink', $.ui.chunk, {
-    edit: function() {
-        var chunkLink = this,
-            link = new BoomCMS.Link(this.getUrl(), this.getTargetPageId(), this.getText());
-        
-        new BoomCMS.LinkPicker(link, {
-            text: this.textIsEditable(),
-            remove: link.getUrl() !== ''
-        })
-        .done(function(link) {
-            chunkLink.insert(link);
-        })
-        .fail(function() {
-            chunkLink.destroy();    
-        });
-    },
-    
-    getTargetPageId: function() {
-        return this.element.attr('data-boom-target_page_id');
-    },
-    
-    getText: function() {
-        return this.element.attr('data-boom-text');
-    },
-    
-    getUrl: function() {
-        return this.element.attr('data-boom-url');
-    },
-
-    insert: function(link) {
-        if (typeof(link) === 'undefined' || link.getUrl() === '') {
-            this.remove();
-        } else {
-            this._save({
-                links: [{
-                    title: link.getTitle(),
-                    url: link.getUrl(),
-                    target_page_id: link.getPageId()
-                }]
-            });
-        }
-    },
-
-    textIsEditable: function() {
-        return this.element.attr('data-boom-edittext') === '1';
-    }
-});;$.widget('ui.chunkLocation', $.ui.chunk, {
+}(BoomCMS));;$.widget('ui.chunkLocation', $.ui.chunk, {
     edit: function() {
         var chunk = this,
             options = this.getOptions(),
@@ -55077,7 +55022,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.externalUrl.val(url);
 
             if (url !== '' && !this.link.isAsset()) {
-                $('a[href=#b-linkpicker-add-external]').click();
+                $('a[href="#b-linkpicker-add-external"]').trigger('click');
             }
         };
 
@@ -55114,7 +55059,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         return this.open();
     };
-}($, BoomCMS));;(function(Backbone, BoomCMS) {
+}($, BoomCMS));
+;(function(Backbone, BoomCMS) {
     'use strict';
 
     BoomCMS.AssetManager = Backbone.View.extend({

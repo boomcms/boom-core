@@ -318,7 +318,7 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals(1, $page->getFeatureImageId());
 
         $page = new Page();
-        $this->assertNull($page->getFeatureImageId());
+        $this->assertEquals(0, $page->getFeatureImageId());
     }
 
     public function testGetFeatureImage()

@@ -188,6 +188,7 @@ abstract class BaseChunk
             $this->attributePrefix.'slot-template' => $this->template,
             $this->attributePrefix.'page'          => $this->page->getId(),
             $this->attributePrefix.'chunk-id'      => $this->getId(),
+            $this->attributePrefix.'has-content'   => $this->hasContent(),
         ];
     }
 

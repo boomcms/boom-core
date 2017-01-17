@@ -135,6 +135,11 @@
             }
         };
 
+        BoomCMS.Dialog.prototype.remove = function() {
+            this.deferred.resolve();
+            this.contents.dialog('close');
+        };
+
         this.open();
     };
 }(BoomCMS));
