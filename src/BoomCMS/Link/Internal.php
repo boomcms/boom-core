@@ -49,7 +49,7 @@ class Internal extends Link
      */
     public function getFeatureImageId(): int
     {
-        return (isset($this->attrs['asset_id']) && !empty($this->attrs['asset_id'])) ? 
+        return (isset($this->attrs['asset_id']) && !empty($this->attrs['asset_id'])) ?
             $this->attrs['asset_id'] : $this->page->getFeatureImageId();
     }
 
@@ -85,7 +85,7 @@ class Internal extends Link
     }
 
     /**
-     * Whether the link is visible
+     * Whether the link is visible.
      *
      * @return bool
      */

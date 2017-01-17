@@ -47,6 +47,5 @@ class RemoveLinksetLinksTable extends Migration
      */
     public function down()
     {
-
     }
 }
