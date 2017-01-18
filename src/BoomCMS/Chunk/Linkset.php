@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Chunk;
 
-use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Link\Link;
 use Illuminate\Support\Facades\View;
 
@@ -29,19 +28,6 @@ class Linkset extends BaseChunk
         'link-title' => false,
         'link-asset' => false,
     ];
-
-    public function __construct(Page $page, array $attrs, $slotname)
-    {
-        parent::__construct($page, $attrs, $slotname);
-
-        if (isset($this->attrs['links'])) {
-            foreach ($this->attrs['links'] as &$link) {
-                $target = empty($link['target_page_id']) ? $link['url'] : $link['target_page_id'];
-
-                $link = Link::factory($target, $link);
-            }
-        }
-    }
 
     /**
      * @return array
@@ -86,14 +72,23 @@ class Linkset extends BaseChunk
      *
      * @return array
      */
-    public function getLinks()
+    public function getLinks(): array
     {
         if ($this->links !== null) {
             return $this->links;
         }
 
-        $this->links = isset($this->attrs['links']) ?
-            $this->removeInvalidLinks($this->attrs['links']) : [];
+        $this->links = $this->attrs['links'] ?? [];
+
+        foreach ($this->links as $i => &$link) {
+            $target = empty($link['target_page_id']) ? $link['url'] : $link['target_page_id'];
+
+            $link = Link::factory($target, $link);
+
+            if (!$this->editable && !$link->isVisible()) {
+                unset($this->links[$i]);
+            }
+        }
 
         return $this->links;
     }
@@ -111,34 +106,6 @@ class Linkset extends BaseChunk
     public function getTitle()
     {
         return isset($this->attrs['title']) ? $this->attrs['title'] : '';
-    }
-
-    /**
-     * Removes internal links to deleted pages.
-     *
-     * And internal links to invisible pages when the editor is disabled.
-     *
-     * @param array $links
-     *
-     * @return array
-     */
-    protected function removeInvalidLinks(array $links)
-    {
-        foreach ($links as $i => $link) {
-            if ($link->isExternal()) {
-                continue;
-            }
-
-            $page = $link->getPage();
-
-            if (!$page || $page->isDeleted() || 
-                (!$this->editable && !$page->isVisible())
-            ) {
-                unset($links[$i]);
-            }
-        }
-
-        return $links;
     }
 
     /**

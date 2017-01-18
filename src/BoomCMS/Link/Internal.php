@@ -91,7 +91,7 @@ class Internal extends Link
      */
     public function isVisible(): bool
     {
-        return $this->page->isVisible();
+        return !$page->isDeleted() && $this->page->isVisible();
     }
 
     public function url()
