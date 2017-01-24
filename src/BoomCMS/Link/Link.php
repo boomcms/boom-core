@@ -39,9 +39,8 @@ abstract class Link implements LinkableInterface
     }
 
     /**
-     * 
      * @param int|string $link
-     * @param array $attrs
+     * @param array      $attrs
      *
      * @return Link
      */
@@ -167,7 +166,7 @@ abstract class Link implements LinkableInterface
     }
 
     /**
-     * Whether the link is visible
+     * Whether the link is visible.
      *
      * External links will always be visible
      *

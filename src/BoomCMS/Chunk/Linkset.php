@@ -46,7 +46,7 @@ class Linkset extends BaseChunk
     }
 
     /**
-     * Make this a 'feature' linkset
+     * Make this a 'feature' linkset.
      *
      * Used for backwards compatibility for feature boxes and link chunks
      *
@@ -109,7 +109,6 @@ class Linkset extends BaseChunk
     }
 
     /**
-     * Set linkset options
      *
      * @param array $options
      *
@@ -127,8 +126,8 @@ class Linkset extends BaseChunk
         $links = $this->getLinks();
 
         return View::make($this->viewPrefix."linkset.$this->template", [
-            'title' => $this->getTitle(),
-            'links' => $links,
+            'title'  => $this->getTitle(),
+            'links'  => $links,
             'target' => $links[0],
         ]);
     }
