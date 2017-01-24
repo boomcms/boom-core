@@ -109,7 +109,6 @@ class Linkset extends BaseChunk
     }
 
     /**
-     *
      * @param array $options
      *
      * @return $this
