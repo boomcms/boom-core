@@ -28,7 +28,8 @@ class Search extends Filter
             ->where('embargoed_until', '<=', '?')
             ->setBindings([true, $this->text, time()])
             ->groupBy('page_id')
-            ->lists('page_id');
+            ->pluck('page_id')
+            ->all();
 
         return $query->whereIn('pages.id', $pageIds);
     }
