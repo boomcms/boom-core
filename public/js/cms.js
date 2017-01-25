@@ -48796,7 +48796,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 }
 }());
 ;//! moment-timezone.js
-//! version : 0.5.10
+//! version : 0.5.11
 //! Copyright (c) JS Foundation and other contributors
 //! license : MIT
 //! github.com/moment/moment-timezone
@@ -48816,12 +48816,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	"use strict";
 
 	// Do not load moment-timezone a second time.
-	if (moment.tz !== undefined) {
-		logError('Moment Timezone ' + moment.tz.version + ' was already loaded ' + (moment.tz.dataVersion ? 'with data from ' : 'without any data') + moment.tz.dataVersion);
-		return moment;
-	}
+	// if (moment.tz !== undefined) {
+	// 	logError('Moment Timezone ' + moment.tz.version + ' was already loaded ' + (moment.tz.dataVersion ? 'with data from ' : 'without any data') + moment.tz.dataVersion);
+	// 	return moment;
+	// }
 
-	var VERSION = "0.5.10",
+	var VERSION = "0.5.11",
 		zones = {},
 		links = {},
 		names = {},
@@ -50905,7 +50905,11 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     BoomCMS.Collections.People = Backbone.Collection.extend({
         model: BoomCMS.Person,
         url: BoomCMS.urlRoot + 'person',
-        comparator: 'name'
+        comparator: 'name',
+
+        findByEmail: function(email) {
+            return this.findWhere({email: email});
+        }
     });
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {

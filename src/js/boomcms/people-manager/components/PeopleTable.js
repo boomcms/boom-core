@@ -6,7 +6,7 @@
         template: _.template($('#b-people-table').html()),
 
         events: {
-            'submit #b-people-create': 'createPerson'
+            'submit #b-people-create': 'processCreatePersonForm'
         },
 
         initialize: function(options) {
@@ -18,6 +18,27 @@
             this.listenTo(this.groups, 'add', this.render);
         },
 
+        addPersonToGroups: function(person, groupIds) {
+            for (var i in groupIds) {
+                person.addGroup(this.groups.get(groupIds[i]));
+            }
+
+            person.trigger('change');
+        },
+
+        createPerson: function() {
+            var peopleTable = this,
+                $form = this.$('form'),
+                person = this.people.create({
+                    name: $form.find('input[name=name]').val(),
+                    email: $form.find('input[name=email]').val()
+                }, {
+                    success: function() {
+                        peopleTable.addPersonToGroups(person, $form.find('select').val());
+                    }
+                });
+        },
+
         addPersonToTable: function(person) {
             var view = new BoomCMS.PeopleManager.PeopleTableItem({model: person}),
                 $el = view.render().$el;
@@ -25,28 +46,14 @@
             this.$('tbody').append($el);
         },
 
-        createPerson: function(e) {
+        processCreatePersonForm: function(e) {
             e.preventDefault();
 
             var $form = this.$('form'),
-                groups = this.groups,
-                person;
+                email = $form.find('input[name=email]').val(),
+                person = this.people.findByEmail(email);
 
-            person = this.people.create({
-                name: $form.find('input[name=name]').val(),
-                email: $form.find('input[name=email]').val()
-            }, {
-                success: function() {
-                    var groupIds = $form.find('select').val();
-
-                    for (var i in groupIds) {
-                        person.addGroup(groups.get(groupIds[i]));
-                    }
-
-                    person.trigger('change');
-                    $form[0].reset();
-                }
-            });
+            (person === undefined) ? this.createPerson() : this.addPersonToGroups(person, $form.find('select').val());
         },
 
         render: function() {
@@ -66,6 +73,7 @@
             });
 
             this.$('select').chosen();
+            this.$('form').find('input[name=name]').focus();
 
             return this;
         },
