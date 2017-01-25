@@ -31,14 +31,14 @@ class Autocomplete extends Controller
 
     public function getAssets()
     {
-        $query = DB::table('assets')
+        return DB::table('assets')
             ->select('title')
             ->where('title', 'like', "%$this->text%")
             ->orderBy(DB::raw('length(title)'), 'asc')
             ->distinct(true)
-            ->limit($this->count);
-
-        return $query->lists('title');
+            ->limit($this->count)
+            ->pluck('title')
+            ->all();
     }
 
     public function getPageTitles()
