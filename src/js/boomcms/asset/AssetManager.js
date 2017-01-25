@@ -66,7 +66,14 @@
                     }
                 })
                 .on('keydown', function(e) {
-                    if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
+                    if ($(e.target).is('input')) {
+                        return;
+                    }
+
+                    if (
+                        (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE)
+                        && assetManager.selection.models.length > 0
+                    ) {
                         assetManager.viewSelection(assetManager.selection, 'delete');
                     }
 

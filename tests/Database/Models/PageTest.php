@@ -112,7 +112,7 @@ class PageTest extends AbstractModelTestCase
 
     public function testGetAclGroupIds()
     {
-        $groupIds = [1, 2];
+        $collection = collect([1, 2]);
         $pageId = 1;
         $page = m::mock(Page::class)->makePartial();
 
@@ -142,7 +142,7 @@ class PageTest extends AbstractModelTestCase
             ->shouldReceive('pluck')
             ->once()
             ->with('group_id')
-            ->andReturn($groupIds);
+            ->andReturn($collection);
 
         $page->getAclGroupIds();
     }

@@ -50905,7 +50905,11 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     BoomCMS.Collections.People = Backbone.Collection.extend({
         model: BoomCMS.Person,
         url: BoomCMS.urlRoot + 'person',
-        comparator: 'name'
+        comparator: 'name',
+
+        findByEmail: function(email) {
+            return this.findWhere({email: email});
+        }
     });
 }(Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
@@ -55128,7 +55132,14 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     }
                 })
                 .on('keydown', function(e) {
-                    if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
+                    if ($(e.target).is('input')) {
+                        return;
+                    }
+
+                    if (
+                        (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE)
+                        && assetManager.selection.models.length > 0
+                    ) {
                         assetManager.viewSelection(assetManager.selection, 'delete');
                     }
 
