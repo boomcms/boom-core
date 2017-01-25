@@ -259,7 +259,8 @@
             this.people.sort();
         }
     });
-}(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
+}(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
     'use strict';
 
     BoomCMS.PeopleManager.PeopleTableItem = Backbone.View.extend({
