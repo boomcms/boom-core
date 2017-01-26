@@ -34,7 +34,7 @@
 
                     <div class="main">
                         <div>
-                            <a href="#" data-timestamp="<?= $version->getEditedTime()->getTimestamp() ?>">
+                            <a href="#" data-editor-time="<?= $version->getEditedTime()->getTimestamp() ?>">
                                 <time datetime="<?= $version->getEditedTime()->format('c') ?>">
                                     <?= $version->getEditedTime()->format('d M Y h:i') ?>
                                 </time>

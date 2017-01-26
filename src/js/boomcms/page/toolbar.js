@@ -11,7 +11,7 @@ $.widget( 'boom.pageToolbar', {
             page = this.options.page;
 
         this.element.contents()
-            .on('click', 'button[data-editor-time]', function() {
+            .on('click', '[data-editor-time]', function() {
                 BoomCMS.Editor
                     .setTime($(this).attr('data-editor-time'))
                     .done(function() {
