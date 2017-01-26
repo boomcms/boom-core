@@ -1054,7 +1054,7 @@ class Page extends Model implements PageInterface, SingleSiteInterface
         }
 
         if (Editor::isHistory()) {
-            $query->where('version:created_at', '<=', Editor::getTime()->getTimestamp());
+            $query->where('created_at', '<=', Editor::getTime()->getTimestamp());
         }
 
         return $query;
