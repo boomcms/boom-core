@@ -85,7 +85,7 @@ class Linkset extends BaseChunk
 
             $link = Link::factory($target, $link);
 
-            if (!$this->editable && !$link->isVisible()) {
+            if (!$link->isValid() || (!$this->editable && !$link->isVisible())) {
                 unset($this->links[$i]);
             }
         }

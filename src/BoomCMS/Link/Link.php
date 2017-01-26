@@ -50,14 +50,33 @@ abstract class Link implements LinkableInterface
             new Internal($link, $attrs) : new External($link, $attrs);
     }
 
+    /**
+     * Alias of getFeatureImageId(), for backwards compatibility
+     *
+     * @return int
+     */
     public function getAssetId(): int
     {
         return $this->attrs['asset_id'] ?? 0;
     }
 
+    /**
+     * Returns an array of link attributes
+     *
+     * @return array
+     */
+    public function getAttributes(): array
+    {
+        return $this->attrs;
+    }
+
+    /**
+     *
+     * @return int
+     */
     public function getFeatureImageId(): int
     {
-        return $this->getAssetId();
+        return $this->attrs['asset_id'] ?? 0;
     }
 
     /**
@@ -164,6 +183,13 @@ abstract class Link implements LinkableInterface
     {
         return false;
     }
+
+    /**
+     * Whether the link is valid.
+     *
+     * @return bool
+     */
+    abstract public function isValid(): bool;
 
     /**
      * Whether the link is visible.

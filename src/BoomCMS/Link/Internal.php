@@ -32,7 +32,9 @@ class Internal extends Link
     {
         parent::__construct($link, $attrs);
 
-        if (is_numeric($link)) {
+        if ($link instanceof Page) {
+            $this->page = $link;
+        } else if (is_numeric($link)) {
             $this->page = PageFacade::find($link);
         } else {
             // Extract the query string and fragement
@@ -84,6 +86,11 @@ class Internal extends Link
         return true;
     }
 
+    public function isValid(): bool
+    {
+        return !$this->page->isDeleted();
+    }
+
     /**
      * Whether the link is visible.
      *
@@ -91,7 +98,7 @@ class Internal extends Link
      */
     public function isVisible(): bool
     {
-        return !$page->isDeleted() && $this->page->isVisible();
+        return $this->page->isVisible();
     }
 
     public function url()

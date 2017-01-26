@@ -20,19 +20,20 @@ class ChunkLinksetTest extends AbstractTestCase
 
     public function testGetLinksRemovesDeletedPageWhenEditable()
     {
-        $path = 'test';
+        $pageId = 1;
 
-        URL::shouldReceive('isAvailable')
+        $page = m::mock(Page::class);
+        $page
+            ->shouldReceive('isDeleted')
             ->once()
-            ->with($path)
-            ->andReturn(false);
+            ->andReturn(true);
 
-        PageFacade::shouldReceive('findByUri')
+        PageFacade::shouldReceive('find')
             ->once()
-            ->with($path)
-            ->andReturn(null);
+            ->with($pageId)
+            ->andReturn($page);
 
-        $chunk = $this->chunk(['links' => [['url' => '/test']]]);
+        $chunk = $this->chunk(['links' => [['target_page_id' => $pageId]]]);
         $chunk->editable(true);
 
         $this->assertEquals([], $chunk->getLinks());

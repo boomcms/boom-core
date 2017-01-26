@@ -42,9 +42,9 @@ class BaseLinkTest extends AbstractTestCase
 
     public function testFactoryReturnsExternalLink()
     {
-        $internalLinks = [
+        $externalLinks = [
             '/test', // Relative link but the page doens't exist
-            'http://www.google.com/test',
+            'http://www.boomcms.net/test',
         ];
 
         URL::shouldReceive('isAvailable')
@@ -52,9 +52,24 @@ class BaseLinkTest extends AbstractTestCase
             ->with('test')
             ->andReturn(true);
 
-        foreach ($internalLinks as $link) {
+        foreach ($externalLinks as $link) {
             $this->assertInstanceOf(Link\External::class, Link\Link::factory($link), $link);
         }
+    }
+
+    /**
+     * @depends testFactoryReturnsExternalLink
+     */
+    public function testFactoryResturnsLinkWithAttributes()
+    {
+        $url = 'http://www.boomcms.net';
+        $attrs = [
+            'text' => 'link text',
+        ];
+
+        $link = Link\Link::factory($url, $attrs);
+    
+        $this->assertEquals($attrs, $link->getAttributes());
     }
 
     public function testGetQueryReturnsArray()
