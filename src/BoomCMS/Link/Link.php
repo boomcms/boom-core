@@ -2,10 +2,16 @@
 
 namespace BoomCMS\Link;
 
+use BoomCMS\Contracts\LinkableInterface;
 use BoomCMS\Support\Helpers\URL;
 
-abstract class Link
+abstract class Link implements LinkableInterface
 {
+    /**
+     * @var array
+     */
+    protected $attrs;
+
     /**
      * Array of query string parameters in the link.
      *
@@ -21,9 +27,10 @@ abstract class Link
     /**
      * @param string $link
      */
-    public function __construct($link)
+    public function __construct($link, array $attrs = [])
     {
         $this->link = $link;
+        $this->attrs = $attrs;
     }
 
     public function __toString()
@@ -31,10 +38,44 @@ abstract class Link
         return (string) $this->url();
     }
 
-    public static function factory($link)
+    /**
+     * @param int|string $link
+     * @param array      $attrs
+     *
+     * @return Link
+     */
+    public static function factory($link, array $attrs = [])
     {
         return (is_numeric($link) || URL::isInternal($link)) ?
-            new Internal($link) : new External($link);
+            new Internal($link, $attrs) : new External($link, $attrs);
+    }
+
+    /**
+     * Alias of getFeatureImageId(), for backwards compatibility.
+     *
+     * @return int
+     */
+    public function getAssetId(): int
+    {
+        return $this->attrs['asset_id'] ?? 0;
+    }
+
+    /**
+     * Returns an array of link attributes.
+     *
+     * @return array
+     */
+    public function getAttributes(): array
+    {
+        return $this->attrs;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFeatureImageId(): int
+    {
+        return $this->attrs['asset_id'] ?? 0;
     }
 
     /**
@@ -87,16 +128,80 @@ abstract class Link
         return $this->query;
     }
 
-    abstract public function getTitle();
-
-    public function isExternal()
+    public function getTargetPageId(): int
     {
-        return $this instanceof External;
+        return $this->attrs['target_page_id'] ?? 0;
     }
 
-    public function isInternal()
+    /**
+     * Returns the contents of the text attribute.
+     *
+     * This is different to getText() which, for internal links returns the page standfirst if no text attribute is set.
+     *
+     * @return string
+     */
+    public function getTextAttribute(): string
     {
-        return $this instanceof Internal;
+        return $this->attrs['text'] ?? '';
+    }
+
+    public function getTitleAttribute(): string
+    {
+        return $this->attrs['title'] ?? '';
+    }
+
+    public function getText(): string
+    {
+        return $this->getTextAttribute();
+    }
+
+    abstract public function getTitle(): string;
+
+    public function getUrl(): string
+    {
+        return $this->url();
+    }
+
+    public function hasFeatureImage(): bool
+    {
+        return !empty($this->getFeatureImageId());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExternal(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInternal(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Whether the link is valid.
+     *
+     * @return bool
+     */
+    abstract public function isValid(): bool;
+
+    /**
+     * Whether the link is visible.
+     *
+     * External links will always be visible
+     *
+     * Internal links are visible if the linked page is visible
+     *
+     * @return bool
+     */
+    public function isVisible(): bool
+    {
+        return true;
     }
 
     abstract public function url();

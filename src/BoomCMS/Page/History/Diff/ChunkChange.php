@@ -17,14 +17,12 @@ class ChunkChange extends BaseChange
      */
     protected $icons = [
         'text'      => 'font',
-        'link'      => 'link',
         'linkset'   => 'link',
         'asset'     => 'paperclip',
         'library'   => 'book',
         'calendar'  => 'calendar',
         'timestamp' => 'clock-o',
         'slideshow' => 'picture-o',
-        'feature'   => 'newspaper-o',
         'location'  => 'globe',
         'html'      => 'code',
     ];

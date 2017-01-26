@@ -224,7 +224,7 @@
             this.externalUrl.val(url);
 
             if (url !== '' && !this.link.isAsset()) {
-                $('a[href=#b-linkpicker-add-external]').click();
+                $('a[href="#b-linkpicker-add-external"]').trigger('click');
             }
         };
 

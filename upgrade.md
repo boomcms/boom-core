@@ -1,5 +1,9 @@
 # BoomCMS Upgrade Notes
 
+## v6.1.0
+
+* Feature and link chunks have been removed. Use linksets instead. A linkset passes a $target variable to chunk views which can be used as a replacement for feature chunks, this is an instance of a Link object rather than a Page object.
+
 ## v5.3.0
 
 * Themes which use the CreatePage job to create pages should no longer need to fire the PageWasCreated event manually

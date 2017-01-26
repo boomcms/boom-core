@@ -20,19 +20,20 @@ class ChunkLinksetTest extends AbstractTestCase
 
     public function testGetLinksRemovesDeletedPageWhenEditable()
     {
-        $path = 'test';
+        $pageId = 1;
 
-        URL::shouldReceive('isAvailable')
+        $page = m::mock(Page::class);
+        $page
+            ->shouldReceive('isDeleted')
             ->once()
-            ->with($path)
-            ->andReturn(false);
+            ->andReturn(true);
 
-        PageFacade::shouldReceive('findByUri')
+        PageFacade::shouldReceive('find')
             ->once()
-            ->with($path)
-            ->andReturn(null);
+            ->with($pageId)
+            ->andReturn($page);
 
-        $chunk = $this->chunk(['links' => [['url' => '/test']]]);
+        $chunk = $this->chunk(['links' => [['target_page_id' => $pageId]]]);
         $chunk->editable(true);
 
         $this->assertEquals([], $chunk->getLinks());
@@ -42,6 +43,9 @@ class ChunkLinksetTest extends AbstractTestCase
     {
         $path = 'test';
 
+        $page = m::mock(Page::class);
+        $page->shouldReceive('isDeleted')->once()->andReturn(true);
+
         URL::shouldReceive('isAvailable')
             ->once()
             ->with($path)
@@ -50,7 +54,7 @@ class ChunkLinksetTest extends AbstractTestCase
         PageFacade::shouldReceive('findByUri')
             ->once()
             ->with($path)
-            ->andReturn(null);
+            ->andReturn($page);
 
         $chunk = $this->chunk(['links' => [['url' => '/test']]]);
 
@@ -63,6 +67,7 @@ class ChunkLinksetTest extends AbstractTestCase
 
         $page = m::mock(Page::class);
         $page->shouldReceive('isVisible')->never();
+        $page->shouldReceive('isDeleted')->once()->andReturn(false);
 
         URL::shouldReceive('isAvailable')
             ->once()
@@ -79,7 +84,7 @@ class ChunkLinksetTest extends AbstractTestCase
         $links = $chunk->getLinks();
 
         $this->assertEquals(1, count($links));
-        $this->assertEquals($page, $links[0]->getLink()->getPage());
+        $this->assertEquals($page, $links[0]->getPage());
 
         return $page;
     }
@@ -90,6 +95,10 @@ class ChunkLinksetTest extends AbstractTestCase
 
         $page = m::mock(Page::class);
         $page->shouldReceive('isVisible')
+            ->once()
+            ->andReturn(false);
+
+        $page->shouldReceive('isDeleted')
             ->once()
             ->andReturn(false);
 

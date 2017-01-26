@@ -27,11 +27,17 @@
 		background: @lightest-grey;
 		padding: 1.5rem;
 		text-align: right;
+        overflow: hidden;
 
 		button {
 			border: 0;
 			padding: 1rem 1rem;
 			margin: 0;
+            height: 50px;
+
+            &.left {
+                float: left;
+            }
 
 			&.b-button-textonly {
 				margin-left: 0;

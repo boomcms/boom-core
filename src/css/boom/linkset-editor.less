@@ -2,6 +2,48 @@
 	padding-bottom: 0;
 	overflow: visible;
 
+    &.b-linkset-single {
+        section:first-of-type {
+            display: none;
+        }
+
+        section:nth-of-type(2) {
+            width: 100%;
+            padding-left: 0;
+            border-left: 0;
+
+            h1 {
+                display: none;
+            }
+        }
+
+        #b-linkset-current form {
+			label {
+				p {
+					width: 10rem;
+				}
+
+				input {
+					width: calc(~"100% - 10rem");
+				}
+			}
+
+			.b-linkset-target input {
+                width: calc(~"100% - 13rem");
+			}
+
+			.b-linkset-asset {
+                img {
+                    width: calc(~"100% - 10rem");
+                }
+
+				.none {
+					width: calc(~"100% - 13rem");
+				}
+			}
+        }
+    }
+
 	#b-linkset-title {
 		overflow: hidden;
 		margin: 1.5rem auto;
@@ -36,11 +78,11 @@
 		}
 
 		&:first-of-type {
-			padding-right: 1em;
+			padding-right: 3rem;
 		}
 
 		&:nth-of-type(2) {
-			padding-left: 1em;
+			padding-left: 3rem;
 			border-left: 1px solid @darkest-grey;
 		}
 	}
@@ -102,27 +144,55 @@
 		form {
 			display: none;
 
+            div {
+                margin: 3rem 0 0 0;
+
+                > h2, > p {
+                    display: none;
+                }
+
+                &.optional {
+                    > h2 {
+                        .text-normal;
+                        display: block;
+                        margin: 0 0 0.5rem 0;
+                    }
+
+                    > p {
+                        display: block;
+                    }
+                }
+            }
+
+            button {
+                .fa-edit {
+                    font-size: 2rem;
+                }
+            }
+
 			label {
 				overflow: hidden;
 				padding-right: 0;
 
 				p {
-					width: 5em;
+					width: 6rem;
 					float: left;
 					margin: 5px 0 0 0;
 				}
 
 				input {
-					width: 20em;
+					width: calc(~"100% - 6rem");
 					float: right;
+                    margin-left: 0;
 				}
 			}
 
 			.b-linkset-target {
 				input {
-					background: transparent;
-					width: 17em;
+					width: calc(~"100% - 9rem");
 					float: left;
+                    border: 0;
+                    text-overflow: ellipsis;
 				}
 
 				button {
@@ -132,24 +202,21 @@
 			}
 
 			.b-linkset-asset {
-				.set {
-					width: 20em;
-					float: right;
-					display: block;
-					margin-top: 5px;
+                position: relative;
 
-					&:focus, &:hover {
-						opacity: 0.8;
-					}
+                button {
+                    position: absolute;
+                    top: 0;
+                    right: 0rem;
+                }
 
-					img {
-						width: 100%;
-					}
-				}
+                img {
+                    width: calc(~"100% - 6rem");
+                }
 
 				.none {
-					width: 20em;
-					float: right;
+					width: calc(~"100% - 9rem");
+					float: left;
 				}
 			}
 		}

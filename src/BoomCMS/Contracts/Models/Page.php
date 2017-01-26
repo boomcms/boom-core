@@ -2,9 +2,10 @@
 
 namespace BoomCMS\Contracts\Models;
 
+use BoomCMS\Contracts\LinkableInterface;
 use DateTime;
 
-interface Page
+interface Page extends LinkableInterface
 {
     /**
      * Whether ACL is enabled.
@@ -137,11 +138,6 @@ interface Page
     /**
      * @return int
      */
-    public function getFeatureImageId();
-
-    /**
-     * @return int
-     */
     public function getGrandchildTemplateId();
 
     /**
@@ -202,11 +198,6 @@ interface Page
     public function getTemplateId();
 
     /**
-     * @return string
-     */
-    public function getTitle();
-
-    /**
      * @return array
      */
     public function getUrls();
@@ -225,11 +216,6 @@ interface Page
      * @return bool
      */
     public function hasChildren();
-
-    /**
-     * @return bool
-     */
-    public function hasFeatureImage();
 
     /**
      * @return bool
@@ -513,11 +499,6 @@ interface Page
      * @return $this
      */
     public function setVisibleTo(DateTime $time = null);
-
-    /**
-     * @return URL
-     */
-    public function url();
 
     /**
      * Returns true if the given person created the page.

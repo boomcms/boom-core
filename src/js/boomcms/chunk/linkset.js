@@ -2,7 +2,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
     edit: function() {
         var chunkLinkset = this;
 
-        new BoomCMS.ChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.getOptions())
+        return new BoomCMS.ChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.getOptions())
             .done(function(data) {
                 chunkLinkset.insert(data);
             })
@@ -16,12 +16,17 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
             options = {
                 title: 'linkset-title',
                 linkAssets: 'link-asset',
-                linkText: 'link-text'
+                linkText: 'link-text',
+                linkTitle: 'link-title'
             };
 
         for (var i in options) {
-            options[i] = $el.hasClass(options[i]) || $el.find('.' + options[i]).length > 0;
+            options[i] = $el.attr('data-boom-' + options[i]) === '1'
+                || $el.hasClass(options[i])
+                || $el.find('.' + options[i]).length > 0;
         }
+
+        options.limit = parseInt($el.attr('data-boom-limit'));
 
         return options;
     },
