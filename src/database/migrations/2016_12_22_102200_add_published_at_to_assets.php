@@ -2,8 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
-class AddFileCreatedAtToAssets extends Migration
+class AddPublishedAtToAssets extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +14,11 @@ class AddFileCreatedAtToAssets extends Migration
     public function up()
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->timestamp('file_created_at')->nullable();
-            $table->index('file_created_at');
+            $table->timestamp('published_at')->useCurrent();
+            $table->index('published_at');
         });
+
+        DB::statement('update assets set published_at = from_unixtime(created_at)');
     }
 
     /**
@@ -26,7 +29,7 @@ class AddFileCreatedAtToAssets extends Migration
     public function down()
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->dropColumn('file_created_at');
+            $table->dropColumn('published_at');
         });
     }
 }

@@ -50138,11 +50138,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         getExtension: function() {
             return this.get('extension');
         },
-
-        getFileCreatedAt: function() {
-            return this.get('file_created_at');
-        },
-
         getFilename: function() {
             return this.get('filename');
         },
@@ -50155,6 +50150,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             var metadata = this.get('metadata');
 
             return (metadata !== undefined) ? metadata : {};
+        },
+
+        getPublishedAt: function() {
+            return this.get('published_at');
         },
 
         getReadableFilesize: function() {

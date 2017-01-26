@@ -107,8 +107,8 @@
                     </label>
 
                     <label>
-                        <?= trans('boomcms::asset.file-created-at') ?>
-                        <input type="text" name="file_created_at" class="boom-datepicker" data-timestamp="<%= asset.getFileCreatedAt() %>" />
+                        <?= trans('boomcms::asset.published-at') ?>
+                        <input type="text" name="published_at" class="boom-datepicker" data-timestamp="<%= asset.getPublishedAt() %>" />
                     </label>
                 </form>
 

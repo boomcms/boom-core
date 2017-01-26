@@ -164,7 +164,7 @@ interface Asset
      *
      * @return $this
      */
-    public function setFileCreatedAt($when);
+    public function setPublishedAt($when);
 
     /**
      * @param int $assetId

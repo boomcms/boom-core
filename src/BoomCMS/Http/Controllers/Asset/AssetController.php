@@ -127,7 +127,7 @@ class AssetController extends Controller
             ->setDescription($request->input(Asset::ATTR_DESCRIPTION))
             ->setCredits($request->input(Asset::ATTR_CREDITS))
             ->setThumbnailAssetId($request->input(Asset::ATTR_THUMBNAIL_ID))
-            ->setFileCreatedAt($request->input(Asset::ATTR_FILE_CREATED_AT));
+            ->setPublishedAt($request->input(Asset::ATTR_PUBLISHED_AT));
 
         AssetFacade::save($asset);
 
