@@ -51,7 +51,7 @@ abstract class Link implements LinkableInterface
     }
 
     /**
-     * Alias of getFeatureImageId(), for backwards compatibility
+     * Alias of getFeatureImageId(), for backwards compatibility.
      *
      * @return int
      */
@@ -61,7 +61,7 @@ abstract class Link implements LinkableInterface
     }
 
     /**
-     * Returns an array of link attributes
+     * Returns an array of link attributes.
      *
      * @return array
      */
@@ -71,7 +71,6 @@ abstract class Link implements LinkableInterface
     }
 
     /**
-     *
      * @return int
      */
     public function getFeatureImageId(): int

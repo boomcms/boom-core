@@ -17,7 +17,7 @@ class LinksetTest extends AbstractTestCase
         foreach ($values as $value => $cleaned) {
             $linkset = new Linkset();
             $linkset->{Linkset::ATTR_LINKS} = [
-                ['text' => $value]
+                ['text' => $value],
             ];
 
             $links = $linkset->{Linkset::ATTR_LINKS};

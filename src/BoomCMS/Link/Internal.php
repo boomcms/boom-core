@@ -34,7 +34,7 @@ class Internal extends Link
 
         if ($link instanceof Page) {
             $this->page = $link;
-        } else if (is_numeric($link)) {
+        } elseif (is_numeric($link)) {
             $this->page = PageFacade::find($link);
         } else {
             // Extract the query string and fragement

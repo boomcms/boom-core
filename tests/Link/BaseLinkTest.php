@@ -68,7 +68,7 @@ class BaseLinkTest extends AbstractTestCase
         ];
 
         $link = Link\Link::factory($url, $attrs);
-    
+
         $this->assertEquals($attrs, $link->getAttributes());
     }
 

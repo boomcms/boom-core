@@ -70,7 +70,7 @@ class ExternalTest extends AbstractTestCase
     }
 
     /**
-     * External links currently can't have a featured asset
+     * External links currently can't have a featured asset.
      */
     public function testGetFeatureImageIdReturnsZero()
     {
@@ -80,7 +80,7 @@ class ExternalTest extends AbstractTestCase
     }
 
     /**
-     * External links currently can't have a featured asset
+     * External links currently can't have a featured asset.
      */
     public function testGetTextReturnsTextAttribute()
     {
@@ -105,7 +105,7 @@ class ExternalTest extends AbstractTestCase
     }
 
     /**
-     * External links are always visible
+     * External links are always visible.
      */
     public function testIsVisibleReturnsTrue()
     {
