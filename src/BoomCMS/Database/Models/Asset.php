@@ -203,7 +203,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
 
     public function getOriginalFilename()
     {
-        return $this->getLatestVersion()->getFilename();
+        return str_replace(['\\', '/'], '', $this->getLatestVersion()->getFilename());
     }
 
     public function getReadableFilesizeAttribute()
