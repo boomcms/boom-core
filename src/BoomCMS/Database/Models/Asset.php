@@ -8,6 +8,7 @@ use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Str;
 use BoomCMS\Support\Traits\SingleSite;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
@@ -41,7 +42,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     protected $latestVersion;
 
     protected $casts = [
-        self::ATTR_PUBLISHED_AT => 'timestamp',
+        self::ATTR_PUBLISHED_AT => 'datetime',
     ];
 
     protected $appends = [
@@ -199,6 +200,16 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function getMimetype()
     {
         return $this->getLatestVersion()->getMimetype();
+    }
+
+    /**
+     * Returns the published_at property
+     *
+     * @return Carbon
+     */
+    public function getPublishedAt(): Carbon
+    {
+        return $this->{self::ATTR_PUBLISHED_AT};
     }
 
     public function getOriginalFilename()

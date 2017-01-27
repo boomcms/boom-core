@@ -3,6 +3,7 @@
 namespace BoomCMS\Contracts\Models;
 
 use BoomCMS\Database\Models\AssetVersion;
+use Carbon\Carbon;
 use DateTime;
 
 interface Asset
@@ -87,6 +88,13 @@ interface Asset
      * @return string
      */
     public function getOriginalFilename();
+
+    /**
+     * Returns the published_at property
+     *
+     * @return Carbon
+     */
+    public function getPublishedAt(): Carbon;
 
     /**
      * @return Site

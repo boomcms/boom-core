@@ -4,6 +4,7 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
+use Carbon\Carbon;
 use DateTime;
 use Mockery as m;
 
@@ -141,6 +142,16 @@ class AssetTest extends AbstractModelTestCase
         $asset = $this->mockVersionedAttribute(['height' => 1]);
         $this->assertEquals(1, $asset->getHeight());
         $this->assertInternalType('int', $asset->getHeight());
+    }
+
+    public function testGetPublishedAt()
+    {
+        $now = new DateTime('now');
+
+        $asset = new Asset([Asset::ATTR_PUBLISHED_AT => $now]);
+
+        $this->assertInstanceOf(Carbon::class, $asset->getPublishedAt());
+        $this->assertEquals($now->getTimestamp(), $asset->getPublishedAt()->getTimestamp());
     }
 
     public function testGetTitleReturnsTitleAttribute()
