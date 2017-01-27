@@ -76,7 +76,7 @@
                         <ol class="page-list">
                             <?php foreach ($news as $item): ?>
                                 <li>
-                                    <a href="<?= $item->url ?>">
+                                    <a href="<?= $item->url ?>?utm_source=dashboard&amp;utm_medium=<?= Request::server('HTTP_HOST') ?>">
                                         <h3><?= $item->title ?></h3>
                                         <time datetime="<?= (new DateTime("@{$item->date}"))->format('d M Y H:i') ?>"></time>
                                         <p><?= $item->standfirst ?></p>
