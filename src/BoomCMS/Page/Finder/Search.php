@@ -15,7 +15,7 @@ class Search extends Filter
 
     public function __construct($text)
     {
-        $this->text = addslashes(trim(strip_tags(str_replace(["\n", "\r"], '', $text))));
+        $this->text = mysqli_real_escape_string(trim(strip_tags(str_replace(["\n", "\r"], '', $text))));
     }
 
     public function build(Builder $query)
