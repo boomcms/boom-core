@@ -174,6 +174,26 @@ class AssetTest extends AbstractModelTestCase
         $this->assertEquals($version, $asset->getLatestVersion());
     }
 
+    /**
+     * When downloading an asset the filename cannot contain a forward slash or double back slash.
+     * 
+     * These are now removed when the asset is created
+     *
+     * Also removing when retrieving the filename ensures any pre-existing records are valid.
+     */
+    public function testGetOriginalFilenameRemovesSlashes()
+    {
+        $filenames = ["test file\'s filename", 'file / name'];
+
+        foreach ($filenames as $filename) {
+            $asset = $this->mockVersionedAttribute([
+                AssetVersion::ATTR_FILENAME => $filename,
+            ]);
+
+            $this->assertEquals(str_replace(['/', '\\'], '', $filename), $asset->getOriginalFilename());
+        }
+    }
+
     protected function mockVersionedAttribute($attrs)
     {
         $version = new AssetVersion($attrs);

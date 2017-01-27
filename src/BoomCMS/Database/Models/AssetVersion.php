@@ -131,4 +131,9 @@ class AssetVersion extends Model
 
         $this->attributes[self::ATTR_EXTENSION] = $extension;
     }
+
+    public function setFilenameAttribute($value)
+    {
+        $this->attributes[self::ATTR_FILENAME] = str_replace(['/', '\\'], '', $value);
+    }
 }
