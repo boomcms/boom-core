@@ -90,7 +90,7 @@ interface Asset
     public function getOriginalFilename();
 
     /**
-     * Returns the published_at property
+     * Returns the published_at property.
      *
      * @return Carbon
      */

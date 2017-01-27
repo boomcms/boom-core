@@ -203,7 +203,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     }
 
     /**
-     * Returns the published_at property
+     * Returns the published_at property.
      *
      * @return Carbon
      */
