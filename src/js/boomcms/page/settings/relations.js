@@ -10,7 +10,8 @@
                 external: false,
                 asset: false
             })
-                .done(function(link) {
+            .done(function(link) {
+                if (pages.get(link.getPageId()) === undefined) {
                     page.addRelatedPage(link.getPageId())
                         .done(function() {
                             pages.add(new BoomCMS.Page({
@@ -19,14 +20,15 @@
                                 url: link.getUrl()
                             }));
                         });
-                });
+                }
+            });
         },
 
         addToList: function(page) {
             var $li = $('<li>');
 
-            $('<span>').addClass('title').text(page.getTitle()).appendTo($li),
-            $('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
+            $('<span>').addClass('title').text(page.getTitle()).appendTo($li);
+            $('<span>').addClass('uri').text(page.getUrl()).appendTo($li);
             $('<a>')
                 .attr('href', '#')
                 .addClass('fa fa-trash-o')

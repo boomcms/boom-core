@@ -52379,7 +52379,8 @@ $.widget( 'boom.pageToolbar', {
                 external: false,
                 asset: false
             })
-                .done(function(link) {
+            .done(function(link) {
+                if (pages.get(link.getPageId()) === undefined) {
                     page.addRelatedPage(link.getPageId())
                         .done(function() {
                             pages.add(new BoomCMS.Page({
@@ -52388,14 +52389,15 @@ $.widget( 'boom.pageToolbar', {
                                 url: link.getUrl()
                             }));
                         });
-                });
+                }
+            });
         },
 
         addToList: function(page) {
             var $li = $('<li>');
 
-            $('<span>').addClass('title').text(page.getTitle()).appendTo($li),
-            $('<span>').addClass('uri').text(page.getUrl()).appendTo($li),
+            $('<span>').addClass('title').text(page.getTitle()).appendTo($li);
+            $('<span>').addClass('uri').text(page.getUrl()).appendTo($li);
             $('<a>')
                 .attr('href', '#')
                 .addClass('fa fa-trash-o')
@@ -54776,7 +54778,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         };
 
         BoomCMS.Link.prototype.getPageId = function() {
-            return this.pageId;
+            return parseFloat(this.pageId, 10);
         };
 
         BoomCMS.Link.prototype.getTelUrl = function() {

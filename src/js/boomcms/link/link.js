@@ -55,7 +55,7 @@
         };
 
         BoomCMS.Link.prototype.getPageId = function() {
-            return this.pageId;
+            return parseFloat(this.pageId, 10);
         };
 
         BoomCMS.Link.prototype.getTelUrl = function() {
