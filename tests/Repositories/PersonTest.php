@@ -39,23 +39,6 @@ class PersonTest extends AbstractTestCase
         $this->assertEquals($repository, $repository->delete($model));
     }
 
-    /**
-     * @expectedException BoomCMS\Exceptions\DuplicateEmailException
-     */
-    public function testCreateThrowsDuplicateEmailException()
-    {
-        $email = 'test@test.com';
-        $person = new Person(['id' => 1, 'email' => $email]);
-
-        $this->repository
-            ->shouldReceive('findByEmail')
-            ->once()
-            ->with($email)
-            ->andReturn($person);
-
-        $this->repository->create(['name' => 'test', 'email' => $email]);
-    }
-
     public function testFindByGroupId()
     {
         $this->model->shouldReceive('join')->with('group_person', 'people.id', '=', 'person_id')->andReturnSelf();

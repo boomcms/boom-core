@@ -33,21 +33,30 @@ class PersonTest extends BaseControllerTest
         $site = new Site();
         $site->{Site::ATTR_ID} = 1;
 
+        $email = 'support@uxblondon.com';
+
         $person = m::mock(Person::class);
         $person
             ->shouldReceive('addSite')
             ->once()
             ->with($site);
 
-        PersonFacade::shouldReceive('create')
+        $person
+            ->shouldReceive('hasSite')
             ->once()
+            ->with($site)
+            ->andReturn(false);
+
+        PersonFacade::shouldReceive('findByEmail')
+            ->once()
+            ->with($email)
             ->andReturn($person);
 
         Auth::shouldReceive('user')->andReturn(new Person());
         Event::shouldReceive('fire');
 
         $request = new Request([
-            'email'  => 'support@uxblondon.com',
+            'email'  => $email,
             'name'   => 'Test user',
         ]);
 

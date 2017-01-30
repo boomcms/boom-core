@@ -7,7 +7,6 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
 use BoomCMS\Database\Models\Person as Model;
-use BoomCMS\Exceptions\DuplicateEmailException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Str;
@@ -41,12 +40,6 @@ class Person implements PersonRepositoryInterface, UserProvider
 
     public function create(array $credentials)
     {
-        $existing = $this->findByEmail($credentials['email']);
-
-        if ($existing) {
-            throw new DuplicateEmailException($credentials['email']);
-        }
-
         return $this->model->create($credentials);
     }
 
