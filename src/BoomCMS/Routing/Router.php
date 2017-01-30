@@ -121,7 +121,7 @@ class Router
      *
      * @return $this
      */
-    public function setActiveSite(SiteInterface $site)
+    public function setActiveSite(SiteInterface $site = null)
     {
         $this->site = $site;
         $this->app->instance(SiteModel::class, $site);

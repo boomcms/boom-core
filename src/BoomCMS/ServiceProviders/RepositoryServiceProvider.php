@@ -15,38 +15,36 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        $site = $router->getActiveSite();
-
         $this->app->singleton(Repositories\Asset::class, function () {
             return new Repositories\Asset(new Models\Asset(), new Models\AssetVersion());
         });
 
-        $this->app->singleton(Repositories\Page::class, function () use ($site) {
-            return new Repositories\Page(new Models\Page(), $site);
+        $this->app->singleton(Repositories\Page::class, function () use ($router) {
+            return new Repositories\Page(new Models\Page(), $router->getActiveSite());
         });
 
         $this->app->singleton(Repositories\PageVersion::class, function () {
             return new Repositories\PageVersion(new Models\PageVersion());
         });
 
-        $this->app->singleton(Repositories\Person::class, function () use ($site) {
-            return new Repositories\Person(new Models\Person(), $site);
+        $this->app->singleton(Repositories\Person::class, function () use ($router) {
+            return new Repositories\Person(new Models\Person(), $router->getActiveSite());
         });
 
         $this->app->singleton(Repositories\Group::class, function () {
             return new Repositories\Group();
         });
 
-        $this->app->singleton(Repositories\Tag::class, function () use ($site) {
-            return new Repositories\Tag(new Models\Tag(), $site);
+        $this->app->singleton(Repositories\Tag::class, function () use ($router) {
+            return new Repositories\Tag(new Models\Tag(), $router->getActiveSite());
         });
 
         $this->app->singleton(Repositories\Template::class, function () {
             return new Repositories\Template(new Models\Template());
         });
 
-        $this->app->singleton(Repositories\URL::class, function () use ($site) {
-            return new Repositories\URL(new Models\URL(), $site);
+        $this->app->singleton(Repositories\URL::class, function () use ($router) {
+            return new Repositories\URL(new Models\URL(), $router->getActiveSite());
         });
     }
 
