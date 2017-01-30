@@ -47,7 +47,8 @@ class RouteServiceProvider extends ServiceProvider
 
             try {
                 $router->routeHostname($this->app->make(Request::class)->getHttpHost());
-            } catch (QueryException $e) {}
+            } catch (QueryException $e) {
+            }
 
             return $router;
         });
