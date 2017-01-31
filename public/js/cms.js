@@ -56349,7 +56349,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     },
 
     hasElements: function() {
-        return this.element.children().length > 1;
+        return this.element.children().length > 0;
     },
 
     justify: function() {
