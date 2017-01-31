@@ -37,6 +37,7 @@ class Person extends PeopleManager
 
         $job = new CreatePerson($request->input('email'), $request->input('name'));
         $person = $this->dispatch($job);
+
         return $person->addSite($site);
     }
 

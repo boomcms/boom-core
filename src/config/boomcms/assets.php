@@ -16,6 +16,7 @@ return [
                 'application/msexcel',
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 'application/zip',
+                'application/postscript',
                 'text/plain',
             ],
             'video' => [
@@ -27,6 +28,7 @@ return [
             ],
         ],
         'extensions' => [
+            'eps'  => 'application/postscript',
             'png'  => 'image/png',
             'gif'  => 'image/gif',
             'jpg'  => 'image/jpeg',
