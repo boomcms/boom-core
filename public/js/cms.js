@@ -50037,32 +50037,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             this.assetTypes = options.assetTypes || {};
             this.user = options.user;
 
-            // Used in the login / password reset forms. To be extended to other forms.
-            $('.input input')
-                .on('input paste change keyup', function() {
-                    var $this = $(this),
-                        className = 'has-content';
-
-                    $this.val() ? $this.addClass(className) : $this.removeClass(className);
-                }).trigger('input');
-
             $('#b-topbar, body').ui();
-
-            $('#b-menu-button').on('click', function() {
-                var $body = $('body'),
-                    $window = $(top.window);
-
-                if ($body.hasClass('menu-open')) {
-                    $body.removeClass('menu-open');
-
-                    setTimeout(function() {
-                        $window.trigger('boom:dialog:close');
-                    }, 250);
-                } else {
-                    $window.trigger('boom:dialog:open');
-                    $body.addClass('menu-open');
-                }
-            });
+            $('#b-menu-button').boomcmsMenuButton();
         };
 
         BoomCMS.prototype.getTimezone = function() {
@@ -50985,6 +50961,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
         this.find('time').localTime();
 
+        // Used in the login / password reset forms. To be extended to other forms.
+        this.find('.input input').boomcmsInput();
+
         return this;
     };
 
@@ -51025,6 +51004,33 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
                 $target.siblings().removeClass(selectedClass);
                 $target.addClass(selectedClass);
+            }
+        });
+    };
+
+    $.fn.boomcmsInput = function() {
+        $(this).on('input paste change keyup', function() {
+            var $this = $(this),
+                className = 'has-content';
+
+            $this.val() ? $this.addClass(className) : $this.removeClass(className);
+        }).trigger('input');
+    };
+
+    $.fn.boomcmsMenuButton = function() {
+        $(this).on('click', function() {
+            var $body = $('body'),
+                $window = $(top.window);
+
+            if ($body.hasClass('menu-open')) {
+                $body.removeClass('menu-open');
+
+                setTimeout(function() {
+                    $window.trigger('boom:dialog:close');
+                }, 250);
+            } else {
+                $window.trigger('boom:dialog:open');
+                $body.addClass('menu-open');
             }
         });
     };

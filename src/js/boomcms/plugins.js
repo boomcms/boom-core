@@ -55,6 +55,9 @@
 
         this.find('time').localTime();
 
+        // Used in the login / password reset forms. To be extended to other forms.
+        this.find('.input input').boomcmsInput();
+
         return this;
     };
 
@@ -95,6 +98,33 @@
 
                 $target.siblings().removeClass(selectedClass);
                 $target.addClass(selectedClass);
+            }
+        });
+    };
+
+    $.fn.boomcmsInput = function() {
+        $(this).on('input paste change keyup', function() {
+            var $this = $(this),
+                className = 'has-content';
+
+            $this.val() ? $this.addClass(className) : $this.removeClass(className);
+        }).trigger('input');
+    };
+
+    $.fn.boomcmsMenuButton = function() {
+        $(this).on('click', function() {
+            var $body = $('body'),
+                $window = $(top.window);
+
+            if ($body.hasClass('menu-open')) {
+                $body.removeClass('menu-open');
+
+                setTimeout(function() {
+                    $window.trigger('boom:dialog:close');
+                }, 250);
+            } else {
+                $window.trigger('boom:dialog:open');
+                $body.addClass('menu-open');
             }
         });
     };
