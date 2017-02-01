@@ -12,7 +12,7 @@ class AddCreatedColumnsToPeople extends Migration
      */
     public function up()
     {
-        Schema::table('people', function(Blueprint $table) {
+        Schema::table('people', function (Blueprint $table) {
             $table->integer('created_by')
                 ->unsigned()
                 ->nullable()
@@ -32,7 +32,7 @@ class AddCreatedColumnsToPeople extends Migration
      */
     public function down()
     {
-        Schema::table('people', function(Blueprint $table) {
+        Schema::table('people', function (Blueprint $table) {
             $table->dropColumn('created_by');
             $table->dropColumn('created_at');
         });
