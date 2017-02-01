@@ -60,7 +60,8 @@
             var view = new BoomCMS.PeopleManager.PersonView({
                 model: person,
                 groups: this.groups,
-                sites: this.sites
+                sites: this.sites,
+                people: this.people
             });
 
             this.show(view);
@@ -283,12 +284,8 @@
                 .html(this.template({
                     person: this.model,
                     groups: this.model.getGroups().models
-                }));
-
-            var $time = this.$('time'),
-                lastLogin = $time.attr('datetime') ? moment(this.$('time').attr('datetime')).fromNow() : 'Never';
-
-            this.$('time').text(lastLogin);
+                }))
+                .ui();
 
             return this;
         }
@@ -309,6 +306,7 @@
         initialize: function(options) {
             this.groups = options.groups;
             this.sites = options.sites;
+            this.people = options.people;
 
             this.listenTo(this.model, 'destroy', this.remove);
         },
@@ -326,8 +324,10 @@
                 person: person,
                 groups: groups,
                 selectedGroups: this.model.getGroups(),
-                sites: sites
-            }));
+                sites: sites,
+                createdBy: this.people.get(person.getCreatedBy())
+            }))
+            .ui();
 
             this.$name = this.$('.name').boomcmsEditableHeading();
 

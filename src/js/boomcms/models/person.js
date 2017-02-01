@@ -35,6 +35,14 @@
             return this.sites.add(site);
         },
 
+        getCreatedAt: function() {
+            return this.get('created_at');
+        },
+
+        getCreatedBy: function() {
+            return this.get('created_by');
+        },
+
         getEmail: function() {
             return this.get('email');
         },

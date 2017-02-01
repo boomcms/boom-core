@@ -33,6 +33,25 @@
     </section>
 
     <section>
+        <h3><?= trans('boomcms::people-manager.person.account-details') ?></h3>
+
+        <dl>
+            <% if (person.getCreatedAt()) { %>
+                <dt><?= trans('boomcms::people-manager.person.created-at') ?></dt>
+                <dd><time datetime='<%= new Date(person.getCreatedAt() * 1000).toString() %>'></time></dd>
+            <% } %>
+
+            <% if (createdBy !== undefined) { %>
+                <dt><?= trans('boomcms::people-manager.person.created-by') ?></dt>
+                <dd><%= createdBy.getName() %>&nbsp;<small><%= createdBy.getEmail() %></small></dd>
+            <% } %>
+
+            <dt><?= trans('boomcms::people-manager.person.last-login') ?></dt>
+            <dd><?= view('boomcms::people-manager.person-last-login') ?></dd>
+        </dl>
+    </section>
+
+    <section>
         <h3><?= trans('boomcms::people-manager.groups-heading') ?></h3>
         <p><?= trans('boomcms::people-manager.groups') ?></p>
 

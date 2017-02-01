@@ -14,6 +14,7 @@
         initialize: function(options) {
             this.groups = options.groups;
             this.sites = options.sites;
+            this.people = options.people;
 
             this.listenTo(this.model, 'destroy', this.remove);
         },
@@ -31,8 +32,10 @@
                 person: person,
                 groups: groups,
                 selectedGroups: this.model.getGroups(),
-                sites: sites
-            }));
+                sites: sites,
+                createdBy: this.people.get(person.getCreatedBy())
+            }))
+            .ui();
 
             this.$name = this.$('.name').boomcmsEditableHeading();
 

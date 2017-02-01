@@ -34,6 +34,8 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     const ATTR_SUPERUSER = 'superuser';
     const ATTR_REMEMBER_TOKEN = 'remember_token';
     const ATTR_LAST_LOGIN = 'last_login';
+    const ATTR_CREATED_BY = 'created_by';
+    const ATTR_CREATED_AT = 'created_at';
 
     public $table = 'people';
 

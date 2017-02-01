@@ -31,12 +31,8 @@
                 .html(this.template({
                     person: this.model,
                     groups: this.model.getGroups().models
-                }));
-
-            var $time = this.$('time'),
-                lastLogin = $time.attr('datetime') ? moment(this.$('time').attr('datetime')).fromNow() : 'Never';
-
-            this.$('time').text(lastLogin);
+                }))
+                .ui();
 
             return this;
         }

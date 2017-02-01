@@ -50558,6 +50558,14 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             return this.sites.add(site);
         },
 
+        getCreatedAt: function() {
+            return this.get('created_at');
+        },
+
+        getCreatedBy: function() {
+            return this.get('created_by');
+        },
+
         getEmail: function() {
             return this.get('email');
         },
@@ -50975,9 +50983,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
             $this.each(function() {
                 var $el = $(this),
-                    time = moment($el.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
+                    time = moment($el.attr('datetime')).tz(tz),
+                    text = $el.hasClass('since') ? time.fromNow() : time.format('Do MMMM YYYY HH:mm');
 
-                $el.text(time);
+                $el.text(text);
             });
         }
     };
