@@ -51008,6 +51008,33 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         });
     };
 
+    // Used for the editable name in people manager person and group view.
+    $.fn.boomcmsEditableHeading = function() {
+        var $this = $(this),
+            edit = function($el) {
+                $el
+                    .removeClass(BoomCMS.editableClass)
+                    .focus();
+            };
+
+        $this
+            .addClass(BoomCMS.editableClass)
+            .on('click', function() {
+                edit($(this));
+            })
+            .on('blur', function() {
+                $(this).addClass(BoomCMS.editableClass)
+            })
+            .next('a')
+            .on('click', function(e) {
+                e.preventDefault();
+
+                edit($(this).prev());
+            });
+
+        return $this;
+    };
+
     $.fn.boomcmsInput = function() {
         $(this).on('input paste change keyup', function() {
             var $this = $(this),

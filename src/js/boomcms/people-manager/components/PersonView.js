@@ -6,7 +6,6 @@
         template: _.template($('#b-person-view-template').html()),
 
         events: {
-            'click .name, .name + a': 'editName',
             'click #b-person-delete': 'deletePerson',
             'blur h2': 'saveName',
             'change select[name=enabled], select[name=superuser]': 'toggleAttribute'
@@ -17,14 +16,6 @@
             this.sites = options.sites;
 
             this.listenTo(this.model, 'destroy', this.remove);
-        },
-
-        editName: function(e) {
-            e.preventDefault();
-
-            this.$name
-                .removeClass(BoomCMS.editableClass)
-                .focus();
         },
 
         deletePerson: function() {
@@ -43,7 +34,7 @@
                 sites: sites
             }));
 
-            this.$name = this.$('.name').addClass(BoomCMS.editableClass);
+            this.$name = this.$('.name').boomcmsEditableHeading();
 
             this.$('select[name="groups[]"]')
                     .chosen()
@@ -71,10 +62,9 @@
         saveName: function(e) {
             e.preventDefault();
 
-            this.model.set('name', this.$name.text());
-            this.$name.addClass(BoomCMS.editableClass);
-
-            this.model.save();
+            this.model
+                .set('name', this.$name.text())
+                .save();
         },
 
         toggleAttribute: function(e) {
