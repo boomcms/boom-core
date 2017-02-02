@@ -151,7 +151,7 @@ class Asset implements AssetRepositoryInterface
 
         return $model
             ->select('people.*')
-            ->join('assets', AssetModel::ATTR_CREATED_BY, '=', 'people.id')
+            ->join('assets', 'assets.'.AssetModel::ATTR_CREATED_BY, '=', 'people.id')
             ->groupBy('people.id')
             ->orderBy(PersonModel::ATTR_NAME)
             ->get();

@@ -119,6 +119,20 @@
                         <?= trans('boomcms::asset.published-at') ?>
                         <input type="text" name="published_at" class="boom-datepicker" data-timestamp="<%= asset.getPublishedAt() %>" />
                     </label>
+
+                    <label>
+                        <?= trans('boomcms::asset.public.title') ?>
+
+                        <select name="public">
+                            <?php foreach ([1, 0] as $value): ?>
+                                <option value="<?= $value ?>"
+                                    <% if (asset.isPublic() == <?= $value ?>) { %> selected<% } %>
+                                >
+                                    <?= trans("boomcms::asset.public.$value") ?>
+                                </option>
+                            <?php endforeach ?>
+                        </select>
+                    </label>
                 </form>
 
                 <?= $button('save', 'save-changes', ['class' => 'b-assets-save b-button-withtext']) ?>

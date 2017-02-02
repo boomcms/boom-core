@@ -28,6 +28,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     const ATTR_CREDITS = 'credits';
     const ATTR_DOWNLOADS = 'downloads';
     const ATTR_PUBLISHED_AT = 'published_at';
+    const ATTR_PUBLIC = 'public';
 
     public $table = 'assets';
 
@@ -43,6 +44,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
 
     protected $casts = [
         self::ATTR_PUBLISHED_AT => 'datetime',
+        self::ATTR_PUBLIC       => 'boolean',
     ];
 
     protected $appends = [
@@ -311,6 +313,16 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     }
 
     /**
+     * Whether the asset is public (visible to users who aren't logged in to the CMS)
+     *
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return $this->{self::ATTR_PUBLIC} === true;
+    }
+
+    /**
      * @return bool
      */
     public function isVideo()
@@ -416,7 +428,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
 
     public function uploadedBy()
     {
-        return $this->belongsTo(Person::class, 'created_by');
+        return $this->belongsTo(Person::class, 'assets.created_by');
     }
 
     public function versions()

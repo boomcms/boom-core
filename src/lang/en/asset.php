@@ -58,6 +58,11 @@ return [
         'heading' => 'Preview',
         'about'   => 'Previews are provided by Google Docs Viewer',
     ],
+    'public'          => [
+        'title'   => 'Publicity',
+        '0'       => 'Visible to logged in users only',
+        '1'       => 'Visible to all users',
+    ],
     'replace'         => [
         'heading' => 'Replace',
         'info1'   => 'Drag and drop a file here, or',

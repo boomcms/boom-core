@@ -112,6 +112,24 @@ class AssetTest extends AbstractModelTestCase
         $this->assertFalse($empty->isImage());
     }
 
+    public function testIsPublic()
+    {
+        $values = [
+            null,
+            0,
+            'anything else',
+            1,
+            true,
+            '1',
+        ];
+
+        foreach ($values as $value) {
+            $asset = new Asset([Asset::ATTR_PUBLIC => $value]);
+
+            $this->assertEquals((bool) $value, $asset->isPublic());
+        }
+    }
+
     public function testIsVideo()
     {
         $video = new Asset([Asset::ATTR_TYPE => 'video']);

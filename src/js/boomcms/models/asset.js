@@ -136,6 +136,10 @@
             return this.getType() === 'image';
         },
 
+        isPublic: function() {
+            return this.get('public') === true;
+        },
+
         isVideo: function() {
             return this.getType() === 'video';
         },

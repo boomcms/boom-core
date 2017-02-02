@@ -93,7 +93,7 @@ class AssetTest extends AbstractTestCase
         $model
             ->shouldReceive('join')
             ->once()
-            ->with('assets', Asset::ATTR_CREATED_BY, '=', 'people.id')
+            ->with('assets', 'assets.'.Asset::ATTR_CREATED_BY, '=', 'people.id')
             ->andReturnSelf();
 
         $model

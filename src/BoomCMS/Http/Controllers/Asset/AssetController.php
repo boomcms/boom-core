@@ -122,11 +122,11 @@ class AssetController extends Controller
     {
         $this->authorize('manageAssets', $site);
 
+        $fields = [Asset::ATTR_TITLE, Asset::ATTR_DESCRIPTION,
+            Asset::ATTR_CREDITS, Asset::ATTR_THUMBNAIL_ID, Asset::ATTR_PUBLIC];
+
         $asset
-            ->setTitle($request->input(Asset::ATTR_TITLE))
-            ->setDescription($request->input(Asset::ATTR_DESCRIPTION))
-            ->setCredits($request->input(Asset::ATTR_CREDITS))
-            ->setThumbnailAssetId($request->input(Asset::ATTR_THUMBNAIL_ID))
+            ->fill($request->only($fields))
             ->setPublishedAt($request->input(Asset::ATTR_PUBLISHED_AT));
 
         AssetFacade::save($asset);

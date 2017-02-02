@@ -24,6 +24,10 @@ class BaseController extends Controller
         if (!$this->asset->exists()) {
             abort(404);
         }
+
+        if (!($this->asset->isPublic() || auth()->check())) {
+            abort(401);
+        }
     }
 
     public function download()

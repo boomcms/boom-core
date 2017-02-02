@@ -154,6 +154,11 @@ interface Asset
     public function isImage();
 
     /**
+     * @return bool
+     */
+    public function isPublic(): bool;
+
+    /**
      * @param string $credits
      *
      * @return $this
