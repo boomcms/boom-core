@@ -117,7 +117,7 @@
 
                     <label>
                         <?= trans('boomcms::asset.published-at') ?>
-                        <input type="text" name="published_at" class="boom-datepicker" data-timestamp="<%= asset.getPublishedAt() %>" />
+                        <input type="text" name="published_at" class="boom-datepicker" data-timestamp="<%= new Date(asset.getPublishedAt()).getTime() / 1000 %>" />
                     </label>
 
                     <label>
