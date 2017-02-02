@@ -123,7 +123,7 @@ class AssetController extends Controller
         $this->authorize('manageAssets', $site);
 
         $fields = [Asset::ATTR_TITLE, Asset::ATTR_DESCRIPTION,
-            Asset::ATTR_CREDITS, Asset::ATTR_THUMBNAIL_ID, Asset::ATTR_PUBLIC];
+            Asset::ATTR_CREDITS, Asset::ATTR_THUMBNAIL_ID, Asset::ATTR_PUBLIC, ];
 
         $asset
             ->fill($request->only($fields))

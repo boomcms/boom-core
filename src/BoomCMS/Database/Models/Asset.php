@@ -313,7 +313,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     }
 
     /**
-     * Whether the asset is public (visible to users who aren't logged in to the CMS)
+     * Whether the asset is public (visible to users who aren't logged in to the CMS).
      *
      * @return bool
      */
