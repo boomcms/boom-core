@@ -54,6 +54,10 @@ return [
         'upload'  => 'Upload Asset',
         'filter'  => 'Filter Assets',
     ],
+    'preview'         => [
+        'heading' => 'Preview',
+        'about'   => 'Previews are provided by Google Docs Viewer',
+    ],
     'replace'         => [
         'heading' => 'Replace',
         'info1'   => 'Drag and drop a file here, or',

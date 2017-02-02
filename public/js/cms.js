@@ -50231,6 +50231,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             return this.getType() === 'audio';
         },
 
+        isDocument: function() {
+            return this.getType() === 'doc';
+        },
+
         isImage: function() {
             return this.getType() === 'image';
         },
@@ -55535,12 +55539,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             if (asset === undefined) {
                 asset = new BoomCMS.Asset({id: id});
-                asset.fetch();
+                asset.fetch({
+                    success: function() {
+                        asset.trigger('view', asset, section);
+                    }
+                });
 
                 this.assets.add(asset);
+            } else {
+                asset.trigger('view', asset, section);
             }
-
-            asset.trigger('view', asset, section);
         },
 
         viewSelection: function(selection, section) {

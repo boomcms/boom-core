@@ -18,12 +18,16 @@
 
             if (asset === undefined) {
                 asset = new BoomCMS.Asset({id: id});
-                asset.fetch();
+                asset.fetch({
+                    success: function() {
+                        asset.trigger('view', asset, section);
+                    }
+                });
 
                 this.assets.add(asset);
+            } else {
+                asset.trigger('view', asset, section);
             }
-
-            asset.trigger('view', asset, section);
         },
 
         viewSelection: function(selection, section) {

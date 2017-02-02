@@ -128,6 +128,10 @@
             return this.getType() === 'audio';
         },
 
+        isDocument: function() {
+            return this.getType() === 'doc';
+        },
+
         isImage: function() {
             return this.getType() === 'image';
         },

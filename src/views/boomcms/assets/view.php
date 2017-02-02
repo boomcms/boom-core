@@ -23,6 +23,15 @@
                     </a>
                 </li>
 
+                <% if (asset.isDocument()) { %>
+                    <li>
+                        <a href="#b-asset-preview"<% if (section === 'preview') { %> class="selected"<% } %> data-section='preview'>
+                            <span class="fa fa-eye"></span>
+                            <?= trans('boomcms::asset.preview.heading') ?>
+                        </a>
+                    </li>
+                <% } %>
+
                 <% if (!asset.isImage()) { %>
                     <li>
                         <a href="#b-assets-view-thumbnail"<% if (section === 'thumbnail') { %> class="selected"<% } %> data-section='thumbnail'>
@@ -116,7 +125,7 @@
             </div>
 
             <% if (!asset.isImage()) { %>
-                <div id="b-assets-view-thumbnail"<% if (!section || section === 'thumbnail') { %> class="selected"<% } %>>
+                <div id="b-assets-view-thumbnail"<% if (section === 'thumbnail') { %> class="selected"<% } %>>
                     <h1><?= trans('boomcms::asset.thumbnail') ?></h1>
                     <img src="<%= asset.getUrl('thumb', 500) %>?<%= Date.now() %>" alt="<?= trans('boomcms::asset.thumbnail.heading') ?>">
 
@@ -220,6 +229,15 @@
             <div id="b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
                 <?= view('boomcms::assets.tags') ?>
             </div>
+
+            <% if (asset.isDocument()) { %>
+                <div id="b-asset-preview"<% if (section === 'preview') { %> class="selected"<% } %>>
+                    <h1><?= trans('boomcms::asset.preview.heading') ?></h1>
+                    <p><?= trans('boomcms::asset.preview.about') ?></p>
+
+                    <iframe src='//docs.google.com/viewer?embedded=true&url=<%= window.location.protocol + "//" + window.location.hostname + asset.getUrl() %>'></iframe>
+                </div>
+            <% } %>
 
             <% if (asset.hasMetadata()) { %>
                 <div id="b-asset-metadata"<% if (section === 'metadata') { %> class="selected"<% } %>>
