@@ -50037,32 +50037,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             this.assetTypes = options.assetTypes || {};
             this.user = options.user;
 
-            // Used in the login / password reset forms. To be extended to other forms.
-            $('.input input')
-                .on('input paste change keyup', function() {
-                    var $this = $(this),
-                        className = 'has-content';
-
-                    $this.val() ? $this.addClass(className) : $this.removeClass(className);
-                }).trigger('input');
-
             $('#b-topbar, body').ui();
-
-            $('#b-menu-button').on('click', function() {
-                var $body = $('body'),
-                    $window = $(top.window);
-
-                if ($body.hasClass('menu-open')) {
-                    $body.removeClass('menu-open');
-
-                    setTimeout(function() {
-                        $window.trigger('boom:dialog:close');
-                    }, 250);
-                } else {
-                    $window.trigger('boom:dialog:open');
-                    $body.addClass('menu-open');
-                }
-            });
+            $('#b-menu-button').boomcmsMenuButton();
         };
 
         BoomCMS.prototype.getTimezone = function() {
@@ -50586,6 +50562,14 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             return this.sites.add(site);
         },
 
+        getCreatedAt: function() {
+            return this.get('created_at');
+        },
+
+        getCreatedBy: function() {
+            return this.get('created_by');
+        },
+
         getEmail: function() {
             return this.get('email');
         },
@@ -50989,6 +50973,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
         this.find('time').localTime();
 
+        // Used in the login / password reset forms. To be extended to other forms.
+        this.find('.input input').boomcmsInput();
+
         return this;
     };
 
@@ -51000,9 +50987,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
             $this.each(function() {
                 var $el = $(this),
-                    time = moment($el.attr('datetime')).tz(tz).format('Do MMMM YYYY HH:mm');
+                    time = moment($el.attr('datetime')).tz(tz),
+                    text = $el.hasClass('since') ? time.fromNow() : time.format('Do MMMM YYYY HH:mm');
 
-                $el.text(time);
+                $el.text(text);
             });
         }
     };
@@ -51029,6 +51017,60 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
                 $target.siblings().removeClass(selectedClass);
                 $target.addClass(selectedClass);
+            }
+        });
+    };
+
+    // Used for the editable name in people manager person and group view.
+    $.fn.boomcmsEditableHeading = function() {
+        var $this = $(this),
+            edit = function($el) {
+                $el
+                    .removeClass(BoomCMS.editableClass)
+                    .focus();
+            };
+
+        $this
+            .addClass(BoomCMS.editableClass)
+            .on('click', function() {
+                edit($(this));
+            })
+            .on('blur', function() {
+                $(this).addClass(BoomCMS.editableClass)
+            })
+            .next('a')
+            .on('click', function(e) {
+                e.preventDefault();
+
+                edit($(this).prev());
+            });
+
+        return $this;
+    };
+
+    $.fn.boomcmsInput = function() {
+        $(this).on('input paste change keyup', function() {
+            var $this = $(this),
+                className = 'has-content';
+
+            $this.val() ? $this.addClass(className) : $this.removeClass(className);
+        }).trigger('input');
+    };
+
+    $.fn.boomcmsMenuButton = function() {
+        $(this).on('click', function() {
+            var $body = $('body'),
+                $window = $(top.window);
+
+            if ($body.hasClass('menu-open')) {
+                $body.removeClass('menu-open');
+
+                setTimeout(function() {
+                    $window.trigger('boom:dialog:close');
+                }, 250);
+            } else {
+                $window.trigger('boom:dialog:open');
+                $body.addClass('menu-open');
             }
         });
     };
@@ -56351,7 +56393,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     },
 
     hasElements: function() {
-        return this.element.children().length > 1;
+        return this.element.children().length > 0;
     },
 
     justify: function() {

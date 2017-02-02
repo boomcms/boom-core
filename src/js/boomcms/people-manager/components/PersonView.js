@@ -6,7 +6,6 @@
         template: _.template($('#b-person-view-template').html()),
 
         events: {
-            'click .name, .name + a': 'editName',
             'click #b-person-delete': 'deletePerson',
             'blur h2': 'saveName',
             'change select[name=enabled], select[name=superuser]': 'toggleAttribute'
@@ -15,16 +14,9 @@
         initialize: function(options) {
             this.groups = options.groups;
             this.sites = options.sites;
+            this.people = options.people;
 
             this.listenTo(this.model, 'destroy', this.remove);
-        },
-
-        editName: function(e) {
-            e.preventDefault();
-
-            this.$name
-                .removeClass(BoomCMS.editableClass)
-                .focus();
         },
 
         deletePerson: function() {
@@ -40,10 +32,12 @@
                 person: person,
                 groups: groups,
                 selectedGroups: this.model.getGroups(),
-                sites: sites
-            }));
+                sites: sites,
+                createdBy: this.people.get(person.getCreatedBy())
+            }))
+            .ui();
 
-            this.$name = this.$('.name').addClass(BoomCMS.editableClass);
+            this.$name = this.$('.name').boomcmsEditableHeading();
 
             this.$('select[name="groups[]"]')
                     .chosen()
@@ -71,10 +65,9 @@
         saveName: function(e) {
             e.preventDefault();
 
-            this.model.set('name', this.$name.text());
-            this.$name.addClass(BoomCMS.editableClass);
-
-            this.model.save();
+            this.model
+                .set('name', this.$name.text())
+                .save();
         },
 
         toggleAttribute: function(e) {

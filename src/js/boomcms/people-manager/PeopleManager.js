@@ -60,7 +60,8 @@
             var view = new BoomCMS.PeopleManager.PersonView({
                 model: person,
                 groups: this.groups,
-                sites: this.sites
+                sites: this.sites,
+                people: this.people
             });
 
             this.show(view);

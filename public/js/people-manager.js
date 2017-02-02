@@ -60,7 +60,8 @@
             var view = new BoomCMS.PeopleManager.PersonView({
                 model: person,
                 groups: this.groups,
-                sites: this.sites
+                sites: this.sites,
+                people: this.people
             });
 
             this.show(view);
@@ -145,22 +146,13 @@
         template: _.template($('#b-group-edit').html()),
 
         events: {
-            'click h2, h2 + a': 'editName',
             'blur h2': 'save'
-        },
-
-        editName: function(e) {
-            e.preventDefault();
-
-            this.$name
-                .removeClass(BoomCMS.editableClass)
-                .focus();
         },
 
         render: function() {
             this.$el.html(this.template(this.model.toJSON()));
 
-            this.$name = this.$('h2').addClass(BoomCMS.editableClass);
+            this.$name = this.$('h2').boomcmsEditableHeading();
             this.$('#b-group-roles').groupPermissionsEditor({group: this.model});
 
             return this;
@@ -169,10 +161,9 @@
         save: function(e) {
             e.preventDefault();
 
-            this.model.set('name', this.$name.text());
-            this.$name.addClass(BoomCMS.editableClass);
-
-            this.model.save();
+            this.model
+                .set('name', this.$name.text())
+                .save();
         }
     });
 }(jQuery, Backbone, BoomCMS));;(function($, Backbone, BoomCMS) {
@@ -293,12 +284,8 @@
                 .html(this.template({
                     person: this.model,
                     groups: this.model.getGroups().models
-                }));
-
-            var $time = this.$('time'),
-                lastLogin = $time.attr('datetime') ? moment(this.$('time').attr('datetime')).fromNow() : 'Never';
-
-            this.$('time').text(lastLogin);
+                }))
+                .ui();
 
             return this;
         }
@@ -311,7 +298,6 @@
         template: _.template($('#b-person-view-template').html()),
 
         events: {
-            'click .name, .name + a': 'editName',
             'click #b-person-delete': 'deletePerson',
             'blur h2': 'saveName',
             'change select[name=enabled], select[name=superuser]': 'toggleAttribute'
@@ -320,16 +306,9 @@
         initialize: function(options) {
             this.groups = options.groups;
             this.sites = options.sites;
+            this.people = options.people;
 
             this.listenTo(this.model, 'destroy', this.remove);
-        },
-
-        editName: function(e) {
-            e.preventDefault();
-
-            this.$name
-                .removeClass(BoomCMS.editableClass)
-                .focus();
         },
 
         deletePerson: function() {
@@ -345,10 +324,12 @@
                 person: person,
                 groups: groups,
                 selectedGroups: this.model.getGroups(),
-                sites: sites
-            }));
+                sites: sites,
+                createdBy: this.people.get(person.getCreatedBy())
+            }))
+            .ui();
 
-            this.$name = this.$('.name').addClass(BoomCMS.editableClass);
+            this.$name = this.$('.name').boomcmsEditableHeading();
 
             this.$('select[name="groups[]"]')
                     .chosen()
@@ -376,10 +357,9 @@
         saveName: function(e) {
             e.preventDefault();
 
-            this.model.set('name', this.$name.text());
-            this.$name.addClass(BoomCMS.editableClass);
-
-            this.model.save();
+            this.model
+                .set('name', this.$name.text())
+                .save();
         },
 
         toggleAttribute: function(e) {
