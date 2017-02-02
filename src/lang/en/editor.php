@@ -46,10 +46,8 @@ return [
                 'asset'         => 'Asset',
                 'heading'       => 'Current link',
                 'no-asset'      => 'None set',
-                'none-selected' => 'No link selected',
                 'optional'      => 'Optional details',
                 'optional-desc' => 'These details are optional, leave them blank to use the content from the linked page',
-                'select-one'    => 'Select a link from the left or add a new link to edit it here',
                 'target'        => 'Target',
                 'text'          => 'Text',
                 'title'         => 'Title',
@@ -57,6 +55,7 @@ return [
             'linkset-title' => 'Linkset title',
             'no-links'      => 'This linkset does not contain any links',
             'reorder'       => 'Drag links to re-order them',
+            'select-one'    => 'Select a link below or add a new link to edit it',
         ],
         'location' => [
             'details'        => 'Location details',

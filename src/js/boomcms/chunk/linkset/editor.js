@@ -62,6 +62,11 @@
                 });
 
             this.dialog.contents
+                .on('click', '.back', function() {
+                    linksetEditor.dialog.contents
+                        .find('#b-linkset-current')
+                        .removeClass('visible');
+                })
                 .on('click', '#b-linkset-add', function() {
                     linksetEditor.addLink();
                 })
@@ -132,12 +137,11 @@
 
             this.dialog.contents
                 .find('#b-linkset-current')
-                .find('.default')
-                .hide()
+                .addClass('visible')
+                .find('.back')
+                .focus()
                 .end()
-                .find('form')
-                .show()
-                .find('div')
+                .find('form div')
                 .removeClass()
                 .addClass($a.attr('data-page-id') ? 'optional' : '')
                 .end()
@@ -190,10 +194,6 @@
             return this.options.limit === 1 ? 'Edit Link': 'Edit Linkset';
         };
 
-        BoomCMS.ChunkLinksetEditor.prototype.getDialogWidth = function() {
-            return this.options.limit === 1 ? 600 : 900;
-        };
-
         BoomCMS.ChunkLinksetEditor.prototype.getLinks = function() {
             var linksetEditor = this, links = [];
 
@@ -226,7 +226,7 @@
                 url: '/boomcms/page/' + this.pageId + '/chunk/edit?slotname=' + this.slotname + '&type=linkset',
                 title: this.getDialogTitle(),
                 id: 'b-linkset-editor',
-                width: this.getDialogWidth(),
+                width: 600,
                 onLoad: function() {
                     linksetEditor.bind();
                 }

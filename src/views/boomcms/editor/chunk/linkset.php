@@ -9,7 +9,8 @@
             <h1><?= trans('boomcms::editor.chunk.linkset.all-links') ?></h1>
 
             <?php if (count($chunk->getLinks())): ?>
-            <p><?= trans('boomcms::editor.chunk.linkset.reorder') ?></p>
+                <p><?= trans('boomcms::editor.chunk.linkset.reorder') ?></p>
+                <p><?= trans('boomcms::editor.chunk.linkset.select-one') ?></p>
 
                 <ul>
                     <?php foreach ($chunk->getLinks() as $link): ?>
@@ -25,43 +26,47 @@
     </section>
 
     <section id="b-linkset-current">
-        <h1><?= trans('boomcms::editor.chunk.linkset.current.heading') ?></h1>
+        <a href="#" class="back">
+            <span>Back to all links</span>
+            <i class="fa fa-caret-right"></i>
+        </a>
 
-        <p class="default"><?= trans('boomcms::editor.chunk.linkset.current.none-selected') ?></p>
-        <p class="default"><?= trans('boomcms::editor.chunk.linkset.current.select-one') ?></p>
+        <div>
+            <h1><?= trans('boomcms::editor.chunk.linkset.current.heading') ?></h1>
 
-        <form>
-            <label class="b-linkset-target">
-                <p><?= trans('boomcms::editor.chunk.linkset.current.target') ?></p>
-                <input type="text" name="target" value="" />
+            <form>
+                <label class="b-linkset-target">
+                    <p><?= trans('boomcms::editor.chunk.linkset.current.target') ?></p>
+                    <input type="text" name="target" value="" />
 
-                <?= $button('edit', 'linkset-edit-target', ['class' => 'small']) ?>
-            </label>
-
-            <div>
-                <h2><?= trans('boomcms::editor.chunk.linkset.current.optional') ?></h2>
-                <p><?= trans('boomcms::editor.chunk.linkset.current.optional-desc') ?></p>
-
-                <label class="b-linkset-title">
-                    <p><?= trans('boomcms::editor.chunk.linkset.current.title') ?></p>
-                    <input type="text" name="title" value="" />
+                    <?= $button('edit', 'linkset-edit-target', ['class' => 'small']) ?>
                 </label>
 
-                <label class="b-linkset-text">
-                    <p><?= trans('boomcms::editor.chunk.linkset.current.text') ?></p>
-                    <input type="text" name="text" value="" />
-                </label>
+                <div>
+                    <h2><?= trans('boomcms::editor.chunk.linkset.current.optional') ?></h2>
+                    <p><?= trans('boomcms::editor.chunk.linkset.current.optional-desc') ?></p>
 
-                <label class="b-linkset-asset">
-                    <p><?= trans('boomcms::editor.chunk.linkset.current.asset') ?></p>
-                    <?= $button('edit', 'linkset-edit-asset', ['class' => 'small']) ?>
+                    <label class="b-linkset-title">
+                        <p><?= trans('boomcms::editor.chunk.linkset.current.title') ?></p>
+                        <input type="text" name="title" value="" />
+                    </label>
 
-                    <input type="hidden" name="asset" value="" />
-                    <img src="" />
-                    <p class="none"><?= trans('boomcms::editor.chunk.linkset.current.no-asset') ?></p>
-                </label>
-            </div>
-        </form>
+                    <label class="b-linkset-text">
+                        <p><?= trans('boomcms::editor.chunk.linkset.current.text') ?></p>
+                        <input type="text" name="text" value="" />
+                    </label>
+
+                    <label class="b-linkset-asset">
+                        <p><?= trans('boomcms::editor.chunk.linkset.current.asset') ?></p>
+                        <?= $button('edit', 'linkset-edit-asset', ['class' => 'small']) ?>
+
+                        <input type="hidden" name="asset" value="" />
+                        <img src="" />
+                        <p class="none"><?= trans('boomcms::editor.chunk.linkset.current.no-asset') ?></p>
+                    </label>
+                </div>
+            </form>
+        </div>
     </section>
 </div>
 
