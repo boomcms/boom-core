@@ -6,7 +6,7 @@
 		"php": ">=5.6",
 		"ext-imagick" : "*",
 		"mpratt/embera": "1.9.*",
-		"genphrase/genphrase" : "1.0.*",
+		"genphrase/genphrase" : "1.*",
 		"hautelook/phpass": "1.*",
 		"thujohn/rss": "~1.0",
 		"intervention/imagecache" : "2.*",

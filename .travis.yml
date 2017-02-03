@@ -2,7 +2,6 @@ sudo: false
 language: php
 php: 
   - 7.0
-  - 7.1
 services:
   - mysql
 script: phpunit --coverage-clover build/logs/clover.xml
