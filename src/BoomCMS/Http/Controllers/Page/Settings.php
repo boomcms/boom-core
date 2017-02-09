@@ -50,7 +50,7 @@ class Settings extends Controller
 
         return view("$this->viewPrefix.children", [
             'childTemplate'      => $page->getDefaultChildTemplateId(),
-            'grandchildTemplate' => $page->getDefaultGrandchildTemplateId(),
+            'grandchildTemplate' => $page->getGrandchildTemplateId(),
             'templates'          => $templates,
             'orderColumn'        => $orderCol,
             'orderDirection'     => $orderDirection,

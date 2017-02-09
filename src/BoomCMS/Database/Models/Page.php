@@ -394,7 +394,7 @@ class Page extends Model implements PageInterface, SingleSiteInterface
     {
         $grandchildTemplateId = $this->getGrandchildTemplateId();
 
-        return $grandchildTemplateId !== 0 ?: $this->getTemplateId();
+        return empty($grandchildTemplateId) ? $this->getTemplateId() : $grandchildTemplateId;
     }
 
     /**
