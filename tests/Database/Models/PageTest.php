@@ -285,21 +285,32 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals(1, $page->getDefaultChildTemplateId());
     }
 
-    public function testGetDefaultGrandchildTemplateId()
+    public function testGetDefaultGrandchildTemplateIdReturnsTemplateId()
     {
-        $values = [
-            0    => 2,
-            1    => 1,
-        ];
-
+        $values = [0, null, ''];
         $templateId = 2;
-        $page = m::mock(Page::class)->makePartial();
-        $page->shouldReceive('getTemplateId')->once()->andReturn($templateId);
 
-        foreach ($values as $grandchildTemplateId => $default) {
+        $page = m::mock(Page::class)->makePartial();
+        $page->shouldReceive('getTemplateId')->times(3)->andReturn($templateId);
+
+        foreach ($values as $grandchildTemplateId) {
             $page->{Page::ATTR_GRANDCHILD_TEMPLATE} = $grandchildTemplateId;
 
-            $this->assertEquals($default, $page->getDefaultGrandchildTemplateId());
+            $this->assertEquals($templateId, $page->getDefaultGrandchildTemplateId());
+        }
+    }
+
+    public function testGetDefaultGrandchildTemplateIdReturnsDefinedValue()
+    {
+        $values = [1, 2, 3];
+
+        $page = m::mock(Page::class)->makePartial();
+        $page->shouldReceive('getTemplateId')->never();
+
+        foreach ($values as $grandchildTemplateId) {
+            $page->{Page::ATTR_GRANDCHILD_TEMPLATE} = $grandchildTemplateId;
+
+            $this->assertEquals($grandchildTemplateId, $page->getDefaultGrandchildTemplateId());
         }
     }
 
