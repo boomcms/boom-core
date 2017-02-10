@@ -32,6 +32,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
             .on('keydown change paste', function() {
                 setTimeout(function() {
                     self.updateLengthCounter(self.getLength());
+                    self.setCounterPosition();
                 }, 0);
             })
             .on('focus', function() {
@@ -47,24 +48,17 @@ $.widget('boom.pageTitle', $.ui.chunk, {
     },
 
     createLengthCounter: function() {
-        var $counter = $('<div id="b-title-length"><span></span></div>');
+        this.$counter = $('<div id="b-title-length"><span></span></div>');
 
         $(top.document)
-                .find('body')
-                .first()
-                .append($counter);
+            .find('body')
+            .first()
+            .append(this.$counter);
 
-        var offset = this.element.offset(),
-            title = this;
-
-        $counter
-            .css({
-                top : offset.top + 'px',
-                left : (offset.left - 110) + 'px'
-            });
+        var title = this;
 
         $('<p><a href="#" id="b-title-help">What is this?</a></p>')
-            .appendTo($counter)
+            .appendTo(this.$counter)
             .on('mousedown', 'a', function() {
                 title.element.textEditor('disableAutoSave');
             })
@@ -79,6 +73,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
                 title.openHelp();
             });
 
+        this.setCounterPosition();
         this.updateLengthCounter(this.getLength());
     },
 
@@ -94,6 +89,22 @@ $.widget('boom.pageTitle', $.ui.chunk, {
         }
 
         return 'green';
+    },
+
+    getCounterPosition: function() {
+        var offset = this.element.offset();
+
+        if (offset.left > this.$counter.width() + 110) {
+            return {
+                top : offset.top + 'px',
+                left : (offset.left - 110) + 'px'
+            };
+        }
+
+        return {
+            top: offset.top + this.element.height() + 'px',
+            left: (offset.left - $('#b-editor-ifrane').width()) + 'px'
+        };
     },
 
     getLength: function() {
@@ -141,6 +152,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
                 var page_title = top.$('title').text().replace(old_title, title);
                 top.$('title').text(page_title);
             });
+    },
+
+    setCounterPosition: function() {
+        this.$counter.css(this.getCounterPosition());  
     },
 
     updateLengthCounter: function(length) {
