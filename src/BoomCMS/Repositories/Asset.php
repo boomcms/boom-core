@@ -7,7 +7,7 @@ use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\Database\Models\Person as PersonModel;
-use BoomCMS\Support\File;
+use BoomCMS\FileInfo\Facade as FileInfo;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -41,17 +41,17 @@ class Asset implements AssetRepositoryInterface
      */
     public function createVersionFromFile(AssetInterface $asset, UploadedFile $file)
     {
-        list($width, $height) = getimagesize($file->getRealPath());
+        $info = FileInfo::create($file);
 
         $version = $this->version->create([
             'asset_id'   => $asset->getId(),
             'extension'  => $file->guessExtension(),
             'filesize'   => $file->getClientSize(),
             'filename'   => $file->getClientOriginalName(),
-            'width'      => $width,
-            'height'     => $height,
+            'width'      => $info->getWidth(),
+            'height'     => $info->getHeight(),
             'mimetype'   => $file->getMimeType(),
-            'metadata'   => File::exif($file->getRealPath()),
+            'metadata'   => $info->getMetadata(),
         ]);
 
         $file->move($asset->directory(), $version->id);

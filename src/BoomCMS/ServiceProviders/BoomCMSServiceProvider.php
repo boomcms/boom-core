@@ -3,6 +3,7 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\BoomCMS;
+use BoomCMS\FileInfo;
 use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
 use BoomCMS\Support\Helpers\Asset;
@@ -21,6 +22,7 @@ class BoomCMSServiceProvider extends ServiceProvider
         'Chunk'       => Facades\Chunk::class,
         'Page'        => Facades\Page::class,
         'Editor'      => Facades\Editor::class,
+        'FileInfo'    => FileInfo\Facade::class,
         'Tag'         => Facades\Tag::class,
         'Template'    => Facades\Template::class,
         'Group'       => Facades\Group::class,
@@ -40,6 +42,7 @@ class BoomCMSServiceProvider extends ServiceProvider
         ServiceProviders\ChunkServiceProvider::class,
         ServiceProviders\EventServiceProvider::class,
         HtmlServiceProvider::class,
+        FileInfo\ServiceProvider::class,
     ];
 
     /**
