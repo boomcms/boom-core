@@ -28,7 +28,6 @@ class DefaultDriver implements FileInfoDriver
 
     public function getCreatedAt(): Carbon
     {
-        return null;
     }
 
     public function getHeight(): int
@@ -60,4 +59,3 @@ class DefaultDriver implements FileInfoDriver
         return [];
     }
 }
-

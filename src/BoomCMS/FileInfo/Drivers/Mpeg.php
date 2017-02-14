@@ -4,7 +4,7 @@ namespace BoomCMS\FileInfo\Drivers;
 
 use FFMpeg\FFProbe;
 
-class Jpg extends Image
+class Mpeg extends Image
 {
     public function readMetadata()
     {
@@ -12,6 +12,6 @@ class Jpg extends Image
 
         $ffprobe
             ->format($this->getPathname())
-            ->all(); 
+            ->all();
     }
 }
