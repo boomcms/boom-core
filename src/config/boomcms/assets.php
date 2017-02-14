@@ -8,6 +8,7 @@ return [
                 'image/gif',
                 'image/png',
                 'image/tiff',
+                'image/svg+xml',
             ],
             'doc' => [
                 'application/pdf',
@@ -31,6 +32,7 @@ return [
             'gif'  => 'image/gif',
             'jpg'  => 'image/jpeg',
             'tiff' => 'image/tiff',
+            'svg'  => 'image/svg+xml',
             'doc'  => 'application/msword',
             'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'xls'  => 'application/msexcel',
