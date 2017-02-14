@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Support;
 
-use Illuminate\Support\Facades\Config as ConfigFacade;
 use Imagick;
 use ImagickException;
 
