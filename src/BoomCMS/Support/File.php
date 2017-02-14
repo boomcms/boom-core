@@ -36,41 +36,4 @@ abstract class File
 
         return $exif;
     }
-
-    /**
-     * Determines the file extension from a filename and mimetype.
-     *
-     * @param string $mimetype
-     * @param string $filename
-     *
-     * @return string
-     */
-    public static function extension($filename, $mimetype)
-    {
-        preg_match('|\.([a-zA-Z]+)$|', $filename, $extension);
-
-        if (isset($extension[1])) {
-            $extension = strtolower($extension[1]);
-        } else {
-            $extension = static::extensionFromMimetype($mimetype);
-        }
-
-        return $extension;
-    }
-
-    /**
-     * Returns an extension which can be used for a particular mimetype.
-     *
-     * Used to determine the extension for a file when it's not present in the filename.
-     *
-     * @param string $mimetype
-     *
-     * @return string
-     */
-    public static function extensionFromMimetype($mimetype)
-    {
-        $extensions = ConfigFacade::get('boomcms.assets.extensions');
-
-        return array_search($mimetype, $extensions);
-    }
 }

@@ -43,11 +43,9 @@ class Asset implements AssetRepositoryInterface
     {
         list($width, $height) = getimagesize($file->getRealPath());
 
-        $extension = File::extension($file->getClientOriginalName(), $file->getMimetype());
-
         $version = $this->version->create([
             'asset_id'   => $asset->getId(),
-            'extension'  => $extension,
+            'extension'  => $file->guessExtension(),
             'filesize'   => $file->getClientSize(),
             'filename'   => $file->getClientOriginalName(),
             'width'      => $width,
