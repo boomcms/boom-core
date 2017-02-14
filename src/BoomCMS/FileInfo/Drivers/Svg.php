@@ -12,7 +12,7 @@ class Svg extends Image
 
             $this->dimensions = [
                 (float) $xmlattributes->width,
-                (float) $xmlattributes->height
+                (float) $xmlattributes->height,
             ];
         }
 
