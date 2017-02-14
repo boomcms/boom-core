@@ -215,7 +215,7 @@
                     <dt><?= trans('boomcms::asset.filesize') ?></dt>
                     <dd><span id='filesize'><%= asset.getReadableFilesize() %></dd>
 
-                    <% if (asset.isImage()) { %>
+                    <% if (asset.getWidth() && asset.getHeight()) { %>
                         <dt><?= trans('boomcms::asset.dimensions') ?></dt>
                         <dd><%= asset.getWidth() %> x <%= asset.getHeight() %></dd>
                     <% } %>

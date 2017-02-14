@@ -30,13 +30,13 @@
             <h2><%= asset.getTitle() %></h2>
 
             <p>
-                <%= BoomCMS.assetTypes[asset.getType()] %><br />
+                <%= BoomCMS.assetTypes[asset.getType()] %><br>
 
-                <% if (asset.isImage()) { %>
-                    <%= asset.getWidth() %> x <%= asset.getHeight() %>
-                <% } else { %>
-                    <%= asset.getReadableFilesize() %>
+                <% if (asset.getWidth() && asset.getHeight()) { %>
+                    <%= asset.getWidth() %> x <%= asset.getHeight() %><br>
                 <% } %>
+
+                <%= asset.getReadableFilesize() %>
             </p>
         </div>
     </a>
