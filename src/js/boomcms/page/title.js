@@ -31,6 +31,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
         this.element
             .on('keydown change paste', function() {
                 setTimeout(function() {
+                    self.updateCounterPosition();
                     self.updateLengthCounter(self.getLength());
                 }, 0);
             })
@@ -47,24 +48,17 @@ $.widget('boom.pageTitle', $.ui.chunk, {
     },
 
     createLengthCounter: function() {
-        var $counter = $('<div id="b-title-length"><span></span></div>');
+        this.$counter = $counter = $('<div id="b-title-length"><span></span></div>');
 
         $(top.document)
                 .find('body')
                 .first()
                 .append($counter);
 
-        var offset = this.element.offset(),
-            title = this;
-
-        $counter
-            .css({
-                top : offset.top + 'px',
-                left : (offset.left - 110) + 'px'
-            });
+        var title = this;
 
         $('<p><a href="#" id="b-title-help">What is this?</a></p>')
-            .appendTo($counter)
+            .appendTo(this.$counter)
             .on('mousedown', 'a', function() {
                 title.element.textEditor('disableAutoSave');
             })
@@ -79,10 +73,28 @@ $.widget('boom.pageTitle', $.ui.chunk, {
                 title.openHelp();
             });
 
+        this.updateCounterPosition();
         this.updateLengthCounter(this.getLength());
     },
 
     edit: function() {},
+
+    getCounterPosition: function() {
+        var offset = this.element.offset();
+console.log(offset, this.$counter.width());
+        if ((offset.left - 60) > this.$counter.width()) {
+            console.log('hello');
+            return {
+                top : offset.top + 'px',
+                left : (offset.left - 60 - this.$counter.width()) + 'px'
+            };
+        }
+
+        return {
+            top : (offset.top + this.element.height() + 10) + 'px',
+            left : (offset.left - 60) + 'px'
+        };
+    },
 
     getCounterColorForLength: function(length) {
         if (length >= this.softLimit) {
@@ -141,6 +153,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
                 var page_title = top.$('title').text().replace(old_title, title);
                 top.$('title').text(page_title);
             });
+    },
+
+    updateCounterPosition: function() {
+        this.$counter.css(this.getCounterPosition());
     },
 
     updateLengthCounter: function(length) {
