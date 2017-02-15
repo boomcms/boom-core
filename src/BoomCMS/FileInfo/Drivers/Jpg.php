@@ -15,7 +15,7 @@ class Jpg extends Image
             Carbon::parse($metadata['DateTimeOriginal']) : null;
     }
 
-    public function readMetadata()
+    public function readMetadata(): array
     {
         $im = new Imagick($this->file->getPathname());
         $exif = $im->getImageProperties('exif:*');
