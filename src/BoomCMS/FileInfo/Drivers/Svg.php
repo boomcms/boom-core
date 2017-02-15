@@ -10,7 +10,7 @@ class Svg extends Image
     {
         $attrs = $this->getXmlAttrs();
 
-        list($x, $y, $width, $height) = explode(' ', $attrs['viewBox']);
+        list($x, $y, $width, $height) = explode(' ', $attrs->viewBox);
 
         return $width / $height;
     }
@@ -29,7 +29,7 @@ class Svg extends Image
         return $this->dimensions;
     }
 
-    protected function getXmlAttrs(): array
+    protected function getXmlAttrs()
     {
         if ($this->xmlAttrs === null) {
             $xml = simplexml_load_file($this->file->getPathname());
