@@ -70,14 +70,15 @@ class Asset implements AssetRepositoryInterface
         $info = $info ?: FileInfo::create($file);
 
         $version = $this->version->create([
-            'asset_id'   => $asset->getId(),
-            'extension'  => $file->guessExtension(),
-            'filesize'   => $file->getClientSize(),
-            'filename'   => $file->getClientOriginalName(),
-            'width'      => $info->getWidth(),
-            'height'     => $info->getHeight(),
-            'mimetype'   => $file->getMimeType(),
-            'metadata'   => $info->getMetadata(),
+            'aspect_ratio' => $info->getAspectRatio(),
+            'asset_id'     => $asset->getId(),
+            'extension'    => $file->guessExtension(),
+            'filesize'     => $file->getClientSize(),
+            'filename'     => $file->getClientOriginalName(),
+            'width'        => $info->getWidth(),
+            'height'       => $info->getHeight(),
+            'mimetype'     => $file->getMimeType(),
+            'metadata'     => $info->getMetadata(),
         ]);
 
         $file->move($asset->directory(), $version->id);

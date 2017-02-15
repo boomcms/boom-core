@@ -18,11 +18,13 @@ class AssetVersion extends Model
     const ATTR_EXTENSION = 'extension';
     const ATTR_MIME = 'mimetype';
     const ATTR_METADATA = 'metadata';
+    const ATTR_ASPECT_RATIO = 'aspect_ratio';
 
     protected $casts = [
-        self::ATTR_ID       => 'integer',
-        self::ATTR_ASSET    => 'integer',
-        self::ATTR_METADATA => 'array',
+        self::ATTR_ID           => 'integer',
+        self::ATTR_ASSET        => 'integer',
+        self::ATTR_METADATA     => 'array',
+        self::ATTR_ASPECT_RATIO => 'float',
     ];
 
     public $table = 'asset_versions';
@@ -35,6 +37,11 @@ class AssetVersion extends Model
     public function editedBy()
     {
         return $this->belongsTo(Person::class, static::ATTR_CREATED_BY);
+    }
+
+    public function getAspectRatio(): float
+    {
+        return $this->{self::ATTR_ASPECT_RATIO};
     }
 
     public function getAsset()
