@@ -15,6 +15,13 @@ class Pdf extends DefaultDriver
             Carbon::parse($metadata['CreationDate']) : null;
     }
 
+    public function getTitle(): string
+    {
+        $metadata = $this->getMetadata();
+
+        return $metadata['Title'] ?? parent::getTitle();
+    }
+
     public function readMetadata(): array
     {
         $parser = new Parser();

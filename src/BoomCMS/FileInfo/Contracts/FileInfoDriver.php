@@ -14,5 +14,7 @@ interface FileInfoDriver
 
     public function getMetadata(): array;
 
+    public function getTitle(): string;
+
     public function getWidth(): float;
 }

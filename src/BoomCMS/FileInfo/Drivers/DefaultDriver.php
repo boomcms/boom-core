@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class DefaultDriver implements FileInfoDriver
 {
+    /**
+     * @var File
+     */
     protected $file;
 
     protected $metadata = null;
@@ -44,6 +47,11 @@ class DefaultDriver implements FileInfoDriver
         }
 
         return $this->metadata;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->file->getClientOriginalName();
     }
 
     public function getWidth(): float
