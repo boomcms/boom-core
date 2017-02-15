@@ -16,6 +16,11 @@ return [
         'role'     => 'manageAssets',
         'icon'     => 'picture-o',
     ],
+    'asset-upload' => [
+        'url'      => '/boomcms/asset-manager#upload',
+        'role'     => 'uploadAssets',
+        'icon'     => 'upload',
+    ],
     'people' => [
         'url'      => '/boomcms/people-manager',
         'role'     => 'managePeople',
