@@ -6,7 +6,7 @@
 
         <?php foreach (Asset::uploaders() as $person): ?>
             <option value="<?= $person->getId() ?>"<?php if (isset($selected) && $selected == $person->getId()): ?> selected="selected"<?php endif ?>>
-                <?= $person->getName() ?>
+                <?= $person->getName() ?> (<?= $person->getEmail() ?>)
             </option>
         <?php endforeach ?>
     </select>
