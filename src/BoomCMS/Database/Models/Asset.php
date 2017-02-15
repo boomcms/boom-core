@@ -428,7 +428,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
 
     public function uploadedBy()
     {
-        return $this->belongsTo(Person::class, 'assets.created_by');
+        return $this->hasOne(Person::class, 'id', 'created_by');
     }
 
     public function versions()
