@@ -18,7 +18,7 @@ class Pdf extends DefaultDriver
     public function readMetadata(): array
     {
         $parser = new Parser();
-        $pdf = $parser->parseFile($this->getPathname());
+        $pdf = $parser->parseFile($this->file->getPathname());
 
         return $pdf->getDetails();
     }

@@ -46,11 +46,6 @@ class DefaultDriver implements FileInfoDriver
         return $this->metadata;
     }
 
-    public function getPathname(): string
-    {
-        return $this->file->getPathname();
-    }
-
     public function getWidth(): float
     {
         return 0;

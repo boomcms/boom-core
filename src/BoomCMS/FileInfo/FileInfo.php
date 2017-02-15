@@ -8,16 +8,14 @@ class FileInfo
 {
     public function create(File $file)
     {
-        $driver = $this->getDriver($file);
+        $driver = $this->getDriver($file->getMimeType());
         $className = __NAMESPACE__.'\Drivers\\'.$driver;
 
         return new $className($file);
     }
 
-    public function getDriver(File $file)
+    public function getDriver(string $mimetype)
     {
-        $mimetype = $file->getMimeType();
-
         if (strpos($mimetype, 'video') === 0 || strpos($mimetype, 'audio') === 0) {
             return 'Mpeg';
         }
@@ -29,8 +27,12 @@ class FileInfo
                 return 'Pdf';
             case 'image/svg+xml':
                 return 'Svg';
-            default:
-                return 'DefaultDriver';
         }
+
+        if (strpos($mimetype, 'image') === 0) {
+            return 'Image';
+        }
+
+        return 'DefaultDriver';
     }
 }

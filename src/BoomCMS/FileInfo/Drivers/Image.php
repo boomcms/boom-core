@@ -9,7 +9,7 @@ class Image extends DefaultDriver
     public function getDimensions(): array
     {
         if ($this->dimensions === null) {
-            $this->dimensions = getimagesize($this->getPathname());
+            $this->dimensions = getimagesize($this->file->getPathname());
         }
 
         return $this->dimensions;

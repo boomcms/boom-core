@@ -17,7 +17,7 @@ class Jpg extends Image
 
     public function readMetadata()
     {
-        $im = new Imagick($this->getPathname());
+        $im = new Imagick($this->file->getPathname());
         $exif = $im->getImageProperties('exif:*');
 
         foreach ($exif as $key => $value) {

@@ -12,8 +12,8 @@ class Mpeg extends DefaultDriver
         try {
             $ffprobe = FFProbe::create();
 
-            $ffprobe
-                ->format($this->getPathname())
+            return $ffprobe
+                ->format($this->file->getPathname())
                 ->all();
         } catch (ExecutableNotFoundException $e) {
             return [];
