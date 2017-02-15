@@ -10,11 +10,11 @@ interface FileInfoDriver
 
     public function getCreatedAt(): Carbon;
 
-    public function getHeight(): int;
+    public function getHeight(): float;
 
     public function getMetadata(): array;
 
     public function getPathname(): string;
 
-    public function getWidth(): int;
+    public function getWidth(): float;
 }

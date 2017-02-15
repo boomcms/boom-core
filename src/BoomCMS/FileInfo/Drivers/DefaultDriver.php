@@ -30,7 +30,7 @@ class DefaultDriver implements FileInfoDriver
     {
     }
 
-    public function getHeight(): int
+    public function getHeight(): float
     {
         return 0;
     }
@@ -39,6 +39,8 @@ class DefaultDriver implements FileInfoDriver
     {
         if ($this->metadata === null) {
             $this->metadata = $this->readMetadata();
+
+            ksort($this->metadata);
         }
 
         return $this->metadata;
@@ -49,7 +51,7 @@ class DefaultDriver implements FileInfoDriver
         return $this->file->getPathname();
     }
 
-    public function getWidth(): int
+    public function getWidth(): float
     {
         return 0;
     }

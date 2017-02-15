@@ -2,16 +2,21 @@
 
 namespace BoomCMS\FileInfo\Drivers;
 
+use FFMpeg\Exception\ExecutableNotFoundException;
 use FFMpeg\FFProbe;
 
-class Mpeg extends Image
+class Mpeg extends DefaultDriver
 {
-    public function readMetadata()
+    public function readMetadata(): array
     {
-        $ffprobe = FFProbe::create();
+        try {
+            $ffprobe = FFProbe::create();
 
-        $ffprobe
-            ->format($this->getPathname())
-            ->all();
+            $ffprobe
+                ->format($this->getPathname())
+                ->all();
+        } catch (ExecutableNotFoundException $e) {
+            return [];
+        }
     }
 }

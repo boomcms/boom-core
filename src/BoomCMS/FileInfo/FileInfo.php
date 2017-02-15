@@ -9,7 +9,7 @@ class FileInfo
     public function create(File $file)
     {
         $driver = $this->getDriver($file);
-        $className = __NAMESPACE__.'\Driver\\'.$driver;
+        $className = __NAMESPACE__.'\Drivers\\'.$driver;
 
         return new $className($file);
     }
