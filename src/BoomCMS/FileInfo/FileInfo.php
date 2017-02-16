@@ -16,7 +16,7 @@ class FileInfo
     ];
 
     /**
-     * Factory method for retrieving a FileInfo object
+     * Factory method for retrieving a FileInfo object.
      *
      * @param File $file
      *
@@ -31,7 +31,7 @@ class FileInfo
     }
 
     /**
-     * Determines which driver to use for a given mimetype
+     * Determines which driver to use for a given mimetype.
      *
      * @param string $mimetype
      *

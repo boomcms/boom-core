@@ -8,7 +8,7 @@ use FFMpeg\FFProbe;
 class Mpeg extends DefaultDriver
 {
     /**
-     * Extracts metadata via FFProbe
+     * Extracts metadata via FFProbe.
      *
      * @return array
      */

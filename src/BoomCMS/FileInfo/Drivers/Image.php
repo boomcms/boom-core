@@ -10,7 +10,7 @@ class Image extends DefaultDriver
     protected $dimensions;
 
     /**
-     * Get the dimensions (width and height) of an image as an array
+     * Get the dimensions (width and height) of an image as an array.
      *
      * @return array
      */
@@ -24,7 +24,7 @@ class Image extends DefaultDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return float
      */
@@ -34,7 +34,7 @@ class Image extends DefaultDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return float
      */

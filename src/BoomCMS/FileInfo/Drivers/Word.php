@@ -9,7 +9,7 @@ use PhpOffice\PhpWord\IOFactory;
 class Word extends DefaultDriver
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return null|Carbon
      */
@@ -21,7 +21,7 @@ class Word extends DefaultDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return string
      */
@@ -33,7 +33,7 @@ class Word extends DefaultDriver
     }
 
     /**
-     * Retrieves metadata from the file and turns it into an array
+     * Retrieves metadata from the file and turns it into an array.
      *
      * @return array
      */

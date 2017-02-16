@@ -8,7 +8,7 @@ use Imagick;
 class Jpg extends Image
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return null|Carbon
      */
@@ -22,12 +22,10 @@ class Jpg extends Image
                 return $metadata[$key];
             }
         }
-
-        return null;
     }
 
     /**
-     * Extracts EXIF data from an image
+     * Extracts EXIF data from an image.
      *
      * @return array
      */

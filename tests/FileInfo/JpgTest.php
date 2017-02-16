@@ -20,12 +20,12 @@ class JpgTest extends BaseDriverTest
 
         $exif = [
             'Components Configuration' => '1, 2, 3, 0',
-            'Date Time Digitized' => '2017:02:16 17:00:00',
-            'Exif Offset' => '50',
-            'Exif Version' => '48, 50, 51, 48',
-            'Flash Pix Version' => '48, 49, 48, 48',
-            'Resolution Unit' => '2',
-            'Y Cb Cr Positioning' => '1',
+            'Date Time Digitized'      => '2017:02:16 17:00:00',
+            'Exif Offset'              => '50',
+            'Exif Version'             => '48, 50, 51, 48',
+            'Flash Pix Version'        => '48, 49, 48, 48',
+            'Resolution Unit'          => '2',
+            'Y Cb Cr Positioning'      => '1',
         ];
 
         $this->assertEquals($exif, $info->getMetadata());
