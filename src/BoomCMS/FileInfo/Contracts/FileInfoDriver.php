@@ -2,8 +2,6 @@
 
 namespace BoomCMS\FileInfo\Contracts;
 
-use Carbon\Carbon;
-
 interface FileInfoDriver
 {
     public function getAspectRatio(): float;
