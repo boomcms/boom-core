@@ -2,14 +2,55 @@
 
 namespace BoomCMS\FileInfo\Drivers;
 
+use Carbon\Carbon;
+use Exception;
 use PhpOffice\PhpWord\IOFactory;
 
 class Word extends DefaultDriver
 {
+    public function getCreatedAt()
+    {
+        $metadata = $this->getMetadata();
+
+        return isset($metadata['created']) ? Carbon::createFromTimestamp($metadata['created']) : null;
+    }
+
+    public function getTitle(): string
+    {
+        $metadata = $this->getMetadata();
+
+        return $metadata['title'] ?? '';
+    }
+
     protected function readMetadata(): array
     {
-        $phpWord = IOFactory::load($this->file->getPathname());
+        try {
+            $phpWord = IOFactory::load($this->file->getPathname());
+            $docinfo = $phpWord->getDocInfo();
 
-        dd($phpWord->getProperties());
+            $attrs = [
+                'creator'        => $docinfo->getCreator(),
+                'created'        => $docinfo->getCreated(),
+                'lastModifiedBy' => $docinfo->getLastModifiedBy(),
+                'modified'       => $docinfo->getModified(),
+                'title'          => $docinfo->getTitle(),
+                'description'    => $docinfo->getDescription(),
+                'subject'        => $docinfo->getSubject(),
+                'keywords'       => $docinfo->getKeywords(),
+                'category'       => $docinfo->getCategory(),
+                'company'        => $docinfo->getCompany(),
+                'manager'        => $docinfo->getManager(),
+            ];
+
+            foreach ($attrs as $key => $value) {
+                if (empty($value)) {
+                    unset($attrs[$key]);
+                }
+            }
+
+            return $attrs;
+        } catch (Exception $e) {
+            return [];
+        }
     }
 }

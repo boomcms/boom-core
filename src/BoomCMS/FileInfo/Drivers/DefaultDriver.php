@@ -31,6 +31,7 @@ class DefaultDriver implements FileInfoDriver
 
     public function getCreatedAt(): Carbon
     {
+        
     }
 
     public function getHeight(): float

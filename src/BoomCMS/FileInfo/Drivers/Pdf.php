@@ -8,7 +8,7 @@ use Smalot\PdfParser\Parser;
 
 class Pdf extends DefaultDriver
 {
-    public function getCreatedAt(): Carbon
+    public function getCreatedAt()
     {
         $metadata = $this->getMetadata();
 

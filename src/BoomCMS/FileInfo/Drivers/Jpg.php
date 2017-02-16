@@ -7,7 +7,7 @@ use Imagick;
 
 class Jpg extends Image
 {
-    public function getCreatedAt(): Carbon
+    public function getCreatedAt()
     {
         $metadata = $this->getMetadata();
 

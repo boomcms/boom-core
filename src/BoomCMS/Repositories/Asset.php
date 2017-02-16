@@ -48,7 +48,7 @@ class Asset implements AssetRepositoryInterface
 
         $asset = new AssetModel();
         $asset
-            ->setTitle($info->getTitle())
+            ->setTitle($info->getTitle() ?: $file->getClientOriginalName())
             ->setPublishedAt($info->getCreatedAt())
             ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
 
@@ -70,7 +70,7 @@ class Asset implements AssetRepositoryInterface
         $info = $info ?: FileInfo::create($file);
 
         $version = $this->version->create([
-            'aspect_ratio' => $info->getAspectRatio(),
+//            'aspect_ratio' => $info->getAspectRatio(),
             'asset_id'     => $asset->getId(),
             'extension'    => $file->guessExtension(),
             'filesize'     => $file->getClientSize(),

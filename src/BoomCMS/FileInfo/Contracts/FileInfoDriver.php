@@ -8,7 +8,7 @@ interface FileInfoDriver
 {
     public function getAspectRatio(): float;
 
-    public function getCreatedAt(): Carbon;
+    public function getCreatedAt();
 
     public function getHeight(): float;
 
