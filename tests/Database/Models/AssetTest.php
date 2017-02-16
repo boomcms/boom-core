@@ -21,23 +21,8 @@ class AssetTest extends AbstractModelTestCase
 
     public function testGetAspectRatio()
     {
-        $asset = m::mock(Asset::class)->makePartial();
-        $asset->shouldReceive('getWidth')->andReturn(4);
-        $asset->shouldReceive('getHeight')->andReturn(3);
-
-        $this->assertEquals(4 / 3, $asset->getAspectRatio());
-    }
-
-    public function testGetAspectRatioReturnsZeroWhenAssetHasNoHeight()
-    {
-        $asset = m::mock(Asset::class)->makePartial();
-
-        $asset
-            ->shouldReceive('getHeight')
-            ->once()
-            ->andReturn(0);
-
-        $this->assertEquals(1, $asset->getAspectRatio());
+        $asset = $this->mockVersionedAttribute(['aspect_ratio' => 2]);
+        $this->assertEquals(2, $asset->getAspectRatio());
     }
 
     public function testGetCreditsReturnsCreditsAttribute()

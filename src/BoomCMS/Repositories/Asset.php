@@ -70,7 +70,7 @@ class Asset implements AssetRepositoryInterface
         $info = $info ?: FileInfo::create($file);
 
         $version = $this->version->create([
-//            'aspect_ratio' => $info->getAspectRatio(),
+            'aspect_ratio' => $info->getAspectRatio(),
             'asset_id'     => $asset->getId(),
             'extension'    => $file->guessExtension(),
             'filesize'     => $file->getClientSize(),
