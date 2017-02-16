@@ -3,6 +3,7 @@
 namespace BoomCMS\FileInfo\Drivers;
 
 use Carbon\Carbon;
+use Exception;
 use Smalot\PdfParser\Parser;
 
 class Pdf extends DefaultDriver
@@ -24,9 +25,13 @@ class Pdf extends DefaultDriver
 
     public function readMetadata(): array
     {
-        $parser = new Parser();
-        $pdf = $parser->parseFile($this->file->getPathname());
+        try {
+            $parser = new Parser();
+            $pdf = $parser->parseFile($this->file->getPathname());
 
-        return $pdf->getDetails();
+            return $pdf->getDetails();
+        } catch (Exception $e) {
+            return [];
+        }
     }
 }
