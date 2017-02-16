@@ -2,9 +2,6 @@
 
 namespace BoomCMS\Tests\Repositories;
 
-use BoomCMS\Tests\AbstractTestCase;
-
 class WordTest extends BaseDriverTest
 {
-
 }
