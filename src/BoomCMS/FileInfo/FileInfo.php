@@ -2,6 +2,7 @@
 
 namespace BoomCMS\FileInfo;
 
+use BoomCMS\FileInfo\Contracts\FileInfoDriver;
 use Symfony\Component\HttpFoundation\File\File;
 
 class FileInfo
@@ -14,7 +15,14 @@ class FileInfo
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'Word',
     ];
 
-    public function create(File $file)
+    /**
+     * Factory method for retrieving a FileInfo object
+     *
+     * @param File $file
+     *
+     * @return FileInfoDriver
+     */
+    public function create(File $file): FileInfoDriver
     {
         $driver = $this->getDriver($file->getMimeType());
         $className = __NAMESPACE__.'\Drivers\\'.$driver;
@@ -22,6 +30,13 @@ class FileInfo
         return new $className($file);
     }
 
+    /**
+     * Determines which driver to use for a given mimetype
+     *
+     * @param string $mimetype
+     *
+     * @return string
+     */
     public function getDriver(string $mimetype)
     {
         if (strpos($mimetype, 'video') === 0 || strpos($mimetype, 'audio') === 0) {

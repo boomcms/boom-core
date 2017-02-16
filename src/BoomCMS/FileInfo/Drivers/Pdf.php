@@ -8,6 +8,11 @@ use Smalot\PdfParser\Parser;
 
 class Pdf extends DefaultDriver
 {
+    /**
+     * {@inheritDoc}
+     *
+     * @return null|Carbon
+     */
     public function getCreatedAt()
     {
         $metadata = $this->getMetadata();
@@ -16,6 +21,11 @@ class Pdf extends DefaultDriver
             Carbon::parse($metadata['CreationDate']) : null;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return string
+     */
     public function getTitle(): string
     {
         $metadata = $this->getMetadata();
@@ -23,6 +33,11 @@ class Pdf extends DefaultDriver
         return $metadata['Title'] ?? parent::getTitle();
     }
 
+    /**
+     * Extracts metadata from a PDF
+     *
+     * @return array
+     */
     public function readMetadata(): array
     {
         try {

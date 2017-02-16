@@ -7,21 +7,37 @@ use Imagick;
 
 class Jpg extends Image
 {
+    /**
+     * {@inheritDoc}
+     *
+     * @return null|Carbon
+     */
     public function getCreatedAt()
     {
         $metadata = $this->getMetadata();
+        $keys = ['DateTimeOriginal', 'DateTimeDigitized', 'Date Time Digitized'];
 
-        return isset($metadata['DateTimeOriginal']) ?
-            Carbon::parse($metadata['DateTimeOriginal']) : null;
+        foreach ($keys as $key) {
+            if (isset($metadata[$key])) {
+                return $metadata[$key];
+            }
+        }
+
+        return null;
     }
 
+    /**
+     * Extracts EXIF data from an image
+     *
+     * @return array
+     */
     public function readMetadata(): array
     {
         $im = new Imagick($this->file->getPathname());
         $exif = $im->getImageProperties('exif:*');
 
         foreach ($exif as $key => $value) {
-            $newKey = preg_replace('/(?<!\ )[A-Z]/', ' $0', str_replace('exif:', '', $key));
+            $newKey = trim(preg_replace('/(?<!\ )[A-Z]/', ' $0', str_replace('exif:', '', $key)));
 
             $exif[$newKey] = $value;
             unset($exif[$key]);

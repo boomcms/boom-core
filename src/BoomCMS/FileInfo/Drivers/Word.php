@@ -8,6 +8,11 @@ use PhpOffice\PhpWord\IOFactory;
 
 class Word extends DefaultDriver
 {
+    /**
+     * {@inheritDoc}
+     *
+     * @return null|Carbon
+     */
     public function getCreatedAt()
     {
         $metadata = $this->getMetadata();
@@ -15,6 +20,11 @@ class Word extends DefaultDriver
         return isset($metadata['created']) ? Carbon::createFromTimestamp($metadata['created']) : null;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return string
+     */
     public function getTitle(): string
     {
         $metadata = $this->getMetadata();
@@ -22,6 +32,11 @@ class Word extends DefaultDriver
         return $metadata['title'] ?? '';
     }
 
+    /**
+     * Retrieves metadata from the file and turns it into an array
+     *
+     * @return array
+     */
     protected function readMetadata(): array
     {
         try {

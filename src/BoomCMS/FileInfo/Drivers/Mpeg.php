@@ -7,6 +7,11 @@ use FFMpeg\FFProbe;
 
 class Mpeg extends DefaultDriver
 {
+    /**
+     * Extracts metadata via FFProbe
+     *
+     * @return array
+     */
     public function readMetadata(): array
     {
         try {

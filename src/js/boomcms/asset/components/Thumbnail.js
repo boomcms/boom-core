@@ -78,11 +78,13 @@
         },
 
         render: function() {
+            var aspectRatio = this.model.getAspectRatio();
+
             this.$el
                 .html(this.template({
                     asset: this.model
                 }))
-                .attr('data-aspect-ratio', this.model.getAspectRatio());
+                .attr('data-aspect-ratio', aspectRatio > 0 ? aspectRatio : 1);
 
             return this;
         }
