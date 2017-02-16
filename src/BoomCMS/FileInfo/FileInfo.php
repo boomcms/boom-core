@@ -6,6 +6,14 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class FileInfo
 {
+    protected $byMimetype = [
+        'image/jpeg'                                                              => 'Jpg',
+        'application/pdf'                                                         => 'Pdf',
+        'image/svg+xml'                                                           => 'Svg',
+        'application/msword'                                                      => 'Word',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'Word',
+    ];
+
     public function create(File $file)
     {
         $driver = $this->getDriver($file->getMimeType());
@@ -20,13 +28,10 @@ class FileInfo
             return 'Mpeg';
         }
 
-        switch ($mimetype) {
-            case 'image/jpeg':
-                return 'Jpg';
-            case 'application/pdf':
-                return 'Pdf';
-            case 'image/svg+xml':
-                return 'Svg';
+        foreach ($this->byMimetype as $match => $driver) {
+            if ($mimetype === $match) {
+                return $driver;
+            }
         }
 
         if (strpos($mimetype, 'image') === 0) {

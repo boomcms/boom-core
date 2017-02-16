@@ -17,7 +17,8 @@
         "caxy/php-htmldiff": "^0.1.3",
         "doctrine/dbal": "2.5.*",
         "php-ffmpeg/php-ffmpeg": "0.9.*",
-        "smalot/pdfparser": "*"
+        "smalot/pdfparser": "*",
+        "phpoffice/phpword": "0.13.*"
     },
     "require-dev": {
         "phpunit/phpunit": "5.6.*",
