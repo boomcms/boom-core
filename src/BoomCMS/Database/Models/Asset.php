@@ -65,22 +65,6 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     ];
 
     /**
-     * @return string
-     */
-    public function directory()
-    {
-        return storage_path().'/boomcms/assets';
-    }
-
-    /**
-     * @return bool
-     */
-    public function exists()
-    {
-        return $this->getId() && file_exists($this->getFilename());
-    }
-
-    /**
      * @return float
      */
     public function getAspectRatio()
@@ -118,14 +102,6 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function getExtension()
     {
         return $this->getLatestVersion()->getExtension();
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilename()
-    {
-        return $this->directory().DIRECTORY_SEPARATOR.$this->getLatestVersionId();
     }
 
     /**

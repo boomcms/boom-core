@@ -1,7 +1,7 @@
 <?php $model = new BoomCMS\Database\Models\Asset() ?>
 
 <div class="b-assets-upload">
-    <?php if (is_writable($model->directory())): ?>
+    <?php /*if (Storage::disk('boomcms-assets')->isWritable()): ?>
         <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
             <div class="b-assets-upload-container">
                 <div class="b-assets-upload-info">
@@ -24,8 +24,8 @@
     <?php else: ?>
         <div class="b-assets-upload-error">
             <p>
-                <?= trans('boomcms::asset.upload.not-writable', ['dir' => $model->directory()]) ?>
+                <?= trans('boomcms::asset.upload.not-writable', ['dir' => ]) ?>
             </p>
         </div>
-    <?php endif ?>
+    <?php endif */ ?>
 </div>

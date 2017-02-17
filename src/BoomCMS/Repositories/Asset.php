@@ -4,24 +4,31 @@ namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
+use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Asset implements AssetRepositoryInterface
 {
     /**
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    /**
      * @var AssetModel
      */
     protected $model;
 
     /**
-     * @var AssetVersion
+     * @var AssetVersionRepositoryInterface
      */
     protected $version;
 
@@ -29,10 +36,11 @@ class Asset implements AssetRepositoryInterface
      * @param AssetModel        $model
      * @param AsserVersionModel $version
      */
-    public function __construct(AssetModel $model, AssetVersionModel $version)
+    public function __construct(AssetModel $model, AssetVersionRepositoryInterface $version, Filesystem $filesystem)
     {
         $this->model = $model;
         $this->version = $version;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -55,39 +63,14 @@ class Asset implements AssetRepositoryInterface
             ->setCredits($info->getCopyright());
 
         $assetId = static::save($asset)->getId();
-        static::createVersionFromFile($asset, $file, $info);
+
+        if ($thumbnail = $info->getThumbnail()) {
+            $this->filesystem->put("$assetId.thumb", $thumbnail->getImageBlob());
+        }
+
+        $this->version->createFromFile($asset, $file, $info);
 
         return $assetId;
-    }
-
-    /**
-     * @param AssetInterface $asset
-     * @param UploadedFile   $file
-     * @param FileInfoDriver $info
-     *
-     * @return AssetVersion
-     */
-    public function createVersionFromFile(AssetInterface $asset, UploadedFile $file, FileInfoDriver $info = null)
-    {
-        $info = $info ?: FileInfo::create($file);
-
-        $version = $this->version->create([
-            'aspect_ratio' => $info->getAspectRatio(),
-            'asset_id'     => $asset->getId(),
-            'extension'    => $file->guessExtension(),
-            'filesize'     => $file->getClientSize(),
-            'filename'     => $file->getClientOriginalName(),
-            'width'        => $info->getWidth(),
-            'height'       => $info->getHeight(),
-            'mimetype'     => $file->getMimeType(),
-            'metadata'     => $info->getMetadata(),
-        ]);
-
-        $file->move($asset->directory(), $version->id);
-
-        $asset->setVersion($version);
-
-        return $version;
     }
 
     /**
@@ -100,16 +83,6 @@ class Asset implements AssetRepositoryInterface
         $this->model->destroy($assetIds);
 
         return $this;
-    }
-
-    public function extensions()
-    {
-        return $this->version
-            ->select(AssetVersionModel::ATTR_EXTENSION)
-            ->where(AssetVersionModel::ATTR_EXTENSION, '!=', '')
-            ->orderBy(AssetVersionModel::ATTR_EXTENSION)
-            ->distinct()
-            ->pluck(AssetVersionModel::ATTR_EXTENSION);
     }
 
     /**
@@ -138,18 +111,15 @@ class Asset implements AssetRepositoryInterface
 
     public function revert(AssetInterface $asset, $versionId)
     {
-        $version = $this->version->find($versionId);
+        $version = $this->find($versionId);
 
         if ($version && $version->getAssetId() == $asset->getId()) {
             $attrs = $version->toArray();
             unset($attrs['id']);
 
-            $version = $this->version->create($attrs);
+            $version = $this->model->create($attrs);
 
-            copy(
-                $asset->directory().DIRECTORY_SEPARATOR.$versionId,
-                $asset->directory().DIRECTORY_SEPARATOR.$version->getId()
-            );
+            $this->filesystem->copy($versionId, $version->getId());
         }
 
         return $asset;

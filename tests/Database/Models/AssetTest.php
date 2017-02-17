@@ -12,13 +12,6 @@ class AssetTest extends AbstractModelTestCase
 {
     protected $model = Asset::class;
 
-    public function testDirectory()
-    {
-        $model = new Asset();
-
-        $this->assertEquals(storage_path().'/boomcms/assets', $model->directory());
-    }
-
     public function testGetAspectRatio()
     {
         $asset = $this->mockVersionedAttribute(['aspect_ratio' => 2]);
@@ -44,17 +37,6 @@ class AssetTest extends AbstractModelTestCase
         $asset = new Asset([Asset::ATTR_DOWNLOADS => 1]);
 
         $this->assertEquals(1, $asset->getDownloads());
-    }
-
-    public function testGetFilename()
-    {
-        $asset = m::mock(Asset::class)->makePartial();
-
-        $asset
-            ->shouldReceive('getLatestVersionId')
-            ->andReturn(1);
-
-        $this->assertEquals($asset->directory().'/1', $asset->getFilename());
     }
 
     public function testGetExtension()
