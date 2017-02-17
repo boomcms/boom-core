@@ -113,7 +113,7 @@ class DefaultDriver implements FileInfoDriver
     }
 
     /**
-     * Loop through an array of metadata keys and return the first one that exists
+     * Loop through an array of metadata keys and return the first one that exists.
      *
      * @param array $keys
      * @param mixed $default
