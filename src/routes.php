@@ -197,7 +197,7 @@ Route::group([
             return App::make(AssetHelper::controller($asset), [$asset])->$action($width, $height);
         },
     ])->where([
-        'action'    => 'view|thumb|download|crop',
+        'action'    => 'view|thumb|download|crop|embed',
         'extension' => '[a-z]+',
     ]);
 
@@ -210,7 +210,7 @@ Route::group([
             return App::make(AssetHelper::controller($asset), [$asset])->$action($width, $height);
         },
     ])->where([
-        'action'    => 'view|thumb|download|crop',
+        'action'    => 'view|thumb|download|crop|embed',
     ]);
 });
 
