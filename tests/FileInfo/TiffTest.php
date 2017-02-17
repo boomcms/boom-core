@@ -24,11 +24,11 @@ class TiffTest extends JpgTest
         $info = $this->getInfo($this->filename);
 
         $exif = [
-            'date:create' => '2017-02-17T10:46:43+00:00',
-            'date:modify' => '2017-02-17T10:46:43+00:00',
-            'tiff:alpha' => 'unspecified',
-            'tiff:endian' => 'lsb',
-            'tiff:photometric' => 'RGB',
+            'date:create'         => '2017-02-17T10:46:43+00:00',
+            'date:modify'         => '2017-02-17T10:46:43+00:00',
+            'tiff:alpha'          => 'unspecified',
+            'tiff:endian'         => 'lsb',
+            'tiff:photometric'    => 'RGB',
             'tiff:rows-per-strip' => '64',
         ];
 

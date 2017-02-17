@@ -19,21 +19,20 @@ class PdfTest extends BaseDriverTest
     }
 
     /**
-     * PDF aspect ratios can't be determined, so 0 should be returned
+     * PDF aspect ratios can't be determined, so 0 should be returned.
      */
     public function testGetAspectRatio()
     {
         $this->assertEquals(0, $this->info->getAspectRatio());
     }
 
-
     public function testGetMetadataReturnsArray()
     {
         $metadata = [
             'CreationDate' => '2017-02-17T11:07:56+00:00',
-            'Creator' => 'Writer',
-            'Pages' => 1,
-            'Producer' => 'LibreOffice 5.1',
+            'Creator'      => 'Writer',
+            'Pages'        => 1,
+            'Producer'     => 'LibreOffice 5.1',
         ];
 
         $this->assertEquals($metadata, $this->info->getMetadata());
@@ -47,7 +46,7 @@ class PdfTest extends BaseDriverTest
     }
 
     /**
-     * PDFs don't have a height - 0 should be returned
+     * PDFs don't have a height - 0 should be returned.
      */
     public function testGetHeight()
     {
@@ -60,7 +59,7 @@ class PdfTest extends BaseDriverTest
     }
 
     /**
-     * PDFs don't have a width - 0 should be returned
+     * PDFs don't have a width - 0 should be returned.
      */
     public function testGetWidth()
     {

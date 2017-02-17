@@ -22,17 +22,17 @@ class JpgTest extends BaseDriverTest
         $info = $this->getInfo($this->filename);
 
         $exif = [
-            "date:create" => "2017-02-16T16:56:18+00:00",
-            "date:modify" => "2017-02-16T16:56:09+00:00",
-            "exif:ComponentsConfiguration" => "1, 2, 3, 0",
-            "exif:DateTimeDigitized" => "2017:02:16 17:00:00",
-            "exif:ExifOffset" => "50",
-            "exif:ExifVersion" => "48, 50, 51, 48",
-            "exif:FlashPixVersion" => "48, 49, 48, 48",
-            "exif:ResolutionUnit" => "2",
-            "exif:YCbCrPositioning" => "1",
-            "jpeg:colorspace" => "2",
-            "jpeg:sampling-factor" => "1x1,1x1,1x1",
+            'date:create'                  => '2017-02-16T16:56:18+00:00',
+            'date:modify'                  => '2017-02-16T16:56:09+00:00',
+            'exif:ComponentsConfiguration' => '1, 2, 3, 0',
+            'exif:DateTimeDigitized'       => '2017:02:16 17:00:00',
+            'exif:ExifOffset'              => '50',
+            'exif:ExifVersion'             => '48, 50, 51, 48',
+            'exif:FlashPixVersion'         => '48, 49, 48, 48',
+            'exif:ResolutionUnit'          => '2',
+            'exif:YCbCrPositioning'        => '1',
+            'jpeg:colorspace'              => '2',
+            'jpeg:sampling-factor'         => '1x1,1x1,1x1',
         ];
 
         $this->assertEquals($exif, $info->getMetadata());

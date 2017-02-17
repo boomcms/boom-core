@@ -19,7 +19,7 @@ class DocxTest extends BaseDriverTest
     }
 
     /**
-     * Docx don't have an aspect ratio - 0 should be returned
+     * Docx don't have an aspect ratio - 0 should be returned.
      */
     public function testGetAspectRatio()
     {
@@ -43,7 +43,7 @@ class DocxTest extends BaseDriverTest
     }
 
     /**
-     * PDFs don't have a height - 0 should be returned
+     * PDFs don't have a height - 0 should be returned.
      */
     public function testGetHeight()
     {
@@ -56,7 +56,7 @@ class DocxTest extends BaseDriverTest
     }
 
     /**
-     * PDFs don't have a width - 0 should be returned
+     * PDFs don't have a width - 0 should be returned.
      */
     public function testGetWidth()
     {

@@ -22,7 +22,7 @@ class SvgTest extends BaseDriverTest
     }
 
     /**
-     * SVGs don't contain metadata so an empty array should be returned
+     * SVGs don't contain metadata so an empty array should be returned.
      */
     public function testGetMetadataReturnsArray()
     {
