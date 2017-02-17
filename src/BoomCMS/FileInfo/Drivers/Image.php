@@ -19,7 +19,7 @@ class Image extends DefaultDriver
      */
     public function getCopyright(): string
     {
-        return $this->oneOf(['exif:Copyright', 'icc:copyright'], '');
+        return $this->oneOf(['exif:Copyright'], '');
     }
 
     /**
