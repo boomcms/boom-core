@@ -6,6 +6,7 @@ services:
   - mysql
 script: phpunit --coverage-clover build/logs/clover.xml
 before_script:
+  - printf "\n" | pecl install imagick
   - composer install --ignore-platform-reqs
 after_script:
   - ./vendor/bin/test-reporter

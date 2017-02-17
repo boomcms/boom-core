@@ -1,38 +1,41 @@
 {
-	"name": "boomcms/boom-core",
-	"description": "Core classes for BoomCMS",
-	"license": "MIT",
-	"require": {
-		"php": ">=5.6",
-		"ext-imagick" : "*",
-		"mpratt/embera": "1.9.*",
-		"genphrase/genphrase" : "1.*",
-		"hautelook/phpass": "1.*",
-		"thujohn/rss": "~1.0",
-		"intervention/imagecache" : "2.*",
-		"laravel/framework": "5.3.*",
-		"rych/bytesize": "1.0.*",
-		"laravelcollective/html": "5.3.*",
-		"lootils/geo": "^0.1.1",
-		"caxy/php-htmldiff": "^0.1.3",
-		"doctrine/dbal": "2.5.*"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "5.6.*",
-		"Mockery/Mockery": "0.9.*",
-                "laravel/laravel": "5.3.*",
-		"codeclimate/php-test-reporter": "dev-master",
-		"symfony/dom-crawler": "3.0.*"
-	},
-	"autoload": {
-		"psr-4": {"BoomCMS\\": "src/BoomCMS/"}
-	},
-	"autoload-dev": {
-		"psr-4": {"BoomCMS\\Tests\\": "tests/"}
-	},
-	"minimum-stability" : "dev",
-	"prefer-stable": true,
-	"scripts": {
-		"test": "phpunit"
-	}
+    "name": "boomcms/boom-core",
+    "description": "Core classes for BoomCMS",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.6",
+        "ext-imagick" : "*",
+        "mpratt/embera": "1.9.*",
+        "genphrase/genphrase" : "1.*",
+        "hautelook/phpass": "1.*",
+        "thujohn/rss": "~1.0",
+        "intervention/imagecache" : "2.*",
+        "laravel/framework": "5.3.*",
+        "rych/bytesize": "1.0.*",
+        "laravelcollective/html": "5.3.*",
+        "lootils/geo": "^0.1.1",
+        "caxy/php-htmldiff": "^0.1.3",
+        "doctrine/dbal": "2.5.*",
+        "php-ffmpeg/php-ffmpeg": "0.9.*",
+        "smalot/pdfparser": "*",
+        "phpoffice/phpword": "0.13.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.6.*",
+        "Mockery/Mockery": "0.9.*",
+        "laravel/laravel": "5.3.*",
+        "codeclimate/php-test-reporter": "dev-master",
+        "symfony/dom-crawler": "3.0.*"
+    },
+    "autoload": {
+        "psr-4": {"BoomCMS\\": "src/BoomCMS/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"BoomCMS\\Tests\\": "tests/"}
+    },
+    "minimum-stability" : "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "phpunit"
+    }
 }

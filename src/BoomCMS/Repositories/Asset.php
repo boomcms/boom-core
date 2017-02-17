@@ -7,7 +7,9 @@ use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\Database\Models\Person as PersonModel;
-use BoomCMS\Support\File;
+use BoomCMS\FileInfo\Contracts\FileInfoDriver;
+use BoomCMS\FileInfo\Facade as FileInfo;
+use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -34,24 +36,49 @@ class Asset implements AssetRepositoryInterface
     }
 
     /**
+     * Create an asset from an uploaded file, setting default values.
+     *
+     * @param UploadedFile $file
+     *
+     * @return int
+     */
+    public function createFromFile(UploadedFile $file): int
+    {
+        $info = FileInfo::create($file);
+
+        $asset = new AssetModel();
+        $asset
+            ->setTitle($info->getTitle() ?: $file->getClientOriginalName())
+            ->setPublishedAt($info->getCreatedAt())
+            ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
+
+        $assetId = static::save($asset)->getId();
+        static::createVersionFromFile($asset, $file, $info);
+
+        return $assetId;
+    }
+
+    /**
      * @param AssetInterface $asset
      * @param UploadedFile   $file
+     * @param FileInfoDriver $info
      *
      * @return AssetVersion
      */
-    public function createVersionFromFile(AssetInterface $asset, UploadedFile $file)
+    public function createVersionFromFile(AssetInterface $asset, UploadedFile $file, FileInfoDriver $info = null)
     {
-        list($width, $height) = getimagesize($file->getRealPath());
+        $info = $info ?: FileInfo::create($file);
 
         $version = $this->version->create([
-            'asset_id'   => $asset->getId(),
-            'extension'  => $file->guessExtension(),
-            'filesize'   => $file->getClientSize(),
-            'filename'   => $file->getClientOriginalName(),
-            'width'      => $width,
-            'height'     => $height,
-            'mimetype'   => $file->getMimeType(),
-            'metadata'   => File::exif($file->getRealPath()),
+            'aspect_ratio' => $info->getAspectRatio(),
+            'asset_id'     => $asset->getId(),
+            'extension'    => $file->guessExtension(),
+            'filesize'     => $file->getClientSize(),
+            'filename'     => $file->getClientOriginalName(),
+            'width'        => $info->getWidth(),
+            'height'       => $info->getHeight(),
+            'mimetype'     => $file->getMimeType(),
+            'metadata'     => $info->getMetadata(),
         ]);
 
         $file->move($asset->directory(), $version->id);

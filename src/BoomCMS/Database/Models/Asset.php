@@ -85,11 +85,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      */
     public function getAspectRatio()
     {
-        if (!$this->getHeight()) {
-            return 1;
-        }
-
-        return $this->getWidth() / $this->getHeight();
+        return $this->getLatestVersion()->getAspectRatio();
     }
 
     /**

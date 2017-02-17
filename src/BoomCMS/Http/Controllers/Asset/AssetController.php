@@ -87,13 +87,7 @@ class AssetController extends Controller
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
-            $asset = new Asset();
-            $asset
-                ->setTitle($file->getClientOriginalName())
-                ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
-
-            $assetIds[] = AssetFacade::save($asset)->getId();
-            AssetFacade::createVersionFromFile($asset, $file);
+            $assetIds[] = AssetFacade::createFromFile($file);
         }
 
         return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
