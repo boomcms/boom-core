@@ -24,7 +24,6 @@ class JpgTest extends BaseDriverTest
         $exif = [
             'exif:ComponentsConfiguration' => '1, 2, 3, 0',
             'exif:DateTimeDigitized'       => '2017:02:16 17:00:00',
-            'exif:ExifOffset'              => '50',
             'exif:ExifVersion'             => '48, 50, 51, 48',
             'exif:FlashPixVersion'         => '48, 49, 48, 48',
             'exif:ResolutionUnit'          => '2',
@@ -34,6 +33,13 @@ class JpgTest extends BaseDriverTest
         ];
 
         $this->assertArraySubset($exif, $info->getMetadata());
+    }
+
+    public function testGetCopyright()
+    {
+        $info = $this->getInfo($this->filename);
+
+        $this->assertEquals('Test Copyright', $info->getCopyright());
     }
 
     /**
@@ -51,7 +57,7 @@ class JpgTest extends BaseDriverTest
     {
         $timestamp = '2017-02-16T16:56:18+00:00';
         $time = Carbon::parse('2017-02-16T16:56:18+00:00');
-        $keys = ['date:create', 'exif:DateTimeOriginal', 'exif:DateTimeDigitized'];
+        $keys = ['date:create', 'exif:DateTimeOriginal', 'exif:DateTimeDigitized', 'exif:DateTime'];
 
         foreach ($keys as $key) {
             $jpg = m::mock(Image::class)->makePartial();
@@ -65,6 +71,13 @@ class JpgTest extends BaseDriverTest
 
             $this->assertEquals($time, $jpg->getCreatedAt());
         }
+    }
+
+    public function testGetDescription()
+    {
+        $info = $this->getInfo($this->filename);
+
+        $this->assertEquals('Test Description', $info->getDescription());
     }
 
     public function testGetHeight()

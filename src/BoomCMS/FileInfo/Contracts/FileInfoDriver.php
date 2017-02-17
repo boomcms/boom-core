@@ -23,6 +23,20 @@ interface FileInfoDriver
     public function getCreatedAt();
 
     /**
+     * Return copyright information from the file metadata, if available
+     *
+     * @return string
+     */
+    public function getCopyright(): string;
+
+    /**
+     * Return a description of the file, if available
+     *
+     * @return string
+     */
+    public function getDescription(): string;
+
+    /**
      * Returns the height of the file, or 0 if it doesn't have a height.
      *
      * @return float

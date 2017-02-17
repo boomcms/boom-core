@@ -41,9 +41,29 @@ class DefaultDriver implements FileInfoDriver
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
+     */
+    public function getCopyright(): string
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getCreatedAt()
     {
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return '';
     }
 
     /**
@@ -90,6 +110,27 @@ class DefaultDriver implements FileInfoDriver
     public function getWidth(): float
     {
         return 0;
+    }
+
+    /**
+     * Loop through an array of metadata keys and return the first one that exists
+     *
+     * @param array $keys
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    protected function oneOf(array $keys, $default = null)
+    {
+        $metadata = $this->getMetadata();
+
+        foreach ($keys as $key) {
+            if (isset($metadata[$key])) {
+                return $metadata[$key];
+            }
+        }
+
+        return $default;
     }
 
     /**

@@ -15,18 +15,33 @@ class Image extends DefaultDriver
     /**
      * {@inheritdoc}
      *
+     * @return string
+     */
+    public function getCopyright(): string
+    {
+        return $this->oneOf(['exif:Copyright', 'icc:copyright'], '');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @return null|Carbon
      */
     public function getCreatedAt()
     {
-        $metadata = $this->getMetadata();
-        $keys = ['exif:DateTimeOriginal', 'exif:DateTimeDigitized', 'date:create'];
+        $timestamp = $this->oneOf(['exif:DateTimeOriginal', 'exif:DateTimeDigitized', 'exif:DateTime', 'date:create']);
 
-        foreach ($keys as $key) {
-            if (isset($metadata[$key])) {
-                return Carbon::parse($metadata[$key]);
-            }
-        }
+        return !empty($timestamp) ? Carbon::parse($timestamp) : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->oneOf(['exif:ImageDescription'], '');
     }
 
     /**

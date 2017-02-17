@@ -8,6 +8,20 @@ class TiffTest extends JpgTest
 {
     protected $filename = 'test.tiff';
 
+    public function testGetDescription()
+    {
+        $info = $this->getInfo($this->filename);
+
+        $this->assertEquals('', $info->getDescription());
+    }
+
+    public function testGetCopyright()
+    {
+        $info = $this->getInfo($this->filename);
+
+        $this->assertEquals('', $info->getCopyright());
+    }
+
     /**
      * The value of the date:create field of our test image should be returned.
      */

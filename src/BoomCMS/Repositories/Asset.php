@@ -50,7 +50,9 @@ class Asset implements AssetRepositoryInterface
         $asset
             ->setTitle($info->getTitle() ?: $file->getClientOriginalName())
             ->setPublishedAt($info->getCreatedAt())
-            ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
+            ->setType(AssetHelper::typeFromMimetype($file->getMimeType()))
+            ->setDescription($info->getDescription())
+            ->setCredits($info->getCopyright());
 
         $assetId = static::save($asset)->getId();
         static::createVersionFromFile($asset, $file, $info);
