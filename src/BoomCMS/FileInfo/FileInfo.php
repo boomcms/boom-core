@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\File\File;
 class FileInfo
 {
     protected $byMimetype = [
-        'image/jpeg'                                                              => 'Jpg',
         'application/pdf'                                                         => 'Pdf',
         'image/svg+xml'                                                           => 'Svg',
         'application/msword'                                                      => 'Word',
@@ -39,14 +38,14 @@ class FileInfo
      */
     public function getDriver(string $mimetype)
     {
-        if (strpos($mimetype, 'video') === 0 || strpos($mimetype, 'audio') === 0) {
-            return 'Mpeg';
-        }
-
         foreach ($this->byMimetype as $match => $driver) {
             if ($mimetype === $match) {
                 return $driver;
             }
+        }
+
+        if (strpos($mimetype, 'video') === 0 || strpos($mimetype, 'audio') === 0) {
+            return 'Mpeg';
         }
 
         if (strpos($mimetype, 'image') === 0) {

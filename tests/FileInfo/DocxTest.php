@@ -4,7 +4,7 @@ namespace BoomCMS\Tests\FileInfo;
 
 use Carbon\Carbon;
 
-class PdfTest extends BaseDriverTest
+class DocxTest extends BaseDriverTest
 {
     /**
      * @var FileInfoDriver
@@ -15,33 +15,29 @@ class PdfTest extends BaseDriverTest
     {
         parent::setUp();
 
-        $this->info = $this->getInfo('test.pdf');
+        $this->info = $this->getInfo('test.docx');
     }
 
     /**
-     * PDF aspect ratios can't be determined, so 0 should be returned
+     * Docx don't have an aspect ratio - 0 should be returned
      */
     public function testGetAspectRatio()
     {
         $this->assertEquals(0, $this->info->getAspectRatio());
     }
 
-
     public function testGetMetadataReturnsArray()
     {
         $metadata = [
-            'CreationDate' => '2017-02-17T11:07:56+00:00',
-            'Creator' => 'Writer',
-            'Pages' => 1,
-            'Producer' => 'LibreOffice 5.1',
+            'created' => 1487329635,
         ];
 
-        $this->assertEquals($metadata, $this->info->getMetadata());
+        $this->assertArraySubset($metadata, $this->info->getMetadata());
     }
 
     public function testGetCreatedAt()
     {
-        $date = Carbon::parse('2017-02-17T11:07:56+00:00');
+        $date = Carbon::createFromTimestamp(1487329635);
 
         $this->assertEquals($date, $this->info->getCreatedAt());
     }

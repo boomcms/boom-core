@@ -18,6 +18,10 @@ class Svg extends Image
     {
         $attrs = $this->getXmlAttrs();
 
+        if (!isset($attrs->viewBox)) {
+            return 0;
+        }
+
         list($x, $y, $width, $height) = explode(' ', $attrs->viewBox);
 
         return $width / $height;
@@ -34,8 +38,8 @@ class Svg extends Image
             $attrs = $this->getXmlAttrs();
 
             $this->dimensions = [
-                (float) $attrs->width,
-                (float) $attrs->height,
+                (float) $attrs->width ?? 0,
+                (float) $attrs->height ?? 0,
             ];
         }
 
@@ -55,5 +59,10 @@ class Svg extends Image
         }
 
         return $this->xmlAttrs;
+    }
+
+    public function readMetadata(): array
+    {
+        return [];
     }
 }

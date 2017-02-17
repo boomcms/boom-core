@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\FileInfo;
 
-class DefaultDriverTest extends BaseDriverTest
+class SvgNoDimensionsTest extends SvgTest
 {
     /**
      * @var FileInfoDriver
@@ -13,7 +13,7 @@ class DefaultDriverTest extends BaseDriverTest
     {
         parent::setUp();
 
-        $this->info = $this->getInfo('test.ods');
+        $this->info = $this->getInfo('test-no-dimensions.svg');
     }
 
     public function testGetAspectRatio()
@@ -21,24 +21,9 @@ class DefaultDriverTest extends BaseDriverTest
         $this->assertEquals(0, $this->info->getAspectRatio());
     }
 
-    public function testGetMetadataReturnsArray()
-    {
-        $this->assertEquals([], $this->info->getMetadata());
-    }
-
-    public function testGetCreatedAt()
-    {
-        $this->assertNull($this->info->getCreatedAt());
-    }
-
     public function testGetHeight()
     {
         $this->assertEquals(0, $this->info->getHeight());
-    }
-
-    public function testGetTitle()
-    {
-        $this->assertEquals('', $this->info->getTitle());
     }
 
     public function testGetWidth()

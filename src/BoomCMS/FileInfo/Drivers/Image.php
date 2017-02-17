@@ -2,12 +2,34 @@
 
 namespace BoomCMS\FileInfo\Drivers;
 
+use Carbon\Carbon;
+use Imagick;
+
 class Image extends DefaultDriver
 {
     /**
      * @var array
      */
     protected $dimensions;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return null|Carbon
+     */
+    public function getCreatedAt()
+    {
+        $metadata = $this->getMetadata();
+        $keys = ['date:create', 'exif:DateTimeOriginal', 'exif:DateTimeDigitized'];
+
+        foreach ($keys as $key) {
+            if (isset($metadata[$key])) {
+                return Carbon::parse($metadata[$key]);
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Get the dimensions (width and height) of an image as an array
@@ -41,5 +63,17 @@ class Image extends DefaultDriver
     public function getWidth(): float
     {
         return $this->getDimensions()[0];
+    }
+
+    /**
+     * Extracts metadata data from an image
+     *
+     * @return array
+     */
+    public function readMetadata(): array
+    {
+        $im = new Imagick($this->file->getPathname());
+
+        return $im->getImageProperties('');
     }
 }

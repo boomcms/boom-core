@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Tests\Repositories;
+namespace BoomCMS\Tests\FileInfo;
 
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Tests\AbstractTestCase;
