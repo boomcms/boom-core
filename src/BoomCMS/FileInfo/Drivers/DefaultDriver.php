@@ -13,7 +13,6 @@ class DefaultDriver implements FileInfoDriver
     protected $file;
 
     /**
-     *
      * @var array
      */
     protected $metadata = null;
@@ -27,7 +26,7 @@ class DefaultDriver implements FileInfoDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return float
      */
@@ -41,15 +40,14 @@ class DefaultDriver implements FileInfoDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getCreatedAt()
     {
-        return null;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return float
      */
@@ -59,7 +57,7 @@ class DefaultDriver implements FileInfoDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return array
      */
@@ -75,7 +73,7 @@ class DefaultDriver implements FileInfoDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return string
      */
@@ -85,7 +83,7 @@ class DefaultDriver implements FileInfoDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return float
      */
@@ -95,7 +93,7 @@ class DefaultDriver implements FileInfoDriver
     }
 
     /**
-     * This method should be overridden by drivers to provide custom behavior for reading metadata from a file
+     * This method should be overridden by drivers to provide custom behavior for reading metadata from a file.
      *
      * @return array
      */

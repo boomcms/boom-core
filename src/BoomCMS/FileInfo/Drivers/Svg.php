@@ -10,7 +10,7 @@ class Svg extends Image
     protected $xmlAttrs;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return float
      */
@@ -28,7 +28,7 @@ class Svg extends Image
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return array
      */
@@ -47,7 +47,7 @@ class Svg extends Image
     }
 
     /**
-     * Reads the SVG file and returns the XML attributes as an object
+     * Reads the SVG file and returns the XML attributes as an object.
      *
      * @return object
      */

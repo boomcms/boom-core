@@ -9,7 +9,7 @@ use Smalot\PdfParser\Parser;
 class Pdf extends DefaultDriver
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return null|Carbon
      */
@@ -22,7 +22,7 @@ class Pdf extends DefaultDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return string
      */
@@ -34,7 +34,7 @@ class Pdf extends DefaultDriver
     }
 
     /**
-     * Extracts metadata from a PDF
+     * Extracts metadata from a PDF.
      *
      * @return array
      */
