@@ -10,7 +10,7 @@ use Imagick;
 class Video extends Mpeg
 {
     /**
-     * Generates a thumbnail for the video from the first frame
+     * Generates a thumbnail for the video from the first frame.
      *
      * @return Imagick
      */

@@ -109,7 +109,6 @@ class DefaultDriver implements FileInfoDriver
      */
     public function getThumbnail()
     {
-        return null;
     }
 
     /**
