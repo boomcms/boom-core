@@ -55,6 +55,11 @@ class Asset implements AssetRepositoryInterface
             ->setCredits($info->getCopyright());
 
         $assetId = static::save($asset)->getId();
+
+        if ($thumbnail = $info->getThumbnail()) {
+            file_put_contents("$assetId.thumb", $thumbnail->getImageBlob());
+        }
+
         static::createVersionFromFile($asset, $file, $info);
 
         return $assetId;

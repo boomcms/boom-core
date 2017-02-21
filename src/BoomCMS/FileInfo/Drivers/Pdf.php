@@ -4,6 +4,7 @@ namespace BoomCMS\FileInfo\Drivers;
 
 use Carbon\Carbon;
 use Exception;
+use Imagick;
 use Smalot\PdfParser\Parser;
 
 class Pdf extends DefaultDriver
@@ -19,6 +20,19 @@ class Pdf extends DefaultDriver
 
         return isset($metadata['CreationDate']) ?
             Carbon::parse($metadata['CreationDate']) : null;
+    }
+
+    /**
+     * Generates a thumbnail for the PDF from the first page of the document
+     *
+     * @return Imagick
+     */
+    public function getThumbnail(): Imagick
+    {
+        $image = new Imagick($this->file->getPathname().'[0]');
+        $image->setImageFormat('png');
+
+        return $image;
     }
 
     /**

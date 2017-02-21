@@ -105,6 +105,16 @@ class DefaultDriver implements FileInfoDriver
     /**
      * {@inheritdoc}
      *
+     * @return Imagick
+     */
+    public function getThumbnail()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @return float
      */
     public function getWidth(): float

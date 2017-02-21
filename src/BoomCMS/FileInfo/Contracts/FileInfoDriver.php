@@ -2,6 +2,8 @@
 
 namespace BoomCMS\FileInfo\Contracts;
 
+use Imagick;
+
 interface FileInfoDriver
 {
     /**
@@ -49,6 +51,13 @@ interface FileInfoDriver
      * @return array
      */
     public function getMetadata(): array;
+
+    /**
+     * Returns an Imagick object representing a thumbnail for the file, or null.
+     *
+     * @return null|Imagick
+     */
+    public function getThumbnail();
 
     /**
      * Returns the title from the file metadata, if present.
