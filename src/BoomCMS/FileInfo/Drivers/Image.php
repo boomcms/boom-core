@@ -35,7 +35,7 @@ class Image extends DefaultDriver
         try {
             return !empty($timestamp) ? Carbon::parse($timestamp) : null;
         } catch (Exception $e) {
-            return null;
+            return;
         }
     }
 

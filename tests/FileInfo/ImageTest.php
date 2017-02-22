@@ -39,7 +39,7 @@ class ImageTest extends BaseDriverTest
     }
 
     /**
-     * If the date is invalid null should be returned
+     * If the date is invalid null should be returned.
      */
     public function testGetCreatedAtWithInvalidDate()
     {
