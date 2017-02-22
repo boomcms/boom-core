@@ -11,6 +11,9 @@ use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View as ViewFacade;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AssetController extends Controller
 {
@@ -24,6 +27,46 @@ class AssetController extends Controller
         $this->authorize('manageAssets', $site);
 
         AssetFacade::delete([$asset->getId()]);
+    }
+
+    /**
+     * Download the given asset
+     *
+     * @param Asset $asset
+     *
+     * @return BinaryFileResponse
+     */
+    public function download(Asset $asset): BinaryFileResponse
+    {
+        return response()->download(
+            $asset->getFilename(),
+            $asset->getOriginalFilename()
+        );
+    }
+
+    /**
+     * Returns the HTML to embed the given asset
+     *
+     * @param Request $request
+     * @param Asset $asset
+     *
+     * @return View
+     */
+    public function embed(Request $request, Asset $asset): View
+    {
+        $viewPrefix = 'boomcms::assets.embed.';
+        $assetType = strtolower(class_basename($asset->getType()));
+        $viewName = $viewPrefix.$assetType;
+
+        if (!ViewFacade::exists($viewName)) {
+            $viewName = $viewPrefix.'default';
+        }
+
+        return ViewFacade::make($viewName, [
+            'asset'  => $asset,
+            'height' => $request->input('height'),
+            'width'  => $request->input('width'),
+        ]);
     }
 
     public function index(Request $request)

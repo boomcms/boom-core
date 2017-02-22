@@ -14,11 +14,10 @@ class RouteServiceProviderTest extends AbstractTestCase
 {
     public function testModelBidings()
     {
-        $router = m::mock(Router::class);
+        $router = m::mock(Router::class)->makePartial();
 
         foreach ([
             Models\Group::class,
-            Models\Asset::class,
             Models\Page::class,
             Models\Person::class,
             Models\Site::class,

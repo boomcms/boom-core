@@ -46,18 +46,6 @@ abstract class Helpers
     }
 
     /**
-     * Get the HTML code to embed an asset.
-     *
-     * @param Asset $asset
-     *
-     * @return string
-     */
-    public static function assetEmbed(AssetInterface $asset, $height = null, $width = null)
-    {
-        return (string) $asset->getEmbedHtml($height, $width);
-    }
-
-    /**
      * Generate a URL to link to an asset.
      *
      * @param array $params
