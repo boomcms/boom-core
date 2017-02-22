@@ -20,7 +20,7 @@ class Word extends DefaultDriver
         try {
             return isset($metadata['created']) ? Carbon::createFromTimestamp($metadata['created']) : null;
         } catch (Exception $e) {
-            return null;
+            return;
         }
     }
 

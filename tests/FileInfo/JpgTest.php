@@ -4,7 +4,6 @@ namespace BoomCMS\Tests\FileInfo;
 
 use BoomCMS\FileInfo\Drivers\Image;
 use Carbon\Carbon;
-use Mockery as m;
 
 class JpgTest extends BaseDriverTest
 {
