@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Tests\FileInfo;
 
+use BoomCMS\FileInfo\Drivers\Word;
 use Carbon\Carbon;
+use Mockery as m;
 
 class DocxTest extends BaseDriverTest
 {
@@ -40,6 +42,23 @@ class DocxTest extends BaseDriverTest
         $date = Carbon::createFromTimestamp(1487329635);
 
         $this->assertEquals($date, $this->info->getCreatedAt());
+    }
+
+    /**
+     * If the date is invalid null should be returned
+     */
+    public function testGetCreatedAtWithInvalidDate()
+    {
+        $info = m::mock(Word::class)->makePartial();
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'created' => 'rubbish date',
+            ]);
+
+        $this->assertNull($info->getCreatedAt());
     }
 
     /**

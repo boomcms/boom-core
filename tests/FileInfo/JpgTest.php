@@ -53,26 +53,6 @@ class JpgTest extends BaseDriverTest
         $this->assertEquals($date, $info->getCreatedAt());
     }
 
-    public function testGetCreatedAtCanComeFromDifferentFields()
-    {
-        $timestamp = '2017-02-16T16:56:18+00:00';
-        $time = Carbon::parse('2017-02-16T16:56:18+00:00');
-        $keys = ['date:create', 'exif:DateTimeOriginal', 'exif:DateTimeDigitized', 'exif:DateTime'];
-
-        foreach ($keys as $key) {
-            $jpg = m::mock(Image::class)->makePartial();
-
-            $jpg
-                ->shouldReceive('getMetadata')
-                ->once()
-                ->andReturn([
-                    $key => $timestamp,
-                ]);
-
-            $this->assertEquals($time, $jpg->getCreatedAt());
-        }
-    }
-
     public function testGetDescription()
     {
         $info = $this->getInfo($this->filename);

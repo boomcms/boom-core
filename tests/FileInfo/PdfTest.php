@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Tests\FileInfo;
 
+use BoomCMS\FileInfo\Drivers\Pdf;
 use Carbon\Carbon;
+use Mockery as m;
 
 class PdfTest extends BaseDriverTest
 {
@@ -43,6 +45,23 @@ class PdfTest extends BaseDriverTest
         $date = Carbon::parse('2017-02-17T11:07:56+00:00');
 
         $this->assertEquals($date, $this->info->getCreatedAt());
+    }
+
+    /**
+     * If the date is invalid null should be returned
+     */
+    public function testGetCreatedAtWithInvalidDate()
+    {
+        $info = m::mock(Pdf::class)->makePartial();
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'CreationDate' => 'rubbish date',
+            ]);
+
+        $this->assertNull($info->getCreatedAt());
     }
 
     /**
