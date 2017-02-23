@@ -3,7 +3,6 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Routing\Router as BoomCMSRouter;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -13,6 +12,7 @@ use Illuminate\Support\ServiceProvider;
 class RouteServiceProvider extends ServiceProvider
 {
     protected $models = [
+        'Asset',
         'Group',
         'Page',
         'Person',
@@ -30,10 +30,6 @@ class RouteServiceProvider extends ServiceProvider
 
             $router->model($binding, $className);
         }
-
-        $router->bind('asset', function($value) {
-            return AssetFacade::find($value);
-        });
 
         $router->model('related', Page::class);
 

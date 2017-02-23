@@ -57,7 +57,6 @@ abstract class AbstractTestCase extends TestCase
         });
 
         $app->register(Stubs\BoomCMSServiceProvider::class);
-        $app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
 
         require __DIR__.'/../src/routes.php';
 

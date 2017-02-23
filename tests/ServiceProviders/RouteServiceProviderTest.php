@@ -17,6 +17,7 @@ class RouteServiceProviderTest extends AbstractTestCase
         $router = m::mock(Router::class)->makePartial();
 
         foreach ([
+            Models\Asset::class,
             Models\Group::class,
             Models\Page::class,
             Models\Person::class,

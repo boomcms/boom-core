@@ -41,7 +41,7 @@ class RequireAssetVisible
             abort(404);
         }
 
-        if (!($asset->isPublic() || $this->guard->check())) {
+        if (!$asset->isPublic() && !$this->guard->check()) {
             abort(401);
         }
 

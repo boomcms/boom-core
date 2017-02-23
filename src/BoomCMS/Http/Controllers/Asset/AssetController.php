@@ -11,7 +11,6 @@ use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -58,11 +57,11 @@ class AssetController extends Controller
         $assetType = strtolower(class_basename($asset->getType()));
         $viewName = $viewPrefix.$assetType;
 
-        if (!ViewFacade::exists($viewName)) {
+        if (!view()->exists($viewName)) {
             $viewName = $viewPrefix.'default';
         }
 
-        return ViewFacade::make($viewName, [
+        return view()->make($viewName, [
             'asset'  => $asset,
             'height' => $request->input('height'),
             'width'  => $request->input('width'),
