@@ -29,7 +29,7 @@ class AssetController extends Controller
     }
 
     /**
-     * Download the given asset
+     * Download the given asset.
      *
      * @param Asset $asset
      *
@@ -44,10 +44,10 @@ class AssetController extends Controller
     }
 
     /**
-     * Returns the HTML to embed the given asset
+     * Returns the HTML to embed the given asset.
      *
      * @param Request $request
-     * @param Asset $asset
+     * @param Asset   $asset
      *
      * @return View
      */

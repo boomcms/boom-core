@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Support;
 
-use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Core\Asset;

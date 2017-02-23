@@ -4,8 +4,8 @@ namespace BoomCMS\Tests\Integration\Asset;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Mockery as m;
 
 class AssetTest extends AbstractTestCase
@@ -21,7 +21,7 @@ class AssetTest extends AbstractTestCase
         $this->asset = m::mock(Asset::class)->makePartial();
         $this->asset->{Asset::ATTR_ID} = 1;
 
-        $this->app['router']->bind('asset', function() {
+        $this->app['router']->bind('asset', function () {
             return $this->asset;
         });
     }
