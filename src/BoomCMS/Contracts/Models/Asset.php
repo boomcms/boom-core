@@ -14,11 +14,6 @@ interface Asset
     public function directory();
 
     /**
-     * @return bool
-     */
-    public function exists();
-
-    /**
      * @return float
      */
     public function getAspectRatio();
@@ -64,8 +59,6 @@ interface Asset
      * @return int
      */
     public function getId();
-
-    public function getEmbedHtml($height = null, $width = null);
 
     /**
      * @return DateTime

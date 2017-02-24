@@ -166,6 +166,7 @@ Route::group([
     'middleware' => [
         'web',
         SubstituteBindings::class,
+        Middleware\RequireAssetVisible::class,
     ],
 ], function () {
     Route::get('version/{id}/{width?}/{height?}', [
@@ -179,14 +180,14 @@ Route::group([
     ]);
 
     Route::get('{asset}/download', [
-        'asset'      => 'asset-download',
+        'as'         => 'asset-download',
         'middleware' => [
             Middleware\LogAssetDownload::class,
         ],
-        'uses' => function ($asset) {
-            return App::make(AssetHelper::controller($asset), [$asset])->download();
-        },
+        'uses' => 'BoomCMS\Http\Controllers\Asset\AssetController@download',
     ]);
+
+    Route::get('{asset}/embed', 'BoomCMS\Http\Controllers\Asset\AssetController@embed');
 
     Route::get('{asset}/{action}.{extension}', [
         'as'         => 'asset',
@@ -210,7 +211,7 @@ Route::group([
             return App::make(AssetHelper::controller($asset), [$asset])->$action($width, $height);
         },
     ])->where([
-        'action'    => 'view|thumb|download|crop|embed',
+        'action'    => 'view|thumb|crop',
     ]);
 });
 

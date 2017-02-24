@@ -23,7 +23,7 @@ class Pdf extends DefaultDriver
     }
 
     /**
-     * Generates a thumbnail for the PDF from the first page of the document
+     * Generates a thumbnail for the PDF from the first page of the document.
      *
      * @return Imagick
      */

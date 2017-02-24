@@ -13,7 +13,6 @@ use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 
 class Asset extends Model implements AssetInterface, SingleSiteInterface
 {
@@ -70,14 +69,6 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function directory()
     {
         return storage_path().'/boomcms/assets';
-    }
-
-    /**
-     * @return bool
-     */
-    public function exists()
-    {
-        return $this->getId() && file_exists($this->getFilename());
     }
 
     /**
@@ -142,22 +133,6 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function getHeight()
     {
         return (int) $this->getLatestVersion()->getHeight();
-    }
-
-    public function getEmbedHtml($height = null, $width = null)
-    {
-        $viewPrefix = 'boomcms::assets.embed.';
-        $assetType = strtolower(class_basename($this->getType()));
-
-        $viewName = View::exists($viewPrefix.$assetType) ?
-            $viewPrefix.$assetType :
-            $viewPrefix.'default';
-
-        return View::make($viewName, [
-            'asset'  => $this,
-            'height' => $height,
-            'width'  => $width,
-        ]);
     }
 
     /**
