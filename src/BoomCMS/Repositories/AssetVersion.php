@@ -3,8 +3,8 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
-use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
+use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -43,8 +43,7 @@ class AssetVersion implements AssetVersionRepositoryInterface
         AssetInterface $asset,
         UploadedFile $file,
         FileInfoDriver $info = null
-    ): AssetVersionModel
-    {
+    ): AssetVersionModel {
         $info = $info ?: FileInfo::create($file);
 
         $version = $this->model->create([
