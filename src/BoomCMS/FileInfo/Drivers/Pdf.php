@@ -27,19 +27,6 @@ class Pdf extends DefaultDriver
     }
 
     /**
-     * Generates a thumbnail for the PDF from the first page of the document.
-     *
-     * @return Imagick
-     */
-    public function getThumbnail(): Imagick
-    {
-        $image = new Imagick($this->file->getPathname().'[0]');
-        $image->setImageFormat('png');
-
-        return $image;
-    }
-
-    /**
      * Generates a thumbnail for the PDF from the first page of the document
      *
      * @return Imagick

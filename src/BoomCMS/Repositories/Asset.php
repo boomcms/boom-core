@@ -8,20 +8,15 @@ use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterfa
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\Database\Models\Person as PersonModel;
-use BoomCMS\FileInfo\Contracts\FileInfoDriver;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Collection;
+use Imagick;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Asset implements AssetRepositoryInterface
 {
-    /**
-     * @var Filesystem
-     */
-    protected $filesystem;
-
     /**
      * @var AssetModel
      */
@@ -36,7 +31,10 @@ class Asset implements AssetRepositoryInterface
      * @param AssetModel        $model
      * @param AsserVersionModel $version
      */
-    public function __construct(AssetModel $model, AssetVersionRepositoryInterface $version, Filesystem $filesystem)
+    public function __construct(
+        AssetModel $model,
+        AssetVersionRepositoryInterface $version,
+        Filesystem $filesystem)
     {
         $this->model = $model;
         $this->version = $version;
@@ -62,13 +60,11 @@ class Asset implements AssetRepositoryInterface
             ->setDescription($info->getDescription())
             ->setCredits($info->getCopyright());
 
-        $assetId = static::save($asset)->getId();
-
-        if ($thumbnail = $info->getThumbnail()) {
-            $this->filesystem->put("$assetId.thumb", $thumbnail->getImageBlob());
-        }
+        $assetId = $this->save($asset)->getId();
 
         $this->version->createFromFile($asset, $file, $info);
+
+        $this->saveFile($asset, $file, $info->getThumbnail());
 
         return $assetId;
     }
@@ -86,6 +82,40 @@ class Asset implements AssetRepositoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @param AssetInterface $asset
+     *
+     * @return bool
+     */
+    public function exists(AssetInterface $asset): bool
+    {
+        return $this->filesystem->exists($asset->getLatestVersionId());
+    }
+
+    /**
+     * Returns an array of extensions which are in use with the latest versions
+     *
+     * @return array
+     */
+    public function extensions(): array
+    {
+        return $this->model
+            ->withLatestVersion()
+            ->select('version.'.AssetVersionModel::ATTR_EXTENSION.' as e')
+            ->having('e', '!=', '')
+            ->orderBy('e')
+            ->distinct()
+            ->pluck('e')
+            ->toArray();
+    }
+
+    public function file(AssetInterface $asset): string
+    {
+        return $this->filesystem->get($asset->getLatestVersionId());
+    }
+
+    /**
      * @param int $assetId
      *
      * @return AssetModel
@@ -95,18 +125,21 @@ class Asset implements AssetRepositoryInterface
         return $this->model->find($assetId);
     }
 
-    public function findByVersionId($versionId)
+    protected function getThumbnailFilename(AssetInterface $asset)
     {
-        $version = $this->findVersion($versionId);
-        $asset = $version->getAsset();
-        $asset->setVersion($version);
-
-        return $asset;
+        return $asset->getLatestVersionId().'.thumb';
     }
 
-    public function findVersion($versionId)
+    public function replaceWith(AssetInterface $asset, UploadedFile $file)
     {
-        return $this->version->find($versionId);
+        $info = FileInfo::create($file);
+
+        $asset->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
+        $this->save($asset);
+
+        $this->version->createFromFile($asset, $file);
+
+        $this->saveFile($asset, $file, $info->getThumbnail());
     }
 
     public function revert(AssetInterface $asset, $versionId)
@@ -126,7 +159,7 @@ class Asset implements AssetRepositoryInterface
     }
 
     /**
-     * @param AssetModel $model
+     * @param AssetInterface $model
      *
      * @return AssetModel
      */
@@ -135,6 +168,20 @@ class Asset implements AssetRepositoryInterface
         $model->save();
 
         return $model;
+    }
+
+    public function saveFile(AssetInterface $asset, UploadedFile $file, Imagick $thumbnail = null)
+    {
+        $this->filesystem->putFileAs(null, $file, $asset->getLatestVersionId());
+
+        if ($thumbnail) {
+            $this->filesystem->put($this->getThumbnailFilename($version), $thumbnail->getImageBlob());
+        }
+    }
+
+    public function thumbnail(AssetInterface $asset): string
+    {
+        return $this->filesystem->get($this->getThumbnailFilename($asset));
     }
 
     /**

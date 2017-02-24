@@ -3,16 +3,20 @@
 namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
+use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetObject;
-use BoomCMS\Database\Models\AssetVersion;
 use BoomCMS\Database\Models\Person as PersonModel;
-use BoomCMS\FileInfo\Contracts\FileInfoDriver;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface Asset
 {
-    public function __construct(AssetObject $model, AssetVersion $version);
+    public function __construct(
+        AssetObject $model,
+        AssetVersionRepositoryInterface $version,
+        Filesystem $filesystem
+    );
 
     /**
      * Create an asset from an uploaded file.
@@ -24,34 +28,18 @@ interface Asset
     public function createFromFile(UploadedFile $file): int;
 
     /**
-     * Add an asset version to an asset from an uploaded file.
-     *
-     * @param AssetInterface $asset
-     * @param UploadedFile   $file
-     * @param FileInfoDriver $info
-     */
-    public function createVersionFromFile(AssetInterface $asset, UploadedFile $file, FileInfoDriver $info);
-
-    /**
      * Returns the extensions which exist in the database.
      *
      * @return array
      */
-    public function extensions();
+    public function extensions(): array;
 
     /**
-     * Retrive an asset by ID.
+     * Retrieve an asset by ID.
      *
      * @param int $assetId
      */
     public function find($assetId);
-
-    /**
-     * Find the asset which is associated with a particular version ID.
-     *
-     * @param int $versionId
-     */
-    public function findByVersionID($versionId);
 
     /**
      * Revert an asset to a previous version ID.

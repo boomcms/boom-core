@@ -1,6 +1,7 @@
 <?php
 
 use BoomCMS\Http\Middleware;
+use BoomCMS\Support\Facades\AssetVersion;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 
@@ -173,7 +174,7 @@ Route::group([
         'as'         => 'asset-version',
         'middleware' => ['web', Middleware\RequireLogin::class],
         'uses'       => function ($versionId, $width = null, $height = null) {
-            $asset = Asset::findByVersionId($versionId);
+            $asset = AssetVersion::findAssetByVersionId($versionId);
 
             return App::make(AssetHelper::controller($asset), [$asset])->view($width, $height);
         },

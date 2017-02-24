@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Http\Middleware;
 
+use BoomCMS\Repositories\Asset;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 
 class RequireAssetVisible
@@ -15,14 +15,14 @@ class RequireAssetVisible
     protected $guard;
 
     /**
-     * @var Filesystem
+     * @var Asset
      */
-    protected $filesystem;
+    protected $repository;
 
-    public function __construct(Filesystem $filesystem, Guard $guard)
+    public function __construct(Asset $repository, Guard $guard)
     {
         $this->guard = $guard;
-        $this->filesystem = $filesystem;
+        $this->repository = $repository;
     }
 
     /**
@@ -37,7 +37,7 @@ class RequireAssetVisible
     {
         $asset = $request->route()->getParameter('asset');
 
-        if (!$this->filesystem->exists($asset->getFilename())) {
+        if (!$this->repository->exists($asset)) {
             abort(404);
         }
 

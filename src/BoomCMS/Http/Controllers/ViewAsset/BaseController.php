@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Http\Response;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageCache;
@@ -30,7 +31,7 @@ class BaseController extends Controller
             ->header('content-transfer-encoding', 'binary')
             ->header('content-length', $this->asset->getFilesize())
             ->header('accept-ranges', 'bytes')
-            ->setContent(file_get_contents($this->asset->getFilename()));
+            ->setContent(AssetFacade::file($this->asset));
     }
 
     public function thumb($width = null, $height = null)

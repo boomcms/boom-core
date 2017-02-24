@@ -6,11 +6,24 @@ use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Repositories\Asset as AssetRepository;
+use BoomCMS\Repositories\AssetVersion as AssetVersionRepository;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
 class AssetTest extends AbstractTestCase
 {
+    /**
+     * @var AssetVersionRepository
+     */
+    protected $version;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->version = m::mock(AssetVersionRepository::class);
+    }
+
     public function testExtensions()
     {
         $extensions = ['gif', 'jpeg'];
@@ -45,7 +58,7 @@ class AssetTest extends AbstractTestCase
             ->with(AssetVersion::ATTR_EXTENSION)
             ->andReturn($extensions);
 
-        $repository = new AssetRepository(new Asset(), $version);
+        $repository = new AssetRepository(new Asset(), $this->version);
 
         $this->assertEquals($extensions, $repository->extensions());
     }
@@ -59,7 +72,7 @@ class AssetTest extends AbstractTestCase
             ->with(1)
             ->andReturn($asset);
 
-        $repository = new AssetRepository($model, new AssetVersion());
+        $repository = new AssetRepository($model, $this->version);
 
         $this->assertEquals($asset, $repository->find(1));
     }
@@ -73,14 +86,14 @@ class AssetTest extends AbstractTestCase
             ->with(1)
             ->andReturn($version);
 
-        $repository = new AssetRepository(new Asset(), $model);
+        $repository = new AssetRepository(new Asset(), $this->version);
 
         $this->assertEquals($version, $repository->findVersion(1));
     }
 
     public function testUploaders()
     {
-        $repository = new AssetRepository(new Asset(), new AssetVersion());
+        $repository = new AssetRepository(new Asset(), $this->version);
         $people = [];
         $model = m::mock(Person::class);
 

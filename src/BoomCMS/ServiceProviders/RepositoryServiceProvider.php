@@ -6,6 +6,7 @@ use BoomCMS\Database\Models;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories;
 use BoomCMS\Routing\Router;
+use Illuminate\Contracts\Filesystem\Factory as Filesystem;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -13,10 +14,18 @@ class RepositoryServiceProvider extends ServiceProvider
     /**
      * @return void
      */
-    public function boot(Router $router)
+    public function boot(Router $router, Filesystem $filesystem)
     {
-        $this->app->singleton(Repositories\Asset::class, function () {
-            return new Repositories\Asset(new Models\Asset(), new Models\AssetVersion());
+        $this->app->singleton(Repositories\AssetVersion::class, function () {
+            return new Repositories\AssetVersion(new Models\AssetVersion());
+        });
+
+        $this->app->singleton(Repositories\Asset::class, function () use ($filesystem) {
+            return new Repositories\Asset(
+                new Models\Asset(),
+                $this->app[Repositories\AssetVersion::class],
+                $filesystem->disk('boomcms-assets')
+            );
         });
 
         $this->app->singleton(Repositories\Page::class, function () use ($router) {

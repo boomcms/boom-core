@@ -89,10 +89,7 @@ class AssetController extends Controller
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
-            $asset->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
-
-            AssetFacade::save($asset);
-            AssetFacade::createVersionFromFile($asset, $file);
+            AssetFacade::replaceWith($asset, $file);
 
             return $this->show($asset, $site);
         }

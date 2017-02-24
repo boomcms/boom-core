@@ -4,12 +4,13 @@ namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
+use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AssetVersion
+class AssetVersion implements AssetVersionRepositoryInterface
 {
     /**
      * @var Filesystem
@@ -22,60 +23,67 @@ class AssetVersion
     protected $model;
 
     /**
-     * @param AsserVersionModel $model
+     * @param AssetVersionModel $model
      */
-    public function __construct(AssetVersionModel $model, Filesystem $filesystem)
+    public function __construct(AssetVersionModel $model)
     {
         $this->model = $model;
-        $this->filesystem = $filesystem;
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param AssetInterface $asset
      * @param UploadedFile   $file
      * @param FileInfoDriver $info
      *
-     * @return AssetVersion
+     * @return AssetVersionModel
      */
-    public function createFromFile(AssetInterface $asset, UploadedFile $file, FileInfoDriver $info = null)
+    public function createFromFile(
+        AssetInterface $asset,
+        UploadedFile $file,
+        FileInfoDriver $info = null
+    ): AssetVersionModel
     {
         $info = $info ?: FileInfo::create($file);
 
         $version = $this->model->create([
             AssetVersionModel::ATTR_ASPECT_RATIO => $info->getAspectRatio(),
-            AssetVersionModel::ATTR_ASSET        => $asset->getId(),
+            AssetVersionModel::ATTR_WIDTH        => $info->getWidth(),
+            AssetVersionModel::ATTR_HEIGHT       => $info->getHeight(),
+            AssetVersionModel::ATTR_METADATA     => $info->getMetadata(),
             AssetVersionModel::ATTR_EXTENSION    => $file->guessExtension(),
             AssetVersionModel::ATTR_FILESIZE     => $file->getClientSize(),
             AssetVersionModel::ATTR_FILENAME     => $file->getClientOriginalName(),
-            AssetVersionModel::ATTR_WIDTH        => $info->getWidth(),
-            AssetVersionModel::ATTR_HEIGHT       => $info->getHeight(),
             AssetVersionModel::ATTR_MIME         => $file->getMimeType(),
-            AssetVersionModel::ATTR_METADATA     => $info->getMetadata(),
+            AssetVersionModel::ATTR_ASSET        => $asset->getId(),
         ]);
-
-        $this->filesystem->putFileAs(null, $file, $version->id);
 
         $asset->setVersion($version);
 
         return $version;
     }
 
-    public function extensions()
-    {
-        return $this->model
-            ->select(AssetVersionModel::ATTR_EXTENSION)
-            ->where(AssetVersionModel::ATTR_EXTENSION, '!=', '')
-            ->orderBy(AssetVersionModel::ATTR_EXTENSION)
-            ->distinct()
-            ->pluck(AssetVersionModel::ATTR_EXTENSION);
-    }
-
-    public function find($versionId)
+    /**
+     * {@inheritdoc}
+     *
+     * @param int $versionId
+     *
+     * @return AssetVersionModel
+     */
+    public function find($versionId): AssetVersionModel
     {
         return $this->model->find($versionId);
     }
 
-    public function findAssetByVersionId($versionId)
+    /**
+     * {@inheritdoc}
+     *
+     * @param int $versionId
+     *
+     * @return AssetInterface
+     */
+    public function findAssetByVersionId($versionId): AssetInterface
     {
         $version = $this->findVersion($versionId);
         $asset = $version->getAsset();
