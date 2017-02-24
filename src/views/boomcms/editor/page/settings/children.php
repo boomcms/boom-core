@@ -44,8 +44,8 @@
 
                 <?php if ($page->hasChildren()): ?>
                     <?= $button('', 'reorder', [
-                        'id' => 'b-page-settings-children-reorder',
-                        'class' => 'b-button-textonly'
+                        'id'    => 'b-page-settings-children-reorder',
+                        'class' => 'b-button-textonly',
                     ]) ?>
                 <?php endif ?>
             </label>
