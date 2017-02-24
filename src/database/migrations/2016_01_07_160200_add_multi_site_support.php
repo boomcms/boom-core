@@ -117,14 +117,13 @@ class AddMultiSiteSupport extends Migration
                 Site::ATTR_HOSTNAME    => '',
             ]);
 
-            foreach (['pages', 'page_urls', 'groups', 'tags'] as $table) {
+            foreach (['pages', 'page_urls', 'groups', 'tags', 'assets'] as $table) {
                 DB::table($table)
                     ->update([
                         'site_id' => $site->getId(),
                     ]);
             }
 
-            DB::statement("insert into asset_site (asset_id, site_id) select id, '{$site->getId()}' from assets");
             DB::statement("insert into person_site (person_id, site_id) select id, '{$site->getId()}' from people");
         }
     }

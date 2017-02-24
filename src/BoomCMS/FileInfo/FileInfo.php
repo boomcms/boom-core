@@ -14,6 +14,12 @@ class FileInfo
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'Word',
     ];
 
+    protected $byMimeStart = [
+        'video' => 'Video',
+        'audio' => 'Mpeg',
+        'image' => 'Image',
+    ];
+
     /**
      * Factory method for retrieving a FileInfo object.
      *
@@ -44,12 +50,10 @@ class FileInfo
             }
         }
 
-        if (strpos($mimetype, 'video') === 0 || strpos($mimetype, 'audio') === 0) {
-            return 'Mpeg';
-        }
-
-        if (strpos($mimetype, 'image') === 0) {
-            return 'Image';
+        foreach ($this->byMimeStart as $match => $driver) {
+            if (strpos($mimetype, $match) === 0) {
+                return $driver;
+            }
         }
 
         return 'DefaultDriver';

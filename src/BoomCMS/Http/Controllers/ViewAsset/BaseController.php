@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
-use BoomCMS\Contracts\Models\Asset;
+use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Intervention\Image\Constraint;
@@ -20,27 +20,6 @@ class BaseController extends Controller
     {
         $this->asset = $asset;
         $this->response = new Response();
-
-        if (!$this->asset->exists()) {
-            abort(404);
-        }
-
-        if (!($this->asset->isPublic() || auth()->check())) {
-            abort(401);
-        }
-    }
-
-    public function download()
-    {
-        return response()->download(
-            $this->asset->getFilename(),
-            $this->asset->getOriginalFilename()
-        );
-    }
-
-    public function embed()
-    {
-        return $this->asset->getEmbedHtml();
     }
 
     public function view($width = null, $height = null)

@@ -8,9 +8,6 @@ return [
         'analytics' => function () {
             return Helpers::analytics();
         },
-        'assetEmbed' => function ($asset, $height = null, $width = null) {
-            return Helpers::assetEmbed($asset, $height, $width);
-        },
         'assetURL' => function (array $params) {
             return Helpers::assetURL($params);
         },
