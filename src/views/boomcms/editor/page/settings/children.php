@@ -1,8 +1,8 @@
 <form>
-	<div id="child-settings">
+    <div id="child-settings">
         <h1><?= trans('boomcms::settings.children.heading') ?></h1>
 
-		<section id="basic">
+        <section id="basic">
             <h2><?= trans('boomcms::settings.basic') ?></h2>
 
             <label>
@@ -43,21 +43,29 @@
                 </select>
 
                 <?php if ($page->hasChildren()): ?>
-                    <?= $button('', 'reorder', ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
+                    <?= $button('', 'reorder', [
+                        'id' => 'b-page-settings-children-reorder',
+                        'class' => 'b-button-textonly'
+                    ]) ?>
                 <?php endif ?>
             </label>
-		</section>
+        </section>
 
-		<?php if (Gate::allows('editChildrenAdvanced', $page)): ?>
-			<section id="advanced">
+        <?php if (Gate::allows('editChildrenAdvanced', $page)): ?>
+            <section id="advanced">
                 <h2><?= trans('boomcms::settings.advanced') ?></h2>
 
                 <label>
                     <p><?= trans('boomcms::settings.children.nav') ?></p>
 
                     <select name="children_visible_in_nav" id="children_visible_in_nav">
-                        <option value="1"<?php if ($page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                        <option value=""<?php if (!$page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
+                        <option value="1"
+                            <?php if ($page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>
+                        >Yes</option>
+
+                        <option value=""
+                            <?php if (!$page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>
+                        >No</option>
                     </select>
                 </label>
 
@@ -65,14 +73,25 @@
                     <p><?= trans('boomcms::settings.children.nav-cms') ?></p>
 
                     <select name="children_visible_in_nav_cms" id="children_visible_in_nav_cms">
-                        <option value="1"<?php if ($page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                        <option value=""<?php if (!$page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
+                        <option value="1"
+                            <?php if ($page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>
+                        >Yes</option>
+
+                        <option value=""
+                            <?php if (!$page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>
+                        >No</option>
                     </select>
                 </label>
 
                 <label>
                     <p><?= trans('boomcms::settings.children.uri-prefix') ?></p>
-                    <input type="text" id="children_url_prefix" name="children_url_prefix" value="<?= $page->getChildPageUrlPrefix() ?>" />
+
+                    <input
+                        type="text"
+                        id="children_url_prefix"
+                        name="children_url_prefix"
+                        value="<?= $page->getChildPageUrlPrefix() ?>"
+                    >
                 </label>
 
                 <label>
@@ -86,9 +105,9 @@
                         <?php endforeach ?>
                     </select>
                 </label>
-			</section>
-		<?php endif ?>
-	</div>
+            </section>
+        <?php endif ?>
+    </div>
 
     <?= $button('refresh', 'reset', ['class' => 'b-button-cancel b-button-withtext']) ?>
     <?= $button('save', 'save', ['class' => 'b-button-save b-button-withtext']) ?>
