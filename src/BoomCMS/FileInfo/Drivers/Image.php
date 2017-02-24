@@ -3,6 +3,7 @@
 namespace BoomCMS\FileInfo\Drivers;
 
 use Carbon\Carbon;
+use Exception;
 use Imagick;
 
 class Image extends DefaultDriver
@@ -31,7 +32,11 @@ class Image extends DefaultDriver
     {
         $timestamp = $this->oneOf(['exif:DateTimeOriginal', 'exif:DateTimeDigitized', 'exif:DateTime', 'date:create']);
 
-        return !empty($timestamp) ? Carbon::parse($timestamp) : null;
+        try {
+            return !empty($timestamp) ? Carbon::parse($timestamp) : null;
+        } catch (Exception $e) {
+            return;
+        }
     }
 
     /**

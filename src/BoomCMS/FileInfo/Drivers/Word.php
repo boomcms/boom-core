@@ -17,7 +17,11 @@ class Word extends DefaultDriver
     {
         $metadata = $this->getMetadata();
 
-        return isset($metadata['created']) ? Carbon::createFromTimestamp($metadata['created']) : null;
+        try {
+            return isset($metadata['created']) ? Carbon::createFromTimestamp($metadata['created']) : null;
+        } catch (Exception $e) {
+            return;
+        }
     }
 
     /**

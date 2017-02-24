@@ -18,8 +18,12 @@ class Pdf extends DefaultDriver
     {
         $metadata = $this->getMetadata();
 
-        return isset($metadata['CreationDate']) ?
-            Carbon::parse($metadata['CreationDate']) : null;
+        try {
+            return isset($metadata['CreationDate']) ?
+                Carbon::parse($metadata['CreationDate']) : null;
+        } catch (Exception $e) {
+            return;
+        }
     }
 
     /**

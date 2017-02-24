@@ -27,7 +27,7 @@ class MigrateFeatureChunksToLinkset extends Migration
                 ->exists();
 
             if ($exists === true) {
-                $slotname = 'feature'.$slotname;
+                $slotname = 'feature-'.$slotname;
             }
 
             Linkset::create([
@@ -43,7 +43,7 @@ class MigrateFeatureChunksToLinkset extends Migration
         Schema::drop('chunk_features');
 
         DB::table('page_versions')
-            ->where('chunk_type', 'in', ['feature', 'link'])
+            ->whereIn('chunk_type', ['feature', 'link'])
             ->update([
                 'chunk_type' => 'linkset',
             ]);
