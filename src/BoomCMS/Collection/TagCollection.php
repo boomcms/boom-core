@@ -3,7 +3,7 @@
 namespace BoomCMS\Collection;
 
 use BoomCMS\Contracts\Models\Tag;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class TagCollection extends Collection
 {
