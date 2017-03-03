@@ -32764,7 +32764,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  *
  * Based on stackoverflow user Stoive's code snippet:
  * http://stackoverflow.com/q/4998908
@@ -55708,11 +55708,13 @@ console.log(offset, this.$counter.width());
         },
 
         render: function() {
+            var aspectRatio = this.model.getAspectRatio();
+
             this.$el
                 .html(this.template({
                     asset: this.model
                 }))
-                .attr('data-aspect-ratio', this.model.getAspectRatio());
+                .attr('data-aspect-ratio', aspectRatio > 0 ? aspectRatio : 1);
 
             return this;
         }
@@ -56076,8 +56078,9 @@ console.log(offset, this.$counter.width());
             if (assetIds.length === 1) {
                 this.pick(new BoomCMS.Asset({id: assetIds[0]}));
             } else {
-                this.clearFilters();
-                this.getAssets();
+                this.dialog.contents.find('.b-assets-upload-form').assetUploader('reset');
+                this.dialog.contents.assetSearch('removeFilters');
+                this.dialog.contents.assetSearch('getAssets');
             }
         };
 
