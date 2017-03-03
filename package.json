@@ -1,6 +1,6 @@
 {
   "name": "boom-core",
-  "version": "6.1.3",
+  "version": "6.1.4",
   "dependencies": {
     "bower": "~1.4.1",
     "grunt": "~0.4.5",
