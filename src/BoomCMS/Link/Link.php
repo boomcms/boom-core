@@ -57,7 +57,8 @@ abstract class Link implements LinkableInterface
      */
     public function getAssetId(): int
     {
-        return $this->attrs['asset_id'] ?? 0;
+        return (isset($this->attrs['asset_id']) && !empty($this->attrs['asset_id'])) ?
+            $this->attrs['asset_id'] : 0;
     }
 
     /**

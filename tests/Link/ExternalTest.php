@@ -7,6 +7,13 @@ use BoomCMS\Tests\AbstractTestCase;
 
 class ExternalTest extends AbstractTestCase
 {
+    public function testGetAssetIdReturnsZeroForEmptyString()
+    {
+        $link = new Link('http://www.boomcms.net', ['asset_id' => '']);
+
+        $this->assertEquals(0, $link->getAssetId());
+    }
+
     public function testUrlReturnsURLUnchanged()
     {
         $links = [
