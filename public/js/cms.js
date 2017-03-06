@@ -47362,7 +47362,25 @@ M:11},qf=Math.abs,rf=wb.prototype;
 // FORMATTING
 // PARSING
 // Side effect imports
-return rf.abs=Wc,rf.add=Yc,rf.subtract=Zc,rf.as=cd,rf.asMilliseconds=$e,rf.asSeconds=_e,rf.asMinutes=af,rf.asHours=bf,rf.asDays=cf,rf.asWeeks=df,rf.asMonths=ef,rf.asYears=ff,rf.valueOf=dd,rf._bubble=_c,rf.get=fd,rf.milliseconds=gf,rf.seconds=hf,rf.minutes=jf,rf.hours=kf,rf.days=lf,rf.weeks=hd,rf.months=mf,rf.years=nf,rf.humanize=md,rf.toISOString=nd,rf.toString=nd,rf.toJSON=nd,rf.locale=lc,rf.localeData=mc,rf.toIsoString=x("toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)",nd),rf.lang=Re,U("X",0,0,"unix"),U("x",0,0,"valueOf"),Z("x",Vd),Z("X",Yd),ba("X",function(a,b,c){c._d=new Date(1e3*parseFloat(a,10))}),ba("x",function(a,b,c){c._d=new Date(u(a))}),a.version="2.17.1",b(sb),a.fn=Xe,a.min=ub,a.max=vb,a.now=Le,a.utc=k,a.unix=Lc,a.months=Rc,a.isDate=g,a.locale=$a,a.invalid=o,a.duration=Ob,a.isMoment=s,a.weekdays=Tc,a.parseZone=Mc,a.localeData=bb,a.isDuration=xb,a.monthsShort=Sc,a.weekdaysMin=Vc,a.defineLocale=_a,a.updateLocale=ab,a.locales=cb,a.weekdaysShort=Uc,a.normalizeUnits=K,a.relativeTimeRounding=kd,a.relativeTimeThreshold=ld,a.calendarFormat=Ub,a.prototype=Xe,a});;(function (root) {/*global exports, Intl*/
+return rf.abs=Wc,rf.add=Yc,rf.subtract=Zc,rf.as=cd,rf.asMilliseconds=$e,rf.asSeconds=_e,rf.asMinutes=af,rf.asHours=bf,rf.asDays=cf,rf.asWeeks=df,rf.asMonths=ef,rf.asYears=ff,rf.valueOf=dd,rf._bubble=_c,rf.get=fd,rf.milliseconds=gf,rf.seconds=hf,rf.minutes=jf,rf.hours=kf,rf.days=lf,rf.weeks=hd,rf.months=mf,rf.years=nf,rf.humanize=md,rf.toISOString=nd,rf.toString=nd,rf.toJSON=nd,rf.locale=lc,rf.localeData=mc,rf.toIsoString=x("toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)",nd),rf.lang=Re,U("X",0,0,"unix"),U("x",0,0,"valueOf"),Z("x",Vd),Z("X",Yd),ba("X",function(a,b,c){c._d=new Date(1e3*parseFloat(a,10))}),ba("x",function(a,b,c){c._d=new Date(u(a))}),a.version="2.17.1",b(sb),a.fn=Xe,a.min=ub,a.max=vb,a.now=Le,a.utc=k,a.unix=Lc,a.months=Rc,a.isDate=g,a.locale=$a,a.invalid=o,a.duration=Ob,a.isMoment=s,a.weekdays=Tc,a.parseZone=Mc,a.localeData=bb,a.isDuration=xb,a.monthsShort=Sc,a.weekdaysMin=Vc,a.defineLocale=_a,a.updateLocale=ab,a.locales=cb,a.weekdaysShort=Uc,a.normalizeUnits=K,a.relativeTimeRounding=kd,a.relativeTimeThreshold=ld,a.calendarFormat=Ub,a.prototype=Xe,a});;(function ($) {
+  $.fn.equalHeights = function () {
+    var $items = $(this);
+    function equalize() {
+      $items.height('initial');
+      var maxH = $items.eq(0).height();
+      $items.each(function () {
+        maxH = ($(this).height() > maxH) ? $(this).height() : maxH;
+      });
+      $items.height(maxH);
+    }
+    equalize();
+    $(window).bind('resize', function () {
+      equalize();
+    });
+  };
+})(jQuery);
+
+;(function (root) {/*global exports, Intl*/
 /**
  * This script gives you the zone info key representing your device's time zone setting.
  *
@@ -53944,6 +53962,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     linksetEditor.dialog.contents.find('#b-linkset-links .none').hide();
                     linksetEditor.addDeleteButtons();
                     linksetEditor.editLink($a);
+
+                    setTimeout(function() {
+                        linksetEditor.resize();
+                    }, 0);
                 });
         };
 
@@ -54060,6 +54082,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .end();
 
             this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
+
+            this.resize();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.editLinkTarget = function() {
@@ -54082,8 +54106,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.deleteLink = function($li) {
+            var linksetEditor = this;
+
             $li.fadeOut(200, function() {
                 $li.remove();
+                linksetEditor.resize();
             });
         };
 
@@ -54133,6 +54160,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 width: 600,
                 onLoad: function() {
                     linksetEditor.bind();
+                    linksetEditor.resize();
                 }
             })
             .done(function() {
@@ -54143,6 +54171,14 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             });
 
             return this.deferred;
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.resize = function() {
+            console.log('resize');
+            this.dialog.contents
+                .find('section')
+                .css('height', '')
+                .equalHeights();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.toggleLinkAsset = function(asset) {

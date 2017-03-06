@@ -40,6 +40,10 @@
                     linksetEditor.dialog.contents.find('#b-linkset-links .none').hide();
                     linksetEditor.addDeleteButtons();
                     linksetEditor.editLink($a);
+
+                    setTimeout(function() {
+                        linksetEditor.resize();
+                    }, 0);
                 });
         };
 
@@ -156,6 +160,8 @@
                 .end();
 
             this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
+
+            this.resize();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.editLinkTarget = function() {
@@ -178,8 +184,11 @@
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.deleteLink = function($li) {
+            var linksetEditor = this;
+
             $li.fadeOut(200, function() {
                 $li.remove();
+                linksetEditor.resize();
             });
         };
 
@@ -229,6 +238,7 @@
                 width: 600,
                 onLoad: function() {
                     linksetEditor.bind();
+                    linksetEditor.resize();
                 }
             })
             .done(function() {
@@ -239,6 +249,14 @@
             });
 
             return this.deferred;
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.resize = function() {
+            console.log('resize');
+            this.dialog.contents
+                .find('section')
+                .css('height', '')
+                .equalHeights();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.toggleLinkAsset = function(asset) {

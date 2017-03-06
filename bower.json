@@ -30,6 +30,7 @@
     "chosen": "~1.5.1",
     "jquery.serializeJSON": "~2.7.2",
     "moment": "^2.13.0",
-    "moment-timezone": "^0.5.5"
+    "moment-timezone": "^0.5.5",
+    "equalHeights": "*"
   }
 }
