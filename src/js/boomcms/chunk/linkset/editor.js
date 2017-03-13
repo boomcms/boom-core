@@ -105,6 +105,9 @@
 
                     linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
                 })
+                .find('img').on('load', function() {
+                    linksetEditor.resize();
+                })
                 .end()
                 .find('ul')
                 .sortable();
@@ -207,7 +210,6 @@
             var linksetEditor = this, links = [];
 
             if (this.options.limit === 1) {
-                console.log(this.currentLink);
                 return [this.getLinkData(this.currentLink)];
             };
 
@@ -252,7 +254,6 @@
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.resize = function() {
-            console.log('resize');
             this.dialog.contents
                 .find('section')
                 .css('height', '')
