@@ -32764,7 +32764,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  *
  * Based on stackoverflow user Stoive's code snippet:
  * http://stackoverflow.com/q/4998908
@@ -47362,7 +47362,25 @@ M:11},qf=Math.abs,rf=wb.prototype;
 // FORMATTING
 // PARSING
 // Side effect imports
-return rf.abs=Wc,rf.add=Yc,rf.subtract=Zc,rf.as=cd,rf.asMilliseconds=$e,rf.asSeconds=_e,rf.asMinutes=af,rf.asHours=bf,rf.asDays=cf,rf.asWeeks=df,rf.asMonths=ef,rf.asYears=ff,rf.valueOf=dd,rf._bubble=_c,rf.get=fd,rf.milliseconds=gf,rf.seconds=hf,rf.minutes=jf,rf.hours=kf,rf.days=lf,rf.weeks=hd,rf.months=mf,rf.years=nf,rf.humanize=md,rf.toISOString=nd,rf.toString=nd,rf.toJSON=nd,rf.locale=lc,rf.localeData=mc,rf.toIsoString=x("toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)",nd),rf.lang=Re,U("X",0,0,"unix"),U("x",0,0,"valueOf"),Z("x",Vd),Z("X",Yd),ba("X",function(a,b,c){c._d=new Date(1e3*parseFloat(a,10))}),ba("x",function(a,b,c){c._d=new Date(u(a))}),a.version="2.17.1",b(sb),a.fn=Xe,a.min=ub,a.max=vb,a.now=Le,a.utc=k,a.unix=Lc,a.months=Rc,a.isDate=g,a.locale=$a,a.invalid=o,a.duration=Ob,a.isMoment=s,a.weekdays=Tc,a.parseZone=Mc,a.localeData=bb,a.isDuration=xb,a.monthsShort=Sc,a.weekdaysMin=Vc,a.defineLocale=_a,a.updateLocale=ab,a.locales=cb,a.weekdaysShort=Uc,a.normalizeUnits=K,a.relativeTimeRounding=kd,a.relativeTimeThreshold=ld,a.calendarFormat=Ub,a.prototype=Xe,a});;(function (root) {/*global exports, Intl*/
+return rf.abs=Wc,rf.add=Yc,rf.subtract=Zc,rf.as=cd,rf.asMilliseconds=$e,rf.asSeconds=_e,rf.asMinutes=af,rf.asHours=bf,rf.asDays=cf,rf.asWeeks=df,rf.asMonths=ef,rf.asYears=ff,rf.valueOf=dd,rf._bubble=_c,rf.get=fd,rf.milliseconds=gf,rf.seconds=hf,rf.minutes=jf,rf.hours=kf,rf.days=lf,rf.weeks=hd,rf.months=mf,rf.years=nf,rf.humanize=md,rf.toISOString=nd,rf.toString=nd,rf.toJSON=nd,rf.locale=lc,rf.localeData=mc,rf.toIsoString=x("toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)",nd),rf.lang=Re,U("X",0,0,"unix"),U("x",0,0,"valueOf"),Z("x",Vd),Z("X",Yd),ba("X",function(a,b,c){c._d=new Date(1e3*parseFloat(a,10))}),ba("x",function(a,b,c){c._d=new Date(u(a))}),a.version="2.17.1",b(sb),a.fn=Xe,a.min=ub,a.max=vb,a.now=Le,a.utc=k,a.unix=Lc,a.months=Rc,a.isDate=g,a.locale=$a,a.invalid=o,a.duration=Ob,a.isMoment=s,a.weekdays=Tc,a.parseZone=Mc,a.localeData=bb,a.isDuration=xb,a.monthsShort=Sc,a.weekdaysMin=Vc,a.defineLocale=_a,a.updateLocale=ab,a.locales=cb,a.weekdaysShort=Uc,a.normalizeUnits=K,a.relativeTimeRounding=kd,a.relativeTimeThreshold=ld,a.calendarFormat=Ub,a.prototype=Xe,a});;(function ($) {
+  $.fn.equalHeights = function () {
+    var $items = $(this);
+    function equalize() {
+      $items.height('initial');
+      var maxH = $items.eq(0).height();
+      $items.each(function () {
+        maxH = ($(this).height() > maxH) ? $(this).height() : maxH;
+      });
+      $items.height(maxH);
+    }
+    equalize();
+    $(window).bind('resize', function () {
+      equalize();
+    });
+  };
+})(jQuery);
+
+;(function (root) {/*global exports, Intl*/
 /**
  * This script gives you the zone info key representing your device's time zone setting.
  *
@@ -52271,7 +52289,7 @@ $.widget( 'boom.pageToolbar', {
                 var $this = $(this),
                     src = $this.attr('src').replace(/\/asset\/(\d+)(.*?)/, '$1');
 
-                return src.indexOf('/')? src : src.substring(0, src.indexOf('/'));
+                return src.indexOf('/') > -1 ? src.substring(0, src.indexOf('/')) : src;
             });
     },
 
@@ -52298,11 +52316,11 @@ $.widget( 'boom.pageToolbar', {
             .on('click', '.b-page-feature-set', function() {
                 pageFeatureEditor.setFeature(new BoomCMS.Asset({id: $(this).attr('data-asset-id')}));
             });
-
+console.log(this.imagesInPage);
         if (this.imagesInPage.length) {
             for (var i = 0; i < this.imagesInPage.length; i++) {
                 var asset = new BoomCMS.Asset({id: this.imagesInPage[i]});
-
+console.log(asset);
                 $imagesInPageContainer.append('<li><a href=\'#\' class=\'b-page-feature-set\' data-asset-id=\'' + asset.getId() + '\'><img src=\'' + asset.getUrl() + '\' /></a></li>');
             }
         } else {
@@ -52879,9 +52897,8 @@ $.widget('boom.textEditor', {
         if (self.mode !== 'text') {
             self.instance = new wysihtml5.Editor(element[0], {
                 toolbar: self.toolbar[0],
-                style: true,
-                parserRules:  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
-                useLineBreaks: (self.mode !== 'block'),
+                parserRules:  (self.mode === 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
+                useLineBreaks: (self.mode === 'block'),
                 contentEditableMode: true,
                 autoLink: false,
                 uneditableContainerClassname: 'b-asset-embed',
@@ -52890,7 +52907,7 @@ $.widget('boom.textEditor', {
             });
 
             // Ensures that default text is wrapped in a paragraph
-            if (self.mode === 'block' && element.text() == element.html()) {
+            if (self.mode === 'block' && element.text() === element.html()) {
                 element.html($('<p></p>').text(element.text()));
             }
         } else {
@@ -52917,6 +52934,13 @@ $.widget('boom.textEditor', {
             .on('focus', function() {
                 if ( ! self.toolbar.is(':visible')) {
                     self.showToolbar();
+                }
+            })
+            .on('keypress', function(e) {
+                if (self.mode === 'inline' && element.is('p, li, dt, dd, span') && e.which === 13) {
+                    e.preventDefault();
+
+                    self.instance.composer.selection.insertHTML('<br>');
                 }
             })
             .on('keyup', function(e) {
@@ -53017,7 +53041,7 @@ $.widget('boom.textEditor', {
         window.BoomCMS.page.toolbar.minimise();
         this.hideToolbar();
 
-        if (this.mode !== 'block') {
+        if (this.mode === 'text') {
             html = html.replace(/<br>|\n|\r|\n\r/g, ' ');
             element.html(html);
         }
@@ -53944,6 +53968,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     linksetEditor.dialog.contents.find('#b-linkset-links .none').hide();
                     linksetEditor.addDeleteButtons();
                     linksetEditor.editLink($a);
+
+                    setTimeout(function() {
+                        linksetEditor.resize();
+                    }, 0);
                 });
         };
 
@@ -54005,6 +54033,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                     linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
                 })
+                .find('img').on('load', function() {
+                    linksetEditor.resize();
+                })
                 .end()
                 .find('ul')
                 .sortable();
@@ -54060,6 +54091,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .end();
 
             this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
+
+            this.resize();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.editLinkTarget = function() {
@@ -54082,8 +54115,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.deleteLink = function($li) {
+            var linksetEditor = this;
+
             $li.fadeOut(200, function() {
                 $li.remove();
+                linksetEditor.resize();
             });
         };
 
@@ -54102,7 +54138,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             var linksetEditor = this, links = [];
 
             if (this.options.limit === 1) {
-                console.log(this.currentLink);
                 return [this.getLinkData(this.currentLink)];
             };
 
@@ -54133,6 +54168,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 width: 600,
                 onLoad: function() {
                     linksetEditor.bind();
+                    linksetEditor.resize();
                 }
             })
             .done(function() {
@@ -54143,6 +54179,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             });
 
             return this.deferred;
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.resize = function() {
+            this.dialog.contents
+                .find('section')
+                .css('height', '')
+                .equalHeights();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.toggleLinkAsset = function(asset) {
@@ -55708,11 +55751,13 @@ console.log(offset, this.$counter.width());
         },
 
         render: function() {
+            var aspectRatio = this.model.getAspectRatio();
+
             this.$el
                 .html(this.template({
                     asset: this.model
                 }))
-                .attr('data-aspect-ratio', this.model.getAspectRatio());
+                .attr('data-aspect-ratio', aspectRatio > 0 ? aspectRatio : 1);
 
             return this;
         }
@@ -56076,8 +56121,9 @@ console.log(offset, this.$counter.width());
             if (assetIds.length === 1) {
                 this.pick(new BoomCMS.Asset({id: assetIds[0]}));
             } else {
-                this.clearFilters();
-                this.getAssets();
+                this.dialog.contents.find('.b-assets-upload-form').assetUploader('reset');
+                this.dialog.contents.assetSearch('removeFilters');
+                this.dialog.contents.assetSearch('getAssets');
             }
         };
 
@@ -76774,21 +76820,31 @@ wysihtml5.views.View = Base.extend(
         }
     }
 };;var wysihtml5ParserRulesInline = {
-  tags: {
-    strong: {},
-    b:      {},
-    i:      {},
-    em:     {},
-    a:      {
-      set_attributes: {
-        target: "_blank",
-        rel:    "nofollow"
-      },
-      check_attributes: {
-        href:   "url" // important to avoid XSS
+    tags: {
+        div: {
+            "rename_tag": "br"
+        },
+        p: {
+            "rename_tag": "br"
+        },
+        p: {
+            "rename_tag": "br"
+        },
+        br: {},
+        strong: {},
+        b:      {},
+        i:      {},
+        em:     {},
+        a:      {
+            set_attributes: {
+                target: "_blank",
+                rel:    "nofollow"
+            },
+            check_attributes: {
+                href:   "url" // important to avoid XSS
+            }
+        }
       }
-    }
-  }
 };;(function(wysihtml5) {
 	wysihtml5.commands.insertBoomAsset = {
 		exec: function(composer, command, value) {

@@ -30,9 +30,8 @@ $.widget('boom.textEditor', {
         if (self.mode !== 'text') {
             self.instance = new wysihtml5.Editor(element[0], {
                 toolbar: self.toolbar[0],
-                style: true,
-                parserRules:  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
-                useLineBreaks: (self.mode !== 'block'),
+                parserRules:  (self.mode === 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
+                useLineBreaks: (self.mode === 'block'),
                 contentEditableMode: true,
                 autoLink: false,
                 uneditableContainerClassname: 'b-asset-embed',
@@ -41,7 +40,7 @@ $.widget('boom.textEditor', {
             });
 
             // Ensures that default text is wrapped in a paragraph
-            if (self.mode === 'block' && element.text() == element.html()) {
+            if (self.mode === 'block' && element.text() === element.html()) {
                 element.html($('<p></p>').text(element.text()));
             }
         } else {
@@ -68,6 +67,13 @@ $.widget('boom.textEditor', {
             .on('focus', function() {
                 if ( ! self.toolbar.is(':visible')) {
                     self.showToolbar();
+                }
+            })
+            .on('keypress', function(e) {
+                if (self.mode === 'inline' && element.is('p, li, dt, dd, span') && e.which === 13) {
+                    e.preventDefault();
+
+                    self.instance.composer.selection.insertHTML('<br>');
                 }
             })
             .on('keyup', function(e) {
@@ -168,7 +174,7 @@ $.widget('boom.textEditor', {
         window.BoomCMS.page.toolbar.minimise();
         this.hideToolbar();
 
-        if (this.mode !== 'block') {
+        if (this.mode === 'text') {
             html = html.replace(/<br>|\n|\r|\n\r/g, ' ');
             element.html(html);
         }
