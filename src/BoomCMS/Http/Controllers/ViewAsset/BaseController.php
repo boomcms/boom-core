@@ -25,13 +25,9 @@ class BaseController extends Controller
 
     public function view($width = null, $height = null)
     {
-        return $this->response
-            ->header('content-type', $this->asset->getMimetype())
-            ->header('content-disposition', 'inline; filename="'.$this->asset->getOriginalFilename().'"')
-            ->header('content-transfer-encoding', 'binary')
-            ->header('content-length', $this->asset->getFilesize())
-            ->header('accept-ranges', 'bytes')
-            ->setContent(AssetFacade::file($this->asset));
+        return $this->response->file(AssetFacade::file($this->asset), [
+            'content-disposition' => 'inline; filename="'.$this->asset->getOriginalFilename().'"'
+        ]);
     }
 
     public function thumb($width = null, $height = null)

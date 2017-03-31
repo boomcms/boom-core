@@ -4,7 +4,7 @@ namespace BoomCMS\Tests\Integration\Asset;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
-use BoomCMS\Support\Facades\AssetVersion as AssetVersionFacade;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Auth;
 use Mockery as m;
@@ -31,7 +31,7 @@ class AssetTest extends AbstractTestCase
 
     public function test404IfAssetFileNotFound()
     {
-        AssetVersionFacade::shouldReceive('exists')->once()->andReturn(false);
+        AssetFacade::shouldReceive('exists')->once()->andReturn(false);
 
         $this->call('GET', $this->url);
 
@@ -42,7 +42,7 @@ class AssetTest extends AbstractTestCase
     {
         $this->asset->shouldReceive('isPublic')->andReturn(false);
 
-        AssetVersionFacade::shouldReceive('exists')->once()->andReturn(true);
+        AssetFacade::shouldReceive('exists')->once()->andReturn(true);
         Auth::shouldReceive('check')->andReturn(false);
 
         $this->call('GET', $this->url);
@@ -54,6 +54,6 @@ class AssetTest extends AbstractTestCase
     {
         $this->asset->shouldReceive('isPublic')->andReturn(true);
 
-        AssetVersionFacade::shouldReceive('exists')->once()->andReturn(true);
+        AssetFacade::shouldReceive('exists')->once()->andReturn(true);
     }
 }

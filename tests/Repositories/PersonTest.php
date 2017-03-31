@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Tests\Repositories;
 
+use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Person as PersonRepository;
@@ -79,6 +80,30 @@ class PersonTest extends AbstractTestCase
             ->andReturn($people);
 
         $this->assertEquals($people, $this->repository->findBySite($site));
+    }
+
+    public function testGetAssetUploaders()
+    {
+        $people = collect([]);
+
+        $this->model
+            ->shouldReceive('has')
+            ->once()
+            ->with('assets')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with(Person::ATTR_NAME, 'asc')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn($people);
+
+        $this->assertEquals($people, $this->repository->getAssetUploaders());
     }
 
     public function testRetrieveByCredentials()

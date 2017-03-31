@@ -6,6 +6,7 @@ use BoomCMS\Repositories;
 use BoomCMS\Routing\Router;
 use BoomCMS\ServiceProviders\RepositoryServiceProvider;
 use BoomCMS\Tests\AbstractTestCase;
+use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\App;
 use Mockery as m;
@@ -35,7 +36,7 @@ class RepositoryServiceProviderTest extends AbstractTestCase
         }
 
         $sp = new RepositoryServiceProvider($app);
-        $sp->boot($app->make(Router::class));
+        $sp->boot($app->make(Router::class), m::mock(FilesystemFactory::class));
 
         foreach ($expectations as $class) {
             $this->assertInstanceOf($class, App::offsetGet($class));

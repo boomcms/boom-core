@@ -7,11 +7,10 @@ use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
 use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
-use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Imagick;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -48,7 +47,7 @@ class Asset implements AssetRepositoryInterface
      *
      * @return int
      */
-    public function createFromFile(UploadedFile $file): int
+    public function createFromFile(UploadedFile $file): AssetInterface
     {
         $info = FileInfo::create($file);
 
@@ -60,13 +59,11 @@ class Asset implements AssetRepositoryInterface
             ->setDescription($info->getDescription())
             ->setCredits($info->getCopyright());
 
-        $assetId = $this->save($asset)->getId();
-
         $this->version->createFromFile($asset, $file, $info);
 
         $this->saveFile($asset, $file, $info->getThumbnail());
 
-        return $assetId;
+        return $asset;
     }
 
     /**
@@ -74,7 +71,7 @@ class Asset implements AssetRepositoryInterface
      *
      * @return $this
      */
-    public function delete(array $assetIds)
+    public function delete(array $assetIds): self
     {
         $this->model->destroy($assetIds);
 
@@ -96,9 +93,9 @@ class Asset implements AssetRepositoryInterface
     /**
      * Returns an array of extensions which are in use with the latest versions
      *
-     * @return array
+     * @return Collection
      */
-    public function extensions(): array
+    public function extensions(): Collection
     {
         return $this->model
             ->withLatestVersion()
@@ -106,8 +103,7 @@ class Asset implements AssetRepositoryInterface
             ->having('e', '!=', '')
             ->orderBy('e')
             ->distinct()
-            ->pluck('e')
-            ->toArray();
+            ->pluck('e');
     }
 
     public function file(AssetInterface $asset): string
@@ -118,14 +114,14 @@ class Asset implements AssetRepositoryInterface
     /**
      * @param int $assetId
      *
-     * @return AssetModel
+     * @return AssetModel|null
      */
     public function find($assetId)
     {
         return $this->model->find($assetId);
     }
 
-    protected function getThumbnailFilename(AssetInterface $asset)
+    protected function getThumbnailFilename(AssetInterface $asset): string
     {
         return $asset->getLatestVersionId().'.thumb';
     }
@@ -144,13 +140,13 @@ class Asset implements AssetRepositoryInterface
 
     public function revert(AssetInterface $asset, $versionId)
     {
-        $version = $this->find($versionId);
+        $version = $this->version->find($versionId);
 
-        if ($version && $version->getAssetId() == $asset->getId()) {
+        if ($version && $version->getAssetId() === $asset->getId()) {
             $attrs = $version->toArray();
             unset($attrs['id']);
 
-            $version = $this->model->create($attrs);
+            $version = $this->version->create($attrs);
 
             $this->filesystem->copy($versionId, $version->getId());
         }
@@ -175,29 +171,12 @@ class Asset implements AssetRepositoryInterface
         $this->filesystem->putFileAs(null, $file, $asset->getLatestVersionId());
 
         if ($thumbnail) {
-            $this->filesystem->put($this->getThumbnailFilename($version), $thumbnail->getImageBlob());
+            $this->filesystem->put($this->getThumbnailFilename($asset), $thumbnail->getImageBlob());
         }
     }
 
     public function thumbnail(AssetInterface $asset): string
     {
         return $this->filesystem->get($this->getThumbnailFilename($asset));
-    }
-
-    /**
-     * Returns a Collection of People who have uploaded assets.
-     *
-     * @return Collection
-     */
-    public function uploaders(PersonModel $model = null)
-    {
-        $model = $model ?: new PersonModel();
-
-        return $model
-            ->select('people.*')
-            ->join('assets', 'assets.'.AssetModel::ATTR_CREATED_BY, '=', 'people.id')
-            ->groupBy('people.id')
-            ->orderBy(PersonModel::ATTR_NAME)
-            ->get();
     }
 }

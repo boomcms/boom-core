@@ -5,9 +5,8 @@ namespace BoomCMS\Contracts\Repositories;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetObject;
-use BoomCMS\Database\Models\Person as PersonModel;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface Asset
@@ -23,16 +22,16 @@ interface Asset
      *
      * @param UploadedFile $file
      *
-     * @return int
+     * @return AssetInterface
      */
-    public function createFromFile(UploadedFile $file): int;
+    public function createFromFile(UploadedFile $file): AssetInterface;
 
     /**
      * Returns the extensions which exist in the database.
      *
-     * @return array
+     * @return Collection
      */
-    public function extensions(): array;
+    public function extensions(): Collection;
 
     /**
      * Retrieve an asset by ID.
@@ -55,11 +54,4 @@ interface Asset
      * @param AssetObject $asset
      */
     public function save(AssetObject $asset);
-
-    /**
-     * Returns the users who have uploaded assets.
-     *
-     * @return Collection
-     */
-    public function uploaders(PersonModel $model = null);
 }

@@ -3,6 +3,7 @@
 namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Person as PersonInterface;
+use Illuminate\Support\Collection;
 
 interface Person
 {
@@ -42,6 +43,13 @@ interface Person
      * @return PersonInterface
      */
     public function findByEmail($email);
+
+    /**
+     * Returns the users who have uploaded assets.
+     *
+     * @return Collection
+     */
+    public function getAssetUploaders();
 
     /**
      * @param PersonInterface $person

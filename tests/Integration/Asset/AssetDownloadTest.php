@@ -3,7 +3,8 @@
 namespace BoomCMS\Tests\Integration\Asset;
 
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Http\Response;
+use BoomCMS\Support\Facades\Asset;
 
 class AssetDownloadTest extends AssetTest
 {
@@ -11,19 +12,26 @@ class AssetDownloadTest extends AssetTest
 
     public function testDownloadRequest()
     {
-        $filename = realpath(__DIR__.'/../../files/test.jpg');
+        $file = file_get_contents(realpath(__DIR__.'/../../files/test.jpg'));
         $originalFilename = 'test-original';
 
-        $this->asset->shouldReceive('isPublic')->andReturn(true);
-        $this->asset->shouldReceive('getFilename')->andReturn($filename);
         $this->asset->shouldReceive('getOriginalFilename')->andReturn($originalFilename);
+
+        $this->assetIsAccessible();
+
+        Asset::shouldReceive('file')
+            ->once()
+            ->with($this->asset)
+            ->andReturn($file);
 
         // Prevent the download from being logged.
         Auth::shouldReceive('check')->andReturn(true);
 
         $response = $this->call('GET', $this->url);
 
-        $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals($filename, $response->getFile());
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals($file, $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('download; filename="'.$originalFilename.'"', $this->response->headers->get('content-disposition'));
     }
 }

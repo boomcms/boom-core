@@ -58,6 +58,11 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         self::ATTR_REMEMBER_TOKEN,
     ];
 
+    public function assets()
+    {
+        return $this->belongsTo(Asset::class, self::ATTR_ID, Asset::ATTR_CREATED_BY);
+    }
+
     /**
      * @param Group $group
      *
