@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Tests\Integration\Asset;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Response;
 use BoomCMS\Support\Facades\Asset;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class AssetDownloadTest extends AssetTest
 {
