@@ -91,7 +91,7 @@ class Asset implements AssetRepositoryInterface
     }
 
     /**
-     * Returns an array of extensions which are in use with the latest versions
+     * Returns an array of extensions which are in use with the latest versions.
      *
      * @return Collection
      */
