@@ -59,6 +59,8 @@ class Asset implements AssetRepositoryInterface
             ->setDescription($info->getDescription())
             ->setCredits($info->getCopyright());
 
+        $this->save($asset);
+
         $this->version->createFromFile($asset, $file, $info);
 
         $this->saveFile($asset, $file, $info->getThumbnail());
