@@ -40,6 +40,10 @@
                     linksetEditor.dialog.contents.find('#b-linkset-links .none').hide();
                     linksetEditor.addDeleteButtons();
                     linksetEditor.editLink($a);
+
+                    setTimeout(function() {
+                        linksetEditor.resize();
+                    }, 0);
                 });
         };
 
@@ -101,6 +105,9 @@
 
                     linksetEditor.editAsset(new BoomCMS.Asset({id: linksetEditor.currentLink.attr('data-asset')}));
                 })
+                .find('img').on('load', function() {
+                    linksetEditor.resize();
+                })
                 .end()
                 .find('ul')
                 .sortable();
@@ -156,6 +163,8 @@
                 .end();
 
             this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
+
+            this.resize();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.editLinkTarget = function() {
@@ -178,8 +187,11 @@
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.deleteLink = function($li) {
+            var linksetEditor = this;
+
             $li.fadeOut(200, function() {
                 $li.remove();
+                linksetEditor.resize();
             });
         };
 
@@ -198,7 +210,6 @@
             var linksetEditor = this, links = [];
 
             if (this.options.limit === 1) {
-                console.log(this.currentLink);
                 return [this.getLinkData(this.currentLink)];
             };
 
@@ -229,6 +240,7 @@
                 width: 600,
                 onLoad: function() {
                     linksetEditor.bind();
+                    linksetEditor.resize();
                 }
             })
             .done(function() {
@@ -239,6 +251,13 @@
             });
 
             return this.deferred;
+        };
+
+        BoomCMS.ChunkLinksetEditor.prototype.resize = function() {
+            this.dialog.contents
+                .find('section')
+                .css('height', '')
+                .equalHeights();
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.toggleLinkAsset = function(asset) {

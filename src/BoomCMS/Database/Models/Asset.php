@@ -311,9 +311,11 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
 
     public function setPublishedAt($when = null)
     {
-        $datetime = ($when === null) ? null : new DateTime($when);
+        if ($when !== null && !is_object($when)) {
+            $when = new DateTime($when);
+        }
 
-        $this->{self::ATTR_PUBLISHED_AT} = $datetime;
+        $this->{self::ATTR_PUBLISHED_AT} = $when;
 
         return $this;
     }
@@ -399,6 +401,10 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      */
     public function toArray()
     {
+        if ($this->attributes[self::ATTR_PUBLISHED_AT] === '0000-00-00 00:00:00') {
+            $this->attributes[self::ATTR_PUBLISHED_AT] = null;
+        }
+
         $attributes = $this->attributesToArray();
         $version = $this->getLatestVersion()->toArray();
 

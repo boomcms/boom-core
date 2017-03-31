@@ -16,8 +16,9 @@
             if (assetIds.length === 1) {
                 this.pick(new BoomCMS.Asset({id: assetIds[0]}));
             } else {
-                this.clearFilters();
-                this.getAssets();
+                this.dialog.contents.find('.b-assets-upload-form').assetUploader('reset');
+                this.dialog.contents.assetSearch('removeFilters');
+                this.dialog.contents.assetSearch('getAssets');
             }
         };
 

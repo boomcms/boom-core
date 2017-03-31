@@ -8,7 +8,7 @@ $.widget('boom.pageSettingsFeature', {
                 var $this = $(this),
                     src = $this.attr('src').replace(/\/asset\/(\d+)(.*?)/, '$1');
 
-                return src.indexOf('/')? src : src.substring(0, src.indexOf('/'));
+                return src.indexOf('/') > -1 ? src.substring(0, src.indexOf('/')) : src;
             });
     },
 
@@ -35,11 +35,11 @@ $.widget('boom.pageSettingsFeature', {
             .on('click', '.b-page-feature-set', function() {
                 pageFeatureEditor.setFeature(new BoomCMS.Asset({id: $(this).attr('data-asset-id')}));
             });
-
+console.log(this.imagesInPage);
         if (this.imagesInPage.length) {
             for (var i = 0; i < this.imagesInPage.length; i++) {
                 var asset = new BoomCMS.Asset({id: this.imagesInPage[i]});
-
+console.log(asset);
                 $imagesInPageContainer.append('<li><a href=\'#\' class=\'b-page-feature-set\' data-asset-id=\'' + asset.getId() + '\'><img src=\'' + asset.getUrl() + '\' /></a></li>');
             }
         } else {
