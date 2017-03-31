@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Tests\Repositories;
 
-use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Person as PersonRepository;

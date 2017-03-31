@@ -26,7 +26,7 @@ class BaseController extends Controller
     public function view($width = null, $height = null)
     {
         return $this->response->file(AssetFacade::file($this->asset), [
-            'content-disposition' => 'inline; filename="'.$this->asset->getOriginalFilename().'"'
+            'content-disposition' => 'inline; filename="'.$this->asset->getOriginalFilename().'"',
         ]);
     }
 
