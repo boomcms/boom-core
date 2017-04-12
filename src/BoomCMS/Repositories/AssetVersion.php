@@ -84,7 +84,7 @@ class AssetVersion implements AssetVersionRepositoryInterface
      */
     public function findAssetByVersionId($versionId): AssetInterface
     {
-        $version = $this->findVersion($versionId);
+        $version = $this->find($versionId);
         $asset = $version->getAsset();
         $asset->setVersion($version);
 
