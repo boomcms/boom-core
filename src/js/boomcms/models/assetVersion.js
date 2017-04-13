@@ -11,7 +11,7 @@
         },
 
         getThumbnail: function() {
-            return '/asset/version/' + this.getId() + '/200/0';
+            return '/asset/' + this.get('asset_id') + '/view/200/0?version=' + this.getId();
         }
     });
 }(BoomCMS));
