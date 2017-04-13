@@ -4,7 +4,6 @@ namespace BoomCMS\Tests\Integration\Asset;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
-use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Auth;
 use Mockery as m;
