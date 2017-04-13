@@ -4,6 +4,7 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion as Version;
+use DateInterval;
 use DateTime;
 use Mockery as m;
 
@@ -129,7 +130,7 @@ class PageVersionTest extends AbstractModelTestCase
 
     public function testIsPublishedWithTimeParameter()
     {
-        $time = new DateTime('@'.time() - 1000);
+        $time = (new DateTime('now'))->sub(new DateInterval('PT1000S'));
 
         $published = new Version([Version::ATTR_EMBARGOED_UNTIL => $time->getTimestamp() - 10]);
         $this->assertTrue($published->isPublished($time));
@@ -170,7 +171,7 @@ class PageVersionTest extends AbstractModelTestCase
 
     public function testIsEmbargoedWithTimeParameterIfEmbargoInFuture()
     {
-        $time = new DateTime('@'.time() + 1000);
+        $time = (new DateTime('now'))->add(new DateInterval('PT1000S'));
         $version = new Version([Version::ATTR_EMBARGOED_UNTIL => $time->getTimestamp() + 10]);
 
         $this->assertTrue($version->isEmbargoed($time));

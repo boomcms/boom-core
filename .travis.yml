@@ -2,9 +2,10 @@ sudo: false
 language: php
 php: 
   - 7.0
+  - 7.1
 services:
   - mysql
-script: phpunit --coverage-clover build/logs/clover.xml
+script: ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 before_script:
   - printf "\n" | pecl install imagick
   - composer install --ignore-platform-reqs

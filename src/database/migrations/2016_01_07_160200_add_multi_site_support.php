@@ -22,7 +22,7 @@ class AddMultiSiteSupport extends Migration
         Schema::create('sites', function (Blueprint $table) {
             $table->increments(Site::ATTR_ID);
             $table->string(Site::ATTR_NAME, 100);
-            $table->string(Site::ATTR_HOSTNAME)->unique();
+            $table->string(Site::ATTR_HOSTNAME, 191)->unique();
             $table->string(Site::ATTR_ADMIN_EMAIL, 250);
             $table->text(Site::ATTR_ANALYTICS)->nullable();
             $table->boolean(Site::ATTR_DEFAULT)->default(false);
