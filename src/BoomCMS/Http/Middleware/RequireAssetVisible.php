@@ -14,15 +14,9 @@ class RequireAssetVisible
      */
     protected $guard;
 
-    /**
-     * @var Asset
-     */
-    protected $repository;
-
-    public function __construct(Asset $repository, Guard $guard)
+    public function __construct(Guard $guard)
     {
         $this->guard = $guard;
-        $this->repository = $repository;
     }
 
     /**
@@ -36,10 +30,6 @@ class RequireAssetVisible
     public function handle(Request $request, Closure $next)
     {
         $asset = $request->route()->parameter('asset');
-
-        if (!$this->repository->exists($asset)) {
-            abort(404);
-        }
 
         if (!$asset->isPublic() && !$this->guard->check()) {
             abort(401);

@@ -29,20 +29,10 @@ class AssetTest extends AbstractTestCase
         });
     }
 
-    public function test404IfAssetFileNotFound()
-    {
-        AssetFacade::shouldReceive('exists')->once()->andReturn(false);
-
-        $this->call('GET', $this->url);
-
-        $this->assertResponseStatus(404);
-    }
-
     public function test401IfAssetNotPublicAndUserIsGuest()
     {
         $this->asset->shouldReceive('isPublic')->andReturn(false);
 
-        AssetFacade::shouldReceive('exists')->once()->andReturn(true);
         Auth::shouldReceive('check')->andReturn(false);
 
         $this->call('GET', $this->url);
@@ -53,7 +43,5 @@ class AssetTest extends AbstractTestCase
     protected function assetIsAccessible()
     {
         $this->asset->shouldReceive('isPublic')->andReturn(true);
-
-        AssetFacade::shouldReceive('exists')->once()->andReturn(true);
     }
 }

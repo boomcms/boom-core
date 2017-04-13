@@ -4,10 +4,12 @@ namespace BoomCMS\Foundation\Exceptions;
 
 use BoomCMS\Support\Facades\Page;
 use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -50,5 +52,14 @@ class Handler extends ExceptionHandler
         }
 
         return parent::render($request, $e);
+    }
+
+    protected function prepareException(Exception $e)
+    {
+        if ($e instanceof FileNotFoundException) {
+            return new NotFoundHttpException($e->getMessage(), $e);
+        }
+
+        return $e;
     }
 }
