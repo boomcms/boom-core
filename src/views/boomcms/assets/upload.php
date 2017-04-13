@@ -1,7 +1,5 @@
-<?php $model = new BoomCMS\Database\Models\Asset() ?>
-
 <div class="b-assets-upload">
-    <?php if (is_writable($model->directory())): ?>
+    <?php /*if ():*/ ?>
         <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
             <div class="b-assets-upload-container">
                 <div class="b-assets-upload-info">
@@ -21,11 +19,11 @@
                 <?= $button('times', 'close-upload', ['class' => 'b-assets-upload-close b-button-withtext']) ?>
             </div>
         </form>
-    <?php else: ?>
+    <?php /*else: ?>
         <div class="b-assets-upload-error">
             <p>
-                <?= trans('boomcms::asset.upload.not-writable', ['dir' => $model->directory()]) ?>
+                <?= trans('boomcms::asset.upload.not-writable') ?>
             </p>
         </div>
-    <?php endif ?>
+    <?php endif */ ?>
 </div>

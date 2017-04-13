@@ -8,11 +8,10 @@ use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
-use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AssetController extends Controller
 {
@@ -33,14 +32,13 @@ class AssetController extends Controller
      *
      * @param Asset $asset
      *
-     * @return BinaryFileResponse
+     * @return Response
      */
-    public function download(Asset $asset): BinaryFileResponse
+    public function download(Asset $asset): Response
     {
-        return response()->download(
-            $asset->getFilename(),
-            $asset->getOriginalFilename()
-        );
+        return new Response(AssetFacade::file($asset), 200, [
+            'content-disposition' => 'download; filename="'.$asset->getOriginalFilename().'"',
+        ]);
     }
 
     /**
@@ -89,10 +87,7 @@ class AssetController extends Controller
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
-            $asset->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
-
-            AssetFacade::save($asset);
-            AssetFacade::createVersionFromFile($asset, $file);
+            AssetFacade::replaceWith($asset, $file);
 
             return $this->show($asset, $site);
         }
@@ -129,7 +124,7 @@ class AssetController extends Controller
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
-            $assetIds[] = AssetFacade::createFromFile($file);
+            $assetIds[] = AssetFacade::createFromFile($file)->getId();
         }
 
         return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;

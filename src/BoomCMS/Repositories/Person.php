@@ -9,6 +9,7 @@ use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
 use BoomCMS\Database\Models\Person as Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Person implements PersonRepositoryInterface, UserProvider
@@ -99,7 +100,20 @@ class Person implements PersonRepositoryInterface, UserProvider
         return $this->model
             ->join('group_person', 'people.id', '=', 'person_id')
             ->where('group_id', '=', $groupId)
-            ->orderBy('name', 'asc')
+            ->orderBy(Model::ATTR_NAME, 'asc')
+            ->get();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return Collection
+     */
+    public function getAssetUploaders(): Collection
+    {
+        return $this->model
+            ->has('assets')
+            ->orderBy(Model::ATTR_NAME, 'asc')
             ->get();
     }
 

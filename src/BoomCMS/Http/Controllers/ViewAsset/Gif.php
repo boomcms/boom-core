@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
+use BoomCMS\Support\Facades\Asset;
 use Illuminate\Http\Response;
 
 class Gif extends BaseController
@@ -25,7 +26,7 @@ class Gif extends BaseController
     {
         return $this->response
             ->header('content-type', $this->asset->getMimetype())
-            ->setContent(file_get_contents($this->asset->getFilename()));
+            ->setContent(Asset::file($this->asset));
     }
 
     public function thumb($width = null, $height = null)

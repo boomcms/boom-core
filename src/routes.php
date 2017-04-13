@@ -1,6 +1,7 @@
 <?php
 
 use BoomCMS\Http\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 
@@ -169,16 +170,6 @@ Route::group([
         Middleware\RequireAssetVisible::class,
     ],
 ], function () {
-    Route::get('version/{id}/{width?}/{height?}', [
-        'as'         => 'asset-version',
-        'middleware' => ['web', Middleware\RequireLogin::class],
-        'uses'       => function ($versionId, $width = null, $height = null) {
-            $asset = Asset::findByVersionId($versionId);
-
-            return App::make(AssetHelper::controller($asset), [$asset])->view($width, $height);
-        },
-    ]);
-
     Route::get('{asset}/download', [
         'as'         => 'asset-download',
         'middleware' => [
@@ -194,8 +185,8 @@ Route::group([
         'middleware' => [
             Middleware\CheckAssetETag::class,
         ],
-        'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetHelper::controller($asset), [$asset])->$action($width, $height);
+        'uses' => function (Request $request, $asset, $action = 'view', $width = null, $height = null) {
+            return App::make(AssetHelper::controller($asset), [$request, $asset])->$action($width, $height);
         },
     ])->where([
         'action'    => 'view|thumb|download|crop|embed',
@@ -207,8 +198,8 @@ Route::group([
         'middleware' => [
             Middleware\CheckAssetETag::class,
         ],
-        'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetHelper::controller($asset), [$asset])->$action($width, $height);
+        'uses' => function (Request $request, $asset, $action = 'view', $width = null, $height = null) {
+            return App::make(AssetHelper::controller($asset), [$request, $asset])->$action($width, $height);
         },
     ])->where([
         'action'    => 'view|thumb|crop',

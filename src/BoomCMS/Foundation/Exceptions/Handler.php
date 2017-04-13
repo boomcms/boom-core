@@ -4,10 +4,12 @@ namespace BoomCMS\Foundation\Exceptions;
 
 use BoomCMS\Support\Facades\Page;
 use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -24,20 +26,6 @@ class Handler extends ExceptionHandler
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
     ];
-
-    /**
-     * Report or log an exception.
-     *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param \Exception $e
-     *
-     * @return void
-     */
-    public function report(Exception $e)
-    {
-        return parent::report($e);
-    }
 
     /**
      * Render an exception into an HTTP response.
@@ -64,5 +52,14 @@ class Handler extends ExceptionHandler
         }
 
         return parent::render($request, $e);
+    }
+
+    protected function prepareException(Exception $e)
+    {
+        if ($e instanceof FileNotFoundException) {
+            return new NotFoundHttpException($e->getMessage(), $e);
+        }
+
+        return $e;
     }
 }

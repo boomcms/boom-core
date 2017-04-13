@@ -102,7 +102,7 @@ return [
         'info1'        => 'Drag and drop files here, or',
         'info2'        => 'select files',
         'info3'        => 'to start uploading.',
-        'not-writable' => 'Unable to upload assets. Please ensure the directory <code>:dir</code> is writable',
+        'not-writable' => 'Unable to upload assets. Please ensure you asset storage is writable',
     ],
     'loading'                => 'Loading thumbnail',
     'failed'                 => 'Unable to load thumbnail',

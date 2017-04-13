@@ -4,13 +4,14 @@ namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
+use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
-use BoomCMS\Database\Models\Person as PersonModel;
-use BoomCMS\FileInfo\Contracts\FileInfoDriver;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
+use Imagick;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Asset implements AssetRepositoryInterface
@@ -21,7 +22,7 @@ class Asset implements AssetRepositoryInterface
     protected $model;
 
     /**
-     * @var AssetVersion
+     * @var AssetVersionRepositoryInterface
      */
     protected $version;
 
@@ -29,10 +30,14 @@ class Asset implements AssetRepositoryInterface
      * @param AssetModel        $model
      * @param AsserVersionModel $version
      */
-    public function __construct(AssetModel $model, AssetVersionModel $version)
+    public function __construct(
+        AssetModel $model,
+        AssetVersionRepositoryInterface $version,
+        Filesystem $filesystem)
     {
         $this->model = $model;
         $this->version = $version;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -42,7 +47,7 @@ class Asset implements AssetRepositoryInterface
      *
      * @return int
      */
-    public function createFromFile(UploadedFile $file): int
+    public function createFromFile(UploadedFile $file): AssetInterface
     {
         $info = FileInfo::create($file);
 
@@ -54,45 +59,13 @@ class Asset implements AssetRepositoryInterface
             ->setDescription($info->getDescription())
             ->setCredits($info->getCopyright());
 
-        $assetId = static::save($asset)->getId();
+        $this->save($asset);
 
-        if ($thumbnail = $info->getThumbnail()) {
-            file_put_contents("$assetId.thumb", $thumbnail->getImageBlob());
-        }
+        $this->version->createFromFile($asset, $file, $info);
 
-        static::createVersionFromFile($asset, $file, $info);
+        $this->saveFile($asset, $file, $info->getThumbnail());
 
-        return $assetId;
-    }
-
-    /**
-     * @param AssetInterface $asset
-     * @param UploadedFile   $file
-     * @param FileInfoDriver $info
-     *
-     * @return AssetVersion
-     */
-    public function createVersionFromFile(AssetInterface $asset, UploadedFile $file, FileInfoDriver $info = null)
-    {
-        $info = $info ?: FileInfo::create($file);
-
-        $version = $this->version->create([
-            'aspect_ratio' => $info->getAspectRatio(),
-            'asset_id'     => $asset->getId(),
-            'extension'    => $file->guessExtension(),
-            'filesize'     => $file->getClientSize(),
-            'filename'     => $file->getClientOriginalName(),
-            'width'        => $info->getWidth(),
-            'height'       => $info->getHeight(),
-            'mimetype'     => $file->getMimeType(),
-            'metadata'     => $info->getMetadata(),
-        ]);
-
-        $file->move($asset->directory(), $version->id);
-
-        $asset->setVersion($version);
-
-        return $version;
+        return $asset;
     }
 
     /**
@@ -100,68 +73,91 @@ class Asset implements AssetRepositoryInterface
      *
      * @return $this
      */
-    public function delete(array $assetIds)
+    public function delete(array $assetIds): self
     {
         $this->model->destroy($assetIds);
 
         return $this;
     }
 
-    public function extensions()
+    /**
+     * {@inheritdoc}
+     *
+     * @param AssetInterface $asset
+     *
+     * @return bool
+     */
+    public function exists(AssetInterface $asset): bool
     {
-        return $this->version
-            ->select(AssetVersionModel::ATTR_EXTENSION)
-            ->where(AssetVersionModel::ATTR_EXTENSION, '!=', '')
-            ->orderBy(AssetVersionModel::ATTR_EXTENSION)
+        return $this->filesystem->exists($asset->getLatestVersionId());
+    }
+
+    /**
+     * Returns an array of extensions which are in use with the latest versions.
+     *
+     * @return Collection
+     */
+    public function extensions(): Collection
+    {
+        return $this->model
+            ->withLatestVersion()
+            ->select('version.'.AssetVersionModel::ATTR_EXTENSION.' as e')
+            ->having('e', '!=', '')
+            ->orderBy('e')
             ->distinct()
-            ->pluck(AssetVersionModel::ATTR_EXTENSION);
+            ->pluck('e');
+    }
+
+    public function file(AssetInterface $asset): string
+    {
+        return $this->filesystem->get($asset->getLatestVersionId());
     }
 
     /**
      * @param int $assetId
      *
-     * @return AssetModel
+     * @return AssetModel|null
      */
     public function find($assetId)
     {
         return $this->model->find($assetId);
     }
 
-    public function findByVersionId($versionId)
+    protected function getThumbnailFilename(AssetInterface $asset): string
     {
-        $version = $this->findVersion($versionId);
-        $asset = $version->getAsset();
-        $asset->setVersion($version);
-
-        return $asset;
+        return $asset->getLatestVersionId().'.thumb';
     }
 
-    public function findVersion($versionId)
+    public function replaceWith(AssetInterface $asset, UploadedFile $file)
     {
-        return $this->version->find($versionId);
+        $info = FileInfo::create($file);
+
+        $asset->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
+        $this->save($asset);
+
+        $this->version->createFromFile($asset, $file);
+
+        $this->saveFile($asset, $file, $info->getThumbnail());
     }
 
     public function revert(AssetInterface $asset, $versionId)
     {
         $version = $this->version->find($versionId);
 
-        if ($version && $version->getAssetId() == $asset->getId()) {
+        if ($version && $version->getAssetId() === $asset->getId()) {
             $attrs = $version->toArray();
             unset($attrs['id']);
 
             $version = $this->version->create($attrs);
 
-            copy(
-                $asset->directory().DIRECTORY_SEPARATOR.$versionId,
-                $asset->directory().DIRECTORY_SEPARATOR.$version->getId()
-            );
+            $this->filesystem->copy($versionId, $version->getId());
         }
 
         return $asset;
     }
 
     /**
-     * @param AssetModel $model
+     * @param AssetInterface $model
      *
      * @return AssetModel
      */
@@ -172,20 +168,17 @@ class Asset implements AssetRepositoryInterface
         return $model;
     }
 
-    /**
-     * Returns a Collection of People who have uploaded assets.
-     *
-     * @return Collection
-     */
-    public function uploaders(PersonModel $model = null)
+    public function saveFile(AssetInterface $asset, UploadedFile $file, Imagick $thumbnail = null)
     {
-        $model = $model ?: new PersonModel();
+        $this->filesystem->putFileAs(null, $file, $asset->getLatestVersionId());
 
-        return $model
-            ->select('people.*')
-            ->join('assets', 'assets.'.AssetModel::ATTR_CREATED_BY, '=', 'people.id')
-            ->groupBy('people.id')
-            ->orderBy(PersonModel::ATTR_NAME)
-            ->get();
+        if ($thumbnail) {
+            $this->filesystem->put($this->getThumbnailFilename($asset), $thumbnail->getImageBlob());
+        }
+    }
+
+    public function thumbnail(AssetInterface $asset): string
+    {
+        return $this->filesystem->get($this->getThumbnailFilename($asset));
     }
 }

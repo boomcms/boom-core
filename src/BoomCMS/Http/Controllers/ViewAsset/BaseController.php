@@ -4,7 +4,11 @@ namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
+use BoomCMS\Support\Facades\AssetVersion;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageCache;
 use Intervention\Image\ImageManager;
@@ -16,21 +20,21 @@ class BaseController extends Controller
      */
     protected $asset;
 
-    public function __construct(Asset $asset)
+    public function __construct(Request $request, Asset $asset)
     {
         $this->asset = $asset;
         $this->response = new Response();
+
+        if ($request->has('version') && Auth::check()) {
+            $asset->setVersion(AssetVersion::find($request->input('version')));
+        }
     }
 
     public function view($width = null, $height = null)
     {
-        return $this->response
-            ->header('content-type', $this->asset->getMimetype())
-            ->header('content-disposition', 'inline; filename="'.$this->asset->getOriginalFilename().'"')
-            ->header('content-transfer-encoding', 'binary')
-            ->header('content-length', $this->asset->getFilesize())
-            ->header('accept-ranges', 'bytes')
-            ->setContent(file_get_contents($this->asset->getFilename()));
+        return $this->response->file(AssetFacade::file($this->asset), [
+            'content-disposition' => 'inline; filename="'.$this->asset->getOriginalFilename().'"',
+        ]);
     }
 
     public function thumb($width = null, $height = null)

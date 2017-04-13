@@ -9,11 +9,6 @@ use DateTime;
 interface Asset
 {
     /**
-     * @return string
-     */
-    public function directory();
-
-    /**
      * @return float
      */
     public function getAspectRatio();
@@ -37,11 +32,6 @@ interface Asset
      * @return string
      */
     public function getExtension();
-
-    /**
-     * @return string
-     */
-    public function getFilename();
 
     /**
      * Returns the filesize in bytes.
