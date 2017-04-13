@@ -35,7 +35,7 @@ class RequireAssetVisible
      */
     public function handle(Request $request, Closure $next)
     {
-        $asset = $request->route()->getParameter('asset');
+        $asset = $request->route()->parameter('asset');
 
         if (!$this->filesystem->exists($asset->getFilename())) {
             abort(404);

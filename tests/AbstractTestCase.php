@@ -7,7 +7,7 @@ use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Person as PersonRepository;
 use BoomCMS\Routing\Router;
 use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Testing\TestCase;
+use Laravel\BrowserKitTesting\TestCase;
 use Mockery as m;
 
 abstract class AbstractTestCase extends TestCase
