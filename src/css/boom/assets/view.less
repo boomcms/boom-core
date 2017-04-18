@@ -198,3 +198,18 @@ html.boom .b-assets-view {
 		}
 	}
 }
+
+@media all and (min-height: 1024px) {
+    html.boom .b-assets-view {
+        .b-settings {
+            .b-settings-menu {
+                height: calc(~"100% - 17.5rem");
+            }
+
+            .b-settings-content {
+                height: calc(~"100% - 17rem");
+                min-height: 0;
+            }
+        }
+    }
+}

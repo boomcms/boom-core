@@ -45,6 +45,8 @@
     <?= view('boomcms::assets.selection') ?>
 </script>
 
+<script defer type="text/javascript" src="/vendor/boomcms/boom-core/js/asset-manager.js"></script>
+
 <script type="text/javascript">
     window.onload = function() {
         new BoomCMS.AssetManager();

@@ -4,6 +4,7 @@
     BoomCMS.AssetManager = Backbone.View.extend({
         el: 'body',
 
+        activeAsset: null,
         assets: new BoomCMS.Collections.Assets(),
         selection: new BoomCMS.Collections.Assets(),
 
@@ -11,6 +12,24 @@
 
         selectedClass: 'selected',
         hideThumbsClass: 'hide-thumbs',
+
+        /**
+         * When the assets in the collection change (e.g. the page or filters are changed)
+         *
+         * If an asset is being viewed which isn't in the collection
+         * Then view the first asset in the collection instead
+         *
+         * @returns {undefined}
+         */
+        assetsChanged: function() {
+            if (this.activeAsset !== null && this.assets.get(this.activeAsset) === undefined) {
+                var first = this.assets.at(0);
+
+                if (first) {
+                    first.trigger('view', first);
+                }
+            }
+        },
 
         assetsUploaded: function() {
             this.router.navigate('', {trigger: true});
@@ -38,12 +57,16 @@
                 .on('click', '#b-assets-selection-download', function() {
                     assetManager.viewSelection(assetManager.selection, 'download');
                 })
-                .on('click', '#b-assets-select-all', function() {
+                .on('click', '#b-assets-select-all', function(e) {
+                    e.preventDefault();
+
                     assetManager.selectAll();
 
                     $(this).blur();
                 })
-                .on('click', '#b-assets-select-none', function() {
+                .on('click', '#b-assets-select-none', function(e) {
+                    e.preventDefault();
+
                     assetManager.clearSelection();
 
                     $(this).blur();
@@ -135,10 +158,6 @@
                     assetManager.hideThumbs();
                 })
                 .on('home', function() {
-                    if (assetManager.assets.length <= 1) {
-                        assetManager.getAssets();
-                    }
-
                     assetManager.showThumbs();
                 });
 
@@ -148,7 +167,7 @@
         clearSelection: function() {
             this.selection.reset();
 
-            this.$('#b-assets-view-thumbs .selected').removeClass(this.selectedClass);
+            this.$('.b-assets-thumbnail').removeClass(this.selectedClass);
         },
 
         getAssets: function() {
@@ -179,7 +198,7 @@
         },
 
         getThumb: function(asset) {
-            return this.$el.find('.thumb[data-asset="' + asset.getId() + '"]');
+            return this.$el.find('.b-assets-thumbnail[data-asset="' + asset.getId() + '"]');
         },
 
         hideThumbs: function() {
@@ -193,8 +212,27 @@
             this.$content = this.$('#b-assets-content');
             this.uploader = this.$content.find('> .b-assets-upload .b-assets-upload-form').eq(0);
 
+            this.filmroll = new BoomCMS.AssetManager.Filmroll({
+                assets: this.assets
+            });
+
+            this.$content.append(this.filmroll.render().$el);
+
+            this.$el.assetSearch({
+                assets: this.assets
+            });
+
+            this.getAssets();
+
             this.listenTo(this.assets, 'select', this.select);
             this.listenTo(this.assets, 'view', this.viewAsset);
+            this.listenTo(this.assets, 'reset', this.assetsChanged);
+
+            this.listenTo(this.assets, 'change reset add remove', function() {
+                assetManager.$content.find('#b-assets-filmroll').remove();
+                assetManager.$content.append(assetManager.filmroll.render().$el);
+            });
+
             this.listenTo(this.assets, 'destroy', function() {
                 assetManager.getAssets();
                 assetManager.clearSelection();
@@ -202,15 +240,16 @@
 
             this.listenTo(this.selection, 'reset update', this.toggleButtons);
 
-            this.$el.assetSearch({assets: this.assets});
-
             this.bind();
             this.bindRoutes();
         },
 
         showThumbs: function() {
+            this.activeAsset = null;
+
             this.$content.removeClass(this.hideThumbsClass);
             this.uploader.hide();
+            this.filmroll.hide();
         },
 
         selectAll: function() {
@@ -246,7 +285,16 @@
             this.getAssets();
         },
 
+        view: function(view, section) {
+            view.render(section);
+            this.$content.find('.b-assets-view').parent().remove();
+            this.$content.prepend(view.$el);
+            this.hideThumbs();
+        },
+
         viewAsset: function(asset, section) {
+            this.activeAsset = asset;
+
             if (section === undefined) {
                 section = 'info';
             }
@@ -263,12 +311,14 @@
                     view.close();
                 });
 
-            view.render(section);
-            this.$content.prepend(view.$el);
-            this.hideThumbs();
+            this.filmroll.select(asset).show();
+
+            this.view(view, section);
         },
 
         viewSelection: function(selection, section) {
+            this.activeAsset = null;
+
             var view = new BoomCMS.AssetManager.ViewSelection({
                 selection: selection,
                 assets: this.assets,
@@ -281,9 +331,7 @@
                     view.close();
                 });
 
-            view.render(section);
-            this.$content.prepend(view.$el);
-            this.hideThumbs();
+            this.view(view, section);
         }
     });
 }(Backbone, BoomCMS));
