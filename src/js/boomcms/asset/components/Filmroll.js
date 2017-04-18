@@ -54,11 +54,12 @@
             setTimeout(function() {
                 var $el = filmroll.$el.find('[data-asset="' + asset.getId() + '"]').parents('.film_roll_child');
 
-                filmroll.$el.find('.film_roll_child').removeClass('selected');
+                filmroll.$el.find('.selected').removeClass('selected');
 
                 if ($el.length) {
                     $el.addClass('selected');
                     filmroll.filmroll.moveToChild($el[0]);
+                    filmroll.$el.find('.film_roll_pager .active').addClass('selected');
                 } 
             }, 0);
 
