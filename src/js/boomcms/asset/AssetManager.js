@@ -226,12 +226,13 @@
 
             this.listenTo(this.assets, 'select', this.select);
             this.listenTo(this.assets, 'view', this.viewAsset);
-            this.listenTo(this.assets, 'reset', this.assetsChanged);
 
             this.listenTo(this.assets, 'change reset add remove', function() {
                 assetManager.$content.find('#b-assets-filmroll').remove();
                 assetManager.$content.append(assetManager.filmroll.render().$el);
             });
+
+            this.listenTo(this.assets, 'reset', this.assetsChanged);
 
             this.listenTo(this.assets, 'destroy', function() {
                 assetManager.getAssets();
@@ -299,11 +300,12 @@
                 section = 'info';
             }
 
-            var view = new BoomCMS.AssetManager.ViewAsset({
-                model: asset,
-                assets: this.assets,
-                router: this.router
-            });
+            var filmroll = this.filmroll,
+                view = new BoomCMS.AssetManager.ViewAsset({
+                    model: asset,
+                    assets: this.assets,
+                    router: this.router
+                });
 
             this.router
                 .navigate('asset/' + asset.getId() + '/' + section)
@@ -311,7 +313,9 @@
                     view.close();
                 });
 
-            this.filmroll.select(asset).show();
+            setTimeout(function() {
+                filmroll.select(asset).show();
+            }, 0);
 
             this.view(view, section);
         },

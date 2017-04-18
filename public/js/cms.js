@@ -48298,12 +48298,13 @@ console.log(offset, this.$counter.width());
 
             this.listenTo(this.assets, 'select', this.select);
             this.listenTo(this.assets, 'view', this.viewAsset);
-            this.listenTo(this.assets, 'reset', this.assetsChanged);
 
             this.listenTo(this.assets, 'change reset add remove', function() {
                 assetManager.$content.find('#b-assets-filmroll').remove();
                 assetManager.$content.append(assetManager.filmroll.render().$el);
             });
+
+            this.listenTo(this.assets, 'reset', this.assetsChanged);
 
             this.listenTo(this.assets, 'destroy', function() {
                 assetManager.getAssets();
@@ -48371,11 +48372,12 @@ console.log(offset, this.$counter.width());
                 section = 'info';
             }
 
-            var view = new BoomCMS.AssetManager.ViewAsset({
-                model: asset,
-                assets: this.assets,
-                router: this.router
-            });
+            var filmroll = this.filmroll,
+                view = new BoomCMS.AssetManager.ViewAsset({
+                    model: asset,
+                    assets: this.assets,
+                    router: this.router
+                });
 
             this.router
                 .navigate('asset/' + asset.getId() + '/' + section)
@@ -48383,7 +48385,9 @@ console.log(offset, this.$counter.width());
                     view.close();
                 });
 
-            this.filmroll.select(asset).show();
+            setTimeout(function() {
+                filmroll.select(asset).show();
+            }, 0);
 
             this.view(view, section);
         },
@@ -48626,17 +48630,15 @@ console.log(offset, this.$counter.width());
         select: function(asset) {
             var filmroll = this;
 
-            setTimeout(function() {
-                var $el = filmroll.$el.find('[data-asset="' + asset.getId() + '"]').parents('.film_roll_child');
+                var $el = this.$el.find('[data-asset="' + asset.getId() + '"]').parents('.film_roll_child');
 
-                filmroll.$el.find('.selected').removeClass('selected');
+                this.$el.find('.selected').removeClass('selected');
 
                 if ($el.length) {
                     $el.addClass('selected');
-                    filmroll.filmroll.moveToChild($el[0]);
-                    filmroll.$el.find('.film_roll_pager .active').addClass('selected');
+                    this.filmroll.moveToChild($el[0]);
+                    this.$el.find('.film_roll_pager .active').addClass('selected');
                 } 
-            }, 0);
 
             return this;
         },
