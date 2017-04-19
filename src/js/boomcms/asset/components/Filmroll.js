@@ -36,7 +36,8 @@
                 filmroll.filmroll = new FilmRoll({
                     container: filmroll.$el,
                     scroll: false,
-                    configure_load: true
+                    configure_load: true,
+                    resize: false
                 });
 
                 for (var i = 0; i < thumbnails.length; i++) {
