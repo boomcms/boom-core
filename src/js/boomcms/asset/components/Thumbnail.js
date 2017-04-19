@@ -11,8 +11,7 @@
 
             this.template = _.template($('#b-asset-thumb').html());
 
-            this.listenTo(model, 'change', this.render);
-            this.listenTo(model, 'change:image', function() {
+            this.listenTo(model, 'change change:image', function() {
                 view.render();
                 view.loadImage();
             });
