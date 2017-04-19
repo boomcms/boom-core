@@ -100,4 +100,21 @@ class AssetTest extends AbstractTestCase
 
         $this->assertEquals($asset, $this->repository->find(1));
     }
+
+    public function testStream()
+    {
+        $versionId = 1;
+
+        $this->model
+            ->shouldReceive('getLatestVersionId')
+            ->once()
+            ->andReturn($versionId);
+
+        $this->filesystem
+            ->shouldReceive('readStream')
+            ->once()
+            ->with($versionId);
+
+        $this->repository->stream($this->model);
+    }
 }

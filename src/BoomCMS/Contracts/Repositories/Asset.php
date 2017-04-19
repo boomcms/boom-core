@@ -54,4 +54,11 @@ interface Asset
      * @param AssetObject $asset
      */
     public function save(AssetObject $asset);
+
+    /**
+     * Returns a read stream for the given asset.
+     *
+     * @param AssetObject $asset
+     */
+    public function stream(AssetInterface $asset);
 }

@@ -177,6 +177,16 @@ class Asset implements AssetRepositoryInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @param AssetInterface $asset
+     */
+    public function stream(AssetInterface $asset)
+    {
+        return $this->filesystem->readStream($asset->getLatestVersionId());
+    }
+
     public function thumbnail(AssetInterface $asset): string
     {
         return $this->filesystem->get($this->getThumbnailFilename($asset));
