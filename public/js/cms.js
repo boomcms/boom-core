@@ -48304,9 +48304,6 @@ console.log(offset, this.$counter.width());
         initialize: function() {
             var assetManager = this;
 
-            this.router = new BoomCMS.AssetManager.Router({assets: this.assets});            
-            this.bindRoutes();
-
             this.$content = this.$('#b-assets-content');
             this.uploader = this.$content.find('> .b-assets-upload .b-assets-upload-form').eq(0);
 
@@ -48319,6 +48316,9 @@ console.log(offset, this.$counter.width());
             this.$el.assetSearch({
                 assets: this.assets
             });
+
+            this.router = new BoomCMS.AssetManager.Router({assets: this.assets}); 
+            this.bindRoutes();
 
             this.getAssets();
 
