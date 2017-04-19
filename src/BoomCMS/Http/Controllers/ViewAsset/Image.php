@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
-use BoomCMS\Database\Models\Asset;
+use BoomCMS\Contracts\Models\Asset;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Http\Request;
 use Intervention\Image\Constraint;

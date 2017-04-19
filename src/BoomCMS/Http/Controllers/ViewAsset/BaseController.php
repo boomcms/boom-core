@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
-use BoomCMS\Database\Models\Asset;
+use BoomCMS\Contracts\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\AssetVersion;
