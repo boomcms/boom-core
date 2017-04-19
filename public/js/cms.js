@@ -48628,17 +48628,15 @@ console.log(offset, this.$counter.width());
         },
 
         select: function(asset) {
-            var filmroll = this;
+            var $el = this.$el.find('[data-asset="' + asset.getId() + '"]').parents('.film_roll_child');
 
-                var $el = this.$el.find('[data-asset="' + asset.getId() + '"]').parents('.film_roll_child');
+            this.$el.find('.selected').removeClass('selected');
 
-                this.$el.find('.selected').removeClass('selected');
-
-                if ($el.length) {
-                    $el.addClass('selected');
-                    this.filmroll.moveToChild($el[0]);
-                    this.$el.find('.film_roll_pager .active').addClass('selected');
-                } 
+            if ($el.length) {
+                $el.addClass('selected');
+                this.filmroll.moveToChild($el[0]);
+                this.$el.find('.film_roll_pager .active').addClass('selected');
+            } 
 
             return this;
         },
