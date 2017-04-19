@@ -31,7 +31,7 @@ class RoutePage
      */
     public function handle(Request $request, Closure $next)
     {
-        $response = $this->router->routePage($request->route()->getParameter('location'));
+        $response = $this->router->routePage($request->route()->parameter('location'));
 
         if ($response) {
             return $response;
