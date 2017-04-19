@@ -1,4 +1,4 @@
-<div id="b-assets-picker">
+<div id="b-assets-picker" class="<?= Gate::allows('manageAssets', Router::getActiveSite()) ? 'show-edit' : '' ?>">
     <?= view('boomcms::assets.thumbs', ['assets' => []]) ?>
 
     <section id="b-assets-picker-sidebar">

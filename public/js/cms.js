@@ -49179,9 +49179,14 @@ console.log(offset, this.$counter.width());
         this.bind = function() {
             var assetPicker = this;
 
-            this.assets.on('select', function(asset) {
-                assetPicker.pick(asset);
-            });
+            this.assets
+                .on('select', function(asset) {
+                    assetPicker.pick(asset);
+                })
+                .on('view', function(asset) {
+                    window.open('/boomcms/asset-manager#asset/' + asset.getId() + '/info');
+                });
+
 
             this.picker
                 .on('click', '#b-assets-picker-close', function() {
