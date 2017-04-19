@@ -125,8 +125,7 @@ function Row() {
 
                     $el
                         .height('+=' + increaseBy)
-                        .width('+=' + incWidth)
-                        .trigger('justified');
+                        .width('+=' + incWidth);
                 });
             }
 
@@ -143,6 +142,10 @@ function Row() {
                 }
             }
         }
+
+        $.each(this.elements, function(index, $el) {
+            $el.trigger('justified');
+        });
     };
 
     Row.prototype.shrinkBy = function(size) {
