@@ -48325,7 +48325,7 @@ console.log(offset, this.$counter.width());
             this.listenTo(this.assets, 'select', this.select);
             this.listenTo(this.assets, 'view', this.viewAsset);
 
-            this.listenTo(this.assets, 'change reset add remove', function() {
+            this.listenTo(this.assets, 'reset add remove', function() {
                 assetManager.$content.find('#b-assets-filmroll').remove();
                 assetManager.$content.append(assetManager.filmroll.render().$el);
             });
@@ -48734,6 +48734,10 @@ console.log(offset, this.$counter.width());
             this.template = _.template($('#b-asset-thumb').html());
 
             this.listenTo(model, 'change', this.render);
+            this.listenTo(model, 'change:image', function() {
+                view.render();
+                view.loadImage();
+            });
 
             $el
                 .data('model', model)

@@ -229,7 +229,7 @@
             this.listenTo(this.assets, 'select', this.select);
             this.listenTo(this.assets, 'view', this.viewAsset);
 
-            this.listenTo(this.assets, 'change reset add remove', function() {
+            this.listenTo(this.assets, 'reset add remove', function() {
                 assetManager.$content.find('#b-assets-filmroll').remove();
                 assetManager.$content.append(assetManager.filmroll.render().$el);
             });

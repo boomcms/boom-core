@@ -12,6 +12,10 @@
             this.template = _.template($('#b-asset-thumb').html());
 
             this.listenTo(model, 'change', this.render);
+            this.listenTo(model, 'change:image', function() {
+                view.render();
+                view.loadImage();
+            });
 
             $el
                 .data('model', model)
