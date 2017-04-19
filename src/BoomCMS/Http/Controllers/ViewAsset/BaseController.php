@@ -46,16 +46,15 @@ class BaseController extends Controller
         }
 
         $thumbnail = $this->asset->getThumbnail();
-        $filename = $thumbnail->getFilename();
         $im = new ImageManager();
 
         if ($width || $height) {
-            $image = $im->cache(function (ImageCache $cache) use ($width, $height, $filename) {
+            $image = $im->cache(function (ImageCache $cache) use ($width, $height, $thumbnail) {
                 $width = empty($width) ? null : $width;
                 $height = empty($height) ? null : $height;
 
                 return $cache
-                    ->make($filename)
+                    ->make(AssetFacade::file($thumbnail))
                     ->resize($width, $height, function (Constraint $constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
@@ -63,7 +62,7 @@ class BaseController extends Controller
                     ->encode('image/png');
             });
         } else {
-            $image = $im->make($filename)->encode();
+            $image = $im->make(AssetFacade::file($thumbnail))->encode();
         }
 
         return $this->response
