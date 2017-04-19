@@ -27,6 +27,20 @@ class AssetVersionTest extends AbstractTestCase
         $this->repository = new AssetVersionRepository($this->model);
     }
 
+    public function testCreate()
+    {
+        $attrs = [];
+        $version = new AssetVersion();
+
+        $this->model
+            ->shouldReceive('create')
+            ->once()
+            ->with($attrs)
+            ->andReturn($version);
+
+        $this->assertEquals($version, $this->repository->create($attrs));
+    }
+
     public function testFind()
     {
         $version = m::mock(AssetVersion::class);

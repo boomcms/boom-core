@@ -12,6 +12,15 @@ interface AssetVersion
     public function __construct(AssetVersionModel $model);
 
     /**
+     * Create a version with the given attributes
+     *
+     * @param array $attrs
+     *
+     * @return AssetVersionModel
+     */
+    public function create(array $attrs): AssetVersionModel;
+
+    /**
      * Create an asset version from an uploaded file.
      *
      * @param AssetInterface $asset

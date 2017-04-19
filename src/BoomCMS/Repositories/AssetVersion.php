@@ -33,6 +33,18 @@ class AssetVersion implements AssetVersionRepositoryInterface
     /**
      * {@inheritdoc}
      *
+     * @param array $attrs
+     *
+     * @return AssetVersionModel
+     */
+    public function create(array $attrs): AssetVersionModel
+    {
+        return $this->model->create($attrs);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @param AssetInterface $asset
      * @param UploadedFile   $file
      * @param FileInfoDriver $info
@@ -46,7 +58,7 @@ class AssetVersion implements AssetVersionRepositoryInterface
     ): AssetVersionModel {
         $info = $info ?: FileInfo::create($file);
 
-        $version = $this->model->create([
+        $version = $this->create([
             AssetVersionModel::ATTR_ASPECT_RATIO => $info->getAspectRatio(),
             AssetVersionModel::ATTR_WIDTH        => $info->getWidth(),
             AssetVersionModel::ATTR_HEIGHT       => $info->getHeight(),
