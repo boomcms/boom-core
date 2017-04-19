@@ -48569,26 +48569,25 @@ console.log(offset, this.$counter.width());
         },
 
         showTags: function() {
-            if (this.tagsDisplayed === false) {
-                var view = this,
-                    allTags = new BoomCMS.Collections.Assets([]).getTags();
+            var view = this;
 
-                allTags.done(function(tags) {
-                    view.displayTags(tags);
-                });
+            if (this.allTags === undefined) {
+                this.allTags = new BoomCMS.Collections.Assets([]).getTags();
+            }    
 
-                $.when(allTags, this.selection.getTags()).done(function(response1, response2) {
-                    if (typeof response2[0] !== 'undefined') {
-                        var tags = response2[0];
+            this.allTags.done(function(tags) {
+                view.displayTags(tags);
+            });
 
-                        for (var i = 0; i < tags.length; i++) {
-                            view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
-                        }
+            $.when(this.allTags, this.selection.getTags()).done(function(response1, response2) {
+                if (typeof response2[0] !== 'undefined') {
+                    var tags = response2[0];
+
+                    for (var i = 0; i < tags.length; i++) {
+                        view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
                     }
-                });
-
-                this.tagsDisplayed = true;
-            }
+                }
+            });
         },
 
         toggleTag: function($a) {
