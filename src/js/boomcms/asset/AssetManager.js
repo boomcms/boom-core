@@ -215,7 +215,7 @@
                 assets: this.assets
             });
 
-            this.$content.append(this.filmroll.render().$el);
+            this.$content.append(this.filmroll.$el);
 
             this.$el.assetSearch({
                 assets: this.assets
@@ -229,9 +229,10 @@
             this.listenTo(this.assets, 'select', this.select);
             this.listenTo(this.assets, 'view', this.viewAsset);
 
-            this.listenTo(this.assets, 'reset add remove', function() {
+            this.listenTo(this.assets, 'reset', function() {
                 assetManager.$content.find('#b-assets-filmroll').remove();
                 assetManager.$content.append(assetManager.filmroll.render().$el);
+                assetManager.filmroll.initFilmroll();
             });
 
             this.listenTo(this.assets, 'reset', this.assetsChanged);

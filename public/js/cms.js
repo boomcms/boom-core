@@ -48311,7 +48311,7 @@ console.log(offset, this.$counter.width());
                 assets: this.assets
             });
 
-            this.$content.append(this.filmroll.render().$el);
+            this.$content.append(this.filmroll.$el);
 
             this.$el.assetSearch({
                 assets: this.assets
@@ -48325,9 +48325,10 @@ console.log(offset, this.$counter.width());
             this.listenTo(this.assets, 'select', this.select);
             this.listenTo(this.assets, 'view', this.viewAsset);
 
-            this.listenTo(this.assets, 'reset add remove', function() {
+            this.listenTo(this.assets, 'reset', function() {
                 assetManager.$content.find('#b-assets-filmroll').remove();
                 assetManager.$content.append(assetManager.filmroll.render().$el);
+                assetManager.filmroll.initFilmroll();
             });
 
             this.listenTo(this.assets, 'reset', this.assetsChanged);
@@ -48612,14 +48613,37 @@ console.log(offset, this.$counter.width());
         },
 
         initialize: function(options) {
-            this.$el = $('<div id="b-assets-filmroll"></div>');
             this.assets = options.assets;
+            this.$el = $('<div id="b-assets-filmroll"></div>');
+        },
+
+        /**
+         * Init the filmroll plugin
+         *
+         * These needs to be called after render() and after the element has been inserted into the DOM
+         *
+         * Otherwise Filmroll calculates its width as 0
+         *
+         * @returns {undefined}
+         */
+        initFilmroll: function() {
+            this.filmroll = new FilmRoll({
+                container: this.$el,
+                scroll: false,
+                configure_load: true,
+                resize: false
+            });
+
+            for (var i = 0; i < this.thumbnails.length; i++) {
+                this.thumbnails[i].$el.css('width', '100%');
+                this.thumbnails[i].loadImage();
+            }
         },
 
         render: function() {
-            var filmroll = this,
-                thumbnails = [];
-     
+            var filmroll = this;
+            this.thumbnails = [];
+
             this.$el.html('');
 
             this.assets.each(function(asset) {
@@ -48632,28 +48656,14 @@ console.log(offset, this.$counter.width());
 
                 filmroll.$el.append($('<div></div>').append(thumbnail.$el));
 
-                thumbnails.push(thumbnail);
+                filmroll.thumbnails.push(thumbnail);
             });
-
-            setTimeout(function() {
-                filmroll.filmroll = new FilmRoll({
-                    container: filmroll.$el,
-                    scroll: false,
-                    configure_load: true,
-                    resize: false
-                });
-
-                for (var i = 0; i < thumbnails.length; i++) {
-                    thumbnails[i].$el.css('width', '100%');
-                    thumbnails[i].loadImage();
-                }
-            }, 0);
 
             return this;
         },
 
         select: function(asset) {
-            var $el = this.$el.find('[data-asset="' + asset.getId() + '"]').parents('.film_roll_child');
+            var $el = this.$el.find('[data-asset="' + asset.getId() + '"]').parent().parent();
 
             this.$el.find('.selected').removeClass('selected');
 
