@@ -9,9 +9,15 @@ use BoomCMS\Repositories\AssetVersion as AssetVersionRepository;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Mockery as m;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AssetTest extends AbstractTestCase
 {
+    /**
+     * @var Asset
+     */
+    protected $asset;
+
     /**
      * @var Filesystem
      */
@@ -44,9 +50,39 @@ class AssetTest extends AbstractTestCase
         $this->filesystem = m::mock(Filesystem::class);
         $this->version = new AssetVersion();
         $this->model = m::mock(Asset::class);
+        $this->asset = m::mock(Asset::class);
         $this->versionRepository = new AssetVersionRepository($this->version);
 
+        $this->asset
+            ->shouldReceive('getLatestVersionId')
+            ->andReturn(1);
+
         $this->repository = new AssetRepository($this->model, $this->versionRepository, $this->filesystem);
+    }
+
+    public function testDelete()
+    {
+        $assetIds = [1, 2, 3];
+
+        $this->model
+            ->shouldReceive('destroy')
+            ->once()
+            ->with($assetIds);
+
+        $this->repository->delete($assetIds);
+    }
+
+    public function testExists()
+    {
+        foreach ([true, false] as $value) {
+            $this->filesystem
+                ->shouldReceive('exists')
+                ->once()
+                ->with($this->asset->getLatestVersionId())
+                ->andReturn($value);
+
+            $this->repository->exists($this->asset);
+        }
     }
 
     public function testExtensions()
@@ -90,31 +126,58 @@ class AssetTest extends AbstractTestCase
         $this->assertEquals($extensions, $this->repository->extensions());
     }
 
+    public function testFile()
+    {
+        $file = 'test file contents';
+
+        $this->filesystem
+            ->shouldReceive('get')
+            ->once()
+            ->with($this->asset->getLatestVersionId())
+            ->andReturn($file);
+
+        $this->assertEquals($file, $this->repository->file($this->asset));
+    }
+
     public function testFindReturnsAssetById()
     {
-        $asset = new Asset();
-
-        $this->model->shouldReceive('find')
+        $this->model
+            ->shouldReceive('find')
             ->with(1)
-            ->andReturn($asset);
+            ->andReturn($this->asset);
 
-        $this->assertEquals($asset, $this->repository->find(1));
+        $this->assertEquals($this->asset, $this->repository->find(1));
+    }
+
+    public function testFindReturnsNull()
+    {
+        $this->model
+            ->shouldReceive('find')
+            ->with(1)
+            ->andReturn(null);
+
+        $this->assertNull($this->repository->find(1));
+    }
+
+    public function testSaveFileUsesVersionIdAsFileName()
+    {
+        $file = m::mock(UploadedFile::class);
+
+        $this->filesystem
+            ->shouldReceive('putFileAs')
+            ->once()
+            ->with(null, $file, $this->asset->getLatestVersionId());
+
+        $this->repository->saveFile($this->asset, $file);
     }
 
     public function testStream()
     {
-        $versionId = 1;
-
-        $this->model
-            ->shouldReceive('getLatestVersionId')
-            ->once()
-            ->andReturn($versionId);
-
         $this->filesystem
             ->shouldReceive('readStream')
             ->once()
-            ->with($versionId);
+            ->with($this->asset->getLatestVersionId());
 
-        $this->repository->stream($this->model);
+        $this->repository->stream($this->asset);
     }
 }
