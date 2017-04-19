@@ -227,7 +227,7 @@
                 title: $el.attr('data-title'),
                 asset_id: $el.attr('data-asset'),
                 text: $el.attr('data-text')
-            }
+            };
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.open = function() {
