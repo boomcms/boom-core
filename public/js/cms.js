@@ -49187,7 +49187,6 @@ console.log(offset, this.$counter.width());
                     window.open('/boomcms/asset-manager#asset/' + asset.getId() + '/info');
                 });
 
-
             this.picker
                 .on('click', '#b-assets-picker-close', function() {
                     assetPicker.cancel();
