@@ -62,7 +62,9 @@ class Provider
         $modelName = $this->getModelName($type);
         $model = $modelName::create($attrs);
 
-        $this->saveToCache($type, $attrs['slotname'], $version, $model);
+        $model->created(function() use ($type, $attrs, $version, $model) {
+            $this->saveToCache($type, $attrs['slotname'], $version, $model);
+        });
 
         $className = $this->getClassName($type);
         $attrs['id'] = $model->id;
