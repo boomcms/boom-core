@@ -29,7 +29,7 @@ class LogAssetDownload
      */
     public function handle(Request $request, Closure $next)
     {
-        $asset = $request->route()->getParameter('asset');
+        $asset = $request->route()->parameter('asset');
 
         if ($asset && !$this->auth->check()) {
             $ip = ip2long($request->ip());
