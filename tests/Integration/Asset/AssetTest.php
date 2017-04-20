@@ -4,6 +4,7 @@ namespace BoomCMS\Tests\Integration\Asset;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Auth;
 use Mockery as m;
@@ -42,5 +43,7 @@ class AssetTest extends AbstractTestCase
     protected function assetIsAccessible()
     {
         $this->asset->shouldReceive('isPublic')->andReturn(true);
+
+        AssetFacade::shouldReceive('exists')->once()->with($this->asset)->andReturn(true);
     }
 }
