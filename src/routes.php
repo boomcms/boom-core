@@ -2,7 +2,6 @@
 
 use BoomCMS\Contracts\Models\Asset as AssetContract;
 use BoomCMS\Http\Middleware;
-use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
@@ -166,7 +165,6 @@ Route::group([
     'prefix'     => 'asset',
     'middleware' => [
         'web',
-        SubstituteBindings::class,
         Middleware\RequireAssetVisible::class,
     ],
 ], function () {
