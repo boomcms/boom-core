@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use BoomCMS\Repositories\Asset;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
