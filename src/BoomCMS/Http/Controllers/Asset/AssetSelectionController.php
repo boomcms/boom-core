@@ -28,10 +28,9 @@ class AssetSelectionController extends Controller
         $assets = AssetFacade::find($this->request->input('assets'));
 
         if (count($assets) === 1) {
-            return Response::download(
-                $assets[0]->getFilename(),
-                $assets[0]->getOriginalFilename()
-            );
+            return new Response(AssetFacade::file($assets[0]), 200, [
+                'content-disposition' => 'download; filename="'.$assets[0]->getOriginalFilename().'"',
+            ]);
         }
 
         $downloadFilename = rtrim($this->request->input('filename'), '.zip').'.zip';
@@ -40,7 +39,7 @@ class AssetSelectionController extends Controller
         $zip->open($filename, ZipArchive::CREATE);
 
         foreach ($assets as $asset) {
-            $zip->addFile($asset->getFilename(), $asset->getOriginalFilename());
+            $zip->addFromString($asset->getOriginalFilename(), AssetFacade::file($asset));
         }
 
         $zip->close();

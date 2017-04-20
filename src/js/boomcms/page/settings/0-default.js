@@ -1,28 +1,28 @@
 $.widget('boom.pageSettingsDefault', {
-	bind: function() {
-		var settingsEditor = this,
-			section = settingsEditor.options.section;
+    bind: function() {
+        var settingsEditor = this,
+            section = settingsEditor.options.section;
 
-		this.element
-			.on('click', '.b-button-cancel', function(e) {
-				e.preventDefault();
+        this.element
+            .on('click', '.b-button-cancel', function(e) {
+                e.preventDefault();
 
-				settingsEditor.options.settings.show(section);
-			})
-			.on('click', '.b-button-save', function(e) {
-				e.preventDefault();
+                settingsEditor.options.settings.show(section);
+            })
+            .on('click', '.b-button-save', function(e) {
+                e.preventDefault();
 
-				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
-					.done(function() {
-						new boomNotification('Page settings saved').show();
-					});
-			});
-	},
+                settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
+                    .done(function() {
+                        BoomCMS.Notification('Page settings saved');
+                    });
+            });
+    },
 
-	_create: function() {
-		this.page = this.options.page;
-		this.bind();
+    _create: function() {
+        this.page = this.options.page;
+        this.bind();
 
-		this.element.find('time').localTime();
-	}
+        this.element.find('time').localTime();
+    }
 });

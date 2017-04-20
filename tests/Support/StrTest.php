@@ -33,6 +33,7 @@ class StrTest extends AbstractTestCase
             'localhost/test'                                              => 'localhost/test',
             "<a href='https://www.localhost.com/test'></a>"               => "<a href='https://www.localhost.com/test'></a>",
             "<a href='https://localhost/test?query=test#test'>test</a>"   => "<a href='/test?query=test#test'>test</a>",
+            "<img src='https://localhost/test'>"                          => "<img src='/test'>",
         ];
 
         foreach ($replacements as $original => $after) {

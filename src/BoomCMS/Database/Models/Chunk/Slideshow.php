@@ -40,12 +40,20 @@ class Slideshow extends BaseChunk
     public function setSlidesAttribute($slides)
     {
         foreach ($slides as &$slide) {
-            $slide['url'] = (isset($slide['page']) && $slide['page'] > 0) ?
-                $slide['page']
-                : isset($slide['url']) ? $slide['url'] : null;
+            if (!$slide instanceof Slideshow\Slide) {
+                $slide['url'] = (isset($slide['page']) && $slide['page'] > 0) ?
+                    $slide['page']
+                    : isset($slide['url']) ? $slide['url'] : null;
 
-            unset($slide['page']);
-            $slide = new Slideshow\Slide($slide);
+                unset($slide['page']);
+
+                if (isset($slide['asset']) && is_array($slide['asset'])) {
+                    $slide['asset_id'] = $slide['asset']['id'];
+                    unset($slide['asset']);
+                }
+
+                $slide = new Slideshow\Slide($slide);
+            }
         }
 
         $this->attributes['slides'] = $slides;

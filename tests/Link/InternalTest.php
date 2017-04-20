@@ -2,8 +2,10 @@
 
 namespace BoomCMS\Tests\Link;
 
+use BoomCMS\Chunk\Text as TextChunk;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Link\Internal as Link;
+use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
@@ -52,19 +54,6 @@ class InternalTest extends AbstractTestCase
         return $page;
     }
 
-    public function testGetTitleReturnsPageTitle()
-    {
-        $page = $this->getMock(Page::class, ['getTitle']);
-        $page->expects($this->any())
-            ->method('getTitle')
-            ->will($this->returnValue('test'));
-
-        PageFacade::shouldReceive('findByUri')->with('test')->andReturn($page);
-        $link = new Link('test');
-
-        $this->assertEquals('test', $link->getTitle());
-    }
-
     public function testOriginalLinkIsReturnedIfPageNotFound()
     {
         $pageId = 1;
@@ -76,15 +65,174 @@ class InternalTest extends AbstractTestCase
         $this->assertEquals($pageId, $link->url());
     }
 
-    /**
-     * @depends testUrlReturnsCorrectUrl
-     */
-    public function testGetHostnameReturnsTheHostnameOfTheCurrentSite($page)
+    public function testGetHostnameReturnsTheHostnameOfTheCurrentSite()
     {
-        PageFacade::shouldReceive('findByUri')->with('test')->andReturn($page);
+        $page = m::mock(Page::class.'[url]');
+        $page
+            ->shouldReceive('url')
+            ->andReturn("http://{$this->baseUrl}/test");
+
+        PageFacade::shouldReceive('findByUri')->once()->with('test')->andReturn($page);
 
         $link = new Link('/test');
 
         $this->assertEquals($this->baseUrl, $link->getHostname());
+    }
+
+    public function testGetFeatureImageIdReturnsAssetIdAttribute()
+    {
+        $assetId = 1;
+        $link = new Link(new Page(), ['asset_id' => $assetId]);
+
+        $this->assertEquals($assetId, $link->getFeatureImageId());
+    }
+
+    public function testGetFeatureImageIdReturnsPageFeatureImageId()
+    {
+        $attrs = [
+            ['asset_id' => null],
+            ['asset_id' => ''],
+            ['asset_id' => 0],
+            [],
+        ];
+
+        foreach ($attrs as $a) {
+            $assetId = 1;
+            $page = new Page([Page::ATTR_FEATURE_IMAGE => $assetId]);
+            $link = new Link($page, $a);
+
+            $this->assertEquals($assetId, $link->getFeatureImageId());
+        }
+    }
+
+    public function testGetPageWithInjectedPage()
+    {
+        $page = new Page();
+        $link = new Link($page);
+
+        $this->assertEquals($page, $link->getPage());
+    }
+
+    public function testGetPageWithFromPageId()
+    {
+        $page = new Page();
+        $pageId = 1;
+
+        PageFacade::shouldReceive('find')->once()->with($pageId)->andReturn($page);
+
+        $link = new Link($pageId);
+
+        $this->assertEquals($page, $link->getPage());
+    }
+
+    public function testGetPageFromPageUrl()
+    {
+        $page = new Page();
+
+        PageFacade::shouldReceive('findByUri')->once()->with('test')->andReturn($page);
+
+        $link = new Link('/test');
+
+        $this->assertEquals($page, $link->getPage());
+    }
+
+    public function testGetTitleReturnsTitleAttribute()
+    {
+        $title = 'link title';
+        $link = new Link(new Page(), ['title' => $title]);
+
+        $this->assertEquals($title, $link->getTitle());
+    }
+
+    public function testGetTitleReturnsPageTitle()
+    {
+        $attrs = [
+            ['title' => null],
+            ['title' => ''],
+            [],
+        ];
+
+        foreach ($attrs as $a) {
+            $title = 'page title';
+            $page = m::mock(Page::class);
+            $page->shouldReceive('getTitle')->once()->andReturn($title);
+
+            $link = new Link($page, $a);
+
+            $this->assertEquals($title, $link->getTitle());
+        }
+    }
+
+    public function testGetTextReturnsTextAttribute()
+    {
+        $text = 'link text';
+        $link = new Link(new Page(), ['text' => $text]);
+
+        $this->assertEquals($text, $link->getText());
+    }
+
+    public function testGetTextReturnsPageStandfirst()
+    {
+        $attrs = [
+            ['text' => null],
+            ['text' => ''],
+            [],
+        ];
+
+        foreach ($attrs as $a) {
+            $text = 'page standfirst';
+            $page = new Page();
+
+            $chunk = new TextChunk($page, ['text' => $text, 'site_text' => $text], 'standfirst');
+
+            Chunk::shouldReceive('get')
+                ->once()
+                ->with('text', 'standfirst', $page)
+                ->andReturn($chunk);
+
+            $link = new Link($page, $a);
+
+            $this->assertEquals($text, $link->getText());
+        }
+    }
+
+    public function testIsInternalReturnsTrue()
+    {
+        $link = new Link(new Page());
+
+        $this->assertTrue($link->isInternal());
+    }
+
+    public function testIsExternalReturnsFalse()
+    {
+        $link = new Link(new Page());
+
+        $this->assertFalse($link->isExternal());
+    }
+
+    public function testIsValidDependsOnWhetherPageIsDeleted()
+    {
+        $page = m::mock(Page::class);
+
+        foreach ([true, false] as $deleted) {
+            $page->shouldReceive('isDeleted')->once()->andReturn($deleted);
+
+            $link = new Link($page);
+
+            $this->assertEquals(!$deleted, $link->isValid());
+        }
+    }
+
+    public function testIsVisibleIfPageIsVisible()
+    {
+        $page = m::mock(Page::class);
+
+        foreach ([true, false] as $visible) {
+            $page->shouldReceive('isVisible')->once()->andReturn($visible);
+
+            $link = new Link($page);
+
+            $this->assertEquals($visible, $link->isVisible());
+        }
     }
 }

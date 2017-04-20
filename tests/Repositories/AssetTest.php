@@ -4,115 +4,180 @@ namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
-use BoomCMS\Database\Models\Person;
 use BoomCMS\Repositories\Asset as AssetRepository;
+use BoomCMS\Repositories\AssetVersion as AssetVersionRepository;
 use BoomCMS\Tests\AbstractTestCase;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Mockery as m;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AssetTest extends AbstractTestCase
 {
+    /**
+     * @var Asset
+     */
+    protected $asset;
+
+    /**
+     * @var Filesystem
+     */
+    protected $fileystem;
+
+    /**
+     * @var Asset
+     */
+    protected $model;
+
+    /**
+     * @var AssetRepository
+     */
+    protected $repository;
+
+    /**
+     * @var AssetVersionRepository
+     */
+    protected $version;
+
+    /**
+     * @var AssetVersionRepository
+     */
+    protected $versionRepository;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->filesystem = m::mock(Filesystem::class);
+        $this->version = new AssetVersion();
+        $this->model = m::mock(Asset::class);
+        $this->asset = m::mock(Asset::class);
+        $this->versionRepository = new AssetVersionRepository($this->version);
+
+        $this->asset
+            ->shouldReceive('getLatestVersionId')
+            ->andReturn(1);
+
+        $this->repository = new AssetRepository($this->model, $this->versionRepository, $this->filesystem);
+    }
+
+    public function testDelete()
+    {
+        $assetIds = [1, 2, 3];
+
+        $this->model
+            ->shouldReceive('destroy')
+            ->once()
+            ->with($assetIds);
+
+        $this->repository->delete($assetIds);
+    }
+
+    public function testExists()
+    {
+        foreach ([true, false] as $value) {
+            $this->filesystem
+                ->shouldReceive('exists')
+                ->once()
+                ->with($this->asset->getLatestVersionId())
+                ->andReturn($value);
+
+            $this->repository->exists($this->asset);
+        }
+    }
+
     public function testExtensions()
     {
-        $extensions = ['gif', 'jpeg'];
-        $version = m::mock(AssetVersion::class);
+        $extensions = collect(['gif', 'jpeg']);
 
-        $version
+        $this->model
+            ->shouldReceive('withLatestVersion')
+            ->once()
+            ->andReturnSelf();
+
+        $this->model
             ->shouldReceive('select')
             ->once()
-            ->with(AssetVersion::ATTR_EXTENSION)
+            ->with('version.'.AssetVersion::ATTR_EXTENSION.' as e')
             ->andReturnSelf();
 
-        $version
-            ->shouldReceive('where')
+        $this->model
+            ->shouldReceive('having')
             ->once()
-            ->with(AssetVersion::ATTR_EXTENSION, '!=', '')
+            ->with('e', '!=', '')
             ->andReturnSelf();
 
-        $version
+        $this->model
             ->shouldReceive('orderBy')
             ->once()
-            ->with(AssetVersion::ATTR_EXTENSION)
+            ->with('e')
             ->andReturnSelf();
 
-        $version
+        $this->model
             ->shouldReceive('distinct')
             ->once()
             ->andReturnSelf();
 
-        $version
+        $this->model
             ->shouldReceive('pluck')
             ->once()
-            ->with(AssetVersion::ATTR_EXTENSION)
+            ->with('e')
             ->andReturn($extensions);
 
-        $repository = new AssetRepository(new Asset(), $version);
+        $this->assertEquals($extensions, $this->repository->extensions());
+    }
 
-        $this->assertEquals($extensions, $repository->extensions());
+    public function testFile()
+    {
+        $file = 'test file contents';
+
+        $this->filesystem
+            ->shouldReceive('get')
+            ->once()
+            ->with($this->asset->getLatestVersionId())
+            ->andReturn($file);
+
+        $this->assertEquals($file, $this->repository->file($this->asset));
     }
 
     public function testFindReturnsAssetById()
     {
-        $asset = m::mock(Asset::class);
-        $model = m::mock(Asset::class);
-
-        $model->shouldReceive('find')
+        $this->model
+            ->shouldReceive('find')
             ->with(1)
-            ->andReturn($asset);
+            ->andReturn($this->asset);
 
-        $repository = new AssetRepository($model, new AssetVersion());
-
-        $this->assertEquals($asset, $repository->find(1));
+        $this->assertEquals($this->asset, $this->repository->find(1));
     }
 
-    public function testFindVersion()
+    public function testFindReturnsNull()
     {
-        $version = m::mock(AssetVersion::class);
-        $model = m::mock(AssetVersion::class);
-
-        $model->shouldReceive('find')
+        $this->model
+            ->shouldReceive('find')
             ->with(1)
-            ->andReturn($version);
+            ->andReturn(null);
 
-        $repository = new AssetRepository(new Asset(), $model);
-
-        $this->assertEquals($version, $repository->findVersion(1));
+        $this->assertNull($this->repository->find(1));
     }
 
-    public function testUploaders()
+    public function testSaveFileUsesVersionIdAsFileName()
     {
-        $repository = new AssetRepository(new Asset(), new AssetVersion());
-        $people = [];
-        $model = m::mock(Person::class);
+        $file = m::mock(UploadedFile::class);
 
-        $model
-            ->shouldReceive('select')
+        $this->filesystem
+            ->shouldReceive('putFileAs')
             ->once()
-            ->with('people.*')
-            ->andReturnSelf();
+            ->with(null, $file, $this->asset->getLatestVersionId());
 
-        $model
-            ->shouldReceive('join')
+        $this->repository->saveFile($this->asset, $file);
+    }
+
+    public function testStream()
+    {
+        $this->filesystem
+            ->shouldReceive('readStream')
             ->once()
-            ->with('assets', Asset::ATTR_UPLOADED_BY, '=', 'people.id')
-            ->andReturnSelf();
+            ->with($this->asset->getLatestVersionId());
 
-        $model
-            ->shouldReceive('groupBy')
-            ->once()
-            ->with('people.id')
-            ->andReturnSelf();
-
-        $model
-            ->shouldReceive('orderBy')
-            ->once()
-            ->with(Person::ATTR_NAME)
-            ->andReturnSelf();
-
-        $model
-            ->shouldReceive('get')
-            ->once()
-            ->andReturn($people);
-
-        $this->assertEquals($people, $repository->uploaders($model));
+        $this->repository->stream($this->asset);
     }
 }

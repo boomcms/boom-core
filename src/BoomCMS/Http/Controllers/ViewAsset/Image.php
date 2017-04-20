@@ -3,6 +3,8 @@
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Contracts\Models\Asset;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
+use Illuminate\Http\Request;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageCache;
 use Intervention\Image\ImageManager;
@@ -16,9 +18,9 @@ class Image extends BaseController
 
     protected $encoding;
 
-    public function __construct(Asset $asset)
+    public function __construct(Request $request, Asset $asset)
     {
-        parent::__construct($asset);
+        parent::__construct($request, $asset);
 
         $this->manager = new ImageManager(['driver' => 'imagick']);
     }
@@ -27,12 +29,12 @@ class Image extends BaseController
     {
         if (!empty($width) && !empty($height)) {
             $image = $this->manager->cache(function (ImageCache $cache) use ($width, $height) {
-                return $cache->make($this->asset->getFilename())
+                return $cache->make($this->getFile())
                     ->fit($width, $height)
                     ->encode($this->encoding);
             });
         } else {
-            $image = $this->manager->make($this->asset->getFilename())->encode();
+            $image = $this->manager->make($this->getFile())->encode();
         }
 
         return $this->response
@@ -53,7 +55,7 @@ class Image extends BaseController
                 $height = empty($height) ? null : $height;
 
                 return $cache
-                    ->make($this->asset->getFilename())
+                    ->make($this->getFile())
                     ->resize($width, $height, function (Constraint $constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
@@ -61,11 +63,16 @@ class Image extends BaseController
                     ->encode($this->encoding);
             });
         } else {
-            $image = $this->manager->make($this->asset->getFilename())->encode();
+            $image = $this->manager->make($this->getFile())->encode();
         }
 
         return $this->response
             ->header('content-type', $this->asset->getMimetype())
             ->setContent($image);
+    }
+
+    protected function getFile()
+    {
+        return AssetFacade::file($this->asset);
     }
 }

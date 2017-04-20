@@ -27,11 +27,17 @@
 		background: @lightest-grey;
 		padding: 1.5rem;
 		text-align: right;
+        overflow: hidden;
 
 		button {
 			border: 0;
 			padding: 1rem 1rem;
 			margin: 0;
+            height: 50px;
+
+            &.left {
+                float: left;
+            }
 
 			&.b-button-textonly {
 				margin-left: 0;
@@ -73,8 +79,8 @@
 	}
 
 	.buttons {
-		position: absolute;
-		bottom: 1rem;
+		position: fixed;
+        bottom: 1rem;
 	}
 	
 	button.b-button {
@@ -88,4 +94,12 @@
 	img {
 		max-width: 100%;
 	}
+}
+
+@media all and (min-width: 768px) {
+    .b-dialog {
+        .buttons {
+            position: absolute;
+        }
+    }
 }

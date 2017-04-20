@@ -85,7 +85,7 @@ class SettingsTest extends AbstractTestCase
             'key2' => 'value2',
         ];
 
-        $filesystem = $this->getMock('Illuminate\Filesystem\Filesystem');
+        $filesystem = $this->createMock('Illuminate\Filesystem\Filesystem');
         $filesystem
             ->expects($this->once())
             ->method('exists')
@@ -130,7 +130,7 @@ class SettingsTest extends AbstractTestCase
 
     protected function getStore(array $settings = null)
     {
-        $filesystem = $this->getMock('Illuminate\Filesystem\Filesystem');
+        $filesystem = $this->createMock('Illuminate\Filesystem\Filesystem');
         $filesystem
             ->expects($this->once())
             ->method('exists')

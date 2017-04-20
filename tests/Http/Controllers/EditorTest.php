@@ -8,6 +8,7 @@ use BoomCMS\Http\Controllers\Editor as EditorController;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\View;
 use Mockery as m;
 
@@ -33,14 +34,16 @@ class EditorTest extends BaseControllerTest
 
             $request = new Request(['state' => $state]);
 
-            $this->controller->postState($request, $editor);
+            $this->controller->setState($request, $editor);
         }
     }
 
     public function testPostTime()
     {
+        $session = m::mock(Store::class)->makePartial();
+
         $timestamp = time() - 1000;
-        $editor = m::mock(Editor::class)->makePartial();
+        $editor = m::mock(Editor::class, [$session])->makePartial();
 
         $editor
             ->shouldReceive('setTime')

@@ -4,70 +4,39 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
+use Carbon\Carbon;
 use DateTime;
+use Mockery as m;
 
 class AssetTest extends AbstractModelTestCase
 {
     protected $model = Asset::class;
 
-    public function testDirectory()
-    {
-        $model = new Asset();
-
-        $this->assertEquals(storage_path().'/boomcms/assets', $model->directory());
-    }
-
     public function testGetAspectRatio()
     {
-        $asset = $this->getMock(Asset::class, ['getWidth', 'getHeight']);
-        $asset->expects($this->any())
-            ->method('getWidth')
-            ->will($this->returnValue(4));
-
-        $asset->expects($this->any())
-            ->method('getHeight')
-            ->will($this->returnValue(3));
-
-        $this->assertEquals(4 / 3, $asset->getAspectRatio());
-    }
-
-    public function testGetAspectRatioReturnsZeroWhenAssetHasNoHeight()
-    {
-        $asset = $this->getMock(Asset::class, ['getHeight']);
-
-        $asset->expects($this->once())
-            ->method('getHeight')
-            ->will($this->returnValue(0));
-
-        $this->assertEquals(1, $asset->getAspectRatio());
+        $asset = $this->mockVersionedAttribute(['aspect_ratio' => 2]);
+        $this->assertEquals(2, $asset->getAspectRatio());
     }
 
     public function testGetCreditsReturnsCreditsAttribute()
     {
         $asset = new Asset([Asset::ATTR_CREDITS => 'test']);
+
         $this->assertEquals('test', $asset->getCredits());
     }
 
     public function testGetDescriptionReturnsDescriptionAttribute()
     {
         $asset = new Asset([Asset::ATTR_DESCRIPTION => 'test']);
+
         $this->assertEquals('test', $asset->getDescription());
     }
 
     public function testGetDownloadsReturnsDownloadsAttribute()
     {
         $asset = new Asset([Asset::ATTR_DOWNLOADS => 1]);
+
         $this->assertEquals(1, $asset->getDownloads());
-    }
-
-    public function testGetFilename()
-    {
-        $asset = $this->getMock(Asset::class, ['getLatestVersionId']);
-        $asset->expects($this->once())
-            ->method('getLatestVersionId')
-            ->will($this->returnValue(1));
-
-        $this->assertEquals($asset->directory().'/1', $asset->getFilename());
     }
 
     public function testGetExtension()
@@ -82,6 +51,7 @@ class AssetTest extends AbstractModelTestCase
     public function testGetFilesize()
     {
         $asset = $this->mockVersionedAttribute(['filesize' => 1000]);
+
         $this->assertEquals(1000, $asset->getFilesize());
     }
 
@@ -107,6 +77,24 @@ class AssetTest extends AbstractModelTestCase
 
         $empty = new Asset();
         $this->assertFalse($empty->isImage());
+    }
+
+    public function testIsPublic()
+    {
+        $values = [
+            null,
+            0,
+            'anything else',
+            1,
+            true,
+            '1',
+        ];
+
+        foreach ($values as $value) {
+            $asset = new Asset([Asset::ATTR_PUBLIC => $value]);
+
+            $this->assertEquals((bool) $value, $asset->isPublic());
+        }
     }
 
     public function testIsVideo()
@@ -141,6 +129,16 @@ class AssetTest extends AbstractModelTestCase
         $this->assertInternalType('int', $asset->getHeight());
     }
 
+    public function testGetPublishedAt()
+    {
+        $now = new DateTime('now');
+
+        $asset = new Asset([Asset::ATTR_PUBLISHED_AT => $now]);
+
+        $this->assertInstanceOf(Carbon::class, $asset->getPublishedAt());
+        $this->assertEquals($now->getTimestamp(), $asset->getPublishedAt()->getTimestamp());
+    }
+
     public function testGetTitleReturnsTitleAttribute()
     {
         $asset = new Asset([Asset::ATTR_TITLE => 'test']);
@@ -162,15 +160,6 @@ class AssetTest extends AbstractModelTestCase
         $this->assertEquals($now->getTimestamp(), $asset->getUploadedTime()->getTimestamp());
     }
 
-    public function testSetSite()
-    {
-        $asset = new Asset();
-
-        $asset->setSite($this->site);
-
-        $this->assertEquals($this->site->getId(), $asset->{Asset::ATTR_SITE});
-    }
-
     public function testSetVersion()
     {
         $asset = new Asset();
@@ -185,11 +174,8 @@ class AssetTest extends AbstractModelTestCase
     {
         $version = new AssetVersion($attrs);
 
-        $asset = $this->getMock(Asset::class, ['getLatestVersion']);
-        $asset
-            ->expects($this->any())
-            ->method('getLatestVersion')
-            ->will($this->returnValue($version));
+        $asset = m::mock(Asset::class)->makePartial();
+        $asset->shouldReceive('getLatestVersion')->andReturn($version);
 
         return $asset;
     }

@@ -3,13 +3,13 @@
 namespace BoomCMS\Listeners;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Events\PageTitleWasChanged;
+use BoomCMS\Foundation\Events\PageEvent;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Str;
 
 class SetPageInternalName extends CreatePagePrimaryURL
 {
-    public function handle(PageTitleWasChanged $event)
+    public function handle(PageEvent $event)
     {
         $page = $event->getPage();
         $title = $event->getNewTitle();

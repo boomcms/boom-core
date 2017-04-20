@@ -1,77 +1,85 @@
 (function($, Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.PeopleManager.PeopleTable = Backbone.View.extend({
-		tagName: 'div',
-		template: _.template($('#b-people-table').html()),
+    BoomCMS.PeopleManager.PeopleTable = Backbone.View.extend({
+        tagName: 'div',
+        template: _.template($('#b-people-table').html()),
 
-		events: {
-			'submit #b-people-create': 'createPerson'
-		},
+        events: {
+            'submit #b-people-create': 'processCreatePersonForm'
+        },
 
-		initialize: function(options) {
-			this.people = options.people;
-			this.groups = options.groups;
-			this.group = options.group;
+        initialize: function(options) {
+            this.people = options.people;
+            this.groups = options.groups;
+            this.group = options.group;
 
-			this.listenTo(this.people, 'change add', this.render);
-			this.listenTo(this.groups, 'add', this.render);
-		},
+            this.listenTo(this.people, 'change add', this.render);
+            this.listenTo(this.groups, 'add', this.render);
+        },
 
-		addPersonToTable: function(person) {
-			var view = new BoomCMS.PeopleManager.PeopleTableItem({model: person}),
-				$el = view.render().$el;
+        addPersonToGroups: function(person, groupIds) {
+            for (var i in groupIds) {
+                person.addGroup(this.groups.get(groupIds[i]));
+            }
 
-			this.$('tbody').append($el);
-		},
+            person.trigger('change');
+        },
 
-		createPerson: function(e) {
-			e.preventDefault();
+        createPerson: function() {
+            var peopleTable = this,
+                $form = this.$('form'),
+                person = this.people.create({
+                    name: $form.find('input[name=name]').val(),
+                    email: $form.find('input[name=email]').val()
+                }, {
+                    success: function() {
+                        peopleTable.addPersonToGroups(person, $form.find('select').val());
+                    }
+                });
+        },
 
-			var $form = this.$('form'),
-				groups = this.groups,
-				person;
+        addPersonToTable: function(person) {
+            var view = new BoomCMS.PeopleManager.PeopleTableItem({model: person}),
+                $el = view.render().$el;
 
-			person = this.people.create({
-				name: $form.find('input[name=name]').val(),
-				email: $form.find('input[name=email]').val()
-			}, {
-				success: function() {
-					var groupIds = $form.find('select').val();
+            this.$('tbody').append($el);
+        },
 
-					for (var i in groupIds) {
-						person.addGroup(groups.get(groupIds[i]));
-					}
+        processCreatePersonForm: function(e) {
+            e.preventDefault();
 
-					person.trigger('change');
-					$form[0].reset();
-				}
-			});
-		},
+            var $form = this.$('form'),
+                email = $form.find('input[name=email]').val(),
+                person = this.people.findByEmail(email);
 
-		render: function() {
-			var table = this,
-				group = this.group;
+            (person === undefined) ? this.createPerson() : this.addPersonToGroups(person, $form.find('select').val());
+        },
 
-			this.$el.html(this.template({
-				group: group,
-				groups: this.groups,
-				selectedGroups: new Backbone.Collection([group])
-			}));
+        render: function() {
+            var table = this,
+                group = this.group;
 
-			this.people.each(function(person) {
-				if (!group || person.groups.get(group.getId())) {
-					table.addPersonToTable(person);
-				}
-			});
+            this.$el.html(this.template({
+                group: group,
+                groups: this.groups,
+                selectedGroups: new Backbone.Collection([group])
+            }));
 
-			this.$('select').chosen();
+            this.people.each(function(person) {
+                if (!group || person.groups.get(group.getId())) {
+                    table.addPersonToTable(person);
+                }
+            });
 
-			return this;
-		},
+            this.$('select').chosen();
+            this.$('form').find('input[name=name]').focus();
 
-		sortPeople: function() {
-			this.people.sort();
-		}
-	});
+            return this;
+        },
+
+        sortPeople: function() {
+            this.people.sort();
+        }
+    });
 }(jQuery, Backbone, BoomCMS));

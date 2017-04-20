@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Repositories\URL as URLRepository;
 use BoomCMS\Support\Facades\URL as URLFacade;
@@ -28,7 +27,7 @@ class URLTest extends AbstractTestCase
         parent::setUp();
 
         $this->model = m::mock(URL::class);
-        $this->repository = new URLRepository($this->model);
+        $this->repository = new URLRepository($this->model, $this->site);
     }
 
     public function testCreateWithUniqueUrl()
@@ -38,11 +37,6 @@ class URLTest extends AbstractTestCase
         $isPrimary = false;
 
         $page = m::mock(Page::class)->makePartial();
-        $page
-            ->shouldReceive('getSite')
-            ->once()
-            ->andReturn($this->site);
-
         $page->shouldReceive('getId')->andReturn(2);
 
         $this->model
@@ -52,7 +46,6 @@ class URLTest extends AbstractTestCase
                 URL::ATTR_LOCATION   => 'test',
                 URL::ATTR_PAGE_ID    => $page->getId(),
                 URL::ATTR_IS_PRIMARY => $isPrimary,
-                URL::ATTR_SITE       => $this->site->getId(),
             ])
             ->andReturn($url);
 
@@ -71,20 +64,15 @@ class URLTest extends AbstractTestCase
 
         URLFacade::shouldReceive('isAvailable')
             ->once()
-            ->with($this->site, 'test')
+            ->with('test')
             ->andReturn(false);
 
         URLFacade::shouldReceive('isAvailable')
             ->once()
-            ->with($this->site, 'test1')
+            ->with('test1')
             ->andReturn(true);
 
         $page = m::mock(Page::class)->makePartial();
-        $page
-            ->shouldReceive('getSite')
-            ->once()
-            ->andReturn($this->site);
-
         $page->shouldReceive('getId')->andReturn(2);
 
         $this->model
@@ -94,7 +82,6 @@ class URLTest extends AbstractTestCase
                 URL::ATTR_LOCATION   => 'test1',
                 URL::ATTR_PAGE_ID    => $page->getId(),
                 URL::ATTR_IS_PRIMARY => $isPrimary,
-                URL::ATTR_SITE       => $this->site->getId(),
             ])
             ->andReturn($url);
 
@@ -123,18 +110,15 @@ class URLTest extends AbstractTestCase
         $this->assertEquals($url, $this->repository->find($url->getId()));
     }
 
-    public function testFindBySiteAndLocation()
+    public function testFindByLocation()
     {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
-
         $url = new URL();
         $location = '/test';
 
         $this->model
             ->shouldReceive('where')
             ->once()
-            ->with(URL::ATTR_SITE, '=', $site->getId())
+            ->with(URL::ATTR_SITE, '=', $this->site->getId())
             ->andReturnSelf();
 
         $this->model
@@ -148,20 +132,18 @@ class URLTest extends AbstractTestCase
             ->once()
             ->andReturn($url);
 
-        $this->assertEquals($url, $this->repository->findBySiteAndLocation($site, $location));
+        $this->assertEquals($url, $this->repository->findByLocation($location));
     }
 
     public function testIsAvailable()
     {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
         $location = 'test';
 
         foreach ([true, false] as $exists) {
             $this->model
                 ->shouldReceive('where')
                 ->once()
-                ->with(URL::ATTR_SITE, '=', $site->getId())
+                ->with(URL::ATTR_SITE, '=', $this->site->getId())
                 ->andReturnSelf();
 
             $this->model
@@ -176,7 +158,7 @@ class URLTest extends AbstractTestCase
                 ->andReturn($exists);
 
             $available = !$exists;
-            $this->assertEquals($available, $this->repository->isAvailable($site, $location));
+            $this->assertEquals($available, $this->repository->isAvailable($location));
         }
     }
 

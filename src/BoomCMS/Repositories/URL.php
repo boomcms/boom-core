@@ -17,11 +17,18 @@ class URL implements URLRepositoryInterface
     protected $model;
 
     /**
-     * @param Model $model
+     * @var SiteInterface
      */
-    public function __construct(Model $model)
+    protected $site;
+
+    /**
+     * @param Model        $model
+     * @param SiteInteface $site
+     */
+    public function __construct(Model $model, SiteInterface $site = null)
     {
         $this->model = $model;
+        $this->site = $site;
     }
 
     /**
@@ -33,14 +40,12 @@ class URL implements URLRepositoryInterface
      */
     public function create($location, PageInterface $page, $isPrimary = false)
     {
-        $site = $page->getSite();
-        $unique = URLHelper::makeUnique($site, URLHelper::sanitise($location));
+        $unique = URLHelper::makeUnique(URLHelper::sanitise($location));
 
         return $this->model->create([
             Model::ATTR_LOCATION   => $unique,
             Model::ATTR_PAGE_ID    => $page->getId(),
             Model::ATTR_IS_PRIMARY => $isPrimary,
-            Model::ATTR_SITE       => $site->getId(),
         ]);
     }
 
@@ -69,15 +74,14 @@ class URL implements URLRepositoryInterface
     }
 
     /**
-     * @param SiteInterface $site
-     * @param string        $location
+     * @param string $location
      *
      * @return URLInterface
      */
-    public function findBySiteAndLocation(SiteInterface $site, $location)
+    public function findByLocation($location)
     {
         return $this->model
-            ->where(Model::ATTR_SITE, '=', $site->getId())
+            ->where(Model::ATTR_SITE, '=', $this->site->getId())
             ->where(Model::ATTR_LOCATION, '=', URLHelper::sanitise($location))
             ->first();
     }
@@ -85,15 +89,14 @@ class URL implements URLRepositoryInterface
     /**
      * Determine whether a URL is already being used by a page in the CMS.
      *
-     * @param SiteInterface $site
-     * @param string        $path
+     * @param string $path
      *
      * @return bool
      */
-    public function isAvailable(SiteInterface $site, $path)
+    public function isAvailable($path)
     {
         return !$this->model
-            ->where(Model::ATTR_SITE, '=', $site->getId())
+            ->where(Model::ATTR_SITE, '=', $this->site->getId())
             ->where(Model::ATTR_LOCATION, '=', $path)
             ->exists();
     }

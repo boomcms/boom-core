@@ -24,8 +24,26 @@ class Provider
     protected $gate;
 
     /**
-     * @param AuthManager $auth
-     * @param Store       $cache
+     * Array of all chunk types.
+     *
+     * @var array
+     */
+    protected $types = [
+        'asset',
+        'calendar',
+        'html',
+        'text',
+        'library',
+        'linkset',
+        'location',
+        'slideshow',
+        'text',
+        'timestamp',
+    ];
+
+    /**
+     * @param Gate  $gate
+     * @param Store $cache
      */
     public function __construct(Gate $gate, Cache $cache)
     {
@@ -233,5 +251,25 @@ class Provider
         $key = $this->getCacheKey($type, $slotname, $version);
 
         $this->cache->forever($key, $chunk);
+    }
+
+    /**
+     * Returns an array of chunks which have changed since a version.
+     *
+     * @param PageVersion $version
+     *
+     * @return array
+     */
+    public function since(PageVersion $version)
+    {
+        $chunks = [];
+
+        foreach ($this->types as $type) {
+            $className = $this->getModelName($type);
+
+            $chunks[$type] = $className::getSince($version)->get();
+        }
+
+        return $chunks;
     }
 }

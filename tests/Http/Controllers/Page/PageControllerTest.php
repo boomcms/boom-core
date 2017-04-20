@@ -3,13 +3,9 @@
 namespace BoomCMS\Tests\Http\Controllers;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Site;
-use BoomCMS\Database\Models\URL;
-use BoomCMS\Events\PageWasReverted;
 use BoomCMS\Http\Controllers\Page\PageController as Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
-use BoomCMS\Support\Facades\PageVersion as PageVersionFacade;
 use Mockery as m;
 
 class PageControllerTest extends BaseControllerTest
@@ -23,8 +19,6 @@ class PageControllerTest extends BaseControllerTest
     {
         $this->login();
 
-        $site = new Site();
-        $url = new URL([URL::ATTR_LOCATION => 'test']);
         $parent = m::mock(Page::class)->makePartial();
 
         $page = new Page();
@@ -48,21 +42,6 @@ class PageControllerTest extends BaseControllerTest
             ->with($page->getId())
             ->andReturn($page);
 
-        $this->assertEquals($page, $this->controller->postAdd($site, $parent));
-    }
-
-    public function testPostDiscard()
-    {
-        $page = new Page();
-
-        $this->requireRole('edit', $page);
-
-        $this->expectsEvents(PageWasReverted::class);
-
-        PageVersionFacade::shouldReceive('deleteDrafts')
-            ->once()
-            ->with($page);
-
-        $this->controller->postDiscard($page);
+        $this->assertEquals($page, $this->controller->postAdd($parent));
     }
 }

@@ -24,15 +24,15 @@
 				bm = composer.selection.getBookmark();
 
 			if (existing_link) {
-				var link = new boomLink(existing_link.href, 0, (existing_link.textContent || existing_link.innerText));
+				var link = new BoomCMS.Link(existing_link.href, 0, (existing_link.textContent || existing_link.innerText));
 				opts.link = link;
 			} else {
-				link = new boomLink();
+				link = new BoomCMS.Link();
 			}
 
 			$(composer).trigger('before:boomdialog');
 
-			new boomLinkPicker(link, {remove: link.getUrl() != ''})
+			new BoomCMS.LinkPicker(link, {remove: link.getUrl() != ''})
 				.done(function(link) {
 					var url = link.getUrl();
 

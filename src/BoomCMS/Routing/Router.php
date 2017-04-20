@@ -61,12 +61,12 @@ class Router
      */
     public function routePage($path)
     {
-        $url = URL::findBySiteAndLocation($this->getActiveSite(), $path);
+        $url = URL::findByLocation($path);
 
         if ($url) {
             $page = $url->getPage();
 
-            if (!$page) {
+            if (!$page || $page->isDeleted()) {
                 // The url is in use but doesn't have a page.
                 // The page must have been deleted.
                 throw new GoneHttpException();
@@ -121,7 +121,7 @@ class Router
      *
      * @return $this
      */
-    public function setActiveSite(SiteInterface $site)
+    public function setActiveSite(SiteInterface $site = null)
     {
         $this->site = $site;
         $this->app->instance(SiteModel::class, $site);

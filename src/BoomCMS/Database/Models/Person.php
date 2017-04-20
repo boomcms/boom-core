@@ -7,15 +7,17 @@ use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Foundation\Database\Model;
+use BoomCMS\Notifications\ResetPasswordNotification;
 use BoomCMS\Support\Traits\MultipleSites;
 use Carbon\Carbon;
-use DateTime;
+use DateTimeInterface;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
 
 class Person extends Model implements PersonInterface, AuthenticatableContract, CanResetPassword
 {
@@ -23,6 +25,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     use Authorizable;
     use SoftDeletes;
     use MultipleSites;
+    use Notifiable;
 
     const ATTR_NAME = 'name';
     const ATTR_EMAIL = 'email';
@@ -31,6 +34,8 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
     const ATTR_SUPERUSER = 'superuser';
     const ATTR_REMEMBER_TOKEN = 'remember_token';
     const ATTR_LAST_LOGIN = 'last_login';
+    const ATTR_CREATED_BY = 'created_by';
+    const ATTR_CREATED_AT = 'created_at';
 
     public $table = 'people';
 
@@ -52,6 +57,11 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         self::ATTR_PASSWORD,
         self::ATTR_REMEMBER_TOKEN,
     ];
+
+    public function assets()
+    {
+        return $this->belongsTo(Asset::class, self::ATTR_ID, Asset::ATTR_CREATED_BY);
+    }
 
     /**
      * @param Group $group
@@ -176,7 +186,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
             ->where('person_site.site_id', '=', $site->getId());
     }
 
-    protected function serializeDate(DateTime $date)
+    protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('c');
     }
@@ -258,5 +268,17 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         $this->{self::ATTR_SUPERUSER} = $superuser;
 
         return $this;
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param string $token
+     *
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

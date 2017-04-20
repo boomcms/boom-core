@@ -112,7 +112,7 @@ class PageTest extends AbstractModelTestCase
 
     public function testGetAclGroupIds()
     {
-        $groupIds = [1, 2];
+        $collection = collect([1, 2]);
         $pageId = 1;
         $page = m::mock(Page::class)->makePartial();
 
@@ -142,7 +142,7 @@ class PageTest extends AbstractModelTestCase
             ->shouldReceive('pluck')
             ->once()
             ->with('group_id')
-            ->andReturn($groupIds);
+            ->andReturn($collection);
 
         $page->getAclGroupIds();
     }
@@ -285,21 +285,32 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals(1, $page->getDefaultChildTemplateId());
     }
 
-    public function testGetDefaultGrandchildTemplateId()
+    public function testGetDefaultGrandchildTemplateIdReturnsTemplateId()
     {
-        $values = [
-            0    => 2,
-            1    => 1,
-        ];
-
+        $values = [0, null, ''];
         $templateId = 2;
-        $page = m::mock(Page::class)->makePartial();
-        $page->shouldReceive('getTemplateId')->once()->andReturn($templateId);
 
-        foreach ($values as $grandchildTemplateId => $default) {
+        $page = m::mock(Page::class)->makePartial();
+        $page->shouldReceive('getTemplateId')->times(3)->andReturn($templateId);
+
+        foreach ($values as $grandchildTemplateId) {
             $page->{Page::ATTR_GRANDCHILD_TEMPLATE} = $grandchildTemplateId;
 
-            $this->assertEquals($default, $page->getDefaultGrandchildTemplateId());
+            $this->assertEquals($templateId, $page->getDefaultGrandchildTemplateId());
+        }
+    }
+
+    public function testGetDefaultGrandchildTemplateIdReturnsDefinedValue()
+    {
+        $values = [1, 2, 3];
+
+        $page = m::mock(Page::class)->makePartial();
+        $page->shouldReceive('getTemplateId')->never();
+
+        foreach ($values as $grandchildTemplateId) {
+            $page->{Page::ATTR_GRANDCHILD_TEMPLATE} = $grandchildTemplateId;
+
+            $this->assertEquals($grandchildTemplateId, $page->getDefaultGrandchildTemplateId());
         }
     }
 
@@ -318,7 +329,7 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals(1, $page->getFeatureImageId());
 
         $page = new Page();
-        $this->assertNull($page->getFeatureImageId());
+        $this->assertEquals(0, $page->getFeatureImageId());
     }
 
     public function testGetFeatureImage()
@@ -548,17 +559,6 @@ class PageTest extends AbstractModelTestCase
         $page->{Page::ATTR_PRIMARY_URI} = $url;
 
         $this->assertEquals(URLHelper::sanitise($url), $page->getAttribute(Page::ATTR_PRIMARY_URI));
-    }
-
-    public function testSetSite()
-    {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
-
-        $page = new Page();
-        $page->setSite($site);
-
-        $this->assertEquals($site->getId(), $page->{Page::ATTR_SITE});
     }
 
     public function testSetVisibleAtAnyTime()

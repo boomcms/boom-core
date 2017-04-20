@@ -5,6 +5,7 @@
         routePrefix: 'asset',
         tagName: 'div',
         templateSelector: '#b-assets-view-template',
+        loaded: false,
 
         bind: function() {
             var view = this,
@@ -23,21 +24,19 @@
                         .set(view.$('form').serializeJSON())
                         .save();
 
-                    BoomCMS.notify("Asset details saved");
+                    BoomCMS.Notification('Asset details saved');
                 })
                 .on('remove', function() {
                     this.$('.b-assets-upload').assetUploader('reset');
+                })
+                .on('click', '[data-section]', function(e) {
+                    e.preventDefault();
+
+                    var section = $(this).attr('data-section');
+
+                    view.router.navigate('asset/' + asset.getId() + '/' + section);
+                    view.render(section);
                 });
-
-            this.$('.b-assets-upload').assetUploader({
-                asset: asset,
-                uploadFinished: function(e, data) {
-                    asset.set(data.result);
-                    asset.trigger('change:image');
-
-                    view.render('info');
-                }
-            });
         },
 
         initialize: function(options) {
@@ -46,7 +45,7 @@
             this.selection = new BoomCMS.Collections.Assets([this.model]);
 
             this.listenTo(this.model, 'revert', function() {
-                BoomCMS.notify('This asset has been reverted to the previous version');
+                BoomCMS.Notification('This asset has been reverted to the previous version');
             });
 
             this.listenTo(this.model, 'change:image revert', function() {
@@ -57,7 +56,7 @@
                 .on('click', '#b-assets-thumbnail-change', function(e) {
                     e.preventDefault();
 
-                    new boomAssetPicker(asset.getThumbnailAssetId())
+                    BoomCMS.AssetPicker(asset.getThumbnailAssetId())
                         .done(function(thumbnail) {
                             asset
                                 .set('thumbnail_asset_id', thumbnail.getId())
@@ -78,15 +77,46 @@
             });
         },
 
+        initUploader: function() {
+            var view = this,
+                asset = this.model;
+
+            this.$('.b-assets-upload').assetUploader({
+                asset: asset,
+                uploadFinished: function(e, data) {
+                    asset.set(data.result);
+                    asset.trigger('change:image');
+
+                    view.render('info');
+                }
+            });
+        },
+
         render: function(section) {
-            this.$el.html(this.template({
-                asset: this.model,
-                section: section
-            }));
+            this.$el
+                .html(this.template({
+                    asset: this.model,
+                    section: section
+                }))
+                .ui();
 
-            this.bind();
-            this.initImageEditor();
+            this.$el.ui();
 
+            if (section === 'tags') {
+                this.showTags();
+            }
+
+            if (section === 'replace') {
+                this.initUploader();
+            }
+
+            if (this.loaded === false) {
+                this.bind();
+                this.initImageEditor();
+
+                this.loaded = true;
+            }
+            
             return this;
         }
     });

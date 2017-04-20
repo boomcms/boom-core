@@ -1,36 +1,47 @@
 $.widget('ui.chunkLinkset', $.ui.chunk, {
-	edit: function() {
-		var chunkLinkset = this;
+    _create: function() {
+        this.editorOptions = this.getOptions();
 
-		new boomChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.getOptions())
-			.done(function(data) {
-				chunkLinkset.insert(data);
-			})
-			.fail(function() {
-				chunkLinkset.destroy();
-			});
-	},
+        this.bind();
+    },
 
-	getOptions: function() {
-		var $el = this.element,
-			options = {
-				title: 'linkset-title',
-				linkAssets: 'link-asset',
-				linkText: 'link-text'
-			};
+    edit: function() {
+        var chunkLinkset = this;
 
-		for (var i in options) {
-			options[i] = $el.hasClass(options[i]) || $el.find('.' + options[i]).length > 0;
-		}
+        return new BoomCMS.ChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.editorOptions)
+            .done(function(data) {
+                chunkLinkset.insert(data);
+            })
+            .fail(function() {
+                chunkLinkset.destroy();
+            });
+    },
 
-		return options;
-	},
+    getOptions: function() {
+        var $el = this.element,
+            options = {
+                title: 'linkset-title',
+                linkAssets: 'link-asset',
+                linkText: 'link-text',
+                linkTitle: 'link-title'
+            };
 
-	insert: function(links) {
-		if (typeof(links) === 'undefined' || links.length === 0) {
-			this.remove();
-		} else {
-			this._save(links);
-		}
-	}
+        for (var i in options) {
+            options[i] = $el.attr('data-boom-' + options[i]) === '1'
+                || $el.hasClass(options[i])
+                || $el.find('.' + options[i]).length > 0;
+        }
+
+        options.limit = parseInt($el.attr('data-boom-limit'));
+
+        return options;
+    },
+
+    insert: function(links) {
+        if (typeof(links) === 'undefined' || links.length === 0) {
+            this.remove();
+        } else {
+            this._save(links);
+        }
+    }
 });

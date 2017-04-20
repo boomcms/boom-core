@@ -1,45 +1,49 @@
 (function(Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Group = BoomCMS.Model.extend({
-		urlRoot: BoomCMS.urlRoot + 'group',
+    BoomCMS.Group = BoomCMS.Model.extend({
+        urlRoot: BoomCMS.urlRoot + 'group',
 
-		defaults: {
-			id: null
-		},
+        defaults: {
+            id: null
+        },
 
-		initialize: function() {
-			var roles = Backbone.Collection.extend({
-				url: this.url() + '/roles'
-			});
+        addRole: function(roleId, allowed, pageId) {
+            return this.roles().create({
+                role_id: roleId,
+                allowed: allowed,
+                page_id: pageId
+            });
+        },
 
-			this.roles = new roles();
-		},
+        getName: function() {
+            return this.get('name');
+        },
 
-		addRole: function(roleId, allowed, pageId) {
-			return this.roles.create({
-				role_id : roleId,
-				allowed: allowed,
-				page_id: pageId
-			});
-		},
+        getRoles: function(pageId) {
+            return this.roles().fetch({data: {page_id: pageId}});
+        },
 
-		getName: function() {
-			return this.get('name');
-		},
+        removeRole: function(roleId, pageId) {
+            return $.ajax({
+                type: 'delete',
+                url: this.roles().url + '/' + roleId,
+                data: {
+                    page_id : pageId
+                }
+            });
+        },
 
-		getRoles: function(pageId) {
-			return this.roles.fetch({data: {page_id: pageId}});
-		},
+        roles: function() {
+            if (this._roles === undefined) {
+                var roles = Backbone.Collection.extend({
+                    url: this.url() + '/roles'
+                });
 
-		removeRole: function(roleId, pageId) {
-			return $.ajax({
-				type: 'delete',
-				url: this.roles.url + '/' + roleId,
-				data: {
-					page_id : pageId
-				}
-			});
-		}
-	});
+                this._roles = new roles();
+            }
+
+            return this._roles;
+        }
+    });
 }(Backbone, BoomCMS));

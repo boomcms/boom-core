@@ -14,6 +14,7 @@ class AddForeignKeysToChunkTimestampsTable extends Migration
     {
         Schema::table('chunk_timestamps', function (Blueprint $table) {
             $table->foreign('page_vid', 'chunk_timestamps_ibfk_1')->references('id')->on('page_versions')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('page_id')->references('id')->on('pages')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

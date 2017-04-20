@@ -5,8 +5,12 @@
 </script>
 
 <script type="text/template" id="b-asset-thumb">
-    <a class="thumb loading" data-asset="<%= asset.getId() %>" tabindex="0">
+    <a class="b-assets-thumbnail thumb loading<% if (!asset.isPublic()) { %> private<% } %>" data-asset="<%= asset.getId() %>" tabindex="0">
         <img class="loading" alt="">
+
+        <div class="private">
+            <i class="fa fa-lock"></i>
+        </div>
 
         <div class="pace progress">
             <div>
@@ -26,13 +30,13 @@
             <h2><%= asset.getTitle() %></h2>
 
             <p>
-                <%= BoomCMS.assetTypes[asset.getType()] %><br />
+                <%= BoomCMS.assetTypes[asset.getType()] %><br>
 
-                <% if (asset.isImage()) { %>
-                    <%= asset.getWidth() %> x <%= asset.getHeight() %>
-                <% } else { %>
-                    <%= asset.getReadableFilesize() %>
+                <% if (asset.getWidth() && asset.getHeight()) { %>
+                    <%= asset.getWidth() %> x <%= asset.getHeight() %><br>
                 <% } %>
+
+                <%= asset.getReadableFilesize() %>
             </p>
         </div>
     </a>

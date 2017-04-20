@@ -1,89 +1,82 @@
 (function($, Backbone, BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.PeopleManager.PersonView = Backbone.View.extend({
-		tagName: 'div',
-		template: _.template($('#b-person-view-template').html()),
+    BoomCMS.PeopleManager.PersonView = Backbone.View.extend({
+        tagName: 'div',
+        template: _.template($('#b-person-view-template').html()),
 
-		events: {
-			'click .name, .name + a': 'editName',
-			'click #b-person-delete': 'deletePerson',
-			'blur h2': 'saveName',
-			'change select[name=enabled], select[name=superuser]': 'toggleAttribute'
-		},
+        events: {
+            'click #b-person-delete': 'deletePerson',
+            'blur h2': 'saveName',
+            'change select[name=enabled], select[name=superuser]': 'toggleAttribute'
+        },
 
-		initialize: function(options) {
-			this.groups = options.groups;
-			this.sites = options.sites;
+        initialize: function(options) {
+            this.groups = options.groups;
+            this.sites = options.sites;
+            this.people = options.people;
 
-			this.listenTo(this.model, 'destroy', this.remove);
-		},
+            this.listenTo(this.model, 'destroy', this.remove);
+        },
 
-		editName: function(e) {
-			e.preventDefault();
+        deletePerson: function() {
+            this.model.destroy();
+        },
 
-			this.$name
-				.removeClass(BoomCMS.editableClass)
-				.focus();
-		},
+        render: function() {
+            var person = this.model,
+                groups = this.groups,
+                sites = this.sites;
 
-		deletePerson: function() {
-			this.model.destroy();
-		},
+            this.$el.html(this.template({
+                person: person,
+                groups: groups,
+                selectedGroups: this.model.getGroups(),
+                sites: sites,
+                createdBy: this.people.get(person.getCreatedBy())
+            }))
+            .ui();
 
-		render: function() {
-			var person = this.model,
-				groups = this.groups,
-				sites = this.sites;
+            this.$name = this.$('.name').boomcmsEditableHeading();
 
-			this.$el.html(this.template({
-				person: person,
-				groups: groups,
-				selectedGroups: this.model.getGroups(),
-				sites: sites
-			}));
+            this.$('select[name="groups[]"]')
+                    .chosen()
+                    .change(function(event, data) {
+                        if (typeof(data.selected) !== 'undefined') {
+                            return person.addGroup(groups.get(data.selected));
+                        }
 
-			this.$name = this.$('.name').addClass(BoomCMS.editableClass);
+                        return person.removeGroup(person.groups.get(data.deselected));
+                    });
 
-			this.$('select[name="groups[]"]')
-					.chosen()
-					.change(function(event, data) {
-						if (typeof(data.selected) !== 'undefined') {
-							return person.addGroup(groups.get(data.selected));
-						}
+            this.$('select[name=sites]')
+                    .chosen()
+                    .change(function(event, data) {
+                        if (typeof(data.selected) !== 'undefined') {
+                            return person.addSite(sites.get(data.selected));
+                        }
 
-						return person.removeGroup(person.groups.get(data.deselected));
-					});
+                        return person.removeSite(person.sites.get(data.deselected));
+                    });
 
-			this.$('select[name=sites]')
-					.chosen()
-					.change(function(event, data) {
-						if (typeof(data.selected) !== 'undefined') {
-							return person.addSite(sites.get(data.selected));
-						}
+            return this;
+        },
 
-						return person.removeSite(person.sites.get(data.deselected));
-					});
+        saveName: function(e) {
+            e.preventDefault();
 
-			return this;
-		},
+            this.model
+                .set('name', this.$name.text())
+                .save();
+        },
 
-		saveName: function(e) {
-			e.preventDefault();
+        toggleAttribute: function(e) {
+            var $select = $(e.target),
+                value = $select.find(':selected').val();
 
-			this.model.set('name', this.$name.text());
-			this.$name.addClass(BoomCMS.editableClass);
-
-			this.model.save();
-		},
-
-		toggleAttribute: function(e) {
-			var $select = $(e.target),
-				value = $select.find(':selected').val();
-
-			this.model
-				.set($select.attr('name'), value)
-				.save();
-		}
-	});
+            this.model
+                .set($select.attr('name'), value)
+                .save();
+        }
+    });
 }(jQuery, Backbone, BoomCMS));

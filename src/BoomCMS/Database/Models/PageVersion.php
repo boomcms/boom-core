@@ -16,17 +16,19 @@ class PageVersion extends Model implements PageVersionInterface
     const ATTR_PAGE = 'page_id';
     const ATTR_TEMPLATE = 'template_id';
     const ATTR_TITLE = 'title';
-    const ATTR_EDITED_BY = 'edited_by';
-    const ATTR_EDITED_AT = 'edited_time';
+    const ATTR_CREATED_BY = 'created_by';
+    const ATTR_CREATED_AT = 'created_at';
     const ATTR_EMBARGOED_UNTIL = 'embargoed_until';
     const ATTR_PENDING_APPROVAL = 'pending_approval';
     const ATTR_CHUNK_TYPE = 'chunk_type';
     const ATTR_CHUNK_ID = 'chunk_id';
+    const ATTR_RESTORED_FROM = 'restored_from';
 
     protected $casts = [
         self::ATTR_PAGE             => 'integer',
         self::ATTR_PENDING_APPROVAL => 'boolean',
         self::ATTR_CHUNK_ID         => 'integer',
+        self::ATTR_RESTORED_FROM    => 'integer',
     ];
 
     protected $table = 'page_versions';
@@ -48,7 +50,7 @@ class PageVersion extends Model implements PageVersionInterface
 
     public function editedBy()
     {
-        return $this->belongsTo(Person::class, 'edited_by');
+        return $this->belongsTo(Person::class, 'created_by');
     }
 
     /**
@@ -82,7 +84,7 @@ class PageVersion extends Model implements PageVersionInterface
      */
     public function getEditedTime()
     {
-        return (new DateTime())->setTimestamp($this->{self::ATTR_EDITED_AT});
+        return (new DateTime())->setTimestamp($this->{self::ATTR_CREATED_AT});
     }
 
     /**
@@ -102,8 +104,8 @@ class PageVersion extends Model implements PageVersionInterface
     {
         return $this
             ->where(self::ATTR_PAGE, $this->getPageId())
-            ->where(self::ATTR_EDITED_AT, '>', $this->getEditedTime()->getTimestamp())
-            ->orderBy(self::ATTR_EDITED_AT, 'asc')
+            ->where(self::ATTR_CREATED_AT, '>', $this->getEditedTime()->getTimestamp())
+            ->orderBy(self::ATTR_CREATED_AT, 'asc')
             ->first();
     }
 
@@ -124,9 +126,17 @@ class PageVersion extends Model implements PageVersionInterface
     {
         return $this
             ->where(self::ATTR_PAGE, $this->getPageId())
-            ->where(self::ATTR_EDITED_AT, '<', $this->getEditedTime()->getTimestamp())
-            ->orderBy(self::ATTR_EDITED_AT, 'desc')
+            ->where(self::ATTR_CREATED_AT, '<', $this->getEditedTime()->getTimestamp())
+            ->orderBy(self::ATTR_CREATED_AT, 'desc')
             ->first();
+    }
+
+    /**
+     * @return int
+     */
+    public function getRestoredVersionId()
+    {
+        return $this->{self::ATTR_RESTORED_FROM};
     }
 
     /**
@@ -244,37 +254,6 @@ class PageVersion extends Model implements PageVersionInterface
     }
 
     /**
-     * Set the time when the version was created.
-     *
-     * @param DateTime $time
-     *
-     * @return $this
-     */
-    public function setEditedAt(DateTime $time)
-    {
-        $this->{self::ATTR_EDITED_AT} = $time->getTimestamp();
-
-        return $this;
-    }
-
-    /**
-     * Set the user who created the page version.
-     *
-     * This can be set to null to allow page content to be changed programmatically,
-     * when a real user may not be logged in.
-     *
-     * @param null|PersonInterface $person
-     *
-     * @return $this
-     */
-    public function setEditedBy(PersonInterface $person = null)
-    {
-        $this->{self::ATTR_EDITED_BY} = ($person === null) ? null : $person->getId();
-
-        return $this;
-    }
-
-    /**
      * Set the page that the version belongs to.
      *
      * @param PageInterface $page
@@ -288,6 +267,20 @@ class PageVersion extends Model implements PageVersionInterface
         return $this;
     }
 
+    /**
+     * Mark the version as being restored from another.
+     *
+     * @param PageVersionInterface $version
+     *
+     * @return $this
+     */
+    public function setRestoredFrom(PageVersionInterface $version)
+    {
+        $this->{self::ATTR_RESTORED_FROM} = $version->getId();
+
+        return $this;
+    }
+
     public function scopeLastPublished($query)
     {
         // Get the published version with the most recent embargoed time.
@@ -295,7 +288,7 @@ class PageVersion extends Model implements PageVersionInterface
         return $query
             ->whereNotNull(self::ATTR_EMBARGOED_UNTIL)
             ->where(self::ATTR_EMBARGOED_UNTIL, '<=', time())
-            ->orderBy(self::ATTR_EDITED_AT, 'desc')
+            ->orderBy(self::ATTR_CREATED_AT, 'desc')
             ->orderBy(self::ATTR_ID, 'desc');
     }
 
@@ -308,14 +301,14 @@ class PageVersion extends Model implements PageVersionInterface
     {
         if (Editor::isHistory()) {
             return $query
-                ->where(self::ATTR_EDITED_AT, '<=', Editor::getTime()->getTimestamp())
-                ->orderBy(self::ATTR_EDITED_AT, 'desc')
+                ->where(self::ATTR_CREATED_AT, '<=', Editor::getTime()->getTimestamp())
+                ->orderBy(self::ATTR_CREATED_AT, 'desc')
                 ->orderBy(self::ATTR_ID, 'desc');
         }
 
         return (Editor::isDisabled()) ?
                 $this->scopeLastPublished($query)
-                : $query->orderBy(self::ATTR_EDITED_AT, 'desc');
+                : $query->orderBy(self::ATTR_CREATED_AT, 'desc');
     }
 
     public function scopeForPage($query, PageInterface $page)

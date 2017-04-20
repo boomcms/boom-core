@@ -1,101 +1,103 @@
 $.widget('boom.pageSettingsVisibility', {
-	changed: false,
-	baseUrl: '/boomcms/page/{page}/settings/visibility',
+    changed: false,
+    baseUrl: '/boomcms/page/{page}/settings/visibility',
 
-	bind: function() {
-		var pageVisibilityEditor = this;
+    bind: function() {
+        var pageVisibilityEditor = this;
 
-		this.element
-			.on('change', 'input, select', function() {
-				pageVisibilityEditor.changed = true;
-			})
-			.on('change', '#toggle-visible', function() {
-				pageVisibilityEditor.toggleVisibleTo(this.checked);
-			})
-			.on('change', '#b-page-visible', function() {
-				pageVisibilityEditor.toggleVisible($(this).find('option:selected').val() === '1');
-			})
-			.on('click', '.b-visibility-cancel', function() {
-				pageVisibilityEditor.options.settings.show('visibility');
-			})
-			.on('click', '.b-visibility-save', function() {
-				pageVisibilityEditor.save();
-			})
-			.on('click', '.b-visibility-preview', function() {
-				window.BoomCMS.Editor.state('preview');
-			});
+        this.element
+            .on('change', 'input, select', function() {
+                pageVisibilityEditor.changed = true;
+            })
+            .on('change', '#toggle-visible', function() {
+                pageVisibilityEditor.toggleVisibleTo(this.checked);
+            })
+            .on('change', '#b-page-visible', function() {
+                pageVisibilityEditor.toggleVisible($(this).find('option:selected').val() === '1');
+            })
+            .on('click', '.b-visibility-cancel', function() {
+                pageVisibilityEditor.options.settings.show('visibility');
+            })
+            .on('click', '.b-visibility-save', function() {
+                pageVisibilityEditor.save();
+            })
+            .on('click', '.b-visibility-preview', function() {
+                window.BoomCMS.Editor.state('preview');
+            });
 
-		this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');
-		this.toggleVisibleTo(this.elements.visibleToToggle.is(':checked'));
-	},
-	
-	_create: function() {
-		this.findElements();
-		this.bind();
-	},
+        setTimeout(function() {
+            pageVisibilityEditor.toggleVisible(pageVisibilityEditor.elements.visible.find('option:selected').val() === '1');
+            pageVisibilityEditor.toggleVisibleTo(pageVisibilityEditor.elements.visibleToToggle.is(':checked'));
+        }, 0);
+    },
 
-	disableElements: function() {
-		var elementsToDisable = ['visibleFrom', 'visibleTo', 'visibleToToggle'];
+    _create: function() {
+        this.findElements();
+        this.bind();
+    },
 
-		for (var el in elementsToDisable) {
-			this.elements[elementsToDisable[el]].attr('disabled', 'disabled');
-		}
-	},
+    disableElements: function() {
+        var elementsToDisable = ['visibleFrom', 'visibleTo', 'visibleToToggle'];
 
-	findElements: function() {
-		var $el = this.element;
+        for (var el in elementsToDisable) {
+            this.elements[elementsToDisable[el]].attr('disabled', 'disabled');
+        }
+    },
 
-		this.elements = {
-			visible: $el.find('#b-page-visible'),
-			visibleFrom: $el.find('#visible-from'),
-			visibleTo: $el.find('#visible-to'),
-			visibleToToggle: $el.find('#toggle-visible')
-		};
-	},
+    findElements: function() {
+        var $el = this.element;
 
-	save: function() {
-		var visibilityEditor = this;
+        this.elements = {
+            visible: $el.find('#b-page-visible'),
+            visibleFrom: $el.find('#visible-from'),
+            visibleTo: $el.find('#visible-to'),
+            visibleToToggle: $el.find('#toggle-visible')
+        };
+    },
 
-		if (this.changed) {
-			$.post(this.baseUrl.replace('{page}', this.options.page.id), this.element.find('form').serialize())
-				.done(function(response) {
-					new boomNotification('Page visibility saved').show();
+    save: function() {
+        var visibilityEditor = this;
 
-					visibilityEditor._trigger('done', null, response);
-				});
-		}
-	},
+        if (this.changed) {
+            $.post(this.baseUrl.replace('{page}', this.options.page.id), this.element.find('form').serialize())
+                .done(function(response) {
+                    BoomCMS.Notification('Page visibility saved');
 
-	toggleVisible: function(visible) {
-		if (visible) {
-			this.element.find('.b-visibility-toggle').slideDown();
-			this.elements.visibleFrom.removeAttr('disabled');
-			this.elements.visibleToToggle.removeAttr('disabled');
-		} else {
-			this.element.find('.b-visibility-toggle').slideUp();
-			this.disableElements();
-		}
-	},
+                    visibilityEditor._trigger('done', null, response);
+                });
+        }
+    },
 
-	toggleVisibleTo: function(disable) {
-		var visibleTo = this.elements.visibleTo;
+    toggleVisible: function(visible) {
+        if (visible) {
+            this.element.find('.b-visibility-toggle').slideDown();
+            this.elements.visibleFrom.removeAttr('disabled');
+            this.elements.visibleToToggle.removeAttr('disabled');
+        } else {
+            this.element.find('.b-visibility-toggle').slideUp();
+            this.disableElements();
+        }
+    },
 
-		if (disable) {
-			visibleTo.removeAttr('disabled');
+    toggleVisibleTo: function(disable) {
+        var visibleTo = this.elements.visibleTo;
 
-			if (visibleTo.val().toLowerCase().trim() == 'forever') {
-				visibleTo.val('');
-			}
+        if (disable) {
+            visibleTo.removeAttr('disabled');
 
-			visibleTo.focus();
-		} else {
-			visibleTo.attr('disabled', 'disabled');
+            if (visibleTo.val().toLowerCase() === 'forever') {
+                visibleTo.val('');
+            }
 
-			if (! visibleTo.val().trim().length) {
-				visibleTo.val('forever');
-			}
+            visibleTo.focus();
+        } else {
+            visibleTo.attr('disabled', 'disabled');
 
-			visibleTo.blur();
-		}
-	}
+            if (!visibleTo.val().length) {
+                visibleTo.val('forever');
+            }
+
+            visibleTo.blur();
+        }
+    }
 });

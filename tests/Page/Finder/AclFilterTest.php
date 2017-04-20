@@ -107,7 +107,7 @@ class AclFilterTest extends AbstractTestCase
                 $this->query
                     ->shouldReceive('where')
                     ->once()
-                    ->with(Page::ATTR_CREATED_BY, $personId)
+                    ->with('pages.created_by', $personId)
                     ->andReturnSelf();
 
                 $this->query

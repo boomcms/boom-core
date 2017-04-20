@@ -3,11 +3,11 @@
 namespace BoomCMS\Listeners;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Events\PageTitleWasChanged;
+use BoomCMS\Foundation\Events\PageEvent;
 
 class UpdatePagePrimaryURLToTitle extends CreatePagePrimaryURL
 {
-    public function urlShouldBeChanged(PageTitleWasChanged $event)
+    public function urlShouldBeChanged(PageEvent $event)
     {
         $oldTitle = $event->getOldTitle();
 

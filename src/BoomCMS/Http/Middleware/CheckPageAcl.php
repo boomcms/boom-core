@@ -6,6 +6,8 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Routing\Router;
 use Closure;
 use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CheckPageAcl
@@ -16,6 +18,11 @@ class CheckPageAcl
     protected $gate;
 
     /**
+     * @var Guard
+     */
+    protected $guard;
+
+    /**
      * @var Page
      */
     protected $page;
@@ -24,10 +31,11 @@ class CheckPageAcl
      * @param Router $router
      * @param Gate   $gate
      */
-    public function __construct(Router $router, Gate $gate)
+    public function __construct(Router $router, Guard $guard, Gate $gate)
     {
         $this->page = $router->getActivePage();
         $this->gate = $gate;
+        $this->guard = $guard;
     }
 
     /**
@@ -40,8 +48,14 @@ class CheckPageAcl
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($this->page->aclEnabled() && $this->gate->denies('view', $this->page)) {
-            abort(403);
+        if ($this->page->aclEnabled()) {
+            if (!$this->guard->check()) {
+                return new RedirectResponse(route('login'));
+            }
+
+            if ($this->gate->denies('view', $this->page)) {
+                abort(403);
+            }
         }
 
         return $next($request);

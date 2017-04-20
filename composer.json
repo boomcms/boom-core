@@ -1,38 +1,42 @@
 {
-	"name": "boomcms/boom-core",
-	"description": "Core classes for BoomCMS",
-	"license": "MIT",
-	"require": {
-		"php": ">=5.3",
-		"ext-imagick" : "*",
-		"mpratt/embera": "1.9.*",
-		"genphrase/genphrase" : "1.0.*",
-		"hautelook/phpass": "0.3.4",
-		"thujohn/rss": "~1.0",
-		"intervention/imagecache" : "2.*",
-		"laravel/framework": "5.2.*",
-		"symfony/http-kernel": "2.*",
-		"rych/bytesize": "1.0.*",
-		"laravelcollective/html": "5.2.*",
-		"doctrine/dbal": "~2.3",
-		"lootils/geo": "^0.1.1",
-		"caxy/php-htmldiff": "^0.1.3"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "4.8.*",
-		"Mockery/Mockery": "^0.9.4",
-		"laravel/laravel": "~5.1",
-		"codeclimate/php-test-reporter": "dev-master"
-	},
-	"autoload": {
-		"psr-4": {"BoomCMS\\": "src/BoomCMS/"}
-	},
-	"autoload-dev": {
-		"psr-4": {"BoomCMS\\Tests\\": "tests/"}
-	},
-	"minimum-stability" : "dev",
-	"prefer-stable": true,
-	"scripts": {
-		"test": "phpunit"
-	}
+    "name": "boomcms/boom-core",
+    "description": "Core classes for BoomCMS",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.6",
+        "ext-imagick" : "*",
+        "mpratt/embera": "1.9.*",
+        "genphrase/genphrase" : "1.*",
+        "hautelook/phpass": "1.*",
+        "thujohn/rss": "~1.0",
+        "intervention/imagecache" : "2.*",
+        "laravel/framework": "5.4.*",
+        "rych/bytesize": "1.0.*",
+        "laravelcollective/html": "5.4.*",
+        "lootils/geo": "^0.1.1",
+        "caxy/php-htmldiff": "^0.1.3",
+        "doctrine/dbal": "2.5.*",
+        "php-ffmpeg/php-ffmpeg": "0.9.*",
+        "smalot/pdfparser": "*",
+        "phpoffice/phpword": "0.13.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.*",
+        "Mockery/Mockery": "0.9.*",
+        "laravel/laravel": "5.4.*",
+        "codeclimate/php-test-reporter": "dev-master",
+        "symfony/dom-crawler": "3.0.*",
+        "laravel/browser-kit-testing": "1.*"
+    },
+    "autoload": {
+        "psr-4": {"BoomCMS\\": "src/BoomCMS/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"BoomCMS\\Tests\\": "tests/"}
+    },
+    "minimum-stability" : "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "phpunit"
+    }
 }

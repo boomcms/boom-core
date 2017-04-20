@@ -1,5 +1,6 @@
 <?php
 
+use BoomCMS\Database\Models\Page;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -34,13 +35,19 @@ class CreatePagesTable extends Migration
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('created_time')->unsigned()->nullable();
             $table->string('primary_uri', 2048)->nullable()->index('pages_primary_uri');
-            $table->boolean('deleted')->nullable()->default(0);
             $table->integer('feature_image_id')->unsigned()->nullable()->index('pages_feature_image_id');
-            $table->index(['deleted', 'visible', 'visible_from', 'visible_to', 'visible_in_nav'], 'pages_sitelist');
-            $table->index(['deleted', 'visible_in_nav_cms', 'visible_from'], 'pages_cmslist');
+            $table->index(['visible', 'visible_from', 'visible_to', 'visible_in_nav'], 'pages_sitelist');
+            $table->index(['visible_in_nav_cms', 'visible_from'], 'pages_cmslist');
             $table->integer('parent_id')->unsigned()->nullable();
             $table->foreign('parent_id')->references('id')->on('pages')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->boolean('disable_delete')->default(false);
+
+            $table->softDeletes();
+            $table->integer('deleted_by')->unsigned()->nullable();
+            $table->tinyinteger(Page::ATTR_ADD_BEHAVIOUR)->default(1);
+            $table->tinyinteger(Page::ATTR_CHILD_ADD_BEHAVIOUR)->default(1);
+            $table->index(['deleted_at', 'parent_id', 'visible']);
+            $table->boolean(Page::ATTR_ENABLE_ACL)->default(false);
         });
     }
 

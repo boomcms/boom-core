@@ -21,13 +21,14 @@ class Tags extends Controller
      *
      * @return int
      */
-    public function add(Request $request, Site $site, Page $page)
+    public function add(Request $request, Page $page)
     {
         $this->auth($page);
 
         $name = $request->input('tag');
         $group = $request->input('group');
-        $tag = TagFacade::findOrCreate($site, $name, $group);
+
+        $tag = TagFacade::findOrCreate($name, $group);
 
         $page->addTag($tag);
 
@@ -59,7 +60,7 @@ class Tags extends Controller
             $grouped[$group][] = $t;
         }
 
-        $tags = Helpers::getTags($page)->map(function ($tag) {
+        $tags = Helpers::getTags($page)->map(function (Tag $tag) {
             return $tag->getId();
         });
 

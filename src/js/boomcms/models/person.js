@@ -1,70 +1,78 @@
 (function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Person = BoomCMS.Model.extend({
-		urlRoot: BoomCMS.urlRoot + 'person',
+    BoomCMS.Person = BoomCMS.Model.extend({
+        urlRoot: BoomCMS.urlRoot + 'person',
 
-		initialize: function() {
-			var person = this;
+        initialize: function() {
+            var person = this;
 
-			this.groups = new BoomCMS.Collections.Groups(this.get('groups'));
-			this.sites = new BoomCMS.Collections.Sites(this.get('sites'));
+            this.groups = new BoomCMS.Collections.Groups(this.get('groups'));
+            this.sites = new BoomCMS.Collections.Sites(this.get('sites'));
 
-			this.groups
-				.on('add', function(group) {
-					person.addRelationship('group', group.getId());
-				})
-				.on('remove', function(group) {
-					person.removeRelationship('group', group.getId());
-				});
+            this.groups
+                .on('add', function(group) {
+                    person.addRelationship('group', group.getId());
+                })
+                .on('remove', function(group) {
+                    person.removeRelationship('group', group.getId());
+                });
 
-			this.sites
-				.on('add', function(site) {
-					person.addRelationship('site', site.getId());
-				})
-				.on('remove', function(site) {
-					person.removeRelationship('site', site.getId());
-				});
-		},
+            this.sites
+                .on('add', function(site) {
+                    person.addRelationship('site', site.getId());
+                })
+                .on('remove', function(site) {
+                    person.removeRelationship('site', site.getId());
+                });
+        },
 
-		addGroup: function(group) {
-			return this.groups.add(group);
-		},
+        addGroup: function(group) {
+            return this.groups.add(group);
+        },
 
-		addSite: function(site) {
-			return this.sites.add(site);
-		},
+        addSite: function(site) {
+            return this.sites.add(site);
+        },
 
-		getEmail: function() {
-			return this.get('email');
-		},
+        getCreatedAt: function() {
+            return this.get('created_at');
+        },
 
-		getGroups: function() {
-			return this.groups;
-		},
+        getCreatedBy: function() {
+            return this.get('created_by');
+        },
 
-		getLastLogin: function() {
-			return this.get('last_login');
-		},
+        getEmail: function() {
+            return this.get('email');
+        },
 
-		getName: function() {
-			return this.get('name');
-		},
+        getGroups: function() {
+            return this.groups;
+        },
 
-		isEnabled: function() {
-			return this.get('enabled') === true;
-		},
+        getLastLogin: function() {
+            return this.get('last_login');
+        },
 
-		isSuperuser: function() {
-			return this.get('superuser') === true;
-		},
+        getName: function() {
+            return this.get('name');
+        },
 
-		removeGroup: function(group) {
-			this.groups.remove(group);
-		},
+        isEnabled: function() {
+            return this.get('enabled') === true;
+        },
 
-		removeSite: function(site) {
-			return this.sites.remove(site);
-		}
-	});
+        isSuperuser: function() {
+            return this.get('superuser') === true;
+        },
+
+        removeGroup: function(group) {
+            this.groups.remove(group);
+        },
+
+        removeSite: function(site) {
+            return this.sites.remove(site);
+        }
+    });
 }(BoomCMS));

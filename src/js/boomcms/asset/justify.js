@@ -1,196 +1,199 @@
 $.widget('boom.justifyAssets', {
-	targetRightOffset : null,
-	windowWidth : null,
+    targetRightOffset : null,
+    windowWidth : null,
 
-	closeRemainingGap: function() {
-		var lastRowGap = this.currentRow.determineGap(this.targetRightOffset);
+    closeRemainingGap: function() {
+        var lastRowGap = this.currentRow.determineGap(this.targetRightOffset);
 
-		if (lastRowGap <= (this.element.outerWidth(true) * 0.75)) {
-			this.currentRow.expandTo(this.targetRightOffset);
-		} else if (this.rows > 1) {
-			this.prevRow.merge(currentRow);
-		}
-	},
+        if (lastRowGap <= (this.element.outerWidth(true) * 0.75)) {
+            this.currentRow.expandTo(this.targetRightOffset);
+        } else if (this.rows > 1) {
+            this.prevRow.merge(this.currentRow);
+        }
+    },
 
-	_create: function() {
-		var justifyAssets = this,
-			resizeTimeout;
+    _create: function() {
+        var justifyAssets = this,
+            resizeTimeout;
 
-		this.window.on('resize', function() {
-			if (resizeTimeout !== undefined) {
-				clearTimeout(resizeTimeout);
-			}
+        this.window.on('resize', function() {
+            if (resizeTimeout !== undefined) {
+                clearTimeout(resizeTimeout);
+            }
 
-			resizeTimeout = setTimeout(function() {
-				justifyAssets.justify();
-			}, 50);
-		});
-	},
+            resizeTimeout = setTimeout(function() {
+                justifyAssets.justify();
+            }, 50);
+        });
+    },
 
-	_init: function() {
-		this.justify();
-	},
+    _init: function() {
+        this.justify();
+    },
 
-	_getOffset: function($el) {
-		var offset = $el.offset();
-		offset.right = this.windowWidth - (offset.left + $el.outerWidth(true));
+    _getOffset: function($el) {
+        var offset = $el.offset();
+        offset.right = this.windowWidth - (offset.left + $el.outerWidth(true));
 
-		return offset;
-	},
+        return offset;
+    },
 
-	hasElements: function() {
-		return this.element.children().length > 1;
-	},
+    hasElements: function() {
+        return this.element.children().length > 0;
+    },
 
-	justify: function() {
-		this.currentRow = new Row();
-		this.prevRow = null;
-		this.rows = 0;
-		this.windowWidth = $(window).width();
-		this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
+    justify: function() {
+        this.currentRow = new Row();
+        this.prevRow = null;
+        this.rows = 0;
+        this.windowWidth = $(window).width();
+        this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
 
-		if (this.hasElements()) {
-			this.resetInitialDimensions();
-			this.resizeElements();
-			this.closeRemainingGap();
-		}
-	},
+        if (this.hasElements()) {
+            this.resetInitialDimensions();
+            this.resizeElements();
+            this.closeRemainingGap();
+        }
+    },
 
-	resetInitialDimensions: function() {
-		this.element.children().each(function(index, element) {
-			var $child = $(element);
+    resetInitialDimensions: function() {
+        this.element.children().each(function(index, element) {
+            var $child = $(element);
 
-			if (!$child.css('height') || !$child.attr('data-aspect-ratio')) {
-				$child.remove();
-				return true;
-			}
+            if (!$child.css('height') || !$child.attr('data-aspect-ratio')) {
+                $child.remove();
+                return true;
+            }
 
-			$child.css({
-				height: '160px',
-				width: Math.floor(160 * $child.attr('data-aspect-ratio')) + 'px'
-			});
-		});
-	},
+            $child.css({
+                height: '160px',
+                width: Math.floor(160 * $child.attr('data-aspect-ratio')) + 'px'
+            });
+        });
+    },
 
-	resizeElements: function() {
-		var justifyAssets = this;
+    resizeElements: function() {
+        var justifyAssets = this;
 
-		this.element.children().each(function(index, element) {
-			var $child = $(element);
+        this.element.children().each(function(index, element) {
+            var $child = $(element);
 
-			$child.offset = justifyAssets._getOffset($child);
+            $child.offset = justifyAssets._getOffset($child);
 
-			justifyAssets.prevRow = jQuery.extend({}, justifyAssets.currentRow);
-			justifyAssets.currentRow.addElementToRow($child);
+            justifyAssets.prevRow = jQuery.extend({}, justifyAssets.currentRow);
+            justifyAssets.currentRow.addElementToRow($child);
 
-			if (justifyAssets.currentRow.isAtStart() && index > 0) {
-				this.rows++;
-				justifyAssets.prevRow.expandTo(justifyAssets.targetRightOffset);
-			}
-		});
-	}
+            if (justifyAssets.currentRow.isAtStart() && index > 0) {
+                this.rows++;
+                justifyAssets.prevRow.expandTo(justifyAssets.targetRightOffset);
+            }
+        });
+    }
 });
 
 function Row() {
-	this.elements = [];
-	this.aspectRatioSum = 0;
+    this.elements = [];
+    this.aspectRatioSum = 0;
 
-	Row.prototype.addElementToRow = function($el) {
-		if (this._elementStartsRow($el)) {
-			this.elements = [];
-			this.aspectRatioSum = 0;
-		}
+    Row.prototype.addElementToRow = function($el) {
+        if (this._elementStartsRow($el)) {
+            this.elements = [];
+            this.aspectRatioSum = 0;
+        }
 
-		this.elements.push($el);
-		this.aspectRatioSum += parseFloat($el.attr('data-aspect-ratio'));
+        this.elements.push($el);
+        this.aspectRatioSum += parseFloat($el.attr('data-aspect-ratio'));
 
-		return this;
-	};
+        return this;
+    };
 
-	Row.prototype.determineGap = function(offset) {
-		return this.elements[this.elements.length - 1].offset.right - offset;
-	};
+    Row.prototype.determineGap = function(offset) {
+        return this.elements[this.elements.length - 1].offset.right - offset;
+    };
 
-	Row.prototype.expandTo = function(offset) {
-		var endOfRowGap = this.determineGap(offset) - 1;
+    Row.prototype.expandTo = function(offset) {
+        var endOfRowGap = this.determineGap(offset) - 1;
 
-		if (endOfRowGap > 0) {
-			var increaseBy = Math.floor(endOfRowGap / this.aspectRatioSum);
-			var remainder = Math.floor(endOfRowGap) - 1;
+        if (endOfRowGap > 0) {
+            var increaseBy = Math.floor(endOfRowGap / this.aspectRatioSum);
+            var remainder = Math.floor(endOfRowGap) - 1;
 
-			if (increaseBy <= endOfRowGap) {
-				$.each(this.elements, function(index, $el) {
-					var incWidth = Math.floor(increaseBy * $el.attr('data-aspect-ratio'));
-					remainder -= incWidth;
+            if (increaseBy <= endOfRowGap) {
+                $.each(this.elements, function(index, $el) {
+                    var incWidth = Math.floor(increaseBy * $el.attr('data-aspect-ratio'));
+                    remainder -= incWidth;
 
-					$el
-						.height('+=' + increaseBy)
-						.width('+=' + incWidth)
-						.trigger('justified');
-				});
-			}
+                    $el
+                        .height('+=' + increaseBy)
+                        .width('+=' + incWidth);
+                });
+            }
 
-			if (remainder > 0) {
-				while (remainder > 1) {
-					$.each(this.elements, function(index, $el) {
-						if (remainder <= 1) {
-							return false;
-						}
+            if (remainder > 0) {
+                while (remainder > 1) {
+                    $.each(this.elements, function(index, $el) {
+                        if (remainder <= 1) {
+                            return false;
+                        }
 
-						$el.css('margin-right', '+=1');
-						remainder -= 1;
-					});
-				}
-			}
-		}
-	};
+                        $el.css('margin-right', '+=1');
+                        remainder -= 1;
+                    });
+                }
+            }
+        }
 
-	Row.prototype.shrinkBy = function(size) {
+        $.each(this.elements, function(index, $el) {
+            $el.trigger('justified');
+        });
+    };
 
-		var total_aspect_ratio = 0;
-		$.each(this.elements, function(index, $el) {
-			total_aspect_ratio += $el.data('aspect-ratio');
-		});
+    Row.prototype.shrinkBy = function(size) {
 
-		$.each(this.elements, function(index, $el) {
-			var reduceBy = size * ($el.data('aspect-ratio') / total_aspect_ratio);
+        var total_aspect_ratio = 0;
+        $.each(this.elements, function(index, $el) {
+            total_aspect_ratio += $el.data('aspect-ratio');
+        });
 
-			$el
-				.width('-=' + Math.ceil(reduceBy))
-				.height('-=' + Math.ceil(reduceBy / $el.data('aspect-ratio')));
-		});
-	};
+        $.each(this.elements, function(index, $el) {
+            var reduceBy = size * ($el.data('aspect-ratio') / total_aspect_ratio);
 
-	Row.prototype.getWidth = function() {
-		var width = 0;
+            $el
+                .width('-=' + Math.ceil(reduceBy))
+                .height('-=' + Math.ceil(reduceBy / $el.data('aspect-ratio')));
+        });
+    };
 
-		$.each(this.elements, function(index, $el) {
-			width += $el.outerWidth(true);
-		});
+    Row.prototype.getWidth = function() {
+        var width = 0;
 
-		return width;
-	};
+        $.each(this.elements, function(index, $el) {
+            width += $el.outerWidth(true);
+        });
 
-	Row.prototype.isAtStart = function() {
-		return this.elements.length <= 1;
-	};
+        return width;
+    };
 
-	Row.prototype.merge = function(row) {
-		var width = row.getWidth();
-		this.shrinkBy(width);
+    Row.prototype.isAtStart = function() {
+        return this.elements.length <= 1;
+    };
 
-		var heightDif = this.elements[0].height() - row.elements[0].height();
+    Row.prototype.merge = function(row) {
+        var width = row.getWidth();
+        this.shrinkBy(width);
 
-		$.each(row.elements, function(index, $el) {
-			$el.height('+=' + heightDif);
-		});
-	};
+        var heightDif = this.elements[0].height() - row.elements[0].height();
 
-	Row.prototype._elementStartsRow = function($el) {
-		if ( ! this.elements.length) {
-			return true;
-		}
+        $.each(row.elements, function(index, $el) {
+            $el.height('+=' + heightDif);
+        });
+    };
 
-		return ($el.offset.top >= (this.elements[this.elements.length - 1].offset.top + $el.height()));
-	};
+    Row.prototype._elementStartsRow = function($el) {
+        if ( ! this.elements.length) {
+            return true;
+        }
+
+        return ($el.offset.top >= (this.elements[this.elements.length - 1].offset.top + $el.height()));
+    };
 }

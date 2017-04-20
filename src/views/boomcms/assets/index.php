@@ -9,7 +9,10 @@
             <?= $button('', 'view-assets', ['id' => 'b-assets-view-assets', 'class' => 'b-button-textonly']) ?>
             <?= $button('', 'view-albums', ['id' => 'b-assets-view-albums', 'class' => 'b-button-textonly']) ?>
 
-			<?= $button('upload', 'upload', ['id' => 'b-assets-upload']) ?>
+            <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
+    			<?= $button('upload', 'upload', ['id' => 'b-assets-upload']) ?>
+            <?php endif ?>
+
 			<?= $button('trash-o', 'delete', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-delete', 'disabled' => 'disabled']) ?>
 			<?= $button('download', 'download', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-download', 'disabled' => 'disabled']) ?>
 			<?= $button('tags', 'add-tags', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-tag', 'disabled' => 'disabled']) ?>
@@ -29,7 +32,10 @@
 	</div>
 
     <div id="b-assets-content">
-        <?= view('boomcms::assets.upload') ?>
+        <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
+            <?= view('boomcms::assets.upload') ?>
+        <?php endif ?>
+
         <?= view('boomcms::assets.thumbs') ?>
         <?= view('boomcms::assets.view-albums') ?>
     </div>
@@ -42,6 +48,8 @@
 <script type="text/template" id="b-assets-selection-template">
     <?= view('boomcms::assets.selection') ?>
 </script>
+
+<script defer type="text/javascript" src="/vendor/boomcms/boom-core/js/asset-manager.js"></script>
 
 <script type="text/javascript">
     window.onload = function() {

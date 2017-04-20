@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Jobs;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Person;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -38,37 +37,7 @@ class CreatePageTest extends AbstractTestCase
         $this->expectsEvents(PageWasCreated::class);
     }
 
-    public function testSiteIdOfNewPageIsSet()
-    {
-        $this->newPage->shouldReceive('addVersion');
-
-        PageFacade::shouldReceive('create')
-            ->once()
-            ->with(m::subset([
-                Page::ATTR_SITE => $this->site->getId(),
-            ]))
-            ->andReturn($this->newPage);
-
-        $job = new CreatePage(new Person(), $this->site);
-        $job->handle();
-    }
-
-    public function testCreatedTimeIsSet()
-    {
-        $this->newPage->shouldReceive('addVersion');
-
-        PageFacade::shouldReceive('create')
-            ->once()
-            ->with(m::subset([
-                Page::ATTR_CREATED_AT => time(),
-            ]))
-            ->andReturn($this->newPage);
-
-        $job = new CreatePage(new Person(), $this->site, null);
-        $job->handle();
-    }
-
-    public function testSiteIdAndParentIdAreSet()
+    public function testParentIdIsSet()
     {
         $this->newPage->shouldReceive('addVersion');
 
@@ -81,16 +50,15 @@ class CreatePageTest extends AbstractTestCase
         PageFacade::shouldReceive('create')
             ->once()
             ->with(m::subset([
-                Page::ATTR_SITE   => $this->site->getId(),
                 Page::ATTR_PARENT => $this->parent->getId(),
             ]))
             ->andReturn($this->newPage);
 
-        $job = new CreatePage(new Person(), $this->site, $this->parent);
+        $job = new CreatePage($this->parent);
         $job->handle();
     }
 
-    public function testNewPageShouldNotHaveVisibleFromSetToBeInvisible()
+    public function testNewPageShouldHaveVisibleFromSet()
     {
         $this->newPage->shouldReceive('addVersion');
 
@@ -103,11 +71,11 @@ class CreatePageTest extends AbstractTestCase
         PageFacade::shouldReceive('create')
             ->once()
             ->with(m::on(function (array $attrs) {
-                return !isset($attrs['visible_from']);
+                return isset($attrs['visible_from']);
             }))
             ->andReturn($this->newPage);
 
-        $job = new CreatePage(new Person(), $this->site, $this->parent);
+        $job = new CreatePage($this->parent);
         $job->handle();
     }
 
@@ -126,7 +94,7 @@ class CreatePageTest extends AbstractTestCase
             ->once()
             ->andReturn($this->newPage);
 
-        $job = new CreatePage(new Person(), $this->site, $this->parent);
+        $job = new CreatePage($this->parent);
         $job->setTitle($title);
         $job->handle();
     }

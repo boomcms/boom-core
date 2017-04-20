@@ -2,32 +2,67 @@
 
 namespace BoomCMS\Chunk;
 
-use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Link\Link;
 use Illuminate\Support\Facades\View;
 
 class Linkset extends BaseChunk
 {
     protected $defaultTemplate = 'quicklinks';
 
+    /**
+     * @var int
+     */
+    protected $limit = 0;
+
+    /**
+     * @var links
+     */
     protected $links;
 
-    public function __construct(Page $page, array $attrs, $slotname)
-    {
-        parent::__construct($page, $attrs, $slotname);
+    /**
+     * @var array
+     */
+    protected $options = [
+        'title'      => false,
+        'link-text'  => false,
+        'link-title' => false,
+        'link-asset' => false,
+    ];
 
-        if (isset($this->attrs['links'])) {
-            foreach ($this->attrs['links'] as &$link) {
-                $link = new Linkset\Link($link);
-            }
+    /**
+     * @return array
+     */
+    public function attributes()
+    {
+        $attrs = [
+            $this->attributePrefix.'limit' => $this->limit,
+        ];
+
+        foreach ($this->options as $key => $value) {
+            $attrs[$this->attributePrefix.$key] = $value;
         }
+
+        return $attrs;
     }
 
-    protected function show()
+    /**
+     * Make this a 'feature' linkset.
+     *
+     * Used for backwards compatibility for feature boxes and link chunks
+     *
+     * Sets limit to 1 and enables all link options
+     *
+     * @return $this
+     */
+    public function feature(): Linkset
     {
-        return View::make($this->viewPrefix."linkset.$this->template", [
-            'title' => $this->getTitle(),
-            'links' => $this->getLinks(),
-        ])->render();
+        $this->limit = 1;
+
+        foreach (['link-text', 'link-title', 'link-asset'] as $option) {
+            $this->options[$option] = true;
+        }
+
+        return $this;
     }
 
     /**
@@ -37,14 +72,23 @@ class Linkset extends BaseChunk
      *
      * @return array
      */
-    public function getLinks()
+    public function getLinks(): array
     {
         if ($this->links !== null) {
             return $this->links;
         }
 
-        $this->links = isset($this->attrs['links']) ?
-            $this->removeInvalidLinks($this->attrs['links']) : [];
+        $this->links = $this->attrs['links'] ?? [];
+
+        foreach ($this->links as $i => &$link) {
+            $target = empty($link['target_page_id']) ? $link['url'] : $link['target_page_id'];
+
+            $link = Link::factory($target, $link);
+
+            if (!$link->isValid() || (!$this->editable && !$link->isVisible())) {
+                unset($this->links[$i]);
+            }
+        }
 
         return $this->links;
     }
@@ -65,30 +109,25 @@ class Linkset extends BaseChunk
     }
 
     /**
-     * Removes internal links to delted pages.
+     * @param array $options
      *
-     * And internal links to invisible pages when the editor is disabled.
-     *
-     * @param array $links
-     *
-     * @return array
+     * @return $this
      */
-    protected function removeInvalidLinks(array $links)
+    public function setOptions(array $options): Linkset
     {
-        foreach ($links as $i => $item) {
-            $link = $item->getLink();
+        $this->options = $options + $this->options;
 
-            if ($link->isExternal()) {
-                continue;
-            }
+        return $this;
+    }
 
-            if (!$link->getPage() ||
-                (!$this->editable && !$link->getPage()->isVisible())
-            ) {
-                unset($links[$i]);
-            }
-        }
+    protected function show()
+    {
+        $links = $this->getLinks();
 
-        return $links;
+        return View::make($this->viewPrefix."linkset.$this->template", [
+            'title'  => $this->getTitle(),
+            'links'  => $links,
+            'target' => $links[0],
+        ]);
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
@@ -15,7 +16,6 @@ class Kernel extends HttpKernel
 {
     protected $middleware = [
         CheckForMaintenanceMode::class,
-        Middleware\RouteSite::class,
     ];
 
     /**
@@ -28,6 +28,7 @@ class Kernel extends HttpKernel
             StartSession::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
+            SubstituteBindings::class,
             Middleware\DefineGlobalViewSharedVariables::class,
         ],
     ];

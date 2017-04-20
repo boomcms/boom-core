@@ -23,6 +23,15 @@
                     </a>
                 </li>
 
+                <% if (asset.isDocument()) { %>
+                    <li>
+                        <a href="#b-asset-preview"<% if (section === 'preview') { %> class="selected"<% } %> data-section='preview'>
+                            <span class="fa fa-eye"></span>
+                            <?= trans('boomcms::asset.preview.heading') ?>
+                        </a>
+                    </li>
+                <% } %>
+
                 <% if (!asset.isImage()) { %>
                     <li>
                         <a href="#b-assets-view-thumbnail"<% if (section === 'thumbnail') { %> class="selected"<% } %> data-section='thumbnail'>
@@ -105,13 +114,32 @@
                         <?= trans('boomcms::asset.credits') ?>
                         <textarea id="credits" name="credits"><%= asset.getCredits() %></textarea>
                     </label>
+
+                    <label>
+                        <?= trans('boomcms::asset.published-at') ?>
+                        <input type="text" name="published_at" class="boom-datepicker" data-timestamp="<%= new Date(asset.getPublishedAt()).getTime() / 1000 %>" />
+                    </label>
+
+                    <label>
+                        <?= trans('boomcms::asset.public.title') ?>
+
+                        <select name="public">
+                            <?php foreach ([1, 0] as $value): ?>
+                                <option value="<?= $value ?>"
+                                    <% if (asset.isPublic() == <?= $value ?>) { %> selected<% } %>
+                                >
+                                    <?= trans("boomcms::asset.public.$value") ?>
+                                </option>
+                            <?php endforeach ?>
+                        </select>
+                    </label>
                 </form>
 
                 <?= $button('save', 'save-changes', ['class' => 'b-assets-save b-button-withtext']) ?>
             </div>
 
             <% if (!asset.isImage()) { %>
-                <div id="b-assets-view-thumbnail"<% if (!section || section === 'thumbnail') { %> class="selected"<% } %>>
+                <div id="b-assets-view-thumbnail"<% if (section === 'thumbnail') { %> class="selected"<% } %>>
                     <h1><?= trans('boomcms::asset.thumbnail') ?></h1>
                     <img src="<%= asset.getUrl('thumb', 500) %>?<%= Date.now() %>" alt="<?= trans('boomcms::asset.thumbnail.heading') ?>">
 
@@ -187,7 +215,7 @@
                     <dt><?= trans('boomcms::asset.filesize') ?></dt>
                     <dd><span id='filesize'><%= asset.getReadableFilesize() %></dd>
 
-                    <% if (asset.isImage()) { %>
+                    <% if (asset.getWidth() && asset.getHeight()) { %>
                         <dt><?= trans('boomcms::asset.dimensions') ?></dt>
                         <dd><%= asset.getWidth() %> x <%= asset.getHeight() %></dd>
                     <% } %>
@@ -215,6 +243,15 @@
             <div id="b-asset-albums"<% if (section === 'albums') { %> class="selected"<% } %>>
                 <?= view('boomcms::assets.albums') ?>
             </div>
+
+            <% if (asset.isDocument()) { %>
+                <div id="b-asset-preview"<% if (section === 'preview') { %> class="selected"<% } %>>
+                    <h1><?= trans('boomcms::asset.preview.heading') ?></h1>
+                    <p><?= trans('boomcms::asset.preview.about') ?></p>
+
+                    <iframe src='//docs.google.com/viewer?embedded=true&url=<%= window.location.protocol + "//" + window.location.hostname + asset.getUrl() %>'></iframe>
+                </div>
+            <% } %>
 
             <% if (asset.hasMetadata()) { %>
                 <div id="b-asset-metadata"<% if (section === 'metadata') { %> class="selected"<% } %>>

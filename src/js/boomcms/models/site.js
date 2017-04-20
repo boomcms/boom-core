@@ -1,15 +1,15 @@
 (function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.Site = BoomCMS.Model.extend({
-		urlRoot: BoomCMS.urlRoot + 'site',
+    BoomCMS.Site = BoomCMS.Model.extend({
+        urlRoot: BoomCMS.urlRoot + 'site',
 
-		defaults: {
-			id: null
-		},
+        defaults: {
+            id: null
+        },
 
-		getName: function() {
-			return this.get('name');
-		}
-	});
+        getName: function() {
+            return this.get('name');
+        }
+    });
 }(BoomCMS));

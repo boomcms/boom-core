@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Tests\Repositories;
 
-use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Repositories\Tag as TagRepository;
 use BoomCMS\Tests\AbstractTestCase;
@@ -12,19 +11,6 @@ use Mockery as m;
 class TagTest extends AbstractTestCase
 {
     /**
-     * @var Site
-     */
-    protected $site;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->site = new Site();
-        $this->site->{Site::ATTR_ID} = 1;
-    }
-
-    /**
      * @expectedException InvalidArgumentException
      */
     public function testCreateNameCannotBeEmpty()
@@ -32,9 +18,9 @@ class TagTest extends AbstractTestCase
         $model = m::mock(Tag::class);
         $model->shouldReceive('create')->never();
 
-        $repository = new TagRepository($model);
+        $repository = new TagRepository($model, $this->site);
 
-        $this->assertEquals($model, $repository->create($this->site, '', ''));
+        $this->assertEquals($model, $repository->create('', ''));
     }
 
     public function testCreate()
@@ -46,15 +32,14 @@ class TagTest extends AbstractTestCase
         $model
             ->shouldReceive('create')
             ->with([
-                Tag::ATTR_SITE  => $this->site->getId(),
                 Tag::ATTR_NAME  => $name,
                 Tag::ATTR_GROUP => $group,
             ])
             ->andReturn($model);
 
-        $repository = new TagRepository($model);
+        $repository = new TagRepository($model, $this->site);
 
-        $this->assertEquals($model, $repository->create($this->site, $name, $group));
+        $this->assertEquals($model, $repository->create($name, $group));
     }
 
     public function testFind()
@@ -62,7 +47,7 @@ class TagTest extends AbstractTestCase
         $model = m::mock(Tag::class);
         $model->shouldReceive('find')->with(1)->andReturnSelf();
 
-        $repository = new TagRepository($model);
+        $repository = new TagRepository($model, $this->site);
 
         $this->assertEquals($model, $repository->find(1));
     }
@@ -84,9 +69,9 @@ class TagTest extends AbstractTestCase
 
         $model->shouldReceive('first')->andReturnSelf();
 
-        $repository = new TagRepository($model);
+        $repository = new TagRepository($model, $this->site);
 
-        $this->assertEquals($model, $repository->findByName($this->site, 'test'));
+        $this->assertEquals($model, $repository->findByName('test'));
     }
 
     public function testFindByNameAndGroup()
@@ -115,9 +100,9 @@ class TagTest extends AbstractTestCase
 
         $model->shouldReceive('first')->andReturnSelf();
 
-        $repository = new TagRepository($model);
+        $repository = new TagRepository($model, $this->site);
 
-        $this->assertEquals($model, $repository->findByNameAndGroup($this->site, $name, $group));
+        $this->assertEquals($model, $repository->findByNameAndGroup($name, $group));
     }
 
     public function testFindBySite()
@@ -145,9 +130,9 @@ class TagTest extends AbstractTestCase
         $model->shouldReceive('orderBy')->with('name')->andReturnSelf();
         $model->shouldReceive('get')->andReturnSelf();
 
-        $repository = new TagRepository($model);
+        $repository = new TagRepository($model, $this->site);
 
-        $this->assertEquals($model, $repository->findBySite($this->site, 'test'));
+        $this->assertEquals($model, $repository->findBySite($this->site));
     }
 
     public function testFindBySlugAndGroup()
@@ -176,8 +161,8 @@ class TagTest extends AbstractTestCase
 
         $model->shouldReceive('first')->andReturnSelf();
 
-        $repository = new TagRepository($model);
-        $this->assertEquals($model, $repository->findBySlugAndGroup($this->site, $slug, $group));
+        $repository = new TagRepository($model, $this->site);
+        $this->assertEquals($model, $repository->findBySlugAndGroup($slug, $group));
     }
 
     public function testfindOrCreateReturnsExisting()
@@ -185,15 +170,15 @@ class TagTest extends AbstractTestCase
         $name = 'name';
         $group = 'group';
         $model = new Tag();
-        $repository = m::mock(TagRepository::class.'[findByNameAndGroup]', [$model]);
+        $repository = m::mock(TagRepository::class.'[findByNameAndGroup]', [$model, $this->site]);
 
         $repository
             ->shouldReceive('findByNameAndGroup')
             ->once()
-            ->with($this->site, $name, $group)
+            ->with($name, $group)
             ->andReturn($model);
 
-        $this->assertEquals($model, $repository->findOrCreate($this->site, $name, $group));
+        $this->assertEquals($model, $repository->findOrCreate($name, $group));
     }
 
     public function testfindOrCreateReturnsNew()
@@ -201,18 +186,18 @@ class TagTest extends AbstractTestCase
         $name = 'name';
         $group = 'group';
         $model = new Tag();
-        $repository = m::mock(TagRepository::class.'[findByNameAndGroup,create]', [$model]);
+        $repository = m::mock(TagRepository::class.'[findByNameAndGroup,create]', [$model, $this->site]);
 
         $repository
             ->shouldReceive('findByNameAndGroup')
-            ->with($this->site, $name, $group)
+            ->with($name, $group)
             ->andReturn(null);
 
         $repository
             ->shouldReceive('create')
-            ->with($this->site, $name, $group)
+            ->with($name, $group)
             ->andReturn($model);
 
-        $this->assertEquals($model, $repository->findOrCreate($this->site, $name, $group));
+        $this->assertEquals($model, $repository->findOrCreate($name, $group));
     }
 }

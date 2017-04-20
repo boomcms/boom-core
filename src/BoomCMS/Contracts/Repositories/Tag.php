@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Contracts\Repositories;
 
-use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 
 interface Tag
@@ -14,7 +13,7 @@ interface Tag
      *
      * @return TagInterface
      */
-    public function create(SiteInterface $site, $name, $group);
+    public function create($name, $group);
 
     /**
      * @param int $tagId
@@ -24,37 +23,33 @@ interface Tag
     public function find($tagId);
 
     /**
-     * @param SiteInterface $site
-     * @param string        $name
+     * @param string $name
      *
      * @return TagInterface
      */
-    public function findByName(SiteInterface $site, $name);
+    public function findByName($name);
 
     /**
-     * @param SiteInterface $site
-     * @param string        $name
-     * @param string        $group
+     * @param string $name
+     * @param string $group
      *
      * @return TagInterface
      */
-    public function findByNameAndGroup(SiteInterface $site, $name, $group = null);
+    public function findByNameAndGroup($name, $group = null);
 
     /**
-     * @param SiteInterface $site
-     * @param string        $slug
-     * @param string        $group
+     * @param string $slug
+     * @param string $group
      *
      * @return TagInterface
      */
-    public function findBySlugAndGroup(SiteInterface $site, $slug, $group = null);
+    public function findBySlugAndGroup($slug, $group = null);
 
     /**
-     * @param SiteInterface $site
-     * @param string        $name
-     * @param string        $group
+     * @param string $name
+     * @param string $group
      *
      * @return TagInterface
      */
-    public function findOrCreate(SiteInterface $site, $name, $group = null);
+    public function findOrCreate($name, $group = null);
 }

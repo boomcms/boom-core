@@ -1,4 +1,4 @@
-<div id="b-assets-picker">
+<div id="b-assets-picker" class="<?= Gate::allows('manageAssets', Router::getActiveSite()) ? 'show-edit' : '' ?>">
     <?= view('boomcms::assets.thumbs', ['assets' => []]) ?>
 
     <section id="b-assets-picker-sidebar">
@@ -9,7 +9,7 @@
             <?= $button('trash-o', 'Remove current asset', ['id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext']) ?>
         </section>
 
-        <?php if (Gate::allows('manageAssets', Router::getActiveSite())): ?>
+        <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
             <section id="b-assets-picker-upload">
                 <h1><?= trans('boomcms::asset.picker.upload') ?></h1>
                 <?= view('boomcms::assets.upload') ?>

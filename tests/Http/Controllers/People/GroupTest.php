@@ -45,14 +45,11 @@ class GroupTest extends BaseControllerTest
         $group = new Group();
         $group->{Group::ATTR_ID} = 1;
 
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
-
         GroupFacade::shouldReceive('create')
-            ->with($site, $name)
+            ->with($name)
             ->andReturn($group);
 
-        $this->assertEquals($group, $this->controller->store($request, $site));
+        $this->assertEquals($group, $this->controller->store($request));
     }
 
     public function testUpdate()

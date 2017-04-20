@@ -1,11 +1,13 @@
 <?php
-    $selected = isset($selected) ? $selected : 'uploaded_time desc';
+    $selected = isset($selected) ? $selected : 'created_at desc';
 
     $options = [
-        'uploaded_time desc',
-        'uploaded_time asc',
+        'created_at desc',
+        'created_at asc',
         'last_modified desc',
         'last_modified asc',
+        'published_at desc',
+        'published_at asc',
         'title asc',
         'title desc',
         'filesize asc',

@@ -13,16 +13,18 @@ class AssetVersion extends Model
     const ATTR_HEIGHT = 'height';
     const ATTR_FILENAME = 'filename';
     const ATTR_FILESIZE = 'filesize';
-    const ATTR_EDITED_AT = 'edited_at';
-    const ATTR_EDITED_BY = 'edited_by';
+    const ATTR_CREATED_AT = 'created_at';
+    const ATTR_CREATED_BY = 'created_by';
     const ATTR_EXTENSION = 'extension';
     const ATTR_MIME = 'mimetype';
     const ATTR_METADATA = 'metadata';
+    const ATTR_ASPECT_RATIO = 'aspect_ratio';
 
     protected $casts = [
-        self::ATTR_ID       => 'integer',
-        self::ATTR_ASSET    => 'integer',
-        self::ATTR_METADATA => 'array',
+        self::ATTR_ID           => 'integer',
+        self::ATTR_ASSET        => 'integer',
+        self::ATTR_METADATA     => 'array',
+        self::ATTR_ASPECT_RATIO => 'float',
     ];
 
     public $table = 'asset_versions';
@@ -34,7 +36,12 @@ class AssetVersion extends Model
 
     public function editedBy()
     {
-        return $this->belongsTo(Person::class, static::ATTR_EDITED_BY);
+        return $this->belongsTo(Person::class, static::ATTR_CREATED_BY);
+    }
+
+    public function getAspectRatio(): float
+    {
+        return $this->{self::ATTR_ASPECT_RATIO};
     }
 
     public function getAsset()
@@ -52,7 +59,7 @@ class AssetVersion extends Model
 
     public function getEditedAt()
     {
-        return (new DateTime())->setTimestamp($this->attributes[self::ATTR_EDITED_AT]);
+        return (new DateTime())->setTimestamp($this->attributes[self::ATTR_CREATED_AT]);
     }
 
     /**
@@ -130,5 +137,10 @@ class AssetVersion extends Model
         $extension = preg_replace('|[^a-z0-9]|', '', strtolower($value));
 
         $this->attributes[self::ATTR_EXTENSION] = $extension;
+    }
+
+    public function setFilenameAttribute($value)
+    {
+        $this->attributes[self::ATTR_FILENAME] = str_replace(['/', '\\'], '', $value);
     }
 }

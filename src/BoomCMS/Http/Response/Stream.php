@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Response;
 
 use BoomCMS\Contracts\Models\Asset;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -16,20 +17,16 @@ class Stream
     }
 
     /**
-     * This code has been adapted the code at http://www.tuxxin.com/php-mp4-streaming.
+     * This code has been adapted from the code at http://www.tuxxin.com/php-mp4-streaming.
      */
     public function getResponse()
     {
-        $stream = fopen($this->asset->getFilename(), 'rb');
+        $stream = AssetFacade::stream($this->asset);
+
         $size = $length = $this->asset->getFilesize();
         $start = 0;
         $end = $size - 1;
         $code = 200;
-
-        $headers = [
-            'Content-Type'  => $this->asset->getMimetype(),
-            'Accept-Ranges' => 'bytes',
-        ];
 
         if ($range = Request::header('Range')) {
             $c_start = $start;
@@ -61,8 +58,12 @@ class Stream
             $code = 206;
         }
 
-        $headers['Content-Range'] = "bytes $start-$end/$size";
-        $headers['Content-Length'] = $length;
+        $headers = [
+            'Content-Type'   => $this->asset->getMimetype(),
+            'Content-Range'  => "bytes $start-$end/$size",
+            'Content-Length' => $length,
+            'Accept-Ranges'  => 'bytes',
+        ];
 
         return Response::stream(function () use ($stream, $end) {
             $buffer = 1024 * 8;
@@ -71,12 +72,15 @@ class Stream
                 if ($p + $buffer > $end) {
                     $buffer = $end - $p + 1;
                 }
+
                 set_time_limit(0);
                 echo fread($stream, $buffer);
                 flush();
             }
 
-            fclose($stream);
+//            if (is_resource($stream)) {
+                fclose($stream);
+//            }
         }, $code, $headers);
     }
 }

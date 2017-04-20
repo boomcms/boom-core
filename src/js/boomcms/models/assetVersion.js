@@ -1,17 +1,17 @@
 (function(BoomCMS) {
-	'use strict';
+    'use strict';
 
-	BoomCMS.AssetVersion = BoomCMS.Model.extend({
-		getEditedAt: function() {
-			return this.get('edited_at');
-		},
+    BoomCMS.AssetVersion = BoomCMS.Model.extend({
+        getEditedAt: function() {
+            return this.get('created_at');
+        },
 
-		getEditedBy: function() {
-			return new BoomCMS.Person(this.get('edited_by'));
-		},
+        getEditedBy: function() {
+            return new BoomCMS.Person(this.get('edited_by'));
+        },
 
-		getThumbnail: function() {
-			return '/asset/version/' + this.getId() + '/200/0';
-		}
-	});
+        getThumbnail: function() {
+            return '/asset/' + this.get('asset_id') + '/view/200/0?version=' + this.getId();
+        }
+    });
 }(BoomCMS));

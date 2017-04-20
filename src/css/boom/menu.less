@@ -1,78 +1,85 @@
 #b-menu {
-	position: fixed;
-	z-index: 4;
-	background: @darkest-grey;
-	left: -200px;
-	width: 325px;
-	height: 100%;
-	top: 0;
-	transition: transform .2s cubic-bezier(.16, .68, .43, .99);
+    position: fixed;
+    z-index: 4;
+    background: @darkest-grey;
+    left: 0;
+    top: 0;
+    width: 325px;
+    height: 100%;
+    padding-left: 60px;
+    transition: transform 0.25s ease-in;
+    transform: translateX(-100%);
 
-	ul {
-		padding-left: 1em;
-	}
+    ul {
+        padding-left: 1rem;
+    }
 
-	li {
-		list-style-type: none;
-	}
+    li {
+        list-style-type: none;
 
-	img {
-		max-width: 80%;
-		height: auto;
-		margin: 11px auto 2em auto;
-		display: block;
-	}
+        &.break {
+            margin-top: 2rem;
+        }
+    }
 
-	a {
-		color: @white;
-		padding: 0.5em;
-		display: block;
-		text-decoration: none;
-		font-size: 1.6rem;
-		line-height: 1.4em;
+    img {
+        max-width: 80%;
+        height: auto;
+        margin: 11px auto 2em auto;
+        display: block;
+    }
 
-		span {
-			margin-right: 1em;
-		}
+    a {
+        color: @white;
+        padding: 0.5em;
+        display: block;
+        text-decoration: none;
+        font-size: 1.6rem;
+        line-height: 1.4em;
 
-		&:hover, &:focus, &:active {
-			span {
-				color: @red;
-			}
-		}
-	}
+        span {
+            margin-right: 1em;
+        }
 
-	&.pushy-left {
-		transform: translate3d(-200px, 0, 0);
-	}
+        &:hover, &:focus, &:active {
+            span {
+                color: @red;
+            }
+        }
+    }
 
-	&.pushy-open {
-		padding-left: 60px;
-		left: 0;
-		transform: translate3d(0, 0, 0);
-	}
+    body.menu-open & {
+    }
 
-	.version {
-		.text-small;
-		text-align: center;
-		color: @white;
+    .version {
+        .text-small;
+        text-align: center;
+        color: @white;
 
-		a {
-			.text-small;
-			display: inline;
-			padding: 0;
+        a {
+            .text-small;
+            display: inline;
+            padding: 0;
 
-			&:hover, &:focus {
-				text-decoration: underline;
-			}
-		}
-	}
+            &:hover, &:focus {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+body.menu-open {
+    #b-menu {
+        transition: transform 0.25s ease-out;
+        transform: translateX(0);
+    }
 }
 
 #b-menu-button {
-	position: fixed;
-	top: 0;
-	left: 5px;
-	z-index: 5;
-	margin-top: 5px;
+    position: fixed;
+    top: 0;
+    left: 5px;
+    z-index: 5;
+    margin-top: 5px;
+	background: @darkest-grey;
 }

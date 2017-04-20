@@ -1,46 +1,52 @@
-function boomNotification(message) {
-	this.message = message;
+(function($, BoomCMS) {
+    'use strict';
 
-	boomNotification.prototype.$document = $(top.document);
+    BoomCMS.Notification = function(message) {
+        this.message = message;
 
-	boomNotification.prototype.show = function() {
-		var notified = false,
-			waitingApproval = false,
-			timer,
-			notification = this,
-			message = this.message;
+        this.$document = $(top.document);
 
-		if ("Notification" in window && Notification.permission !== 'denied') {
-			waitingApproval = true;
+        this.show = function() {
+            var notified = false,
+                waitingApproval = false,
+                timer,
+                notification = this,
+                message = this.message;
 
-			Notification.requestPermission(function (permission) {
-				waitingApproval = false;
+            if ('Notification' in window && Notification.permission !== 'denied') {
+                waitingApproval = true;
 
-				if (permission === "granted") {
-					var n = new Notification('BoomCMS', {
-						body: message,
-						icon: '/vendor/boomcms/boom-core/img/logo-sq.png',
-						requireInteraction: false
-					});
+                Notification.requestPermission(function (permission) {
+                    waitingApproval = false;
 
-					notified = true;
-	
-					setTimeout(function() {
-						n.close();
-					}, 3000);
-				}
-			});
-		}
+                    if (permission === 'granted') {
+                        var n = new Notification('BoomCMS', {
+                            body: message,
+                            icon: '/vendor/boomcms/boom-core/img/logo-sq.png',
+                            requireInteraction: false
+                        });
 
-		var timer = setInterval(function() {
-			if ( ! waitingApproval && ! notified) {
-				notification.showFallback(message);
-				clearInterval(timer);
-			}
-		}, 100);
-	};
+                        notified = true;
 
-	boomNotification.prototype.showFallback = function(message) {
-		$.jGrowl(message);
-	};
-};
+                        setTimeout(function() {
+                            n.close();
+                        }, 3000);
+                    }
+                });
+            }
+
+            timer = setInterval(function() {
+                if ( ! waitingApproval && ! notified) {
+                    notification.showFallback(message);
+                    clearInterval(timer);
+                }
+            }, 100);
+        };
+
+        this.showFallback = function(message) {
+            $.jGrowl(message);
+        };
+
+        return this.show();
+    };
+}($, BoomCMS));

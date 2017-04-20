@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Support;
 
-use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Core\Asset;
@@ -43,18 +42,6 @@ abstract class Helpers
     public static function analytics()
     {
         return App::environment() === 'production' ? Settings::get('analytics') : '';
-    }
-
-    /**
-     * Get the HTML code to embed an asset.
-     *
-     * @param Asset $asset
-     *
-     * @return string
-     */
-    public static function assetEmbed(AssetInterface $asset, $height = null, $width = null)
-    {
-        return (string) $asset->getEmbedHtml($height, $width);
     }
 
     /**

@@ -5,7 +5,6 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Person as PersonRepository;
-use BoomCMS\Support\Facades\Router;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
@@ -27,7 +26,7 @@ class PersonTest extends AbstractTestCase
         parent::setUp();
 
         $this->model = m::mock(Person::class.'[where,join,whereSite,destroy,orderBy,get,with]');
-        $this->repository = m::mock(PersonRepository::class, [$this->model])->makePartial();
+        $this->repository = m::mock(PersonRepository::class, [$this->model, $this->site])->makePartial();
     }
 
     public function testDelete()
@@ -35,26 +34,9 @@ class PersonTest extends AbstractTestCase
         $model = m::mock(Person::class);
         $model->shouldReceive('delete')->once();
 
-        $repository = new PersonRepository($model);
+        $repository = new PersonRepository($model, $this->site);
 
         $this->assertEquals($repository, $repository->delete($model));
-    }
-
-    /**
-     * @expectedException BoomCMS\Exceptions\DuplicateEmailException
-     */
-    public function testCreateThrowsDuplicateEmailException()
-    {
-        $email = 'test@test.com';
-        $person = new Person(['id' => 1, 'email' => $email]);
-
-        $this->repository
-            ->shouldReceive('findByEmail')
-            ->once()
-            ->with($email)
-            ->andReturn($person);
-
-        $this->repository->create(['name' => 'test', 'email' => $email]);
     }
 
     public function testFindByGroupId()
@@ -99,6 +81,30 @@ class PersonTest extends AbstractTestCase
         $this->assertEquals($people, $this->repository->findBySite($site));
     }
 
+    public function testGetAssetUploaders()
+    {
+        $people = collect([]);
+
+        $this->model
+            ->shouldReceive('has')
+            ->once()
+            ->with('assets')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('orderBy')
+            ->once()
+            ->with(Person::ATTR_NAME, 'asc')
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('get')
+            ->once()
+            ->andReturn($people);
+
+        $this->assertEquals($people, $this->repository->getAssetUploaders());
+    }
+
     public function testRetrieveByCredentials()
     {
         $query = m::mock(Builder::class);
@@ -106,13 +112,11 @@ class PersonTest extends AbstractTestCase
         $credentials = [
             'email' => 'test@test.com',
         ];
-        $site = new Site();
-        Router::shouldReceive('getActiveSite')->once()->andReturn($site);
 
         $this->model
             ->shouldReceive('whereSite')
             ->once()
-            ->with($site)
+            ->with($this->site)
             ->andReturn($query);
 
         $query
@@ -148,13 +152,11 @@ class PersonTest extends AbstractTestCase
         $person = new Person();
         $personId = 1;
         $token = 'test';
-        $site = new Site();
-        Router::shouldReceive('getActiveSite')->once()->andReturn($site);
 
         $this->model
             ->shouldReceive('whereSite')
             ->once()
-            ->with($site)
+            ->with($this->site)
             ->andReturnSelf();
 
         $this->model
@@ -182,7 +184,7 @@ class PersonTest extends AbstractTestCase
         $person = m::mock(Person::class);
         $person->shouldReceive('save');
 
-        $repository = new PersonRepository(new Person());
+        $repository = new PersonRepository(new Person(), $this->site);
 
         $this->assertEquals($person, $repository->save($person));
     }

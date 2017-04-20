@@ -15,7 +15,7 @@ class Search extends Filter
 
     public function __construct($text)
     {
-        $this->text = addslashes(trim(strip_tags(str_replace(["\n", "\r"], '', $text))));
+        $this->text = DB::connection()->getPdo()->quote(trim(strip_tags(str_replace(["\n", "\r"], '', $text))));
     }
 
     public function build(Builder $query)
@@ -28,7 +28,8 @@ class Search extends Filter
             ->where('embargoed_until', '<=', '?')
             ->setBindings([true, $this->text, time()])
             ->groupBy('page_id')
-            ->lists('page_id');
+            ->pluck('page_id')
+            ->all();
 
         return $query->whereIn('pages.id', $pageIds);
     }
@@ -36,7 +37,7 @@ class Search extends Filter
     public function execute(Builder $query)
     {
         return $query
-            ->addSelect(DB::raw("(((match(search_texts.title) against ('{$this->text}')) * 100) + ((match(search_texts.meta) against ('{$this->text}')) * 20) + ((match(search_texts.standfirst) against ('{$this->text}')) * 10) + match(search_texts.text) against ('{$this->text}')) as rel"))
+            ->addSelect(DB::raw("(((match(search_texts.title) against (\"{$this->text}\")) * 100) + ((match(search_texts.meta) against (\"{$this->text}\")) * 20) + ((match(search_texts.standfirst) against (\"{$this->text}\")) * 10) + match(search_texts.text) against (\"{$this->text}\")) as rel"))
             ->join('search_texts', 'pages.id', '=', 'search_texts.page_id')
             ->where('search_texts.embargoed_until', '<=', time())
             ->orderBy('rel', 'desc');

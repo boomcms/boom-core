@@ -11,6 +11,13 @@
 			<directory suffix=".php">./tests/</directory>
 		</testsuite>
 	</testsuites>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src/BoomCMS/</directory>
+        </whitelist>
+    </filter>
+
 	<php>
 		<env name="APP_KEY" value="base64:W2MgfK3FYpkjijGxpQBFvL9K3SngokYEcEo0LFDfuYA=" />
         	<env name="APP_ENV" value="testing"/>

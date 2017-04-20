@@ -50,7 +50,7 @@ class Settings extends Controller
 
         return view("$this->viewPrefix.children", [
             'childTemplate'      => $page->getDefaultChildTemplateId(),
-            'grandchildTemplate' => $page->getDefaultGrandchildTemplateId(),
+            'grandchildTemplate' => $page->getGrandchildTemplateId(),
             'templates'          => $templates,
             'orderColumn'        => $orderCol,
             'orderDirection'     => $orderDirection,
@@ -100,7 +100,7 @@ class Settings extends Controller
      */
     public function getHistory(Page $page)
     {
-        $this->authorize('editFeature', $page);
+        $this->authorize('edit', $page);
 
         return view("$this->viewPrefix.history", [
             'versions' => PageVersionFacade::history($page),
@@ -326,17 +326,15 @@ class Settings extends Controller
         $page->setVisibleAtAnyTime($request->input('visible'));
 
         if ($page->isVisibleAtAnyTime()) {
-            $visibleFrom = $request->input('visible_from') > 0 ?
-                new DateTime($request->input('visible_from'))
-                : null;
+            if ($request->has('visible_from')) {
+                $page->setVisibleFrom(new DateTime($request->input('visible_from')));
+            }
 
             $visibleTo = ($request->has('toggle_visible_to')) ?
                 new DateTime($request->input('visible_to'))
                 : null;
 
-            $page
-                ->setVisibleFrom($visibleFrom)
-                ->setVisibleTo($visibleTo);
+            $page->setVisibleTo($visibleTo);
         }
 
         PageFacade::save($page);

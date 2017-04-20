@@ -3,7 +3,6 @@
 namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
-use BoomCMS\Contracts\Models\Site as SiteInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 interface Page
@@ -56,14 +55,6 @@ interface Page
      * @return Collection|PageInterface
      */
     public function findByUri($uri);
-
-    /**
-     * @param SiteInterface $site
-     * @param array|string  $uri
-     *
-     * @return Collection|PageInterface
-     */
-    public function findBySiteAndUri(SiteInterface $site, $uri);
 
     /**
      * Recurse through a section of the page tree and apply a function.

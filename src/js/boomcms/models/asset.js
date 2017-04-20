@@ -35,7 +35,6 @@
         getExtension: function() {
             return this.get('extension');
         },
-
         getFilename: function() {
             return this.get('filename');
         },
@@ -48,6 +47,10 @@
             var metadata = this.get('metadata');
 
             return (metadata !== undefined) ? metadata : {};
+        },
+
+        getPublishedAt: function() {
+            return this.get('published_at');
         },
 
         getReadableFilesize: function() {
@@ -71,7 +74,7 @@
         },
 
         getUploadedTime: function() {
-            return this.get('uploaded_time');
+            return this.get('created_at');
         },
 
         getUrl: function(action, width, height) {
@@ -125,8 +128,16 @@
             return this.getType() === 'audio';
         },
 
+        isDocument: function() {
+            return this.getType() === 'doc';
+        },
+
         isImage: function() {
             return this.getType() === 'image';
+        },
+
+        isPublic: function() {
+            return this.get('public') === true;
         },
 
         isVideo: function() {

@@ -25,7 +25,7 @@ class CreatePagePrimaryUri extends Command
     {
         $url = ($this->location !== null) ?
             $this->location
-            : URLHelper::fromTitle($this->page->getSite(), $this->prefix, $this->page->getTitle());
+            : URLHelper::fromTitle($this->prefix, $this->page->getTitle());
 
         $url = URLFacade::create($url, $this->page, true);
         Bus::dispatch(new MakeURLPrimary($url));

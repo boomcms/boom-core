@@ -7,7 +7,9 @@
     </section>
 
     <section id="b-tags-search">
-        <?= view('boomcms::assets.search.tag', ['tags' => $chunk->getTags()]) ?>
+        <h2><?= trans('boomcms::asset.search.tag') ?></h2>
+        <p><?= trans('boomcms::editor.chunk.library.tag-info') ?></p>
+        <?= view('boomcms::assets.search.tag', ['tags' => $chunk->getTags()]) ?>        
     </section>
 
     <section>

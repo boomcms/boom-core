@@ -3,44 +3,42 @@
 namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
+use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetObject;
-use BoomCMS\Database\Models\AssetVersion;
-use BoomCMS\Database\Models\Person as PersonModel;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface Asset
 {
-    public function __construct(AssetObject $model, AssetVersion $version);
+    public function __construct(
+        AssetObject $model,
+        AssetVersionRepositoryInterface $version,
+        Filesystem $filesystem
+    );
 
     /**
-     * Add an asset version to an asset from an uploaded file.
+     * Create an asset from an uploaded file.
      *
-     * @param AssetInterface $asset
-     * @param UploadedFile   $file
+     * @param UploadedFile $file
+     *
+     * @return AssetInterface
      */
-    public function createVersionFromFile(AssetInterface $asset, UploadedFile $file);
+    public function createFromFile(UploadedFile $file): AssetInterface;
 
     /**
      * Returns the extensions which exist in the database.
      *
-     * @return array
+     * @return Collection
      */
-    public function extensions();
+    public function extensions(): Collection;
 
     /**
-     * Retrive an asset by ID.
+     * Retrieve an asset by ID.
      *
      * @param int $assetId
      */
     public function find($assetId);
-
-    /**
-     * Find the asset which is associated with a particular version ID.
-     *
-     * @param int $versionId
-     */
-    public function findByVersionID($versionId);
 
     /**
      * Revert an asset to a previous version ID.
@@ -58,9 +56,9 @@ interface Asset
     public function save(AssetObject $asset);
 
     /**
-     * Returns the users who have uploaded assets.
+     * Returns a read stream for the given asset.
      *
-     * @return Collection
+     * @param AssetObject $asset
      */
-    public function uploaders(PersonModel $model = null);
+    public function stream(AssetInterface $asset);
 }

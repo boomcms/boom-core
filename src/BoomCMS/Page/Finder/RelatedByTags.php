@@ -42,7 +42,7 @@ class RelatedByTags extends Filter
         return DB::table('pages_tags')
             ->select('tag_id')
             ->where('page_id', '=', $this->page->getId())
-            ->lists('tag_id');
+            ->pluck('tag_id');
     }
 
     public function shouldBeApplied()

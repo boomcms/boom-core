@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Http\Middleware;
 
+use BoomCMS\Editor\Editor;
+use BoomCMS\Support\Facades\BoomCMS;
 use BoomCMS\UI;
 use Closure;
 use Illuminate\Foundation\Application;
@@ -12,9 +14,15 @@ class DefineCMSViewSharedVariables
 {
     private $app;
 
-    public function __construct(Application $app)
+    /**
+     * @var Editor
+     */
+    private $editor;
+
+    public function __construct(Application $app, Editor $editor)
     {
         $this->app = $app;
+        $this->editor = $editor;
     }
 
     /**
@@ -41,8 +49,8 @@ class DefineCMSViewSharedVariables
 
         $jsFile = $this->app->environment('local') ? 'cms.js' : 'cms.min.js';
 
-        View::share('boomJS', "<script type='text/javascript' src='/vendor/boomcms/boom-core/js/$jsFile'></script>");
-        View::share('editor', $this->app['boomcms.editor']);
+        View::share('boomJS', "<script type='text/javascript' src='/vendor/boomcms/boom-core/js/$jsFile?".BoomCMS::getVersion()."'></script>");
+        View::share('editor', $this->editor);
 
         return $next($request);
     }

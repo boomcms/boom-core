@@ -9,18 +9,18 @@ module.exports = function(grunt) {
 				src : 'public/css/cms.css'
 			}
 		},
-		copy: {
-			main: {
-				files: [
-					{
-						expand: true,
-						flatten: true,
-						src: ['bower_components/leaflet/dist/images/*'],
-						dest: 'public/images/',
-						filter: 'isFile'
-					}
-				]
-			}
+        copy: {
+            main: {
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['bower_components/leaflet/dist/images/*'],
+                        dest: 'public/images/',
+                        filter: 'isFile'
+                    }
+                ]
+            }
 		},
 		concat: {
 			options: {
@@ -29,23 +29,31 @@ module.exports = function(grunt) {
 				  return src.replace(/@VERSION/g, grunt.config.get('pkg.version'));
 				}
 			},
+            'asset-manager': {
+                src: [
+					'bower_components/caman/dist/caman.full.js',
+                    'bower_components/jcrop/js/Jcrop.js',
+                    'bower_components/FilmRoll/js/jquery.film_roll.js',
+					'src/js/boomcms/asset/imageEditor.js'
+                ],
+                'dest': 'public/js/asset-manager.js'
+            },
 			'people-manager': {
 				src: [
 					'src/js/boomcms/people-manager/PeopleManager.js',
-					'src/js/boomcms/people-manager/components/*.js',
+					'src/js/boomcms/people-manager/components/*.js'
 				],
 				dest: 'public/js/people-manager.js'
 			},
 			'template-manager': {
-                                src: [
-                                        'src/js/boomcms/template-manager/TemplateManager.js',
-                                        'src/js/boomcms/template-manager/components/*.js',
-                                ],
-                                dest: 'public/js/template-manager.js'
+                src: [
+                    'src/js/boomcms/template-manager/TemplateManager.js',
+                    'src/js/boomcms/template-manager/components/*.js'
+                ],
+                dest: 'public/js/template-manager.js'
 			},
 			dist: {
 	  			src: [
-					'bower_components/modernizr/modernizr.js',
 					'bower_components/jquery/dist/jquery.js',
 					'bower_components/jquery-ui/jquery-ui.js',
 					'bower_components/jquery.serializeJSON/jquery.serializejson.js',
@@ -56,15 +64,13 @@ module.exports = function(grunt) {
 					'bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js',
 					'bower_components/jquery-file-upload/js/jquery.fileupload.js',
 					'bower_components/leaflet/dist/leaflet.js',
-					'bower_components/caman/dist/caman.full.js',
-					'bower_components/jcrop/js/Jcrop.js',
 					'bower_components/pace/pace.js',
 					'node_modules/geodesy/dms.js',
 					'bower_components/chosen/chosen.jquery.js',
 					'bower_components/underscore/underscore.js',
 					'bower_components/backbone/backbone.js',
 					'bower_components/moment/min/moment.min.js',
-					'bower_components/pushy/js/pushy.js',
+					'bower_components/equalHeights/equalheights.js',
 					'node_modules/jstimezonedetect/dist/jstz.js',
 					'bower_components/moment-timezone/builds/moment-timezone-with-data.js',
 					'src/js/boomcms/boomcms.js',
@@ -86,7 +92,6 @@ module.exports = function(grunt) {
 					'src/js/boomcms/chunk/chunk.js',
 					'src/js/boomcms/chunk/text.js',
 					'src/js/boomcms/chunk/linkset.js',
-					'src/js/boomcms/chunk/feature.js',
 					'src/js/boomcms/chunk/asset.js',
 					'src/js/boomcms/chunk/slideshow.js',
 					'src/js/boomcms/chunk/timestamp.js',
@@ -94,7 +99,6 @@ module.exports = function(grunt) {
 					'src/js/boomcms/chunk/slideshow/editor.js',
 					'src/js/boomcms/chunk/linkset/editor.js',
 					'src/js/boomcms/chunk/asset/editor.js',
-					'src/js/boomcms/chunk/link.js',
 					'src/js/boomcms/chunk/location.js',
 					'src/js/boomcms/chunk/location/editor.js',
 					'src/js/boomcms/chunk/html.js',
@@ -110,9 +114,7 @@ module.exports = function(grunt) {
 					'src/js/boomcms/asset/uploader.js',
 					'src/js/boomcms/asset/justify.js',
 					'src/js/boomcms/asset/tagSearch.js',
-					'src/js/boomcms/asset/imageEditor.js',
 					'src/js/boomcms/group/permissionsEditor.js',
-					'src/js/boomcms/approvals.js',
 					'bower_components/wysihtml/dist/wysihtml-toolbar.js',
 					'src/js/wysihtml5/parser_rules/full.js',
 					'src/js/wysihtml5/parser_rules/inline.js',
@@ -136,7 +138,7 @@ module.exports = function(grunt) {
 				files: {
 					'public/js/cms.min.js': 'public/js/cms.js',
 					'public/js/people-manager.min.js': 'public/js/people-manager.js',
-                                        'public/js/template-manager.min.js': 'public/js/template-manager.js'
+                    'public/js/template-manager.min.js': 'public/js/template-manager.js'
 				}
 			}
 		},
@@ -203,7 +205,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.registerTask('build-css', ['less', 'autoprefixer:no_dest', 'cssmin']);
-	grunt.registerTask('build-js', ['concat:dist', 'concat:people-manager', 'concat:template-manager', 'uglify']);
+	grunt.registerTask('build-js', ['concat:dist', 'concat:asset-manager', 'concat:people-manager', 'concat:template-manager', 'uglify']);
 	grunt.registerTask('dist', ['copy', 'build-css', 'build-js']);
 	grunt.registerTask('default',['watch']);
 };

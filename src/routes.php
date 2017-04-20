@@ -1,6 +1,8 @@
 <?php
 
 use BoomCMS\Http\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
@@ -12,25 +14,35 @@ Route::group(['middleware' => [
             'namespace'  => 'Auth',
             'middleware' => [Middleware\RequireGuest::class],
         ], function () {
-            Route::get('login', ['as' => 'login', 'uses' => 'AuthController@getLogin']);
+            Route::get('login', ['as' => 'login', 'uses' => 'AuthController@showLoginForm']);
 
             // Password reset link request routes...
-            Route::get('recover', ['as' => 'password', 'uses' => 'PasswordReset@getEmail']);
-            Route::post('recover', 'PasswordReset@postEmail');
-            Route::get('recover/{token}', 'PasswordReset@getReset');
-            Route::post('recover/{token}', 'PasswordReset@postReset');
-            Route::post('login', 'AuthController@postLogin');
+            Route::get('recover', ['as' => 'password', 'uses' => 'SendResetEmail@showLinkRequestForm']);
+            Route::post('recover', 'SendResetEmail@sendResetLinkEmail');
+            Route::get('recover/{token}', 'PasswordReset@showResetForm');
+            Route::post('recover/{token}', 'PasswordReset@reset');
+            Route::post('login', ['as' => 'processLogin', 'uses' => 'AuthController@login']);
         });
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
-            Route::get('logout', 'Auth\AuthController@getLogout');
+            Route::get('', ['as' => 'dashboard', 'uses' => 'Dashboard@index']);
+            Route::get('logout', 'Auth\AuthController@logout');
 
-            Route::controller('autocomplete', 'Autocomplete');
-            Route::controller('editor', 'Editor');
-            Route::controller('account', 'Auth\Account');
-            Route::controller('approvals', 'Approvals');
-            Route::controller('settings', 'Settings');
-            Route::controller('support', 'Support');
+            Route::get('autocomplete/assets', 'Autocomplete@getAssets');
+            Route::get('autocomplete/page-titles', 'Autocomplete@getPageTitles');
+
+            Route::get('editor/toolbar', 'Editor@getToolbar');
+            Route::post('editor/state', ['as' => 'editor.state', 'uses' => 'Editor@postState']);
+            Route::post('editor/time', 'Editor@postTime');
+
+            Route::get('account', 'Auth\Account@getIndex');
+            Route::post('account', 'Auth\Account@postIndex');
+
+            Route::get('settings', 'Settings@getIndex');
+            Route::post('settings', 'Settings@postIndex');
+
+            Route::get('support', 'Support@getIndex');
+            Route::post('support', 'Support@postIndex');
             Route::post('editor/state', 'Editor@setState');
             Route::get('editor/toolbar/{page}', 'Editor@getToolbar');
 
@@ -80,12 +92,44 @@ Route::group(['middleware' => [
             ]);
 
             Route::get('page', 'Page\PageController@getIndex');
+            Route::post('page/{page}/add', 'Page\PageController@postAdd');
 
             Route::group(['prefix' => 'page/{page}', 'namespace' => 'Page'], function () {
                 Route::post('version/template/{template}', 'Version@postTemplate');
-                Route::controller('version', 'Version');
-                Route::controller('settings', 'Settings');
-                Route::controller('chunk', 'Chunk');
+
+                Route::get('version/embargo', 'Version@getEmbargo');
+                Route::get('version/status', 'Version@getStatus');
+                Route::get('version/template', 'Version@getTemplate');
+                Route::post('version/embargo', 'Version@postEmbargo');
+                Route::post('version/status', 'Version@postStatus');
+                Route::post('version/template', 'Version@postTemplate');
+                Route::post('version/title', 'Version@postTitle');
+                Route::post('version/request-approval', 'Version@requestApproval');
+                Route::post('version/restore', 'Version@postRestore');
+
+                Route::get('settings/admin', 'Settings@getAdmin');
+                Route::get('settings/children', 'Settings@getChildren');
+                Route::get('settings/delete', 'Settings@getDelete');
+                Route::get('settings/feature', 'Settings@getFeature');
+                Route::get('settings/history', 'Settings@getHistory');
+                Route::get('settings/index', 'Settings@getIndex');
+                Route::get('settings/info', 'Settings@getInfo');
+                Route::get('settings/navigation', 'Settings@getNavigation');
+                Route::get('settings/search', 'Settings@getSearch');
+                Route::get('settings/visibility', 'Settings@getVisibility');
+
+                Route::post('settings/admin', 'Settings@postAdmin');
+                Route::post('settings/children', 'Settings@postChildren');
+                Route::post('settings/delete', 'Settings@postDelete');
+                Route::post('settings/feature', 'Settings@postFeature');
+                Route::post('settings/history', 'Settings@postHistory');
+                Route::post('settings/navigation', 'Settings@postNavigation');
+                Route::post('settings/search', 'Settings@postSearch');
+                Route::post('settings/visibility', 'Settings@postVisibility');
+                Route::post('settings/sort-children', 'Settings@postSortChildren');
+
+                Route::get('chunk/edit', 'Chunk@getEdit');
+                Route::post('chunk/save', 'Chunk@postSave');
 
                 Route::group(['prefix' => 'urls'], function () {
                     Route::get('', 'Urls@index');
@@ -95,7 +139,6 @@ Route::group(['middleware' => [
                     Route::delete('{url}', 'Urls@destroy');
                     Route::get('{url}/move', 'Urls@getMove');
                     Route::post('{url}/move', 'Urls@postMove');
-                    Route::controller('', 'Urls');
                 });
 
                 Route::get('tags', 'Tags@view');
@@ -111,43 +154,40 @@ Route::group(['middleware' => [
                 Route::post('acl/{group}', 'Acl@store');
                 Route::delete('acl/{group}', 'Acl@destroy');
 
-                Route::controller('', 'PageController');
+                Route::get('', 'PageController@getIndex');
             });
         });
     });
 });
 
-Route::group(['prefix' => 'asset'], function () {
-    Route::get('version/{id}/{width?}/{height?}', [
-        'as'         => 'asset-version',
-        'middleware' => ['web', Middleware\RequireLogin::class],
-        'uses'       => function ($versionId, $width = null, $height = null) {
-            $asset = Asset::findByVersionId($versionId);
-
-            return App::make(AssetHelper::controller($asset), [$asset])->view($width, $height);
-        },
-    ]);
-
+Route::group([
+    'prefix'     => 'asset',
+    'middleware' => [
+        'web',
+        SubstituteBindings::class,
+        Middleware\RequireAssetVisible::class,
+    ],
+], function () {
     Route::get('{asset}/download', [
-        'asset'      => 'asset-download',
+        'as'         => 'asset-download',
         'middleware' => [
             Middleware\LogAssetDownload::class,
         ],
-        'uses' => function ($asset) {
-            return App::make(AssetHelper::controller($asset), [$asset])->download();
-        },
+        'uses' => 'BoomCMS\Http\Controllers\Asset\AssetController@download',
     ]);
+
+    Route::get('{asset}/embed', 'BoomCMS\Http\Controllers\Asset\AssetController@embed');
 
     Route::get('{asset}/{action}.{extension}', [
         'as'         => 'asset',
         'middleware' => [
             Middleware\CheckAssetETag::class,
         ],
-        'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetHelper::controller($asset), [$asset])->$action($width, $height);
+        'uses' => function (Request $request, $asset, $action = 'view', $width = null, $height = null) {
+            return App::make(AssetHelper::controller($asset), [$request, $asset])->$action($width, $height);
         },
     ])->where([
-        'action'    => '[a-z]+',
+        'action'    => 'view|thumb|download|crop|embed',
         'extension' => '[a-z]+',
     ]);
 
@@ -156,9 +196,11 @@ Route::group(['prefix' => 'asset'], function () {
         'middleware' => [
             Middleware\CheckAssetETag::class,
         ],
-        'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetHelper::controller($asset), [$asset])->$action($width, $height);
+        'uses' => function (Request $request, $asset, $action = 'view', $width = null, $height = null) {
+            return App::make(AssetHelper::controller($asset), [$request, $asset])->$action($width, $height);
         },
+    ])->where([
+        'action'    => 'view|thumb|crop',
     ]);
 });
 

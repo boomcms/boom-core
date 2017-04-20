@@ -3,59 +3,69 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Database\Models;
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories;
+use BoomCMS\Routing\Router;
+use Illuminate\Contracts\Filesystem\Factory as Filesystem;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
-     *
      * @return void
      */
-    public function boot()
+    public function boot(Router $router, Filesystem $filesystem)
     {
-    }
-
-    /**
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->singleton('boomcms.repositories.asset', function () {
-            return new Repositories\Asset(new Models\Asset(), new Models\AssetVersion());
+        $this->app->singleton(Repositories\AssetVersion::class, function () {
+            return new Repositories\AssetVersion(new Models\AssetVersion());
         });
 
-        $this->app->singleton('boomcms.repositories.page', function () {
-            return new Repositories\Page(new Models\Page());
+        $this->app->singleton(Repositories\Asset::class, function () use ($filesystem) {
+            return new Repositories\Asset(
+                new Models\Asset(),
+                $this->app[Repositories\AssetVersion::class],
+                $filesystem->disk('boomcms-assets')
+            );
+        });
+
+        $this->app->singleton(Repositories\Page::class, function () use ($router) {
+            return new Repositories\Page(new Models\Page(), $router->getActiveSite());
         });
 
         $this->app->singleton(Repositories\PageVersion::class, function () {
             return new Repositories\PageVersion(new Models\PageVersion());
         });
 
-        $this->app->singleton('boomcms.repositories.person', function () {
-            return new Repositories\Person(new Models\Person());
+        $this->app->singleton(Repositories\Person::class, function () use ($router) {
+            return new Repositories\Person(new Models\Person(), $router->getActiveSite());
         });
 
-        $this->app->singleton('boomcms.repositories.group', function () {
+        $this->app->singleton(Repositories\Group::class, function () {
             return new Repositories\Group();
         });
 
-        $this->app->singleton('boomcms.repositories.tag', function () {
-            return new Repositories\Tag(new Models\Tag());
+        $this->app->singleton(Repositories\Tag::class, function () use ($router) {
+            return new Repositories\Tag(new Models\Tag(), $router->getActiveSite());
         });
 
-        $this->app->singleton('boomcms.repositories.template', function () {
+        $this->app->singleton(Repositories\Template::class, function () {
             return new Repositories\Template(new Models\Template());
         });
 
-        $this->app->singleton('boomcms.repositories.url', function () {
-            return new Repositories\URL(new Models\URL());
+        $this->app->singleton(Repositories\URL::class, function () use ($router) {
+            return new Repositories\URL(new Models\URL(), $router->getActiveSite());
         });
+    }
 
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
         $this->app->singleton(Repositories\Site::class, function () {
-            return new Repositories\Site(new Models\Site());
+            return new Repositories\Site(new Site());
         });
     }
 }

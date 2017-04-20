@@ -10,6 +10,14 @@
 	overflow: auto;
 	background: @white;
 
+    &.show-edit {
+        #b-assets-view-thumbs {
+            .edit {
+                display: block;
+            }
+        }
+    }
+
 	.b-assets-upload-progress {
 		height: 1.5rem;
 	}
@@ -17,6 +25,10 @@
 	.b-assets-upload-close {
 		display: none;
 	}
+
+    .b-assets-upload-cancel {
+        margin: auto;
+    }
 
 	#b-assets-view-thumbs {
 		width: calc(~"100vw - 25em");

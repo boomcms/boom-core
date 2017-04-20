@@ -3,20 +3,11 @@
 namespace BoomCMS\Contracts\Models;
 
 use BoomCMS\Database\Models\AssetVersion;
+use Carbon\Carbon;
 use DateTime;
 
 interface Asset
 {
-    /**
-     * @return string
-     */
-    public function directory();
-
-    /**
-     * @return bool
-     */
-    public function exists();
-
     /**
      * @return float
      */
@@ -43,11 +34,6 @@ interface Asset
     public function getExtension();
 
     /**
-     * @return string
-     */
-    public function getFilename();
-
-    /**
      * Returns the filesize in bytes.
      *
      * @return int
@@ -63,8 +49,6 @@ interface Asset
      * @return int
      */
     public function getId();
-
-    public function getEmbedHtml($height = null, $width = null);
 
     /**
      * @return DateTime
@@ -87,6 +71,13 @@ interface Asset
      * @return string
      */
     public function getOriginalFilename();
+
+    /**
+     * Returns the published_at property.
+     *
+     * @return Carbon
+     */
+    public function getPublishedAt(): Carbon;
 
     /**
      * @return Site
@@ -141,6 +132,11 @@ interface Asset
     public function isImage();
 
     /**
+     * @return bool
+     */
+    public function isPublic(): bool;
+
+    /**
      * @param string $credits
      *
      * @return $this
@@ -155,13 +151,11 @@ interface Asset
     public function setDescription($description);
 
     /**
-     * Set the site that the asset belongs to.
-     *
-     * @param Site $site
+     * @param string $when
      *
      * @return $this
      */
-    public function setSite(Site $site);
+    public function setPublishedAt($when);
 
     /**
      * @param int $assetId
@@ -183,15 +177,6 @@ interface Asset
      * @return $this
      */
     public function setType($type);
-
-    /**
-     * @param Person $person
-     *
-     * @return $this
-     */
-    public function setUploadedBy(Person $person);
-
-    public function setUploadedTime(DateTime $time);
 
     /**
      * @param AssetVersion

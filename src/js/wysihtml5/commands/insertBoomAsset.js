@@ -46,7 +46,7 @@
 
 			$(composer).trigger('before:boomdialog');
 
-			new boomAssetPicker()
+			BoomCMS.AssetPicker()
 				.done(function(asset) {
 					if (asset.getId() > 0) {
 						asset.getEmbedCode()

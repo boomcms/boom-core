@@ -113,7 +113,7 @@
     </td>
 
     <td>
-        <time datetime='<%= person.getLastLogin() %>'></time>
+        <?= view('boomcms::people-manager.person-last-login') ?>
     </td>
 
     <td>

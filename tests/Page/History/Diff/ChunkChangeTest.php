@@ -13,14 +13,12 @@ class ChunkChangeTest extends AbstractTestCase
 
     protected $types = [
         'text'      => 'font',
-        'link'      => 'link',
         'linkset'   => 'link',
         'asset'     => 'paperclip',
         'library'   => 'book',
         'calendar'  => 'calendar',
         'timestamp' => 'clock-o',
         'slideshow' => 'picture-o',
-        'feature'   => 'newspaper-o',
         'location'  => 'globe',
         'html'      => 'code',
     ];

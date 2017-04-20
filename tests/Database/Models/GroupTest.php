@@ -44,17 +44,6 @@ class GroupTest extends AbstractModelTestCase
         $this->assertEquals('test', $group->getName());
     }
 
-    public function testSetSite()
-    {
-        $site = new Site();
-        $site->{Site::ATTR_ID} = 1;
-
-        $group = new Group();
-        $group->setSite($site);
-
-        $this->assertEquals($site->getId(), $group->{Group::ATTR_SITE});
-    }
-
     public function testNameIsTrimmed()
     {
         $group = new Group();

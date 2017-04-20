@@ -4,27 +4,29 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
+use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Str;
 use BoomCMS\Support\Traits\SingleSite;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\View;
 
-class Asset extends Model implements AssetInterface
+class Asset extends Model implements AssetInterface, SingleSiteInterface
 {
     use SingleSite;
 
     const ATTR_TITLE = 'title';
     const ATTR_DESCRIPTION = 'description';
     const ATTR_TYPE = 'type';
-    const ATTR_UPLOADED_BY = 'uploaded_by';
-    const ATTR_UPLOADED_AT = 'uploaded_time';
+    const ATTR_CREATED_BY = 'created_by';
+    const ATTR_UPLOADED_AT = 'created_at';
     const ATTR_THUMBNAIL_ID = 'thumbnail_asset_id';
     const ATTR_CREDITS = 'credits';
     const ATTR_DOWNLOADS = 'downloads';
-    const ATTR_SITE = 'site_id';
+    const ATTR_PUBLISHED_AT = 'published_at';
+    const ATTR_PUBLIC = 'public';
 
     public $table = 'assets';
 
@@ -38,49 +40,34 @@ class Asset extends Model implements AssetInterface
      */
     protected $latestVersion;
 
+    protected $casts = [
+        self::ATTR_PUBLISHED_AT => 'datetime',
+        self::ATTR_PUBLIC       => 'boolean',
+    ];
+
     protected $appends = [
         'readable_filesize',
         'metadata',
     ];
 
     protected $versionColumns = [
-        'asset_id'   => '',
-        'width'      => '',
-        'height'     => '',
-        'filesize'   => '',
-        'filename'   => '',
-        'edited_at'  => '',
-        'edited_by'  => '',
-        'version:id' => '',
-        'extension'  => '',
+        'asset_id'           => '',
+        'width'              => '',
+        'height'             => '',
+        'filesize'           => '',
+        'filename'           => '',
+        'version:created_at' => '',
+        'version:created_by' => '',
+        'version:id'         => '',
+        'extension'          => '',
     ];
-
-    /**
-     * @return string
-     */
-    public function directory()
-    {
-        return storage_path().'/boomcms/assets';
-    }
-
-    /**
-     * @return bool
-     */
-    public function exists()
-    {
-        return $this->getId() && file_exists($this->getFilename());
-    }
 
     /**
      * @return float
      */
     public function getAspectRatio()
     {
-        if (!$this->getHeight()) {
-            return 1;
-        }
-
-        return $this->getWidth() / $this->getHeight();
+        return $this->getLatestVersion()->getAspectRatio();
     }
 
     /**
@@ -116,14 +103,6 @@ class Asset extends Model implements AssetInterface
     }
 
     /**
-     * @return string
-     */
-    public function getFilename()
-    {
-        return $this->directory().DIRECTORY_SEPARATOR.$this->getLatestVersionId();
-    }
-
-    /**
      * @return int
      */
     public function getFilesize()
@@ -137,22 +116,6 @@ class Asset extends Model implements AssetInterface
     public function getHeight()
     {
         return (int) $this->getLatestVersion()->getHeight();
-    }
-
-    public function getEmbedHtml($height = null, $width = null)
-    {
-        $viewPrefix = 'boomcms::assets.embed.';
-        $assetType = strtolower(class_basename($this->getType()));
-
-        $viewName = View::exists($viewPrefix.$assetType) ?
-            $viewPrefix.$assetType :
-            $viewPrefix.'default';
-
-        return View::make($viewName, [
-            'asset'  => $this,
-            'height' => $height,
-            'width'  => $width,
-        ]);
     }
 
     /**
@@ -195,9 +158,19 @@ class Asset extends Model implements AssetInterface
         return $this->getLatestVersion()->getMimetype();
     }
 
+    /**
+     * Returns the published_at property.
+     *
+     * @return Carbon
+     */
+    public function getPublishedAt(): Carbon
+    {
+        return $this->{self::ATTR_PUBLISHED_AT};
+    }
+
     public function getOriginalFilename()
     {
-        return $this->getLatestVersion()->getFilename();
+        return str_replace(['\\', '/'], '', $this->getLatestVersion()->getFilename());
     }
 
     public function getReadableFilesizeAttribute()
@@ -283,6 +256,16 @@ class Asset extends Model implements AssetInterface
     }
 
     /**
+     * Whether the asset is public (visible to users who aren't logged in to the CMS).
+     *
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return $this->{self::ATTR_PUBLIC} === true;
+    }
+
+    /**
      * @return bool
      */
     public function isVideo()
@@ -310,6 +293,17 @@ class Asset extends Model implements AssetInterface
     public function setDescription($description)
     {
         $this->{self::ATTR_DESCRIPTION} = $description;
+
+        return $this;
+    }
+
+    public function setPublishedAt($when = null)
+    {
+        if ($when !== null && !is_object($when)) {
+            $when = new DateTime($when);
+        }
+
+        $this->{self::ATTR_PUBLISHED_AT} = $when;
 
         return $this;
     }
@@ -351,25 +345,6 @@ class Asset extends Model implements AssetInterface
     }
 
     /**
-     * @param PersonInterface $person
-     *
-     * @return $this
-     */
-    public function setUploadedBy(PersonInterface $person)
-    {
-        $this->{self::ATTR_UPLOADED_BY} = $person->getId();
-
-        return $this;
-    }
-
-    public function setUploadedTime(DateTime $time)
-    {
-        $this->{self::ATTR_UPLOADED_AT} = $time->getTimestamp();
-
-        return $this;
-    }
-
-    /**
      * Set the version to use with the asset.
      *
      * @param AssetVersion $version
@@ -398,13 +373,13 @@ class Asset extends Model implements AssetInterface
 
     public function uploadedBy()
     {
-        return $this->belongsTo(Person::class, 'uploaded_by');
+        return $this->hasOne(Person::class, 'id', 'created_by');
     }
 
     public function versions()
     {
         return $this->hasMany(AssetVersion::class)
-            ->orderBy(AssetVersion::ATTR_EDITED_AT, 'desc');
+            ->orderBy(AssetVersion::ATTR_CREATED_AT, 'desc');
     }
 
     /**
@@ -414,8 +389,16 @@ class Asset extends Model implements AssetInterface
      */
     public function toArray()
     {
-        $attributes = $this->attributesToArray();
+        if ($this->attributes[self::ATTR_PUBLISHED_AT] === '0000-00-00 00:00:00') {
+            $this->attributes[self::ATTR_PUBLISHED_AT] = null;
+        }
 
-        return array_merge($this->getLatestVersion()->toArray(), $attributes, $this->relationsToArray());
+        $attributes = $this->attributesToArray();
+        $version = $this->getLatestVersion()->toArray();
+
+        $attributes['edited_at'] = $version['created_at'];
+        $attributes['edited_by'] = $version['created_by'];
+
+        return array_merge($version, $attributes, $this->relationsToArray());
     }
 }

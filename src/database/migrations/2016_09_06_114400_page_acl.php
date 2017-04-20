@@ -1,7 +1,5 @@
 <?php
 
-use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -33,15 +31,6 @@ class PageACL extends Migration
 
             $table->primary(['page_id', 'group_id']);
         });
-
-        Schema::table('pages', function (Blueprint $table) {
-            $table->boolean(Page::ATTR_ENABLE_ACL)->default(false);
-        });
-
-        Role::create([
-            'name' => 'editAcl',
-            'tree' => true,
-        ]);
     }
 
     /**
@@ -52,11 +41,5 @@ class PageACL extends Migration
     public function down()
     {
         Schema::drop('page_acl');
-
-        Schema::table('pages', function (Blueprint $table) {
-            $table->dropColumn(Page::ATTR_ENABLE_ACL);
-        });
-
-        Role::where('name', 'editAcl')->delete();
     }
 }

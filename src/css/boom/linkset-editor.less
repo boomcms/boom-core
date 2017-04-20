@@ -2,6 +2,62 @@
 	padding-bottom: 0;
 	overflow: visible;
 
+    &.b-linkset-single {
+        section:first-of-type {
+            display: none;
+        }
+
+        #b-linkset-current {
+            width: 100%;
+            padding-left: 0;
+            border-left: 0;
+            position: static;
+
+            .back {
+                display: none;
+            }
+
+            &.visible {
+                left: auto;
+                transition: none;
+            }
+
+            > div {
+                padding: 0;
+            }
+
+            h1 {
+                display: none;
+            }
+        }
+
+        #b-linkset-current form {
+			label {
+				p {
+					width: 10rem;
+				}
+
+				input {
+					width: calc(~"100% - 10rem");
+				}
+			}
+
+			.b-linkset-target input {
+                width: calc(~"100% - 13rem");
+			}
+
+			.b-linkset-asset {
+                img {
+                    width: calc(~"100% - 10rem");
+                }
+
+				.none {
+					width: calc(~"100% - 13rem");
+				}
+			}
+        }
+    }
+
 	#b-linkset-title {
 		overflow: hidden;
 		margin: 1.5rem auto;
@@ -20,30 +76,17 @@
 
 	.container {
 		width: 100%;
-		overflow: hidden;
-		padding: 1em 0 0 0;
-		display: table;
 		margin-bottom: 1.5rem;
+        position: relative;
+
+        section{
+            width: 100%;
+        }
 	}
 
-	section {
-		width: 50%;
-		display: table-cell;
-		vertical-align: top;
-
-		h1 {
-			margin-top: 0;
-		}
-
-		&:first-of-type {
-			padding-right: 1em;
-		}
-
-		&:nth-of-type(2) {
-			padding-left: 1em;
-			border-left: 1px solid @darkest-grey;
-		}
-	}
+    section h1 {
+        margin-top: 0;
+    }
 
 	#b-linkset-links {
 		ul {
@@ -81,7 +124,6 @@
 				}
 			}
 
-
 			a.delete {
 				position: absolute;
 				top: 0;
@@ -99,30 +141,99 @@
 	}
 
 	#b-linkset-current {
+        position: absolute;
+        left: calc(~"100% + 1.5rem");
+        top: -1.5rem;
+        left: calc(~"100% + 1.5rem");
+        width: calc(~"100% + 3rem");
+        transition: left 0.5s;
+        background: @white;
+        z-index: 2;
+        padding-left: 5rem;
+
+        &.visible {
+            left: -1.5rem;
+            transition: left 0.5s;
+        }
+
+        > div {
+            padding: 1.5rem;
+        }
+
+        .back {
+            position: absolute;
+            top: 0;
+            bottom: -3rem;
+            left: 0;
+            width: 5rem;
+            overflow: hidden;
+            background: @lightest-grey;
+
+            span {
+                position: absolute;
+                top: -1000%;
+            }
+
+            i {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateY(-50%) translateX(-50%);
+                color: @red;
+                font-size: 3rem;
+            }
+        }
+
 		form {
-			display: none;
+            div {
+                margin: 3rem 0 0 0;
+
+                > h2, > p {
+                    display: none;
+                }
+
+                &.optional {
+                    > h2 {
+                        .text-normal;
+                        display: block;
+                        margin: 0 0 0.5rem 0;
+                    }
+
+                    > p {
+                        display: block;
+                    }
+                }
+            }
+
+            button {
+                .fa-edit {
+                    font-size: 2rem;
+                }
+            }
 
 			label {
 				overflow: hidden;
 				padding-right: 0;
 
 				p {
-					width: 5em;
+					width: 6rem;
 					float: left;
 					margin: 5px 0 0 0;
 				}
 
 				input {
-					width: 20em;
+					width: calc(~"100% - 6rem");
 					float: right;
+                    margin-left: 0;
 				}
 			}
 
 			.b-linkset-target {
 				input {
-					background: transparent;
-					width: 17em;
+					width: calc(~"100% - 9rem");
 					float: left;
+                    border: 0;
+                    text-overflow: ellipsis;
 				}
 
 				button {
@@ -132,24 +243,21 @@
 			}
 
 			.b-linkset-asset {
-				.set {
-					width: 20em;
-					float: right;
-					display: block;
-					margin-top: 5px;
+                position: relative;
 
-					&:focus, &:hover {
-						opacity: 0.8;
-					}
+                button {
+                    position: absolute;
+                    top: 0;
+                    right: 0rem;
+                }
 
-					img {
-						width: 100%;
-					}
-				}
+                img {
+                    width: calc(~"100% - 6rem");
+                }
 
 				.none {
-					width: 20em;
-					float: right;
+					width: calc(~"100% - 9rem");
+					float: left;
 				}
 			}
 		}

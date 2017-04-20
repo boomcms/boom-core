@@ -22,20 +22,8 @@ trait SingleSite
         return $this->site;
     }
 
-    public function scopeWhereSiteIs(Builder $query, $site)
+    public function scopeWhereSiteIs(Builder $query, Site $site)
     {
         return $query->where('site_id', '=', $site->getId());
-    }
-
-    /**
-     * @param Site $site
-     *
-     * @return $this
-     */
-    public function setSite(Site $site)
-    {
-        $this->site_id = $site->getId();
-
-        return $this;
     }
 }

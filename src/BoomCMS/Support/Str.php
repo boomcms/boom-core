@@ -62,7 +62,7 @@ abstract class Str extends BaseStr
     public static function makeInternalLinksRelative($text)
     {
         if ($base = Request::getHttpHost()) {
-            return preg_replace("|<(.*?)href=(['\"])(https?://)".$base."/(.*?)(['\"])(.*?)>|", '<$1href=$2/$4$5$6>', $text);
+            return preg_replace("~<(.*?)(href|src)=(['\"])(https?://)".$base."/(.*?)(['\"])(.*?)>~", '<$1$2=$3/$5$6$7>', $text);
         }
 
         return $text;

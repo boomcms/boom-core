@@ -2,8 +2,6 @@
 
 namespace BoomCMS\Jobs;
 
-use BoomCMS\Contracts\Models\Person;
-use BoomCMS\Contracts\Models\Site;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -13,21 +11,9 @@ use Illuminate\Support\Facades\Event;
 class CreatePage extends Command
 {
     /**
-     * @var Person
-     */
-    protected $createdBy;
-
-    /**
      * @var Page
      */
     protected $parent;
-
-    /**
-     * The site to which to add the new page.
-     *
-     * @var Site
-     */
-    protected $site;
 
     /**
      * @var string
@@ -35,22 +21,17 @@ class CreatePage extends Command
     protected $title = Page::DEFAULT_TITLE;
 
     /**
-     * @param Person $createdBy
-     * @param Page   $parent
+     * @param Page $parent
      */
-    public function __construct(Person $createdBy, Site $site, Page $parent = null)
+    public function __construct(Page $parent = null)
     {
-        $this->createdBy = $createdBy;
         $this->parent = $parent;
-        $this->site = $site;
     }
 
     public function handle()
     {
         $attrs = [
-            'created_time' => time(),
-            'created_by'   => $this->createdBy->getId(),
-            'site_id'      => $this->site->getId(),
+            'visible_from' => time(),
         ];
 
         if ($this->parent) {

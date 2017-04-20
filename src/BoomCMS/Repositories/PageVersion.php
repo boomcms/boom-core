@@ -5,7 +5,7 @@ namespace BoomCMS\Repositories;
 use BoomCMS\Contracts\Models\Page as PageModelInterface;
 use BoomCMS\Contracts\Repositories\PageVersion as PageVersionRepositoryInterface;
 use BoomCMS\Database\Models\PageVersion as Model;
-use Illuminate\Database\Eloquent\Builder;
+use BoomCMS\Support\Facades\Chunk;
 
 class PageVersion implements PageVersionRepositoryInterface
 {
@@ -23,30 +23,58 @@ class PageVersion implements PageVersionRepositoryInterface
     {
         return $this->model
             ->where(Model::ATTR_PAGE, $page->getId())
-            ->orderBy(Model::ATTR_EDITED_AT, 'desc')
+            ->orderBy(Model::ATTR_CREATED_AT, 'desc')
             ->with('editedBy')
             ->get();
     }
 
     /**
-     * Delete the draft versions for a page.
+     * Find a version by page and version ID.
      *
      * @param PageModelInterface $page
+     * @param type               $versionId
      *
-     * @return $this
+     * @return Model
      */
-    public function deleteDrafts(PageModelInterface $page)
+    public function find(PageModelInterface $page, $versionId)
     {
-        $this->model
+        return $this->model
             ->where(Model::ATTR_PAGE, $page->getId())
-            ->where(function (Builder $query) {
-                $query
-                    ->whereNull(Model::ATTR_EMBARGOED_UNTIL)
-                    ->orWhere(Model::ATTR_EMBARGOED_UNTIL, '>', time());
-            })
-            ->where(Model::ATTR_EDITED_AT, '>', $page->getLastPublishedTime()->getTimestamp())
-            ->delete();
+            ->where(Model::ATTR_ID, $versionId)
+            ->first();
+    }
 
-        return $this;
+    /**
+     * Restore an older version of a page.
+     *
+     * Creates a new version based on the old one.
+     *
+     * @param Model $version
+     *
+     * @return Model
+     */
+    public function restore(Model $version)
+    {
+        $newVersion = new Model($version->toArray());
+        $newVersion->setRestoredFrom($version)->save();
+
+        $types = Chunk::since($version);
+
+        foreach ($types as $type => $chunks) {
+            $className = Chunk::getModelName($type);
+
+            foreach ($chunks as $chunk) {
+                $old = Chunk::find($type, $chunk->slotname, $version);
+                $attrs = ($old === null) ? [] : array_except($old->toArray(), ['id', 'page_vid']);
+
+                $attrs['page_id'] = $newVersion->getPageId();
+                $attrs['slotname'] = $chunk->slotname;
+                $attrs['page_vid'] = $newVersion->getId();
+
+                $className::create($attrs);
+            }
+        }
+
+        return $newVersion;
     }
 }

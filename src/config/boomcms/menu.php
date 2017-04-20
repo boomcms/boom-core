@@ -6,11 +6,6 @@ return [
         'role'     => 'managePages',
         'icon'     => 'sitemap',
     ],
-    'approvals' => [
-        'url'      => '/boomcms/approvals',
-        'role'     => 'manageApprovals',
-        'icon'     => 'thumbs-o-up',
-    ],
     'templates' => [
         'url'      => '/boomcms/template-manager',
         'role'     => 'manageTemplates',
@@ -20,6 +15,11 @@ return [
         'url'      => '/boomcms/asset-manager',
         'role'     => 'manageAssets',
         'icon'     => 'picture-o',
+    ],
+    'asset-upload' => [
+        'url'      => '/boomcms/asset-manager#upload',
+        'role'     => 'uploadAssets',
+        'icon'     => 'upload',
     ],
     'people' => [
         'url'      => '/boomcms/people-manager',

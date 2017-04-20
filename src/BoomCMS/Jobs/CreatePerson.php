@@ -5,7 +5,6 @@ namespace BoomCMS\Jobs;
 use BoomCMS\Auth\Hasher;
 use BoomCMS\Auth\RandomPassword;
 use BoomCMS\Events\AccountCreated;
-use BoomCMS\Exceptions\DuplicateEmailException;
 use BoomCMS\Support\Facades\Person;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
@@ -40,21 +39,14 @@ class CreatePerson extends Command
         $password = (string) new RandomPassword();
         $hasher = new Hasher();
 
-        try {
-            $person = Person::create([
-                'name'     => $this->name,
-                'email'    => $this->email,
-                'password' => $hasher->make($password),
-            ]);
-        } catch (DuplicateEmailException $e) {
-        }
+        $person = Person::create([
+            'name'     => $this->name,
+            'email'    => $this->email,
+            'password' => $hasher->make($password),
+        ]);
 
-        if (isset($person)) {
-            Event::fire(new AccountCreated($person, $password, Auth::user()));
+        Event::fire(new AccountCreated($person, $password, Auth::user()));
 
-            return $person;
-        } else {
-            return Person::findByEmail($this->email);
-        }
+        return $person;
     }
 }

@@ -8,27 +8,64 @@ use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
-use BoomCMS\Support\Helpers\Asset as AssetHelper;
-use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class AssetController extends Controller
 {
     use ValidatesAssetUpload;
 
-    protected $role = 'manageAssets';
-
     /**
      * @param Asset $asset
      */
-    public function destroy(Asset $asset)
+    public function destroy(Asset $asset, Site $site)
     {
+        $this->authorize('manageAssets', $site);
+
         AssetFacade::delete([$asset->getId()]);
     }
 
-    // Needs to not require the manageAssets role. Move to another controller.
+    /**
+     * Download the given asset.
+     *
+     * @param Asset $asset
+     *
+     * @return Response
+     */
+    public function download(Asset $asset): Response
+    {
+        return new Response(AssetFacade::file($asset), 200, [
+            'content-disposition' => 'download; filename="'.$asset->getOriginalFilename().'"',
+        ]);
+    }
+
+    /**
+     * Returns the HTML to embed the given asset.
+     *
+     * @param Request $request
+     * @param Asset   $asset
+     *
+     * @return View
+     */
+    public function embed(Request $request, Asset $asset): View
+    {
+        $viewPrefix = 'boomcms::assets.embed.';
+        $assetType = strtolower(class_basename($asset->getType()));
+        $viewName = $viewPrefix.$assetType;
+
+        if (!view()->exists($viewName)) {
+            $viewName = $viewPrefix.'default';
+        }
+
+        return view()->make($viewName, [
+            'asset'  => $asset,
+            'height' => $request->input('height'),
+            'width'  => $request->input('width'),
+        ]);
+    }
+
     public function index(Request $request)
     {
         return [
@@ -43,17 +80,16 @@ class AssetController extends Controller
      *
      * @return JsonResponse
      */
-    public function replace(Request $request, Asset $asset)
+    public function replace(Request $request, Asset $asset, Site $site)
     {
+        $this->authorize('manageAssets', $site);
+
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
-            $asset->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
+            AssetFacade::replaceWith($asset, $file);
 
-            AssetFacade::save($asset);
-            AssetFacade::createVersionFromFile($asset, $file);
-
-            return $this->show($asset);
+            return $this->show($asset, $site);
         }
 
         if (count($errors)) {
@@ -65,35 +101,30 @@ class AssetController extends Controller
      * @param Request $request
      * @param Asset   $asset
      */
-    public function revert(Request $request, Asset $asset)
+    public function revert(Request $request, Asset $asset, Site $site)
     {
+        $this->authorize('manageAssets', $site);
+
         AssetFacade::revert($asset, $request->input('version_id'));
 
-        return $this->show($asset);
+        return $this->show($asset, $site);
     }
 
     /**
-     * @param Site $site
+     * @param Request $request
      *
      * @return JsonResponse|array
      */
     public function store(Request $request, Site $site)
     {
+        $this->authorize('uploadAssets', $site);
+
         $assetIds = [];
 
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
-            $asset = new Asset();
-            $asset
-                ->setSite($site)
-                ->setUploadedTime(new DateTime('now'))
-                ->setUploadedBy(Auth::user())
-                ->setTitle($file->getClientOriginalName())
-                ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
-
-            $assetIds[] = AssetFacade::save($asset)->getId();
-            AssetFacade::createVersionFromFile($asset, $file);
+            $assetIds[] = AssetFacade::createFromFile($file)->getId();
         }
 
         return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
@@ -102,8 +133,10 @@ class AssetController extends Controller
     /**
      * @param Asset $asset
      */
-    public function show(Asset $asset)
+    public function show(Asset $asset, Site $site)
     {
+        $this->authorize('manageAssets', $site);
+
         return $asset
             ->newQuery()
             ->with('versions')
@@ -117,16 +150,19 @@ class AssetController extends Controller
      * @param Request $request
      * @param Asset   $asset
      */
-    public function update(Request $request, Asset $asset)
+    public function update(Request $request, Asset $asset, Site $site)
     {
+        $this->authorize('manageAssets', $site);
+
+        $fields = [Asset::ATTR_TITLE, Asset::ATTR_DESCRIPTION,
+            Asset::ATTR_CREDITS, Asset::ATTR_THUMBNAIL_ID, Asset::ATTR_PUBLIC, ];
+
         $asset
-            ->setTitle($request->input(Asset::ATTR_TITLE))
-            ->setDescription($request->input(Asset::ATTR_DESCRIPTION))
-            ->setCredits($request->input(Asset::ATTR_CREDITS))
-            ->setThumbnailAssetId($request->input(Asset::ATTR_THUMBNAIL_ID));
+            ->fill($request->only($fields))
+            ->setPublishedAt($request->input(Asset::ATTR_PUBLISHED_AT));
 
         AssetFacade::save($asset);
 
-        return $this->show($asset);
+        return $this->show($asset, $site);
     }
 }

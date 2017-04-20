@@ -1,0 +1,74 @@
+#b-assets-filmroll {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 23rem;
+    z-index: 10;
+    padding: 2rem 0 4rem 0;
+    background: @lightest-grey;
+    visibility: hidden;
+    border-top: 1px solid @darkest-grey;
+
+    .film_roll_child {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+        padding: 1rem;
+        border: 1px solid transparent;
+
+        &.active {
+            border-color: @darkest-grey;
+        }
+
+        &.selected {
+            border-color: @red;
+        }
+
+        > div {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+    }
+
+    .b-assets-thumbnail {
+        height: 15rem;
+        width: auto;
+        display: inline-block;
+
+        a, img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .film_roll_pager {
+        position: absolute;
+        left: 50%;
+        bottom: 1rem;
+        transform: translateX(-50%);
+
+        .selected {
+            background: @red;
+            border-color: @red;
+        }
+    }
+
+    .film_roll_next, .film_roll_prev {
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        margin: 0;
+        color: @white;
+    }
+}
+
+@media all and (min-height: 768px) {
+    #b-assets-filmroll {
+        &.visible {
+            visibility: visible;
+        }
+    }
+}

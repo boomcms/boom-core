@@ -4,22 +4,22 @@ namespace BoomCMS\Tests;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Site;
-use BoomCMS\Support\Facades\Router;
+use BoomCMS\Repositories\Person as PersonRepository;
+use BoomCMS\Routing\Router;
 use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Testing\TestCase;
+use Laravel\BrowserKitTesting\TestCase;
+use Mockery as m;
 
 abstract class AbstractTestCase extends TestCase
 {
     protected $baseUrl = 'localhost';
 
-    public function setUp()
-    {
-        parent::setUp();
+    /**
+     * @var Site
+     */
+    protected $site;
 
-        $this->site = new Site();
-
-        Router::setActiveSite($this->site);
-    }
+    protected $people;
 
     /**
      * Creates the application.
@@ -28,13 +28,38 @@ abstract class AbstractTestCase extends TestCase
      */
     public function createApplication()
     {
+        $this->site = new Site();
+        $this->people = m::mock(PersonRepository::class);
+
         $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
         $app->make(Kernel::class)->bootstrap();
-        $app->register(Stubs\BoomCMSServiceProvider::class);
 
-        $app->bind('boomcms.settings', function ($app) {
+        $app->bind('boomcms.settings', function () {
             return new Stubs\SettingsStore();
         });
+
+        $app->singleton(Router::class, function () use ($app) {
+            $router = new Router($app);
+            $router->setActiveSite($this->site);
+
+            return $router;
+        });
+
+        $app->instance(Site::class, function () {
+            return $this->site;
+        });
+
+        $app['config']->set('auth', require __DIR__.'/../src/config/auth.php');
+        $app['config']->set('filesystems', require __DIR__.'/../src/config/filesystems.php');
+        $app['config']->set('auth.providers.boomcms.driver', 'boomcms_test');
+
+        $app['auth']->provider('boomcms_test', function () {
+            return $this->people;
+        });
+
+        $app->register(Stubs\BoomCMSServiceProvider::class);
+
+        require __DIR__.'/../src/routes.php';
 
         return $app;
     }

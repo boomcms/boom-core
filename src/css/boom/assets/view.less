@@ -87,6 +87,14 @@ html.boom .b-assets-view {
 		}
 	}
 
+    #b-asset-preview {
+        iframe {
+            width: 600px;
+            height: 750px;
+            border: 0;
+        }
+    }
+
 	#b-asset-replace {
 		.b-assets-upload-form {
 			display: block;
@@ -189,4 +197,19 @@ html.boom .b-assets-view {
 			}
 		}
 	}
+}
+
+@media all and (min-height: 768px) {
+    html.boom .b-assets-view {
+        .b-settings {
+            .b-settings-menu {
+                height: calc(~"100% - 17.5rem");
+            }
+
+            .b-settings-content {
+                height: calc(~"100% - 17rem");
+                min-height: 0;
+            }
+        }
+    }
 }

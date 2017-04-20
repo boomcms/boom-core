@@ -15,10 +15,7 @@ class BaseChunkTest extends AbstractTestCase
     {
         $chunkId = 1;
 
-        $chunk = $this->getMockBuilder(BaseChunk::class)
-            ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
-            ->setConstructorArgs([new Page(), ['id' => $chunkId], 'test', true])
-            ->getMock();
+        $chunk = m::mock(BaseChunk::class, [new Page(), ['id' => $chunkId], 'test', true])->makePartial();
 
         $this->assertEquals($chunkId, $chunk->getId());
     }
@@ -35,15 +32,12 @@ class BaseChunkTest extends AbstractTestCase
             ->with('boomcms::chunks.text.test')
             ->andReturn('some text');
 
-        $chunk = $this->getMockBuilder(BaseChunk::class)
-            ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
-            ->setConstructorArgs([new Page(), [], 'test', true])
-            ->getMock();
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test', true])->makePartial();
 
         $chunk
-            ->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue('text'));
+            ->shouldReceive('getType')
+            ->once()
+            ->andReturn('text');
 
         $this->assertEquals('some text', $chunk->getPlaceholderText());
     }
@@ -60,22 +54,19 @@ class BaseChunkTest extends AbstractTestCase
             ->with('boomcms::chunks.text.default')
             ->andReturn('some text');
 
-        $chunk = $this->getMockBuilder(BaseChunk::class)
-            ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
-            ->setConstructorArgs([new Page(), [], 'test', true])
-            ->getMock();
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test', true])->makePartial();
 
         $chunk
-            ->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue('text'));
+            ->shouldReceive('getType')
+            ->once()
+            ->andReturn('text');
 
         $this->assertEquals('some text', $chunk->getPlaceholderText());
     }
 
     public function testDefaultPlaceholderTextsAreDefined()
     {
-        $types = ['asset', 'location', 'link', 'text', 'html', 'feature', 'library', 'linkset', 'slideshow', 'timestamp'];
+        $types = ['asset', 'location', 'text', 'html', 'library', 'linkset', 'slideshow', 'timestamp'];
 
         foreach ($types as $type) {
             $langKey = "boomcms::chunks.$type.default";
@@ -85,18 +76,10 @@ class BaseChunkTest extends AbstractTestCase
 
     public function testIsEditable()
     {
-        $editable = $this->getMockBuilder(BaseChunk::class)
-            ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page(), [], 'test'])
-            ->getMock();
-
+        $editable = m::mock(BaseChunk::class, [new Page(), [], 'test'])->makePartial();
         $editable->editable(true);
 
-        $noteditable = $this->getMockBuilder(BaseChunk::class)
-            ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page(), [], 'test'])
-            ->getMock();
-
+        $noteditable = m::mock(BaseChunk::class, [new Page(), [], 'test'])->makePartial();
         $noteditable->editable(false);
 
         $this->assertTrue($editable->isEditable());
@@ -105,11 +88,7 @@ class BaseChunkTest extends AbstractTestCase
 
     public function testReadonly()
     {
-        $editable = $this->getMockBuilder(BaseChunk::class)
-            ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page(), [], 'test'])
-            ->getMock();
-
+        $editable = m::mock(BaseChunk::class, [new Page(), [], 'test'])->makePartial();
         $editable->editable(true);
         $readonly = $editable->readonly();
 
@@ -124,37 +103,37 @@ class BaseChunkTest extends AbstractTestCase
             'data-boom-slot-template' => null,
             'data-boom-page'          => 1,
             'data-boom-chunk-id'      => 2,
+            'data-boom-has-content'   => 1,
         ];
 
-        $chunk = $this->getMockBuilder(BaseChunk::class)
-            ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
-            ->setConstructorArgs([$this->validPage(), ['id' => 2], 'test', true])
-            ->getMock();
+        $chunk = m::mock(BaseChunk::class, [$this->validPage(), ['id' => 2], 'test', true])->makePartial();
 
         $chunk
-            ->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue('testType'));
+            ->shouldReceive('getType')
+            ->once()
+            ->andReturn('testType');
+
+        $chunk
+            ->shouldReceive('hasContent')
+            ->once()
+            ->andReturn(true);
 
         $this->assertEquals($requiredAttributes, $chunk->getRequiredAttributes());
     }
 
     public function testAddAttributesToHtml()
     {
-        $chunk = $this->getMockBuilder(BaseChunk::class)
-            ->setMethods(['show', 'showDefault', 'hasContent', 'getRequiredAttributes', 'attributes'])
-            ->setConstructorArgs([new Page(), [], 'test', true])
-            ->getMock();
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test', true])->makePartial();
 
         $chunk
-            ->expects($this->once())
-            ->method('getRequiredAttributes')
-            ->will($this->returnValue(['required' => 'value1']));
+            ->shouldReceive('getRequiredAttributes')
+            ->once()
+            ->andReturn(['required' => 'value1']);
 
         $chunk
-            ->expects($this->once())
-            ->method('attributes')
-            ->will($this->returnValue(['attr' => 'value2']));
+            ->shouldReceive('attributes')
+            ->once()
+            ->andReturn(['attr' => 'value2']);
 
         $expected = '<p required="value1" attr="value2"></p>';
         $this->assertEquals($expected, $chunk->addAttributesToHtml('<p></p>'));
@@ -162,10 +141,7 @@ class BaseChunkTest extends AbstractTestCase
 
     public function testGetTypeReturnsClassName()
     {
-        $chunk = $this->getMockBuilder(BaseChunk::class)
-            ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page(), [], 'test', true])
-            ->getMock();
+        $chunk = m::mock(BaseChunk::class, [new Page(), [], 'test', true])->makePartial();
 
         $this->assertEquals(strtolower(class_basename($chunk)), $chunk->getType());
     }

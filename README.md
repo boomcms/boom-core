@@ -1,12 +1,17 @@
-BoomCMS
-=========
+<p align="center">
+    <a href="https://www.boomcms.net" target="_blank">
+        <img src="https://www.boomcms.net/vendor/boomcms/boom-core/img/logo.png" alt="BoomCMS logo">
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://travis-ci.org/boomcms/boom-core"><img src="https://travis-ci.org/boomcms/boom-core.svg?branch=master" alt="Build Status"></a>
+    <a href="https://styleci.io/repos/25917795"><img src="https://styleci.io/repos/25917795/shield" alt="StyleCI"></a>
+</p>
+
+## BoomCMS
 
 BoomCMS is a content management system which is designed to be easy for content editors and developers alike.
-
-
-[![Build Status](https://travis-ci.org/boomcms/boom-core.svg?branch=master)](https://travis-ci.org/boomcms/boom-core)
-[![StyleCI](https://styleci.io/repos/25917795/shield)](https://styleci.io/repos/25917795)
-
 
 This is the core code for BoomCMS which is designed to be integrated into a laravel application.
 

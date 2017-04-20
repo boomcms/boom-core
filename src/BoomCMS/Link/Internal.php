@@ -2,13 +2,15 @@
 
 namespace BoomCMS\Link;
 
-use BoomCMS\Support\Facades\Page;
+use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Support\Facades\Chunk;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Helpers\URL;
 
 class Internal extends Link
 {
     /**
-     * @var Page\Page
+     * @var Page
      */
     protected $page;
 
@@ -26,20 +28,31 @@ class Internal extends Link
      */
     protected $queryString;
 
-    public function __construct($link)
+    public function __construct($link, array $attrs = [])
     {
-        parent::__construct($link);
+        parent::__construct($link, $attrs);
 
-        if (is_numeric($link)) {
-            $this->page = Page::find($link);
+        if ($link instanceof Page) {
+            $this->page = $link;
+        } elseif (is_numeric($link)) {
+            $this->page = PageFacade::find($link);
         } else {
             // Extract the query string and fragement
             $this->queryString = parse_url($link, PHP_URL_QUERY);
             $this->urlFragment = parse_url($link, PHP_URL_FRAGMENT);
 
             $path = URL::getInternalPath($link);
-            $this->page = Page::findByUri($path);
+            $this->page = PageFacade::findByUri($path);
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getFeatureImageId(): int
+    {
+        return (isset($this->attrs['asset_id']) && !empty($this->attrs['asset_id'])) ?
+            $this->attrs['asset_id'] : $this->page->getFeatureImageId();
     }
 
     public function getPage()
@@ -47,9 +60,45 @@ class Internal extends Link
         return $this->page;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
+        if (isset($this->attrs['title']) && !empty($this->attrs['title'])) {
+            return $this->attrs['title'];
+        }
+
         return $this->page->getTitle();
+    }
+
+    public function getText(): string
+    {
+        if (isset($this->attrs['text']) && !empty($this->attrs['text'])) {
+            return $this->attrs['text'];
+        }
+
+        return Chunk::get('text', 'standfirst', $this->page)->text();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInternal(): bool
+    {
+        return true;
+    }
+
+    public function isValid(): bool
+    {
+        return !$this->page->isDeleted();
+    }
+
+    /**
+     * Whether the link is visible.
+     *
+     * @return bool
+     */
+    public function isVisible(): bool
+    {
+        return $this->page->isVisible();
     }
 
     public function url()

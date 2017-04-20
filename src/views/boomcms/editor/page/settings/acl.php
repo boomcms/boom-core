@@ -24,7 +24,7 @@
 
         <select name="groups[]" multiple>
             <?php foreach ($allGroups as $group): ?>
-                <option value="<?= $group->getId() ?>"<?= in_array($group->getId(), $groupIds) ? ' selected' : '' ?>><?= $group->getName() ?></option>
+                <option value="<?= $group->getId() ?>"<?= $groupIds->contains($group->getId()) ? ' selected' : '' ?>><?= $group->getName() ?></option>
             <?php endforeach ?>>
         </select>
     </section>

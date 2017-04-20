@@ -33,6 +33,10 @@ class DeletePage extends Command
 
     public function handle()
     {
+        if ($this->urlsShouldBeReassigned()) {
+            $this->reassignURLs();
+        }
+
         $this->childrenShouldBeMoved() ?
             $this->keepChildren()
             : $this->deleteAll();
@@ -66,11 +70,6 @@ class DeletePage extends Command
     protected function keepChildren()
     {
         $this->reparentChildren();
-
-        if ($this->urlsShouldBeReassigned()) {
-            $this->reassignURLs();
-        }
-
         $this->delete($this->page);
     }
 

@@ -33,7 +33,7 @@ class UploadedByTest extends AbstractTestCase
         $query
             ->shouldReceive('where')
             ->once()
-            ->with(Asset::ATTR_UPLOADED_BY, $person->getId())
+            ->with('assets.'.Asset::ATTR_CREATED_BY, $person->getId())
             ->andReturnSelf();
 
         $this->assertEquals($query, $filter->build($query));
@@ -58,7 +58,7 @@ class UploadedByTest extends AbstractTestCase
         $query
             ->shouldReceive('where')
             ->once()
-            ->with(Asset::ATTR_UPLOADED_BY, $person->getId())
+            ->with('assets.'.Asset::ATTR_CREATED_BY, $person->getId())
             ->andReturnSelf();
 
         $this->assertEquals($query, $filter->build($query));

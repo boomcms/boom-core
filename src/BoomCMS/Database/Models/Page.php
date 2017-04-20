@@ -8,6 +8,7 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
+use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
@@ -16,10 +17,11 @@ use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class Page extends Model implements PageInterface
+class Page extends Model implements PageInterface, SingleSiteInterface
 {
     use SingleSite;
     use SoftDeletes;
@@ -42,7 +44,7 @@ class Page extends Model implements PageInterface
     const ATTR_KEYWORDS = 'keywords';
     const ATTR_DESCRIPTION = 'description';
     const ATTR_CREATED_BY = 'created_by';
-    const ATTR_CREATED_AT = 'created_time';
+    const ATTR_CREATED_AT = 'created_at';
     const ATTR_PRIMARY_URI = 'primary_uri';
     const ATTR_FEATURE_IMAGE = 'feature_image_id';
     const ATTR_PARENT = 'parent_id';
@@ -51,7 +53,6 @@ class Page extends Model implements PageInterface
     const ATTR_DISABLE_DELETE = 'disable_delete';
     const ATTR_ADD_BEHAVIOUR = 'add_behaviour';
     const ATTR_CHILD_ADD_BEHAVIOUR = 'child_add_behaviour';
-    const ATTR_SITE = 'site_id';
     const ATTR_ENABLE_ACL = 'enable_acl';
 
     const DEFAULT_TITLE = 'Untitled';
@@ -90,6 +91,7 @@ class Page extends Model implements PageInterface
         self::ATTR_VISIBLE_IN_NAV_CMS          => 'boolean',
         self::ATTR_VISIBLE                     => 'boolean',
         self::ATTR_ENABLE_ACL                  => 'boolean',
+        self::ATTR_FEATURE_IMAGE               => 'integer',
     ];
 
     /**
@@ -124,11 +126,14 @@ class Page extends Model implements PageInterface
      */
     public function addAclGroupId($groupId)
     {
-        DB::table('page_acl')
-            ->insert([
-                'page_id'  => $this->getId(),
-                'group_id' => $groupId,
-            ]);
+        try {
+            DB::table('page_acl')
+                ->insert([
+                    'page_id'  => $this->getId(),
+                    'group_id' => $groupId,
+                ]);
+        } catch (QueryException $e) {
+        }
 
         return $this;
     }
@@ -169,12 +174,10 @@ class Page extends Model implements PageInterface
         // Chunk type and ID fields shouldn't be copied.
         unset($attrs[PageVersion::ATTR_CHUNK_TYPE]);
         unset($attrs[PageVersion::ATTR_CHUNK_ID]);
+        unset($attrs[PageVersion::ATTR_RESTORED_FROM]);
 
         $newVersion = new PageVersion($attrs);
-        $newVersion
-            ->setPage($this)
-            ->setEditedAt(new DateTime('now'))
-            ->setEditedBy(Auth::user());
+        $newVersion->setPage($this);
 
         /*
          * Only make the new version a draft if the old version is published.
@@ -259,7 +262,8 @@ class Page extends Model implements PageInterface
         return DB::table('page_acl')
             ->select('group_id')
             ->where('page_id', $this->getId())
-            ->pluck('group_id');
+            ->pluck('group_id')
+            ->all();
     }
 
     /**
@@ -390,7 +394,7 @@ class Page extends Model implements PageInterface
     {
         $grandchildTemplateId = $this->getGrandchildTemplateId();
 
-        return $grandchildTemplateId !== 0 ?: $this->getTemplateId();
+        return empty($grandchildTemplateId) ? $this->getTemplateId() : $grandchildTemplateId;
     }
 
     /**
@@ -405,9 +409,9 @@ class Page extends Model implements PageInterface
         return $this->featureImage;
     }
 
-    public function getFeatureImageId()
+    public function getFeatureImageId(): int
     {
-        return $this->{self::ATTR_FEATURE_IMAGE};
+        return $this->{self::ATTR_FEATURE_IMAGE} ?? 0;
     }
 
     public function getGrandchildTemplateId()
@@ -466,13 +470,14 @@ class Page extends Model implements PageInterface
         return $this->getCurrentVersion()->getEditedTime();
     }
 
-    public function getLastPublishedTime()
+    /**
+     * Returns the last published version for the page.
+     *
+     * @return PageVersionInterface
+     */
+    public function getLastPublished()
     {
-        $m = PageVersion::forPage($this)
-            ->lastPublished()
-            ->first();
-
-        return (new DateTime())->setTimestamp($m['embargoed_until']);
+        return PageVersion::forPage($this)->lastPublished()->first();
     }
 
     public function getManualOrderPosition()
@@ -509,7 +514,7 @@ class Page extends Model implements PageInterface
         return $this->getCurrentVersion()->getTemplateId();
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->getCurrentVersion()->getTitle();
     }
@@ -552,7 +557,7 @@ class Page extends Model implements PageInterface
      *
      * @return bool
      */
-    public function hasFeatureImage()
+    public function hasFeatureImage(): bool
     {
         return !empty($this->getFeatureImageId());
     }
@@ -1050,7 +1055,7 @@ class Page extends Model implements PageInterface
         }
 
         if (Editor::isHistory()) {
-            $query->where('edited_time', '<=', Editor::getTime()->getTimestamp());
+            $query->where('created_at', '<=', Editor::getTime()->getTimestamp());
         }
 
         return $query;
@@ -1091,6 +1096,8 @@ class Page extends Model implements PageInterface
         return $query
             ->select('version.*')
             ->addSelect('version.id as version:id')
+            ->addSelect('version.created_at as version:created_at')
+            ->addSelect('version.created_by as version:created_by')
             ->addSelect('pages.*')
             ->join(DB::raw('('.$subquery->toSql().') as v2'), 'pages.id', '=', 'v2.page_id')
             ->mergeBindings($subquery)

@@ -13,7 +13,7 @@ class PageController extends Controller
     public function show(Request $request)
     {
         $page = Router::getActivePage();
-        $format = $this->request->format();
+        $format = $request->format();
 
         if ($request->route() && $request->route()->getParameter('format')) {
             $format = $request->route()->getParameter('format');
