@@ -15,8 +15,8 @@ class PageController extends Controller
         $page = Router::getActivePage();
         $format = $request->format();
 
-        if ($request->route() && $request->route()->getParameter('format')) {
-            $format = $request->route()->getParameter('format');
+        if ($request->route() && $request->route()->parameter('format')) {
+            $format = $request->route()->parameter('format');
         }
 
         $method = 'as'.ucfirst($format);

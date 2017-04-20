@@ -19,7 +19,7 @@ class RoutePageTest extends AbstractTestCase
         $router->shouldReceive('routePage')->with($uri);
 
         $route = m::mock(Route::class);
-        $route->shouldReceive('getParameter')->with('location')->andReturn($uri);
+        $route->shouldReceive('parameter')->with('location')->andReturn($uri);
 
         $request = m::mock(Request::class);
         $request->shouldReceive('route')->andReturn($route);

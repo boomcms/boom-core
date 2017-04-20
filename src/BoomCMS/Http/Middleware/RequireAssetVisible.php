@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use BoomCMS\Repositories\Asset;
+use BoomCMS\Support\Facades\Asset;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -33,6 +33,10 @@ class RequireAssetVisible
 
         if (!$asset->isPublic() && !$this->guard->check()) {
             abort(401);
+        }
+
+        if (!Asset::exists($asset)) {
+            abort(404);
         }
 
         return $next($request);

@@ -78,9 +78,9 @@ class Stream
                 flush();
             }
 
-//            if (is_resource($stream)) {
+            if (is_resource($stream)) {
                 fclose($stream);
-//            }
+            }
         }, $code, $headers);
     }
 }

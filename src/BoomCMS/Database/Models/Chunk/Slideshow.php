@@ -8,22 +8,6 @@ class Slideshow extends BaseChunk
 
     protected $table = 'chunk_slideshows';
 
-    public static function create(array $attributes = [])
-    {
-        if (isset($attributes['slides'])) {
-            $slides = $attributes['slides'];
-            unset($attributes['slides']);
-        }
-
-        $slideshow = parent::create($attributes);
-
-        if (isset($slides)) {
-            $slideshow->slides = $slides;
-        }
-
-        return $slideshow;
-    }
-
     public function setTitleAttribute($value)
     {
         $this->attributes[self::ATTR_TITLE] = strip_tags($value);
@@ -56,8 +40,9 @@ class Slideshow extends BaseChunk
             }
         }
 
-        $this->attributes['slides'] = $slides;
-        $this->slides()->saveMany($slides);
+        $this->created(function () use ($slides) {
+            $this->slides()->saveMany($slides);
+        });
     }
 
     public function scopeWithRelations($query)

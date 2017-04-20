@@ -2,8 +2,6 @@
 
 namespace BoomCMS\Tests\Integration\Asset;
 
-use BoomCMS\Database\Models\Asset;
-
 class AssetEmbedTest extends AssetTest
 {
     protected $url = 'http://localhost/asset/1/embed';

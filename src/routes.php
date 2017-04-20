@@ -1,8 +1,7 @@
 <?php
 
+use BoomCMS\Contracts\Models\Asset as AssetContract;
 use BoomCMS\Http\Middleware;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
@@ -164,7 +163,6 @@ Route::group([
     'prefix'     => 'asset',
     'middleware' => [
         'web',
-        SubstituteBindings::class,
         Middleware\RequireAssetVisible::class,
     ],
 ], function () {
@@ -183,8 +181,10 @@ Route::group([
         'middleware' => [
             Middleware\CheckAssetETag::class,
         ],
-        'uses' => function (Request $request, $asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetHelper::controller($asset), [$request, $asset])->$action($width, $height);
+        'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
+            App::instance(AssetContract::class, $asset);
+
+            return App::make(AssetHelper::controller($asset))->$action($width, $height);
         },
     ])->where([
         'action'    => 'view|thumb|download|crop|embed',
@@ -196,8 +196,10 @@ Route::group([
         'middleware' => [
             Middleware\CheckAssetETag::class,
         ],
-        'uses' => function (Request $request, $asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetHelper::controller($asset), [$request, $asset])->$action($width, $height);
+        'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
+            App::instance(AssetContract::class, $asset);
+
+            return App::make(AssetHelper::controller($asset))->$action($width, $height);
         },
     ])->where([
         'action'    => 'view|thumb|crop',
