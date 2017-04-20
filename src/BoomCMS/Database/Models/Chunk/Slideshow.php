@@ -40,7 +40,7 @@ class Slideshow extends BaseChunk
             }
         }
 
-        $this->created(function() use($slides) {
+        $this->created(function () use ($slides) {
             $this->slides()->saveMany($slides);
         });
     }
