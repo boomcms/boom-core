@@ -5,7 +5,7 @@
 </script>
 
 <script type="text/template" id="b-asset-thumb">
-    <a class="b-assets-thumbnail thumb loading<% if (!asset.isPublic()) { %> private<% } %>" data-asset="<%= asset.getId() %>" tabindex="0">
+    <a href="#asset/<%= asset.getId() %>" class="b-assets-thumbnail thumb loading<% if (!asset.isPublic()) { %> private<% } %>" data-asset="<%= asset.getId() %>" tabindex="0">
         <img class="loading" alt="">
 
         <div class="private">

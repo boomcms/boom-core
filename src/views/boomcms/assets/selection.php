@@ -46,6 +46,14 @@
             <div id="b-selection-download"<% if (section === 'download') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.selection.download.heading') ?></h1>
 
+                <p class="about">
+                    <% if (selection.length > 1) { %>
+                        <?= trans('boomcms::asset.selection.download.about.plural') ?>
+                    <% } else { %>
+                        <?= trans('boomcms::asset.selection.download.about.singular') ?>
+                    <% } %>
+                </p>
+
                 <form id="b-assets-download-filename">
                     <label>
                         <p><?= trans('boomcms::asset.selection.download.filename') ?></p>

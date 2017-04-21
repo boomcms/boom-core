@@ -2,15 +2,12 @@
     'use strict';
 
     BoomCMS.AssetManager.Filmroll = Backbone.View.extend({
-        visibleClass: 'visible',
-
-        hide: function() {
-            this.$el.removeClass(this.visibleClass);
-        },
+        el: '#b-assets-filmroll',
 
         initialize: function(options) {
             this.assets = options.assets;
-            this.$el = $('<div id="b-assets-filmroll"></div>');
+
+            this.listenTo(this.assets, 'reset', this.render);
         },
 
         /**
@@ -24,7 +21,7 @@
          */
         initFilmroll: function() {
             this.filmroll = new FilmRoll({
-                container: this.$el,
+                container: this.$el.find('> div'),
                 scroll: false,
                 configure_load: true,
                 resize: false
@@ -37,23 +34,27 @@
         },
 
         render: function() {
-            var filmroll = this;
+            var filmroll = this,
+                $container = $('<div></div>');
+
             this.thumbnails = [];
 
-            this.$el.html('');
+            this.$el.html($container);
 
             this.assets.each(function(asset) {
                 var thumbnail = new BoomCMS.AssetManager.Thumbnail({
-                            model: asset
-                        }).render(),
+                        model: asset
+                    }).render(),
                     width = Math.floor(150 * asset.getAspectRatio());
 
                 thumbnail.$el.css('width', width);
 
-                filmroll.$el.append($('<div></div>').append(thumbnail.$el));
+                $container.append($('<div></div>').append(thumbnail.$el));
 
                 filmroll.thumbnails.push(thumbnail);
             });
+
+            this.initFilmroll();
 
             return this;
         },
@@ -68,12 +69,6 @@
                 this.filmroll.moveToChild($el[0]);
                 this.$el.find('.film_roll_pager .active').addClass('selected');
             } 
-
-            return this;
-        },
-
-        show: function() {
-            this.$el.addClass(this.visibleClass);
 
             return this;
         }
