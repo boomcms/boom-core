@@ -1,0 +1,30 @@
+#b-assets-all-albums {
+    ul {
+        margin: 1.25rem;
+        padding: 0;
+        overflow: hidden;
+
+        li {
+            padding: 0.75rem;
+            display: inline-block;
+            float: left;
+            list-style-type: none;
+            width: 25%;
+
+            a {
+                height: 20rem;
+                position: relative;
+                display: block;
+                padding: 2rem;
+                background: @dark-grey;
+                color: @lightest-grey;
+
+                &:hover, &:focus {
+                    h3 {
+                        color: @red;
+                    }
+                }
+            }
+        }
+    }
+}

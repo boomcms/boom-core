@@ -1,4 +1,4 @@
-<div class="b-assets-upload">
+<div class="b-assets-upload section">
     <?php /*if ():*/ ?>
         <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
             <div class="b-assets-upload-container">

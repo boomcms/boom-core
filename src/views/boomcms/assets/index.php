@@ -6,8 +6,8 @@
 
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
 		<div id="b-assets-buttons">
-            <?= $button('', 'view-assets', ['id' => 'b-assets-view-assets', 'class' => 'b-button-textonly']) ?>
-            <?= $button('', 'view-albums', ['id' => 'b-assets-view-albums', 'class' => 'b-button-textonly']) ?>
+            <?= $button('', 'view-assets', ['class' => 'b-button-textonly', 'data-view' => '']) ?>
+            <?= $button('', 'view-albums', ['class' => 'b-button-textonly', 'data-view' => 'albums']) ?>
 
             <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
     			<?= $button('upload', 'upload', ['id' => 'b-assets-upload']) ?>
@@ -40,12 +40,13 @@
             <div class="pace-activity"></div>
         </div>
 
-        <div id="b-assets-view-asset-container"></div>
-        <div id="b-assets-view-selection-container"></div>
+        <div id="b-assets-view-asset-container" class='section'></div>
+        <div id="b-assets-view-selection-container" class='section'></div>
+        <div id="b-assets-all-albums-container" class='section'></div>
+        <div id="b-assets-view-album-container" class='section'></div>
         <div id="b-assets-filmroll"></div>
 
         <?= view('boomcms::assets.thumbs') ?>
-        <?= view('boomcms::assets.view-albums') ?>
     </div>
 </div>
 
@@ -57,11 +58,38 @@
     <?= view('boomcms::assets.selection') ?>
 </script>
 
+<script type="text/template" id="b-assets-all-albums-template">
+    <div id='b-assets-all-albums'>
+        <ul>
+            <% for (var i = 0; i < albums.models.length; i++) { %>
+                <% var album = albums.models[i] %>
+
+                <li>
+                    <a href='#albums/<%= album.getId() %>'>
+                        <div>
+                            <h3><%= album.getName() %></h3>
+                            <p><%= album.getAssetCount() %> asset<% if (album.getAssetCount() !== 1) { %>s<% } %>
+                        </div>
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+</script>
+
+<script type='text/template' id='b-assets-view-album-template'>
+    <div id='b-assets-view-album'>
+        <h2><%= album.getName() %>
+    </div>
+</script>
+
 <script defer type="text/javascript" src="/vendor/boomcms/boom-core/js/asset-manager.js"></script>
 
 <script type="text/javascript">
     window.onload = function() {
-        new BoomCMS.AssetManager();
+        new BoomCMS.AssetManager({
+            albums: new BoomCMS.Collections.Albums(<?= Album::all() ?>)
+        });
     };
 </script>
 

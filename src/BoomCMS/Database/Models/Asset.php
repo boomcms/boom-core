@@ -62,6 +62,11 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         'extension'          => '',
     ];
 
+    public function albums()
+    {
+        return $this->hasMany(Album::class);
+    }
+
     /**
      * @return float
      */

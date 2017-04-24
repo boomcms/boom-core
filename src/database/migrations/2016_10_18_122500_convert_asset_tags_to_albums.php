@@ -3,6 +3,7 @@
 use BoomCMS\Database\Models\Album;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Chunk\Library;
+use BoomCMS\Database\Models\Site;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +17,14 @@ class ConvertAssetTagsToAlbums extends Migration
      */
     public function up()
     {
+        $site = Site::where('default', true)->first();
+
         Schema::create('albums', function (Blueprint $table) {
             $table->increments(Album::ATTR_ID);
             $table->string(Album::ATTR_NAME);
             $table->string(Album::ATTR_SLUG)->unique();
             $table->integer(Album::ATTR_ASSET_COUNT)->default(0);
+            $table->integer(Album::ATTR_SITE)->references('id')->on('sites')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -42,6 +46,7 @@ class ConvertAssetTagsToAlbums extends Migration
             if (!empty($tag)) {
                 $albums[$tag] = Album::create([
                     Album::ATTR_NAME => $tag,
+                    Album::ATTR_SITE => $site->getId(),
                 ]);
 
                 $assets = Asset::join('assets_tags', 'assets.id', '=', 'assets_tags.asset_id')

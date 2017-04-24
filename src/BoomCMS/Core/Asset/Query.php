@@ -7,7 +7,7 @@ use BoomCMS\Foundation\Query as BaseQuery;
 class Query extends BaseQuery
 {
     protected $filterAliases = [
-        'tag'                        => Finder\Tag::class,
+        'album'                      => Finder\Album::class,
         'title'                      => Finder\TitleContains::class,
         'titleordescriptioncontains' => Finder\TitleOrDescriptionContains::class,
         'type'                       => Finder\Type::class,

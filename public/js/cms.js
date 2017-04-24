@@ -43018,7 +43018,15 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     'use strict';
 
     BoomCMS.Album = BoomCMS.Model.extend({
-        urlRoot: BoomCMS.urlRoot + 'album'
+        urlRoot: BoomCMS.urlRoot + 'album',
+
+        getAssetCount: function() {
+            return this.get('asset_count');
+        },
+
+        getName: function() {
+            return this.get('name');
+        }
     });
 }(BoomCMS));
 ;(function(BoomCMS) {
@@ -48113,7 +48121,6 @@ console.log(offset, this.$counter.width());
                     assetManager.$('.b-assets-thumbnail').removeClass(assetManager.selectedClass);
                 });
 
-
             this.$el
                 .on('click', '#b-assets-selection-delete', function() {
                     assetManager.router.updateSelection(assetManager.selection, 'delete', {trigger: true});
@@ -48145,14 +48152,11 @@ console.log(offset, this.$counter.width());
                     $('#b-assets-filters').toggleClass('visible');
                     $(this).toggleClass('open');
                 })
-                .on('click', '#b-assets-view-assets', function() {
-                    this.router.navigate('', {trigger: true});
-                })
-                .on('click', '#b-assets-view-albums', function() {
-                    this.router.navigate('albums', {trigger: true});
+                .on('click', '[data-view]', function(e) {
+                    e.preventDefault();
 
-                    assetManager.toggleSearch();
-                })                        
+                    assetManager.router.goTo($(this).attr('data-view'));
+                })                      
                 .on('keydown', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
                         e.preventDefault();
@@ -48234,6 +48238,13 @@ console.log(offset, this.$counter.width());
 
                     assetManager.viewSelection(section);
                 })
+                .on('route:viewAlbum', function(albumId) {
+                    var album = assetManager.albums.get(albumId);
+
+                    if (album) {
+                        assetManager.viewAlbum(album);
+                    }
+                })
                 .on('route', function(section) {
                     assetManager.setView(section);
                 });
@@ -48277,9 +48288,10 @@ console.log(offset, this.$counter.width());
             return this.$el.find('.b-assets-thumbnail[data-asset="' + asset.getId() + '"]').addClass('hello');
         },
 
-        initialize: function() {
+        initialize: function(options) {
             var assetManager = this;
 
+            this.albums = options.albums;
             this.$content = this.$('#b-assets-content');
             this.$viewAssetContainer = this.$('#b-assets-view-asset-container');
             this.$viewSelectionContainer = this.$('#b-assets-view-selection-container');
@@ -48311,12 +48323,17 @@ console.log(offset, this.$counter.width());
             });
 
             this.listenTo(this.selection, 'reset update', this.toggleButtons);
-            
+
+            this.showAlbums();
             this.bind();
         },
 
         showAlbums: function() {
-            
+            var view = new BoomCMS.AssetManager.AllAlbums({
+                albums: this.albums
+            });
+
+            this.$('#b-assets-all-albums-container').html(view.render().$el);
         },
 
         selectAll: function() {
@@ -48358,9 +48375,18 @@ console.log(offset, this.$counter.width());
             this.$el.find('#b-assets-search').toggleClass('open');
         },
 
-        updateTagFilters: function(tags) {
-            this.addFilter('tag', tags);
+        viewAlbum: function(album) {
+            this.$el
+                .assetSearch('removeFilters')
+                .assetSearch('addFilter', 'album', album.getId());
+
             this.getAssets();
+
+            var view = new BoomCMS.AssetManager.ViewAlbum({
+                model: album
+            });
+
+            this.$('#b-assets-view-album-container').html(view.render().$el);
         },
 
         viewAsset: function(asset, section) {
@@ -48567,6 +48593,25 @@ console.log(offset, this.$counter.width());
         }
     });
 }(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
+    'use strict';
+
+    BoomCMS.AssetManager.AllAlbums = Backbone.View.extend({
+        initialize: function(options) {
+            this.albums = options.albums;
+
+            this.template = _.template($('#b-assets-all-albums-template').html());
+        },
+
+        render: function() {
+            this.$el.html($(this.template({
+                albums: this.albums
+            })));
+
+            return this;
+        }
+    });
+}(jQuery, Backbone, BoomCMS));
 ;(function($, BoomCMS) {
     'use strict';
 
@@ -48652,7 +48697,12 @@ console.log(offset, this.$counter.width());
             'upload': 'upload',
             'asset/:asset/:section': 'viewAsset',
             'selection/:selection/:section': 'viewSelection',
-            'albums': 'viewAlbums'
+            'albums/:album': 'viewAlbum',
+            'albums': 'allAlbums'
+        },
+
+        goTo: function(route) {
+            this.navigate(route, {trigger: true});
         },
 
         initialize: function(options) {
@@ -48781,6 +48831,25 @@ console.log(offset, this.$counter.width());
                     asset: this.model
                 }))
                 .attr('data-aspect-ratio', aspectRatio > 0 ? aspectRatio : 1);
+
+            return this;
+        }
+    });
+}(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
+    'use strict';
+
+    BoomCMS.AssetManager.ViewAlbum = Backbone.View.extend({
+        tagName: 'div',
+
+        initialize: function() {
+            this.template = _.template($('#b-assets-view-album-template').html());
+        },
+
+        render: function() {
+            this.$el.html($(this.template({
+                album: this.model
+            })));
 
             return this;
         }

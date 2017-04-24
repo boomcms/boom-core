@@ -27,11 +27,6 @@ interface Album
     public function getName();
 
     /**
-     * @return Site
-     */
-    public function getSite();
-
-    /**
      * @param Asset $asset
      *
      * @return $this
@@ -44,11 +39,4 @@ interface Album
      * @return $this
      */
     public function setName($name);
-
-    /**
-     * @param Site $site
-     *
-     * @return $this
-     */
-    public function setSite(Site $site);
 }

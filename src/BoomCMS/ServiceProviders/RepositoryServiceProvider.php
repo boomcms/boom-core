@@ -16,6 +16,10 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot(Router $router, Filesystem $filesystem)
     {
+        $this->app->singleton(Repositories\Album::class, function () use ($router) {
+            return new Repositories\Album(new Models\Album(), $router->getActiveSite());
+        });
+
         $this->app->singleton(Repositories\AssetVersion::class, function () {
             return new Repositories\AssetVersion(new Models\AssetVersion());
         });

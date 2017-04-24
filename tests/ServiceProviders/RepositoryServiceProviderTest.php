@@ -16,6 +16,7 @@ class RepositoryServiceProviderTest extends AbstractTestCase
     public function testRepositoriesAreRegistered()
     {
         $expectations = [
+            Repositories\Album::class,
             Repositories\Asset::class,
             Repositories\Group::class,
             Repositories\Page::class,

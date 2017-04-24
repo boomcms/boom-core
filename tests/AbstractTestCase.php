@@ -76,4 +76,11 @@ abstract class AbstractTestCase extends TestCase
 
         return $page;
     }
+
+    protected function assertHasTrait($class, $trait)
+    {
+        $traits = class_uses($class);
+
+        $this->assertContains($trait, $traits);
+    }
 }

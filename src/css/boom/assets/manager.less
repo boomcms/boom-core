@@ -9,27 +9,68 @@
 
     &[data-view=upload] {
         .b-assets-upload {
+            display: block;
+        }
+    }
+
+    &[data-view=allAlbums] {
+        #b-assets-all-albums-container {
+            display: block;
+        }
+    }
+
+    &[data-view=allAlbums], &[data-view=viewAlbum] {
+        button[data-view=''] {
+            background: @darkest-grey;
+            color: @lightest-grey;
+        }
+
+        button[data-view='albums'] {
+            background: @lightest-grey;
+            color: @darkest-grey;
+        }
+    }
+
+    &[data-view=viewAlbum] {
+        #b-assets-view-album-container, #b-assets-view-thumbs {
+            display: inline-block;
+        }
+
+        #b-assets-view-album-container {
+            width: 25rem;
+            float: left;
+        }
+
+        #b-assets-view-thumbs {
+            width: calc(~"100% - 25rem");
             visibility: visible;
             z-index: 1;
+            float: right;
+            padding-top: 1.25rem;
         }
     }
 
     &[data-view=viewAsset],  {
-        #b-assets-view-asset-container, #b-assets-filmroll {
-            visibility: visible;
-            z-index: 1;
+        #b-assets-view-asset-container {
+            display: block !important;
         }
     }
 
     &[data-view=viewSelection] {
-        #b-assets-view-selection-container, #b-assets-filmroll {
+        #b-assets-view-selection-container {
+            display: block;
+        }
+    }
+
+    &[data-view=viewAsset], &[data-view=viewSelection] {
+        #b-assets-filmroll {
             visibility: visible;
             z-index: 1;
         }
     }
 
     &[data-view=home] {
-        #b-assets-view-thumbs {
+        #b-assets-content #b-assets-view-thumbs {
             visibility: visible;
             z-index: 1;
         }
@@ -38,6 +79,7 @@
 	#b-topbar {
 		position: fixed;
 		z-index: 3;
+
 	}
 
 	#b-assets-search {
@@ -94,14 +136,14 @@
 		}
 	}
 
+    #b-assets-view-thumbs, #b-assets-filmroll {
+        visibility: hidden;
+        z-index: -1;
+    }
+
 	#b-assets-content {
 		padding-top: 60px;
 		min-height: 100vh;
-
-        > * {
-            visibility: hidden;
-            z-index: -1;
-        }
 
         > .pace .pace-activity {
             visibility: visible;
@@ -168,4 +210,23 @@
 			}
 		}
 	}
+
+    .section {
+        display: none;
+    }
+
+    button[data-view] {
+        margin-bottom: -1rem;
+        padding-bottom: 1rem;
+        padding: 0 2rem 1rem 2rem;
+
+        .b-button-text {
+            margin: 0;
+        }
+    }
+
+    button[data-view=''] {
+        background: @lightest-grey;
+        color: @darkest-grey;
+    }
 }

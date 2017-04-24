@@ -4,6 +4,8 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Album;
 use BoomCMS\Database\Models\Asset;
+use BoomCMS\Support\Traits\SingleSite;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Mockery as m;
 
 class AlbumTest extends AbstractModelTestCase
@@ -12,6 +14,16 @@ class AlbumTest extends AbstractModelTestCase
      * @var string
      */
     protected $model = Album::class;
+
+    public function testIsSingleSite()
+    {
+        $this->assertHasTrait($this->model, SingleSite::class);
+    }
+
+    public function testSoftDeletes()
+    {
+        $this->assertHasTrait($this->model, SoftDeletes::class);
+    }
 
     public function testAssets()
     {

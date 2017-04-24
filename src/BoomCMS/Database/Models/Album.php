@@ -4,16 +4,18 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Album as AlbumInterface;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
+use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Str;
 use BoomCMS\Support\Traits\SingleSite;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Album extends Model implements AlbumInterface
+class Album extends Model implements AlbumInterface, SingleSiteInterface
 {
     use SingleSite;
+    use SoftDeletes;
 
     const ATTR_NAME = 'name';
-    const ATTR_SITE = 'site_id';
     const ATTR_SLUG = 'slug';
     const ATTR_ASSET_COUNT = 'asset_count';
 

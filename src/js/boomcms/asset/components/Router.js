@@ -7,7 +7,12 @@
             'upload': 'upload',
             'asset/:asset/:section': 'viewAsset',
             'selection/:selection/:section': 'viewSelection',
-            'albums': 'viewAlbums'
+            'albums/:album': 'viewAlbum',
+            'albums': 'allAlbums'
+        },
+
+        goTo: function(route) {
+            this.navigate(route, {trigger: true});
         },
 
         initialize: function(options) {
