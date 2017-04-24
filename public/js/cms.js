@@ -48098,7 +48098,7 @@ console.log(offset, this.$counter.width());
     'use strict';
 
     BoomCMS.AssetManager = Backbone.View.extend({
-        el: 'body',
+        el: '#b-assets-manager',
 
         activeAsset: null,
         assets: new BoomCMS.Collections.Assets(),
@@ -48359,7 +48359,7 @@ console.log(offset, this.$counter.width());
         },
 
         setView: function(section) {
-            this.$content.attr('data-view', section);
+            this.$el.attr('data-view', section);
 
             if (section !== 'asset') {
                 this.activeAsset = null;
