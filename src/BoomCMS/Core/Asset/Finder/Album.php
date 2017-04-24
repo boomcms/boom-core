@@ -19,7 +19,7 @@ class Album extends BaseFilter
      */
     public function __construct($album)
     {
-        $this->album = ($album instanceof Album) ? $album : AlbumFacade::find($album);
+        $this->album = ($album instanceof self) ? $album : AlbumFacade::find($album);
     }
 
     /**
