@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 interface Album
 {
     /**
-     * Returns a collection containing all albums
+     * Returns a collection containing all albums.
      *
      * @return Collection
      */
