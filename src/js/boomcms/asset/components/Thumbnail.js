@@ -17,6 +17,9 @@
             });
 
             $el
+                .on('click', function(e) {
+                    e.preventDefault();
+                })
                 .data('model', model)
                 .dblclick()
                 .on('sclick', function() {

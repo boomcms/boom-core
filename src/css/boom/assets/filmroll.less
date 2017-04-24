@@ -7,8 +7,13 @@
     z-index: 10;
     padding: 2rem 0 4rem 0;
     background: @lightest-grey;
-    visibility: hidden;
+    display: none;
     border-top: 1px solid @darkest-grey;
+
+    > div {
+        width: 100%;
+        height: 100%;
+    }
 
     .film_roll_child {
         position: relative;
@@ -67,8 +72,6 @@
 
 @media all and (min-height: 768px) {
     #b-assets-filmroll {
-        &.visible {
-            visibility: visible;
-        }
+        display: block;
     }
 }

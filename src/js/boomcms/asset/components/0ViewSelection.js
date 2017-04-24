@@ -66,11 +66,10 @@
                 });
 
             this.$('.b-settings-menu a[href^="#"]').boomTabs();
-            this.$('time').localTime();
+            this.$el.ui();
         },
 
         close: function() {
-            this.$el.remove();
             this.router.navigate('', {trigger: true});
         },
 
@@ -101,7 +100,7 @@
 
             this.template = _.template($(this.templateSelector).html());
 
-            this.listenTo(this.selection, 'sync', function() {
+            this.listenTo(this.selection, 'add remove', function() {
                 this.render(view.getSection());
             });
 
@@ -117,16 +116,23 @@
         },
 
         render: function(section) {
-            this.$el.html(this.template({
+            this.$el.html($(this.template({
                 selection: this.selection,
                 section: section
-            }));
+            })));
+            
+            var $about = this.$('.about');
+            $about.text($about.text().replace(':count', this.selection.length));
 
             if (section === 'tags') {
                 this.showTags();
             }
 
             this.bind();
+
+            this.listenTo(this.assets, 'select', function() {
+                this.router.updateSelection(this.selection, this.getSection());
+            });
 
             return this;
         },

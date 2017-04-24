@@ -36,6 +36,14 @@
             <?= view('boomcms::assets.upload') ?>
         <?php endif ?>
 
+        <div class="pace">
+            <div class="pace-activity"></div>
+        </div>
+
+        <div id="b-assets-view-asset-container"></div>
+        <div id="b-assets-view-selection-container"></div>
+        <div id="b-assets-filmroll"></div>
+
         <?= view('boomcms::assets.thumbs') ?>
         <?= view('boomcms::assets.view-albums') ?>
     </div>

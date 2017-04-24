@@ -32,6 +32,10 @@ return [
     'unsupported'     => 'File :filename is of an unsuported type: :mimetype',
     'selection'       => [
         'download' => [
+            'about'    => [
+                'singular' => 'The selected asset will be downloaded as a .zip file',
+                'plural'   => 'The :count selected assets will be downloaded as a .zip file',
+            ],
             'heading'  => 'Download assets',
             'filename' => 'Enter the name of the download',
             'default'  => 'BoomCMS Asset Download',

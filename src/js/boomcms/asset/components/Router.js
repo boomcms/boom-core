@@ -14,8 +14,8 @@
             this.assets = options.assets;
         },
 
-        viewAlbums: function() {
-            this.trigger('albums');
+        updateSelection: function(assets, section, options) {
+            this.navigate('selection/' + assets.getIdString() + '/' + section, options);
         },
 
         viewAsset: function(id, section) {
@@ -40,14 +40,6 @@
             var assetIds = selection.split(',');
 
             this.trigger('selection', assetIds, section);
-        },
-
-        home: function() {
-            this.trigger('home');
-        },
-
-        upload: function() {
-            this.trigger('upload');
         }
     });
 }(Backbone, BoomCMS));
