@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Repositories;
 
-use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Models\Album as AlbumInterface;
+use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Album as AlbumRepositoryInterface;
 use BoomCMS\Database\Models\Album as Model;
 use Illuminate\Support\Collection;

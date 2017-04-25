@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'albums'         => 'Albums',
+    'albums'          => 'Albums',
     'all'             => 'All assets',
     'close'           => 'Close',
     'attributes'      => 'Attributes',
