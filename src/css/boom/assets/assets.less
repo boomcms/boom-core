@@ -17,49 +17,6 @@
 }
 
 #b-assets {
-	&-buttons {
-		display: inline-block;
-		width: 100%;
-
-		> a {
-			text-decoration: underline;
-
-			&:hover, &:focus {
-				color: @red;
-				text-decoration: none;
-			}
-		}
-		
-		#b-assets-select-all {
-			margin-left: 1.5rem;
-		}
-	}
-
-	&-content {
-		overflow: hidden;
-
-		&.hide-thumbs {
-			#b-assets-view-thumbs {
-				z-index: -1;
-				transition: all 1s;
-
-				.thumb {
-					max-height: 0;
-					transition: max-height 1s ease-out;
-					overflow: hidden;
-
-					+ .edit {
-						top: -1000%;
-					}
-				}
-			}
-		}
-
-		img {
-			border: none;
-		}
-	}
-
 	&-none {
 		.text-large;
 		line-height: 85vh;

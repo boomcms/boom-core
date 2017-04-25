@@ -1,4 +1,4 @@
-<div class="b-assets-upload section">
+<div class="b-assets-upload">
     <?php /*if ():*/ ?>
         <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
             <div class="b-assets-upload-container">
@@ -16,7 +16,6 @@
                 </div>
 
                 <input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
-                <?= $button('times', 'close-upload', ['class' => 'b-assets-upload-close b-button-withtext']) ?>
             </div>
         </form>
     <?php /*else: ?>

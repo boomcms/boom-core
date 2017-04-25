@@ -12,7 +12,7 @@ use BoomCMS\Tests\AbstractTestCase;
 class FacadesTest extends AbstractTestCase
 {
     protected $facades = [
-        Facaces\Album::class    => Repositories\Album::class,
+        Facades\Album::class    => Repositories\Album::class,
         Facades\Asset::class    => Repositories\Asset::class,
         Facades\Chunk::class    => Chunk::class,
         Facades\Editor::class   => Editor::class,

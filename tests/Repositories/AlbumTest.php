@@ -5,6 +5,7 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Album;
 use BoomCMS\Repositories\Album as AlbumRepository;
 use BoomCMS\Tests\AbstractTestCase;
+use Mockery as m;
 
 class AlbumTest extends AbstractTestCase
 {
@@ -24,12 +25,12 @@ class AlbumTest extends AbstractTestCase
 
         $this->model = m::mock(Album::class);
 
-        $this->repository = new AssetRepository($this->model, $this->site);
+        $this->repository = new AlbumRepository($this->model, $this->site);
     }
 
     public function testAll()
     {
-        $albums = [new Album(), new Album()];
+        $albums = collect([new Album(), new Album()]);
 
         $this->model
             ->shouldReceive('whereSite')
@@ -74,7 +75,7 @@ class AlbumTest extends AbstractTestCase
             $this->model
                 ->shouldReceive('find')
                 ->once()
-                ->width($albumId)
+                ->with($albumId)
                 ->andReturn($album);
 
             $this->assertEquals($album, $this->repository->find($albumId));

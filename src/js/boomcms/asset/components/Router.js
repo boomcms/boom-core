@@ -8,7 +8,7 @@
             'asset/:asset/:section': 'viewAsset',
             'selection/:selection/:section': 'viewSelection',
             'albums/:album': 'viewAlbum',
-            'albums': 'allAlbums'
+            'search': 'search'
         },
 
         goTo: function(route) {

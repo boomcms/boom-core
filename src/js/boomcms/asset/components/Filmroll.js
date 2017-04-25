@@ -37,6 +37,12 @@
             var filmroll = this,
                 $container = $('<div></div>');
 
+            if (this.assets.length <= 1) {
+                this.$el.html('');
+
+                return this;
+            }
+
             this.thumbnails = [];
 
             this.$el.html($container);

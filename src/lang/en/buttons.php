@@ -7,6 +7,7 @@ return [
     'add-tag'               => 'Add tag',
     'add-tag-group'         => 'Add tag group',
     'add-tags'              => 'Add tags',
+    'albums'                => 'Albums',
     'all-assets'            => 'All assets',
     'asset-revert'          => 'Revert to this version',
     'asset-undo'            => 'Undo changes',
@@ -14,7 +15,6 @@ return [
     'change-thumbnail'      => 'Change thumbnail',
     'clear-filters'         => 'Clear filters',
     'clear-selection'       => 'Clear selection',
-    'close-upload'          => 'Close uploader',
     'conflict-reload'       => 'Discard',
     'conflict-overwrite'    => 'Overwrite',
     'conflict-inspect'      => 'Inspect',
@@ -64,7 +64,6 @@ return [
         'visible'   => 'This page is visible. The content displayed will depend on which version of the page is published',
     ],
     'upload'                => 'Upload files',
-    'view-albums'           => 'Albums',
     'view-assets'           => 'Assets',
     'view-edit'             => 'View / edit',
 ];

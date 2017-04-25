@@ -155,16 +155,10 @@
         },
 
         removeFilters: function() {
-            this.postData = {};
-
-            for (var key in this.initialFilters) {
-                this.postData[key] = this.initialFilters[key];
-            }
-
             this.element.find('#b-assets-types, #b-assets-extensions, select[name=uploadedby]').val(0);
             this.element.find('#b-tags-search li').remove();
 
-            this.getAssets();
+            this.setFilters(this.initialFilters);
         },
 
         renderGrid: function() {
@@ -201,6 +195,14 @@
             }
 
             this.perpage = perpage;
+        },
+
+        setFilters: function(filters) {
+            this.postData = {};
+
+            for (var key in filters) {
+                this.postData[key] = filters[key];
+            }
         },
 
         sortBy: function(sort) {

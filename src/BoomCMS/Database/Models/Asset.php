@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Database\Models;
 
+use BoomCMS\Contracts\Models\Album as AlbumInterface;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\SingleSiteInterface;
@@ -64,7 +65,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
 
     public function albums()
     {
-        return $this->hasMany(Album::class);
+        return $this->belongsToMany(Album::class);
     }
 
     /**
@@ -276,6 +277,14 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function isVideo()
     {
         return $this->getType() === 'video';
+    }
+
+    public function scopeWhereAlbum(Builder $query, AlbumInterface $album): Builder
+    {
+        return $query
+            ->whereHas('albums', function(Builder $query) use ($album) {
+                $query->where('albums.id', $album->getId());
+            });
     }
 
     /**

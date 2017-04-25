@@ -135,11 +135,6 @@
                         // For situations where multiple files were uploaded but one caused an error.
                         assetManager.getAssets();
                     }
-                })
-                .on('click', '.b-assets-upload-close', function(e) {
-                    e.preventDefault();
-
-                    assetManager.router.navigate('', {trigger: true});
                 });
         },
 
@@ -175,43 +170,14 @@
                         assetManager.viewAlbum(album);
                     }
                 })
+                .on('route:home', function() {
+                    assetManager.showAlbums();
+                })
                 .on('route', function(section) {
                     assetManager.setView(section);
                 });
 
             Backbone.history.start();
-        },
-
-        getAssets: function() {
-            var assetManager = this,
-                selection = this.selection,
-                deferred = $.Deferred();
-
-            this.$el
-                .assetSearch('getAssets')
-                .done(function() {
-                    var remove = [];
-
-                    // Ensure that any assets in the selection are marked as selected.
-                    // If the asset thumbnail isn't in view then remove it from the selection.
-                    selection.each(function(asset) {
-                        var $thumb = assetManager.getThumb(asset);
-
-                        if ($thumb.length && !$thumb.hasClass(assetManager.selectedClass)) {
-                            $thumb.addClass(assetManager.selectedClass);
-                        } else if ($thumb.length === 0) {
-                            remove.push(asset);
-                        }
-                    });
-
-                    for (var i = 0; i < remove.length; i++) {
-                        selection.remove(remove[i]);
-                    }
-
-                    deferred.resolve();
-                });
-
-            return deferred;
         },
 
         getThumb: function(asset) {
@@ -233,29 +199,23 @@
 
             this.router = new BoomCMS.AssetManager.Router({assets: this.assets}); 
 
-            this.getAssets()
-                .done(function() {
-                    assetManager.filmroll = new BoomCMS.AssetManager.Filmroll({
-                        assets: assetManager.assets
-                    }).render();
-
-                    assetManager.bindRoutes();
-                });
+            this.filmroll = new BoomCMS.AssetManager.Filmroll({
+                assets: this.assets
+            }).render();
 
             this.listenTo(this.assets, 'select', this.select);
             this.listenTo(this.assets, 'view', this.viewAsset);
-
             this.listenTo(this.assets, 'reset', this.assetsChanged);
 
             this.listenTo(this.assets, 'destroy', function() {
-                assetManager.getAssets();
+                assetManager.router.navigate('', {trigger: true});
                 assetManager.selection.reset();
             });
 
             this.listenTo(this.selection, 'reset update', this.toggleButtons);
 
-            this.showAlbums();
             this.bind();
+            this.bindRoutes();
         },
 
         showAlbums: function() {
@@ -287,7 +247,16 @@
         },
 
         setView: function(section) {
+            if (section === 'home') {
+                section = '';
+            }
+
             this.$el.attr('data-view', section);
+
+            this.$('button[data-view]')
+                .removeClass('active')
+                .filter('[data-view="' + section + '"]')
+                .addClass('active');
 
             if (section !== 'asset') {
                 this.activeAsset = null;
@@ -300,17 +269,12 @@
             $buttons.prop('disabled', this.selection.length ? false : true);
         },
 
-        toggleSearch: function() {
-            this.$el.find('#b-assets-filters').toggleClass('visible');
-            this.$el.find('#b-assets-search').toggleClass('open');
-        },
-
         viewAlbum: function(album) {
             this.$el
-                .assetSearch('removeFilters')
-                .assetSearch('addFilter', 'album', album.getId());
-
-            this.getAssets();
+                .assetSearch('setFilters', {
+                    album: album.getId()
+                })
+                .assetSearch('getAssets');
 
             var view = new BoomCMS.AssetManager.ViewAlbum({
                 model: album

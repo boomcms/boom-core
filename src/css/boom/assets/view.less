@@ -6,11 +6,9 @@ html.boom .b-assets-view {
 	right: 0;
 	bottom: 0;
 
-	form.b-tags-add {
-		margin: 0;
-		float: none;
-		height: 3.9rem;
-	}
+    &:empty {
+        display: none;
+    }
 
 	.b-settings-content {
 		> * {
@@ -65,14 +63,6 @@ html.boom .b-assets-view {
 
 	textarea {
 		height: 6em;
-	}
-
-	#b-tags {
-		overflow: hidden;
-
-		.b-tag {
-			background: @white;
-		}
 	}
 
 	#b-asset-metadata {
@@ -200,7 +190,7 @@ html.boom .b-assets-view {
 }
 
 @media all and (min-height: 768px) {
-    html.boom .b-assets-view {
+    html.boom .b-assets-view:not(.no-filmroll) {
         .b-settings {
             .b-settings-menu {
                 height: calc(~"100% - 17.5rem");

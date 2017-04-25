@@ -29,7 +29,7 @@ class Album extends BaseFilter
      */
     public function build(Builder $query)
     {
-        return $query->with('albums')->where('albums.id', '=', $this->album->getId());
+        return $query->whereAlbum($this->album);
     }
 
     /**

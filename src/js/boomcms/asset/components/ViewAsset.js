@@ -98,8 +98,8 @@
                 section: section
             })));
 
-            if (section === 'tags') {
-                this.showTags();
+            if (this.assets.length <= 1) {
+                this.$el.children().addClass('no-filmroll');
             }
 
             if (section === 'replace') {

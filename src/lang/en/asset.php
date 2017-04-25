@@ -75,13 +75,11 @@ return [
     ],
 
     'search'          => [
-        'album'             => 'Filter by album',
-        'album-placeholder' => 'Type an album name',
-        'sort'            => 'Sort assets by',
-        'title'           => 'Search by asset name',
-        'type'            => 'Filter by asset type',
-        'extension'       => 'Filter by file extension',
-        'uploaded-by'     => 'Filter by uploader',
+        'sort'         => 'Sort assets by',
+        'title'        => 'Search by asset name',
+        'type'         => 'Filter by asset type',
+        'extension'    => 'Filter by file extension',
+        'uploaded-by'  => 'Filter by uploader',
     ],
     'sort' => [
         'created_at desc'      => 'Upload time: most recent first',

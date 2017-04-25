@@ -124,10 +124,6 @@
             var $about = this.$('.about');
             $about.text($about.text().replace(':count', this.selection.length));
 
-            if (section === 'tags') {
-                this.showTags();
-            }
-
             this.bind();
 
             this.listenTo(this.assets, 'select', function() {
