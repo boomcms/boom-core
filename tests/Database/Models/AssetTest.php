@@ -183,7 +183,7 @@ class AssetTest extends AbstractModelTestCase
         $query
             ->shouldReceive('whereHas')
             ->once()
-            ->with('albums', m::on(function($closure) use($query) {
+            ->with('albums', m::on(function ($closure) use ($query) {
                 $closure($query);
 
                 return true;

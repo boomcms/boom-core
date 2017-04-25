@@ -6,7 +6,6 @@ use BoomCMS\Database\Models\Album;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Support\Traits\SingleSite;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
 class AlbumTest extends AbstractModelTestCase
