@@ -149,8 +149,8 @@ function Row() {
     };
 
     Row.prototype.shrinkBy = function(size) {
-
         var total_aspect_ratio = 0;
+
         $.each(this.elements, function(index, $el) {
             total_aspect_ratio += $el.data('aspect-ratio');
         });

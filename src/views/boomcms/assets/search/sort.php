@@ -17,13 +17,17 @@
 ?>
 
 <div>
-    <h2><?= trans('boomcms::asset.search.sort') ?></h2>
-
     <select id="b-assets-sortby">
+        <option value="<?= $selected ?>">
+            <?= trans('boomcms::asset.search.sort') ?>
+        </option>
+
         <?php foreach ($options as $o): ?>
-            <option value="<?= $o ?>"<?php if ($selected === $o): ?> selected="selected"<?php endif ?>>
+            <option value="<?= $o ?>">
                 <?= trans("boomcms::asset.sort.$o") ?>
             </option>
         <?php endforeach ?>
     </select>
+
+    <label for="b-assets-sortby"><?= trans('boomcms::asset.search.sort') ?></label>
 </div>

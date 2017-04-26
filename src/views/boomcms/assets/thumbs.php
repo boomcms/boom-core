@@ -1,4 +1,10 @@
-<div id="b-assets-view-thumbs"></div>
+<div id="b-assets-view-thumbs">
+    <div class="pace">
+        <div class="pace-activity"></div>
+    </div>
+
+    <div></div>
+</div>
 
 <script type="text/template" id="b-assets-none-template">
     <p id="b-assets-none"><?= trans('boomcms::asset.none') ?></p>

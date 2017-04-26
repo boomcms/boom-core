@@ -8,8 +8,7 @@ class Query extends BaseQuery
 {
     protected $filterAliases = [
         'album'                      => Finder\Album::class,
-        'title'                      => Finder\TitleContains::class,
-        'titleordescriptioncontains' => Finder\TitleOrDescriptionContains::class,
+        'text'                       => Finder\TitleOrDescriptionContains::class,
         'type'                       => Finder\Type::class,
         'extension'                  => Finder\Extension::class,
         'uploadedby'                 => Finder\UploadedBy::class,

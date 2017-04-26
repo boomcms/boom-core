@@ -29,9 +29,10 @@
 	</div>
 
     <div id="b-assets-tabs">
-        <div id="b-assets-filters">
+        <div id="b-assets-search">
+            <h1><?= trans('boomcms::asset.search.heading') ?></h1>
+
             <?= view('boomcms::assets.search') ?>
-            <?= view('boomcms::assets.search.sort') ?>
         </div>
 
         <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
@@ -41,14 +42,18 @@
         <div id="b-assets-all-albums-container"></div>
 
         <div id="b-assets-content">
+            <div id="b-assets-search-results">
+                <h1><?= trans('boomcms::asset.search.results') ?></h1>
+            </div>
+
             <div id="b-assets-view-asset-container"></div>
             <div id="b-assets-view-selection-container"></div>
             <div id="b-assets-view-album-container"></div>
-            <div id="b-assets-filmroll"></div>
-
             <?= view('boomcms::assets.thumbs') ?>
         </div>
     </div>
+
+    <div id="b-assets-filmroll"></div>
 </div>
 
 <script type="text/template" id="b-assets-view-template">
@@ -80,7 +85,7 @@
 
 <script type='text/template' id='b-assets-view-album-template'>
     <div id='b-assets-view-album'>
-        <h2><%= album.getName() %>
+        <h1><%= album.getName() %></h1>
     </div>
 </script>
 

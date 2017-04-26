@@ -43,7 +43,9 @@
                     }
                 })
                 .on('click', '.b-settings-close', function(e) {
-                    view.close(e);
+                    e.preventDefault();
+
+                    view.close();
                 })
                 .on('click', '.b-assets-delete', function() {
                     selection.destroy();
@@ -70,7 +72,7 @@
         },
 
         close: function() {
-            this.router.navigate('', {trigger: true});
+            this.router.goToPreviousOrHome();
         },
 
         displayTags: function(tags) {

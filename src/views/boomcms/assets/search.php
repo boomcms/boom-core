@@ -1,6 +1,9 @@
-<?= view('boomcms::assets.search.title') ?>
-<?= view('boomcms::assets.search.type') ?>
-<?= view('boomcms::assets.search.extension') ?>
-<?= view('boomcms::assets.search.uploaded-by') ?>
+<form action="#">
+    <?= view('boomcms::assets.search.text') ?>
+    <?= view('boomcms::assets.search.type') ?>
+    <?= view('boomcms::assets.search.extension') ?>
+    <?= view('boomcms::assets.search.uploaded-by') ?>
+    <?= view('boomcms::assets.search.sort') ?>
 
-<?= $button('accept', 'all-assets', ['id' => 'b-assets-all', 'class' => 'b-button-textonly']) ?>
+    <?= $button('search', 'search-assets', ['class' => 'b-button-textonly', 'type' => 'submit']) ?>
+</form>

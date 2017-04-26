@@ -89,4 +89,61 @@ html.boom {
 			margin-left: 1em;
 		}
 	}
+
+    .input {
+        position: relative;
+        display: block;
+
+        + .input {
+            margin-top: 2.5rem;
+        }
+
+        .fa {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 4rem;
+            background: @white;
+            color: @red;
+            text-align: center;
+            line-height: 6rem;
+            z-index: 3;
+        }
+
+        input[type=text],
+        input[type=email],
+        input[type=password] {
+            position: relative;
+            z-index: 2;
+
+            &.has-content, &:focus {
+                padding-top: 2rem;
+                opacity: 1;
+                outline: 0;
+
+                + label {
+                    .text-small;
+                    transform: none;
+                    top: 1rem;
+                    transition: all 0.5s;
+                    z-index: 3;
+                }
+            }
+
+            &:-webkit-autofill {
+                -webkit-box-shadow: 0 0 0px 1000px @lightest-grey inset;
+            }
+
+            + label {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 100%;
+                margin: 0;
+                transition: all 0.5s;
+            }
+        }
+    }
 }

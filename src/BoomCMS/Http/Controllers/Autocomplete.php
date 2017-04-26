@@ -29,18 +29,6 @@ class Autocomplete extends Controller
         $this->request = $request;
     }
 
-    public function getAssets()
-    {
-        return DB::table('assets')
-            ->select('title')
-            ->where('title', 'like', "%$this->text%")
-            ->orderBy(DB::raw('length(title)'), 'asc')
-            ->distinct(true)
-            ->limit($this->count)
-            ->pluck('title')
-            ->all();
-    }
-
     public function getPageTitles()
     {
         $results = [];

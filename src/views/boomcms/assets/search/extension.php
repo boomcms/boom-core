@@ -1,6 +1,4 @@
 <div>
-    <h2><?= trans('boomcms::asset.search.extension') ?></h2>
-
     <select id="b-assets-extensions" name="extension">
         <option value="0">
             <?= trans('boomcms::asset.search.extension') ?>
@@ -12,4 +10,7 @@
             </option>
         <?php endforeach ?>
     </select>
+
+    <label for="b-assets-extensions"><?= trans('boomcms::asset.search.extension') ?></label>
+
 </div>

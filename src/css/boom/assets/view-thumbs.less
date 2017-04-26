@@ -1,18 +1,47 @@
 #b-assets-view-thumbs {
 	overflow: hidden;
-	padding: 0.25rem;
-	width: 100vw;
+	margin: -0.75rem;
+	width: 100%;
 	height: auto;
-	min-height: 100vh;
+	min-height: 100%;
 	position: relative;
 	z-index: 2;
 
-	> div {
-		margin: 0.75rem;
-		display: inline-block;
-		position: relative;
-		overflow: hidden;
-		z-index: 1;
-		float: left;
+    &.loading {
+        > .pace .pace-activity {
+            display: block;
+        }
+
+        > div:nth-of-type(2) {
+            display: none;
+        }
+    }
+
+    > .pace .pace-activity {
+        z-index: 1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        width: 10rem;
+        height: 10rem;
+        border-radius: 10rem;
+        display: none;
+    }
+
+	> div:nth-of-type(2) {
+        width: 100%;
+        height: auto;
+        position: relative;
+        overflow: hidden;
+
+        > div {
+            margin: 0.75rem;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            float: left;
+        }
 	}
 }

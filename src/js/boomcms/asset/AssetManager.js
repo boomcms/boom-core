@@ -52,6 +52,13 @@
                 });
 
             this.$el
+                .on('submit', '#b-assets-search form', function(e) {
+                    e.preventDefault();
+
+                    var search = $(this).serializeArray();
+
+                    assetManager.router.goToSearchResults(search);
+                })
                 .on('click', '#b-assets-selection-delete', function() {
                     assetManager.router.updateSelection(assetManager.selection, 'delete', {trigger: true});
                 })
@@ -173,6 +180,9 @@
                 .on('route:home', function() {
                     assetManager.showAlbums();
                 })
+                .on('viewSearchResults', function(params) {
+                    assetManager.viewSearchResults(params);
+                })
                 .on('route', function(section) {
                     assetManager.setView(section);
                 });
@@ -272,7 +282,8 @@
         viewAlbum: function(album) {
             this.$el
                 .assetSearch('setFilters', {
-                    album: album.getId()
+                    album: album.getId(),
+                    page: null // Don't paginate albums
                 })
                 .assetSearch('getAssets');
 
@@ -301,6 +312,12 @@
             this.filmroll.select(asset);
 
             this.$viewAssetContainer.html(view.render(section).$el);
+        },
+
+        viewSearchResults: function(params) {
+            this.$el
+                .assetSearch('setFilters', params)
+                .assetSearch('getAssets');
         },
 
         viewSelection: function(section) {

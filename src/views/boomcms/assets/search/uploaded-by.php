@@ -1,6 +1,4 @@
 <div>
-    <h2><?= trans('boomcms::asset.search.uploaded-by') ?></h2>
-
     <select id="b-assets-uploadedby" name="uploadedby">
         <option value="0"><?= trans('boomcms::asset.search.uploaded-by') ?></option>
 
@@ -10,4 +8,6 @@
             </option>
         <?php endforeach ?>
     </select>
+
+    <label for="b-assets-uploadedby"><?= trans('boomcms::asset.search.uploaded-by') ?></label>
 </div>

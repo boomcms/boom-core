@@ -1,0 +1,58 @@
+#b-assets-search {
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 70rem;
+    max-width: 100%;
+    overflow: hidden;
+
+    form > div {
+        + div {
+            margin-top: 3rem;
+        }
+    }
+
+    .input {
+        input {
+            padding: 3rem 2rem 1rem 2rem;
+        }
+
+        label {
+            padding: 0 0 0 2rem;
+            color: @grey;
+            z-index: 5;
+        }
+    }
+
+    input, select {
+        background-color: @lightest-grey;
+        padding: 2rem;
+        color: @grey;
+        height: auto;
+        width: 100%;
+    }
+
+    select {        
+        border: 1px solid @light-grey;
+
+        + label {
+            position: absolute;
+            left: -200vw;
+        }
+    }
+
+    button[type=submit] {
+        margin-top: 5rem;
+        background: @blue;
+        color: @darkest-grey;
+        padding: 1.5rem 7.5rem;
+        height: auto;
+
+        &:hover, &:focus {
+            background: @red;
+            transition: all 0.25s ease-in-out;
+        }
+    }
+}
+    

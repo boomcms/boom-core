@@ -17,9 +17,7 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
                 library.dialog.contents
                     .on('click', '.b-button.clear', function() {
                         library.clearFilters();
-                    })
-                    .find('#b-tags-search')
-                    .assetTagSearch();
+                    });
             }
         })
         .always(function() {
