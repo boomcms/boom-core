@@ -10,15 +10,15 @@
             'asset/:asset/:section': 'viewAsset',
             'selection/:selection/:section': 'viewSelection',
             'albums/:album': 'viewAlbum',
-            'search?*query': 'searchResults',
-            'search': 'search'
+            'search?:query': 'searchResults',
+            'search(?)': 'search'
         },
 
         /**
          * Go forward to the last route visited, or home if we're on the first page view
          */
         goToPreviousOrHome: function() {
-            var route = (this.history.length > 1) ? this.history[this.history.length - 2] : 'home';
+            var route = (this.history.length > 1) ? this.history[this.history.length - 2] : '';
 
             this.goTo(route);
         },

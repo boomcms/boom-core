@@ -1,3 +1,20 @@
 #b-assets-view-album {
-    
+    .description {
+        margin: -3.5rem 0 5rem 0;
+        color: @darkest-grey;
+        max-width: 70rem;
+
+        &:focus:before {
+            display: none;
+        }
+
+        &:empty {
+            font-style: italic;
+            color: @grey;
+
+            &:before {
+                content: 'Set an album description';
+            }
+        }
+    }
 }

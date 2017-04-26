@@ -26,3 +26,5 @@
         <?= $button('times', 'Close asset picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
     </section>
 </div>
+
+<?= view('boomcms::assets.templates') ?>

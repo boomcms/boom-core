@@ -9,6 +9,10 @@ $.widget('boom.justifyAssets', {
             this.currentRow.expandTo(this.targetRightOffset);
         } else if (this.rows > 1) {
             this.prevRow.merge(this.currentRow);
+        } else {
+            $.each(this.currentRow.elements, function(index, $el) {
+                $el.trigger('justified');
+            });
         }
     },
 

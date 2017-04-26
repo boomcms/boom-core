@@ -43024,6 +43024,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             return this.get('asset_count');
         },
 
+        getDescription: function() {
+            return this.get('description');
+        },
+
         getName: function() {
             return this.get('name');
         }
@@ -43946,12 +43950,13 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             };
 
         $this
+            .attr('contenteditable', true)
             .addClass(BoomCMS.editableClass)
             .on('click', function() {
                 edit($(this));
             })
             .on('blur', function() {
-                $(this).addClass(BoomCMS.editableClass)
+                $(this).addClass(BoomCMS.editableClass);
             })
             .next('a')
             .on('click', function(e) {
@@ -48269,7 +48274,7 @@ console.log(offset, this.$counter.width());
             this.$content = this.$('#b-assets-content');
             this.$viewAssetContainer = this.$('#b-assets-view-asset-container');
             this.$viewSelectionContainer = this.$('#b-assets-view-selection-container');
-            this.uploader = this.$content.find('> .b-assets-upload .b-assets-upload-form').eq(0);
+            this.uploader = this.$('#b-assets-upload .b-assets-upload-form');
 
             this.$el.assetSearch({
                 assets: this.assets
@@ -48683,15 +48688,15 @@ console.log(offset, this.$counter.width());
             'asset/:asset/:section': 'viewAsset',
             'selection/:selection/:section': 'viewSelection',
             'albums/:album': 'viewAlbum',
-            'search?*query': 'searchResults',
-            'search': 'search'
+            'search?:query': 'searchResults',
+            'search(?)': 'search'
         },
 
         /**
          * Go forward to the last route visited, or home if we're on the first page view
          */
         goToPreviousOrHome: function() {
-            var route = (this.history.length > 1) ? this.history[this.history.length - 2] : 'home';
+            var route = (this.history.length > 1) ? this.history[this.history.length - 2] : '';
 
             this.goTo(route);
         },
@@ -48874,8 +48879,43 @@ console.log(offset, this.$counter.width());
 ;(function($, Backbone, BoomCMS) {
     'use strict';
 
+    BoomCMS.AssetManager.ThumbnailGrid = Backbone.View.extend({
+        initialize: function(options) {
+            this.assets = options.assets;
+        },
+
+        justify: function() {
+            this.element.find('.b-assets-view-thumbs > div:nth-of-type(2)').justifyAssets();
+        },
+
+        render: function() {
+            if (!this.assets.length) {
+                return this.$el.html(this.$('#b-assets-none-template').html());
+            }
+
+            this.assets.each(function(asset) {
+                var thumbnail = new BoomCMS.AssetManager.Thumbnail({
+                    model: asset
+                });
+
+                this.$el.append(thumbnail.render().el);
+            });
+
+            this.element.find('#b-assets-view-thumbs').removeClass('loading');
+            this.justify();
+        }
+    });
+}(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
+    'use strict';
+
     BoomCMS.AssetManager.ViewAlbum = Backbone.View.extend({
         tagName: 'div',
+
+        events: {
+            'blur h1': 'save',
+            'blur .description': 'save'
+        },
 
         initialize: function() {
             this.template = _.template($('#b-assets-view-album-template').html());
@@ -48886,7 +48926,24 @@ console.log(offset, this.$counter.width());
                 album: this.model
             })));
 
+            this.$name = this.$('h1').boomcmsEditableHeading();
+            this.$description = this.$('.description').boomcmsEditableHeading();
+
+            new BoomCMS.AssetManager.ThumbnailGrid({
+                assets: new BoomCMS.Collections.Albums(),
+                el: this.$el.find('.b-assets-view-thumbs')
+            }).render();
+
             return this;
+        },
+
+        save: function(e) {
+            this.model
+                .set({
+                    name: this.$name.text(),
+                    description: this.$description.text()
+                })
+                .save();
         }
     });
 }(jQuery, Backbone, BoomCMS));
@@ -49031,18 +49088,6 @@ console.log(offset, this.$counter.width());
             var assetSearch = this;
 
             this.element
-                .on('click', '#b-assets-all', function() {
-                    assetSearch.removeFilters();
-                })
-                .on('change', 'select[name=type], select[name=extension], select[name=uploadedby]', function() {
-                    var $this = $(this);
-
-                    assetSearch.addFilter($this.attr('name'), $this.val());
-                    assetSearch.getAssets();
-                })
-                .on('change', '#b-assets-sortby', function() {
-                    assetSearch.sortBy(this.value);
-                })
                 .on('keydown', function(e) {
                     switch (e.which) {
                         case $.ui.keyCode.LEFT:
@@ -49137,10 +49182,6 @@ console.log(offset, this.$counter.width());
             }
         },
 
-        justify: function() {
-            this.element.find('#b-assets-view-thumbs > div:nth-of-type(2)').justifyAssets();
-        },
-
         nextPage: function() {
             var page = this.postData.page;
 
@@ -49168,22 +49209,9 @@ console.log(offset, this.$counter.width());
         },
 
         renderGrid: function() {
-            var $el = this.element.find('#b-assets-view-thumbs > div:nth-of-type(2)');
+            var $el = this.element.find('.b-assets-view-thumbs > div:nth-of-type(2)');
 
-            if (!this.assets.length) {
-                return $el.html(this.element.find('#b-assets-none-template').html());
-            }
-
-            this.assets.each(function(asset) {
-                var thumbnail = new BoomCMS.AssetManager.Thumbnail({
-                    model: asset
-                });
-
-                $el.append(thumbnail.render().el);
-            });
-
-            this.element.find('#b-assets-view-thumbs').removeClass('loading');
-            this.justify();
+            
         },
 
         setAssetsPerPage: function() {
@@ -49522,6 +49550,10 @@ console.log(offset, this.$counter.width());
             this.currentRow.expandTo(this.targetRightOffset);
         } else if (this.rows > 1) {
             this.prevRow.merge(this.currentRow);
+        } else {
+            $.each(this.currentRow.elements, function(index, $el) {
+                $el.trigger('justified');
+            });
         }
     },
 

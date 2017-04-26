@@ -28,29 +28,28 @@
         <?= view('boomcms::assets.pagination') ?>
 	</div>
 
-    <div id="b-assets-tabs">
+    <div id="b-assets-content">
         <div id="b-assets-search">
-            <h1><?= trans('boomcms::asset.search.heading') ?></h1>
+            <h1 class='bigger'><?= trans('boomcms::asset.search.heading') ?></h1>
 
             <?= view('boomcms::assets.search') ?>
         </div>
 
         <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
-            <?= view('boomcms::assets.upload') ?>
+            <div id='b-assets-upload'>
+                <?= view('boomcms::assets.upload') ?>
+            </div>
         <?php endif ?>
         
-        <div id="b-assets-all-albums-container"></div>
-
-        <div id="b-assets-content">
-            <div id="b-assets-search-results">
-                <h1><?= trans('boomcms::asset.search.results') ?></h1>
-            </div>
-
-            <div id="b-assets-view-asset-container"></div>
-            <div id="b-assets-view-selection-container"></div>
-            <div id="b-assets-view-album-container"></div>
+        <div id="b-assets-search-results">
+            <h1 class="bigger"><?= trans('boomcms::asset.search.results') ?></h1>
             <?= view('boomcms::assets.thumbs') ?>
         </div>
+
+        <div id="b-assets-all-albums-container"></div>
+        <div id="b-assets-view-asset-container"></div>
+        <div id="b-assets-view-selection-container"></div>
+        <div id="b-assets-view-album-container"></div>
     </div>
 
     <div id="b-assets-filmroll"></div>
@@ -64,30 +63,7 @@
     <?= view('boomcms::assets.selection') ?>
 </script>
 
-<script type="text/template" id="b-assets-all-albums-template">
-    <div id='b-assets-all-albums'>
-        <ul>
-            <% for (var i = 0; i < albums.models.length; i++) { %>
-                <% var album = albums.models[i] %>
-
-                <li>
-                    <a href='#albums/<%= album.getId() %>'>
-                        <div>
-                            <h3><%= album.getName() %></h3>
-                            <p><%= album.getAssetCount() %> asset<% if (album.getAssetCount() !== 1) { %>s<% } %>
-                        </div>
-                    </a>
-                </li>
-            <% } %>
-        </ul>
-    </div>
-</script>
-
-<script type='text/template' id='b-assets-view-album-template'>
-    <div id='b-assets-view-album'>
-        <h1><%= album.getName() %></h1>
-    </div>
-</script>
+<?= view('boomcms::assets.templates') ?>
 
 <script defer type="text/javascript" src="/vendor/boomcms/boom-core/js/asset-manager.js"></script>
 

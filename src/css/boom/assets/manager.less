@@ -2,7 +2,7 @@
 	background: @lightest-grey;
 
     &[data-view=upload] {
-        #b-assets-tabs .b-assets-upload {
+        #b-assets-upload {
             display: block;
         }
     }
@@ -29,14 +29,20 @@
         }
     }
 
-    &[data-view=viewAlbum] {
-        #b-assets-view-asset-container, #b-assets-view-selection-container {
-            display: none;
+    &[data-view=viewAsset] {
+        background: @white;
+
+        #b-assets-content {
+            padding: 0;
+        }
+
+        #b-assets-view-asset-container {
+            display: block;
         }
     }
 
-    &[data-view=viewAlbum], &[data-view=viewAsset], &[data-view=viewSelection], &[data-view=searchResults] {
-        #b-assets-content {
+    &[data-view=viewAlbum] {
+        #b-assets-view-album-container {
             display: block;
         }
     }
@@ -118,39 +124,60 @@
 
 	#b-assets-content {
 		min-height: calc(~"100vh - 60px");
-		overflow: hidden;
         padding: 5rem 1.5rem;
+
+        > * {
+            display: none;
+        }
 
         #b-assets-view-thumbs {
             min-height: calc(~"100vh - (60px + 20rem)");
         }
+
+
+        .b-settings {
+            .b-settings-menu {
+                position: fixed;
+                top: 6rem;
+                bottom: 0;
+                left: 0;
+                width: 35rem;
+                height: auto;
+                z-index: 2;
+            }
+
+            .b-settings-content {
+                min-height: 0;
+                padding-left: 40rem;
+            }
+        }
 	}
 
-	.b-assets-upload-form {
-		height: calc(~"100vh - 6rem");
-		background: @lightest-grey;
+	#b-assets-upload {
+        position: absolute;
+        top: 6rem;
+        right: 0;
+        bottom: 0;
+        left: 0;
 
-		.b-assets-upload-container {
+        .b-assets-upload, .b-assets-upload-container, form {
 			width: 100%;
 			height: 100%;
+        }
+
+		.b-assets-upload-container {
 			margin: 0;
             border: 0;
 		}
 	}
 
-    #b-assets-tabs {
-        min-height: calc(~"100vh - 60px");
-    }
-
-    #b-assets-tabs > *, #b-assets-search-results {
-        display: none;
-    }
-
-    h1 {
+    h1.bigger {
         .text-largest;
         border-bottom: 0;
         padding-bottom: 0;
-        margin-bottom: 5rem;
+        margin-bottom: 2rem;
+        width: 100%;
+        max-width: 70rem;
     }
 }
 
@@ -158,6 +185,10 @@
     #b-assets-manager {
         #b-assets-content {
             padding: 5rem;
+        }
+
+        h1.bigger {
+            margin-bottom: 5rem;
         }
     }
 }

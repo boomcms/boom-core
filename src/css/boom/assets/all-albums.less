@@ -1,6 +1,4 @@
 #b-assets-all-albums {
-    padding: 5rem;
-
     ul {
         margin: -0.75rem;
         padding: 0;
@@ -9,12 +7,12 @@
         li {
             padding: 0.75rem;
             display: inline-block;
-            float: left;
             list-style-type: none;
-            width: 25%;
+            width: 100%;
 
             a {
                 height: 20rem;
+                width: 100%;
                 position: relative;
                 display: block;
                 padding: 2rem;
@@ -30,3 +28,38 @@
         }
     }
 }
+
+@media all and (min-width: 500px) {
+    #b-assets-all-albums {
+        ul li {
+            float: left;
+            width: 50%;
+        }
+    }
+}
+
+@media all and (min-width: 600px) {
+    #b-assets-all-albums {
+        ul li {
+            float: left;
+            width: 100/3%;
+        }
+    }
+}
+
+@media all and (min-width: 768px) {
+    #b-assets-all-albums {
+        ul li {
+            width: 25%;
+        }
+    }
+}
+
+@media all and (min-width: 1024px) {
+    #b-assets-all-albums {
+        ul li {
+            width: 20%;
+        }
+    }
+}
+

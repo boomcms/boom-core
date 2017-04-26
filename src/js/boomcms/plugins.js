@@ -113,12 +113,13 @@
             };
 
         $this
+            .attr('contenteditable', true)
             .addClass(BoomCMS.editableClass)
             .on('click', function() {
                 edit($(this));
             })
             .on('blur', function() {
-                $(this).addClass(BoomCMS.editableClass)
+                $(this).addClass(BoomCMS.editableClass);
             })
             .next('a')
             .on('click', function(e) {

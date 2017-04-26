@@ -17,7 +17,7 @@
 ?>
 
 <div>
-    <select id="b-assets-sortby">
+    <select id="b-assets-sortby" name='order'>
         <option value="<?= $selected ?>">
             <?= trans('boomcms::asset.search.sort') ?>
         </option>

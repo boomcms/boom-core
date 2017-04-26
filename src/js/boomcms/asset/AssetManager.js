@@ -201,7 +201,7 @@
             this.$content = this.$('#b-assets-content');
             this.$viewAssetContainer = this.$('#b-assets-view-asset-container');
             this.$viewSelectionContainer = this.$('#b-assets-view-selection-container');
-            this.uploader = this.$content.find('> .b-assets-upload .b-assets-upload-form').eq(0);
+            this.uploader = this.$('#b-assets-upload .b-assets-upload-form');
 
             this.$el.assetSearch({
                 assets: this.assets

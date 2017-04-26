@@ -8,6 +8,10 @@
             return this.get('asset_count');
         },
 
+        getDescription: function() {
+            return this.get('description');
+        },
+
         getName: function() {
             return this.get('name');
         }
