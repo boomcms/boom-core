@@ -17,7 +17,7 @@ class TitleOrDescriptionContains extends BaseFilter
     public function build(Builder $query)
     {
         return $query
-            ->where(function(Builder $query) {
+            ->where(function (Builder $query) {
                 $query
                     ->where('title', 'like', "%{$this->text}%")
                     ->where('description', 'like', "%{$this->text}%");
