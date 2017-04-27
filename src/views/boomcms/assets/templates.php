@@ -21,8 +21,15 @@
 
 <script type='text/template' id='b-assets-view-album-template'>
     <div id='b-assets-view-album'>
-        <h1 class='bigger'><%= album.getName() %></h1>
-        <p class='description'><%= album.getDescription() %></p>
+        <div class=heading>
+            <h1 class='bigger'><%= album.getName() %></h1>
+            <p class='description'><%= album.getDescription() %></p>
+        </div>
+
+        <div class='controls'>
+            <?= $button('upload', 'album-upload', ['class' => 'small dark']) ?>
+            <?= $button('trash', 'delete', ['class' => 'small dark']) ?>
+        </div>
 
         <?= view('boomcms::assets.thumbs') ?>
     </div>

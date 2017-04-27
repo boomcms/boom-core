@@ -6,6 +6,12 @@
 	position: relative;
 	z-index: 2;
 
+    &.none {
+        .b-assets-none {
+            display: block;
+        }
+    }
+
     &.loading {
         > .pace .pace-activity {
             display: block;
@@ -43,4 +49,14 @@
             float: left;
         }
 	}
+
+    .b-assets-none {
+		.text-large;
+        display: none;
+		line-height: 85vh;
+		font-weight: bold;
+		text-align: center;
+		height: 100vh;
+		color: @black;
+    }
 }

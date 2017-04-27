@@ -8,6 +8,7 @@ return [
     'add-tag-group'         => 'Add tag group',
     'add-tags'              => 'Add tags',
     'albums'                => 'Albums',
+    'album-upload'          => 'Upload to album',
     'asset-revert'          => 'Revert to this version',
     'asset-undo'            => 'Undo changes',
     'cancel'                => 'Cancel',

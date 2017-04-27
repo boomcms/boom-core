@@ -62,13 +62,16 @@ html.boom .b-button, .b-button {
 	&.small {
 		width: 30px;
 		height: 30px;
+        font-size: 1.2rem;
 	}
 
 	&.dark {
 		color: @dark-grey;
+        transition: color 0.25s ease-in-out;
 
 		&:hover, &:focus {
 			color: @red;
+            transition: color 0.25s ease-in-out;
 		}
 	}
 

@@ -3,16 +3,31 @@
 
     BoomCMS.AssetManager.ThumbnailGrid = Backbone.View.extend({
         initialize: function(options) {
+            var view = this;
+
             this.assets = options.assets;
+            this.selection = options.selection;
+
+            this.listenTo(this.assets, 'add remove reset sync', this.render);
+
+            this.listenTo(this.assets, 'select', function(asset) {
+                view.selection.toggle(asset);
+            });
         },
 
         justify: function() {
-            this.element.find('.b-assets-view-thumbs > div:nth-of-type(2)').justifyAssets();
+            this.$el.justifyAssets();
+
+            return this;
         },
 
         render: function() {
+            var view = this;
+
             if (!this.assets.length) {
-                return this.$el.html(this.$('#b-assets-none-template').html());
+                this.$el.addClass('none');
+
+                return this;
             }
 
             this.assets.each(function(asset) {
@@ -20,11 +35,10 @@
                     model: asset
                 });
 
-                this.$el.append(thumbnail.render().el);
+                view.$el.append(thumbnail.render().el);
             });
 
-            this.element.find('#b-assets-view-thumbs').removeClass('loading');
-            this.justify();
+            return this.justify();
         }
     });
 }(jQuery, Backbone, BoomCMS));

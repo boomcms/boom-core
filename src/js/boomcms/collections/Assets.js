@@ -47,6 +47,17 @@
 
         parse: function(data) {
             return data.assets;
+        },
+
+        /**
+         * Remove the asset if it exists in the collection, otherwise add it to
+         *
+         * @param BoomCMS.Models.Asset asset
+         */
+        toggle: function(asset) {
+            var method = this.findWhere({id: asset.getId()}) ? 'remove' : 'add';
+
+            this[method](asset);
         }
     });
 }(Backbone, BoomCMS));

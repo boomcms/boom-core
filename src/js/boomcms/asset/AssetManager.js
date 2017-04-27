@@ -191,7 +191,7 @@
         },
 
         getThumb: function(asset) {
-            return this.$el.find('.b-assets-thumbnail[data-asset="' + asset.getId() + '"]').addClass('hello');
+            return this.$el.find('.b-assets-thumbnail[data-asset="' + asset.getId() + '"]');
         },
 
         initialize: function(options) {
@@ -199,7 +199,6 @@
 
             this.albums = options.albums;
             this.$content = this.$('#b-assets-content');
-            this.$viewAssetContainer = this.$('#b-assets-view-asset-container');
             this.$viewSelectionContainer = this.$('#b-assets-view-selection-container');
             this.uploader = this.$('#b-assets-upload .b-assets-upload-form');
 
@@ -250,10 +249,7 @@
 
 
         select: function(asset) {
-            var selection = this.selection,
-                method = selection.findWhere({id: asset.getId()}) ? 'remove' : 'add';
-
-            selection[method](asset);
+            this.selection.toggle(asset);
         },
 
         setView: function(section) {
@@ -280,18 +276,14 @@
         },
 
         viewAlbum: function(album) {
-            this.$el
-                .assetSearch('setFilters', {
-                    album: album.getId(),
-                    page: null // Don't paginate albums
-                })
-                .assetSearch('getAssets');
+            this.selection.reset();
+            this.assets.models = album.getAssets().models;
 
-            var view = new BoomCMS.AssetManager.ViewAlbum({
-                model: album
-            });
-
-            this.$('#b-assets-view-album-container').html(view.render().$el);
+            new BoomCMS.AssetManager.ViewAlbum({
+                model: album,
+                el: this.$('#b-assets-view-album-container'),
+                selection: this.selection
+            }).render();
         },
 
         viewAsset: function(asset, section) {
@@ -304,7 +296,8 @@
             var view = new BoomCMS.AssetManager.ViewAsset({
                 model: asset,
                 assets: this.assets,
-                router: this.router
+                router: this.router,
+                el: this.$('#b-assets-view-asset-container')
             });
 
             this.router.navigate('asset/' + asset.getId() + '/' + section, {trigger: true});

@@ -59,22 +59,20 @@
             var assetSearch = this,
                 deferred = $.Deferred();
 
-            if (this.paginateResults() === true) {
-                this.postData.limit = this.perpage;
-            }
-
             var $el = this.element
-                .find('#b-assets-view-thumbs')
+                .find('.b-assets-view-thumbs')
                 .addClass('loading');
 
             $el.find('> div:nth-of-type(2)').html('');
+
+            this.postData.limit = this.perpage;
             
             this.assets.fetch({
                 data: this.postData,
                 reset: true,
                 success: function(collection, response) {
                     assetSearch.initPagination(response.total);
-                    assetSearch.renderGrid();
+                    assetSearch.renderGrid(collection);
 
                     deferred.resolve(collection);
                 }
@@ -94,24 +92,22 @@
             var assetManager = this,
                 $el = assetManager.element.find('.b-pagination');
 
-            if (this.paginateResults()) {
-                this.lastPage = Math.ceil(total / this.postData.limit);
+            this.lastPage = Math.ceil(total / this.postData.limit);
 
-                // Max page isn't set correctly when re-initialising
-                if ($el.data('jqPagination')) {
-                    $el.jqPagination('destroy');
-                }
-
-                $el.jqPagination({
-                    paged: function(page) {
-                        assetManager.getPage(page);
-                    },
-                    max_page: this.lastPage,
-                    current_page: total > 0 ? this.postData.page : 0
-                });
-
-                $el.show();
+            // Max page isn't set correctly when re-initialising
+            if ($el.data('jqPagination')) {
+                $el.jqPagination('destroy');
             }
+
+            $el.jqPagination({
+                paged: function(page) {
+                    assetManager.getPage(page);
+                },
+                max_page: this.lastPage,
+                current_page: total > 0 ? this.postData.page : 0
+            });
+
+            $el.show();
         },
 
         nextPage: function() {
@@ -120,10 +116,6 @@
             if (page < this.lastPage) {
                 this.getPage(page + 1);
             }
-        },
-
-        paginateResults: function() {
-            return this.postData['page'] !== null;
         },
 
         previousPage: function() {
@@ -140,14 +132,19 @@
             this.setFilters(this.initialFilters);
         },
 
-        renderGrid: function() {
+        renderGrid: function(assets) {
             var $el = this.element.find('.b-assets-view-thumbs > div:nth-of-type(2)');
 
-            
+            new BoomCMS.AssetManager.ThumbnailGrid({
+                el: $el[0],
+                assets: assets
+            }).render();
+
+            this.element.find('.b-assets-view-thumbs').removeClass('loading');
         },
 
         setAssetsPerPage: function() {
-            var $thumbs = this.element.find('#b-assets-view-thumbs > div:nth-of-type(2)'),
+            var $thumbs = this.element.find('.b-assets-view-thumbs > div:nth-of-type(2)'),
                 rowHeight = 200,
                 avgAspectRatio = 1.5,
                 height = $thumbs.height(),
@@ -155,7 +152,7 @@
                 perrow = Math.ceil($thumbs.width() / (rowHeight * avgAspectRatio)),
                 perpage = Math.ceil(rows * perrow);
 
-            if (perpage < 30) {
+            if (perpage === NaN || perpage < 30) {
                 perpage = 30;
             }
 

@@ -2,15 +2,16 @@
     'use strict';
 
     BoomCMS.AssetManager.ViewAlbum = Backbone.View.extend({
-        tagName: 'div',
-
         events: {
             'blur h1': 'save',
             'blur .description': 'save'
         },
 
-        initialize: function() {
+        initialize: function(options) {
+            this.options = options;
+
             this.template = _.template($('#b-assets-view-album-template').html());
+            this.assets = this.model.getAssets();
         },
 
         render: function() {
@@ -22,8 +23,9 @@
             this.$description = this.$('.description').boomcmsEditableHeading();
 
             new BoomCMS.AssetManager.ThumbnailGrid({
-                assets: new BoomCMS.Collections.Albums(),
-                el: this.$el.find('.b-assets-view-thumbs')
+                assets: this.assets,
+                selection: this.options.selection,
+                el: this.$el.find('.b-assets-view-thumbs > div:nth-of-type(2)')
             }).render();
 
             return this;
