@@ -28,7 +28,7 @@ abstract class BaseRepositoryTest extends AbstractTestCase
 
     public function testFindReturnsModelById()
     {
-        $model = new $this->modelClass;
+        $model = new $this->modelClass();
 
         $this->model
             ->shouldReceive('find')
@@ -52,7 +52,7 @@ abstract class BaseRepositoryTest extends AbstractTestCase
     {
         $model = m::mock($this->modelClass);
         $model->shouldReceive('save')->once();
-        
+
         $this->assertEquals($model, $this->repository->save($model));
     }
 }
