@@ -65,5 +65,5 @@ interface Site
      *
      * @return SiteInterface
      */
-    public function save(SiteInterface $site);
+    public function save(SiteInterface $site): SiteInterface;
 }

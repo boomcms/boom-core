@@ -3,7 +3,6 @@
 
     BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
         routePrefix: 'selection',
-        tagName: 'div',
         tagsDisplayed: false,
         templateSelector: '#b-assets-selection-template',
 

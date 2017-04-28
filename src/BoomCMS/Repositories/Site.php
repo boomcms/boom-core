@@ -117,8 +117,10 @@ class Site implements SiteRepositoryInterface
      *
      * @return SiteModelInterface
      */
-    public function save(SiteModelInterface $site)
+    public function save(SiteModelInterface $site): SiteModelInterface
     {
-        return $site->save();
+        $site->save();
+
+        return $site;
     }
 }

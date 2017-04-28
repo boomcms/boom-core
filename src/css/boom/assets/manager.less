@@ -47,6 +47,12 @@
         }
     }
 
+    &[data-view=viewSelection] {
+        #b-assets-view-selection-container {
+            display: block;
+        }
+    }
+
     &[data-view=viewAsset], &[data-view=viewSelection] {
         #b-assets-filmroll {
             visibility: visible;
@@ -130,10 +136,9 @@
             display: none;
         }
 
-        #b-assets-view-thumbs {
-            min-height: calc(~"100vh - (60px + 20rem)");
+        .b-assets-view-thumbs {
+            min-height: calc(~"100vh - (60px + 25rem)");
         }
-
 
         .b-settings {
             .b-settings-menu {

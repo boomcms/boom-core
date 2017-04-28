@@ -5,21 +5,12 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Repositories\Person as PersonRepository;
-use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
-class PersonTest extends AbstractTestCase
+class PersonTest extends BaseRepositoryTest
 {
-    /**
-     * @var Person
-     */
-    protected $model;
-
-    /**
-     * @var PersonRepository
-     */
-    protected $repository;
+    protected $modelClass = Person::class;
 
     public function setUp()
     {
@@ -27,16 +18,6 @@ class PersonTest extends AbstractTestCase
 
         $this->model = m::mock(Person::class.'[where,join,whereSite,destroy,orderBy,get,with]');
         $this->repository = m::mock(PersonRepository::class, [$this->model, $this->site])->makePartial();
-    }
-
-    public function testDelete()
-    {
-        $model = m::mock(Person::class);
-        $model->shouldReceive('delete')->once();
-
-        $repository = new PersonRepository($model, $this->site);
-
-        $this->assertEquals($repository, $repository->delete($model));
     }
 
     public function testFindByGroupId()
@@ -177,15 +158,5 @@ class PersonTest extends AbstractTestCase
             ->andReturn($person);
 
         $this->assertEquals($person, $this->repository->retrieveByToken($personId, $token));
-    }
-
-    public function testSave()
-    {
-        $person = m::mock(Person::class);
-        $person->shouldReceive('save');
-
-        $repository = new PersonRepository(new Person(), $this->site);
-
-        $this->assertEquals($person, $repository->save($person));
     }
 }

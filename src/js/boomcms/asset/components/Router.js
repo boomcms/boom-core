@@ -27,6 +27,10 @@
             this.navigate(route, {trigger: true});
         },
 
+        goToAsset: function(asset) {
+            this.navigate('asset/' + asset.getId() + '/info', {trigger: true});
+        },
+
         /**
          * Accepts an array of search parameters, as created from jQuery.serliazeArray()
          *
@@ -73,24 +77,6 @@
             }
 
             this.trigger('viewSearchResults', params);
-        },
-
-        viewAsset: function(id, section) {
-            var asset = this.assets.get(id);
-
-            if (asset === undefined) {
-                asset = new BoomCMS.Asset({id: id});
-
-                asset.fetch({
-                    success: function() {
-                        asset.trigger('view', asset, section);
-                    }
-                });
-
-                this.assets.add(asset);
-            } else {
-                asset.trigger('view', asset, section);
-            }
         },
 
         viewSelection: function(selection, section) {

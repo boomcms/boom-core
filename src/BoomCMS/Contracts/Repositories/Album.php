@@ -15,6 +15,13 @@ interface Album
     public function all(): Collection;
 
     /**
+     * Delete the given album
+     *
+     * @param AlbumInterface $album
+     */
+    public function delete(AlbumInterface $album);
+
+    /**
      * Returns the album with the given ID.
      *
      * @param int|array $albumId
@@ -22,4 +29,13 @@ interface Album
      * @return null|AlbumInterface
      */
     public function find($albumId);
+
+    /**
+     * Save the given album
+     *
+     * @param AlbumInterface $album
+     *
+     * @reutnr AlbumInterface
+     */
+    public function save(AlbumInterface $album): AlbumInterface;
 }

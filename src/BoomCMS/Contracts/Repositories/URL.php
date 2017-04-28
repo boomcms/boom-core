@@ -58,5 +58,5 @@ interface URL
      *
      * @return URLInterface
      */
-    public function save(URLInterface $url);
+    public function save(URLInterface $url): URLInterface;
 }

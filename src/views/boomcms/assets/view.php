@@ -241,7 +241,6 @@
             </div>
 
             <div id="b-asset-albums"<% if (section === 'albums') { %> class="selected"<% } %>>
-                <?= view('boomcms::assets.albums') ?>
             </div>
 
             <% if (asset.isDocument()) { %>

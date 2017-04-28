@@ -7,7 +7,7 @@
         initialize: function(options) {
             this.assets = options.assets;
 
-            this.listenTo(this.assets, 'reset', this.render);
+            this.listenTo(this.assets, 'reset add destory sync', this.render);
         },
 
         /**

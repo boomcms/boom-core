@@ -1,24 +1,14 @@
 .b-assets-view-thumbs {
 	overflow: hidden;
 	width: 100%;
-	height: auto;
-	min-height: 100%;
-	position: relative;
-	z-index: 2;
-
-    &.none {
-        .b-assets-none {
-            display: block;
-        }
-    }
 
     &.loading {
         > .pace .pace-activity {
             display: block;
         }
 
-        > div:nth-of-type(2) {
-            display: none;
+        .thumbnails {
+            visibility: hidden;
         }
     }
 
@@ -34,19 +24,26 @@
         display: none;
     }
 
-	> div:nth-of-type(2) {
-        margin: -0.75rem;
-        height: auto;
+	.thumbnails {
+        margin: -1rem;
+        width: calc(~"100vw - 7rem");
         position: relative;
-        overflow: hidden;
+
+        &:empty + .b-assets-none {
+            display: block;
+        }
 
         > div {
-            margin: 0.75rem;
-            display: inline-block;
-            position: relative;
             overflow: hidden;
-            z-index: 1;
-            float: left;
+
+            > div {
+                margin: 1rem;
+                display: inline-block;
+                position: relative;
+                overflow: hidden;
+                z-index: 1;
+                float: left;
+            }
         }
 	}
 

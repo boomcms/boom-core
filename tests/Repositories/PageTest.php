@@ -4,40 +4,23 @@ namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Repositories\Page as PageRepository;
-use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
-class PageTest extends AbstractTestCase
+class PageTest extends BaseRepositoryTest
 {
-    /**
-     * @var Page
-     */
-    protected $model;
+    protected $modelClass = Page::class;
 
     /**
      * @var Page
      */
     protected $page;
 
-    /**
-     * @var PageRepository
-     */
-    protected $repository;
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->model = m::mock(Page::class);
         $this->repository = m::mock(PageRepository::class, [$this->model, $this->site])->makePartial();
         $this->page = m::mock(Page::class);
-    }
-
-    public function testDelete()
-    {
-        $this->page->shouldReceive('delete');
-
-        $this->assertEquals($this->repository, $this->repository->delete($this->page));
     }
 
     public function testFindByPrimaryUri()

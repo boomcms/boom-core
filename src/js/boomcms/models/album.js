@@ -32,6 +32,10 @@
             return this.get('name');
         },
 
+        getSlug: function() {
+            return this.get('slug');
+        },
+
         initialize: function() {
             this.assets = new BoomCMS.Collections.Assets();
         }

@@ -72,8 +72,10 @@ class Group implements GroupRepositoryInterface
             ->get();
     }
 
-    public function save(GroupModelInterface $group)
+    public function save(GroupModelInterface $group): GroupModelInterface
     {
-        return $group->save();
+        $group->save();
+
+        return $group;
     }
 }

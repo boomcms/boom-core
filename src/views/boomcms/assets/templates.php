@@ -7,10 +7,11 @@
                 <% var album = albums.models[i] %>
 
                 <li>
-                    <a href='#albums/<%= album.getId() %>'>
+                    <a href='#albums/<%= album.getSlug() %>'>
                         <div>
                             <h3><%= album.getName() %></h3>
-                            <p><%= album.getAssetCount() %> asset<% if (album.getAssetCount() !== 1) { %>s<% } %>
+                            <p class='description'><%= album.getDescription() %></p>
+                            <p class='count'><span><%= album.getAssetCount() %></span> asset<% if (album.getAssetCount() !== 1) { %>s<% } %></p>
                         </div>
                     </a>
                 </li>
@@ -27,16 +28,12 @@
         </div>
 
         <div class='controls'>
-            <?= $button('upload', 'album-upload', ['class' => 'small dark']) ?>
-            <?= $button('trash', 'delete', ['class' => 'small dark']) ?>
+            <?= $button('upload', 'album-upload', ['class' => 'upload small dark']) ?>
+            <?= $button('trash', 'delete', ['class' => 'delete small dark']) ?>
         </div>
 
         <?= view('boomcms::assets.thumbs') ?>
     </div>
-</script>
-
-<script type="text/template" id="b-assets-none-template">
-    <p id="b-assets-none"><?= trans('boomcms::asset.none') ?></p>
 </script>
 
 <script type="text/template" id="b-asset-thumb">

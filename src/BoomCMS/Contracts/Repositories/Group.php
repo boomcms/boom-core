@@ -41,5 +41,10 @@ interface Group
      */
     public function findBySite(SiteInterface $site);
 
-    public function save(GroupInterface $group);
+    /**
+     * @param GroupInterface $group
+     *
+     * @return GroupInterface
+     */
+    public function save(GroupInterface $group): GroupInterface;
 }

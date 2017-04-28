@@ -3,7 +3,6 @@
 
     BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
         routePrefix: 'asset',
-        tagName: 'div',
         templateSelector: '#b-assets-view-template',
         loaded: false,
 
@@ -34,8 +33,7 @@
 
                     var section = $(this).attr('data-section');
 
-                    view.router.navigate('asset/' + asset.getId() + '/' + section);
-                    view.render(section);
+                    view.router.navigate('asset/' + asset.getId() + '/' + section, {trigger: true});
                 });
         },
 
@@ -48,7 +46,7 @@
                 BoomCMS.Notification('This asset has been reverted to the previous version');
             });
 
-            this.listenTo(this.model, 'change:image revert', function() {
+            this.listenTo(this.model, 'sync change:image revert', function() {
                 this.render('info');
             });
 
@@ -93,10 +91,10 @@
         },
 
         render: function(section) {
-            this.$el.html($(this.template({
+            this.$el.html(this.template({
                 asset: this.model,
                 section: section
-            })));
+            }));
 
             if (this.assets.length <= 1) {
                 this.$el.children().addClass('no-filmroll');

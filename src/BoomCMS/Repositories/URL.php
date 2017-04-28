@@ -121,8 +121,10 @@ class URL implements URLRepositoryInterface
      *
      * @return URLInterface
      */
-    public function save(URLInterface $url)
+    public function save(URLInterface $url): URLInterface
     {
-        return $url->save();
+        $url->save();
+
+        return $url;
     }
 }

@@ -25,6 +25,15 @@ class AlbumTest extends AbstractModelTestCase
         $this->assertHasTrait($this->model, SoftDeletes::class);
     }
 
+    public function testAssetCountIsGuarded()
+    {
+        $album = new Album();
+
+        $album->fill([
+            Album::ATTR_ASSET_COUNT => 1,
+        ]);
+    }
+
     public function testAssets()
     {
         $album = m::mock(Album::class)->makePartial();

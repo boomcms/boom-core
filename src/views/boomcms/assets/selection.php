@@ -40,7 +40,6 @@
 
         <div class="b-settings-content">
             <div id="b-selection-albums"<% if (section === 'albums') { %> class="selected"<% } %>>
-                <?= view('boomcms::assets.albums') ?>
             </div>
 
             <div id="b-selection-download"<% if (section === 'download') { %> class="selected"<% } %>>

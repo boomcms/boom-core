@@ -2,6 +2,7 @@
     'use strict';
 
     BoomCMS.AssetManager.Thumbnail = Backbone.View.extend({
+        selected: 'selected',
         tagName: 'div',
 
         initialize: function() {
@@ -16,6 +17,9 @@
                 view.loadImage();
             });
 
+            this.listenTo(model, 'select', this.select);
+            this.listenTo(model, 'unselect', this.unselect);
+
             $el
                 .on('click', function(e) {
                     e.preventDefault();
@@ -23,7 +27,7 @@
                 .data('model', model)
                 .dblclick()
                 .on('sclick', function() {
-                    model.trigger('select', model);
+                    view.toggleSelected();
 
                     $el.blur();
                 })
@@ -43,6 +47,14 @@
                 })
                 .on('justified', function() {
                     view.loadImage();
+                })
+                .on('keydown', '.thumb', function(e) {
+                    if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        model.destroy();
+                    }
                 })
                 .on('keypress', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.ENTER) {
@@ -92,7 +104,23 @@
                 }))
                 .attr('data-aspect-ratio', aspectRatio > 0 ? aspectRatio : 1);
 
+            this.$thumbnail = this.$('.b-assets-thumbnail');
+
             return this;
+        },
+
+        select: function() {
+            this.$thumbnail.addClass(this.selected);
+        },
+
+        toggleSelected: function() {
+            var event = this.$thumbnail.hasClass(this.selected) ? 'unselect' : 'select';
+
+            this.model.trigger(event, this.model);
+        },
+
+        unselect: function() {
+            this.$thumbnail.removeClass(this.selected);
         }
     });
 }(jQuery, Backbone, BoomCMS));

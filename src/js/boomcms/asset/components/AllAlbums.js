@@ -6,6 +6,8 @@
             this.albums = options.albums;
 
             this.template = _.template($('#b-assets-all-albums-template').html());
+
+            this.listenTo(this.albums, 'change add remove', this.render);
         },
 
         render: function() {

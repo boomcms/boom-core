@@ -6,12 +6,11 @@ use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
 use BoomCMS\Repositories\Asset as AssetRepository;
 use BoomCMS\Repositories\AssetVersion as AssetVersionRepository;
-use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Mockery as m;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AssetTest extends AbstractTestCase
+class AssetTest extends BaseRepositoryTest
 {
     /**
      * @var Asset
@@ -22,6 +21,11 @@ class AssetTest extends AbstractTestCase
      * @var Filesystem
      */
     protected $fileystem;
+
+    /**
+     * @var string
+     */
+    protected $modelClass = Asset::class;
 
     /**
      * @var Asset
@@ -49,7 +53,6 @@ class AssetTest extends AbstractTestCase
 
         $this->filesystem = m::mock(Filesystem::class);
         $this->version = new AssetVersion();
-        $this->model = m::mock(Asset::class);
         $this->asset = m::mock(Asset::class);
         $this->versionRepository = new AssetVersionRepository($this->version);
 
@@ -137,26 +140,6 @@ class AssetTest extends AbstractTestCase
             ->andReturn($file);
 
         $this->assertEquals($file, $this->repository->file($this->asset));
-    }
-
-    public function testFindReturnsAssetById()
-    {
-        $this->model
-            ->shouldReceive('find')
-            ->with(1)
-            ->andReturn($this->asset);
-
-        $this->assertEquals($this->asset, $this->repository->find(1));
-    }
-
-    public function testFindReturnsNull()
-    {
-        $this->model
-            ->shouldReceive('find')
-            ->with(1)
-            ->andReturn(null);
-
-        $this->assertNull($this->repository->find(1));
     }
 
     public function testSaveFileUsesVersionIdAsFileName()

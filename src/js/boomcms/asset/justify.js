@@ -51,7 +51,7 @@ $.widget('boom.justifyAssets', {
         this.prevRow = null;
         this.rows = 0;
         this.windowWidth = $(window).width();
-        this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
+        this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.outerWidth(true)));
 
         if (this.hasElements()) {
             this.resetInitialDimensions();

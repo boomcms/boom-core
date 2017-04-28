@@ -7,26 +7,16 @@ use BoomCMS\Database\Models\URL;
 use BoomCMS\Repositories\URL as URLRepository;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use BoomCMS\Support\Helpers\URL as URLHelper;
-use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
-class URLTest extends AbstractTestCase
+class URLTest extends BaseRepositoryTest
 {
-    /**
-     * @var URL
-     */
-    protected $model;
-
-    /**
-     * @var URLRepository
-     */
-    protected $repository;
+    protected $modelClass = URL::class;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->model = m::mock(URL::class);
         $this->repository = new URLRepository($this->model, $this->site);
     }
 
@@ -86,14 +76,6 @@ class URLTest extends AbstractTestCase
             ->andReturn($url);
 
         $this->assertEquals($url, $this->repository->create($location, $page, $isPrimary));
-    }
-
-    public function testDelete()
-    {
-        $model = m::mock(URL::class);
-        $model->shouldReceive('delete')->once();
-
-        $this->assertEquals($this->repository, $this->repository->delete($model));
     }
 
     public function testFind()

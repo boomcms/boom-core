@@ -44,6 +44,16 @@ class Album implements AlbumRepositoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @param AlbumInterface $album
+     */
+    public function delete(AlbumInterface $album)
+    {
+        $album->delete();
+    }
+
+    /**
      * Returns the tag with the given ID.
      *
      * @param int $albumId
@@ -53,5 +63,19 @@ class Album implements AlbumRepositoryInterface
     public function find($albumId)
     {
         return $this->model->find($albumId);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param AlbumInterface $album
+     *
+     * @return AlbumInterface
+     */
+    public function save(AlbumInterface $album): AlbumInterface
+    {
+        $album->save();
+
+        return $album;
     }
 }
