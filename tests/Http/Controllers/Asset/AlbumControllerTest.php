@@ -39,7 +39,7 @@ class AlbumControllerTest extends BaseControllerTest
     public function testUpdate()
     {
         $params = [
-            Album::ATTR_NAME => 'test album',
+            Album::ATTR_NAME        => 'test album',
             Album::ATTR_DESCRIPTION => 'with a description',
         ];
 

@@ -15,7 +15,7 @@ interface Album
     public function all(): Collection;
 
     /**
-     * Delete the given album
+     * Delete the given album.
      *
      * @param AlbumInterface $album
      */
@@ -31,7 +31,7 @@ interface Album
     public function find($albumId);
 
     /**
-     * Save the given album
+     * Save the given album.
      *
      * @param AlbumInterface $album
      *
