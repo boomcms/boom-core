@@ -16,9 +16,9 @@
         </div>
 
         <div id="selection-controls">
-            <?= $button('trash-o', 'delete', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-delete', 'disabled' => 'disabled']) ?>
-            <?= $button('download', 'download', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-download', 'disabled' => 'disabled']) ?>
-            <?= $button('book', 'albums', ['class' => 'b-assets-multi', 'id' => 'b-assets-selection-albums', 'disabled' => 'disabled']) ?>
+            <?= $button('trash-o', 'delete', ['class' => 'small', 'id' => 'b-assets-selection-delete', 'disabled' => 'disabled']) ?>
+            <?= $button('download', 'download', ['class' => 'small', 'id' => 'b-assets-selection-download', 'disabled' => 'disabled']) ?>
+            <?= $button('book', 'albums', ['class' => 'small', 'id' => 'b-assets-selection-albums', 'disabled' => 'disabled']) ?>
 
             <a href="#" id="b-assets-select-all"><?= trans('boomcms::asset.select.all') ?></a>
             &nbsp;:&nbsp;
@@ -37,7 +37,9 @@
 
         <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
             <div id='b-assets-upload'>
+                <h1 class='bigger'><?= trans('boomcms::asset.upload.heading') ?></h1>
                 <?= view('boomcms::assets.upload') ?>
+                <?= view('boomcms::assets.thumbs') ?>
             </div>
         <?php endif ?>
         
@@ -46,7 +48,12 @@
             <?= view('boomcms::assets.thumbs') ?>
         </div>
 
-        <div id="b-assets-all-albums-container"></div>
+        <div id="b-assets-all-albums">
+            <h1 class='bigger'><?= trans('boomcms::asset.albums') ?></h1>
+
+            <div></div>
+        </div>
+
         <div id="b-assets-view-asset-container"></div>
         <div id="b-assets-view-selection-container"></div>
         <div id="b-assets-view-album-container"></div>

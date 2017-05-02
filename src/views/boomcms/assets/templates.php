@@ -1,23 +1,17 @@
-<script type="text/template" id="b-assets-all-albums-template">
-    <div id='b-assets-all-albums'>
-        <h1 class='bigger'><?= trans('boomcms::asset.albums') ?></h1>
+<script type="text/template" id="b-assets-album-list-template">
+    <% for (var i = 0; i < albums.models.length; i++) { %>
+        <% var album = albums.models[i] %>
 
-        <ul>
-            <% for (var i = 0; i < albums.models.length; i++) { %>
-                <% var album = albums.models[i] %>
-
-                <li>
-                    <a href='#albums/<%= album.getSlug() %>'>
-                        <div>
-                            <h3><%= album.getName() %></h3>
-                            <p class='description'><%= album.getDescription() %></p>
-                            <p class='count'><span><%= album.getAssetCount() %></span> asset<% if (album.getAssetCount() !== 1) { %>s<% } %></p>
-                        </div>
-                    </a>
-                </li>
-            <% } %>
-        </ul>
-    </div>
+        <li data-album='<%= album.getId() %>'>
+            <a href='#albums/<%= album.getSlug() %>'>
+                <div>
+                    <h3><%= album.getName() %></h3>
+                    <p class='description'><%= album.getDescription() %></p>
+                    <p class='count'><span><%= album.getAssetCount() %></span> asset<% if (album.getAssetCount() !== 1) { %>s<% } %></p>
+                </div>
+            </a>
+        </li>
+    <% } %>
 </script>
 
 <script type='text/template' id='b-assets-view-album-template'>

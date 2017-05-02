@@ -2,6 +2,8 @@
     'use strict';
 
     BoomCMS.AssetManager.ViewAlbum = Backbone.View.extend({
+        tagName: 'div',
+
         events: {
             'blur h1': 'save',
             'blur .description': 'save',

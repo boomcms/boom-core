@@ -41,6 +41,10 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      */
     protected $latestVersion;
 
+    protected $attributes = [
+        self::ATTR_PUBLIC => true,
+    ];
+
     protected $casts = [
         self::ATTR_PUBLISHED_AT => 'datetime',
         self::ATTR_PUBLIC       => 'boolean',

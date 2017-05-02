@@ -241,6 +241,8 @@
             </div>
 
             <div id="b-asset-albums"<% if (section === 'albums') { %> class="selected"<% } %>>
+                <h1><?= trans('boomcms::asset.albums') ?></h1>
+                <div></div>
             </div>
 
             <% if (asset.isDocument()) { %>

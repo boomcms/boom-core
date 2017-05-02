@@ -4,7 +4,6 @@
     BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
         routePrefix: 'asset',
         templateSelector: '#b-assets-view-template',
-        loaded: false,
 
         bind: function() {
             var view = this,
@@ -25,22 +24,24 @@
 
                     BoomCMS.Notification('Asset details saved');
                 })
-                .on('remove', function() {
-                    this.$('.b-assets-upload').assetUploader('reset');
-                })
                 .on('click', '[data-section]', function(e) {
                     e.preventDefault();
 
                     var section = $(this).attr('data-section');
 
-                    view.router.navigate('asset/' + asset.getId() + '/' + section, {trigger: true});
+                    view.section = section;
+                    view.router.navigate('asset/' + asset.getId() + '/' + section);
                 });
+
+            this.$('.b-settings-menu a[href^="#"]').boomTabs();
         },
 
         initialize: function(options) {
             var asset = this.model;
 
             this.selection = new BoomCMS.Collections.Assets([this.model]);
+            this.albums = options.albums;
+            this.section = options.section;
 
             this.listenTo(this.model, 'revert', function() {
                 BoomCMS.Notification('This asset has been reverted to the previous version');
@@ -90,26 +91,20 @@
             });
         },
 
-        render: function(section) {
+        render: function() {
             this.$el.html(this.template({
                 asset: this.model,
-                section: section
+                section: this.section
             }));
 
             if (this.assets.length <= 1) {
                 this.$el.children().addClass('no-filmroll');
             }
 
-            if (section === 'replace') {
-                this.initUploader();
-            }
-
-            if (this.loaded === false) {
-                this.bind();
-                this.initImageEditor();
-
-                this.loaded = true;
-            }
+            this.initUploader();
+            this.initImageEditor();
+            this.viewAlbums();
+            this.bind();
             
             return this;
         }

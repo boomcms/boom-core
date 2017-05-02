@@ -99,6 +99,13 @@ class AssetTest extends AbstractModelTestCase
         }
     }
 
+    public function testIsPublicByDefault()
+    {
+        $asset = new Asset();
+
+        $this->assertTrue($asset->isPublic());
+    }
+
     public function testIsVideo()
     {
         $video = new Asset([Asset::ATTR_TYPE => 'video']);

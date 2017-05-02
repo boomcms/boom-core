@@ -14,6 +14,11 @@ class AlbumController extends Controller
      */
     protected $role = 'manageAlbums';
 
+    public function destroy(Album $album)
+    {
+        AlbumFacade::delete($album);
+    }
+
     public function update(Album $album, Request $request)
     {
         $expected = [Album::ATTR_NAME, Album::ATTR_DESCRIPTION, Album::ATTR_ORDER];

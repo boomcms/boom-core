@@ -8,7 +8,7 @@
     }
 
     &[data-view=''] {
-        #b-assets-all-albums-container {
+        #b-assets-all-albums {
             display: block;
         }
     }
@@ -73,7 +73,7 @@
 
         div {
             display: inline-block;
-            vertical-align: top;
+            vertical-align: bottom;
         }
 
 		a {
@@ -91,6 +91,16 @@
 
         #selection-controls {
             display: none;
+            padding: 2rem 0 1rem 1rem;
+            border-left: 1px solid @grey;
+
+            &.visible {
+                display: inline-block;
+            }
+
+            button {
+                margin-top: 0;
+            }
         }
 
         #tab-controls {
@@ -105,7 +115,7 @@
                 float: left;
 
                 &:hover, &:focus {
-                    transition: all 0.25s ease-in-out;
+                    .transition;
                 }
 
                 &:hover, &:focus, &.active {
@@ -154,27 +164,39 @@
             .b-settings-content {
                 min-height: 0;
                 padding-left: 40rem;
+                max-width: 100%;
             }
         }
 	}
 
-	#b-assets-upload {
-        position: absolute;
-        top: 6rem;
-        right: 0;
-        bottom: 0;
-        left: 0;
+	#b-assets-upload form, #b-assets-search {
+        margin: auto;
+        position: relative;
+        width: 70rem;
+        max-width: 100%;
+        overflow: hidden;
+	}
 
-        .b-assets-upload, .b-assets-upload-container, form {
-			width: 100%;
-			height: 100%;
+    #b-assets-upload {
+        h1 {
+            width: 70rem;
+            max-width: 100%;
+            margin: 0 auto 5rem auto;
         }
 
-		.b-assets-upload-container {
-			margin: 0;
-            border: 0;
-		}
-	}
+        .b-assets-view-thumbs {
+            margin-top: 5rem;
+            min-height: 0;
+        }
+
+        .progress {
+            margin-bottom: 7rem;
+        }
+
+        .pace {
+            display: none;
+        }
+    }
 
     h1.bigger {
         .text-largest;

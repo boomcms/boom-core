@@ -34,11 +34,6 @@
                 .on('dclick', function() {
                     model.trigger('view', model);
                 })
-                .on('keypress', '.edit', function(e) {
-                    if (e.which === $.ui.keyCode.ENTER) {
-                        model.trigger('view', model);
-                    }
-                })
                 .on('click', '.edit', function(e) {
                     e.preventDefault();
                     e.stopPropagation();

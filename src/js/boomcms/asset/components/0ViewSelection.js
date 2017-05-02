@@ -4,47 +4,18 @@
     BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
         routePrefix: 'selection',
         tagsDisplayed: false,
+        tagName: 'div',
         templateSelector: '#b-assets-selection-template',
-
-        addTag: function(tag) {
-            if (!tag) {
-                return;
-            }
-
-            var $tagList = this.$('.b-tags').eq(0),
-                $tagTemplate = this.$('#b-tag-template').html(),
-                $el = $($tagTemplate);
-
-            return $el
-                .find('a')
-                .attr('data-tag', tag)
-                .find('span:first-of-type')
-                .text(tag)
-                .end()
-                .end()
-                .insertBefore($tagList.find('.b-tags-add').parent());
-        },
 
         bind: function() {
             var view = this,
                 selection = this.selection;
 
             this.$el
-                .on('submit', '.b-tags-add', function(e) {
-                    e.preventDefault();
-
-                    var $input = $(this).find('input[type=text]'),
-                        $el = view.addTag($input.val());
-
-                    if ($el !== undefined) {
-                        view.toggleTag($el.find('a'));
-                        $input.val('');
-                    }
-                })
                 .on('click', '.b-settings-close', function(e) {
                     e.preventDefault();
 
-                    view.close();
+                    view.router.navigate(view.returnTo, {trigger: true});
                 })
                 .on('click', '.b-assets-delete', function() {
                     selection.destroy();
@@ -52,11 +23,7 @@
                 .on('click', 'a[data-section]', function() {
                     var section = $(this).attr('data-section');
 
-                    view.router.navigate(view.routePrefix + '/' + selection.getIdString() + '/' + section);
-
-                    if (section === 'tags') {
-                        view.showTags();
-                    }
+                    view.router.navigate(view.routePrefix + '/' + selection.getIdString() + '/' + section, {trigger: true});
                 })
                 .on('submit', '#b-assets-download-filename', function(e) {
                     e.preventDefault();
@@ -66,27 +33,7 @@
                     selection.download(filename);
                 });
 
-            this.$('.b-settings-menu a[href^="#"]').boomTabs();
             this.$el.ui();
-        },
-
-        close: function() {
-            this.router.goToPreviousOrHome();
-        },
-
-        displayTags: function(tags) {
-            var view = this;
-
-            for (var i = 0; i < tags.length; i++) {
-                view.addTag(tags[i]);
-            }
-
-            this.$el
-                .on('click', '.b-tags a', function(e) {
-                    e.preventDefault();
-
-                    view.toggleTag($(this));
-                });
         },
 
         getSection: function() {
@@ -98,6 +45,7 @@
 
             this.assets = options.assets;
             this.router = options.router;
+            this.returnTo = options.returnTo;
 
             this.template = _.template($(this.templateSelector).html());
 
@@ -112,6 +60,7 @@
 
         initialize: function(options) {
             this.selection = options.selection;
+            this.albums = options.albums;
 
             this.init(options);
         },
@@ -121,6 +70,10 @@
                 selection: this.selection,
                 section: section
             })));
+
+            if (section === 'albums') {
+                this.viewAlbums();
+            }
             
             var $about = this.$('.about');
             $about.text($about.text().replace(':count', this.selection.length));
@@ -134,35 +87,12 @@
             return this;
         },
 
-        showTags: function() {
-            var view = this;
-
-            if (this.allTags === undefined) {
-                this.allTags = new BoomCMS.Collections.Assets([]).getTags();
-            }    
-
-            this.allTags.done(function(tags) {
-                view.displayTags(tags);
+        viewAlbums: function() {
+            var view = new BoomCMS.AssetManager.AlbumList({
+                albums: this.albums
             });
 
-            $.when(this.allTags, this.selection.getTags()).done(function(response1, response2) {
-                if (typeof response2[0] !== 'undefined') {
-                    var tags = response2[0];
-
-                    for (var i = 0; i < tags.length; i++) {
-                        view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
-                    }
-                }
-            });
-        },
-
-        toggleTag: function($a) {
-            var activeClass = 'active',
-                funcName = $a.hasClass(activeClass) ? 'removeTag' : 'addTag';
-
-            this.selection[funcName]($a.attr('data-tag')).done(function() {
-                $a.toggleClass(activeClass).blur();
-            });
+            this.$('#b-asset-albums > div').html(view.render().el);
         }
     });
 }(jQuery, Backbone, BoomCMS));

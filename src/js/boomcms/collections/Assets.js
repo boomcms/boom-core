@@ -45,6 +45,19 @@
             return this.getAssetIds().join(',');
         },
 
+        getOrFetch: function(assetId) {
+            var asset = this.get(assetId);
+
+            if (asset === undefined) {
+                asset = new BoomCMS.Asset({id: assetId});
+                asset.fetch();
+
+                this.add(asset);
+            }
+
+            return asset;
+        },
+
         parse: function(data) {
             return data.assets;
         },

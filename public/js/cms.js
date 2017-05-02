@@ -43781,6 +43781,19 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             return this.getAssetIds().join(',');
         },
 
+        getOrFetch: function(assetId) {
+            var asset = this.get(assetId);
+
+            if (asset === undefined) {
+                asset = new BoomCMS.Asset({id: assetId});
+                asset.fetch();
+
+                this.add(asset);
+            }
+
+            return asset;
+        },
+
         parse: function(data) {
             return data.assets;
         },
@@ -48119,6 +48132,7 @@ console.log(offset, this.$counter.width());
         activeAsset: null,
         assets: new BoomCMS.Collections.Assets(),
         selection: new BoomCMS.Collections.Assets(),
+        uploaded: new BoomCMS.Collections.Assets(),
         selectedClass: 'selected',
 
         /**
@@ -48140,9 +48154,11 @@ console.log(offset, this.$counter.width());
         },
 
         assetsUploaded: function() {
-            this.router.navigate('', {trigger: true});
-            this.uploader.assetUploader('reset');
-            this.getAssets();
+            new BoomCMS.AssetManager.ThumbnailGrid({
+                assets: this.uploaded,
+                selection: this.selection,
+                el: this.$('#b-assets-upload .b-assets-view-thumbs')
+            }).render();
         },
 
         bindAssetEvents: function(assets) {
@@ -48245,12 +48261,7 @@ console.log(offset, this.$counter.width());
             this.uploader
                 .assetUploader({
                     uploadFinished: function(e, data) {
-                        assetManager.assetsUploaded(data.result);
-                    },
-                    uploadFailed: function() {
-                        // Update asset list even though an error occurred
-                        // For situations where multiple files were uploaded but one caused an error.
-                        assetManager.getAssets();
+                        assetManager.uploadCompleted(data.result.assets, data.result.errors);
                     }
                 });
         },
@@ -48280,8 +48291,29 @@ console.log(offset, this.$counter.width());
 
                     assetManager.viewSelection(section);
                 })
+                .on('route', function(section) {
+                    assetManager.setView(section);
+                })
                 .on('route:viewAsset', function(assetId, section) {
                     assetManager.viewAsset(assetId, section);
+                })
+                .on('route:viewAssetInAlbum', function(album, assetId, section) {
+                    album = assetManager.albums.findBySlug(album);
+
+                    if (album) {
+                        assetManager.assets = album.getAssets();
+                        assetManager.bindAssetEvents(album.getAssets());
+
+                        if (assetManager.assets.length > 0) {
+                            assetManager.viewFilmroll();
+                            assetManager.viewAsset(assetId, section, 'albums/' + album.getSlug());
+                        } else {
+                            assetManager.assets.once('sync', function() {
+                                assetManager.viewFilmroll();
+                                assetManager.viewAsset(assetId, section, 'albums/' + album.getSlug());
+                            });
+                        }
+                    }
                 })
                 .on('route:viewAlbum', function(slug) {
                     assetManager.viewAlbum(slug);
@@ -48291,9 +48323,6 @@ console.log(offset, this.$counter.width());
                 })
                 .on('viewSearchResults', function(params) {
                     assetManager.viewSearchResults(params);
-                })
-                .on('route', function(section) {
-                    assetManager.setView(section);
                 });
 
             Backbone.history.start();
@@ -48301,26 +48330,29 @@ console.log(offset, this.$counter.width());
 
         initialize: function(options) {
             this.albums = options.albums;
-            this.uploader = this.$('#b-assets-upload .b-assets-upload-form');
 
+            this.uploader = this.$('#b-assets-upload form');
             this.router = new BoomCMS.AssetManager.Router({assets: this.assets}); 
 
             this.listenTo(this.albums, 'add remove reset', this.showAlbums);
-
             this.listenTo(this.selection, 'reset update', this.toggleButtons);
+
+            this.bindAssetEvents(this.uploaded);
+            this.listenTo(this.uploaded, 'add', this.assetsUploaded);
 
             this.bind();
             this.bindRoutes();
         },
 
         showAlbums: function() {
-            var $el = this.$('#b-assets-all-albums-container');
+            var $el = this.$('#b-assets-all-albums > div');
 
             if (!$el.html()) {
-                new BoomCMS.AssetManager.AllAlbums({
-                    albums: this.albums,
-                    el: $el
-                }).render();
+                var view = new BoomCMS.AssetManager.AlbumList({
+                    albums: this.albums
+                });
+
+                $el.html(view.render().el);
             }
         },
 
@@ -48341,6 +48373,10 @@ console.log(offset, this.$counter.width());
                 section = '';
             }
 
+            if (section === 'viewAssetInAlbum') {
+                section = 'viewAsset';
+            }
+
             this.$el.attr('data-view', section);
 
             this.$('button[data-view]')
@@ -48354,9 +48390,32 @@ console.log(offset, this.$counter.width());
         },
 
         toggleButtons: function() {
-            var $buttons = this.$('.b-assets-multi');
+            var $controls = this.$('#selection-controls button'),
+                $buttons = $controls.find('button');
 
-            $buttons.prop('disabled', this.selection.length ? false : true);
+            if (this.selection.length > 0) {
+                $controls.addClass('visible');
+                $buttons.prop('disabled', false);
+            } else {
+                $controls.removeClass('visible');
+                $buttons.prop('disabled', true);
+            }
+        },
+
+        uploadCompleted: function(assets, errors) {
+            var $errors = this.$('#b-assets-upload .errors');
+
+            for (var i = 0; i < assets.length; i++) {
+                this.uploaded.add(new BoomCMS.Asset(assets[i]));
+            }
+
+            for (var i = 0; i < errors.length; i++) {
+                var $li = $('<li></li>').text(errors[i]);
+
+                $errors.find('ul').append($li);
+            } 
+
+            $errors.show();
         },
 
         viewAlbum: function(slug) {
@@ -48368,25 +48427,18 @@ console.log(offset, this.$counter.width());
                 this.assets = album.getAssets();
                 this.bindAssetEvents(album.getAssets());
 
-                new BoomCMS.AssetManager.ViewAlbum({
+                var view = new BoomCMS.AssetManager.ViewAlbum({
                     model: album,
-                    el: this.$('#b-assets-view-album-container'),
                     router: this.router
-                }).render();
+                });
 
+                this.$('#b-assets-view-album-container').html(view.render().el);
                 this.viewFilmroll();
             }
         },
 
-        viewAsset: function(assetId, section) {
-            var asset = this.assets.get(assetId);
-
-            if (asset === undefined) {
-                asset = new BoomCMS.Asset({id: assetId});
-                asset.fetch();
-
-                this.assets.add(asset);
-            }
+        viewAsset: function(assetId, section, returnTo) {
+            var asset = this.assets.getOrFetch(assetId);
 
             this.activeAsset = asset;
 
@@ -48394,12 +48446,16 @@ console.log(offset, this.$counter.width());
                 section = 'info';
             }
 
-            new BoomCMS.AssetManager.ViewAsset({
+            var view = new BoomCMS.AssetManager.ViewAsset({
                 model: asset,
                 assets: this.assets,
                 router: this.router,
-                el: this.$('#b-assets-view-asset-container')
-            }).render();
+                albums: this.albums,
+                section: section,
+                returnTo: returnTo
+            });
+
+            this.$('#b-assets-view-asset-container').html(view.render(section).el);
 
             if (this.filmroll) {
                 this.filmroll.select(asset);
@@ -48420,16 +48476,18 @@ console.log(offset, this.$counter.width());
                 params: params
             });
 
+            this.bindAssetEvents(this.assets);
             this.viewFilmroll();
         },
 
         viewSelection: function(section) {
-            new BoomCMS.AssetManager.ViewSelection({
+            var view = new BoomCMS.AssetManager.ViewSelection({
                 selection: this.selection,
                 assets: this.assets,
-                router: this.router,
-                el: this.$('#b-assets-view-selection-container')
-            }).render();
+                router: this.router
+            });
+
+            this.$('#b-assets-view-selection-container').html(view.render().el);
 
             this.filmroll.select(this.selection.models[0]);
         }
@@ -48441,47 +48499,18 @@ console.log(offset, this.$counter.width());
     BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
         routePrefix: 'selection',
         tagsDisplayed: false,
+        tagName: 'div',
         templateSelector: '#b-assets-selection-template',
-
-        addTag: function(tag) {
-            if (!tag) {
-                return;
-            }
-
-            var $tagList = this.$('.b-tags').eq(0),
-                $tagTemplate = this.$('#b-tag-template').html(),
-                $el = $($tagTemplate);
-
-            return $el
-                .find('a')
-                .attr('data-tag', tag)
-                .find('span:first-of-type')
-                .text(tag)
-                .end()
-                .end()
-                .insertBefore($tagList.find('.b-tags-add').parent());
-        },
 
         bind: function() {
             var view = this,
                 selection = this.selection;
 
             this.$el
-                .on('submit', '.b-tags-add', function(e) {
-                    e.preventDefault();
-
-                    var $input = $(this).find('input[type=text]'),
-                        $el = view.addTag($input.val());
-
-                    if ($el !== undefined) {
-                        view.toggleTag($el.find('a'));
-                        $input.val('');
-                    }
-                })
                 .on('click', '.b-settings-close', function(e) {
                     e.preventDefault();
 
-                    view.close();
+                    view.router.navigate(view.returnTo, {trigger: true});
                 })
                 .on('click', '.b-assets-delete', function() {
                     selection.destroy();
@@ -48489,11 +48518,7 @@ console.log(offset, this.$counter.width());
                 .on('click', 'a[data-section]', function() {
                     var section = $(this).attr('data-section');
 
-                    view.router.navigate(view.routePrefix + '/' + selection.getIdString() + '/' + section);
-
-                    if (section === 'tags') {
-                        view.showTags();
-                    }
+                    view.router.navigate(view.routePrefix + '/' + selection.getIdString() + '/' + section, {trigger: true});
                 })
                 .on('submit', '#b-assets-download-filename', function(e) {
                     e.preventDefault();
@@ -48503,27 +48528,7 @@ console.log(offset, this.$counter.width());
                     selection.download(filename);
                 });
 
-            this.$('.b-settings-menu a[href^="#"]').boomTabs();
             this.$el.ui();
-        },
-
-        close: function() {
-            this.router.goToPreviousOrHome();
-        },
-
-        displayTags: function(tags) {
-            var view = this;
-
-            for (var i = 0; i < tags.length; i++) {
-                view.addTag(tags[i]);
-            }
-
-            this.$el
-                .on('click', '.b-tags a', function(e) {
-                    e.preventDefault();
-
-                    view.toggleTag($(this));
-                });
         },
 
         getSection: function() {
@@ -48535,6 +48540,7 @@ console.log(offset, this.$counter.width());
 
             this.assets = options.assets;
             this.router = options.router;
+            this.returnTo = options.returnTo;
 
             this.template = _.template($(this.templateSelector).html());
 
@@ -48549,6 +48555,7 @@ console.log(offset, this.$counter.width());
 
         initialize: function(options) {
             this.selection = options.selection;
+            this.albums = options.albums;
 
             this.init(options);
         },
@@ -48558,6 +48565,10 @@ console.log(offset, this.$counter.width());
                 selection: this.selection,
                 section: section
             })));
+
+            if (section === 'albums') {
+                this.viewAlbums();
+            }
             
             var $about = this.$('.about');
             $about.text($about.text().replace(':count', this.selection.length));
@@ -48571,48 +48582,36 @@ console.log(offset, this.$counter.width());
             return this;
         },
 
-        showTags: function() {
-            var view = this;
-
-            if (this.allTags === undefined) {
-                this.allTags = new BoomCMS.Collections.Assets([]).getTags();
-            }    
-
-            this.allTags.done(function(tags) {
-                view.displayTags(tags);
+        viewAlbums: function() {
+            var view = new BoomCMS.AssetManager.AlbumList({
+                albums: this.albums
             });
 
-            $.when(this.allTags, this.selection.getTags()).done(function(response1, response2) {
-                if (typeof response2[0] !== 'undefined') {
-                    var tags = response2[0];
-
-                    for (var i = 0; i < tags.length; i++) {
-                        view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
-                    }
-                }
-            });
-        },
-
-        toggleTag: function($a) {
-            var activeClass = 'active',
-                funcName = $a.hasClass(activeClass) ? 'removeTag' : 'addTag';
-
-            this.selection[funcName]($a.attr('data-tag')).done(function() {
-                $a.toggleClass(activeClass).blur();
-            });
+            this.$('#b-asset-albums > div').html(view.render().el);
         }
     });
 }(jQuery, Backbone, BoomCMS));
 ;(function($, Backbone, BoomCMS) {
     'use strict';
 
-    BoomCMS.AssetManager.AllAlbums = Backbone.View.extend({
+    BoomCMS.AssetManager.AlbumList = Backbone.View.extend({
+        el: $('<ul class="b-assets-album-list"></ul>'),
+
         initialize: function(options) {
             this.albums = options.albums;
 
-            this.template = _.template($('#b-assets-all-albums-template').html());
+            this.template = _.template($('#b-assets-album-list-template').html());
 
-            this.listenTo(this.albums, 'change add remove', this.render);
+            this.listenTo(this.albums, 'change add', this.render);
+            this.listenTo(this.albums, 'remove', this.removeAlbum);
+        },
+
+        removeAlbum: function(album) {
+            this.$el
+                .find('li[data-album=' + album.getId() + ']')
+                .fadeOut(600, function() {
+                    $(this).remove();
+                });
         },
 
         render: function() {
@@ -48710,25 +48709,15 @@ console.log(offset, this.$counter.width());
     'use strict';
 
     BoomCMS.AssetManager.Router = Backbone.Router.extend({
-        history: [],
-
         routes: {
             '': 'home',
             'upload': 'upload',
-            'asset/:asset/:section': 'viewAsset',
-            'selection/:selection/:section': 'viewSelection',
             'albums/:album': 'viewAlbum',
-            'search?:query': 'searchResults',
-            'search(?)': 'search'
-        },
-
-        /**
-         * Go forward to the last route visited, or home if we're on the first page view
-         */
-        goToPreviousOrHome: function() {
-            var route = (this.history.length > 1) ? this.history[this.history.length - 2] : '';
-
-            this.goTo(route);
+            'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
+            'search/:query': 'searchResults',
+            'search': 'search',
+            'asset:asset/:section': 'viewAsset',
+            'selection/:selection/:section': 'viewSelection'
         },
 
         goTo: function(route) {
@@ -48736,7 +48725,23 @@ console.log(offset, this.$counter.width());
         },
 
         goToAsset: function(asset) {
-            this.navigate('asset/' + asset.getId() + '/info', {trigger: true});
+            var current = Backbone.history.getFragment(),
+                prefix = '',
+                albumSlug;
+
+            if (albumSlug = this.getAlbumSlug(current)) {
+                prefix = 'albums/' + albumSlug + '/';
+            }
+    
+            this.navigate(prefix + 'asset/' + asset.getId() + '/info', {trigger: true});
+        },
+
+        getAlbumSlug: function(path) {
+            var matches = path.match(/^albums\/([-a-zA-Z0-9]+)/i);
+
+            if (typeof matches[1] !== 'undefined') {
+                return matches[1];
+            }
         },
 
         /**
@@ -48756,18 +48761,7 @@ console.log(offset, this.$counter.width());
         },
 
         initialize: function(options) {
-            var router = this;
-
             this.assets = options.assets;
-
-            this.listenTo(this, 'route', function () {
-                // Limit the size of the history array
-                if (router.history.length > 1) {
-                    router.history = [router.history[router.history.length - 1]];
-                }
-
-                router.history.push(Backbone.history.fragment);
-            });
         },
 
         updateSelection: function(assets, section, options) {
@@ -48944,11 +48938,6 @@ console.log(offset, this.$counter.width());
                 .on('dclick', function() {
                     model.trigger('view', model);
                 })
-                .on('keypress', '.edit', function(e) {
-                    if (e.which === $.ui.keyCode.ENTER) {
-                        model.trigger('view', model);
-                    }
-                })
                 .on('click', '.edit', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -49086,6 +49075,8 @@ console.log(offset, this.$counter.width());
     'use strict';
 
     BoomCMS.AssetManager.ViewAlbum = Backbone.View.extend({
+        tagName: 'div',
+
         events: {
             'blur h1': 'save',
             'blur .description': 'save',
@@ -49152,7 +49143,6 @@ console.log(offset, this.$counter.width());
     BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
         routePrefix: 'asset',
         templateSelector: '#b-assets-view-template',
-        loaded: false,
 
         bind: function() {
             var view = this,
@@ -49173,22 +49163,24 @@ console.log(offset, this.$counter.width());
 
                     BoomCMS.Notification('Asset details saved');
                 })
-                .on('remove', function() {
-                    this.$('.b-assets-upload').assetUploader('reset');
-                })
                 .on('click', '[data-section]', function(e) {
                     e.preventDefault();
 
                     var section = $(this).attr('data-section');
 
-                    view.router.navigate('asset/' + asset.getId() + '/' + section, {trigger: true});
+                    view.section = section;
+                    view.router.navigate('asset/' + asset.getId() + '/' + section);
                 });
+
+            this.$('.b-settings-menu a[href^="#"]').boomTabs();
         },
 
         initialize: function(options) {
             var asset = this.model;
 
             this.selection = new BoomCMS.Collections.Assets([this.model]);
+            this.albums = options.albums;
+            this.section = options.section;
 
             this.listenTo(this.model, 'revert', function() {
                 BoomCMS.Notification('This asset has been reverted to the previous version');
@@ -49238,26 +49230,20 @@ console.log(offset, this.$counter.width());
             });
         },
 
-        render: function(section) {
+        render: function() {
             this.$el.html(this.template({
                 asset: this.model,
-                section: section
+                section: this.section
             }));
 
             if (this.assets.length <= 1) {
                 this.$el.children().addClass('no-filmroll');
             }
 
-            if (section === 'replace') {
-                this.initUploader();
-            }
-
-            if (this.loaded === false) {
-                this.bind();
-                this.initImageEditor();
-
-                this.loaded = true;
-            }
+            this.initUploader();
+            this.initImageEditor();
+            this.viewAlbums();
+            this.bind();
             
             return this;
         }
@@ -49409,6 +49395,8 @@ console.log(offset, this.$counter.width());
     'use strict';
 
     $.widget('boom.assetUploader', {
+        uploading: 'uploading',
+
         uploaderOptions: {
             /**
             @type string
@@ -49453,11 +49441,11 @@ console.log(offset, this.$counter.width());
         },
 
         _create: function() {
-            this.cancelButton = this.element.find('.b-assets-upload-cancel').eq(0);
-            this.dropArea = this.element.find('.b-assets-upload-container').eq(0);
-            this.progressBar = this.element.find('.b-assets-upload-progress').eq(0);
+            this.cancelButton = this.element.find('.cancel').eq(0);
+            this.progressBar = this.element.find('.progress').eq(0);
             this.uploadForm = this.element;
-            this.originalMessage = this.dropArea.find('.message').html();
+
+            this.dropArea = this.getDropArea();
 
             this.bind();
         },
@@ -49468,9 +49456,17 @@ console.log(offset, this.$counter.width());
                 this.uploaderOptions.singleFileUploads = true;
             }
 
-            this.uploaderOptions.dropZone = this.element;
-            
+            this.uploaderOptions.dropZone = this.dropArea;
+
             this.initUploader();
+        },
+
+        getDropArea: function() {
+            if (typeof(this.options.dropArea) === 'undefined') {
+                return this.element.find('.b-assets-upload-container').eq(0);
+            }
+
+            return this.options.dropArea;
         },
 
         initUploader: function() {
@@ -49496,23 +49492,8 @@ console.log(offset, this.$counter.width());
                 });
         },
 
-        notify: function(message) {
-            if (!message) {
-                message = this.originalMessage;
-            }
-
-            this.dropArea
-                .find('p.message')
-                .show()
-                .html(message);
-        },
-
         reset: function() {
-            this.progressBar
-                .css('display', 'none')
-                .progressbar('destroy');
-
-            this.cancelButton.hide();
+            this.progressBar.progressbar('destroy');
 
             // If we don't call disable first then when the uploader is reintialized
             // we end up with multiple file uploads taking place.
@@ -49526,31 +49507,23 @@ console.log(offset, this.$counter.width());
             this._trigger('uploadProgress', e, [percentComplete]);
         },
 
-        uploadFailed: function(e, data) {
-            var message = 'Errors occurred during file upload:<br />',
-                errors = $.parseJSON(data.jqXHR.responseText),
-                i;
-
-            for (i = 0; i < errors.length; i++) {
-                message = message + errors[i] + '<br />';
-            }
-
-            this.notify(message);
+        uploadFailed: function(e) {
+            this.element.attr('data-status', 'failed');
             this.reset();
 
-            this._trigger('uploadFailed', e, data);
+            this._trigger('uploadFailed', e);
         },
 
         uploadFinished: function(e, data) {
+            this.element.attr('data-status', 'complete');
+
             this._trigger('uploadFinished', e, data);
         },
 
         uploadStarted: function(e, data) {
-            this.progressBar
-                .css('display', 'block')
-                .progressbar();
+            this.element.attr('data-status', 'uploading');
 
-            this.cancelButton.css('display', 'block');
+            this.progressBar.progressbar();
 
             this.fileData = data;
 

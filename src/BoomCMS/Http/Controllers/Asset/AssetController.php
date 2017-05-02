@@ -119,15 +119,18 @@ class AssetController extends Controller
     {
         $this->authorize('uploadAssets', $site);
 
-        $assetIds = [];
+        $assets = [];
 
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
-            $assetIds[] = AssetFacade::createFromFile($file)->getId();
+            $assets[] = AssetFacade::createFromFile($file);
         }
 
-        return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
+        return [
+            'errors' => $errors,
+            'assets' => $assets,
+        ];
     }
 
     /**

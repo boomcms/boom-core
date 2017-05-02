@@ -9,7 +9,7 @@ use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Http\Request;
 use Mockery as m;
 
-abstract class AlbumControllerTest extends BaseControllerTest
+class AlbumControllerTest extends BaseControllerTest
 {
     protected $className = Controller::class;
 
@@ -22,7 +22,7 @@ abstract class AlbumControllerTest extends BaseControllerTest
     {
         parent::setUp();
 
-        $this->album = m::mock(Album::class)->makePartial();
+        $this->album = m::mock(Album::class);
 
         $this->requireRole('manageAlbums');
     }

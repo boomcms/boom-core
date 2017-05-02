@@ -7,6 +7,7 @@
         activeAsset: null,
         assets: new BoomCMS.Collections.Assets(),
         selection: new BoomCMS.Collections.Assets(),
+        uploaded: new BoomCMS.Collections.Assets(),
         selectedClass: 'selected',
 
         /**
@@ -28,9 +29,11 @@
         },
 
         assetsUploaded: function() {
-            this.router.navigate('', {trigger: true});
-            this.uploader.assetUploader('reset');
-            this.getAssets();
+            new BoomCMS.AssetManager.ThumbnailGrid({
+                assets: this.uploaded,
+                selection: this.selection,
+                el: this.$('#b-assets-upload .b-assets-view-thumbs')
+            }).render();
         },
 
         bindAssetEvents: function(assets) {
@@ -133,12 +136,7 @@
             this.uploader
                 .assetUploader({
                     uploadFinished: function(e, data) {
-                        assetManager.assetsUploaded(data.result);
-                    },
-                    uploadFailed: function() {
-                        // Update asset list even though an error occurred
-                        // For situations where multiple files were uploaded but one caused an error.
-                        assetManager.getAssets();
+                        assetManager.uploadCompleted(data.result.assets, data.result.errors);
                     }
                 });
         },
@@ -168,8 +166,29 @@
 
                     assetManager.viewSelection(section);
                 })
+                .on('route', function(section) {
+                    assetManager.setView(section);
+                })
                 .on('route:viewAsset', function(assetId, section) {
                     assetManager.viewAsset(assetId, section);
+                })
+                .on('route:viewAssetInAlbum', function(album, assetId, section) {
+                    album = assetManager.albums.findBySlug(album);
+
+                    if (album) {
+                        assetManager.assets = album.getAssets();
+                        assetManager.bindAssetEvents(album.getAssets());
+
+                        if (assetManager.assets.length > 0) {
+                            assetManager.viewFilmroll();
+                            assetManager.viewAsset(assetId, section, 'albums/' + album.getSlug());
+                        } else {
+                            assetManager.assets.once('sync', function() {
+                                assetManager.viewFilmroll();
+                                assetManager.viewAsset(assetId, section, 'albums/' + album.getSlug());
+                            });
+                        }
+                    }
                 })
                 .on('route:viewAlbum', function(slug) {
                     assetManager.viewAlbum(slug);
@@ -179,9 +198,6 @@
                 })
                 .on('viewSearchResults', function(params) {
                     assetManager.viewSearchResults(params);
-                })
-                .on('route', function(section) {
-                    assetManager.setView(section);
                 });
 
             Backbone.history.start();
@@ -189,26 +205,29 @@
 
         initialize: function(options) {
             this.albums = options.albums;
-            this.uploader = this.$('#b-assets-upload .b-assets-upload-form');
 
+            this.uploader = this.$('#b-assets-upload form');
             this.router = new BoomCMS.AssetManager.Router({assets: this.assets}); 
 
             this.listenTo(this.albums, 'add remove reset', this.showAlbums);
-
             this.listenTo(this.selection, 'reset update', this.toggleButtons);
+
+            this.bindAssetEvents(this.uploaded);
+            this.listenTo(this.uploaded, 'add', this.assetsUploaded);
 
             this.bind();
             this.bindRoutes();
         },
 
         showAlbums: function() {
-            var $el = this.$('#b-assets-all-albums-container');
+            var $el = this.$('#b-assets-all-albums > div');
 
             if (!$el.html()) {
-                new BoomCMS.AssetManager.AllAlbums({
-                    albums: this.albums,
-                    el: $el
-                }).render();
+                var view = new BoomCMS.AssetManager.AlbumList({
+                    albums: this.albums
+                });
+
+                $el.html(view.render().el);
             }
         },
 
@@ -229,6 +248,10 @@
                 section = '';
             }
 
+            if (section === 'viewAssetInAlbum') {
+                section = 'viewAsset';
+            }
+
             this.$el.attr('data-view', section);
 
             this.$('button[data-view]')
@@ -242,9 +265,32 @@
         },
 
         toggleButtons: function() {
-            var $buttons = this.$('.b-assets-multi');
+            var $controls = this.$('#selection-controls button'),
+                $buttons = $controls.find('button');
 
-            $buttons.prop('disabled', this.selection.length ? false : true);
+            if (this.selection.length > 0) {
+                $controls.addClass('visible');
+                $buttons.prop('disabled', false);
+            } else {
+                $controls.removeClass('visible');
+                $buttons.prop('disabled', true);
+            }
+        },
+
+        uploadCompleted: function(assets, errors) {
+            var $errors = this.$('#b-assets-upload .errors');
+
+            for (var i = 0; i < assets.length; i++) {
+                this.uploaded.add(new BoomCMS.Asset(assets[i]));
+            }
+
+            for (var i = 0; i < errors.length; i++) {
+                var $li = $('<li></li>').text(errors[i]);
+
+                $errors.find('ul').append($li);
+            } 
+
+            $errors.show();
         },
 
         viewAlbum: function(slug) {
@@ -256,25 +302,18 @@
                 this.assets = album.getAssets();
                 this.bindAssetEvents(album.getAssets());
 
-                new BoomCMS.AssetManager.ViewAlbum({
+                var view = new BoomCMS.AssetManager.ViewAlbum({
                     model: album,
-                    el: this.$('#b-assets-view-album-container'),
                     router: this.router
-                }).render();
+                });
 
+                this.$('#b-assets-view-album-container').html(view.render().el);
                 this.viewFilmroll();
             }
         },
 
-        viewAsset: function(assetId, section) {
-            var asset = this.assets.get(assetId);
-
-            if (asset === undefined) {
-                asset = new BoomCMS.Asset({id: assetId});
-                asset.fetch();
-
-                this.assets.add(asset);
-            }
+        viewAsset: function(assetId, section, returnTo) {
+            var asset = this.assets.getOrFetch(assetId);
 
             this.activeAsset = asset;
 
@@ -282,12 +321,16 @@
                 section = 'info';
             }
 
-            new BoomCMS.AssetManager.ViewAsset({
+            var view = new BoomCMS.AssetManager.ViewAsset({
                 model: asset,
                 assets: this.assets,
                 router: this.router,
-                el: this.$('#b-assets-view-asset-container')
-            }).render();
+                albums: this.albums,
+                section: section,
+                returnTo: returnTo
+            });
+
+            this.$('#b-assets-view-asset-container').html(view.render(section).el);
 
             if (this.filmroll) {
                 this.filmroll.select(asset);
@@ -308,16 +351,18 @@
                 params: params
             });
 
+            this.bindAssetEvents(this.assets);
             this.viewFilmroll();
         },
 
         viewSelection: function(section) {
-            new BoomCMS.AssetManager.ViewSelection({
+            var view = new BoomCMS.AssetManager.ViewSelection({
                 selection: this.selection,
                 assets: this.assets,
-                router: this.router,
-                el: this.$('#b-assets-view-selection-container')
-            }).render();
+                router: this.router
+            });
+
+            this.$('#b-assets-view-selection-container').html(view.render().el);
 
             this.filmroll.select(this.selection.models[0]);
         }

@@ -2,25 +2,15 @@
     'use strict';
 
     BoomCMS.AssetManager.Router = Backbone.Router.extend({
-        history: [],
-
         routes: {
             '': 'home',
             'upload': 'upload',
-            'asset/:asset/:section': 'viewAsset',
-            'selection/:selection/:section': 'viewSelection',
             'albums/:album': 'viewAlbum',
-            'search?:query': 'searchResults',
-            'search(?)': 'search'
-        },
-
-        /**
-         * Go forward to the last route visited, or home if we're on the first page view
-         */
-        goToPreviousOrHome: function() {
-            var route = (this.history.length > 1) ? this.history[this.history.length - 2] : '';
-
-            this.goTo(route);
+            'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
+            'search/:query': 'searchResults',
+            'search': 'search',
+            'asset:asset/:section': 'viewAsset',
+            'selection/:selection/:section': 'viewSelection'
         },
 
         goTo: function(route) {
@@ -28,7 +18,23 @@
         },
 
         goToAsset: function(asset) {
-            this.navigate('asset/' + asset.getId() + '/info', {trigger: true});
+            var current = Backbone.history.getFragment(),
+                prefix = '',
+                albumSlug;
+
+            if (albumSlug = this.getAlbumSlug(current)) {
+                prefix = 'albums/' + albumSlug + '/';
+            }
+    
+            this.navigate(prefix + 'asset/' + asset.getId() + '/info', {trigger: true});
+        },
+
+        getAlbumSlug: function(path) {
+            var matches = path.match(/^albums\/([-a-zA-Z0-9]+)/i);
+
+            if (typeof matches[1] !== 'undefined') {
+                return matches[1];
+            }
         },
 
         /**
@@ -48,18 +54,7 @@
         },
 
         initialize: function(options) {
-            var router = this;
-
             this.assets = options.assets;
-
-            this.listenTo(this, 'route', function () {
-                // Limit the size of the history array
-                if (router.history.length > 1) {
-                    router.history = [router.history[router.history.length - 1]];
-                }
-
-                router.history.push(Backbone.history.fragment);
-            });
         },
 
         updateSelection: function(assets, section, options) {
