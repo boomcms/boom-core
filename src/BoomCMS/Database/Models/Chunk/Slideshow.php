@@ -62,7 +62,7 @@ class Slideshow extends BaseChunk
 
     public function scopeWithRelations($query)
     {
-        return $query->with('slides.asset');
+        return $query->with('slides');
     }
 
     public function thumbnail()
