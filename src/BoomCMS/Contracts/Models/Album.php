@@ -5,7 +5,7 @@ namespace BoomCMS\Contracts\Models;
 interface Album
 {
     /**
-     * Add assets to the album
+     * Add assets to the album.
      *
      * @param array $assetIds
      *
@@ -29,7 +29,7 @@ interface Album
     public function getName();
 
     /**
-     * Remove assets from the album
+     * Remove assets from the album.
      *
      * @param array $assetIds
      *
@@ -45,7 +45,7 @@ interface Album
     public function setName($name);
 
     /**
-     * Updates the count of assets in this album
+     * Updates the count of assets in this album.
      *
      * @return Album $this
      */

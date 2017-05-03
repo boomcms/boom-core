@@ -2,15 +2,13 @@
 
 namespace BoomCMS\Tests\Http\Controllers\Asset;
 
-use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Album;
 use BoomCMS\Http\Controllers\Asset\AlbumAssetsController as Controller;
-use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
 use Illuminate\Http\Request;
 use Mockery as m;
 
-class AlbumAsetsControllerTest extends BaseControllerTest
+class AlbumAssetsControllerTest extends BaseControllerTest
 {
     protected $className = Controller::class;
 
@@ -36,7 +34,7 @@ class AlbumAsetsControllerTest extends BaseControllerTest
         $this->album
             ->shouldReceive('removeAssets')
             ->once()
-            -with($assetIds)
+            - with($assetIds)
             ->andReturnSelf();
 
         $this->assertEquals($this->album, $this->controller->destroy($request, $this->album));
@@ -50,7 +48,7 @@ class AlbumAsetsControllerTest extends BaseControllerTest
         $this->album
             ->shouldReceive('addAssets')
             ->once()
-            -with($assetIds)
+            - with($assetIds)
             ->andReturnSelf();
 
         $this->assertEquals($this->album, $this->controller->destroy($request, $this->album));

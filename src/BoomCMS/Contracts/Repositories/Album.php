@@ -31,7 +31,7 @@ interface Album
     public function find($albumId);
 
     /**
-     * Find all the albums which include the given asset IDs
+     * Find all the albums which include the given asset IDs.
      *
      * @param array $assetIds
      *

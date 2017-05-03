@@ -76,7 +76,7 @@ class Album implements AlbumRepositoryInterface
     public function findByAssetIds(array $assetIds): Collection
     {
         return $this->model
-            ->withCount(['assets' => function(Builder $query) use($assetIds) {
+            ->withCount(['assets' => function (Builder $query) use ($assetIds) {
                 $query->whereIn('asset_id', $assetIds);
             }])
             ->having('assets_count', '=', count($assetIds))
