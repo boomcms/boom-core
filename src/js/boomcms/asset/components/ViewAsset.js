@@ -2,7 +2,6 @@
     'use strict';
 
     BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
-        routePrefix: 'asset',
         templateSelector: '#b-assets-view-template',
 
         bind: function() {

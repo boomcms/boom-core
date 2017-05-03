@@ -7,6 +7,9 @@
             'upload': 'upload',
             'albums/:album': 'viewAlbum',
             'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
+            'albums/:album/selection/:selection/:section': 'viewSelectionInAlbum',
+            'search/:query/asset/:asset/section': 'viewAssetInSearch',
+            'search/:query/selection/:selection/section': 'viewSelectionInSearch',
             'search/:query': 'searchResults',
             'search': 'search',
             'asset/:asset/:section': 'viewAsset',
@@ -66,6 +69,13 @@
 
         initialize: function(options) {
             this.assets = options.assets;
+        },
+
+        updateSection: function(section) {
+            var current = Backbone.history.getFragment(),
+                newPath = current.replace(/(.*)\/[a-z]+$/, '$1/' + section);
+
+            this.navigate(newPath);
         },
 
         updateSelection: function(assets, section, options) {

@@ -6,8 +6,6 @@
         thumbnails: '.thumbnails > div',
 
         initialize: function(options) {
-            var view = this;
-
             this.assets = options.assets;
             this.selection = options.selection;
 

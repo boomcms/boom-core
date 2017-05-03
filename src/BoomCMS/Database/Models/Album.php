@@ -33,7 +33,7 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
      */
     public function addAssets(array $assetIds): AlbumInterface
     {
-        $this->assets()->attach($assetIds);
+        $this->assets()->syncWithoutDetaching($assetIds);
 
         return $this->updateAssetCount();
     }

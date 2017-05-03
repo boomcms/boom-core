@@ -43031,7 +43031,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
                 model.set(response);
             });
 
-            this.assets.add(assets);
+            assets.each(function(asset) {
+                model.assets.add(asset);
+            });
         },
 
         getAssets: function() {
@@ -43081,7 +43083,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
                 model.set(response);
             });
 
-            this.assets.remove(assets);
+            assets.each(function(asset) {
+                model.assets.remove(asset);
+            });
         }
     });
 }(BoomCMS));
@@ -48535,7 +48539,6 @@ console.log(offset, this.$counter.width());
 
     BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
         eventsBound: false,
-        routePrefix: 'selection',
         selected: 'selected',
         tagsDisplayed: false,
         tagName: 'div',
@@ -48665,7 +48668,7 @@ console.log(offset, this.$counter.width());
                 .filter('[data-section=' + section + ']')
                 .addClass('selected');
 
-            this.router.navigate(this.routePrefix + '/' + this.selection.getIdString() + '/' + section);
+            this.router.updateSection(section);
         }
     });
 }(jQuery, Backbone, BoomCMS));
@@ -48814,6 +48817,9 @@ console.log(offset, this.$counter.width());
             'upload': 'upload',
             'albums/:album': 'viewAlbum',
             'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
+            'albums/:album/selection/:selection/:section': 'viewSelectionInAlbum',
+            'search/:query/asset/:asset/section': 'viewAssetInSearch',
+            'search/:query/selection/:selection/section': 'viewSelectionInSearch',
             'search/:query': 'searchResults',
             'search': 'search',
             'asset/:asset/:section': 'viewAsset',
@@ -48873,6 +48879,13 @@ console.log(offset, this.$counter.width());
 
         initialize: function(options) {
             this.assets = options.assets;
+        },
+
+        updateSection: function(section) {
+            var current = Backbone.history.getFragment(),
+                newPath = current.replace(/(.*)\/[a-z]+$/, '$1/' + section);
+
+            this.navigate(newPath);
         },
 
         updateSelection: function(assets, section, options) {
@@ -49142,8 +49155,6 @@ console.log(offset, this.$counter.width());
         thumbnails: '.thumbnails > div',
 
         initialize: function(options) {
-            var view = this;
-
             this.assets = options.assets;
             this.selection = options.selection;
 
@@ -49252,7 +49263,6 @@ console.log(offset, this.$counter.width());
     'use strict';
 
     BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
-        routePrefix: 'asset',
         templateSelector: '#b-assets-view-template',
 
         bind: function() {

@@ -15,7 +15,9 @@
                 model.set(response);
             });
 
-            this.assets.add(assets);
+            assets.each(function(asset) {
+                model.assets.add(asset);
+            });
         },
 
         getAssets: function() {
@@ -65,7 +67,9 @@
                 model.set(response);
             });
 
-            this.assets.remove(assets);
+            assets.each(function(asset) {
+                model.assets.remove(asset);
+            });
         }
     });
 }(BoomCMS));

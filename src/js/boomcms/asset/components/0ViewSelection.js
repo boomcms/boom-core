@@ -3,7 +3,6 @@
 
     BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
         eventsBound: false,
-        routePrefix: 'selection',
         selected: 'selected',
         tagsDisplayed: false,
         tagName: 'div',
@@ -133,7 +132,7 @@
                 .filter('[data-section=' + section + ']')
                 .addClass('selected');
 
-            this.router.navigate(this.routePrefix + '/' + this.selection.getIdString() + '/' + section);
+            this.router.updateSection(section);
         }
     });
 }(jQuery, Backbone, BoomCMS));
