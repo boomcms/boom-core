@@ -6,6 +6,7 @@ use BoomCMS\Contracts\Models\Album as AlbumInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Album as AlbumRepositoryInterface;
 use BoomCMS\Database\Models\Album as Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class Album implements AlbumRepositoryInterface
@@ -63,6 +64,23 @@ class Album implements AlbumRepositoryInterface
     public function find($albumId)
     {
         return $this->model->find($albumId);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param array $assetIds
+     *
+     * @return Collection
+     */
+    public function findByAssetIds(array $assetIds): Collection
+    {
+        return $this->model
+            ->withCount(['assets' => function(Builder $query) use($assetIds) {
+                $query->whereIn('asset_id', $assetIds);
+            }])
+            ->having('assets_count', '=', count($assetIds))
+            ->get();
     }
 
     /**

@@ -42,4 +42,9 @@ class AlbumTest extends BaseRepositoryTest
 
         $this->assertEquals($albums, $this->repository->all());
     }
+
+    public function testFindByAssetIds()
+    {
+        $this->markTestIncomplete();
+    }
 }

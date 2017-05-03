@@ -5,11 +5,13 @@ namespace BoomCMS\Contracts\Models;
 interface Album
 {
     /**
-     * @param Asset $asset
+     * Add assets to the album
+     *
+     * @param array $assetIds
      *
      * @return $this
      */
-    public function addAsset(Asset $asset);
+    public function addAssets(array $assetIds): Album;
 
     /**
      * @return int
@@ -27,11 +29,13 @@ interface Album
     public function getName();
 
     /**
-     * @param Asset $asset
+     * Remove assets from the album
+     *
+     * @param array $assetIds
      *
      * @return $this
      */
-    public function removeAsset(Asset $asset);
+    public function removeAssets(array $assetIds): Album;
 
     /**
      * @param string $name
@@ -39,4 +43,11 @@ interface Album
      * @return $this
      */
     public function setName($name);
+
+    /**
+     * Updates the count of assets in this album
+     *
+     * @return Album $this
+     */
+    public function updateAssetCount(): Album;
 }

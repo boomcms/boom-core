@@ -9,7 +9,7 @@
             'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
             'search/:query': 'searchResults',
             'search': 'search',
-            'asset:asset/:section': 'viewAsset',
+            'asset/:asset/:section': 'viewAsset',
             'selection/:selection/:section': 'viewSelection'
         },
 
@@ -29,10 +29,21 @@
             this.navigate(prefix + 'asset/' + asset.getId() + '/info', {trigger: true});
         },
 
+        goToPreviousOrHome: function() {
+            var current = Backbone.history.getFragment(),
+                albumSlug;
+
+            if (albumSlug = this.getAlbumSlug(current)) {
+                return this.goTo('albums/' + albumSlug);
+            }
+
+            return this.goTo('');
+        },
+
         getAlbumSlug: function(path) {
             var matches = path.match(/^albums\/([-a-zA-Z0-9]+)/i);
 
-            if (typeof matches[1] !== 'undefined') {
+            if (matches !== null && typeof matches[1] !== 'undefined') {
                 return matches[1];
             }
         },

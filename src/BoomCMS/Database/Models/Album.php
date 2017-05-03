@@ -3,7 +3,6 @@
 namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Album as AlbumInterface;
-use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Str;
@@ -26,16 +25,17 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
     public $timestamps = true;
 
     /**
-     * @param AssetInterface $asset
+     * {@inheritdoc}
+     *
+     * @param array $assetIds
      *
      * @return $this
      */
-    public function addAsset(AssetInterface $asset)
+    public function addAssets(array $assetIds): AlbumInterface
     {
-        $this->assets()->attach($asset);
-        $this->increment(self::ATTR_ASSET_COUNT);
+        $this->assets()->attach($assetIds);
 
-        return $this;
+        return $this->updateAssetCount();
     }
 
     public function assets()
@@ -60,16 +60,17 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
     }
 
     /**
-     * @param AssetInterface $asset
+     * {@inheritdoc}
+     *
+     * @param array $assetIds
      *
      * @return $this
      */
-    public function removeAsset(AssetInterface $asset)
+    public function removeAssets(array $assetIds): AlbumInterface
     {
-        $this->assets()->detach($asset);
-        $this->decrement(self::ATTR_ASSET_COUNT);
+        $this->assets()->detach($assetIds);
 
-        return $this;
+        return $this->updateAssetCount();
     }
 
     /**
@@ -98,5 +99,19 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
                 ->where(self::ATTR_SLUG, $slug)
                 ->exists();
         });
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return AlbumInterface $this
+     */
+    public function updateAssetCount(): AlbumInterface
+    {
+        $this->update([
+            self::ATTR_ASSET_COUNT => $this->assets->count(),
+        ]);
+
+        return $this;
     }
 }

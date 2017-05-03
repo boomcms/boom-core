@@ -31,6 +31,15 @@ interface Album
     public function find($albumId);
 
     /**
+     * Find all the albums which include the given asset IDs
+     *
+     * @param array $assetIds
+     *
+     * @return Collection
+     */
+    public function findByAssetIds(array $assetIds): Collection;
+
+    /**
      * Save the given album.
      *
      * @param AlbumInterface $album

@@ -11,7 +11,7 @@
 
                 <li>
                     <a href="#b-selection-albums"<% if (section === 'albums') { %> class="selected"<% } %> data-section='albums'>
-                        <span class="fa fa-albums"></span>
+                        <span class="fa fa-book"></span>
                         <?= trans('boomcms::asset.albums') ?>
                     </a>
                 </li>
@@ -39,10 +39,12 @@
         </div>
 
         <div class="b-settings-content">
-            <div id="b-selection-albums"<% if (section === 'albums') { %> class="selected"<% } %>>
+            <div id="b-asset-albums" data-section="albums"<% if (section === 'albums') { %> class="selected"<% } %>>
+                <h1><?= trans('boomcms::asset.albums') ?></h1>
+                <div></div>
             </div>
 
-            <div id="b-selection-download"<% if (section === 'download') { %> class="selected"<% } %>>
+            <div id="b-selection-download" data-section="download"<% if (section === 'download') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.selection.download.heading') ?></h1>
 
                 <p class="about">
@@ -66,7 +68,7 @@
                 </form>
             </div>
 
-            <div id="b-selection-delete"<% if (section === 'delete') { %> class="selected"<% } %>>
+            <div id="b-selection-delete" data-section="delete"<% if (section === 'delete') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.selection.delete.heading') ?></h1>
                 <p><?= trans('boomcms::asset.selection.delete.confirm') ?></p>
 

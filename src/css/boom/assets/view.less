@@ -111,6 +111,27 @@ html.boom .b-assets-view {
         }
     }
 
+    #b-asset-albums {
+        .selected a {
+            background: @blue;
+        }
+
+        a {
+            color: @darkest-grey;
+            background: transparent;
+            height: 15rem;
+            border: 1px solid @darkest-grey;
+
+            &:hover, &:focus {
+                text-decoration: none;
+            }
+
+            h3 {
+                color: @red;
+            }
+        }
+    }
+
 	#b-assets-view-info {
 		position: relative;
 		

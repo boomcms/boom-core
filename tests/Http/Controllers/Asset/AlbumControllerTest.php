@@ -86,4 +86,18 @@ class AlbumControllerTest extends BaseControllerTest
 
         $this->assertEquals($this->album, $this->controller->update($this->album, $request));
     }
+
+    public function testIndex()
+    {
+        $assetIds = [1, 2, 3];
+        $assets = collect(new Asset(), new Asset());
+        $request = new Request(['assets' => $assetIds]);
+
+        AlbumFacade::shouldReceive('findByAssetIds')
+            ->once()
+            ->with($assetIds)
+            ->andReturn($assets);
+
+        $this->assertEquals($assets, $this->controller->index($request));
+    }
 }

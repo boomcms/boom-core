@@ -46,10 +46,10 @@ class AlbumTest extends AbstractModelTestCase
         $album->assets();
     }
 
-    public function testAddAsset()
+    public function testAddAssets()
     {
         $album = m::mock(Album::class)->shouldAllowMockingProtectedMethods()->makePartial();
-        $asset = new Asset();
+        $assetIds = [1, 2, 3];
 
         $album
             ->shouldReceive('assets')
@@ -59,21 +59,16 @@ class AlbumTest extends AbstractModelTestCase
         $album
             ->shouldReceive('attach')
             ->once()
-            ->with($asset)
+            ->with($assetIds)
             ->andReturnSelf();
 
-        $album
-            ->shouldReceive('increment')
-            ->once()
-            ->with(Album::ATTR_ASSET_COUNT);
-
-        $this->assertEquals($album, $album->addAsset($asset));
+        $this->assertEquals($album, $album->addAssets($assetIds));
     }
 
     public function testRemoveAsset()
     {
         $album = m::mock(Album::class)->shouldAllowMockingProtectedMethods()->makePartial();
-        $asset = new Asset();
+        $assetIds = [1, 2, 3];
 
         $album
             ->shouldReceive('assets')
@@ -83,14 +78,14 @@ class AlbumTest extends AbstractModelTestCase
         $album
             ->shouldReceive('detach')
             ->once()
-            ->with($asset)
+            ->with($assetIds)
             ->andReturnSelf();
 
-        $album
-            ->shouldReceive('decrement')
-            ->once()
-            ->with(Album::ATTR_ASSET_COUNT);
+        $this->assertEquals($album, $album->removeAssets($assetIds));
+    }
 
-        $this->assertEquals($album, $album->removeAsset($asset));
+    public function testUpdateAssetCount()
+    {
+        $this->markTestIncomplete();
     }
 }

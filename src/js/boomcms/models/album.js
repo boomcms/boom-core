@@ -5,12 +5,22 @@
         assetsFetched: false,
         urlRoot: BoomCMS.urlRoot + 'album',
 
+        addAssets: function(assets) {
+            var model = this;
+
+            $.post(this.assets.url, {
+                'assets[]': assets.getAssetIds()
+            })
+            .done(function(response) {
+                model.set(response);
+            });
+
+            this.assets.add(assets);
+        },
+
         getAssets: function() {
             if (this.assetsFetched === false) {
                 this.assets.fetch({
-                    data: {
-                        album: this.getId()
-                    },
                     reset: true
                 });
 
@@ -38,6 +48,24 @@
 
         initialize: function() {
             this.assets = new BoomCMS.Collections.Assets();
+            this.assets.url = BoomCMS.urlRoot + 'album/' + this.getId() + '/assets';
+        },
+
+        removeAssets: function(assets) {
+            var model = this;
+
+            $.ajax({
+                url: this.assets.url,
+                method: 'delete',
+                data: {
+                    'assets[]': assets.getAssetIds()
+                }
+            })
+            .done(function(response) {
+                model.set(response);
+            });
+
+            this.assets.remove(assets);
         }
     });
 }(BoomCMS));

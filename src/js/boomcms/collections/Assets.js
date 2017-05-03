@@ -37,6 +37,20 @@
             window.location = url;
         },
 
+        getAlbums: function() {
+            if (this.albums === undefined) {
+                this.albums = new BoomCMS.Collections.Albums();
+
+                this.albums.fetch({
+                    data: {
+                        'assets': this.getAssetIds()
+                    }
+                });
+            }
+
+            return this.albums;
+        },
+
         getAssetIds: function() {
             return this.pluck('id');
         },

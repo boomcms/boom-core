@@ -23,25 +23,13 @@
                         .save();
 
                     BoomCMS.Notification('Asset details saved');
-                })
-                .on('click', '[data-section]', function(e) {
-                    e.preventDefault();
-
-                    var section = $(this).attr('data-section');
-
-                    view.section = section;
-                    view.router.navigate('asset/' + asset.getId() + '/' + section);
                 });
-
-            this.$('.b-settings-menu a[href^="#"]').boomTabs();
         },
 
         initialize: function(options) {
             var asset = this.model;
 
             this.selection = new BoomCMS.Collections.Assets([this.model]);
-            this.albums = options.albums;
-            this.section = options.section;
 
             this.listenTo(this.model, 'revert', function() {
                 BoomCMS.Notification('This asset has been reverted to the previous version');
@@ -97,14 +85,13 @@
                 section: this.section
             }));
 
-            if (this.assets.length <= 1) {
-                this.$el.children().addClass('no-filmroll');
-            }
-
             this.initUploader();
             this.initImageEditor();
             this.viewAlbums();
-            this.bind();
+
+            if (this.eventsBound === false) {
+                this.bind();
+            }
             
             return this;
         }

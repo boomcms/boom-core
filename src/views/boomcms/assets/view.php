@@ -96,7 +96,7 @@
         </div>
 
         <div class="b-settings-content">
-            <div id="b-assets-view-attributes"<% if (section === 'attributes') { %> class="selected"<% } %>>
+            <div id="b-assets-view-attributes" data-section="attributes"<% if (section === 'attributes') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.attributes') ?></h1>
 
                 <form>
@@ -139,7 +139,7 @@
             </div>
 
             <% if (!asset.isImage()) { %>
-                <div id="b-assets-view-thumbnail"<% if (section === 'thumbnail') { %> class="selected"<% } %>>
+                <div id="b-assets-view-thumbnail" data-section="thumbnail"<% if (section === 'thumbnail') { %> class="selected"<% } %>>
                     <h1><?= trans('boomcms::asset.thumbnail') ?></h1>
                     <img src="<%= asset.getUrl('thumb', 500) %>?<%= Date.now() %>" alt="<?= trans('boomcms::asset.thumbnail.heading') ?>">
 
@@ -150,7 +150,7 @@
                 </div>
             <% } %>
 
-            <div id="b-assets-view-info"<% if (!section || section === 'info') { %> class="selected"<% } %>>
+            <div id="b-assets-view-info" data-section="info"<% if (!section || section === 'info') { %> class="selected"<% } %>>
                 <h1><%= asset.getTitle() %></h1>
 
                 <% if (asset.isVideo()) { %>
@@ -240,13 +240,13 @@
                 </dl>
             </div>
 
-            <div id="b-asset-albums"<% if (section === 'albums') { %> class="selected"<% } %>>
+            <div id="b-asset-albums" data-section="albums"<% if (section === 'albums') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.albums') ?></h1>
                 <div></div>
             </div>
 
             <% if (asset.isDocument()) { %>
-                <div id="b-asset-preview"<% if (section === 'preview') { %> class="selected"<% } %>>
+                <div id="b-asset-preview" data-section="preview"<% if (section === 'preview') { %> class="selected"<% } %>>
                     <h1><?= trans('boomcms::asset.preview.heading') ?></h1>
                     <p><?= trans('boomcms::asset.preview.about') ?></p>
 
@@ -255,7 +255,7 @@
             <% } %>
 
             <% if (asset.hasMetadata()) { %>
-                <div id="b-asset-metadata"<% if (section === 'metadata') { %> class="selected"<% } %>>
+                <div id="b-asset-metadata" data-section="metadata"<% if (section === 'metadata') { %> class="selected"<% } %>>
                     <h1><?= trans('boomcms::asset.metadata') ?></h1>
 
                     <dl>
@@ -270,7 +270,7 @@
             <% } %>
 
             <% if (asset.hasPreviousVersions()) { %>
-                <div id="b-assets-view-files"<% if (section === 'history') { %> class="selected"<% } %>>
+                <div id="b-assets-view-files" data-section="history"<% if (section === 'history') { %> class="selected"<% } %>>
                     <h1><?= trans('boomcms::asset.history') ?></h1>
                     <p><?= trans('boomcms::asset.history-intro') ?></p>
 
@@ -302,7 +302,7 @@
                 </div>
             <% } %>
 
-            <div id="b-asset-replace"<% if (section === 'replace') { %> class="selected"<% } %>>
+            <div id="b-asset-replace" data-section="replace"<% if (section === 'replace') { %> class="selected"<% } %>>
                 <div class="b-assets-upload">
                     <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
                         <div class="b-assets-upload-container">
@@ -327,7 +327,7 @@
                 </div>
             </div>
 
-            <div id="b-assets-delete"<% if (section === 'delete') { %> class="selected"<% } %>>
+            <div id="b-assets-delete" data-section="delete"<% if (section === 'delete') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.delete.heading') ?></h1>
                 <p><?= trans('boomcms::asset.delete.confirm') ?></p>
 

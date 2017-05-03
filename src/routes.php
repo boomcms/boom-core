@@ -58,7 +58,10 @@ Route::group(['middleware' => [
             Route::get('asset-picker', 'Asset\AssetPickerController@index');
             Route::get('asset-manager', 'Asset\AssetManagerController@index');
             Route::resource('asset', 'Asset\AssetController');
+
             Route::resource('album', 'Asset\AlbumController');
+            Route::resource('album/{album}/assets', 'Asset\AlbumAssetsController');
+            Route::delete('album/{album}/assets', 'Asset\AlbumAssetsController@destroy');
 
             Route::group([
                 'namespace'  => 'People',

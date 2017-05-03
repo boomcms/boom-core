@@ -19,6 +19,11 @@ class AlbumController extends Controller
         AlbumFacade::delete($album);
     }
 
+    public function index(Request $request)
+    {
+        return AlbumFacade::findByAssetIds($request->input('assets'));
+    }
+
     public function update(Album $album, Request $request)
     {
         $expected = [Album::ATTR_NAME, Album::ATTR_DESCRIPTION, Album::ATTR_ORDER];
