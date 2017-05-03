@@ -37,11 +37,11 @@ class Slideshow extends BaseChunk
 
     public function getSlides()
     {
-        return isset($this->attrs['slides']) ? $this->attrs['slides'] : [];
+        return $this->attrs['slides'] ?? [];
     }
 
     public function getTitle()
     {
-        return isset($this->attrs['title']) ? $this->attrs['title'] : '';
+        return $this->attrs['title'] ?? '';
     }
 }
