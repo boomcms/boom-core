@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Chunk\Slideshow;
 
 use BoomCMS\Chunk\Slideshow\Slide;
-use BoomCMS\Database\Models\Asset;
 use BoomCMS\Tests\AbstractTestCase;
 
 class SlideTest extends AbstractTestCase
