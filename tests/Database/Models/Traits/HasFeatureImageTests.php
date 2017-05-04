@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait HasFeatureImageTests
 {
+    public function testFeatureImageIsZeroByDefault()
+    {
+        $model = new $this->model();
+
+        $this->AssertEquals(0, $model->getAssetCount());
+    }
+
     public function testGetFeatureImageId()
     {
         $model = new $this->model();

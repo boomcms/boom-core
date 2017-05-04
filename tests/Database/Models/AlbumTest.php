@@ -37,6 +37,13 @@ class AlbumTest extends AbstractModelTestCase
         ]);
     }
 
+    public function testAssetCountIsZeroByDefault()
+    {
+        $album = new Album();
+
+        $this->AssertEquals(0, $album->getAssetCount());
+    }
+
     public function testAssets()
     {
         $album = m::mock(Album::class)->makePartial();

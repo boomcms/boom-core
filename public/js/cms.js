@@ -43018,7 +43018,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     'use strict';
 
     BoomCMS.Album = BoomCMS.Model.extend({
-        assetsFetched: false,
         urlRoot: BoomCMS.urlRoot + 'album',
 
         addAssets: function(assets) {
@@ -43037,14 +43036,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getAssets: function() {
-            if (this.assetsFetched === false) {
-                this.assets.fetch({
-                    reset: true
-                });
-
-                this.assetsFetched = true;
-            }
-
             return this.assets;
         },
 
@@ -43057,7 +43048,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getFeatureImage: function() {
-            return new BoomCMS.Asset({id: this.get('feature_image_id')});
+            var featureImageId = this.get('feature_image_id');
+
+            return featureImageId ? new BoomCMS.Asset({id: featureImageId}) : null;
         },
 
         getName: function() {
@@ -43070,7 +43063,11 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
         initialize: function() {
             this.assets = new BoomCMS.Collections.Assets();
-            this.assets.url = BoomCMS.urlRoot + 'album/' + this.getId() + '/assets';
+            this.setAssetsUrl();
+
+            this.on('change:id', function() {
+                this.setAssetsUrl();
+            });
         },
 
         removeAssets: function(assets) {
@@ -43090,6 +43087,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             assets.each(function(asset) {
                 model.assets.remove(asset);
             });
+        },
+
+        setAssetsUrl: function() {
+            this.assets.url = BoomCMS.urlRoot + 'album/' + this.getId() + '/assets';
         }
     });
 }(BoomCMS));
@@ -43774,6 +43775,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     'use strict';
 
     BoomCMS.Collections.Assets = Backbone.Collection.extend({
+        fetched: false,
         model: BoomCMS.Asset,
         url: BoomCMS.urlRoot + 'asset',
         comparator: 'name',
@@ -43807,6 +43809,14 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             url = url + '&filename=' + filename;
 
             window.location = url;
+        },
+
+        fetchOnce: function() {
+            if (this.fetched === false) {
+                this.fetched = true;
+
+                this.fetch({reset: true});
+            }
         },
 
         getAlbums: function() {
@@ -49174,11 +49184,17 @@ console.log(offset, this.$counter.width());
         thumbnails: '.thumbnails > div',
 
         initialize: function(options) {
+            var view = this;
+
             this.assets = options.assets;
             this.selection = options.selection;
 
-            this.listenTo(this.assets, 'add remove reset sync', this.render);
+            this.listenTo(this.assets, 'add remove sync', this.render);
             this.listenTo(this.assets, 'change change:image', this.justify);
+
+            this.listenTo(this.assets, 'reset', function() {
+                view.$el.removeClass(view.none).addClass(view.loading);
+            });
         },
 
         justify: function() {
@@ -49193,7 +49209,7 @@ console.log(offset, this.$counter.width());
 
             this.$thumbnails = this.$(this.thumbnails).html('');
 
-            if (assetCount === 0) {
+            if (assetCount === 0 && this.assets.fetched === true) {
                 this.$el.removeClass(this.loading).addClass(this.none);
 
                 return this;
@@ -49252,6 +49268,7 @@ console.log(offset, this.$counter.width());
 
             if (!this.model.isNew()) {
                 this.assets = this.model.getAssets();
+                this.assets.fetchOnce();
             }
 
             this.model.on('change:slug', function() {

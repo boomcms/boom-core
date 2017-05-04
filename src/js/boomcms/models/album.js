@@ -2,7 +2,6 @@
     'use strict';
 
     BoomCMS.Album = BoomCMS.Model.extend({
-        assetsFetched: false,
         urlRoot: BoomCMS.urlRoot + 'album',
 
         addAssets: function(assets) {
@@ -21,14 +20,6 @@
         },
 
         getAssets: function() {
-            if (this.assetsFetched === false) {
-                this.assets.fetch({
-                    reset: true
-                });
-
-                this.assetsFetched = true;
-            }
-
             return this.assets;
         },
 
@@ -41,7 +32,9 @@
         },
 
         getFeatureImage: function() {
-            return new BoomCMS.Asset({id: this.get('feature_image_id')});
+            var featureImageId = this.get('feature_image_id');
+
+            return featureImageId ? new BoomCMS.Asset({id: featureImageId}) : null;
         },
 
         getName: function() {
@@ -54,7 +47,11 @@
 
         initialize: function() {
             this.assets = new BoomCMS.Collections.Assets();
-            this.assets.url = BoomCMS.urlRoot + 'album/' + this.getId() + '/assets';
+            this.setAssetsUrl();
+
+            this.on('change:id', function() {
+                this.setAssetsUrl();
+            });
         },
 
         removeAssets: function(assets) {
@@ -74,6 +71,10 @@
             assets.each(function(asset) {
                 model.assets.remove(asset);
             });
+        },
+
+        setAssetsUrl: function() {
+            this.assets.url = BoomCMS.urlRoot + 'album/' + this.getId() + '/assets';
         }
     });
 }(BoomCMS));

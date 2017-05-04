@@ -30,6 +30,11 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
 
     public $timestamps = true;
 
+    protected $attributes = [
+        self::ATTR_FEATURE_IMAGE => 0,
+        self::ATTR_ASSET_COUNT   => 0,
+    ];
+
     /**
      * {@inheritdoc}
      *

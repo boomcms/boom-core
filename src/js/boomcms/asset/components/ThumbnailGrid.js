@@ -7,11 +7,17 @@
         thumbnails: '.thumbnails > div',
 
         initialize: function(options) {
+            var view = this;
+
             this.assets = options.assets;
             this.selection = options.selection;
 
-            this.listenTo(this.assets, 'add remove reset sync', this.render);
+            this.listenTo(this.assets, 'add remove sync', this.render);
             this.listenTo(this.assets, 'change change:image', this.justify);
+
+            this.listenTo(this.assets, 'reset', function() {
+                view.$el.removeClass(view.none).addClass(view.loading);
+            });
         },
 
         justify: function() {
@@ -26,7 +32,7 @@
 
             this.$thumbnails = this.$(this.thumbnails).html('');
 
-            if (assetCount === 0) {
+            if (assetCount === 0 && this.assets.fetched === true) {
                 this.$el.removeClass(this.loading).addClass(this.none);
 
                 return this;

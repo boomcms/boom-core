@@ -2,6 +2,7 @@
     'use strict';
 
     BoomCMS.Collections.Assets = Backbone.Collection.extend({
+        fetched: false,
         model: BoomCMS.Asset,
         url: BoomCMS.urlRoot + 'asset',
         comparator: 'name',
@@ -35,6 +36,14 @@
             url = url + '&filename=' + filename;
 
             window.location = url;
+        },
+
+        fetchOnce: function() {
+            if (this.fetched === false) {
+                this.fetched = true;
+
+                this.fetch({reset: true});
+            }
         },
 
         getAlbums: function() {
