@@ -58,7 +58,6 @@
             this.params['page'] = page;
 
             this.router.goToSearchResults(this.params);
-            this.getAssets();
         },
 
         initPagination: function() {

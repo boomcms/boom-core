@@ -49007,13 +49007,17 @@ console.log(offset, this.$counter.width());
             this.params['page'] = page;
 
             this.router.goToSearchResults(this.params);
-            this.getAssets();
         },
 
         initPagination: function() {
             var view = this;
 
             this.lastPage = Math.ceil(this.assets.total / this.perpage);
+
+            // Max page isn't set correctly when re-initialising
+            if (this.$pagination.data('jqPagination')) {
+                this.$pagination.jqPagination('destroy');
+            }
 
             this.$pagination.jqPagination({
                 paged: function(page) {
