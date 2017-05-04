@@ -62,15 +62,7 @@
          *
          */
         goToSearchResults: function(search) {
-            var active = {};
-
-            for (var i = 0; i < search.length; i++) {
-                if (search[i].value !== '0' && search[i].value !== '') {
-                    active[search[i].name] = search[i].value;
-                }
-            }
-
-            this.goTo('search/' + $.param(active));
+            this.goTo('search/' + $.param(search));
         },
 
         initialize: function(options) {

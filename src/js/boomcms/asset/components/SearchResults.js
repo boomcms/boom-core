@@ -3,13 +3,14 @@
 
     BoomCMS.AssetManager.SearchResults = BoomCMS.AssetManager.ViewSelection.extend({
         initialFilters: {},
+        page: 1,
 
         bind: function() {
             var assetSearch = this;
 
             this.listenTo(this.assets, 'reset sync add remove', this.render);
 
-            this.$pagination
+            this.$el
                 .on('keydown', function(e) {
                     switch (e.which) {
                         case $.ui.keyCode.LEFT:
@@ -39,9 +40,9 @@
 
         getAssets: function() {
             var data = {
-                    limit: this.perpage,
-                    page: 1
-                };
+                limit: this.perpage,
+                page: this.page
+            };
 
             for (var key in this.params) {
                 data[key] = this.params[key];
@@ -53,28 +54,29 @@
             });
         },
 
-        initPagination: function(total) {
-            var view = this,
-                $el = this.$pagination;
+        getPage: function(page) {
+            this.params['page'] = page;
 
-            this.lastPage = Math.ceil(total / this.postData.limit);
+            this.router.goToSearchResults(this.params);
+            this.getAssets();
+        },
 
-            // Max page isn't set correctly when re-initialising
-            if ($el.data('jqPagination')) {
-                $el.jqPagination('destroy');
-            }
+        initPagination: function() {
+            var view = this;
 
-            $el.jqPagination({
+            this.lastPage = Math.ceil(this.assets.total / this.perpage);
+
+            this.$pagination.jqPagination({
                 paged: function(page) {
                     view.getPage(page);
                 },
                 max_page: this.lastPage,
-                current_page: total > 0 ? this.postData.page : 0
+                current_page: this.assets.total > 0 ? this.page : 0
             });
         },
 
         nextPage: function() {
-            var page = this.postData.page;
+            var page = this.page;
 
             if (page < this.lastPage) {
                 this.getPage(page + 1);
@@ -82,7 +84,7 @@
         },
 
         previousPage: function() {
-            var page = this.postData.page;
+            var page = this.page;
 
             if (page > 1) {
                 this.getPage(page - 1);
@@ -94,6 +96,8 @@
                 el: this.$('.b-assets-view-thumbs'),
                 assets: this.assets
             }).render();
+
+            this.initPagination();
         },
 
         setAssetsPerPage: function() {

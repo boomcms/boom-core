@@ -73,9 +73,16 @@
                 .on('submit', '#b-assets-search form', function(e) {
                     e.preventDefault();
 
-                    var search = $(this).serializeArray();
+                    var search = $(this).serializeArray(),
+                        active = {};
 
-                    assetManager.router.goToSearchResults(search);
+                    for (var i = 0; i < search.length; i++) {
+                        if (search[i].value !== '0' && search[i].value !== '') {
+                            active[search[i].name] = search[i].value;
+                        }
+                    }
+
+                    assetManager.router.goToSearchResults(active);
                 })
                 .on('click', '#b-assets-selection-delete', function() {
                     assetManager.router.updateSelection(assetManager.selection, 'delete', {trigger: true});
@@ -350,7 +357,8 @@
                 el: this.$('#b-assets-search-results'),
                 pagination: this.$('#b-assets-pagination'),
                 assets: this.assets,
-                params: params
+                params: params,
+                router: this.router,
             });
 
             this.bindAssetEvents(this.assets);

@@ -82,6 +82,8 @@
         },
 
         parse: function(data) {
+            this.total = data.total;
+
             return data.assets;
         },
 

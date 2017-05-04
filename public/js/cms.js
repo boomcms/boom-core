@@ -43855,6 +43855,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         parse: function(data) {
+            this.total = data.total;
+
             return data.assets;
         },
 
@@ -48258,9 +48260,16 @@ console.log(offset, this.$counter.width());
                 .on('submit', '#b-assets-search form', function(e) {
                     e.preventDefault();
 
-                    var search = $(this).serializeArray();
+                    var search = $(this).serializeArray(),
+                        active = {};
 
-                    assetManager.router.goToSearchResults(search);
+                    for (var i = 0; i < search.length; i++) {
+                        if (search[i].value !== '0' && search[i].value !== '') {
+                            active[search[i].name] = search[i].value;
+                        }
+                    }
+
+                    assetManager.router.goToSearchResults(active);
                 })
                 .on('click', '#b-assets-selection-delete', function() {
                     assetManager.router.updateSelection(assetManager.selection, 'delete', {trigger: true});
@@ -48535,7 +48544,8 @@ console.log(offset, this.$counter.width());
                 el: this.$('#b-assets-search-results'),
                 pagination: this.$('#b-assets-pagination'),
                 assets: this.assets,
-                params: params
+                params: params,
+                router: this.router,
             });
 
             this.bindAssetEvents(this.assets);
@@ -48899,15 +48909,7 @@ console.log(offset, this.$counter.width());
          *
          */
         goToSearchResults: function(search) {
-            var active = {};
-
-            for (var i = 0; i < search.length; i++) {
-                if (search[i].value !== '0' && search[i].value !== '') {
-                    active[search[i].name] = search[i].value;
-                }
-            }
-
-            this.goTo('search/' + $.param(active));
+            this.goTo('search/' + $.param(search));
         },
 
         initialize: function(options) {
@@ -48950,13 +48952,14 @@ console.log(offset, this.$counter.width());
 
     BoomCMS.AssetManager.SearchResults = BoomCMS.AssetManager.ViewSelection.extend({
         initialFilters: {},
+        page: 1,
 
         bind: function() {
             var assetSearch = this;
 
             this.listenTo(this.assets, 'reset sync add remove', this.render);
 
-            this.$pagination
+            this.$el
                 .on('keydown', function(e) {
                     switch (e.which) {
                         case $.ui.keyCode.LEFT:
@@ -48986,9 +48989,9 @@ console.log(offset, this.$counter.width());
 
         getAssets: function() {
             var data = {
-                    limit: this.perpage,
-                    page: 1
-                };
+                limit: this.perpage,
+                page: this.page
+            };
 
             for (var key in this.params) {
                 data[key] = this.params[key];
@@ -49000,28 +49003,29 @@ console.log(offset, this.$counter.width());
             });
         },
 
-        initPagination: function(total) {
-            var view = this,
-                $el = this.$pagination;
+        getPage: function(page) {
+            this.params['page'] = page;
 
-            this.lastPage = Math.ceil(total / this.postData.limit);
+            this.router.goToSearchResults(this.params);
+            this.getAssets();
+        },
 
-            // Max page isn't set correctly when re-initialising
-            if ($el.data('jqPagination')) {
-                $el.jqPagination('destroy');
-            }
+        initPagination: function() {
+            var view = this;
 
-            $el.jqPagination({
+            this.lastPage = Math.ceil(this.assets.total / this.perpage);
+
+            this.$pagination.jqPagination({
                 paged: function(page) {
                     view.getPage(page);
                 },
                 max_page: this.lastPage,
-                current_page: total > 0 ? this.postData.page : 0
+                current_page: this.assets.total > 0 ? this.page : 0
             });
         },
 
         nextPage: function() {
-            var page = this.postData.page;
+            var page = this.page;
 
             if (page < this.lastPage) {
                 this.getPage(page + 1);
@@ -49029,7 +49033,7 @@ console.log(offset, this.$counter.width());
         },
 
         previousPage: function() {
-            var page = this.postData.page;
+            var page = this.page;
 
             if (page > 1) {
                 this.getPage(page - 1);
@@ -49041,6 +49045,8 @@ console.log(offset, this.$counter.width());
                 el: this.$('.b-assets-view-thumbs'),
                 assets: this.assets
             }).render();
+
+            this.initPagination();
         },
 
         setAssetsPerPage: function() {
