@@ -22,23 +22,7 @@
                         .save();
 
                     BoomCMS.Notification('Asset details saved');
-                });
-        },
-
-        initialize: function(options) {
-            var asset = this.model;
-
-            this.selection = new BoomCMS.Collections.Assets([this.model]);
-
-            this.listenTo(this.model, 'revert', function() {
-                BoomCMS.Notification('This asset has been reverted to the previous version');
-            });
-
-            this.listenTo(this.model, 'sync change:image revert', function() {
-                this.render('info');
-            });
-
-            this.$el
+                })
                 .on('click', '#b-assets-thumbnail-change', function(e) {
                     e.preventDefault();
 
@@ -49,6 +33,24 @@
                                 .save();
                         });
                 });
+
+            this.$('#b-asset-replace form')
+                .assetUploader({
+                    dropArea: this.$('#b-asset-replace'),
+                    asset: asset
+                });
+        },
+
+        initialize: function(options) {
+            this.selection = new BoomCMS.Collections.Assets([this.model]);
+
+            this.listenTo(this.model, 'revert', function() {
+                BoomCMS.Notification('This asset has been reverted to the previous version');
+            });
+
+            this.listenTo(this.model, 'sync change:image revert', function() {
+                this.router.goToAsset(this.model);
+            });
 
             this.init(options);
         },

@@ -48357,20 +48357,14 @@ console.log(offset, this.$counter.width());
                 })
                 .on('route:viewAssetInAlbum', function(album, assetId, section) {
                     album = assetManager.albums.findBySlug(album);
+                    assetManager.loadAlbum(album);
 
-                    if (album) {
-                        assetManager.assets = album.getAssets();
-                        assetManager.bindAssetEvents(album.getAssets());
-
-                        if (assetManager.assets.length > 0) {
-                            assetManager.viewFilmroll();
+                    if (assetManager.assets.length > 0) {
+                        assetManager.viewAsset(assetId, section);
+                    } else {
+                        assetManager.assets.once('sync', function() {
                             assetManager.viewAsset(assetId, section);
-                        } else {
-                            assetManager.assets.once('sync', function() {
-                                assetManager.viewFilmroll();
-                                assetManager.viewAsset(assetId, section);
-                            });
-                        }
+                        });
                     }
                 })
                 .on('route:viewAlbum', function(slug) {
@@ -48400,6 +48394,20 @@ console.log(offset, this.$counter.width());
 
             this.bind();
             this.bindRoutes();
+        },
+
+        loadAlbum: function(album) {
+            if (album) {
+                this.selection.reset();
+
+                if (!album.isNew()) {
+                    this.assets = album.getAssets();
+                    this.bindAssetEvents(this.assets);
+                    this.assets.fetchOnce();
+                }
+
+                this.viewFilmroll();
+            }
         },
 
         showAlbums: function() {
@@ -48480,14 +48488,9 @@ console.log(offset, this.$counter.width());
             var albums = this.albums,
                 album = slug ? albums.findBySlug(slug) : new BoomCMS.Album();
 
+            this.loadAlbum(album);
+
             if (album) {
-                this.selection.reset();
-
-                if (!album.isNew()) {
-                    this.assets = album.getAssets();
-                    this.bindAssetEvents(this.assets);
-                }
-
                 var view = new BoomCMS.AssetManager.ViewAlbum({
                     model: album,
                     albums: this.albums,
@@ -48495,7 +48498,6 @@ console.log(offset, this.$counter.width());
                 });
 
                 this.$('#b-assets-view-album-container').html(view.render().el);
-                this.viewFilmroll();
             }
         },
 
@@ -49268,7 +49270,6 @@ console.log(offset, this.$counter.width());
 
             if (!this.model.isNew()) {
                 this.assets = this.model.getAssets();
-                this.assets.fetchOnce();
             }
 
             this.model.on('change:slug', function() {
@@ -49333,23 +49334,7 @@ console.log(offset, this.$counter.width());
                         .save();
 
                     BoomCMS.Notification('Asset details saved');
-                });
-        },
-
-        initialize: function(options) {
-            var asset = this.model;
-
-            this.selection = new BoomCMS.Collections.Assets([this.model]);
-
-            this.listenTo(this.model, 'revert', function() {
-                BoomCMS.Notification('This asset has been reverted to the previous version');
-            });
-
-            this.listenTo(this.model, 'sync change:image revert', function() {
-                this.render('info');
-            });
-
-            this.$el
+                })
                 .on('click', '#b-assets-thumbnail-change', function(e) {
                     e.preventDefault();
 
@@ -49360,6 +49345,24 @@ console.log(offset, this.$counter.width());
                                 .save();
                         });
                 });
+
+            this.$('#b-asset-replace form')
+                .assetUploader({
+                    dropArea: this.$('#b-asset-replace'),
+                    asset: asset
+                });
+        },
+
+        initialize: function(options) {
+            this.selection = new BoomCMS.Collections.Assets([this.model]);
+
+            this.listenTo(this.model, 'revert', function() {
+                BoomCMS.Notification('This asset has been reverted to the previous version');
+            });
+
+            this.listenTo(this.model, 'sync change:image revert', function() {
+                this.router.goToAsset(this.model);
+            });
 
             this.init(options);
         },
@@ -49602,9 +49605,6 @@ console.log(offset, this.$counter.width());
             this.cancelButton = this.element.find('.cancel').eq(0);
             this.progressBar = this.element.find('.progress').eq(0);
             this.uploadForm = this.element;
-
-            this.dropArea = this.getDropArea();
-
             this.bind();
         },
 
@@ -49614,17 +49614,8 @@ console.log(offset, this.$counter.width());
                 this.uploaderOptions.singleFileUploads = true;
             }
 
-            this.uploaderOptions.dropZone = this.dropArea;
-
+            this.uploaderOptions.dropZone = this.options.dropArea;
             this.initUploader();
-        },
-
-        getDropArea: function() {
-            if (typeof(this.options.dropArea) === 'undefined') {
-                return this.element.find('.b-assets-upload-container').eq(0);
-            }
-
-            return this.options.dropArea;
         },
 
         initUploader: function() {
@@ -49650,15 +49641,6 @@ console.log(offset, this.$counter.width());
                 });
         },
 
-        reset: function() {
-            this.progressBar.progressbar('destroy');
-
-            // If we don't call disable first then when the uploader is reintialized
-            // we end up with multiple file uploads taking place.
-            this.uploadForm.fileupload('disable').fileupload('destroy');
-            this.initUploader();
-        },
-
         updateProgressBar: function(e, percentComplete) {
             this.progressBar.progressbar('value', percentComplete);
 
@@ -49667,8 +49649,6 @@ console.log(offset, this.$counter.width());
 
         uploadFailed: function(e) {
             this.element.attr('data-status', 'failed');
-            this.reset();
-
             this._trigger('uploadFailed', e);
         },
 

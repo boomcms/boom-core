@@ -32,7 +32,6 @@
 
             if (!this.model.isNew()) {
                 this.assets = this.model.getAssets();
-                this.assets.fetchOnce();
             }
 
             this.model.on('change:slug', function() {

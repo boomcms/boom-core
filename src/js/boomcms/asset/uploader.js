@@ -51,9 +51,6 @@
             this.cancelButton = this.element.find('.cancel').eq(0);
             this.progressBar = this.element.find('.progress').eq(0);
             this.uploadForm = this.element;
-
-            this.dropArea = this.getDropArea();
-
             this.bind();
         },
 
@@ -63,17 +60,8 @@
                 this.uploaderOptions.singleFileUploads = true;
             }
 
-            this.uploaderOptions.dropZone = this.dropArea;
-
+            this.uploaderOptions.dropZone = this.options.dropArea;
             this.initUploader();
-        },
-
-        getDropArea: function() {
-            if (typeof(this.options.dropArea) === 'undefined') {
-                return this.element.find('.b-assets-upload-container').eq(0);
-            }
-
-            return this.options.dropArea;
         },
 
         initUploader: function() {
@@ -99,15 +87,6 @@
                 });
         },
 
-        reset: function() {
-            this.progressBar.progressbar('destroy');
-
-            // If we don't call disable first then when the uploader is reintialized
-            // we end up with multiple file uploads taking place.
-            this.uploadForm.fileupload('disable').fileupload('destroy');
-            this.initUploader();
-        },
-
         updateProgressBar: function(e, percentComplete) {
             this.progressBar.progressbar('value', percentComplete);
 
@@ -116,8 +95,6 @@
 
         uploadFailed: function(e) {
             this.element.attr('data-status', 'failed');
-            this.reset();
-
             this._trigger('uploadFailed', e);
         },
 

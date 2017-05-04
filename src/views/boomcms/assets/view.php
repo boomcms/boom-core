@@ -303,28 +303,26 @@
             <% } %>
 
             <div id="b-asset-replace" data-section="replace"<% if (section === 'replace') { %> class="selected"<% } %>>
-                <div class="b-assets-upload">
-                    <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
-                        <div class="b-assets-upload-container">
-                            <div class="b-assets-upload-info">
-                                <p>
-                                    <?= trans('boomcms::asset.replace.info1') ?>
-                                    <label for="b-asset-replace-file">
-                                        <?= trans('boomcms::asset.replace.info2') ?>
-                                    </label>
-                                    <?= trans('boomcms::asset.replace.info3') ?>
-                                </p>
+                <h1><?= trans('boomcms::asset.replace.heading') ?></h1>
 
-                                <p class="message"></p>
+                <form method="post" enctype="multipart/form-data" class="b-assets-upload">
+                    <div class='info'>
+                        <label for="b-assets-replace-file"><?= trans('boomcms::asset.replace.select-file') ?></label>
+                        <p><?= trans('boomcms::asset.replace.drag-drop') ?></p>
+                    </div>
 
-                                <div class="b-assets-upload-progress"></div>
-                                <?= $button('times', 'cancel', ['class' => 'b-assets-upload-cancel']) ?>
-                            </div>
+                    <div class='errors'>
+                        <h2><?= trans('boomcms::asset.upload.errors') ?></h2>
 
-                            <input type="file" name="b-assets-upload-files[]" id="b-asset-replace-file" multiple min="1" max="5" />
-                        </div>
-                    </form>
-                </div>
+                        <ul></ul>
+                    </div>
+
+                    <p class='failed'><?= trans('boomcms::asset.upload.failed') ?></p>
+                    <div class="progress"></div>
+                    <?= $button('times', 'cancel', ['class' => 'cancel']) ?>
+
+                    <input type="file" name="b-assets-upload-files[]" id="b-assets-replace-file">
+                </form>
             </div>
 
             <div id="b-assets-delete" data-section="delete"<% if (section === 'delete') { %> class="selected"<% } %>>

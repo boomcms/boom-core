@@ -68,10 +68,9 @@ return [
         '1'       => 'Visible to all users',
     ],
     'replace'         => [
-        'heading' => 'Replace',
-        'info1'   => 'Drag and drop a file here, or',
-        'info2'   => 'select a file,',
-        'info3'   => 'to upload.',
+        'heading'      => 'Replace asset',
+        'drag-drop'    => 'Or drag and drop a file here to upload',
+        'select-file'  => 'Select a file',
     ],
 
     'search'          => [

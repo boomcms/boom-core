@@ -172,20 +172,14 @@
                 })
                 .on('route:viewAssetInAlbum', function(album, assetId, section) {
                     album = assetManager.albums.findBySlug(album);
+                    assetManager.loadAlbum(album);
 
-                    if (album) {
-                        assetManager.assets = album.getAssets();
-                        assetManager.bindAssetEvents(album.getAssets());
-
-                        if (assetManager.assets.length > 0) {
-                            assetManager.viewFilmroll();
+                    if (assetManager.assets.length > 0) {
+                        assetManager.viewAsset(assetId, section);
+                    } else {
+                        assetManager.assets.once('sync', function() {
                             assetManager.viewAsset(assetId, section);
-                        } else {
-                            assetManager.assets.once('sync', function() {
-                                assetManager.viewFilmroll();
-                                assetManager.viewAsset(assetId, section);
-                            });
-                        }
+                        });
                     }
                 })
                 .on('route:viewAlbum', function(slug) {
@@ -215,6 +209,20 @@
 
             this.bind();
             this.bindRoutes();
+        },
+
+        loadAlbum: function(album) {
+            if (album) {
+                this.selection.reset();
+
+                if (!album.isNew()) {
+                    this.assets = album.getAssets();
+                    this.bindAssetEvents(this.assets);
+                    this.assets.fetchOnce();
+                }
+
+                this.viewFilmroll();
+            }
         },
 
         showAlbums: function() {
@@ -295,14 +303,9 @@
             var albums = this.albums,
                 album = slug ? albums.findBySlug(slug) : new BoomCMS.Album();
 
+            this.loadAlbum(album);
+
             if (album) {
-                this.selection.reset();
-
-                if (!album.isNew()) {
-                    this.assets = album.getAssets();
-                    this.bindAssetEvents(this.assets);
-                }
-
                 var view = new BoomCMS.AssetManager.ViewAlbum({
                     model: album,
                     albums: this.albums,
@@ -310,7 +313,6 @@
                 });
 
                 this.$('#b-assets-view-album-container').html(view.render().el);
-                this.viewFilmroll();
             }
         },
 
