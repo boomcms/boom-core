@@ -238,15 +238,15 @@
         },
 
         selectAll: function() {
-            var assetManager = this;
-
             this.assets.each(function(asset) {
-                assetManager.selection.add(asset);
+                asset.trigger('select', asset);
             });
         },
 
         selectNone: function() {
-            this.selection.reset();
+            this.assets.each(function(asset) {
+                asset.trigger('unselect', asset);
+            });
         },
 
         setView: function(section) {

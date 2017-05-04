@@ -70,7 +70,7 @@
                 }
             }
 
-            this.goTo('search?' + $.param(active));
+            this.goTo('search/' + $.param(active));
         },
 
         initialize: function(options) {

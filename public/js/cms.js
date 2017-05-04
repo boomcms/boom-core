@@ -48423,15 +48423,15 @@ console.log(offset, this.$counter.width());
         },
 
         selectAll: function() {
-            var assetManager = this;
-
             this.assets.each(function(asset) {
-                assetManager.selection.add(asset);
+                asset.trigger('select', asset);
             });
         },
 
         selectNone: function() {
-            this.selection.reset();
+            this.assets.each(function(asset) {
+                asset.trigger('unselect', asset);
+            });
         },
 
         setView: function(section) {
@@ -48907,7 +48907,7 @@ console.log(offset, this.$counter.width());
                 }
             }
 
-            this.goTo('search?' + $.param(active));
+            this.goTo('search/' + $.param(active));
         },
 
         initialize: function(options) {
