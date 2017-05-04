@@ -4,7 +4,6 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\PageVersion as PageVersionInterface;
-use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
