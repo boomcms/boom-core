@@ -25,7 +25,6 @@ trait HasFeatureImage
     }
 
     /**
-     * 
      * @return int
      */
     public function getFeatureImageId(): int

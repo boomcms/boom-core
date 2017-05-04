@@ -1,7 +1,6 @@
 <?php
 
 use BoomCMS\Database\Models\Album;
-use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Chunk\Library;
 use BoomCMS\Database\Models\Role;
 use BoomCMS\Database\Models\Site;

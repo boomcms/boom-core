@@ -6,9 +6,9 @@ use BoomCMS\Contracts\Models\Album as AlbumInterface;
 use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Str;
-use BoomCMS\Support\Traits\SingleSite;
 use BoomCMS\Support\Traits\HasCreatedBy;
 use BoomCMS\Support\Traits\HasFeatureImage;
+use BoomCMS\Support\Traits\SingleSite;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Album extends Model implements AlbumInterface, SingleSiteInterface

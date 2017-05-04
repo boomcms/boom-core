@@ -47,7 +47,7 @@ class Album implements AlbumRepositoryInterface
     /**
      * {@inheritdoc}
      *
-     * @param string $name
+     * @param string      $name
      * @param string|null $description
      *
      * @return AlbumInterface
