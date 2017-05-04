@@ -67,10 +67,6 @@
 
             this.template = _.template($(this.templateSelector).html());
 
-            this.listenTo(this.selection, 'sync add remove', function() {
-                this.render(view.getSection());
-            });
-
             this.listenTo(this.selection, 'destroy', function() {
                 view.close();
             });
@@ -78,6 +74,10 @@
 
         initialize: function(options) {
             this.selection = options.selection;
+
+            this.listenTo(this.selection, 'sync add remove', function() {
+                this.render(view.getSection());
+            });
 
             this.init(options);
         },

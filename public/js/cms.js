@@ -48628,10 +48628,6 @@ console.log(offset, this.$counter.width());
 
             this.template = _.template($(this.templateSelector).html());
 
-            this.listenTo(this.selection, 'sync add remove', function() {
-                this.render(view.getSection());
-            });
-
             this.listenTo(this.selection, 'destroy', function() {
                 view.close();
             });
@@ -48639,6 +48635,10 @@ console.log(offset, this.$counter.width());
 
         initialize: function(options) {
             this.selection = options.selection;
+
+            this.listenTo(this.selection, 'sync add remove', function() {
+                this.render(view.getSection());
+            });
 
             this.init(options);
         },
@@ -49360,7 +49360,7 @@ console.log(offset, this.$counter.width());
                 BoomCMS.Notification('This asset has been reverted to the previous version');
             });
 
-            this.listenTo(this.model, 'sync change:image revert', function() {
+            this.listenTo(this.model, 'change:image revert', function() {
                 this.router.goToAsset(this.model);
             });
 

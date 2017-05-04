@@ -48,7 +48,7 @@
                 BoomCMS.Notification('This asset has been reverted to the previous version');
             });
 
-            this.listenTo(this.model, 'sync change:image revert', function() {
+            this.listenTo(this.model, 'change:image revert', function() {
                 this.router.goToAsset(this.model);
             });
 
