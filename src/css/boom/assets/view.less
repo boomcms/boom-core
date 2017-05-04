@@ -89,31 +89,14 @@ html.boom .b-assets-view {
 
     #b-asset-albums {
         .selected a {
-            background: @blue;
-
-            h3 {
-                color: @darkest-grey;
+            &:before {
+                background: @blue;
             }
         }
 
         a {
-            color: @darkest-grey;
-            background: transparent;
+            color: @white;
             border: 1px solid @darkest-grey;
-
-            &:hover, &:focus {
-                .transition;
-                text-decoration: none;
-                background: @blue;
-
-                h3 {
-                    color: @darkest-grey;
-                }
-            }
-
-            h3 {
-                color: @red;
-            }
         }
     }
 

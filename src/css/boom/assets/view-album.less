@@ -1,4 +1,49 @@
 #b-assets-view-album {
+    position: relative;
+
+    .controls {
+        label {
+            text-align: center;
+            display: inline-block;
+            vertical-align: bottom;
+            margin: 0;
+            cursor: pointer;
+            height: 30px;
+            width: 30px;
+            font-size: 2rem;
+            line-height: 30px;
+
+            &:hover, &:focus {
+                .transition;
+                color: @red;
+            }
+        }
+    }
+
+    .b-assets-upload {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: @lightest-grey;
+        z-index: 2;
+
+        &[data-status=uploading] {
+            display: block;
+        }
+
+        .progress-cancel {
+            position: absolute;
+            top: 50vh;
+            left: 50vw;
+            transform: translateY(-50%) translateX(-50%);
+            width: 70rem;
+            max-width: 100%;
+        }
+    }
+
     .description {
         margin: -3.5rem 0 5rem 0;
         color: @darkest-grey;

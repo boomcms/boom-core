@@ -73,6 +73,8 @@
         },
 
         initialize: function(options) {
+            var view = this;
+
             this.selection = options.selection;
 
             this.listenTo(this.selection, 'sync add remove', function() {

@@ -7,6 +7,7 @@
             'upload': 'upload',
             'albums/create': 'createAlbum',
             'albums/:album': 'viewAlbum',
+            'albums/:album/upload': 'upload',
             'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
             'albums/:album/selection/:selection/:section': 'viewSelectionInAlbum',
             'search/:query/asset/:asset/section': 'viewAssetInSearch',

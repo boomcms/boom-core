@@ -45,6 +45,8 @@
         },
 
         render: function() {
+            var album = this.model;
+
             this.$el.html($(this.template({
                 album: this.model
             })));
@@ -58,6 +60,16 @@
                     el: this.$('.b-assets-view-thumbs')
                 }).render();
             }
+
+            this.$('.b-assets-upload')
+                .assetUploader({
+                    dropArea: this.$el,
+                    uploadFinished: function(e, data) {
+                        var assets = new BoomCMS.Collections.Assets(data.result.assets);
+
+                        album.addAssets(assets);
+                    }
+                });
 
             return this;
         },

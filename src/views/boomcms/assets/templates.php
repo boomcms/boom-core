@@ -23,11 +23,31 @@
 
         <% if (!album.isNew()) { %>
             <div class='controls'>
-                <?= $button('upload', 'album-upload', ['class' => 'upload small dark']) ?>
+                <label for="b-assets-album-upload-<%= album.getId() %>">
+                    <span class="fa fa-upload"></span>
+                </label>
+
                 <?= $button('trash', 'delete', ['class' => 'delete small dark']) ?>
             </div>
-        
+
             <?= view('boomcms::assets.thumbs') ?>
+
+            <div class="b-assets-upload">
+                <div class='errors'>
+                    <h2><?= trans('boomcms::asset.upload.errors') ?></h2>
+
+                    <ul></ul>
+                </div>
+
+                <p class='failed'><?= trans('boomcms::asset.upload.failed') ?></p>
+
+                <div class='progress-cancel'>
+                    <div class="progress"></div>
+                    <?= $button('times', 'cancel', ['class' => 'cancel']) ?>
+                </div>
+
+                <input type="file" name="b-assets-upload-files[]" id="b-assets-album-upload-<%= album.getId() %>">
+            </div>
         <% } %>
     </div>
 </script>
