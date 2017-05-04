@@ -7,10 +7,14 @@ use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Str;
 use BoomCMS\Support\Traits\SingleSite;
+use BoomCMS\Support\Traits\HasCreatedBy;
+use BoomCMS\Support\Traits\HasFeatureImage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Album extends Model implements AlbumInterface, SingleSiteInterface
 {
+    use HasCreatedBy;
+    use HasFeatureImage;
     use SingleSite;
     use SoftDeletes;
 
@@ -19,6 +23,8 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
     const ATTR_SLUG = 'slug';
     const ATTR_ORDER = 'order';
     const ATTR_ASSET_COUNT = 'asset_count';
+    const ATTR_FEATURE_IMAGE = 'feature_image_id';
+    const ATTR_CREATED_BY = 'created_by';
 
     protected $table = 'albums';
 
@@ -35,12 +41,29 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
     {
         $this->assets()->syncWithoutDetaching($assetIds);
 
-        return $this->updateAssetCount();
+        return $this->assetsUpdated();
     }
 
     public function assets()
     {
         return $this->belongsToMany(Asset::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return AlbumInterface $this
+     */
+    public function assetsUpdated(): AlbumInterface
+    {
+        $feature = $this->assets()->first();
+
+        $this->update([
+            self::ATTR_FEATURE_IMAGE => $feature ? $feature->getId() : null,
+            self::ATTR_ASSET_COUNT   => $this->assets->count(),
+        ]);
+
+        return $this;
     }
 
     /**
@@ -70,7 +93,7 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
     {
         $this->assets()->detach($assetIds);
 
-        return $this->updateAssetCount();
+        return $this->assetsUpdated();
     }
 
     /**
@@ -99,19 +122,5 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
                 ->where(self::ATTR_SLUG, $slug)
                 ->exists();
         });
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return AlbumInterface $this
-     */
-    public function updateAssetCount(): AlbumInterface
-    {
-        $this->update([
-            self::ATTR_ASSET_COUNT => $this->assets->count(),
-        ]);
-
-        return $this;
     }
 }

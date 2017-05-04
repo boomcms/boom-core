@@ -40,6 +40,10 @@
             return this.get('description');
         },
 
+        getFeatureImage: function() {
+            return new BoomCMS.Asset({id: this.get('feature_image_id')});
+        },
+
         getName: function() {
             return this.get('name');
         },

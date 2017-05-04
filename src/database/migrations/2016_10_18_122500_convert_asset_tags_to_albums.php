@@ -26,8 +26,32 @@ class ConvertAssetTagsToAlbums extends Migration
             $table->string(Album::ATTR_DESCRIPTION)->nullable();
             $table->string(Album::ATTR_SLUG)->unique();
             $table->string(Album::ATTR_ORDER)->nullable();
-            $table->integer(Album::ATTR_ASSET_COUNT)->default(0);
-            $table->integer(Album::ATTR_SITE)->references('id')->on('sites')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->integer(Album::ATTR_ASSET_COUNT)->unsigned()->default(0);
+            $table->integer(Album::ATTR_SITE)->unsigned()->references('id')->on('sites')->onUpdate('CASCADE')->onDelete('CASCADE');
+
+            $table->integer(Album::ATTR_FEATURE_IMAGE)->unsigned()
+                ->nullable()
+                ->references('id')
+                ->on('assets')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
+
+            $table->integer('created_by')
+                ->unsigned()
+                ->nullable()
+                ->references('id')
+                ->on('people')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+
+            $table->integer('deleted_by')
+                ->unsigned()
+                ->nullable()
+                ->references('id')
+                ->on('people')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+
             $table->softDeletes();
             $table->timestamps();
             $table->index(Album::ATTR_NAME);
@@ -55,16 +79,9 @@ class ConvertAssetTagsToAlbums extends Migration
                     Album::ATTR_SITE => $site->getId(),
                 ]);
 
-                $assets = Asset::join('assets_tags', 'assets.id', '=', 'assets_tags.asset_id')
-                    ->where('tag', '=', $tag)
-                    ->get();
+                DB::statement('insert into album_asset (album_id, asset_id) select "'.$albums[$tag]->getId().'", asset_id from assets_tags where tag = "'.$tag.'"');
 
-                foreach ($assets as $asset) {
-                    $albums[$tag]->assets()->attach($asset);
-                }
-
-                $albums[$tag]->{Album::ATTR_ASSET_COUNT} = count($assets);
-                $albums[$tag]->save();
+                $albums[$tag]->assetsUpdated();
             }
         }
 

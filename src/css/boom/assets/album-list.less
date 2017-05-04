@@ -15,19 +15,41 @@
             position: relative;
             display: block;
             padding: 2rem;
-            background: @dark-grey;
             color: @lightest-grey;
+            background-position: 50% 50%;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+            &:before {
+                content: ' ';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: fade(@darkest-grey, 80);
+                z-index: 2;
+            }
 
             &:hover, &:focus {
-                h3 {
-                    color: @red;
+                color: @white;
+
+                &:before {
+                    .transition;
+                    background-color: fade(@darkest-grey, 50);
                 }
+            }
+
+            > div {
+                position: relative;
+                height: 100%;
+                z-index: 3;
             }
 
             .count {
                 position: absolute;
-                bottom: 2rem;
-                left: 2rem;
+                bottom: 0;
+                left: 0;
                 margin: 0;
 
                 span {

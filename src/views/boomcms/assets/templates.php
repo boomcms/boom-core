@@ -3,7 +3,7 @@
         <% var album = albums.models[i] %>
 
         <li data-album='<%= album.getId() %>'>
-            <a href='#albums/<%= album.getSlug() %>'>
+            <a href='#albums/<%= album.getSlug() %>'<% if (album.getFeatureImage()) { %> style="background-image: url(<%= album.getFeatureImage().getUrl('thumb', 250, 250) %>"<% } %>>
                 <div>
                     <h3><%= album.getName() %></h3>
                     <p class='description'><%= album.getDescription() %></p>

@@ -14,6 +14,18 @@ interface Album
     public function addAssets(array $assetIds): Album;
 
     /**
+     * Updates the count of assets in this album and the featured asset.
+     *
+     * @return Album $this
+     */
+    public function assetsUpdated(): Album;
+
+    /**
+     * @return Asset
+     */
+    public function getFeatureImage();
+
+    /**
      * @return int
      */
     public function getId();
@@ -43,11 +55,4 @@ interface Album
      * @return $this
      */
     public function setName($name);
-
-    /**
-     * Updates the count of assets in this album.
-     *
-     * @return Album $this
-     */
-    public function updateAssetCount(): Album;
 }
