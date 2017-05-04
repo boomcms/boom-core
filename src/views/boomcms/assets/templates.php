@@ -3,7 +3,7 @@
         <% var album = albums.models[i] %>
 
         <li data-album='<%= album.getId() %>'>
-            <a href='#albums/<%= album.getSlug() %>'<% if (album.getFeatureImage()) { %> style="background-image: url(<%= album.getFeatureImage().getUrl('thumb', 250, 250) %>"<% } %>>
+            <a href='#albums/<%= album.getSlug() %>'<% if (!album.getFeatureImage().isNew()) { %> style="background-image: url(<%= album.getFeatureImage().getUrl('thumb', 250, 250) %>"<% } %>>
                 <div>
                     <h3><%= album.getName() %></h3>
                     <p class='description'><%= album.getDescription() %></p>
@@ -16,17 +16,19 @@
 
 <script type='text/template' id='b-assets-view-album-template'>
     <div id='b-assets-view-album'>
-        <div class=heading>
-            <h1 class='bigger'><%= album.getName() %></h1>
+        <div class='heading'>
+            <h1 class='bigger'><%= album.getName() ? album.getName() : 'Untitled' %></h1>
             <p class='description'><%= album.getDescription() %></p>
         </div>
 
-        <div class='controls'>
-            <?= $button('upload', 'album-upload', ['class' => 'upload small dark']) ?>
-            <?= $button('trash', 'delete', ['class' => 'delete small dark']) ?>
-        </div>
-
-        <?= view('boomcms::assets.thumbs') ?>
+        <% if (!album.isNew()) { %>
+            <div class='controls'>
+                <?= $button('upload', 'album-upload', ['class' => 'upload small dark']) ?>
+                <?= $button('trash', 'delete', ['class' => 'delete small dark']) ?>
+            </div>
+        
+            <?= view('boomcms::assets.thumbs') ?>
+        <% } %>
     </div>
 </script>
 

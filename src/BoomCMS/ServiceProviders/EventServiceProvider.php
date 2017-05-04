@@ -56,7 +56,7 @@ class EventServiceProvider extends ServiceProvider
         Models\PageVersion::observe(CreationLogObserver::class);
         Models\Person::observe(CreationLogObserver::class);
 
-        Models\Album::observe(CreationLogObserver::class);
+        Models\Album::observe(SetSiteObserver::class);
         Models\Asset::observe(SetSiteObserver::class);
         Models\Group::observe(SetSiteObserver::class);
         Models\Page::observe(SetSiteObserver::class);

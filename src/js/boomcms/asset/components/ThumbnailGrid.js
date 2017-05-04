@@ -3,6 +3,7 @@
 
     BoomCMS.AssetManager.ThumbnailGrid = Backbone.View.extend({
         loading: 'loading',
+        none: 'none',
         thumbnails: '.thumbnails > div',
 
         initialize: function(options) {
@@ -24,6 +25,12 @@
                 assetCount = this.assets.models.length;
 
             this.$thumbnails = this.$(this.thumbnails).html('');
+
+            if (assetCount === 0) {
+                this.$el.removeClass(this.loading).addClass(this.none);
+
+                return this;
+            }
 
             this.assets.each(function(asset, i) {
                 var thumbnail = new BoomCMS.AssetManager.Thumbnail({

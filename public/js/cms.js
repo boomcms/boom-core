@@ -48240,6 +48240,11 @@ console.log(offset, this.$counter.width());
             var assetManager = this;
 
             this.$el
+                .on('click', '#b-assets-create-album', function(e) {
+                    e.preventDefault();
+
+                    assetManager.router.goTo('albums/create');
+                })
                 .on('submit', '#b-assets-search form', function(e) {
                     e.preventDefault();
 
@@ -48388,7 +48393,7 @@ console.log(offset, this.$counter.width());
         },
 
         showAlbums: function() {
-            var $el = this.$('#b-assets-all-albums > div');
+            var $el = this.$('#b-assets-all-albums > .content');
 
             if (!$el.html()) {
                 var view = new BoomCMS.AssetManager.AlbumList({
@@ -48462,16 +48467,20 @@ console.log(offset, this.$counter.width());
         },
 
         viewAlbum: function(slug) {
-            var album = this.albums.findBySlug(slug);
+            var albums = this.albums,
+                album = slug ? albums.findBySlug(slug) : new BoomCMS.Album();
 
             if (album) {
                 this.selection.reset();
 
-                this.assets = album.getAssets();
-                this.bindAssetEvents(this.assets);
+                if (!album.isNew()) {
+                    this.assets = album.getAssets();
+                    this.bindAssetEvents(this.assets);
+                }
 
                 var view = new BoomCMS.AssetManager.ViewAlbum({
                     model: album,
+                    albums: this.albums,
                     router: this.router
                 });
 
@@ -48819,6 +48828,7 @@ console.log(offset, this.$counter.width());
         routes: {
             '': 'home',
             'upload': 'upload',
+            'albums/create': 'createAlbum',
             'albums/:album': 'viewAlbum',
             'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
             'albums/:album/selection/:selection/:section': 'viewSelectionInAlbum',
@@ -48828,6 +48838,10 @@ console.log(offset, this.$counter.width());
             'search': 'search',
             'asset/:asset/:section': 'viewAsset',
             'selection/:selection/:section': 'viewSelection'
+        },
+
+        createAlbum: function() {
+            this.trigger('route:viewAlbum');
         },
 
         goTo: function(route) {
@@ -49156,6 +49170,7 @@ console.log(offset, this.$counter.width());
 
     BoomCMS.AssetManager.ThumbnailGrid = Backbone.View.extend({
         loading: 'loading',
+        none: 'none',
         thumbnails: '.thumbnails > div',
 
         initialize: function(options) {
@@ -49177,6 +49192,12 @@ console.log(offset, this.$counter.width());
                 assetCount = this.assets.models.length;
 
             this.$thumbnails = this.$(this.thumbnails).html('');
+
+            if (assetCount === 0) {
+                this.$el.removeClass(this.loading).addClass(this.none);
+
+                return this;
+            }
 
             this.assets.each(function(asset, i) {
                 var thumbnail = new BoomCMS.AssetManager.Thumbnail({
@@ -49220,16 +49241,22 @@ console.log(offset, this.$counter.width());
 
         initialize: function(options) {
             var album = this.model,
-                router = options.router;
+                albums = options.albums,
+                router = options.router,
+                routerParams = this.model.isNew() ? {trigger: true} : {replace: true};
 
             this.options = options;
 
             this.router = options.router;
             this.template = _.template($('#b-assets-view-album-template').html());
-            this.assets = this.model.getAssets();
+
+            if (!this.model.isNew()) {
+                this.assets = this.model.getAssets();
+            }
 
             this.model.on('change:slug', function() {
-                router.navigate('albums/' + album.getSlug(), {replace: true});
+                albums.add(album);
+                router.navigate('albums/' + album.getSlug(), routerParams);
             });
 
             this.model.on('destroy', function() {
@@ -49244,16 +49271,18 @@ console.log(offset, this.$counter.width());
 
             this.$('h1, .description').boomcmsEditableHeading();
 
-            new BoomCMS.AssetManager.ThumbnailGrid({
-                assets: this.assets,
-                selection: this.options.selection,
-                el: this.$('.b-assets-view-thumbs')
-            }).render();
+            if (!this.model.isNew()) {
+                new BoomCMS.AssetManager.ThumbnailGrid({
+                    assets: this.assets,
+                    selection: this.options.selection,
+                    el: this.$('.b-assets-view-thumbs')
+                }).render();
+            }
 
             return this;
         },
 
-        save: function(e) {
+        save: function() {
             this.model
                 .set({
                     name: this.$('h1').text(),

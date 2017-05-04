@@ -21,16 +21,22 @@
 
         initialize: function(options) {
             var album = this.model,
-                router = options.router;
+                albums = options.albums,
+                router = options.router,
+                routerParams = this.model.isNew() ? {trigger: true} : {replace: true};
 
             this.options = options;
 
             this.router = options.router;
             this.template = _.template($('#b-assets-view-album-template').html());
-            this.assets = this.model.getAssets();
+
+            if (!this.model.isNew()) {
+                this.assets = this.model.getAssets();
+            }
 
             this.model.on('change:slug', function() {
-                router.navigate('albums/' + album.getSlug(), {replace: true});
+                albums.add(album);
+                router.navigate('albums/' + album.getSlug(), routerParams);
             });
 
             this.model.on('destroy', function() {
@@ -45,16 +51,18 @@
 
             this.$('h1, .description').boomcmsEditableHeading();
 
-            new BoomCMS.AssetManager.ThumbnailGrid({
-                assets: this.assets,
-                selection: this.options.selection,
-                el: this.$('.b-assets-view-thumbs')
-            }).render();
+            if (!this.model.isNew()) {
+                new BoomCMS.AssetManager.ThumbnailGrid({
+                    assets: this.assets,
+                    selection: this.options.selection,
+                    el: this.$('.b-assets-view-thumbs')
+                }).render();
+            }
 
             return this;
         },
 
-        save: function(e) {
+        save: function() {
             this.model
                 .set({
                     name: this.$('h1').text(),

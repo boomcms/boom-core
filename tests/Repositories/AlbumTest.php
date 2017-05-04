@@ -43,6 +43,21 @@ class AlbumTest extends BaseRepositoryTest
         $this->assertEquals($albums, $this->repository->all());
     }
 
+    public function testCreate()
+    {
+        $name = 'test album name';
+        $description = 'test album description';
+        $album = new Album();
+
+        $this->model
+            ->shouldReceive('create')
+            ->once()
+            ->with($name, $description)
+            ->andReturn($album);
+
+        $this->assertEquals($album, $this->repository->create($name, $description));
+    }
+
     public function testFindByAssetIds()
     {
         $this->markTestIncomplete();

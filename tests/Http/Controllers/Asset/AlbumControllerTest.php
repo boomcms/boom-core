@@ -100,4 +100,28 @@ class AlbumControllerTest extends BaseControllerTest
 
         $this->assertEquals($assets, $this->controller->index($request));
     }
+
+    public function testStoreWithNameOnly()
+    {
+        $request = new Request(['name' => 'new album']);
+
+        AlbumFacade::shouldReceive('create')
+            ->once()
+            ->with($request->input('name'), null)
+            ->andReturn($this->model);
+
+        $this->assertEquals($this->model, $this->controller->store($request));
+    }
+
+    public function testStoreWithDescriptionOnly()
+    {
+        $request = new Request(['description' => 'new album']);
+
+        AlbumFacade::shouldReceive('create')
+            ->once()
+            ->with('Untitled', $request->input('description'))
+            ->andReturn($this->model);
+
+        $this->assertEquals($this->model, $this->controller->store($request));
+    }
 }

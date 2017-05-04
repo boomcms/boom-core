@@ -39,9 +39,26 @@ class Album implements AlbumRepositoryInterface
     public function all(): Collection
     {
         return $this->model
-//            ->whereSite($this->site)
+            ->whereSiteIs($this->site)
             ->orderBy(Model::ATTR_NAME, 'asc')
             ->get();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $name
+     * @param string|null $description
+     *
+     * @return AlbumInterface
+     */
+    public function create($name, $description = null): AlbumInterface
+    {
+        return $this->model
+            ->create([
+                Model::ATTR_NAME        => $name,
+                Model::ATTR_DESCRIPTION => $description,
+            ]);
     }
 
     /**

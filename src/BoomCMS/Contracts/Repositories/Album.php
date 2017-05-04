@@ -15,6 +15,16 @@ interface Album
     public function all(): Collection;
 
     /**
+     * Create an album with the given name and description
+     *
+     * @param string $name
+     * @param string|null $description
+     *
+     * @return AlbumInterace
+     */
+    public function create($name, $description = null): AlbumInterface;
+
+    /**
      * Delete the given album.
      *
      * @param AlbumInterface $album

@@ -24,6 +24,14 @@ class AlbumController extends Controller
         return AlbumFacade::findByAssetIds($request->input('assets'));
     }
 
+    public function store(Request $request)
+    {
+        $name = $request->input(Album::ATTR_NAME, 'Untitled');
+        $description = $request->input(Album::ATTR_DESCRIPTION);
+
+        return AlbumFacade::create($name, $description);
+    }
+
     public function update(Album $album, Request $request)
     {
         $expected = [Album::ATTR_NAME, Album::ATTR_DESCRIPTION, Album::ATTR_ORDER];

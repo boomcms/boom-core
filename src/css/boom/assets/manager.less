@@ -41,7 +41,7 @@
         }
     }
 
-    &[data-view=viewAlbum] {
+    &[data-view=viewAlbum], &[data-view=createAlbum] {
         #b-assets-view-album-container {
             display: block;
         }
@@ -222,6 +222,24 @@
 
         h1.bigger {
             margin-bottom: 5rem;
+        }
+
+        .heading {
+            display: inline-block;
+            width: 70rem;
+            max-width: 100%;
+            float: left;
+        }
+
+        .controls {
+            display: inline-block;
+            float: right;
+            margin-top: 30px;
+            transform: translateY(-50%);
+
+            + * {
+                clear: both;
+            }
         }
     }
 }

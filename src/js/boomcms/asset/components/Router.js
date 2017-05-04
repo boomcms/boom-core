@@ -5,6 +5,7 @@
         routes: {
             '': 'home',
             'upload': 'upload',
+            'albums/create': 'createAlbum',
             'albums/:album': 'viewAlbum',
             'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
             'albums/:album/selection/:selection/:section': 'viewSelectionInAlbum',
@@ -14,6 +15,10 @@
             'search': 'search',
             'asset/:asset/:section': 'viewAsset',
             'selection/:selection/:section': 'viewSelection'
+        },
+
+        createAlbum: function() {
+            this.trigger('route:viewAlbum');
         },
 
         goTo: function(route) {

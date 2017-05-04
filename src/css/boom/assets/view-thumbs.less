@@ -2,6 +2,12 @@
 	overflow: hidden;
 	width: 100%;
 
+    &.none {
+        .b-assets-none {
+            display: block;
+        }
+    }
+
     &.loading {
         > .pace .pace-activity {
             display: block;
@@ -50,10 +56,10 @@
     .b-assets-none {
 		.text-large;
         display: none;
-		line-height: 85vh;
-		font-weight: bold;
-		text-align: center;
-		height: 100vh;
-		color: @black;
+		color: @darkest-grey;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
     }
 }
