@@ -43764,7 +43764,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	BoomCMS.Collections.Albums = Backbone.Collection.extend({
 		model: BoomCMS.Album,
 		url: BoomCMS.urlRoot + 'album',
-		comparator: 'name',
+		comparator: function(album) {
+            return album.getName().toLowerCase();
+        },
 
         findBySlug: function(slug) {
             return this.findWhere({slug: slug});
@@ -49005,6 +49007,7 @@ console.log(offset, this.$counter.width());
             this.assets = options.assets;
             this.$pagination = options.pagination;
             this.params = options.params;
+            this.router = options.router;
             this.selection = options.selection;
 
             for (var key in this.postData) {
@@ -49136,9 +49139,6 @@ console.log(offset, this.$counter.width());
 
                     model.trigger('view', model);
                 })
-                .on('justified', function() {
-                    view.loadImage();
-                })
                 .on('keydown', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
                         e.preventDefault();
@@ -49188,6 +49188,17 @@ console.log(offset, this.$counter.width());
                 });
         },
 
+        loadImageOnce: function() {
+            var src = this.$el
+                .find('[data-asset]')
+                .eq(0)
+                .attr('src');
+
+            if (!src) {
+                this.loadImage();
+            }
+        },
+
         render: function() {
             var aspectRatio = this.model.getAspectRatio();
 
@@ -49223,10 +49234,12 @@ console.log(offset, this.$counter.width());
     BoomCMS.AssetManager.ThumbnailGrid = Backbone.View.extend({
         loading: 'loading',
         none: 'none',
-        thumbnails: '.thumbnails > div',
+        thumbnailsSelector: '.thumbnails > div',
+        thumbnails: [],
 
         initialize: function(options) {
-            var view = this;
+            var view = this,
+                scrollTimeout = null;
 
             this.assets = options.assets;
             this.selection = options.selection;
@@ -49237,6 +49250,16 @@ console.log(offset, this.$counter.width());
             this.listenTo(this.assets, 'reset', function() {
                 view.$el.removeClass(view.none).addClass(view.loading);
             });
+
+            $(view.$el[0].ownerDocument).on('scroll', function() {
+                if (scrollTimeout !== null) {
+                    clearTimeout(scrollTimeout);
+                }
+
+                scrollTimeout = setTimeout(function() {
+                    view.lazyLoadThumbnails();
+                }, 300);
+            });
         },
 
         justify: function() {
@@ -49245,12 +49268,26 @@ console.log(offset, this.$counter.width());
             return this;
         },
 
+        lazyLoadThumbnails: function() {
+            var $window = $(this.$el[0].ownerDocument),
+                windowTop = $window.scrollTop(),
+                windowBottom = windowTop + document.documentElement.clientHeight;
+
+            for (var i = 0; i < this.thumbnails.length; i++) {
+                var top = this.thumbnails[i].$el.offset().top;
+
+                if (top >= windowTop && top <= windowBottom) {
+                    this.thumbnails[i].loadImageOnce();
+                }
+            }
+        },
+
         render: function() {
             var view = this,
                 selection = this.selection,
                 assetCount = this.assets.models.length;
 
-            this.$thumbnails = this.$(this.thumbnails).html('');
+            this.$thumbnails = this.$(this.thumbnailsSelector).html('');
 
             if (assetCount === 0 && this.assets.fetched === true) {
                 this.$el.removeClass(this.loading).addClass(this.none);
@@ -49263,6 +49300,7 @@ console.log(offset, this.$counter.width());
                     model: asset
                 });
 
+                view.thumbnails.push(thumbnail);
                 view.$thumbnails.append(thumbnail.render().el);
 
                 if (selection.get(asset.getId())) {
@@ -49273,6 +49311,7 @@ console.log(offset, this.$counter.width());
                     setTimeout(function() {
                         view.$el.removeClass(view.loading);
                         view.justify();
+                        view.lazyLoadThumbnails();
                     }, 0);
                 }
             });

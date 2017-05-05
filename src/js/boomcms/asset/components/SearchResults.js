@@ -28,6 +28,7 @@
             this.assets = options.assets;
             this.$pagination = options.pagination;
             this.params = options.params;
+            this.router = options.router;
             this.selection = options.selection;
 
             for (var key in this.postData) {

@@ -40,9 +40,6 @@
 
                     model.trigger('view', model);
                 })
-                .on('justified', function() {
-                    view.loadImage();
-                })
                 .on('keydown', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
                         e.preventDefault();
@@ -90,6 +87,17 @@
                             $(this).parent().removeClass(loadingClass).addClass('failed');
                         });
                 });
+        },
+
+        loadImageOnce: function() {
+            var src = this.$el
+                .find('[data-asset]')
+                .eq(0)
+                .attr('src');
+
+            if (!src) {
+                this.loadImage();
+            }
         },
 
         render: function() {
