@@ -25,7 +25,8 @@
                 container: this.$el.find('> div'),
                 scroll: false,
                 configure_load: true,
-                resize: false
+                resize: false,
+                pager: false
             });
 
             for (var i = 0; i < this.thumbnails.length; i++) {
