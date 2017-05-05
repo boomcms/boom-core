@@ -6,6 +6,7 @@
 
         initialize: function(options) {
             this.assets = options.assets;
+            this.selection = options.selection;
 
             this.listenTo(this.assets, 'reset add destory sync', this.render);
         },
@@ -35,6 +36,7 @@
 
         render: function() {
             var filmroll = this,
+                selection = this.selection,
                 $container = $('<div></div>');
 
             if (this.assets.length <= 1) {
@@ -57,6 +59,10 @@
 
                 $container.append($('<div></div>').append(thumbnail.$el));
 
+                if (selection.get(asset.getId())) {
+                    thumbnail.select();
+                }
+
                 filmroll.thumbnails.push(thumbnail);
             });
 
@@ -66,15 +72,16 @@
         },
 
         select: function(asset) {
-            var $el = this.$el.find('[data-asset="' + asset.getId() + '"]').parent().parent();
+            var view = this;
 
-            this.$el.find('.selected').removeClass('selected');
+            setTimeout(function() {
+                var $el = view.$el.find('[data-asset="' + asset.getId() + '"]').parent().parent();
 
-            if ($el.length) {
-                $el.addClass('selected');
-                this.filmroll.moveToChild($el[0]);
-                this.$el.find('.film_roll_pager .active').addClass('selected');
-            } 
+                if ($el.length) {
+                    view.filmroll.moveToChild($el[0]);
+                    view.$el.find('.film_roll_pager .active').addClass('selected');
+                } 
+            }, 0);
 
             return this;
         }

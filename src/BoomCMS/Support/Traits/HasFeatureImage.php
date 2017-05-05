@@ -34,7 +34,7 @@ trait HasFeatureImage
 
     public function getFeatureImageAttributeName(): string
     {
-        return $this->{self::ATTR_FEATURE_IMAGE};
+        return static::ATTR_FEATURE_IMAGE;
     }
 
     /**

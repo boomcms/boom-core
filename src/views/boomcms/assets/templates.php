@@ -3,7 +3,7 @@
         <% var album = albums.models[i] %>
 
         <li data-album='<%= album.getId() %>'>
-            <a href='#albums/<%= album.getSlug() %>'<% if (album.getFeatureImage()) { %> style="background-image: url(<%= album.getFeatureImage().getUrl('thumb', 250, 250) %>"<% } %>>
+            <a href='#albums/<%= album.getSlug() %>'<% if (album.getFeatureImage()) { %> style="background-image: url(<%= album.getFeatureImage().getUrl('thumb', 500, 500) %>"<% } %>>
                 <div>
                     <h3><%= album.getName() %></h3>
                     <p class='description'><%= album.getDescription() %></p>
@@ -23,7 +23,7 @@
 
         <% if (!album.isNew()) { %>
             <div class='controls'>
-                <label for="b-assets-album-upload-<%= album.getId() %>">
+                <label for="b-assets-album-upload-<%= album.getId() %>" tabindex='0'>
                     <span class="fa fa-upload"></span>
                 </label>
 

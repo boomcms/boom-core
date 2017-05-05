@@ -65,6 +65,8 @@
          * 
          * Ensures that an image can be loaded to the correct dimensions of the thumbnail.
          *
+         * Rounds dimensions to the nearest 500px to avoid excessive generation of thumbnail sizes.
+         *
          * @returns {undefined}
          */
         loadImage: function() {
@@ -74,8 +76,8 @@
                 .find('[data-asset]')
                 .each(function() {
                     var $this = $(this),
-                        width = Math.round(($this.width() + 1) / 10) * 10,
-                        height = Math.round(($this.height() + 1) / 10) * 10,
+                        width = Math.round(($this.width() + 1) / 500) * 500,
+                        height = Math.round(($this.height() + 1) / 500) * 500,
                         url = asset.getUrl('thumb', width, height) + '?' + asset.getEditedAt(),
                         loadingClass = 'loading';
 

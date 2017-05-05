@@ -21,7 +21,11 @@ class AlbumController extends Controller
 
     public function index(Request $request)
     {
-        return AlbumFacade::findByAssetIds($request->input('assets'));
+        if ($request->has('assets')) {
+            return AlbumFacade::findByAssetIds($request->input('assets'));
+        }
+
+        return AlbumFacade::all();
     }
 
     public function store(Request $request)

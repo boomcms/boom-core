@@ -49,7 +49,7 @@
                 assetManager.selection.remove(asset);
             });
 
-            this.listenTo(assets, 'reset', this.assetsChanged);
+            this.listenTo(assets, 'sync', this.assetsChanged);
 
             this.listenTo(assets, 'view', function(asset) {
                 assetManager.router.goToAsset(asset);
@@ -118,6 +118,7 @@
 
                     assetManager.router.goTo($(this).attr('data-view'));
                 })
+                .parents('body')
                 .on('keydown', function(e) {
                     if ($(e.target).is('input')) {
                         return;
@@ -127,7 +128,7 @@
                         (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE)
                         && assetManager.selection.models.length > 0
                     ) {
-                        assetManager.viewSelection(assetManager.selection, 'delete');
+                        assetManager.router.viewSelection(assetManager.selection.getIdString(), 'delete');
                     }
 
                     if (e.metaKey || e.ctrlKey) {
@@ -142,7 +143,7 @@
                                 break;
                             case 70:
                                 e.preventDefault();
-                                assetManager.toggleSearch();
+                                assetManager.router.navigate('search', {trigger: true});
                                 break;
                         }
                     }
@@ -227,8 +228,6 @@
                     this.bindAssetEvents(this.assets);
                     this.assets.fetchOnce();
                 }
-
-                this.viewFilmroll();
             }
         },
 
@@ -261,8 +260,12 @@
                 section = '';
             }
 
-            if (section === 'viewAssetInAlbum') {
+            if (section === 'viewAssetInAlbum' || section === 'viewAssetInSearch') {
                 section = 'viewAsset';
+            }
+
+            if (section === 'viewSelectionInAlbum' || section === 'viewSelectionInSearch') {
+                section = 'viewSelection';
             }
 
             this.$el.attr('data-view', section);
@@ -316,7 +319,8 @@
                 var view = new BoomCMS.AssetManager.ViewAlbum({
                     model: album,
                     albums: this.albums,
-                    router: this.router
+                    router: this.router,
+                    selection: this.selection
                 });
 
                 this.$('#b-assets-view-album-container').html(view.render().el);
@@ -324,7 +328,8 @@
         },
 
         viewAsset: function(assetId, section) {
-            var asset = this.assets.getOrFetch(assetId);
+            var assetManager = this,
+                asset = this.assets.getOrFetch(assetId);
 
             this.activeAsset = asset;
 
@@ -341,28 +346,35 @@
 
             this.$('#b-assets-view-asset-container').html(view.render().el);
 
-            if (this.filmroll) {
-                this.filmroll.select(asset);
-            }
+            setTimeout(function() {
+                assetManager.viewFilmroll();
+                assetManager.filmroll.select(asset);
+            }, 0);
         },
 
         viewFilmroll: function() {
             this.filmroll = new BoomCMS.AssetManager.Filmroll({
-                assets: this.assets
+                assets: this.assets,
+                selection: this.selection
             }).render();
         },
 
         viewSearchResults: function(params) {
-            new BoomCMS.AssetManager.SearchResults({
-                el: this.$('#b-assets-search-results'),
-                pagination: this.$('#b-assets-pagination'),
-                assets: this.assets,
-                params: params,
-                router: this.router,
-            });
-
+            this.assets = new BoomCMS.Collections.Assets();
             this.bindAssetEvents(this.assets);
-            this.viewFilmroll();
+
+            var router = this.router,
+                view = new BoomCMS.AssetManager.SearchResults({
+                    el: this.$('#b-assets-search-results'),
+                    pagination: this.$('#b-assets-pagination'),
+                    assets: this.assets,
+                    params: params,
+                    selection: this.selection
+                });
+
+            view.on('filtered', function(params) {
+                router.goToSearchResults(params);
+            });
         },
 
         viewSelection: function(section) {
@@ -371,14 +383,15 @@
                 router: this.router,
                 albums: this.albums,
                 section: section
-            });
+            }),
+            assetManager = this;
 
             this.$('#b-assets-view-selection-container').html(view.render().el);
-            this.viewFilmroll();
 
-            if (this.filmroll) {
-                this.filmroll.select(this.selection.models[0]);
-            }
+            setTimeout(function() {
+                assetManager.viewFilmroll();
+                assetManager.filmroll.select(assetManager.selection.models[0]);
+            }, 0);
         }
     });
 }(Backbone, BoomCMS));

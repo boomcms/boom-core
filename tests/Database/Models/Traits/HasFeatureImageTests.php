@@ -11,7 +11,7 @@ trait HasFeatureImageTests
     {
         $model = new $this->model();
 
-        $this->AssertEquals(0, $model->getAssetCount());
+        $this->AssertEquals(0, $model->getFeatureImageId());
     }
 
     public function testGetFeatureImageId()

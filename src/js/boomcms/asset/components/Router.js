@@ -10,8 +10,8 @@
             'albums/:album/upload': 'upload',
             'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
             'albums/:album/selection/:selection/:section': 'viewSelectionInAlbum',
-            'search/:query/asset/:asset/section': 'viewAssetInSearch',
-            'search/:query/selection/:selection/section': 'viewSelectionInSearch',
+            'search/:query/asset/:asset/:section': 'viewAssetInSearch',
+            'search/:query/selection/:selection/:section': 'viewSelectionInSearch',
             'search/:query': 'searchResults',
             'search': 'search',
             'asset/:asset/:section': 'viewAsset',
@@ -22,39 +22,33 @@
             this.trigger('route:viewAlbum');
         },
 
+        getContext: function(path) {
+            var matches = path.match(/^(albums|search)\/([^\/]+)/i);
+
+            if (matches !== null && typeof matches[2] !== 'undefined') {
+                return matches[1] + '/' + matches[2];
+            }
+
+            return '';
+        },
+
         goTo: function(route) {
             this.navigate(route, {trigger: true});
         },
 
         goToAsset: function(asset) {
             var current = Backbone.history.getFragment(),
-                prefix = '',
-                albumSlug;
-
-            if (albumSlug = this.getAlbumSlug(current)) {
-                prefix = 'albums/' + albumSlug + '/';
-            }
+                context = this.getContext(current),
+                prefix = context === '' ? '' : context + '/';
     
             this.navigate(prefix + 'asset/' + asset.getId() + '/info', {trigger: true});
         },
 
-        goToPreviousOrHome: function() {
+        goToContext: function() {
             var current = Backbone.history.getFragment(),
-                albumSlug;
+                context = this.getContext(current);
 
-            if (albumSlug = this.getAlbumSlug(current)) {
-                return this.goTo('albums/' + albumSlug);
-            }
-
-            return this.goTo('');
-        },
-
-        getAlbumSlug: function(path) {
-            var matches = path.match(/^albums\/([-a-zA-Z0-9]+)/i);
-
-            if (matches !== null && typeof matches[1] !== 'undefined') {
-                return matches[1];
-            }
+            return this.goTo(context);
         },
 
         /**
@@ -77,7 +71,11 @@
         },
 
         updateSelection: function(assets, section, options) {
-            this.navigate('selection/' + assets.getIdString() + '/' + section, options);
+            var current = Backbone.history.getFragment(),
+                context = this.getContext(current),
+                prefix = context === '' ? '' : context + '/';
+
+            this.navigate(prefix + 'selection/' + assets.getIdString() + '/' + section, options);
         },
 
         searchResults: function(queryString) {
@@ -93,10 +91,20 @@
             this.trigger('viewSearchResults', params);
         },
 
+        viewAssetInSearch: function(queryString, assetId, section) {
+            this.searchResults(queryString);
+            this.trigger('route:viewAsset', assetId, section);
+        },
+
         viewSelection: function(selection, section) {
             var assetIds = selection.split(',');
 
             this.trigger('selection', assetIds, section);
+        },
+
+        viewSelectionInSearch: function(queryString, selection, section) {
+            this.searchResults(queryString);
+            this.viewSelection(selection, section);
         }
     });
 }(Backbone, BoomCMS));

@@ -24,7 +24,7 @@
                 .on('click', '.b-settings-close', function(e) {
                     e.preventDefault();
 
-                    view.router.goToPreviousOrHome();
+                    view.router.goToContext();
                 })
                 .on('click', '.b-assets-delete', function() {
                     selection.destroy();

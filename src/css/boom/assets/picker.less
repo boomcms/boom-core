@@ -10,8 +10,18 @@
 	overflow: auto;
 	background: @white;
 
+    &[data-view=assets] {
+        .b-assets-view-thumbs {
+            display: block;
+        }
+
+        .b-assets-album-list {
+            display: none;
+        }
+    }
+
     &.show-edit {
-        #b-assets-view-thumbs {
+        .b-assets-view-thumbs {
             .edit {
                 display: block;
             }
@@ -26,16 +36,24 @@
         margin: auto;
     }
 
-	#b-assets-view-thumbs {
-		width: calc(~"100vw - 25em");
-		margin: 0;
-		overflow: auto;
-		background: transparent;
+    #b-assets-picker-content {
+        width: calc(~"100vw - 25em");
+        height: 100%;
+        padding: 2.5rem;
+        overflow: auto;
+    }
+
+    .b-assets-view-thumbs {
+        display: none;
+
+        .thumbnails {
+            width: 100%;
+        }
 
 		.edit {
 			display: none;
 		}
-	}
+    }
 
 	&-current {
 		margin-bottom: 2em;
@@ -52,7 +70,7 @@
 		bottom: 0;
 		width: 25em;
 		background: @lightest-grey;
-		padding: 1rem 1.5rem;
+		padding: 2.5rem;
 		z-index: 2;
 		max-width: 100%;
 		overflow-y: auto;
@@ -63,29 +81,34 @@
 		}
 	}
 
-	&-filter {
-		margin-top: 1.5rem;
+	#b-assets-picker-filter {
+		overflow: hidden;
 
-		> div {
-			border: 1px solid @light-grey;
-			padding: 1.5rem;
-			margin-top: 1.5rem;
-		}
-
-		h2 {
-			text-align: center;
-			margin: 0 0 1.5rem 0;
-		}
-
-		input, select {
-			width: 100%;
-		}
+        label {
+            position: absolute;
+            top: -1000
+        }
 	}
 
-	&-close {
-		margin-top: 50px;
-		float: right;
-	}
+    #b-assets-search {
+        margin-top: 5rem;
+
+        form > div + div {
+            margin-top: 2rem;
+        }
+
+        .input input {
+            padding: 2rem 1rem 1rem;
+        }
+
+        select {
+            padding: 1rem;
+        }
+
+        button {
+            margin-top: 3rem;
+        }
+    }
 
 	&-all {
 		display: block;
@@ -94,21 +117,26 @@
 		min-width: 15rem;
 	}
 
-	.b-assets-upload-container {
-		border-color: @grey;
-		height: 20rem;
+	.b-assets-upload {
+        .info {
+            p {
+                display: none;
+            }
+        }
+
+        .progress {
+            margin-bottom: 3rem;
+        }
 	}
 
-	.b-assets-upload-info {
-		padding: 0 1.5rem;
-		top: 50%;
-		transform: translateY(-50%);
-	}
+    #b-assets-picker-close, #b-assets-picker-albums {
+        margin-top: 5rem;
+    }
 
 	#b-assets-pagination {
 		border: 0;
-		margin-top: 2em;
 		width: 100%;
+        margin-top: 5rem;
 
 		input, a {
 			color: @black;

@@ -42,7 +42,13 @@
         },
 
         initialize: function(options) {
+            var view = this;
+
             this.selection = new BoomCMS.Collections.Assets([this.model]);
+
+            this.listenTo(this.model, 'sync', function() {
+                view.render(view.getSection());
+            });
 
             this.listenTo(this.model, 'revert', function() {
                 BoomCMS.Notification('This asset has been reverted to the previous version');

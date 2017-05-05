@@ -1,5 +1,10 @@
 <div id="b-assets-picker" class="<?= Gate::allows('manageAssets', Router::getActiveSite()) ? 'show-edit' : '' ?>">
-    <?= view('boomcms::assets.thumbs', ['assets' => []]) ?>
+    <div id="b-assets-picker-content">
+        <ul class="b-assets-album-list"></ul>
+
+        <?= view('boomcms::assets.thumbs') ?>
+    </div>
+   
 
     <section id="b-assets-picker-sidebar">
         <section id="b-assets-picker-current">
@@ -16,14 +21,16 @@
             </section>
         <?php endif ?>
 
-        <section id="b-assets-picker-filter" class="ui-front">
+        <section id="b-assets-search" class="ui-front">
             <h1><?= trans('boomcms::asset.picker.filter') ?></h1>
 
             <?= view('boomcms::assets.search') ?>
         </section>
 
         <?= view('boomcms::assets.pagination') ?>
-        <?= $button('times', 'Close asset picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
+
+        <?= $button('book', 'albums', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-albums']) ?>
+        <?= $button('times', 'close-asset-picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
     </section>
 </div>
 

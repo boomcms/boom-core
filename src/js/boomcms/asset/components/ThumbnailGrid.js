@@ -28,6 +28,7 @@
 
         render: function() {
             var view = this,
+                selection = this.selection,
                 assetCount = this.assets.models.length;
 
             this.$thumbnails = this.$(this.thumbnails).html('');
@@ -44,6 +45,10 @@
                 });
 
                 view.$thumbnails.append(thumbnail.render().el);
+
+                if (selection.get(asset.getId())) {
+                    thumbnail.select();
+                }
 
                 if (i === (assetCount - 1)) {
                     setTimeout(function() {

@@ -11,6 +11,7 @@
             this.listenTo(this.assets, 'reset sync add remove', this.render);
 
             this.$el
+                .parents('body')
                 .on('keydown', function(e) {
                     switch (e.which) {
                         case $.ui.keyCode.LEFT:
@@ -27,7 +28,7 @@
             this.assets = options.assets;
             this.$pagination = options.pagination;
             this.params = options.params;
-            this.router = options.router;
+            this.selection = options.selection;
 
             for (var key in this.postData) {
                 this.initialFilters[key] = this.postData[key];
@@ -57,7 +58,7 @@
         getPage: function(page) {
             this.params['page'] = page;
 
-            this.router.goToSearchResults(this.params);
+            this.trigger('filtered', this.params);
         },
 
         initPagination: function() {
@@ -93,7 +94,8 @@
         render: function() {
             new BoomCMS.AssetManager.ThumbnailGrid({
                 el: this.$('.b-assets-view-thumbs'),
-                assets: this.assets
+                assets: this.assets,
+                selection: this.selection
             }).render();
 
             this.initPagination();

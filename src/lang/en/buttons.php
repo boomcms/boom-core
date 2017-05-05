@@ -16,6 +16,7 @@ return [
     'change-thumbnail'      => 'Change thumbnail',
     'clear-filters'         => 'Clear filters',
     'clear-selection'       => 'Clear selection',
+    'close-asset-picker'    => 'Close asset picker',
     'conflict-reload'       => 'Discard',
     'conflict-overwrite'    => 'Overwrite',
     'conflict-inspect'      => 'Inspect',
