@@ -12,11 +12,15 @@
 
             this.template = _.template($('#b-asset-thumb').html());
 
-            this.listenTo(model, 'change change:image', function() {
+            this.listenTo(model, 'change:image change:width change:height', function() {
                 view.render();
                 view.loadImage();
             });
 
+            this.listenTo(model, 'change:title', this.setTitle);
+            this.listenTo(model, 'change:type', this.setType);
+            this.listenTo(model, 'change:readable_filesize', this.setFilesize);
+            this.listenTo(model, 'change:public', this.setVisibility);
             this.listenTo(model, 'select', this.select);
             this.listenTo(model, 'unselect', this.unselect);
 
@@ -116,6 +120,26 @@
 
         select: function() {
             this.$thumbnail.addClass(this.selected);
+        },
+
+        setFilesize: function() {
+            this.$('filesize').text(this.model.getReadableFilesize());
+        },
+
+        setTitle: function() {
+            this.$('.b-asset-details h2')
+                .text(this.model.getTitle());
+        },
+
+        setType: function() {
+            this.$('.type').text(this.model.getType());
+        },
+
+        setVisibility: function() {
+            var $el = this.$('.b-assets-thumbnail'),
+                className = 'private';
+
+            this.model.isPublic() ? $el.removeClass(className) : $el.addClass(className);
         },
 
         toggleSelected: function() {
