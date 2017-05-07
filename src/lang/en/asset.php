@@ -72,15 +72,16 @@ return [
         'drag-drop'    => 'Or drag and drop a file here to upload',
         'select-file'  => 'Select a file',
     ],
-
     'search'          => [
-        'heading'      => 'Search assets',
-        'results'      => 'Search results',
-        'sort'         => 'Sort order',
-        'text'         => 'Search name or description',
-        'type'         => 'Asset type',
-        'extension'    => 'File extension',
-        'uploaded-by'  => 'Uploaded by',
+        'all-extensions'  => 'All file extensions',
+        'heading'         => 'Search assets',
+        'results'         => 'Search results',
+        'sort'            => 'Sort order',
+        'text'            => 'Search name or description',
+        'type'            => 'Asset type',
+        'extension'       => 'File extension',
+        'uploaded-by'     => 'Uploaded by',
+        'uploaded-by-all' => 'Uploaded by anyone',
     ],
     'sort' => [
         'created_at desc'      => 'Upload time: most recent first',
@@ -96,6 +97,7 @@ return [
         'downloads desc'       => 'Most downloaded',
     ],
     'type'                    => [
+        'all'      => 'All asset types',
         'image'    => 'Image',
         'doc'      => 'Document',
         'video'    => 'Video',

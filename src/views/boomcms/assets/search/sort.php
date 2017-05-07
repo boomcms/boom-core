@@ -18,12 +18,8 @@
 
 <div>
     <select id="b-assets-sortby" name='order'>
-        <option value="<?= $selected ?>">
-            <?= trans('boomcms::asset.search.sort') ?>
-        </option>
-
         <?php foreach ($options as $o): ?>
-            <option value="<?= $o ?>">
+            <option value="<?= $o ?>"<?= ($o === $selected) ? 'selected' : ''?>>
                 <?= trans("boomcms::asset.sort.$o") ?>
             </option>
         <?php endforeach ?>
