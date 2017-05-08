@@ -5,7 +5,8 @@
         el: '#b-assets-manager',
 
         activeAsset: null,
-        albumView: [],
+        albumViews: [],
+        assetViews: [],
         assets: new BoomCMS.Collections.Assets(),
         selection: new BoomCMS.Collections.Assets(),
         uploaded: new BoomCMS.Collections.Assets(),
@@ -317,8 +318,8 @@
             this.loadAlbum(album);
 
             if (album) {
-                if (this.albums[slug] === undefined) {
-                    this.albums[slug] = new BoomCMS.AssetManager.ViewAlbum({
+                if (this.albumViews[slug] === undefined) {
+                    this.albumViews[slug] = new BoomCMS.AssetManager.ViewAlbum({
                         model: album,
                         albums: this.albums,
                         router: this.router,
@@ -330,7 +331,7 @@
                     .children()
                     .detach()
                     .end()
-                    .html(this.albums[slug].el)
+                    .html(this.albumViews[slug].el)
                     .parents('#b-assets-content')
                     .scrollTop();
             }
@@ -342,18 +343,22 @@
 
             this.activeAsset = asset;
 
-            if (section === undefined) {
-                section = 'info';
+            if (this.assetViews[assetId] === undefined) {
+                this.assetViews[assetId] = new BoomCMS.AssetManager.ViewAsset({
+                    model: asset,
+                    router: this.router,
+                    albums: this.albums,
+                    section: section
+                }).render();
             }
 
-            var view = new BoomCMS.AssetManager.ViewAsset({
-                model: asset,
-                router: this.router,
-                albums: this.albums,
-                section: section
-            });
+            this.$('#b-assets-view-asset-container')
+                .children()
+                .detach()
+                .end()
+                .html(this.assetViews[assetId].el);
 
-            this.$('#b-assets-view-asset-container').html(view.render().el);
+            this.assetViews[assetId].viewSection(section);
 
             setTimeout(function() {
                 assetManager.viewFilmroll();

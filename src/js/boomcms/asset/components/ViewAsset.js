@@ -81,15 +81,14 @@
                     asset.set(data.result);
                     asset.trigger('change:image');
 
-                    view.render('info');
+                    view.setSection('info');
                 }
             });
         },
 
         render: function() {
             this.$el.html(this.template({
-                asset: this.model,
-                section: this.section
+                asset: this.model
             }));
 
             this.initUploader();
@@ -99,7 +98,7 @@
             if (this.eventsBound === false) {
                 this.bind();
             }
-            
+
             return this;
         }
     });

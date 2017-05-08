@@ -129,6 +129,8 @@
         },
 
         viewSection: function(section) {
+            section = section ? section : 'info';
+
             this.$('.b-settings-menu a, .b-settings-content > div')
                 .removeClass('selected')
                 .filter('[data-section=' + section + ']')

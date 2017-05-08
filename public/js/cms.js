@@ -48194,7 +48194,8 @@ console.log(offset, this.$counter.width());
         el: '#b-assets-manager',
 
         activeAsset: null,
-        albumView: [],
+        albumViews: [],
+        assetViews: [],
         assets: new BoomCMS.Collections.Assets(),
         selection: new BoomCMS.Collections.Assets(),
         uploaded: new BoomCMS.Collections.Assets(),
@@ -48506,8 +48507,8 @@ console.log(offset, this.$counter.width());
             this.loadAlbum(album);
 
             if (album) {
-                if (this.albums[slug] === undefined) {
-                    this.albums[slug] = new BoomCMS.AssetManager.ViewAlbum({
+                if (this.albumViews[slug] === undefined) {
+                    this.albumViews[slug] = new BoomCMS.AssetManager.ViewAlbum({
                         model: album,
                         albums: this.albums,
                         router: this.router,
@@ -48519,7 +48520,7 @@ console.log(offset, this.$counter.width());
                     .children()
                     .detach()
                     .end()
-                    .html(this.albums[slug].el)
+                    .html(this.albumViews[slug].el)
                     .parents('#b-assets-content')
                     .scrollTop();
             }
@@ -48531,18 +48532,22 @@ console.log(offset, this.$counter.width());
 
             this.activeAsset = asset;
 
-            if (section === undefined) {
-                section = 'info';
+            if (this.assetViews[assetId] === undefined) {
+                this.assetViews[assetId] = new BoomCMS.AssetManager.ViewAsset({
+                    model: asset,
+                    router: this.router,
+                    albums: this.albums,
+                    section: section
+                }).render();
             }
 
-            var view = new BoomCMS.AssetManager.ViewAsset({
-                model: asset,
-                router: this.router,
-                albums: this.albums,
-                section: section
-            });
+            this.$('#b-assets-view-asset-container')
+                .children()
+                .detach()
+                .end()
+                .html(this.assetViews[assetId].el);
 
-            this.$('#b-assets-view-asset-container').html(view.render().el);
+            this.assetViews[assetId].viewSection(section);
 
             setTimeout(function() {
                 assetManager.viewFilmroll();
@@ -48724,6 +48729,8 @@ console.log(offset, this.$counter.width());
         },
 
         viewSection: function(section) {
+            section = section ? section : 'info';
+
             this.$('.b-settings-menu a, .b-settings-content > div')
                 .removeClass('selected')
                 .filter('[data-section=' + section + ']')
@@ -49525,15 +49532,14 @@ console.log(offset, this.$counter.width());
                     asset.set(data.result);
                     asset.trigger('change:image');
 
-                    view.render('info');
+                    view.setSection('info');
                 }
             });
         },
 
         render: function() {
             this.$el.html(this.template({
-                asset: this.model,
-                section: this.section
+                asset: this.model
             }));
 
             this.initUploader();
@@ -49543,7 +49549,7 @@ console.log(offset, this.$counter.width());
             if (this.eventsBound === false) {
                 this.bind();
             }
-            
+
             return this;
         }
     });
