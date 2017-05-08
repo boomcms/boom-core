@@ -66,6 +66,8 @@
             }
 
             this.assets.each(function(asset, i) {
+                view.$el.removeClass(view.none);
+
                 var thumbnail = new BoomCMS.AssetManager.Thumbnail({
                     model: asset
                 });

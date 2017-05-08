@@ -48194,6 +48194,7 @@ console.log(offset, this.$counter.width());
         el: '#b-assets-manager',
 
         activeAsset: null,
+        albumView: [],
         assets: new BoomCMS.Collections.Assets(),
         selection: new BoomCMS.Collections.Assets(),
         uploaded: new BoomCMS.Collections.Assets(),
@@ -48505,14 +48506,22 @@ console.log(offset, this.$counter.width());
             this.loadAlbum(album);
 
             if (album) {
-                var view = new BoomCMS.AssetManager.ViewAlbum({
-                    model: album,
-                    albums: this.albums,
-                    router: this.router,
-                    selection: this.selection
-                });
+                if (this.albums[slug] === undefined) {
+                    this.albums[slug] = new BoomCMS.AssetManager.ViewAlbum({
+                        model: album,
+                        albums: this.albums,
+                        router: this.router,
+                        selection: this.selection
+                    }).render();
+                }
 
-                this.$('#b-assets-view-album-container').html(view.render().el);
+                this.$('#b-assets-view-album-container')
+                    .children()
+                    .detach()
+                    .end()
+                    .html(this.albums[slug].el)
+                    .parents('#b-assets-content')
+                    .scrollTop();
             }
         },
 
@@ -49297,6 +49306,8 @@ console.log(offset, this.$counter.width());
             }
 
             this.assets.each(function(asset, i) {
+                view.$el.removeClass(view.none);
+
                 var thumbnail = new BoomCMS.AssetManager.Thumbnail({
                     model: asset
                 });
