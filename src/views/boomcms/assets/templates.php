@@ -78,13 +78,13 @@
             <h2><%= asset.getTitle() %></h2>
 
             <p>
-                <%= BoomCMS.assetTypes[asset.getType()] %><br>
+                <span class='type'><%= BoomCMS.assetTypes[asset.getType()] %></span><br>
 
                 <% if (asset.getWidth() && asset.getHeight()) { %>
                     <%= asset.getWidth() %> x <%= asset.getHeight() %><br>
                 <% } %>
 
-                <%= asset.getReadableFilesize() %>
+                <span class='filesize'><%= asset.getReadableFilesize() %></span>
             </p>
         </div>
     </a>
