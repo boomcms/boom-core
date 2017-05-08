@@ -48424,7 +48424,7 @@ console.log(offset, this.$counter.width());
         showAlbums: function() {
             var $el = this.$('#b-assets-all-albums > .content');
 
-            if (!$el.html()) {
+            if ($el.is(':empty')) {
                 var view = new BoomCMS.AssetManager.AlbumList({
                     albums: this.albums
                 });
