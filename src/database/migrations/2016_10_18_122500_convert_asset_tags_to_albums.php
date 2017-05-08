@@ -53,7 +53,7 @@ class ConvertAssetTagsToAlbums extends Migration
 
             $table->softDeletes();
             $table->timestamps();
-            $table->index(Album::ATTR_NAME);
+            $table->index(['deleted_at', Album::ATTR_SITE, Album::ATTR_NAME]);
         });
 
         Schema::create('album_asset', function (Blueprint $table) {
