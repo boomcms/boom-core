@@ -13,7 +13,7 @@ abstract class Repository
     protected $model;
 
     /**
-     * Delete a single model or multiple models by ID
+     * Delete a single model or multiple models by ID.
      *
      * @param array|Model
      *
@@ -39,7 +39,7 @@ abstract class Repository
     }
 
     /**
-     * Save the given model
+     * Save the given model.
      *
      * @param Model $model
      *
