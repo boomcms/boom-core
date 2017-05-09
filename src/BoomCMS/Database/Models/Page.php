@@ -2,12 +2,12 @@
 
 namespace BoomCMS\Database\Models;
 
+use BoomCMS\Contracts\LinkableInterface;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\PageVersion as PageVersionInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
-use BoomCMS\Contracts\LinkableInterface;
 use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;

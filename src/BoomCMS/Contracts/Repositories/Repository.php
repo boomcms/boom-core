@@ -7,7 +7,7 @@ use BoomCMS\Foundation\Database\Model;
 interface Repository
 {
     /**
-     * Delete a single model or multiple models by ID
+     * Delete a single model or multiple models by ID.
      *
      * @param array|Model
      *
@@ -25,7 +25,7 @@ interface Repository
     public function find($modelId);
 
     /**
-     * Save the given model
+     * Save the given model.
      *
      * @param Model $model
      *
