@@ -65,7 +65,7 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
 
         $this->update([
             self::ATTR_FEATURE_IMAGE => $feature ? $feature->getId() : null,
-            self::ATTR_ASSET_COUNT   => $this->assets->count(),
+            self::ATTR_ASSET_COUNT   => $this->assets()->count(),
         ]);
 
         return $this;

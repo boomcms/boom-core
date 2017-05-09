@@ -5,7 +5,7 @@ namespace BoomCMS\Contracts\Repositories;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-interface Page
+interface Page extends Repository
 {
     /**
      * @param array $attrs
@@ -13,20 +13,6 @@ interface Page
      * @return PageInterface
      */
     public function create(array $attrs);
-
-    /**
-     * @param PageInterface $page
-     *
-     * @return $this
-     */
-    public function delete(PageInterface $page);
-
-    /**
-     * @param mixed $pageId
-     *
-     * @return PageInterface
-     */
-    public function find($pageId);
 
     /**
      * @param string $name
@@ -65,11 +51,4 @@ interface Page
      * @return void
      */
     public function recurse(PageInterface $page, callable $closure);
-
-    /**
-     * @param PageInterface $page
-     *
-     * @return PageInterface
-     */
-    public function save(PageInterface $page);
 }

@@ -407,7 +407,9 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      */
     public function toArray()
     {
-        if ($this->attributes[self::ATTR_PUBLISHED_AT] === '0000-00-00 00:00:00') {
+        if (isset($this->attributes[self::ATTR_PUBLISHED_AT])
+            && $this->attributes[self::ATTR_PUBLISHED_AT] === '0000-00-00 00:00:00'
+        ) {
             $this->attributes[self::ATTR_PUBLISHED_AT] = null;
         }
 

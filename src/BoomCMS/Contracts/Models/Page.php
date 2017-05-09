@@ -2,10 +2,9 @@
 
 namespace BoomCMS\Contracts\Models;
 
-use BoomCMS\Contracts\LinkableInterface;
 use DateTime;
 
-interface Page extends LinkableInterface
+interface Page
 {
     /**
      * Whether ACL is enabled.

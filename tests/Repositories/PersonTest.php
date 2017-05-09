@@ -16,7 +16,7 @@ class PersonTest extends BaseRepositoryTest
     {
         parent::setUp();
 
-        $this->model = m::mock(Person::class.'[where,join,whereSite,destroy,orderBy,get,with]');
+        $this->model = m::mock(Person::class.'[where,join,whereSite,destroy,orderBy,get,with,delete]');
         $this->repository = m::mock(PersonRepository::class, [$this->model, $this->site])->makePartial();
     }
 

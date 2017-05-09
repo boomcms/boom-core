@@ -8,19 +8,15 @@ use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterfa
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Facade as FileInfo;
+use BoomCMS\Foundation\Repository;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Imagick;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class Asset implements AssetRepositoryInterface
+class Asset extends Repository implements AssetRepositoryInterface
 {
-    /**
-     * @var AssetModel
-     */
-    protected $model;
-
     /**
      * @var AssetVersionRepositoryInterface
      */
@@ -69,18 +65,6 @@ class Asset implements AssetRepositoryInterface
     }
 
     /**
-     * @param array $assetIds
-     *
-     * @return $this
-     */
-    public function delete(array $assetIds): self
-    {
-        $this->model->destroy($assetIds);
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * @param AssetInterface $asset
@@ -111,16 +95,6 @@ class Asset implements AssetRepositoryInterface
     public function file(AssetInterface $asset): string
     {
         return $this->filesystem->get($asset->getLatestVersionId());
-    }
-
-    /**
-     * @param int $assetId
-     *
-     * @return AssetModel|null
-     */
-    public function find($assetId)
-    {
-        return $this->model->find($assetId);
     }
 
     protected function getThumbnailFilename(AssetInterface $asset): string
@@ -154,18 +128,6 @@ class Asset implements AssetRepositoryInterface
         }
 
         return $asset;
-    }
-
-    /**
-     * @param AssetInterface $model
-     *
-     * @return AssetModel
-     */
-    public function save(AssetModel $model)
-    {
-        $model->save();
-
-        return $model;
     }
 
     public function saveFile(AssetInterface $asset, UploadedFile $file, Imagick $thumbnail = null)

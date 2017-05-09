@@ -17,7 +17,19 @@ abstract class BaseRepositoryTest extends AbstractTestCase
         $this->model = m::mock($this->modelClass);
     }
 
-    public function testDelete()
+    public function testDeleteWithArrayOfIds()
+    {
+        $ids = [1, 2, 3];
+
+        $this->model
+            ->shouldReceive('destroy')
+            ->once()
+            ->with($ids);
+
+        $this->repository->delete($ids);
+    }
+
+    public function testDeleteWithModel()
     {
         $this->model
             ->shouldReceive('delete')

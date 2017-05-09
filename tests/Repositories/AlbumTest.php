@@ -24,7 +24,7 @@ class AlbumTest extends BaseRepositoryTest
         $albums = collect([new Album(), new Album()]);
 
         $this->model
-            ->shouldReceive('whereSite')
+            ->shouldReceive('whereSiteIs')
             ->once()
             ->with($this->site)
             ->andReturnSelf();
@@ -52,7 +52,10 @@ class AlbumTest extends BaseRepositoryTest
         $this->model
             ->shouldReceive('create')
             ->once()
-            ->with($name, $description)
+            ->with([
+                Album::ATTR_NAME        => $name,
+                Album::ATTR_DESCRIPTION => $description,
+            ])
             ->andReturn($album);
 
         $this->assertEquals($album, $this->repository->create($name, $description));

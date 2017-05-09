@@ -3,6 +3,7 @@
 namespace BoomCMS\Tests\Http\Controllers\Asset;
 
 use BoomCMS\Database\Models\Album;
+use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Asset\AlbumController as Controller;
 use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
@@ -23,8 +24,6 @@ class AlbumControllerTest extends BaseControllerTest
         parent::setUp();
 
         $this->album = m::mock(Album::class);
-
-        $this->requireRole('manageAlbums');
     }
 
     public function testDestroy()
@@ -41,6 +40,7 @@ class AlbumControllerTest extends BaseControllerTest
         $params = [
             Album::ATTR_NAME        => 'test album',
             Album::ATTR_DESCRIPTION => 'with a description',
+            Album::ATTR_ORDER       => null,
         ];
 
         $request = new Request($params);
@@ -120,9 +120,9 @@ class AlbumControllerTest extends BaseControllerTest
         AlbumFacade::shouldReceive('create')
             ->once()
             ->with($request->input('name'), null)
-            ->andReturn($this->model);
+            ->andReturn($this->album);
 
-        $this->assertEquals($this->model, $this->controller->store($request));
+        $this->assertEquals($this->album, $this->controller->store($request));
     }
 
     public function testStoreWithDescriptionOnly()
@@ -132,8 +132,8 @@ class AlbumControllerTest extends BaseControllerTest
         AlbumFacade::shouldReceive('create')
             ->once()
             ->with('Untitled', $request->input('description'))
-            ->andReturn($this->model);
+            ->andReturn($this->album);
 
-        $this->assertEquals($this->model, $this->controller->store($request));
+        $this->assertEquals($this->album, $this->controller->store($request));
     }
 }

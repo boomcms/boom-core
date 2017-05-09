@@ -6,16 +6,12 @@ use BoomCMS\Contracts\Models\Album as AlbumInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Album as AlbumRepositoryInterface;
 use BoomCMS\Database\Models\Album as Model;
+use BoomCMS\Foundation\Repository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
-class Album implements AlbumRepositoryInterface
+class Album extends Repository implements AlbumRepositoryInterface
 {
-    /**
-     * @var Model
-     */
-    protected $model;
-
     /**
      * @var SiteInterface
      */
@@ -64,28 +60,6 @@ class Album implements AlbumRepositoryInterface
     /**
      * {@inheritdoc}
      *
-     * @param AlbumInterface $album
-     */
-    public function delete(AlbumInterface $album)
-    {
-        $album->delete();
-    }
-
-    /**
-     * Returns the tag with the given ID.
-     *
-     * @param int $albumId
-     *
-     * @return null|AlbumInterface
-     */
-    public function find($albumId)
-    {
-        return $this->model->find($albumId);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
      * @param array $assetIds
      *
      * @return Collection
@@ -98,19 +72,5 @@ class Album implements AlbumRepositoryInterface
             }])
             ->having('assets_count', '=', count($assetIds))
             ->get();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param AlbumInterface $album
-     *
-     * @return AlbumInterface
-     */
-    public function save(AlbumInterface $album): AlbumInterface
-    {
-        $album->save();
-
-        return $album;
     }
 }

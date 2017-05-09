@@ -6,6 +6,7 @@ use BoomCMS\Database\Models\Album;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Support\Traits\SingleSite;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mockery as m;
 
 class AlbumTest extends AbstractModelTestCase
@@ -28,6 +29,37 @@ class AlbumTest extends AbstractModelTestCase
         $this->assertHasTrait($this->model, SoftDeletes::class);
     }
 
+    public function testAssetsUpdated()
+    {
+        $album = m::mock(Album::class);
+        $relation = m::mock(BelongsToMany::class);
+        $asset = new Asset([Asset::ATTR_ID => 1]);
+        $assetCount = 2;
+
+        $album
+            ->shouldReceive('assets')
+            ->times(2)
+            ->andReturn($relation);
+
+        $relation
+            ->shouldReceive('count')
+            ->once()
+            ->andReturn($assetCount);
+
+        $relation
+            ->shouldReceive('first')
+            ->once()
+            ->andReturn($asset);
+
+        $album
+            ->shouldReceive('fill')
+            ->once()
+            ->with([
+                Album::ATTR_ASSET_COUNT   => $assetCount,
+                Album::ATTR_FEATURE_IMAGE => $asset->getId(),
+            ]);
+    }
+
     public function testAssetCountIsGuarded()
     {
         $album = new Album();
@@ -41,12 +73,12 @@ class AlbumTest extends AbstractModelTestCase
     {
         $album = new Album();
 
-        $this->AssertEquals(0, $album->getAssetCount());
+        $this->assertEquals(0, $album->{Album::ATTR_ASSET_COUNT});
     }
 
     public function testAssets()
     {
-        $album = m::mock(Album::class)->makePartial();
+        $album = m::mock(Album::class);
 
         $album
             ->shouldReceive('belongsToMany')
@@ -58,44 +90,49 @@ class AlbumTest extends AbstractModelTestCase
 
     public function testAddAssets()
     {
-        $album = m::mock(Album::class)->shouldAllowMockingProtectedMethods()->makePartial();
+        $album = m::mock(Album::class);
+        $relation = m::mock(BelongsToMany::class);
         $assetIds = [1, 2, 3];
 
         $album
             ->shouldReceive('assets')
             ->once()
-            ->andReturnSelf();
+            ->andReturn($relation);
 
         $album
-            ->shouldReceive('attach')
+            ->shouldReceive('assetsUpdated')
             ->once()
-            ->with($assetIds)
             ->andReturnSelf();
+
+        $relation
+            ->shouldReceive('syncWithoutDetaching')
+            ->once()
+            ->with($assetIds);
 
         $this->assertEquals($album, $album->addAssets($assetIds));
     }
 
-    public function testRemoveAsset()
+    public function testRemoveAssets()
     {
-        $album = m::mock(Album::class)->shouldAllowMockingProtectedMethods()->makePartial();
+        $album = m::mock(Album::class);
+        $relation = m::mock(BelongsToMany::class);
         $assetIds = [1, 2, 3];
 
         $album
             ->shouldReceive('assets')
             ->once()
-            ->andReturnSelf();
+            ->andReturn($relation);
 
         $album
-            ->shouldReceive('detach')
+            ->shouldReceive('assetsUpdated')
             ->once()
-            ->with($assetIds)
             ->andReturnSelf();
 
-        $this->assertEquals($album, $album->removeAssets($assetIds));
-    }
+        $relation
+            ->shouldReceive('detach')
+            ->once()
+            ->with($assetIds);
 
-    public function testUpdateAssetCount()
-    {
-        $this->markTestIncomplete();
+        $this->assertEquals($album, $album->removeAssets($assetIds));
     }
 }

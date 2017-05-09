@@ -7,15 +7,11 @@ use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
 use BoomCMS\Contracts\Repositories\URL as URLRepositoryInterface;
 use BoomCMS\Database\Models\URL as Model;
+use BoomCMS\Foundation\Repository;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 
-class URL implements URLRepositoryInterface
+class URL extends Repository implements URLRepositoryInterface
 {
-    /**
-     * @var Model
-     */
-    protected $model;
-
     /**
      * @var SiteInterface
      */
@@ -47,30 +43,6 @@ class URL implements URLRepositoryInterface
             Model::ATTR_PAGE_ID    => $page->getId(),
             Model::ATTR_IS_PRIMARY => $isPrimary,
         ]);
-    }
-
-    /**
-     * @param URLInterface $url
-     *
-     * @return $this
-     */
-    public function delete(URLInterface $url)
-    {
-        $url->delete();
-
-        return $this;
-    }
-
-    /**
-     * Returns the URL with the given ID.
-     *
-     * @param int $urlId
-     *
-     * @return null|URLInterface
-     */
-    public function find($urlId)
-    {
-        return $this->model->find($urlId);
     }
 
     /**
@@ -114,17 +86,5 @@ class URL implements URLRepositoryInterface
             ->where(Model::ATTR_PAGE_ID, '=', $page->getId())
             ->where(Model::ATTR_IS_PRIMARY, '=', true)
             ->first();
-    }
-
-    /**
-     * @param URLInterface $url
-     *
-     * @return URLInterface
-     */
-    public function save(URLInterface $url): URLInterface
-    {
-        $url->save();
-
-        return $url;
     }
 }

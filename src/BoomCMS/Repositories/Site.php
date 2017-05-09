@@ -6,15 +6,11 @@ use BoomCMS\Contracts\Models\Person as PersonModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Contracts\Repositories\Site as SiteRepositoryInterface;
 use BoomCMS\Database\Models\Site as Model;
+use BoomCMS\Foundation\Repository;
 use Illuminate\Database\Eloquent\Collection;
 
-class Site implements SiteRepositoryInterface
+class Site extends Repository implements SiteRepositoryInterface
 {
-    /**
-     * @var Model
-     */
-    protected $model;
-
     public function __construct(Model $model)
     {
         $this->model = $model;
@@ -28,30 +24,6 @@ class Site implements SiteRepositoryInterface
     public function create(array $attributes)
     {
         return Model::create($attributes);
-    }
-
-    /**
-     * @param SiteModelInterface $site
-     *
-     * @return $this
-     */
-    public function delete(SiteModelInterface $site)
-    {
-        $site->delete();
-
-        return $this;
-    }
-
-    /**
-     * Returns the site with the given ID.
-     *
-     * @param int $siteId
-     *
-     * @return null|SiteModelInterface
-     */
-    public function find($siteId)
-    {
-        return $this->model->find($siteId);
     }
 
     public function findAll()
@@ -110,17 +82,5 @@ class Site implements SiteRepositoryInterface
         }
 
         return $this;
-    }
-
-    /**
-     * @param SiteModelInterface $site
-     *
-     * @return SiteModelInterface
-     */
-    public function save(SiteModelInterface $site): SiteModelInterface
-    {
-        $site->save();
-
-        return $site;
     }
 }

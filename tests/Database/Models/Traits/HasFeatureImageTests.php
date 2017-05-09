@@ -4,6 +4,7 @@ namespace BoomCMS\Tests\Database\Models\Traits;
 
 use BoomCMS\Database\Models\Asset;
 use Illuminate\Database\Eloquent\Builder;
+use Mockery as m;
 
 trait HasFeatureImageTests
 {
@@ -17,7 +18,7 @@ trait HasFeatureImageTests
     public function testGetFeatureImageId()
     {
         $model = new $this->model();
-        $model->{$model->getFeatureImageColumnName()} = 1;
+        $model->{$model->getFeatureImageAttributeName()} = 1;
 
         $this->assertEquals(1, $model->getFeatureImageId());
 
@@ -30,11 +31,11 @@ trait HasFeatureImageTests
         $builder = m::mock(Builder::class);
         $builder->shouldReceive('first')->once();
 
-        $model = m::mock($this->model.'[belongsTo]');
+        $model = m::mock($this->model)->makePartial();
         $model
             ->shouldReceive('belongsTo')
             ->once()
-            ->with(Asset::class, $model->getFeatureImageColumnName())
+            ->with(Asset::class, $model->getFeatureImageAttributeName())
             ->andReturn($builder);
 
         $model->getFeatureImage();
@@ -43,7 +44,7 @@ trait HasFeatureImageTests
     public function testHasFeatureImage()
     {
         $model = new $this->model();
-        $model->{$model->getFeatureImageColumnName()} = 1;
+        $model->{$model->getFeatureImageAttributeName()} = 1;
 
         $this->assertTrue($model->hasFeatureImage());
 

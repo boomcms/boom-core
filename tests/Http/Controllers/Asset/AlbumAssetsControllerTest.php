@@ -22,8 +22,6 @@ class AlbumAssetsControllerTest extends BaseControllerTest
         parent::setUp();
 
         $this->album = m::mock(Album::class);
-
-        $this->requireRole('manageAlbums');
     }
 
     public function testDestroy()
@@ -34,7 +32,7 @@ class AlbumAssetsControllerTest extends BaseControllerTest
         $this->album
             ->shouldReceive('removeAssets')
             ->once()
-            - with($assetIds)
+            ->with($assetIds)
             ->andReturnSelf();
 
         $this->assertEquals($this->album, $this->controller->destroy($request, $this->album));
@@ -48,10 +46,10 @@ class AlbumAssetsControllerTest extends BaseControllerTest
         $this->album
             ->shouldReceive('addAssets')
             ->once()
-            - with($assetIds)
+            ->with($assetIds)
             ->andReturnSelf();
 
-        $this->assertEquals($this->album, $this->controller->destroy($request, $this->album));
+        $this->assertEquals($this->album, $this->controller->store($request, $this->album));
     }
 
     public function testStoreShouldNotThrowExceptionOnDuplicateInsert()

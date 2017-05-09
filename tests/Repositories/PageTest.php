@@ -23,6 +23,20 @@ class PageTest extends BaseRepositoryTest
         $this->page = m::mock(Page::class);
     }
 
+    public function testFindReturnsModelById()
+    {
+        $this->withCurrentVersion();
+
+        parent::testFindReturnsModelById();
+    }
+
+    public function testFindReturnsNull()
+    {
+        $this->withCurrentVersion();
+
+        parent::testFindReturnsNull();
+    }
+
     public function testFindByPrimaryUri()
     {
         $uri = 'test';
@@ -207,5 +221,13 @@ class PageTest extends BaseRepositoryTest
         $this->repository->recurse($this->model, function (Page $page) {
             $page->save();
         });
+    }
+
+    protected function withCurrentVersion()
+    {
+        $this->model
+            ->shouldReceive('currentVersion')
+            ->once()
+            ->andReturnSelf();
     }
 }

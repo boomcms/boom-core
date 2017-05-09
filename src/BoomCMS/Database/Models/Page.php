@@ -7,6 +7,7 @@ use BoomCMS\Contracts\Models\PageVersion as PageVersionInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
+use BoomCMS\Contracts\LinkableInterface;
 use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;
@@ -22,7 +23,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class Page extends Model implements PageInterface, SingleSiteInterface
+class Page extends Model implements PageInterface, LinkableInterface, SingleSiteInterface
 {
     use HasCreatedBy;
     use HasFeatureImage;

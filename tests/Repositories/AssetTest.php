@@ -63,18 +63,6 @@ class AssetTest extends BaseRepositoryTest
         $this->repository = new AssetRepository($this->model, $this->versionRepository, $this->filesystem);
     }
 
-    public function testDelete()
-    {
-        $assetIds = [1, 2, 3];
-
-        $this->model
-            ->shouldReceive('destroy')
-            ->once()
-            ->with($assetIds);
-
-        $this->repository->delete($assetIds);
-    }
-
     public function testExists()
     {
         foreach ([true, false] as $value) {

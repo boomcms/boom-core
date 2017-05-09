@@ -5,7 +5,7 @@ namespace BoomCMS\Contracts\Repositories;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
 
-interface URL
+interface URL extends Repository
 {
     /**
      * @param string        $location
@@ -15,20 +15,6 @@ interface URL
      * @return URLInterface
      */
     public function create($location, PageInterface $page, $isPrimary = false);
-
-    /**
-     * @param URLInterface $url
-     *
-     * @return $this
-     */
-    public function delete(URLInterface $url);
-
-    /**
-     * @param int $urlId
-     *
-     * @return URLInterface
-     */
-    public function find($urlId);
 
     /**
      * @param string $location
@@ -52,11 +38,4 @@ interface URL
      * @return URLInterface
      */
     public function page(PageInterface $page);
-
-    /**
-     * @param URLInterface $url
-     *
-     * @return URLInterface
-     */
-    public function save(URLInterface $url): URLInterface;
 }
