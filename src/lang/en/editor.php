@@ -36,7 +36,7 @@ return [
         'library' => [
             'albums'      => [
                 'heading' => 'Albums',
-                'info'    => 'Filter assets by album'
+                'info'    => 'Filter assets by album',
             ],
             'heading'     => 'Asset Library',
             'about'       => 'Specify criteria to display assets by',
