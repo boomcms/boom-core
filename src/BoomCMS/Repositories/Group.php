@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Repositories;
 
-use BoomCMS\Contracts\Models\Group as GroupModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Contracts\Repositories\Group as GroupRepositoryInterface;
 use BoomCMS\Database\Models\Group as Model;
