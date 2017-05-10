@@ -43063,6 +43063,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
         initialize: function() {
             this.assets = new BoomCMS.Collections.Assets();
+            this.assets.setOrderBy('created_at', 'desc');
+
             this.setAssetsUrl();
 
             this.on('change:id', function() {
@@ -43860,6 +43862,17 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             this.total = data.total;
 
             return data.assets;
+        },
+
+        setOrderBy: function(column, direction) {
+            this.comparator = function(a, b) {
+                var value1 = direction === 'asc' ? a.get(column) : b.get(column),
+                    value2 = direction === 'asc' ? b.get(column) : a.get(column);
+
+                return value1 > value2 ?  1
+                    : value1 < value2 ? -1
+                    :  0;
+            };
         },
 
         /**
@@ -49285,7 +49298,7 @@ console.log(offset, this.$counter.width());
             this.assets = options.assets;
             this.selection = options.selection;
 
-            this.listenTo(this.assets, 'add remove sync', this.render);
+            this.listenTo(this.assets, 'sort add remove sync', this.render);
             this.listenTo(this.assets, 'change change:image', this.justify);
 
             this.listenTo(this.assets, 'reset', function() {
@@ -49393,7 +49406,9 @@ console.log(offset, this.$counter.width());
             this.options = options;
 
             this.router = options.router;
+
             this.template = _.template($('#b-assets-view-album-template').html());
+
 
             if (!this.model.isNew()) {
                 this.assets = this.model.getAssets();
@@ -49410,11 +49425,24 @@ console.log(offset, this.$counter.width());
         },
 
         render: function() {
-            var album = this.model;
+            var album = this.model,
+                view = this,
+                sortbyId = 'b-assets-sortby' + this.model.getId();
 
             this.$el.html($(this.template({
                 album: this.model
             })));
+
+            this.$el
+                .find('#b-assets-sortby')
+                .attr('id', sortbyId)
+                .end()
+                .find('label[for="#b-assets-sortby"]')
+                .attr('for', sortbyId);
+
+            this.$el.on('change', '#' + sortbyId, function(e) {
+                view.reorder(e);
+            });
 
             this.$('h1, .description').boomcmsEditableHeading();
 
@@ -49437,6 +49465,15 @@ console.log(offset, this.$counter.width());
                 });
 
             return this;
+        },
+
+        reorder: function(e) {
+            var value = $(e.target).val(),
+                parts = value.split(' '),
+                assets = this.model.getAssets();
+
+            assets.setOrderBy(parts[0], parts[1]);
+            assets.sort();
         },
 
         save: function() {

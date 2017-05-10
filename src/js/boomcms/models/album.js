@@ -47,6 +47,8 @@
 
         initialize: function() {
             this.assets = new BoomCMS.Collections.Assets();
+            this.assets.setOrderBy('created_at', 'desc');
+
             this.setAssetsUrl();
 
             this.on('change:id', function() {

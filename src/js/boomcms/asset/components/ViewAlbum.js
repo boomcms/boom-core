@@ -28,7 +28,9 @@
             this.options = options;
 
             this.router = options.router;
+
             this.template = _.template($('#b-assets-view-album-template').html());
+
 
             if (!this.model.isNew()) {
                 this.assets = this.model.getAssets();
@@ -45,11 +47,24 @@
         },
 
         render: function() {
-            var album = this.model;
+            var album = this.model,
+                view = this,
+                sortbyId = 'b-assets-sortby' + this.model.getId();
 
             this.$el.html($(this.template({
                 album: this.model
             })));
+
+            this.$el
+                .find('#b-assets-sortby')
+                .attr('id', sortbyId)
+                .end()
+                .find('label[for="#b-assets-sortby"]')
+                .attr('for', sortbyId);
+
+            this.$el.on('change', '#' + sortbyId, function(e) {
+                view.reorder(e);
+            });
 
             this.$('h1, .description').boomcmsEditableHeading();
 
@@ -72,6 +87,15 @@
                 });
 
             return this;
+        },
+
+        reorder: function(e) {
+            var value = $(e.target).val(),
+                parts = value.split(' '),
+                assets = this.model.getAssets();
+
+            assets.setOrderBy(parts[0], parts[1]);
+            assets.sort();
         },
 
         save: function() {

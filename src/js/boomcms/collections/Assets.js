@@ -87,6 +87,17 @@
             return data.assets;
         },
 
+        setOrderBy: function(column, direction) {
+            this.comparator = function(a, b) {
+                var value1 = direction === 'asc' ? a.get(column) : b.get(column),
+                    value2 = direction === 'asc' ? b.get(column) : a.get(column);
+
+                return value1 > value2 ?  1
+                    : value1 < value2 ? -1
+                    :  0;
+            };
+        },
+
         /**
          * Remove the asset if it exists in the collection, otherwise add it to
          *

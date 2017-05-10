@@ -23,6 +23,8 @@
 
         <% if (!album.isNew()) { %>
             <div class='controls'>
+                <?= view('boomcms::assets.search.sort') ?>
+
                 <label for="b-assets-album-upload-<%= album.getId() %>" tabindex='0'>
                     <span class="fa fa-upload"></span>
                 </label>

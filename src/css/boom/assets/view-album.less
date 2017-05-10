@@ -6,6 +6,19 @@
     }
 
     .controls {
+        > div {
+            display: inline-block;
+            float: left;
+            vertical-align: bottom;
+            overflow: hidden;
+            margin-right: 1rem;
+
+            label {
+                position: absolute;
+                top: -1000%;
+            }
+        }
+
         label {
             text-align: center;
             display: inline-block;
