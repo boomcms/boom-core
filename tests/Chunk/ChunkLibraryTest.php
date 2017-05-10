@@ -44,7 +44,7 @@ class ChunkLibraryTest extends AbstractTestCase
     }
 
     /**
-     * getAlbum() should return an array of album IDs
+     * getAlbum() should return an array of album IDs.
      */
     public function testGetAlbumsReturnsAlbums()
     {

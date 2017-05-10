@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Http\Controllers\Asset;
 
 use BoomCMS\Database\Models\Album;
-use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Asset\AlbumController as Controller;
 use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Tests\Http\Controllers\BaseControllerTest;
