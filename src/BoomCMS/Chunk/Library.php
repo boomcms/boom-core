@@ -34,6 +34,14 @@ class Library extends BaseChunk
         });
     }
 
+    /**
+     * @return array
+     */
+    public function getAlbums()
+    {
+        return $this->getParam('album') ? $this->getParam('album') : [];
+    }
+
     public function getAssets()
     {
         return Helpers::getAssets($this->params);
@@ -65,14 +73,6 @@ class Library extends BaseChunk
     public function getParams()
     {
         return $this->params;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTags()
-    {
-        return $this->getParam('tag') ? $this->getParam('tag') : [];
     }
 
     public function getOrder()

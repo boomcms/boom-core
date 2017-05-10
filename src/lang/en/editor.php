@@ -34,6 +34,10 @@ return [
     ],
     'chunk' => [
         'library' => [
+            'albums'      => [
+                'heading' => 'Albums',
+                'info'    => 'Filter assets by album'
+            ],
             'heading'     => 'Asset Library',
             'about'       => 'Specify criteria to display assets by',
             'limit'       => 'Number of assets to show',
