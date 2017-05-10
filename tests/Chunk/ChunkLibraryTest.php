@@ -20,7 +20,7 @@ class ChunkLibraryTest extends AbstractTestCase
      */
     public function testGetParams()
     {
-        $params = ['params' => ['tag' => 'test']];
+        $params = ['params' => ['album' => 1]];
 
         $chunk = $this->getChunk($params);
         $this->assertEquals($params['params'], $chunk->getParams());
@@ -44,28 +44,28 @@ class ChunkLibraryTest extends AbstractTestCase
     }
 
     /**
-     * getTag() should return the tag from the params array.
+     * getAlbum() should return an array of album IDs
      */
-    public function testGetTagsReturnsTags()
+    public function testGetAlbumsReturnsAlbums()
     {
-        $tag = ['test'];
+        $albumId = 1;
 
-        $chunk = $this->getChunk(['params' => ['tag' => $tag]]);
-        $this->assertEquals($tag, $chunk->getTags());
+        $chunk = $this->getChunk(['params' => ['album' => [$albumId]]]);
+        $this->assertEquals([$albumId], $chunk->getAlbums());
     }
 
-    public function testGetTagReturnsEmptyArray()
+    public function testGetAlbumsReturnsEmptyArray()
     {
         $values = [
             [],
-            ['tag' => ''],
-            ['tag' => null],
-            ['tag' => []],
+            ['album' => ''],
+            ['album' => null],
+            ['album' => []],
         ];
 
         foreach ($values as $v) {
             $chunk = $this->getChunk($v);
-            $this->assertEquals([], $chunk->getTags());
+            $this->assertEquals([], $chunk->getAlbums());
         }
     }
 

@@ -51,9 +51,4 @@ class AlbumAssetsControllerTest extends BaseControllerTest
 
         $this->assertEquals($this->album, $this->controller->store($request, $this->album));
     }
-
-    public function testStoreShouldNotThrowExceptionOnDuplicateInsert()
-    {
-        $this->markTestIncomplete();
-    }
 }

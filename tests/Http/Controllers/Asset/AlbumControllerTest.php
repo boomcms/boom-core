@@ -53,7 +53,7 @@ class AlbumControllerTest extends BaseControllerTest
         AlbumFacade::shouldReceive('save')
             ->once()
             ->with($this->album)
-            ->andReturnSelf();
+            ->andReturn($this->album);
 
         $this->assertEquals($this->album, $this->controller->update($this->album, $request));
     }
@@ -82,14 +82,14 @@ class AlbumControllerTest extends BaseControllerTest
         AlbumFacade::shouldReceive('save')
             ->once()
             ->with($this->album)
-            ->andReturnSelf();
+            ->andReturn($this->album);
 
         $this->assertEquals($this->album, $this->controller->update($this->album, $request));
     }
 
     public function testIndexWithoutAssetIdsReturnsAll()
     {
-        $assets = collect(new Asset(), new Asset());
+        $assets = collect([]);
         $request = new Request();
 
         AlbumFacade::shouldReceive('all')
@@ -102,7 +102,7 @@ class AlbumControllerTest extends BaseControllerTest
     public function testIndexWithAssetIds()
     {
         $assetIds = [1, 2, 3];
-        $assets = collect(new Asset(), new Asset());
+        $assets = collect([]);
         $request = new Request(['assets' => $assetIds]);
 
         AlbumFacade::shouldReceive('findByAssetIds')

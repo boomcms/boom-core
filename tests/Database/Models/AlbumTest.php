@@ -31,14 +31,14 @@ class AlbumTest extends AbstractModelTestCase
 
     public function testAssetsUpdated()
     {
-        $album = m::mock(Album::class);
+        $album = m::mock(Album::class)->makePartial();
         $relation = m::mock(BelongsToMany::class);
         $asset = new Asset([Asset::ATTR_ID => 1]);
         $assetCount = 2;
 
         $album
             ->shouldReceive('assets')
-            ->times(2)
+            ->once()
             ->andReturn($relation);
 
         $relation
@@ -52,12 +52,14 @@ class AlbumTest extends AbstractModelTestCase
             ->andReturn($asset);
 
         $album
-            ->shouldReceive('fill')
+            ->shouldReceive('update')
             ->once()
             ->with([
                 Album::ATTR_ASSET_COUNT   => $assetCount,
                 Album::ATTR_FEATURE_IMAGE => $asset->getId(),
             ]);
+
+        $album->assetsUpdated();
     }
 
     public function testAssetCountIsGuarded()
@@ -78,7 +80,7 @@ class AlbumTest extends AbstractModelTestCase
 
     public function testAssets()
     {
-        $album = m::mock(Album::class);
+        $album = m::mock(Album::class)->makePartial();
 
         $album
             ->shouldReceive('belongsToMany')
@@ -90,7 +92,7 @@ class AlbumTest extends AbstractModelTestCase
 
     public function testAddAssets()
     {
-        $album = m::mock(Album::class);
+        $album = m::mock(Album::class)->makePartial();
         $relation = m::mock(BelongsToMany::class);
         $assetIds = [1, 2, 3];
 
@@ -114,7 +116,7 @@ class AlbumTest extends AbstractModelTestCase
 
     public function testRemoveAssets()
     {
-        $album = m::mock(Album::class);
+        $album = m::mock(Album::class)->makePartial();
         $relation = m::mock(BelongsToMany::class);
         $assetIds = [1, 2, 3];
 
