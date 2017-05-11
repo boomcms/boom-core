@@ -48,7 +48,11 @@ class Pdf extends DefaultDriver
     {
         $metadata = $this->getMetadata();
 
-        return $metadata['Title'] ?? parent::getTitle();
+        if (isset($metadata['Title'])) {
+            return is_array($metadata['Title']) ? $metadata['Title'][0] ?? '' : $metadata['Title'];
+        }
+
+        return parent::getTitle();
     }
 
     /**

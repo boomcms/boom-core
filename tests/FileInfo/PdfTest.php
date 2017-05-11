@@ -78,6 +78,47 @@ class PdfTest extends BaseDriverTest
     }
 
     /**
+     * In some cases the title in the metadata can contain an array.
+     *
+     * This has been seen with a PDF produced in Pages where the array contained a single item.
+     *
+     * If the title is an array then the first element of the array should be returned
+     */
+    public function testGetTitleReturnsStringWhenMetadataContainsArray()
+    {
+        $info = m::mock(Pdf::class)->makePartial();
+        $title = 'test title';
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'Title' => [$title],
+            ]);
+
+        $this->assertEquals($title, $info->getTitle());
+    }
+
+    /**
+     * As above, but if the the array is empty then an empty string should be returned.
+     *
+     * @depends testGetTitleReturnsStringWhenMetadataContainsArray
+     */
+    public function testGetTitleReturnsEmptyStringWhenTitleIsEmptyArray()
+    {
+        $info = m::mock(Pdf::class)->makePartial();
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'Title' => [],
+            ]);
+
+        $this->assertEquals('', $info->getTitle());
+    }
+
+    /**
      * PDFs don't have a width - 0 should be returned.
      */
     public function testGetWidth()
