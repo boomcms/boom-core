@@ -65,6 +65,46 @@ class PdfTest extends BaseDriverTest
     }
 
     /**
+     * If the date is invalid null should be returned.
+     *
+     * @depends testGetCreatedAt
+     */
+    public function testGetCreatedAtReturnsArrayFirstValue()
+    {
+        $timestamp = '2017-02-17T11:07:56+00:00';
+        $date = Carbon::parse($timestamp);
+        $info = m::mock(Pdf::class)->makePartial();
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'CreationDate' => [$timestamp],
+            ]);
+
+        $this->assertEquals($date, $info->getCreatedAt());
+    }
+
+    /**
+     * If the created data is an empty array, return null
+     *
+     * @depends testGetCreatedAt
+     */
+    public function testGetCreatedAtReturnsNullIfEmptyArray()
+    {
+        $info = m::mock(Pdf::class)->makePartial();
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'CreationDate' => [],
+            ]);
+
+        $this->assertNull($info->getCreatedAt());
+    }
+
+    /**
      * PDFs don't have a height - 0 should be returned.
      */
     public function testGetHeight()
