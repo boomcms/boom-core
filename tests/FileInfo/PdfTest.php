@@ -86,7 +86,7 @@ class PdfTest extends BaseDriverTest
     }
 
     /**
-     * If the created data is an empty array, return null
+     * If the created data is an empty array, return null.
      *
      * @depends testGetCreatedAt
      */
