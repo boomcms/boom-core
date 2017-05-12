@@ -262,7 +262,8 @@ class Page extends Model implements PageInterface, SingleSiteInterface
         return DB::table('page_acl')
             ->select('group_id')
             ->where('page_id', $this->getId())
-            ->pluck('group_id');
+            ->pluck('group_id')
+            ->toArray();
     }
 
     /**
