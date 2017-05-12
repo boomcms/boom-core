@@ -74,14 +74,14 @@ class PagePolicy extends BoomCMSPolicy
 
         $aclGroupIds = $page->getAclGroupIds();
 
-        if (empty($aclGroupIds)) {
+        if (count($aclGroupIds) === 0) {
             return true;
         }
 
         $groups = $person->getGroups();
 
         foreach ($groups as $group) {
-            if (in_array($group->getId(), $aclGroupIds)) {
+            if ($aclGroupIds->contains($group->getId())) {
                 return true;
             }
         }
