@@ -109,7 +109,7 @@ class PagePolicyTest extends AbstractTestCase
 
     public function testViewReturnsWhetherUserIsInGroupsWhichCanViewPage()
     {
-        $groups = [new Group(), new Group()];
+        $groups = collect([new Group(), new Group()]);
         $groups[0]->id = 1;
         $groups[1]->id = 2;
 
@@ -123,12 +123,12 @@ class PagePolicyTest extends AbstractTestCase
         $page
             ->shouldReceive('getAclGroupIds')
             ->once()
-            ->andReturn([1]);
+            ->andReturn(collect([1]));
 
         $page
             ->shouldReceive('getAclGroupIds')
             ->once()
-            ->andReturn([3]);
+            ->andReturn(collect([3]));
 
         $page
             ->shouldReceive('aclEnabled')
