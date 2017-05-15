@@ -147,7 +147,7 @@ class AssetVersion extends Model
     public function setMetadataAttribute($value)
     {
         if (is_array($value)) {
-            array_walk_recursive($value, function(&$value) {
+            array_walk_recursive($value, function (&$value) {
                 $value = utf8_encode($value);
             });
         }
