@@ -12,8 +12,12 @@ class Slideshow extends BaseChunk
         parent::__construct($page, $attrs, $slotname);
 
         if (isset($this->attrs['slides'])) {
-            foreach ($this->attrs['slides'] as &$slide) {
+            foreach ($this->attrs['slides'] as $i => &$slide) {
                 $slide = new Slideshow\Slide($slide);
+
+                if ($slide->getAsset() === null) {
+                    unset($this->attrs['slides'][$i]);
+                }
             }
         }
     }

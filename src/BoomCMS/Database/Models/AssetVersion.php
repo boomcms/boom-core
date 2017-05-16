@@ -143,4 +143,15 @@ class AssetVersion extends Model
     {
         $this->attributes[self::ATTR_FILENAME] = str_replace(['/', '\\'], '', $value);
     }
+
+    public function setMetadataAttribute($value)
+    {
+        if (is_array($value)) {
+            array_walk_recursive($value, function (&$value) {
+                $value = utf8_encode($value);
+            });
+        }
+
+        $this->attributes[self::ATTR_METADATA] = json_encode($value);
+    }
 }
