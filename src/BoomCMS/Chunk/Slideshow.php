@@ -12,8 +12,12 @@ class Slideshow extends BaseChunk
         parent::__construct($page, $attrs, $slotname);
 
         if (isset($this->attrs['slides'])) {
-            foreach ($this->attrs['slides'] as &$slide) {
+            foreach ($this->attrs['slides'] as $i => &$slide) {
                 $slide = new Slideshow\Slide($slide);
+
+                if ($slide->getAsset() === null) {
+                    unset($this->attrs['slides'][$i]);
+                }
             }
         }
     }
@@ -33,11 +37,11 @@ class Slideshow extends BaseChunk
 
     public function getSlides()
     {
-        return isset($this->attrs['slides']) ? $this->attrs['slides'] : [];
+        return $this->attrs['slides'] ?? [];
     }
 
     public function getTitle()
     {
-        return isset($this->attrs['title']) ? $this->attrs['title'] : '';
+        return $this->attrs['title'] ?? '';
     }
 }

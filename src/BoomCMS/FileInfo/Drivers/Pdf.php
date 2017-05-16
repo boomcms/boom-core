@@ -19,8 +19,11 @@ class Pdf extends DefaultDriver
         $metadata = $this->getMetadata();
 
         try {
-            return isset($metadata['CreationDate']) ?
-                Carbon::parse($metadata['CreationDate']) : null;
+            if (isset($metadata['CreationDate'])) {
+                $timestamp = is_array($metadata['CreationDate']) ? $metadata['CreationDate'][0] ?? null : $metadata['CreationDate'];
+            }
+
+            return isset($timestamp) ? Carbon::parse($timestamp) : null;
         } catch (Exception $e) {
             return;
         }
@@ -48,7 +51,11 @@ class Pdf extends DefaultDriver
     {
         $metadata = $this->getMetadata();
 
-        return $metadata['Title'] ?? parent::getTitle();
+        if (isset($metadata['Title'])) {
+            return is_array($metadata['Title']) ? $metadata['Title'][0] ?? '' : $metadata['Title'];
+        }
+
+        return parent::getTitle();
     }
 
     /**

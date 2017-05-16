@@ -92,8 +92,8 @@ return [
         'title desc'           => 'Title Z - A',
         'filesize asc'         => 'Size (smallest)',
         'filesize desc'        => 'Size (largest)',
-        'published_at asc'     => 'Publish time: most recent first',
-        'published_at desc'    => 'Publish time: oldest first',
+        'published_at desc'    => 'Publish time: most recent first',
+        'published_at asc'     => 'Publish time: oldest first',
         'downloads desc'       => 'Most downloaded',
     ],
     'type'                    => [

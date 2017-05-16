@@ -65,6 +65,46 @@ class PdfTest extends BaseDriverTest
     }
 
     /**
+     * If the date is invalid null should be returned.
+     *
+     * @depends testGetCreatedAt
+     */
+    public function testGetCreatedAtReturnsArrayFirstValue()
+    {
+        $timestamp = '2017-02-17T11:07:56+00:00';
+        $date = Carbon::parse($timestamp);
+        $info = m::mock(Pdf::class)->makePartial();
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'CreationDate' => [$timestamp],
+            ]);
+
+        $this->assertEquals($date, $info->getCreatedAt());
+    }
+
+    /**
+     * If the created data is an empty array, return null.
+     *
+     * @depends testGetCreatedAt
+     */
+    public function testGetCreatedAtReturnsNullIfEmptyArray()
+    {
+        $info = m::mock(Pdf::class)->makePartial();
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'CreationDate' => [],
+            ]);
+
+        $this->assertNull($info->getCreatedAt());
+    }
+
+    /**
      * PDFs don't have a height - 0 should be returned.
      */
     public function testGetHeight()
@@ -75,6 +115,47 @@ class PdfTest extends BaseDriverTest
     public function testGetTitle()
     {
         $this->assertEquals('', $this->info->getTitle());
+    }
+
+    /**
+     * In some cases the title in the metadata can contain an array.
+     *
+     * This has been seen with a PDF produced in Pages where the array contained a single item.
+     *
+     * If the title is an array then the first element of the array should be returned
+     */
+    public function testGetTitleReturnsStringWhenMetadataContainsArray()
+    {
+        $info = m::mock(Pdf::class)->makePartial();
+        $title = 'test title';
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'Title' => [$title],
+            ]);
+
+        $this->assertEquals($title, $info->getTitle());
+    }
+
+    /**
+     * As above, but if the the array is empty then an empty string should be returned.
+     *
+     * @depends testGetTitleReturnsStringWhenMetadataContainsArray
+     */
+    public function testGetTitleReturnsEmptyStringWhenTitleIsEmptyArray()
+    {
+        $info = m::mock(Pdf::class)->makePartial();
+
+        $info
+            ->shouldReceive('getMetadata')
+            ->once()
+            ->andReturn([
+                'Title' => [],
+            ]);
+
+        $this->assertEquals('', $info->getTitle());
     }
 
     /**

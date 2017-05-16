@@ -22,16 +22,9 @@ class Slide
     {
         $this->attrs = $attrs;
 
-        if (isset($this->attrs['asset'])) {
-            if (is_array($this->attrs['asset'])) {
-                $this->asset = new Asset($this->attrs['asset']);
-                $this->asset->{Asset::ATTR_ID} = $this->attrs['asset'][Asset::ATTR_ID];
-
-                return;
-            }
-
-            $this->asset = $this->attrs['asset'];
-        }
+        // Prevent asset from being restored from cache.
+        // Fixes issue when an asset is included in a cached slideshow but deleted via the asset manager.
+        $this->attrs['asset'] = null;
     }
 
     public function getAsset()
@@ -68,12 +61,12 @@ class Slide
 
     public function getLinktext()
     {
-        return isset($this->attrs['link_text']) ? $this->attrs['link_text'] : '';
+        return $this->attrs['link_text'] ?? '';
     }
 
     public function getTitle()
     {
-        return isset($this->attrs['title']) ? $this->attrs['title'] : '';
+        return $this->attrs['title'] ?? '';
     }
 
     /**
