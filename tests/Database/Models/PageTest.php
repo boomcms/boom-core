@@ -6,10 +6,12 @@ use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Site;
+use BoomCMS\Database\Models\Tag;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 use Mockery as m;
@@ -67,6 +69,27 @@ class PageTest extends AbstractModelTestCase
             ->andReturnSelf();
 
         $page->addAclGroupId($groupId);
+    }
+
+    public function testAddTag()
+    {
+        $tag = new Tag();
+        $tag->{Tag::ATTR_ID} = 1;
+
+        $relation = m::mock(BelongsToMany::class);
+        $page = m::mock(Page::class)->makePartial();
+
+        $page
+            ->shouldReceive('tags')
+            ->once()
+            ->andReturn($relation);
+
+        $relation
+            ->shouldReceive('syncWithoutDetaching')
+            ->once()
+            ->with([$tag->getId()]);
+
+        $this->assertEquals($page, $page->addTag($tag));
     }
 
     public function testRemoveAclGroupId()
