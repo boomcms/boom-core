@@ -61,12 +61,12 @@ class Slide
 
     public function getLinktext()
     {
-        return isset($this->attrs['link_text']) ? $this->attrs['link_text'] : '';
+        return $this->attrs['link_text'] ?? '';
     }
 
     public function getTitle()
     {
-        return isset($this->attrs['title']) ? $this->attrs['title'] : '';
+        return $this->attrs['title'] ?? '';
     }
 
     /**
