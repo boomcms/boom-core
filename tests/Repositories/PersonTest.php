@@ -198,7 +198,7 @@ class PersonTest extends AbstractTestCase
         $repository = new PersonRepository(new Person(), $this->site);
 
         $this->assertFalse($repository->validateCredentials($person, [
-            'password' => ''
+            'password' => '',
         ]));
     }
 }
