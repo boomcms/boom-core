@@ -188,4 +188,17 @@ class PersonTest extends AbstractTestCase
 
         $this->assertEquals($person, $repository->save($person));
     }
+
+    public function testValidateCredentialsWithUserWithNoPassword()
+    {
+        $person = new Person([
+            Person::ATTR_EMAIL => 'test@test.com',
+        ]);
+
+        $repository = new PersonRepository(new Person(), $this->site);
+
+        $this->assertFalse($repository->validateCredentials($person, [
+            'password' => ''
+        ]));
+    }
 }
