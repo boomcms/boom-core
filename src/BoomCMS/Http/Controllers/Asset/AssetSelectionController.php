@@ -27,6 +27,10 @@ class AssetSelectionController extends Controller
     {
         $assets = AssetFacade::find($this->request->input('assets'));
 
+        if (count($assets) === 0) {
+            abort(404);
+        }
+
         if (count($assets) === 1) {
             return new Response(AssetFacade::file($assets[0]), 200, [
                 'content-disposition' => 'download; filename="'.$assets[0]->getOriginalFilename().'"',
