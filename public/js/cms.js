@@ -43864,6 +43864,14 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             return data.assets;
         },
 
+        position: function(asset) {
+            for (var i = 0; i < this.models.length; i++) {
+                if (this.models[i].getId() === asset.getId()) {
+                    return i;
+                }
+            }
+        },
+
         setOrderBy: function(column, direction) {
             this.comparator = function(a, b) {
                 var value1 = direction === 'asc' ? a.get(column) : b.get(column),
@@ -48541,7 +48549,11 @@ console.log(offset, this.$counter.width());
 
         viewAsset: function(assetId, section) {
             var assetManager = this,
-                asset = this.assets.getOrFetch(assetId);
+                assets = this.assets,
+                asset = this.assets.getOrFetch(assetId),
+                position = this.assets.position(asset),
+                filmrollStart = position > 5 ? position - 5 : 0,
+                filmrollEnd = position > 5 ? position + 4 : position + 4 + (5 - position);
 
             this.activeAsset = asset;
 
@@ -48562,15 +48574,16 @@ console.log(offset, this.$counter.width());
 
             this.assetViews[assetId].viewSection(section);
 
+            this.viewFilmroll(new BoomCMS.Collections.Assets(assets.slice(filmrollStart, filmrollEnd)));
+
             setTimeout(function() {
-                assetManager.viewFilmroll();
                 assetManager.filmroll.select(asset);
             }, 0);
         },
 
-        viewFilmroll: function() {
+        viewFilmroll: function(assets) {
             this.filmroll = new BoomCMS.AssetManager.Filmroll({
-                assets: this.assets,
+                assets: assets,
                 selection: this.selection
             }).render();
         },
@@ -48599,15 +48612,9 @@ console.log(offset, this.$counter.width());
                 router: this.router,
                 albums: this.albums,
                 section: section
-            }),
-            assetManager = this;
+            });
 
             this.$('#b-assets-view-selection-container').html(view.render().el);
-
-            setTimeout(function() {
-                assetManager.viewFilmroll();
-                assetManager.filmroll.select(assetManager.selection.models[0]);
-            }, 0);
         }
     });
 }(Backbone, BoomCMS));

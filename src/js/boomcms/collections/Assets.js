@@ -87,6 +87,14 @@
             return data.assets;
         },
 
+        position: function(asset) {
+            for (var i = 0; i < this.models.length; i++) {
+                if (this.models[i].getId() === asset.getId()) {
+                    return i;
+                }
+            }
+        },
+
         setOrderBy: function(column, direction) {
             this.comparator = function(a, b) {
                 var value1 = direction === 'asc' ? a.get(column) : b.get(column),
