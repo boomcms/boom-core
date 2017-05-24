@@ -7,7 +7,7 @@
                 <div>
                     <h3><%= album.getName() %></h3>
                     <p class='description'><%= album.getDescription() %></p>
-                    <p class='count'><span><%= album.getAssetCount() %></span> asset<% if (album.getAssetCount() !== 1) { %>s<% } %></p>
+                    <p class='count'><span><%= album.getAssetCount().toLocaleString() %></span> asset<% if (album.getAssetCount() !== 1) { %>s<% } %></p>
                 </div>
             </a>
         </li>
