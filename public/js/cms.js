@@ -48512,13 +48512,15 @@ console.log(offset, this.$counter.width());
                 this.uploaded.add(new BoomCMS.Asset(assets[i]));
             }
 
-            for (var i = 0; i < errors.length; i++) {
-                var $li = $('<li></li>').text(errors[i]);
+            if (errors.length > 0) {
+                for (var i = 0; i < errors.length; i++) {
+                    var $li = $('<li></li>').text(errors[i]);
 
-                $errors.find('ul').append($li);
-            } 
+                    $errors.find('ul').append($li);
+                } 
 
-            $errors.show();
+                $errors.show();
+            }
         },
 
         viewAlbum: function(slug) {
