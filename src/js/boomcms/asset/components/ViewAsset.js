@@ -91,6 +91,8 @@
                 asset: this.model
             }));
 
+            this.$el.find('time').localTime();
+
             this.initUploader();
             this.initImageEditor();
             this.viewAlbums();

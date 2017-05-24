@@ -49625,6 +49625,8 @@ console.log(offset, this.$counter.width());
                 asset: this.model
             }));
 
+            this.$el.ui();
+
             this.initUploader();
             this.initImageEditor();
             this.viewAlbums();
