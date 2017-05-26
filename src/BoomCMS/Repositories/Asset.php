@@ -5,10 +5,12 @@ namespace BoomCMS\Repositories;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
 use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
+use BoomCMS\Contracts\Repositories\Repository as RepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Foundation\Repository;
+use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
@@ -62,6 +64,18 @@ class Asset extends Repository implements AssetRepositoryInterface
         $this->saveFile($asset, $file, $info->getThumbnail());
 
         return $asset;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($param): RepositoryInterface
+    {
+        $assetIds = is_array($param) ? $param : [$param->getId()];
+
+        AlbumFacade::removeAssetsFromCounts($assetIds);
+
+        return parent::delete($param);
     }
 
     /**

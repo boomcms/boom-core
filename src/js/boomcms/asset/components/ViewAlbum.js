@@ -20,7 +20,8 @@
         },
 
         initialize: function(options) {
-            var album = this.model,
+            var view = this,
+                album = this.model,
                 albums = options.albums,
                 router = options.router,
                 routerParams = this.model.isNew() ? {trigger: true} : {replace: true};
@@ -31,10 +32,15 @@
 
             this.template = _.template($('#b-assets-view-album-template').html());
 
-
             if (!this.model.isNew()) {
                 this.assets = this.model.getAssets();
             }
+
+            this.assets.on('destroy', function() {
+                setTimeout(function() {
+                    view.render();
+                }, 0);
+            });
 
             this.model.on('change:slug', function() {
                 albums.add(album);

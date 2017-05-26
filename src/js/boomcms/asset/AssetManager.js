@@ -182,14 +182,15 @@
                 })
                 .on('route:viewAssetInAlbum', function(album, assetId, section) {
                     album = assetManager.albums.findBySlug(album);
-                    assetManager.loadAlbum(album);
 
                     if (assetManager.assets.length > 0) {
+                        assetManager.loadAlbum(album);
                         assetManager.viewAsset(assetId, section);
                     } else {
-                        assetManager.assets.once('sync', function() {
-                            assetManager.viewAsset(assetId, section);
-                        });
+                        assetManager.assets = album.getAssets();
+                        assetManager.bindAssetEvents(assetManager.assets);
+                        assetManager.assets.fetchOnce();
+                        assetManager.viewAsset(assetId, section);
                     }
                 })
                 .on('route:viewAlbum', function(slug) {
@@ -341,11 +342,7 @@
 
         viewAsset: function(assetId, section) {
             var assetManager = this,
-                assets = this.assets,
-                asset = this.assets.getOrFetch(assetId),
-                position = this.assets.position(asset),
-                filmrollStart = position > 5 ? position - 5 : 0,
-                filmrollEnd = position > 5 ? position + 4 : position + 4 + (5 - position);
+                asset = this.assets.getOrFetch(assetId);
 
             this.activeAsset = asset;
 
@@ -366,10 +363,20 @@
 
             this.assetViews[assetId].viewSection(section);
 
-            this.viewFilmroll(new BoomCMS.Collections.Assets(assets.slice(filmrollStart, filmrollEnd)));
-
             setTimeout(function() {
-                assetManager.filmroll.select(asset);
+                var position = assetManager.assets.position(asset),
+                    assets = assetManager.assets,
+                    filmrollStart = position > 5 ? position - 5 : 0,
+                    filmrollEnd = position > 5 ? position + 4 : position + 4 + (5 - position);
+
+                if (assets.length > 1) {
+                    assetManager.viewFilmroll(new BoomCMS.Collections.Assets(assets.slice(filmrollStart, filmrollEnd)));
+                    assetManager.assetViews[assetId].$('.b-assets-view').removeClass('no-filmroll');
+
+                    assetManager.filmroll.select(asset);
+                } else {
+                    assetManager.assetViews[assetId].$('.b-assets-view').addClass('no-filmroll');
+                }
             }, 0);
         },
 

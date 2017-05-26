@@ -9,6 +9,7 @@ use BoomCMS\Database\Models\Album as Model;
 use BoomCMS\Foundation\Repository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Album extends Repository implements AlbumRepositoryInterface
 {
@@ -72,5 +73,25 @@ class Album extends Repository implements AlbumRepositoryInterface
             }])
             ->having('assets_count', '=', count($assetIds))
             ->get();
+    }
+
+    public function removeAssetsFromCounts(array $assetIds)
+    {
+        $subquery = DB::table('albums')
+            ->select('albums.id', DB::raw('count(*) as c'))
+            ->leftJoin('album_asset', 'albums.id', '=', 'album_id')
+            ->leftJoin('assets', 'asset_id', '=', 'assets.id')
+            ->whereNotIn('assets.id', $assetIds)
+            ->groupBy('albums.id');
+
+        $this->model
+            ->newQuery()
+            ->join(DB::raw('('.$subquery->toSql().') as sq'), 'albums.id', '=', 'sq.id')
+            ->mergeBindings($subquery)
+            ->join('album_asset', 'albums.id', '=', 'album_id')
+            ->whereIn('asset_id', $assetIds)
+            ->update([
+                Model::ATTR_ASSET_COUNT => DB::raw('sq.c'),
+            ]);
     }
 }

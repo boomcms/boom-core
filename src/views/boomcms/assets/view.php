@@ -336,5 +336,3 @@
         </div>
     </div>
 </div>
-
-<?= view('boomcms::tags.tag') ?>

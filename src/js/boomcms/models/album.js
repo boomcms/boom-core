@@ -46,10 +46,17 @@
         },
 
         initialize: function() {
+            var album = this;
+
             this.assets = new BoomCMS.Collections.Assets();
             this.assets.setOrderBy('created_at', 'desc');
 
             this.setAssetsUrl();
+
+            this.assets.on('destroy', function(asset) {
+                album.assets.remove(asset, {silent: true});
+                album.set('asset_count', album.get('asset_count') - 1);
+            });
 
             this.on('change:id', function() {
                 this.setAssetsUrl();

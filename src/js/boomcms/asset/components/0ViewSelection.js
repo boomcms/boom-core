@@ -66,10 +66,6 @@
             this.relatedAlbums = this.selection.getAlbums();
 
             this.template = _.template($(this.templateSelector).html());
-
-            this.listenTo(this.selection, 'destroy', function() {
-                view.close();
-            });
         },
 
         initialize: function(options) {
