@@ -115,7 +115,8 @@
 
                     new BoomCMS.AssetManager.AlbumList({
                         albums: assetPicker.albums,
-                        el: assetPicker.dialog.contents.find('.b-assets-album-list')
+                        el: assetPicker.dialog.contents.find('.b-assets-album-list'),
+                        $container: assetPicker.dialog.contents.find('#b-assets-picker-content')
                     }).render();
 
                     assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
@@ -158,7 +159,8 @@
                 pagination: $pagination,
                 assets: this.assets,
                 params: params,
-                selection: new BoomCMS.Collections.Assets()
+                selection: new BoomCMS.Collections.Assets(),
+                $container: this.dialog.contents.find('#b-assets-picker-content')
             });
 
             view.on('filtered', function(params) {
@@ -174,7 +176,8 @@
             new BoomCMS.AssetManager.ThumbnailGrid({
                 assets: this.assets,
                 selection: new BoomCMS.Collections.Assets(),
-                el: this.picker.find('.b-assets-view-thumbs')
+                el: this.picker.find('.b-assets-view-thumbs'),
+                $container: this.dialog.contents.find('#b-assets-picker-content')
             }).render();
 
             this.picker.attr('data-view', 'assets');

@@ -36,12 +36,6 @@
                 this.assets = this.model.getAssets();
             }
 
-            this.assets.on('destroy', function() {
-                setTimeout(function() {
-                    view.render();
-                }, 0);
-            });
-
             this.model.on('change:slug', function() {
                 albums.add(album);
                 router.navigate('albums/' + album.getSlug(), routerParams);

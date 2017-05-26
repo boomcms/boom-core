@@ -13,15 +13,16 @@
 
             this.assets = options.assets;
             this.selection = options.selection;
+            this.$container = options.$container;
 
-            this.listenTo(this.assets, 'sort add remove sync', this.render);
+            this.listenTo(this.assets, 'sort add remove sync destroy', this.render);
             this.listenTo(this.assets, 'change change:image', this.justify);
 
             this.listenTo(this.assets, 'reset', function() {
                 view.$el.removeClass(view.none).addClass(view.loading);
             });
 
-            $(view.$el[0].ownerDocument).on('scroll', function() {
+            this.$container.on('scroll', function() {
                 if (scrollTimeout !== null) {
                     clearTimeout(scrollTimeout);
                 }

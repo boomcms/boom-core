@@ -43069,8 +43069,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
             this.setAssetsUrl();
 
-            this.assets.on('destroy', function(asset) {
-                album.assets.remove(asset, {silent: true});
+            this.assets.on('destroy', function() {
                 album.set('asset_count', album.get('asset_count') - 1);
             });
 
@@ -43802,9 +43801,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
                 }
             })
             .done(function() {
-                assets.each(function(model) {
-                    model.trigger('destroy');
-                });
+                while (assets.length > 0) {
+                    assets.models[0].trigger('destroy', assets.models[0]);
+                }
             });
         },
     
@@ -43853,7 +43852,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getOrFetch: function(assetId) {
-            var asset = this.get(assetId);
+            var asset = this.findWhere({id: assetId});
 
             if (asset === undefined) {
                 asset = new BoomCMS.Asset({id: assetId});
@@ -48274,8 +48273,9 @@ console.log(offset, this.$counter.width());
                 assetManager.router.goToAsset(asset);
             });
 
-            this.listenTo(assets, 'destroy', function() {
-                assetManager.router.navigate('', {trigger: true});
+            this.listenTo(assets, 'destroy', function(asset) {
+                assetManager.router.goToContext();
+                assetManager.removeFromAlbums(asset);
                 assetManager.selection.reset();
             });  
         },
@@ -48451,12 +48451,23 @@ console.log(offset, this.$counter.width());
             }
         },
 
+        removeFromAlbums: function(asset) {
+            this.albums.each(function(album) {
+                var matched = album.getAssets().findWhere({id: asset.getId()});
+
+                if (matched !== undefined) {
+                    album.remove(matched);
+                }
+            });
+        },
+
         showAlbums: function() {
             var $el = this.$('#b-assets-all-albums > .content');
 
             if ($el.is(':empty')) {
                 var view = new BoomCMS.AssetManager.AlbumList({
-                    albums: this.albums
+                    albums: this.albums,
+                    $container: $(this.$el[0].ownerDocument)
                 });
 
                 $el.html(view.render().el);
@@ -48543,7 +48554,8 @@ console.log(offset, this.$counter.width());
                         model: album,
                         albums: this.albums,
                         router: this.router,
-                        selection: this.selection
+                        selection: this.selection,
+                        $container: $(this.$el[0].ownerDocument)
                     }).render();
                 }
 
@@ -48614,7 +48626,8 @@ console.log(offset, this.$counter.width());
                     pagination: this.$('#b-assets-pagination'),
                     assets: this.assets,
                     params: params,
-                    selection: this.selection
+                    selection: this.selection,
+                    $container: $(this.$el[0].ownerDocument)
                 });
 
             view.on('filtered', function(params) {
@@ -48785,6 +48798,7 @@ console.log(offset, this.$counter.width());
 
             this.albums = options.albums;
             this.selected = options.selected;
+            this.$container = options.$container;
 
             this.template = _.template($('#b-assets-album-list-template').html());
 
@@ -48793,7 +48807,7 @@ console.log(offset, this.$counter.width());
             this.listenTo(this.selected, 'add', this.selectAlbum);
             this.listenTo(this.selected, 'remove', this.unselectAlbum);
 
-            $(this.$el[0].ownerDocument).on('scroll', function() {
+            this.$container.on('scroll', function() {
                 if (scrollTimeout !== null) {
                     clearTimeout(scrollTimeout);
                 }
@@ -49057,6 +49071,10 @@ console.log(offset, this.$counter.width());
             this.trigger('selection', assetIds, section);
         },
 
+        viewSelectionInAlbum: function(album, selection, section) {
+            this.viewSelection(selection, section);
+        },
+
         viewSelectionInSearch: function(queryString, selection, section) {
             this.searchResults(queryString);
             this.viewSelection(selection, section);
@@ -49095,6 +49113,7 @@ console.log(offset, this.$counter.width());
             this.params = options.params;
             this.router = options.router;
             this.selection = options.selection;
+            this.$container = options.$container;
 
             for (var key in this.postData) {
                 this.initialFilters[key] = this.postData[key];
@@ -49132,6 +49151,10 @@ console.log(offset, this.$counter.width());
 
             this.lastPage = Math.ceil(this.assets.total / this.perpage);
 
+            if (this.$pagination.data('jqPagination')) {
+                this.$pagination.jqPagination('destroy');
+            }
+
             this.$pagination.jqPagination({
                 paged: function(page) {
                     view.getPage(page);
@@ -49161,7 +49184,8 @@ console.log(offset, this.$counter.width());
             new BoomCMS.AssetManager.ThumbnailGrid({
                 el: this.$('.b-assets-view-thumbs'),
                 assets: this.assets,
-                selection: this.selection
+                selection: this.selection,
+                $container: this.$container
             }).render();
 
             this.initPagination();
@@ -49353,15 +49377,16 @@ console.log(offset, this.$counter.width());
 
             this.assets = options.assets;
             this.selection = options.selection;
+            this.$container = options.$container;
 
-            this.listenTo(this.assets, 'sort add remove sync', this.render);
+            this.listenTo(this.assets, 'sort add remove sync destroy', this.render);
             this.listenTo(this.assets, 'change change:image', this.justify);
 
             this.listenTo(this.assets, 'reset', function() {
                 view.$el.removeClass(view.none).addClass(view.loading);
             });
 
-            $(view.$el[0].ownerDocument).on('scroll', function() {
+            this.$container.on('scroll', function() {
                 if (scrollTimeout !== null) {
                     clearTimeout(scrollTimeout);
                 }
@@ -49469,12 +49494,6 @@ console.log(offset, this.$counter.width());
             if (!this.model.isNew()) {
                 this.assets = this.model.getAssets();
             }
-
-            this.assets.on('destroy', function() {
-                setTimeout(function() {
-                    view.render();
-                }, 0);
-            });
 
             this.model.on('change:slug', function() {
                 albums.add(album);
@@ -49772,7 +49791,8 @@ console.log(offset, this.$counter.width());
 
                     new BoomCMS.AssetManager.AlbumList({
                         albums: assetPicker.albums,
-                        el: assetPicker.dialog.contents.find('.b-assets-album-list')
+                        el: assetPicker.dialog.contents.find('.b-assets-album-list'),
+                        $container: assetPicker.dialog.contents.find('#b-assets-picker-content')
                     }).render();
 
                     assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
@@ -49815,7 +49835,8 @@ console.log(offset, this.$counter.width());
                 pagination: $pagination,
                 assets: this.assets,
                 params: params,
-                selection: new BoomCMS.Collections.Assets()
+                selection: new BoomCMS.Collections.Assets(),
+                $container: this.dialog.contents.find('#b-assets-picker-content')
             });
 
             view.on('filtered', function(params) {
@@ -49831,7 +49852,8 @@ console.log(offset, this.$counter.width());
             new BoomCMS.AssetManager.ThumbnailGrid({
                 assets: this.assets,
                 selection: new BoomCMS.Collections.Assets(),
-                el: this.picker.find('.b-assets-view-thumbs')
+                el: this.picker.find('.b-assets-view-thumbs'),
+                $container: this.dialog.contents.find('#b-assets-picker-content')
             }).render();
 
             this.picker.attr('data-view', 'assets');

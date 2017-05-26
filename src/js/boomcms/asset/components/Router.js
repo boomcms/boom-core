@@ -102,6 +102,10 @@
             this.trigger('selection', assetIds, section);
         },
 
+        viewSelectionInAlbum: function(album, selection, section) {
+            this.viewSelection(selection, section);
+        },
+
         viewSelectionInSearch: function(queryString, selection, section) {
             this.searchResults(queryString);
             this.viewSelection(selection, section);

@@ -57,8 +57,9 @@
                 assetManager.router.goToAsset(asset);
             });
 
-            this.listenTo(assets, 'destroy', function() {
-                assetManager.router.navigate('', {trigger: true});
+            this.listenTo(assets, 'destroy', function(asset) {
+                assetManager.router.goToContext();
+                assetManager.removeFromAlbums(asset);
                 assetManager.selection.reset();
             });  
         },
@@ -234,12 +235,23 @@
             }
         },
 
+        removeFromAlbums: function(asset) {
+            this.albums.each(function(album) {
+                var matched = album.getAssets().findWhere({id: asset.getId()});
+
+                if (matched !== undefined) {
+                    album.remove(matched);
+                }
+            });
+        },
+
         showAlbums: function() {
             var $el = this.$('#b-assets-all-albums > .content');
 
             if ($el.is(':empty')) {
                 var view = new BoomCMS.AssetManager.AlbumList({
-                    albums: this.albums
+                    albums: this.albums,
+                    $container: $(this.$el[0].ownerDocument)
                 });
 
                 $el.html(view.render().el);
@@ -326,7 +338,8 @@
                         model: album,
                         albums: this.albums,
                         router: this.router,
-                        selection: this.selection
+                        selection: this.selection,
+                        $container: $(this.$el[0].ownerDocument)
                     }).render();
                 }
 
@@ -397,7 +410,8 @@
                     pagination: this.$('#b-assets-pagination'),
                     assets: this.assets,
                     params: params,
-                    selection: this.selection
+                    selection: this.selection,
+                    $container: $(this.$el[0].ownerDocument)
                 });
 
             view.on('filtered', function(params) {

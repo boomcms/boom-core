@@ -11,6 +11,7 @@
 
             this.albums = options.albums;
             this.selected = options.selected;
+            this.$container = options.$container;
 
             this.template = _.template($('#b-assets-album-list-template').html());
 
@@ -19,7 +20,7 @@
             this.listenTo(this.selected, 'add', this.selectAlbum);
             this.listenTo(this.selected, 'remove', this.unselectAlbum);
 
-            $(this.$el[0].ownerDocument).on('scroll', function() {
+            this.$container.on('scroll', function() {
                 if (scrollTimeout !== null) {
                     clearTimeout(scrollTimeout);
                 }

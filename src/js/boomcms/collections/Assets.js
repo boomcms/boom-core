@@ -18,9 +18,9 @@
                 }
             })
             .done(function() {
-                assets.each(function(model) {
-                    model.trigger('destroy');
-                });
+                while (assets.length > 0) {
+                    assets.models[0].trigger('destroy', assets.models[0]);
+                }
             });
         },
     
@@ -69,7 +69,7 @@
         },
 
         getOrFetch: function(assetId) {
-            var asset = this.get(assetId);
+            var asset = this.findWhere({id: assetId});
 
             if (asset === undefined) {
                 asset = new BoomCMS.Asset({id: assetId});

@@ -30,6 +30,7 @@
             this.params = options.params;
             this.router = options.router;
             this.selection = options.selection;
+            this.$container = options.$container;
 
             for (var key in this.postData) {
                 this.initialFilters[key] = this.postData[key];
@@ -67,6 +68,10 @@
 
             this.lastPage = Math.ceil(this.assets.total / this.perpage);
 
+            if (this.$pagination.data('jqPagination')) {
+                this.$pagination.jqPagination('destroy');
+            }
+
             this.$pagination.jqPagination({
                 paged: function(page) {
                     view.getPage(page);
@@ -96,7 +101,8 @@
             new BoomCMS.AssetManager.ThumbnailGrid({
                 el: this.$('.b-assets-view-thumbs'),
                 assets: this.assets,
-                selection: this.selection
+                selection: this.selection,
+                $container: this.$container
             }).render();
 
             this.initPagination();
