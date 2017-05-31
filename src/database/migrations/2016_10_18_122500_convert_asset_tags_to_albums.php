@@ -88,8 +88,10 @@ class ConvertAssetTagsToAlbums extends Migration
 
         foreach ($libraries as $library) {
             if (isset($library->params->tag) && !empty($library->params->tag)) {
-                if (isset($albums[$library->params->tag])) {
-                    $library->params->album = $albums[$library->params->tag]->getId();
+                $tag = is_array($library->params->tag) ? $library->params->tag[0] : $library->params->tag;
+
+                if (isset($albums[$tag])) {
+                    $library->params->album = $albums[$tag]->getId();
                 }
 
                 unset($library->params->tag);
