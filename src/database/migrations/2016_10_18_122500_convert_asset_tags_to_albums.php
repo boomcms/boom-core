@@ -21,9 +21,9 @@ class ConvertAssetTagsToAlbums extends Migration
 
         Schema::create('albums', function (Blueprint $table) {
             $table->increments(Album::ATTR_ID);
-            $table->string(Album::ATTR_NAME);
+            $table->string(Album::ATTR_NAME, 100);
             $table->string(Album::ATTR_DESCRIPTION)->nullable();
-            $table->string(Album::ATTR_SLUG)->unique();
+            $table->string(Album::ATTR_SLUG, 100)->unique();
             $table->string(Album::ATTR_ORDER)->nullable();
             $table->integer(Album::ATTR_ASSET_COUNT)->unsigned()->default(0);
             $table->integer(Album::ATTR_SITE)->unsigned()->references('id')->on('sites')->onUpdate('CASCADE')->onDelete('CASCADE');
