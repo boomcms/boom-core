@@ -69,7 +69,8 @@
         },
 
         getOrFetch: function(assetId) {
-            var asset = this.findWhere({id: assetId});
+            var assetId = parseInt(assetId),
+                asset = this.findWhere({id: assetId});
 
             if (asset === undefined) {
                 asset = new BoomCMS.Asset({id: assetId});

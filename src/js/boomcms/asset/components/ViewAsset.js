@@ -47,7 +47,8 @@
             this.selection = new BoomCMS.Collections.Assets([this.model]);
 
             this.listenTo(this.model, 'sync', function() {
-                view.render(view.getSection());
+                view.render();
+                view.viewSection(view.getSection());
             });
 
             this.listenTo(this.model, 'revert', function() {

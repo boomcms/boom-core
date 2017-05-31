@@ -15,6 +15,10 @@
         this.assetsUploaded = function(assets) {
             var assetPicker = this;
 
+            if (this.activeAlbum) {
+                this.activeAlbum.addAssets(assets);
+            }
+
             if (assets.length === 1) {
                 this.pick(assets.at(0));
             } else {
@@ -154,6 +158,8 @@
             var assetPicker = this,
                 $pagination = this.picker.find('#b-assets-pagination');
 
+            this.activeAlbum = null;
+
             var view = new BoomCMS.AssetManager.SearchResults({
                 el: this.picker,
                 pagination: $pagination,
@@ -210,16 +216,21 @@
         };
 
         this.viewAlbum = function(slug) {
-            var album = this.albums.findBySlug(slug);
+            var view = this,
+                album = this.albums.findBySlug(slug);
+
+            this.activeAlbum = album;
 
             this.assets.fetch({
                 data: {
                     album: album.getId()
                 },
-                reset: true
+                reset: true,
+                complete: function() {
+                    view.showAssets();
+                }
             });
-
-            this.showAssets();
+            
             this.picker.find('#b-assets-pagination').hide();
         };
 

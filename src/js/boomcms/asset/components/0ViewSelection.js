@@ -118,7 +118,8 @@
         viewAlbums: function() {
             var view = new BoomCMS.AssetManager.AlbumList({
                 albums: this.albums,
-                selected: this.relatedAlbums
+                selected: this.relatedAlbums,
+                $container: $(this.$el[0].ownerDocument)
             });
 
             this.$('#b-asset-albums > div').html(view.render().el);

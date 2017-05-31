@@ -20,8 +20,7 @@
         },
 
         initialize: function(options) {
-            var view = this,
-                album = this.model,
+            var album = this.model,
                 albums = options.albums,
                 router = options.router,
                 routerParams = this.model.isNew() ? {trigger: true} : {replace: true};
@@ -72,7 +71,8 @@
                 new BoomCMS.AssetManager.ThumbnailGrid({
                     assets: this.assets,
                     selection: this.options.selection,
-                    el: this.$('.b-assets-view-thumbs')
+                    el: this.$('.b-assets-view-thumbs'),
+                    $container: this.options.$container
                 }).render();
             }
 

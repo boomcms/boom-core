@@ -43852,7 +43852,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getOrFetch: function(assetId) {
-            var asset = this.findWhere({id: assetId});
+            var assetId = parseInt(assetId),
+                asset = this.findWhere({id: assetId});
 
             if (asset === undefined) {
                 asset = new BoomCMS.Asset({id: assetId});
@@ -48767,7 +48768,8 @@ console.log(offset, this.$counter.width());
         viewAlbums: function() {
             var view = new BoomCMS.AssetManager.AlbumList({
                 albums: this.albums,
-                selected: this.relatedAlbums
+                selected: this.relatedAlbums,
+                $container: $(this.$el[0].ownerDocument)
             });
 
             this.$('#b-asset-albums > div').html(view.render().el);
@@ -49479,8 +49481,7 @@ console.log(offset, this.$counter.width());
         },
 
         initialize: function(options) {
-            var view = this,
-                album = this.model,
+            var album = this.model,
                 albums = options.albums,
                 router = options.router,
                 routerParams = this.model.isNew() ? {trigger: true} : {replace: true};
@@ -49531,7 +49532,8 @@ console.log(offset, this.$counter.width());
                 new BoomCMS.AssetManager.ThumbnailGrid({
                     assets: this.assets,
                     selection: this.options.selection,
-                    el: this.$('.b-assets-view-thumbs')
+                    el: this.$('.b-assets-view-thumbs'),
+                    $container: this.options.$container
                 }).render();
             }
 
@@ -49616,7 +49618,8 @@ console.log(offset, this.$counter.width());
             this.selection = new BoomCMS.Collections.Assets([this.model]);
 
             this.listenTo(this.model, 'sync', function() {
-                view.render(view.getSection());
+                view.render();
+                view.viewSection(view.getSection());
             });
 
             this.listenTo(this.model, 'revert', function() {
@@ -49690,6 +49693,10 @@ console.log(offset, this.$counter.width());
 
         this.assetsUploaded = function(assets) {
             var assetPicker = this;
+
+            if (this.activeAlbum) {
+                this.activeAlbum.addAssets(assets);
+            }
 
             if (assets.length === 1) {
                 this.pick(assets.at(0));
@@ -49830,6 +49837,8 @@ console.log(offset, this.$counter.width());
             var assetPicker = this,
                 $pagination = this.picker.find('#b-assets-pagination');
 
+            this.activeAlbum = null;
+
             var view = new BoomCMS.AssetManager.SearchResults({
                 el: this.picker,
                 pagination: $pagination,
@@ -49886,16 +49895,21 @@ console.log(offset, this.$counter.width());
         };
 
         this.viewAlbum = function(slug) {
-            var album = this.albums.findBySlug(slug);
+            var view = this,
+                album = this.albums.findBySlug(slug);
+
+            this.activeAlbum = album;
 
             this.assets.fetch({
                 data: {
                     album: album.getId()
                 },
-                reset: true
+                reset: true,
+                complete: function() {
+                    view.showAssets();
+                }
             });
-
-            this.showAssets();
+            
             this.picker.find('#b-assets-pagination').hide();
         };
 
