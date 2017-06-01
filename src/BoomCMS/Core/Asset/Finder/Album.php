@@ -17,9 +17,10 @@ class Album extends BaseFilter
     /**
      * @param AlbumContract|int $album
      */
-    public function __construct($album)
+    public function __construct(... $albums)
     {
-        $this->album = ($album instanceof AlbumContract) ? $album : AlbumFacade::find($album);
+        $this->album = (count($albums) === 1 && $albums[0] instanceof AlbumContract) ?
+            $albums : AlbumFacade::find($albums);
     }
 
     /**

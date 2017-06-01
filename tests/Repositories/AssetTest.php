@@ -6,6 +6,7 @@ use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
 use BoomCMS\Repositories\Asset as AssetRepository;
 use BoomCMS\Repositories\AssetVersion as AssetVersionRepository;
+use BoomCMS\Support\Facades\Album as AlbumFacade;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Mockery as m;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -115,6 +116,28 @@ class AssetTest extends BaseRepositoryTest
             ->andReturn($extensions);
 
         $this->assertEquals($extensions, $this->repository->extensions());
+    }
+
+    public function testDeleteWithArrayOfIds()
+    {
+        AlbumFacade::shouldReceive('removeAssetsFromCounts')
+            ->once()
+            ->with([1, 2, 3]);
+
+        parent::testDeleteWithArrayOfIds();
+    }
+
+    public function testDeleteWithModel()
+    {
+        $this->model
+            ->shouldReceive('getId')
+            ->andReturn(1);
+
+        AlbumFacade::shouldReceive('removeAssetsFromCounts')
+            ->once()
+            ->with([$this->model->getId()]);
+
+        parent::testDeleteWithModel();
     }
 
     public function testFile()

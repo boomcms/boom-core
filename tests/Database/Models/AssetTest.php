@@ -198,9 +198,9 @@ class AssetTest extends AbstractModelTestCase
             ->andReturnSelf();
 
         $query
-            ->shouldReceive('where')
+            ->shouldReceive('whereIn')
             ->once()
-            ->with('albums.id', $album->getId());
+            ->with('albums.id', [$album->getId()]);
 
         $this->assertEquals($query, $asset->scopeWhereAlbum($query, $album));
     }

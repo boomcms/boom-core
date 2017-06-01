@@ -283,11 +283,15 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         return $this->getType() === 'video';
     }
 
-    public function scopeWhereAlbum(Builder $query, AlbumInterface $album): Builder
+    public function scopeWhereAlbum(Builder $query, $albums): Builder
     {
+        $albumIds = $albums instanceof AlbumInterface ? [$albums->getId()] : $albums->map(function($album) {
+            return $album->getId();
+        });
+
         return $query
-            ->whereHas('albums', function (Builder $query) use ($album) {
-                $query->where('albums.id', $album->getId());
+            ->whereHas('albums', function (Builder $query) use ($albumIds) {
+                $query->whereIn('albums.id', $albumIds);
             });
     }
 

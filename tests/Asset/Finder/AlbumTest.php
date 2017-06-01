@@ -18,8 +18,8 @@ class AlbumTest extends AbstractTestCase
 
         AlbumFacade::shouldReceive('find')
             ->once()
-            ->with($albumId)
-            ->andReturn($album);
+            ->with([$albumId])
+            ->andReturn([$album]);
 
         $filter = new Filter($albumId);
 
@@ -32,7 +32,7 @@ class AlbumTest extends AbstractTestCase
 
         AlbumFacade::shouldReceive('find')
             ->once()
-            ->with($albumId)
+            ->with([$albumId])
             ->andReturn(null);
 
         $filter = new Filter($albumId);
@@ -56,7 +56,7 @@ class AlbumTest extends AbstractTestCase
 
         $query->shouldReceive('whereAlbum')
             ->once()
-            ->with($album)
+            ->with([$album])
             ->andReturnSelf();
 
         $this->assertEquals($query, $filter->build($query));
