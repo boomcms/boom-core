@@ -65,7 +65,7 @@
         <div id="b-assets-view-album-container"></div>
     </div>
 
-    <div id="b-assets-filmroll"></div>
+    <div id="b-assets-navigation"></div>
 </div>
 
 <script type="text/template" id="b-assets-view-template">

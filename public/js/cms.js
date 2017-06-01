@@ -48597,12 +48597,12 @@ console.log(offset, this.$counter.width());
             setTimeout(function() {
                 var position = assetManager.assets.position(asset),
                     assets = assetManager.assets,
-                    filmrollStart = position > 5 ? position - 5 : 0,
-                    filmrollEnd = position > 5 ? position + 4 : position + 4 + (5 - position);
+                    navStart = position > 5 ? position - 5 : 0,
+                    navEnd = position > 5 ? position + 4 : position + 4 + (5 - position);
 
                 if (assets.length > 1) {
-                    assetManager.viewFilmroll(new BoomCMS.Collections.Assets(assets.slice(filmrollStart, filmrollEnd)));
-                    assetManager.assetViews[assetId].$('.b-assets-view').removeClass('no-filmroll');
+                    assetManager.viewNavigation(new BoomCMS.Collections.Assets(assets.slice(navStart, navEnd)));
+                    assetManager.assetViews[assetId].$('.b-assets-view').removeClass('no-navigation');
 
                     assetManager.filmroll.select(asset);
                 } else {
@@ -48611,11 +48611,14 @@ console.log(offset, this.$counter.width());
             }, 0);
         },
 
-        viewFilmroll: function(assets) {
-            this.filmroll = new BoomCMS.AssetManager.Filmroll({
-                assets: assets,
-                selection: this.selection
-            }).render();
+        viewNavigation: function(assets) {
+            if (this.navigation === undefined) {
+                this.navigation = new BoomCMS.AssetManager.Navigation({
+                    selection: this.selection
+                });
+            }
+
+            this.navigation.render(assets);
         },
 
         viewSearchResults: function(params) {
@@ -48883,56 +48886,19 @@ console.log(offset, this.$counter.width());
 ;(function($, BoomCMS) {
     'use strict';
 
-    BoomCMS.AssetManager.Filmroll = Backbone.View.extend({
-        el: '#b-assets-filmroll',
+    BoomCMS.AssetManager.Navigation = Backbone.View.extend({
+        el: '#b-assets-navigation',
 
         initialize: function(options) {
-            this.assets = options.assets;
             this.selection = options.selection;
-
-            this.listenTo(this.assets, 'reset add destory sync', this.render);
         },
 
-        /**
-         * Init the filmroll plugin
-         *
-         * These needs to be called after render() and after the element has been inserted into the DOM
-         *
-         * Otherwise Filmroll calculates its width as 0
-         *
-         * @returns {undefined}
-         */
-        initFilmroll: function() {
-            this.filmroll = new FilmRoll({
-                container: this.$el.find('> div'),
-                scroll: false,
-                configure_load: true,
-                resize: false,
-                pager: false
-            });
+        render: function(assets) {
+            var $container = $container = $('<div></div>');
 
-            for (var i = 0; i < this.thumbnails.length; i++) {
-                this.thumbnails[i].$el.css('width', '100%');
-                this.thumbnails[i].loadImage();
-            }
-        },
+            this.$el.html('');
 
-        render: function() {
-            var filmroll = this,
-                selection = this.selection,
-                $container = $('<div></div>');
-
-            if (this.assets.length <= 1) {
-                this.$el.html('');
-
-                return this;
-            }
-
-            this.thumbnails = [];
-
-            this.$el.html($container);
-
-            this.assets.each(function(asset) {
+            assets.each(function(asset) {
                 var thumbnail = new BoomCMS.AssetManager.Thumbnail({
                         model: asset
                     }).render(),
@@ -48942,31 +48908,12 @@ console.log(offset, this.$counter.width());
 
                 $container.append($('<div></div>').append(thumbnail.$el));
 
-                if (selection.get(asset.getId())) {
-                    thumbnail.select();
-                }
-
-                filmroll.thumbnails.push(thumbnail);
+//                if (selection.get(asset.getId())) {
+//                    thumbnail.select();
+//                }
             });
 
-            this.initFilmroll();
-
-            return this;
-        },
-
-        select: function(asset) {
-            var view = this;
-
-            setTimeout(function() {
-                var $el = view.$el.find('[data-asset="' + asset.getId() + '"]').parent().parent();
-
-                if ($el.length) {
-                    view.filmroll.moveToChild($el[0]);
-                    view.$el.find('.film_roll_pager .active').addClass('selected');
-                } 
-            }, 0);
-
-            return this;
+            this.$el.html($container);
         }
     });
 }(jQuery, BoomCMS));

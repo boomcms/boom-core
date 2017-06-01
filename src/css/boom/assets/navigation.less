@@ -1,4 +1,4 @@
-#b-assets-filmroll {
+#b-assets-navigation {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -7,7 +7,6 @@
     z-index: 10;
     padding: 2rem 0 4rem 0;
     background: @lightest-grey;
-    display: none;
     border-top: 1px solid @darkest-grey;
 
     &:empty {
@@ -17,28 +16,25 @@
     > div {
         width: 100%;
         height: 100%;
-    }
-
-    .film_roll_child {
-        position: relative;
-        height: 100%;
         overflow: hidden;
-        padding: 1rem;
-        border: 1px solid transparent;
-
-        &.active {
-            border-color: @darkest-grey;
-        }
-
-        &.selected {
-            border-color: @red;
-        }
 
         > div {
             position: relative;
+            display: inline-block;
+            float: left;
+            position: relative;
             height: 100%;
-            width: 100%;
             overflow: hidden;
+            padding: 1rem;
+            border: 1px solid transparent;
+
+            &.active {
+                border-color: @darkest-grey;
+            }
+
+            &.selected {
+                border-color: @red;
+            }
         }
     }
 
