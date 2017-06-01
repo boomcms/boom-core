@@ -115,7 +115,7 @@ class Library extends BaseChunk
     protected function show()
     {
         return View::make($this->viewPrefix."library.$this->template", [
-            'tags'    => $this->getTags(),
+            'albums'  => $this->getAlbums(),
             'params'  => $this->getParams(),
             'assets'  => function () {
                 return $this->getAssets();
