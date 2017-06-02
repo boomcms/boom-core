@@ -4,7 +4,6 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
-use BoomCMS\Database\Models\Site;
 use DateTime;
 
 class AssetTest extends AbstractModelTestCase
