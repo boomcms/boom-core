@@ -8,8 +8,9 @@
             this.selection = options.selection;
         },
 
-        render: function(assets) {
-            var $container = $container = $('<div></div>');
+        render: function(assets, active) {
+            var $container = $container = $('<div></div>'),
+                thumbnails = [];
 
             this.$el.html('');
 
@@ -23,10 +24,16 @@
 
                 $container.append($('<div></div>').append(thumbnail.$el));
 
-//                if (selection.get(asset.getId())) {
-//                    thumbnail.select();
-//                }
+                if (asset.getId() === active.getId()) {
+                    thumbnail.$el.parent().addClass('active');
+                }
+
+                thumbnails.push(thumbnail);
             });
+
+            for (var i = 0; i < thumbnails.length; i++) {
+                thumbnails[i].loadImageOnce();
+            }
 
             this.$el.html($container);
         }

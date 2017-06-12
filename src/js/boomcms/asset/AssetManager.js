@@ -383,24 +383,24 @@
                     navEnd = position > 5 ? position + 4 : position + 4 + (5 - position);
 
                 if (assets.length > 1) {
-                    assetManager.viewNavigation(new BoomCMS.Collections.Assets(assets.slice(navStart, navEnd)));
-                    assetManager.assetViews[assetId].$('.b-assets-view').removeClass('no-navigation');
+                    var navigationAssets = new BoomCMS.Collections.Assets(assets.slice(navStart, navEnd));
 
-                    assetManager.filmroll.select(asset);
+                    assetManager.viewNavigation(navigationAssets, asset);
+                    assetManager.assetViews[assetId].$('.b-assets-view').removeClass('no-navigation');
                 } else {
-                    assetManager.assetViews[assetId].$('.b-assets-view').addClass('no-filmroll');
+                    assetManager.assetViews[assetId].$('.b-assets-view').addClass('no-navigation');
                 }
             }, 0);
         },
 
-        viewNavigation: function(assets) {
+        viewNavigation: function(assets, active) {
             if (this.navigation === undefined) {
                 this.navigation = new BoomCMS.AssetManager.Navigation({
                     selection: this.selection
                 });
             }
 
-            this.navigation.render(assets);
+            this.navigation.render(assets, active);
         },
 
         viewSearchResults: function(params) {
