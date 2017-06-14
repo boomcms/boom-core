@@ -26,7 +26,7 @@ class ChunkLocationTest extends AbstractTestCase
         $chunk = $this->getChunk();
         $chunk->title();
 
-        $this->assertArraySubset(['data-boom-title' => true], $chunk->attributes());
+        $this->assertArraySubset(['data-boom-title' => 1], $chunk->attributes());
     }
 
     public function testEnablingAddressSection()
@@ -34,7 +34,7 @@ class ChunkLocationTest extends AbstractTestCase
         $chunk = $this->getChunk();
         $chunk->address();
 
-        $this->assertArraySubset(['data-boom-address' => true], $chunk->attributes());
+        $this->assertArraySubset(['data-boom-address' => 1], $chunk->attributes());
     }
 
     public function testGetLocation()
