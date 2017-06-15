@@ -210,6 +210,20 @@ class InternalTest extends AbstractTestCase
         $this->assertFalse($link->isExternal());
     }
 
+    public function testIsValidReturnsFalseIfNoPage()
+    {
+        $pageId = 1;
+
+        PageFacade::shouldReceive('find')
+            ->once()
+            ->with($pageId)
+            ->andReturn(null);
+
+        $link = new Link($pageId);
+
+        $this->assertFalse($link->isValid());
+    }
+
     public function testIsValidDependsOnWhetherPageIsDeleted()
     {
         $page = m::mock(Page::class);

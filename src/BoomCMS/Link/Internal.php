@@ -88,7 +88,7 @@ class Internal extends Link
 
     public function isValid(): bool
     {
-        return !$this->page->isDeleted();
+        return $this->page !== null && !$this->page->isDeleted();
     }
 
     /**
