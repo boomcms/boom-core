@@ -32,7 +32,7 @@ class AssetSelectionController extends Controller
         }
 
         if (count($assets) === 1) {
-            return new Response(AssetFacade::file($assets[0]), 200, [
+            return Response::make(AssetFacade::file($assets[0]), 200, [
                 'content-disposition' => 'download; filename="'.$assets[0]->getOriginalFilename().'"',
             ]);
         }
