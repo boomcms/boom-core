@@ -46871,7 +46871,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.$links.find('li').each(function() {
                 var $this = $(this);
 
-                if ( ! $this.find('.delete').length) {
+                if (!$this.find('.delete').length) {
                     $('<a class="delete fa fa-trash-o" href="#"></a>').appendTo($this);
                 }
             });
@@ -46884,7 +46884,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .done(function(link) {
                     var $a = $('<a href="#"></a>')
                         .attr('data-page-id', link.getPageId())
-                        .attr('data-title', link.getPageId() ? '' : link.getTitle())
+                        .attr('data-title', '')
                         .attr('data-url', link.getUrl())
                         .attr('data-asset', '')
                         .text(link.getTitle());
