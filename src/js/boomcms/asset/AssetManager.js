@@ -190,8 +190,9 @@
                     } else {
                         assetManager.assets = album.getAssets();
                         assetManager.bindAssetEvents(assetManager.assets);
-                        assetManager.assets.fetchOnce();
-                        assetManager.viewAsset(assetId, section);
+                        assetManager.assets.fetchOnce(function() {
+                            assetManager.viewAsset(assetId, section);
+                        });
                     }
                 })
                 .on('route:viewAlbum', function(slug) {

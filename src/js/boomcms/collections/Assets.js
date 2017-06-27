@@ -38,11 +38,14 @@
             window.location = url;
         },
 
-        fetchOnce: function() {
+        fetchOnce: function(success) {
             if (this.fetched === false) {
                 this.fetched = true;
 
-                this.fetch({reset: true});
+                this.fetch({
+                    reset: true,
+                    success: success
+                });
             }
         },
 

@@ -43821,11 +43821,14 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             window.location = url;
         },
 
-        fetchOnce: function() {
+        fetchOnce: function(success) {
             if (this.fetched === false) {
                 this.fetched = true;
 
-                this.fetch({reset: true});
+                this.fetch({
+                    reset: true,
+                    success: success
+                });
             }
         },
 
@@ -48408,8 +48411,9 @@ console.log(offset, this.$counter.width());
                     } else {
                         assetManager.assets = album.getAssets();
                         assetManager.bindAssetEvents(assetManager.assets);
-                        assetManager.assets.fetchOnce();
-                        assetManager.viewAsset(assetId, section);
+                        assetManager.assets.fetchOnce(function() {
+                            assetManager.viewAsset(assetId, section);
+                        });
                     }
                 })
                 .on('route:viewAlbum', function(slug) {
