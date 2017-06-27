@@ -48625,8 +48625,10 @@ console.log(offset, this.$counter.width());
             this.assets = new BoomCMS.Collections.Assets();
             this.bindAssetEvents(this.assets);
 
-            var router = this.router,
-                view = new BoomCMS.AssetManager.SearchResults({
+            if (this.searchResultsView === undefined) {
+                var router = this.router;
+
+                this.searchResultsView = new BoomCMS.AssetManager.SearchResults({
                     el: this.$('#b-assets-search-results'),
                     pagination: this.$('#b-assets-pagination'),
                     assets: this.assets,
@@ -48635,9 +48637,14 @@ console.log(offset, this.$counter.width());
                     $container: $(this.$el[0].ownerDocument)
                 });
 
-            view.on('filtered', function(params) {
-                router.goToSearchResults(params);
-            });
+                this.searchResultsView.on('filtered', function(params) {
+                    router.goToSearchResults(params);
+                });
+            } else {
+                this.searchResultsView.setParams(params);
+            }
+
+            this.searchResultsView.getAssets();
         },
 
         viewSelection: function(section) {
@@ -49042,7 +49049,6 @@ console.log(offset, this.$counter.width());
     'use strict';
 
     BoomCMS.AssetManager.SearchResults = BoomCMS.AssetManager.ViewSelection.extend({
-        initialFilters: {},
         page: 1,
 
         bind: function() {
@@ -49067,18 +49073,13 @@ console.log(offset, this.$counter.width());
         initialize: function(options) {
             this.assets = options.assets;
             this.$pagination = options.pagination;
-            this.params = options.params;
             this.router = options.router;
             this.selection = options.selection;
             this.$container = options.$container;
 
-            for (var key in this.postData) {
-                this.initialFilters[key] = this.postData[key];
-            }
-
             this.bind();
             this.setAssetsPerPage();
-            this.getAssets();
+            this.setParams(options.params);
         },
 
         getAssets: function() {
@@ -49099,6 +49100,7 @@ console.log(offset, this.$counter.width());
 
         getPage: function(page) {
             this.params['page'] = page;
+            this.page = page;
 
             this.trigger('filtered', this.params);
         },
@@ -49126,6 +49128,7 @@ console.log(offset, this.$counter.width());
 
             if (page < this.lastPage) {
                 this.getPage(page + 1);
+                this.initPagination();
             }
         },
 
@@ -49134,6 +49137,7 @@ console.log(offset, this.$counter.width());
 
             if (page > 1) {
                 this.getPage(page - 1);
+                this.initPagination();
             }
         },
 
@@ -49161,6 +49165,14 @@ console.log(offset, this.$counter.width());
             }
 
             this.perpage = perpage;
+        },
+
+        setParams: function(params) {
+            this.params = params;
+
+            if (typeof this.params.page !== 'undefined') {
+                this.page = parseInt(this.params.page);
+            }
         }
     });
 }(jQuery, Backbone, BoomCMS));
@@ -49794,18 +49806,24 @@ console.log(offset, this.$counter.width());
 
             this.activeAlbum = null;
 
-            var view = new BoomCMS.AssetManager.SearchResults({
-                el: this.picker,
-                pagination: $pagination,
-                assets: this.assets,
-                params: params,
-                selection: new BoomCMS.Collections.Assets(),
-                $container: this.dialog.contents.find('#b-assets-picker-content')
-            });
+            if (this.searchResultsView === undefined) {
+                this.searchResultsView = new BoomCMS.AssetManager.SearchResults({
+                    el: this.picker,
+                    pagination: $pagination,
+                    assets: this.assets,
+                    params: params,
+                    selection: new BoomCMS.Collections.Assets(),
+                    $container: this.dialog.contents.find('#b-assets-picker-content')
+                });
 
-            view.on('filtered', function(params) {
-                assetPicker.search(params);
-            });
+                this.searchResultsView.on('filtered', function(params) {
+                    assetPicker.search(params);
+                });
+            } else {
+                this.searchResultsView.setParams(params);
+            }
+
+            this.searchResultsView.getAssets();
 
             $pagination.show();
 

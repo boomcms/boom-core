@@ -2,7 +2,6 @@
     'use strict';
 
     BoomCMS.AssetManager.SearchResults = BoomCMS.AssetManager.ViewSelection.extend({
-        initialFilters: {},
         page: 1,
 
         bind: function() {
@@ -27,18 +26,13 @@
         initialize: function(options) {
             this.assets = options.assets;
             this.$pagination = options.pagination;
-            this.params = options.params;
             this.router = options.router;
             this.selection = options.selection;
             this.$container = options.$container;
 
-            for (var key in this.postData) {
-                this.initialFilters[key] = this.postData[key];
-            }
-
             this.bind();
             this.setAssetsPerPage();
-            this.getAssets();
+            this.setParams(options.params);
         },
 
         getAssets: function() {
@@ -59,6 +53,7 @@
 
         getPage: function(page) {
             this.params['page'] = page;
+            this.page = page;
 
             this.trigger('filtered', this.params);
         },
@@ -86,6 +81,7 @@
 
             if (page < this.lastPage) {
                 this.getPage(page + 1);
+                this.initPagination();
             }
         },
 
@@ -94,6 +90,7 @@
 
             if (page > 1) {
                 this.getPage(page - 1);
+                this.initPagination();
             }
         },
 
@@ -121,6 +118,14 @@
             }
 
             this.perpage = perpage;
+        },
+
+        setParams: function(params) {
+            this.params = params;
+
+            if (typeof this.params.page !== 'undefined') {
+                this.page = parseInt(this.params.page);
+            }
         }
     });
 }(jQuery, Backbone, BoomCMS));

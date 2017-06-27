@@ -160,18 +160,24 @@
 
             this.activeAlbum = null;
 
-            var view = new BoomCMS.AssetManager.SearchResults({
-                el: this.picker,
-                pagination: $pagination,
-                assets: this.assets,
-                params: params,
-                selection: new BoomCMS.Collections.Assets(),
-                $container: this.dialog.contents.find('#b-assets-picker-content')
-            });
+            if (this.searchResultsView === undefined) {
+                this.searchResultsView = new BoomCMS.AssetManager.SearchResults({
+                    el: this.picker,
+                    pagination: $pagination,
+                    assets: this.assets,
+                    params: params,
+                    selection: new BoomCMS.Collections.Assets(),
+                    $container: this.dialog.contents.find('#b-assets-picker-content')
+                });
 
-            view.on('filtered', function(params) {
-                assetPicker.search(params);
-            });
+                this.searchResultsView.on('filtered', function(params) {
+                    assetPicker.search(params);
+                });
+            } else {
+                this.searchResultsView.setParams(params);
+            }
+
+            this.searchResultsView.getAssets();
 
             $pagination.show();
 

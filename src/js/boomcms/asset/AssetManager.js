@@ -407,8 +407,10 @@
             this.assets = new BoomCMS.Collections.Assets();
             this.bindAssetEvents(this.assets);
 
-            var router = this.router,
-                view = new BoomCMS.AssetManager.SearchResults({
+            if (this.searchResultsView === undefined) {
+                var router = this.router;
+
+                this.searchResultsView = new BoomCMS.AssetManager.SearchResults({
                     el: this.$('#b-assets-search-results'),
                     pagination: this.$('#b-assets-pagination'),
                     assets: this.assets,
@@ -417,9 +419,14 @@
                     $container: $(this.$el[0].ownerDocument)
                 });
 
-            view.on('filtered', function(params) {
-                router.goToSearchResults(params);
-            });
+                this.searchResultsView.on('filtered', function(params) {
+                    router.goToSearchResults(params);
+                });
+            } else {
+                this.searchResultsView.setParams(params);
+            }
+
+            this.searchResultsView.getAssets();
         },
 
         viewSelection: function(section) {
