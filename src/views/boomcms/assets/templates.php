@@ -27,7 +27,7 @@
     </li>
     
     <li class='search'>
-        <a href='#search/type=document&order=created_at desc'>
+        <a href='#search/type=doc&order=created_at desc'>
             <div>
                 <h3><?= trans('boomcms::asset.search-shortcuts.all-documents') ?></h3>
                 <span class='fa fa-search'></span>
