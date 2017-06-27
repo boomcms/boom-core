@@ -48,8 +48,8 @@ class Location extends BaseChunk
     public function attributes()
     {
         return [
-            $this->attributePrefix.'address' => $this->address,
-            $this->attributePrefix.'title'   => $this->title,
+            $this->attributePrefix.'address' => (int) $this->address,
+            $this->attributePrefix.'title'   => (int) $this->title,
         ];
     }
 
