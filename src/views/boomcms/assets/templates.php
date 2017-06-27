@@ -1,4 +1,49 @@
 <script type="text/template" id="b-assets-album-list-template">
+    <li class='search without-albums'>
+        <a href='#search/withoutalbums=1&order=created_at desc'>
+            <div>
+                <h3><?= trans('boomcms::asset.search-shortcuts.without-albums') ?></h3>
+                <span class='fa fa-search'></span>
+            </div>
+        </a>
+    </li>
+
+    <li class='search'>
+        <a href='#search/order=created_at desc'>
+            <div>
+                <h3><?= trans('boomcms::asset.search-shortcuts.all') ?></h3>
+                <span class='fa fa-search'></span>
+            </div>
+        </a>
+    </li>
+    
+    <li class='search'>
+        <a href='#search/type=image&order=created_at desc'>
+            <div>
+                <h3><?= trans('boomcms::asset.search-shortcuts.all-images') ?></h3>
+                <span class='fa fa-search'></span>
+            </div>
+        </a>
+    </li>
+    
+    <li class='search'>
+        <a href='#search/type=document&order=created_at desc'>
+            <div>
+                <h3><?= trans('boomcms::asset.search-shortcuts.all-documents') ?></h3>
+                <span class='fa fa-search'></span>
+            </div>
+        </a>
+    </li>
+    
+    <li class='search'>
+        <a href='#search/type=video&order=created_at desc'>
+            <div>
+                <h3><?= trans('boomcms::asset.search-shortcuts.all-videos') ?></h3>
+                <span class='fa fa-search'></span>
+            </div>
+        </a>
+    </li>
+
     <% for (var i = 0; i < albums.models.length; i++) { %>
         <% var album = albums.models[i] %>
 

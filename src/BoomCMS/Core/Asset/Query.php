@@ -13,6 +13,7 @@ class Query extends BaseQuery
         'extension'                  => Finder\Extension::class,
         'uploadedby'                 => Finder\UploadedBy::class,
         'uploaded-by'                => Finder\UploadedBy::class,
+        'withoutalbums'              => Finder\WithoutAlbums::class,
     ];
 
     public function count()

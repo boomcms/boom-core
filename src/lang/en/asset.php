@@ -83,6 +83,13 @@ return [
         'uploaded-by'     => 'Uploaded by',
         'uploaded-by-all' => 'Uploaded by anyone',
     ],
+    'search-shortcuts' => [
+        'all'            => 'All assets',
+        'all-images'     => 'All images',
+        'all-documents'  => 'All documents',
+        'all-videos'     => 'All videos',
+        'without-albums' => 'Without albums'
+    ],
     'sort' => [
         'created_at desc'      => 'Upload time: most recent first',
         'created_at asc'       => 'Upload time: oldest first',

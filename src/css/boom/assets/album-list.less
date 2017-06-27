@@ -9,6 +9,34 @@
         list-style-type: none;
         width: 100%;
 
+        &.search {
+            a {
+                background: @blue;
+
+                &:before {
+                    display: none;
+                }
+
+                &:hover, &:focus {
+                    h3,span {
+                        color: @black;
+                    }
+                }
+
+                span {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    color: @white;
+                    font-size: 3rem;
+                }
+            }
+        }
+
+        &.without-albums a {
+            background: @red;
+        }
+
         a {
             height: 20rem;
             width: 100%;
