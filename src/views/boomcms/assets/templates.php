@@ -16,7 +16,7 @@
             </div>
         </a>
     </li>
-    
+
     <li class='search'>
         <a href='#search/type=image&order=created_at desc'>
             <div>
@@ -25,7 +25,7 @@
             </div>
         </a>
     </li>
-    
+
     <li class='search'>
         <a href='#search/type=doc&order=created_at desc'>
             <div>
@@ -34,7 +34,7 @@
             </div>
         </a>
     </li>
-    
+
     <li class='search'>
         <a href='#search/type=video&order=created_at desc'>
             <div>
