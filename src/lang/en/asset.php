@@ -88,7 +88,7 @@ return [
         'all-images'     => 'All images',
         'all-documents'  => 'All documents',
         'all-videos'     => 'All videos',
-        'without-albums' => 'Without albums'
+        'without-albums' => 'Without albums',
     ],
     'sort' => [
         'created_at desc'      => 'Upload time: most recent first',
