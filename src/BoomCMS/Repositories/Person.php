@@ -154,6 +154,11 @@ class Person extends Repository implements PersonRepositoryInterface, UserProvid
      */
     public function validateCredentials(Authenticatable $person, array $credentials)
     {
+        // User cannot be validated if they don't have a password
+        if (empty($person->getAuthPassword())) {
+            return false;
+        }
+
         return $this->hasher->check($credentials['password'], $person->getAuthPassword());
     }
 }

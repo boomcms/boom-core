@@ -2,6 +2,6 @@
 
 return [
     'password' => [
-        'subject' => 'BoomCMS Password Reset',
+        'subject' => ':site Password Reset',
     ],
 ];

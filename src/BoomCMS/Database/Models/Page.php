@@ -154,7 +154,7 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
 
     public function addTag(TagInterface $tag)
     {
-        $this->tags()->attach($tag);
+        $this->tags()->syncWithoutDetaching([$tag->getId()]);
 
         return $this;
     }

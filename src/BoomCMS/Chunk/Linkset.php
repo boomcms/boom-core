@@ -39,7 +39,7 @@ class Linkset extends BaseChunk
         ];
 
         foreach ($this->options as $key => $value) {
-            $attrs[$this->attributePrefix.$key] = $value;
+            $attrs[$this->attributePrefix.$key] = (int) $value;
         }
 
         return $attrs;

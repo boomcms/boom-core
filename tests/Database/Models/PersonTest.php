@@ -2,10 +2,12 @@
 
 namespace BoomCMS\Tests\Database\Models;
 
+use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mockery as m;
 
 class PersonTest extends AbstractModelTestCase
@@ -42,6 +44,27 @@ class PersonTest extends AbstractModelTestCase
         }
 
         $this->assertEquals($person, $person->addSites($sites));
+    }
+
+    public function testAddGroup()
+    {
+        $group = new Group();
+        $group->{Group::ATTR_ID} = 1;
+
+        $relation = m::mock(BelongsToMany::class);
+        $person = m::mock(Person::class)->makePartial();
+
+        $person
+            ->shouldReceive('groups')
+            ->once()
+            ->andReturn($relation);
+
+        $relation
+            ->shouldReceive('syncWithoutDetaching')
+            ->once()
+            ->with([$group->getId()]);
+
+        $this->assertEquals($person, $person->addGroup($group));
     }
 
     public function testGetAuthIdentifier()

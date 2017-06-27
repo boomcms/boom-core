@@ -70,7 +70,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
      */
     public function addGroup(GroupInterface $group)
     {
-        $this->groups()->attach($group);
+        $this->groups()->syncWithoutDetaching([$group->getId()]);
 
         return $this;
     }
