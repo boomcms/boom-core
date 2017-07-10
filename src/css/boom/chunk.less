@@ -40,6 +40,31 @@
 			width: 50%;
 		}
 
+        .ui-datepicker-prev, .ui-datepicker-next {
+            top: 6px;
+
+            &:before {
+                font-family: 'FontAwesome';
+                display: block;
+            }
+        }
+
+        .ui-datepicker-prev {
+            left: 0;
+
+            &:before {
+                content: '\f053';
+            }
+        }
+
+        .ui-datepicker-next {
+            right: 0;
+
+            &:before {
+                content: '\f054';
+            }
+        }
+
 		.ui-datepicker-calendar {
 			td a.ui-state-active {
 				border-color: @red;

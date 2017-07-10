@@ -44147,6 +44147,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         };
 
         BoomCMS.Dialog.prototype.init = function() {
+            var dialog = this;
+
             $(top.window).trigger('boom:dialog:open');
 
             this
@@ -44156,7 +44158,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
             $(document).on('keydown', function(e) {
                 if (e.which === $.ui.keyCode.ESCAPE) {
-                    BoomCMS.Dialog.cancel();
+                    dialog.cancel();
                     e.stopPropagation();
                 }
             });
@@ -46871,7 +46873,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.$links.find('li').each(function() {
                 var $this = $(this);
 
-                if ( ! $this.find('.delete').length) {
+                if (!$this.find('.delete').length) {
                     $('<a class="delete fa fa-trash-o" href="#"></a>').appendTo($this);
                 }
             });
@@ -46884,7 +46886,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .done(function(link) {
                     var $a = $('<a href="#"></a>')
                         .attr('data-page-id', link.getPageId())
-                        .attr('data-title', link.getPageId() ? '' : link.getTitle())
+                        .attr('data-title', '')
                         .attr('data-url', link.getUrl())
                         .attr('data-asset', '')
                         .text(link.getTitle());
@@ -47036,6 +47038,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     link.getPageId() ? $div.addClass(className) : $div.removeClass(className);
 
                     linksetEditor.dialog.contents.find('.b-linkset-target input').val(link.getUrl());
+                    linksetEditor.resize();
                 });
         };
 

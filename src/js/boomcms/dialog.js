@@ -77,6 +77,8 @@
         };
 
         BoomCMS.Dialog.prototype.init = function() {
+            var dialog = this;
+
             $(top.window).trigger('boom:dialog:open');
 
             this
@@ -86,7 +88,7 @@
 
             $(document).on('keydown', function(e) {
                 if (e.which === $.ui.keyCode.ESCAPE) {
-                    BoomCMS.Dialog.cancel();
+                    dialog.cancel();
                     e.stopPropagation();
                 }
             });
