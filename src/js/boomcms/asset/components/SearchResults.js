@@ -39,7 +39,7 @@
             var data = {
                 limit: this.perpage,
                 page: this.page
-            };
+            }, search = this;
 
             for (var key in this.params) {
                 data[key] = this.params[key];
@@ -47,7 +47,10 @@
             
             this.assets.fetch({
                 data: data,
-                reset: true
+                reset: true,
+                success: function() {
+                    search.trigger('fetched', search.assets);
+                }
             });
         },
 

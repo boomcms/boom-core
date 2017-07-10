@@ -48626,6 +48626,8 @@ console.log(offset, this.$counter.width());
         },
 
         viewSearchResults: function(params) {
+            var assetManager = this;
+
             this.assets = new BoomCMS.Collections.Assets();
             this.bindAssetEvents(this.assets);
 
@@ -48639,6 +48641,11 @@ console.log(offset, this.$counter.width());
                     params: params,
                     selection: this.selection,
                     $container: $(this.$el[0].ownerDocument)
+                });
+
+                this.searchResultsView.on('fetched', function(assets) {
+                    assetManager.assets = assets;
+                    assetManager.bindAssetEvents(assetManager.assets);
                 });
 
                 this.searchResultsView.on('filtered', function(params) {
@@ -49090,7 +49097,7 @@ console.log(offset, this.$counter.width());
             var data = {
                 limit: this.perpage,
                 page: this.page
-            };
+            }, search = this;
 
             for (var key in this.params) {
                 data[key] = this.params[key];
@@ -49098,7 +49105,10 @@ console.log(offset, this.$counter.width());
             
             this.assets.fetch({
                 data: data,
-                reset: true
+                reset: true,
+                success: function() {
+                    search.trigger('fetched', search.assets);
+                }
             });
         },
 

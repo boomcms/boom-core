@@ -405,6 +405,8 @@
         },
 
         viewSearchResults: function(params) {
+            var assetManager = this;
+
             this.assets = new BoomCMS.Collections.Assets();
             this.bindAssetEvents(this.assets);
 
@@ -418,6 +420,11 @@
                     params: params,
                     selection: this.selection,
                     $container: $(this.$el[0].ownerDocument)
+                });
+
+                this.searchResultsView.on('fetched', function(assets) {
+                    assetManager.assets = assets;
+                    assetManager.bindAssetEvents(assetManager.assets);
                 });
 
                 this.searchResultsView.on('filtered', function(params) {
