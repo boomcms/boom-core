@@ -47038,6 +47038,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     link.getPageId() ? $div.addClass(className) : $div.removeClass(className);
 
                     linksetEditor.dialog.contents.find('.b-linkset-target input').val(link.getUrl());
+                    linksetEditor.resize();
                 });
         };
 
