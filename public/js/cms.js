@@ -44147,6 +44147,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         };
 
         BoomCMS.Dialog.prototype.init = function() {
+            var dialog = this;
+
             $(top.window).trigger('boom:dialog:open');
 
             this
@@ -44156,7 +44158,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
             $(document).on('keydown', function(e) {
                 if (e.which === $.ui.keyCode.ESCAPE) {
-                    BoomCMS.Dialog.cancel();
+                    dialog.cancel();
                     e.stopPropagation();
                 }
             });
