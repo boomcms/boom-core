@@ -47795,7 +47795,7 @@ console.log(offset, this.$counter.width());
         };
 
         BoomCMS.Link.prototype.getAsset = function() {
-            var assetId = this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, '$1');
+            var assetId = this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)(\/(view|download|thumb))?/i, '$1');
 
             return new BoomCMS.Asset({id: assetId});
         };
@@ -47922,16 +47922,11 @@ console.log(offset, this.$counter.width());
                             linkPicker.setAssetPreview(asset);
                         });
                 })
-                .on('focus', '#b-linkpicker-add-asset select', function() {
-                    var $this = $(this);
-
-                    $this.data('previous', $this.find('option:selected').val());
-                })
                 .on('change', '#b-linkpicker-add-asset select', function() {
                     if (linkPicker.link.isAsset()) {
                         var $this = $(this),
                             action = $this.find('option:selected').val(),
-                            url = linkPicker.externalUrl.val().replace($this.data('previous'), action);
+                            url = linkPicker.link.getAsset().getUrl(action);
 
                         linkPicker.externalUrl.val(url);
                     }
@@ -48038,7 +48033,7 @@ console.log(offset, this.$counter.width());
                     .find('option[value="' + this.link.getAssetAction() + '"]')
                     .attr('selected', 'selected');
 
-                $('a[href=#b-linkpicker-add-asset]').click();
+                $('a[href="#b-linkpicker-add-asset"]').click();
             }
         };
 
