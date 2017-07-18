@@ -76,7 +76,7 @@ abstract class Link implements LinkableInterface
      */
     public function getFeatureImageId(): int
     {
-        return $this->attrs['asset_id'] ?? 0;
+        return (int) $this->attrs['asset_id'] ?? 0;
     }
 
     /**
