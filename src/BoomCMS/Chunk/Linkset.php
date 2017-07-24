@@ -81,6 +81,12 @@ class Linkset extends BaseChunk
         $this->links = $this->attrs['links'] ?? [];
 
         foreach ($this->links as $i => &$link) {
+            if (!isset($link['target_page_id']) && !isset($link['url'])) {
+                unset($this->links[$i]);
+
+                continue;
+            }
+
             $target = empty($link['target_page_id']) ? $link['url'] : $link['target_page_id'];
 
             $link = Link::factory($target, $link);
