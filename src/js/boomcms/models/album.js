@@ -2,6 +2,10 @@
     'use strict';
 
     BoomCMS.Album = BoomCMS.Model.extend({
+        defaults: {
+            asset_count: 0
+        },
+
         urlRoot: BoomCMS.urlRoot + 'album',
 
         addAssets: function(assets) {

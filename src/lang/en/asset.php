@@ -2,6 +2,8 @@
 
 return [
     'albums'          => 'Albums',
+    'album-create'    => 'Create album',
+    'album-name'      => 'Album name',
     'all'             => 'All assets',
     'close'           => 'Close',
     'attributes'      => 'Attributes',

@@ -4,6 +4,7 @@
 	BoomCMS.Collections.Albums = Backbone.Collection.extend({
 		model: BoomCMS.Album,
 		url: BoomCMS.urlRoot + 'album',
+
 		comparator: function(album) {
             return album.getName().toLowerCase();
         },

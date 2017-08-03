@@ -68,11 +68,6 @@
             var assetManager = this;
 
             this.$el
-                .on('click', '#b-assets-create-album', function(e) {
-                    e.preventDefault();
-
-                    assetManager.router.goTo('albums/create');
-                })
                 .on('submit', '#b-assets-search form', function(e) {
                     e.preventDefault();
 

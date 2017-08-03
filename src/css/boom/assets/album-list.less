@@ -2,6 +2,7 @@
     margin: -1rem;
     padding: 0;
     overflow: hidden;
+    clear: both;
 
     li {
         padding: 1rem;
@@ -9,7 +10,7 @@
         list-style-type: none;
         width: 100%;
 
-        &.search {
+        &.search, &.b-assets-create-album {
             a {
                 background: @blue;
 
@@ -29,6 +30,25 @@
                     left: 0;
                     color: @white;
                     font-size: 3rem;
+                }
+            }
+        }
+
+        &.b-assets-create-album {
+            a {
+                background: @darkest-grey;
+
+                &:hover, &:focus {
+                    h3, span {
+                        color: @blue;
+                    }
+                }
+
+                span {
+                    font-size: 10rem;
+                    left: 50%;
+                    bottom: 1rem;
+                    transform: translateX(-50%);
                 }
             }
         }

@@ -41,16 +41,44 @@
 
                     selection.download(filename);
                 })
-                .on('click', '#b-asset-albums a', function(e) {
+                .on('click', '.b-assets-create-album a', function(e) {
+                    e.preventDefault();
+
+                    view.createAlbumAndAddSelection();
+                })
+                .on('click', '#b-asset-albums [data-album] a', function(e) {
                     e.preventDefault();
 
                     var albumId = $(this).parent().attr('data-album'),
                         album = view.albums.get(albumId);
 
-                    view.toggleAlbum(album);
+                    if (album !== undefined) {
+                        view.toggleAlbum(album);
+                    }
                 });
 
             this.$el.ui();
+        },
+
+        createAlbumAndAddSelection: function() {
+            var view = this,
+                now = new Date();
+                
+            this.albums.create({
+                name: 'Untitled Album ' + now.getFullYear() + now.getMonth() + now.getDate()
+            }, {
+                success: function(album) {
+                    view.addAlbum(album);
+
+//                    setTimeout(function() {
+//                        console.log(view.$('#b-asset-albums [data-album="' + album.getId() + '"]'));
+//
+//                        view.$('#b-asset-albums').animate({
+//                            scrollTop: view.$('#b-asset-albums [data-album="' + album.getId() + '"]').offset().top
+//                        }, 500);
+//                    }, 0);
+                }
+            });
         },
 
         getSection: function() {
@@ -58,8 +86,6 @@
         },
 
         init: function(options) {
-            var view = this;
-
             this.section = options.section;
             this.router = options.router;
             this.albums = options.albums;

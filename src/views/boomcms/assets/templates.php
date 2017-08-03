@@ -1,4 +1,11 @@
 <script type="text/template" id="b-assets-album-list-template">
+    <li class="b-assets-create-album">
+        <a href="#albums/create">
+            <h3><?= trans('boomcms::asset.album-create') ?></h3>
+            <span class="fa fa-plus"></span>
+        </a>
+    </li>
+
     <li class='search without-albums'>
         <a href='#search/withoutalbums=1&order=created_at desc'>
             <div>
@@ -132,4 +139,18 @@
     <a href="#" class="edit" tabindex="0">
         <span class="fa fa-edit"></span>
     </a>
+</script>
+
+<script type="text/template" id="b-album-name-template">
+    <form>
+        <label>
+            <p><?= trans('boomcms::asset.album-name') ?></p>
+            <input type="text" name="filename" value="<?= trans('boomcms::asset.album-name') ?>" />
+        </label>
+
+        <?= $button('save', 'create-album', [
+            'type'  => 'submit',
+            'class' => 'b-button-withtext',
+        ]) ?>
+    </form>    
 </script>

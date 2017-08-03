@@ -53,10 +53,6 @@
                 <h1 class='bigger'><?= trans('boomcms::asset.albums') ?></h1>
             </div>
 
-            <div class='controls'>
-                <?= $button('plus', 'album-create', ['id' => 'b-assets-create-album', 'class' => 'small dark']) ?>
-            </div>
-
             <div class='content'></div>
         </div>
 
