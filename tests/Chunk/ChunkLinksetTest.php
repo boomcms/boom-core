@@ -11,6 +11,13 @@ use Mockery as m;
 
 class ChunkLinksetTest extends AbstractTestCase
 {
+    public function testGetLinksRemovesLinksWithoutPageIdOrUrl()
+    {
+        $chunk = $this->chunk(['links' => [['title' => 'Invalid link']]]);
+
+        $this->assertEquals([], $chunk->getLinks());
+    }
+
     public function testGetLinksReturnsEmptyArrayWhenNoLinksAreGiven()
     {
         $chunk = $this->chunk();
