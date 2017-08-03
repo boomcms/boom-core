@@ -47,7 +47,7 @@ class Asset extends BaseChunk
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             $this->attributePrefix.'target'       => $this->target(),
@@ -74,9 +74,11 @@ class Asset extends BaseChunk
      *
      * @return int
      */
-    public function getAssetId()
+    public function getAssetId(): int
     {
-        return isset($this->attrs['asset_id']) ? $this->attrs['asset_id'] : 0;
+        $assetId = $this->attrs['asset_id'] ?? 0;
+
+        return (int) $assetId;
     }
 
     /**
@@ -84,9 +86,9 @@ class Asset extends BaseChunk
      *
      * @return string
      */
-    public function getCaption()
+    public function getCaption(): string
     {
-        return isset($this->attrs['caption']) ? $this->attrs['caption'] : '';
+        return $this->attrs['caption'] ?? '';
     }
 
     /**
@@ -108,9 +110,9 @@ class Asset extends BaseChunk
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
-        return isset($this->attrs['title']) ? $this->attrs['title'] : '';
+        return$this->attrs['title'] ?? '';
     }
 
     /**
@@ -118,7 +120,7 @@ class Asset extends BaseChunk
      *
      * @return bool
      */
-    public function hasContent()
+    public function hasContent(): bool
     {
         return !empty($this->getAssetId());
     }
@@ -141,7 +143,7 @@ class Asset extends BaseChunk
      *
      * @return int
      */
-    public function target()
+    public function target(): int
     {
         return $this->hasContent() ? $this->getAssetId() : 0;
     }

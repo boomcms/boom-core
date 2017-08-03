@@ -87,16 +87,11 @@
                             linkPicker.setAssetPreview(asset);
                         });
                 })
-                .on('focus', '#b-linkpicker-add-asset select', function() {
-                    var $this = $(this);
-
-                    $this.data('previous', $this.find('option:selected').val());
-                })
                 .on('change', '#b-linkpicker-add-asset select', function() {
                     if (linkPicker.link.isAsset()) {
                         var $this = $(this),
                             action = $this.find('option:selected').val(),
-                            url = linkPicker.externalUrl.val().replace($this.data('previous'), action);
+                            url = linkPicker.link.getAsset().getUrl(action);
 
                         linkPicker.externalUrl.val(url);
                     }
@@ -203,7 +198,7 @@
                     .find('option[value="' + this.link.getAssetAction() + '"]')
                     .attr('selected', 'selected');
 
-                $('a[href=#b-linkpicker-add-asset]').click();
+                $('a[href="#b-linkpicker-add-asset"]').click();
             }
         };
 
