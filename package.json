@@ -3,10 +3,11 @@
   "version": "7.1.0-dev",
   "dependencies": {
     "bower": "~1.4.1",
+    "geodesy": "~1.0.2",
     "grunt": "~0.4.5",
     "grunt-contrib-copy": "~0.8.0",
-    "geodesy": "~1.0.2",
-    "jstimezonedetect": "~1.0.6"
+    "jstimezonedetect": "~1.0.6",
+    "tinymce": "^4.6.5"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

@@ -45,12 +45,6 @@
             ]) ?>
         </div>
 	</div>
-
-    <div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-text">
-        <?php foreach (BoomCMS\UI\TextEditorToolbar::getAvailableButtonSets() as $set): ?>
-            <?= new BoomCMS\UI\TextEditorToolbar($set) ?>
-        <?php endforeach ?>
-    </div>
 </div>
 
 <div id="b-page-settings-toolbar">

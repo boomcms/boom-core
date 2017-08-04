@@ -18,6 +18,12 @@ module.exports = function(grunt) {
                         src: ['bower_components/leaflet/dist/images/*'],
                         dest: 'public/images/',
                         filter: 'isFile'
+                    },
+                    {
+                        expand: true,
+                        src: ['**'],
+                        cwd: 'node_modules/tinymce/skins/lightgray/',
+                        dest: 'public/tinymce/skins/lightgray/'
                     }
                 ]
             }
@@ -52,7 +58,30 @@ module.exports = function(grunt) {
                 ],
                 dest: 'public/js/template-manager.js'
 			},
-			dist: {
+			tinymce: {
+                src: [
+                    'node_modules/tinymce/tinymce.min.js',
+                    'node_modules/tinymce/themes/modern/theme.min.js',
+                    'node_modules/tinymce/plugins/autolink/plugin.min.js',
+                    'node_modules/tinymce/plugins/anchor/plugin.min.js',
+                    'node_modules/tinymce/plugins/autoresize/plugin.min.js',
+                    'node_modules/tinymce/plugins/charmap/plugin.min.js',
+                    'node_modules/tinymce/plugins/emoticons/plugin.min.js',
+                    'node_modules/tinymce/plugins/hr/plugin.min.js',
+                    'node_modules/tinymce/plugins/image/plugin.min.js',
+                    'node_modules/tinymce/plugins/table/plugin.min.js',
+                    'node_modules/tinymce/plugins/link/plugin.min.js',
+                    'node_modules/tinymce/plugins/lists/plugin.min.js',
+                    'node_modules/tinymce/plugins/paste/plugin.min.js',
+                    'node_modules/tinymce/plugins/searchreplace/plugin.min.js',
+                    'node_modules/tinymce/plugins/contextmenu/plugin.min.js',
+                    'node_modules/tinymce/plugins/textpattern/plugin.min.js',
+                    'node_modules/tinymce/plugins/save/plugin.min.js',
+                    'node_modules/tinymce/plugins/media/plugin.min.js'
+                ],
+                dest: 'public/js/tinymce.js'
+			},
+            dist: {
 	  			src: [
 					'bower_components/jquery/dist/jquery.js',
 					'bower_components/jquery-ui/jquery-ui.js',
@@ -115,14 +144,6 @@ module.exports = function(grunt) {
 					'src/js/boomcms/asset/justify.js',
 					'src/js/boomcms/asset/tagSearch.js',
 					'src/js/boomcms/group/permissionsEditor.js',
-					'bower_components/wysihtml/dist/wysihtml-toolbar.js',
-					'src/js/wysihtml5/parser_rules/full.js',
-					'src/js/wysihtml5/parser_rules/inline.js',
-					'src/js/wysihtml5/commands/insertBoomAsset.js',
-					'src/js/wysihtml5/commands/createBoomLink.js',
-					'src/js/wysihtml5/commands/cta.js',
-					'src/js/wysihtml5/commands/insertSuperscript.js',
-					'src/js/wysihtml5/commands/insertSubscript.js',
 					'src/js/jquery/jqpagination.js',
 					'src/js/boomcms/page/manager.js'
 				],
@@ -205,7 +226,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.registerTask('build-css', ['less', 'autoprefixer:no_dest', 'cssmin']);
-	grunt.registerTask('build-js', ['concat:dist', 'concat:asset-manager', 'concat:people-manager', 'concat:template-manager', 'uglify']);
+	grunt.registerTask('build-js', ['concat:dist', 'concat:tinymce', 'concat:asset-manager', 'concat:people-manager', 'concat:template-manager', 'uglify']);
 	grunt.registerTask('dist', ['copy', 'build-css', 'build-js']);
 	grunt.registerTask('default',['watch']);
 };

@@ -35,6 +35,9 @@ $.widget('boom.pageTitle', $.ui.chunk, {
                     self.updateLengthCounter(self.getLength());
                 }, 0);
             })
+            .on('blur', function() {
+                self.removeTitleLengthCounter();
+            })
             .on('focus', function() {
                 if (self.isUntitled()) {
                     self.element.text('');
@@ -81,9 +84,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
     getCounterPosition: function() {
         var offset = this.element.offset();
-console.log(offset, this.$counter.width());
+
         if ((offset.left - 60) > this.$counter.width()) {
-            console.log('hello');
             return {
                 top : offset.top + 'px',
                 left : (offset.left - 60 - this.$counter.width()) + 'px'

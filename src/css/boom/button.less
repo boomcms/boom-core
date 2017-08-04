@@ -1,124 +1,116 @@
 html.boom .b-button, .b-button {
-	font-weight: normal;
-	font-size: 1em;
-	width: 50px;
-	height: 50px;
-	margin: 0;
-	background: transparent;
-	position: relative;
-	padding: 0;
-	border: 0;
-	color: @white;
-	border-radius: 0;
-	cursor: pointer;
+    font-weight: normal;
+    font-size: 1em;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    background: transparent;
+    position: relative;
+    padding: 0;
+    border: 0;
+    color: @white;
+    border-radius: 0;
+    cursor: pointer;
 
-	&:disabled {
-		opacity: 0.35;
-		cursor: initial;
+    &:disabled {
+        opacity: 0.35;
+        cursor: initial;
 
-		&:hover, &:focus {
-			color: @white;
-		}
-	}
+        &:hover, &:focus {
+            color: @white;
+        }
+    }
 
-	&:hover, &:focus {
-		color: @red;
-	}
+    &:hover, &:focus {
+        color: @red;
+    }
 
-	&.b-button-withtext {
-		width: auto;
+    &.b-button-withtext {
+        width: auto;
 
-		.b-button-icon {
-			left: 1.5rem;
-			transform: translateY(-50%);
-		}
+        .b-button-icon {
+            left: 1.5rem;
+            transform: translateY(-50%);
+        }
 
-		.b-button-text, .ui-button-text {
-			text-indent: 0;
-			margin-left: 50px;
-			padding: 0 5px 0 0;
+        .b-button-text, .ui-button-text {
+            text-indent: 0;
+            margin-left: 50px;
+            padding: 0 5px 0 0;
 
-			.b-button-text, .ui-button-text {
-				padding: 0;
-				margin-left: 0;
-			}
-		}
-	}
+            .b-button-text, .ui-button-text {
+                padding: 0;
+                margin-left: 0;
+            }
+        }
+    }
 
-	&.b-button-textonly {
-		width: auto;
-		text-indent: 0;
+    &.b-button-textonly {
+        width: auto;
+        text-indent: 0;
 
-		.b-button-icon {
-			display: none;
-		}
+        .b-button-icon {
+            display: none;
+        }
 
-		.b-button-text, .ui-button-text {
-			text-indent: 0;
-			margin-right: 5px;
-		}
-	}
+        .b-button-text, .ui-button-text {
+            text-indent: 0;
+            margin-right: 5px;
+        }
+    }
 
-	&.small {
-		width: 30px;
-		height: 30px;
-	}
+    &.small {
+        width: 30px;
+        height: 30px;
+    }
 
-	&.dark {
-		color: @dark-grey;
+    &.dark {
+        color: @dark-grey;
 
-		&:hover, &:focus {
-			color: @red;
-		}
-	}
+        &:hover, &:focus {
+            color: @red;
+        }
+    }
 
-	&.fa-2x {
-		font-size: 3.2rem;
-	}
+    &.fa-2x {
+        font-size: 3.2rem;
+    }
 
-	.b-button-text {
-		display: block;
-		padding: 0.4em;
-		text-indent: -9999999px;
-	}
+    .b-button-text {
+        display: block;
+        padding: 0.4em;
+        text-indent: -9999999px;
+    }
 
-	.b-button-icon {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translateX(-50%) translateY(-50%);
-		margin: 0;
-		display: block;
+    .b-button-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        margin: 0;
+        display: block;
 
-		&.fa-eye-slash {
-			color: @pink;
+        &.fa-eye-slash {
+            color: @pink;
 
-			&:hover, &:focus {
-				color: @red;
-			}
-		}
+            &:hover, &:focus {
+                color: @red;
+            }
+        }
 
-		&.fa-h2, &.fa-h3 {
-			&:before {
-				font-size: 1em;
-				font-weight: bold;
-			}
-		}
+        &.fa-h2, &.fa-h3 {
+            &:before {
+                font-size: 1em;
+                font-weight: bold;
+            }
+        }
 
-		&.fa-h2:before {
-			content: 'H2';
-		}
+        &.fa-h2:before {
+            content: 'H2';
+        }
 
-		&.fa-h3:before {
-			content: 'H3';
-		}
-	}
-
-	&.wysihtml5-command-active {
-		color: @pink;
-
-		&:hover, &:focus, &:active {
-			color: @pink;
-		}
-	}
+        &.fa-h3:before {
+            content: 'H3';
+        }
+    }
 }

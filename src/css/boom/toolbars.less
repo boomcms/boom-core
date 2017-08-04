@@ -141,58 +141,6 @@ html.boom body.menu-open, body.menu-open {
 	}
 }
 
-#wysihtml5-toolbar {
-	display: none;
-	width: 100%;
-
-	> div {
-		position: absolute;
-		top: 0;
-		left: 5px;
-		display: none;
-		width: 100%;
-	}
-
-	.b-button-group {
-		position: static;
-		display: block;
-		width: 60px;
-
-		+ .b-button-group {
-			margin-top: 10px;
-			border-top: 1px solid @grey;
-			padding-top: 10px;
-		}
-	}
-
-	.b-button:not(.b-editor-accept):not(.b-editor-cancel) {
-		height: 30px;
-		width: 30px;
-		margin-left: 10px;
-
-		.b-button-icon {
-			font-size: 1em;
-		}
-	}
-
-	[data-wysihtml5-hiddentools="table"] {
-		display: none;
-		position: absolute;
-		right: 0;
-		top: 0;
-		width: 100px;
-
-		&.visible {
-			display: block;
-		}
-
-		a {
-			display: block;
-			text-decoration: none;
-		}
-	}
-}
-
 @media print {
 	.b-toolbar {
 		display: none;
