@@ -45806,7 +45806,7 @@ console.log(asset);
                 inline: true,
                 plugins: 'autolink anchor autoresize charmap emoticons hr image table link lists paste searchreplace contextmenu textpattern save media',
                 menubar: 'edit insert format image table',
-                toolbar: 'save | undo redo | bold italic | bullist numlist | superscript subscript | link hr blockquote emoticons',
+                toolbar: 'save | undo redo | bold italic | bullist numlist | superscript subscript | hr blockquote | image link emoticons',
                 contextmenu: 'link image | charmap | inserttable cell row column deletetable',
                 link_context_toolbar: true,
                 link_class_list: [
