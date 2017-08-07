@@ -25,6 +25,15 @@ interface Album extends Repository
     public function create($name, $description = null): AlbumInterface;
 
     /**
+     * Find an album by name
+     *
+     * @param string $name
+     *
+     * @return null|AlbumInterace
+     */
+    public function findByName($name);
+
+    /**
      * Find all the albums which include the given asset IDs.
      *
      * @param array $assetIds

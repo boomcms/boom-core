@@ -61,6 +61,18 @@ class Album extends Repository implements AlbumRepositoryInterface
     /**
      * {@inheritdoc}
      *
+     * @param string $name
+     *
+     * @return null|AlbumInterface
+     */
+    public function findByName($name)
+    {
+        return $this->model->where(Model::ATTR_NAME, $name)->first();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @param array $assetIds
      *
      * @return Collection
