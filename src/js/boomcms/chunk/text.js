@@ -19,8 +19,6 @@ $.widget('ui.chunkText', $.ui.chunk, {
         var element = this.element,
             self = this;
 
-        this.setOriginalContent();
-
         $.ui.chunk.prototype.bind.call(this);
 
         element.textEditor({
@@ -28,9 +26,8 @@ $.widget('ui.chunkText', $.ui.chunk, {
                 if (!self.hasContent()) {
                     self.remove();
                     self.element.text('Default text.');
-                } else if (self.isEdited()) {
+                } else {
                     self._save();
-                    self.setOriginalContent();
                 }
 
                 $.ui.chunk.prototype.bind.call(self);
@@ -57,21 +54,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
         return this.element.text() !== '' || this.element.find('img').length > 0;
     },
 
-    isEdited: function() {
-        return this.originalContent !== this.element.html();
-    },
-
-    linkClicked: function($a) {
-        if (!$a.is(this.element)) {
-            this.element.blur();
-
-            top.location = $a.attr('href');
-        }
-    },
-
-    setOriginalContent: function() {
-        this.originalContent = this.element.html();
-    },
+    linkClicked: function() {},
 
     _update_html: function() {},
 

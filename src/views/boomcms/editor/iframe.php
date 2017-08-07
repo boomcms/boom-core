@@ -11,4 +11,5 @@
 	</script>
 <?php endif ?>
 
+<script src="/vendor/boomcms/boom-core/js/tinymce.js"></script>
 <iframe id="b-editor-iframe" data-state="<?= $editor->getState() ?>" src='/boomcms/editor/toolbar?page_id=<?= $page_id ?>'></iframe>

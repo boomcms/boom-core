@@ -27,15 +27,12 @@ module.exports = {
       "BoomCMS": true,
       "jQuery": true,
       "$": true,
-      "wysihtml5": true,
       "_": true,
       "Backbone": true,
       "moment": true,
       "Dms": true,
       "L": true,
-      "wysihtml5ParserRules": true,
-      "wysihtml5ParserRulesInline": true,
       "jstz": true,
-      "Caman": true,
+      "Caman": true
     }
 };
