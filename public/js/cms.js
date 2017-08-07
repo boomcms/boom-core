@@ -45908,7 +45908,7 @@ console.log(asset);
                             poster: asset.getUrl('thumb'),
                             width: asset.getWidth(),
                             height: asset.getHeight()
-                    });
+                        });
                     }
                 });
         } else {
@@ -45921,28 +45921,33 @@ console.log(asset);
                             alt: asset.getTitle(),
                             width: asset.getWidth(),
                             height: asset.getHeight()
-                    });
+                        });
                     }
                 });
         }
     },
 
     save: function() {
-        this._trigger('edit', this.element.html());
+        this._trigger('edit', this.editor.getContent());
     },
 
-    setup: function(ed) {
+    setup: function(editor) {
         var element = this.element;
 
-        ed
-        .on('focus', function() {
-            element.removeClass('b-editable');
-        })
-        .on('blur', function() {
-            ed.execCommand('mceSave');
-            element.blur();
-            element.addClass('b-editable');
-        });
+        this.editor = editor;
+
+        editor
+            .on('focus', function() {
+                element.removeClass('b-editable');
+            })
+            .on('blur', function() {
+                // Ensures that any edited images are uploaded before the content is saved.
+                element.find('img').blur();
+
+                editor.execCommand('mceSave');
+                element.blur();
+                element.addClass('b-editable');
+            });
     },
 
     uploadImage: function(blobInfo, success, failure) {
