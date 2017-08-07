@@ -45940,9 +45940,9 @@ console.log(asset);
             top.tinymce.init({
                 target: element[0],
                 inline: true,
-                plugins: 'autolink anchor autoresize charmap emoticons hr image imagetools table link lists paste searchreplace contextmenu textpattern save media',
+                plugins: 'autolink anchor autoresize charmap hr image imagetools table link lists paste searchreplace contextmenu textpattern save media',
                 menubar: 'edit insert format image table',
-                toolbar: 'save | undo redo | bold italic | bullist numlist | superscript subscript | hr blockquote | image link emoticons',
+                toolbar: 'save | undo redo | bold italic | bullist numlist | superscript subscript | hr blockquote | image link',
                 contextmenu: 'link image | charmap | inserttable cell row column deletetable',
                 link_context_toolbar: true,
                 link_class_list: [
@@ -45990,8 +45990,8 @@ console.log(asset);
                 inline: true,
                 menubar: '',
                 oninit: 'setPlainText',
-                plugins: 'save paste charmap emoticons link',
-                toolbar: 'save | undo redo | bold italic | charmap emoticons | link',
+                plugins: 'save paste charmap link',
+                toolbar: 'save | undo redo | bold italic | charmap | link',
                 file_picker_callback: this.filePicker,
                 file_picker_types: 'file',
                 link_context_toolbar: true,
