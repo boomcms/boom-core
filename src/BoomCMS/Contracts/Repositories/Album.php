@@ -25,7 +25,7 @@ interface Album extends Repository
     public function create($name, $description = null): AlbumInterface;
 
     /**
-     * Find an album by name
+     * Find an album by name.
      *
      * @param string $name
      *
@@ -34,7 +34,7 @@ interface Album extends Repository
     public function findByName($name);
 
     /**
-     * Find an album by name, or create it if it doesn't exist
+     * Find an album by name, or create it if it doesn't exist.
      *
      * @param string $name
      *
