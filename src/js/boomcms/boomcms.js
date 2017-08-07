@@ -33,7 +33,7 @@
 
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': this.getCsrfToken()
                 }
             });
 
@@ -43,6 +43,10 @@
             $('#b-topbar, body').ui();
             $('#b-menu-button').boomcmsMenuButton();
         };
+
+        BoomCMS.prototype.getCsrfToken = function() {
+            return $('meta[name="csrf-token"]').attr('content');
+        },
 
         BoomCMS.prototype.getTimezone = function() {
             var key = 'boomcms.timezone';
