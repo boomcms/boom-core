@@ -45,6 +45,8 @@ class AssetController extends Controller
         $asset = AssetFacade::createFromFile($file);
         $asset->setDescription($description);
 
+        AssetFacade::save($asset);
+
         (new Collection([$asset->getId()]))->addTag('Text editor uploads');
 
         return [
