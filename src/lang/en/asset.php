@@ -5,6 +5,7 @@ return [
     'album-create'    => 'Create album',
     'album-name'      => 'Album name',
     'all'             => 'All assets',
+    'automatic-upload-description' => "File automatically uploaded for use in page\n\nUploaded from: :url",
     'close'           => 'Close',
     'attributes'      => 'Attributes',
     'info'            => 'Info',

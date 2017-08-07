@@ -6,6 +6,7 @@ use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +17,41 @@ use Illuminate\View\View;
 class AssetController extends Controller
 {
     use ValidatesAssetUpload;
+
+    /**
+     * Controller for handling a single file upload from TinyMCE.
+     *
+     * @see https://www.tinymce.com/docs/configure/file-image-upload/#automatic_uploads
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function createFromBlob(Request $request, Site $site): array
+    {
+        $this->authorize('uploadAssets', $site);
+
+        $file = $request->file('file');
+        $error = $this->validateFile($file);
+
+        if ($error !== true) {
+            return [];
+        }
+
+        $description = trans('boomcms::asset.automatic-upload-description', [
+            'url' => $request->server('HTTP_REFERER'),
+        ]);
+
+        $asset = AssetFacade::createFromFile($file);
+        $asset->setDescription($description);
+
+        $album = AlbumFacade::findOrCreate('Text editor uploads');
+        $album->addAssets([$asset->getId()]);
+
+        return [
+            'location' => route('asset', ['asset' => $asset]),
+        ];
+    }
 
     /**
      * @param Asset $asset

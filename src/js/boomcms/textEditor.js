@@ -1,5 +1,6 @@
 $.widget('boom.textEditor', {
     skin_url: '/vendor/boomcms/boom-core/tinymce/skins/lightgray',
+    image_upload_url: '/boomcms/asset/create-from-blob',
 
     /**
     * @function
@@ -16,7 +17,7 @@ $.widget('boom.textEditor', {
             top.tinymce.init({
                 target: element[0],
                 inline: true,
-                plugins: 'autolink anchor autoresize charmap emoticons hr image table link lists paste searchreplace contextmenu textpattern save media',
+                plugins: 'autolink anchor autoresize charmap emoticons hr image imagetools table link lists paste searchreplace contextmenu textpattern save media',
                 menubar: 'edit insert format image table',
                 toolbar: 'save | undo redo | bold italic | bullist numlist | superscript subscript | hr blockquote | image link emoticons',
                 contextmenu: 'link image | charmap | inserttable cell row column deletetable',
@@ -54,7 +55,11 @@ $.widget('boom.textEditor', {
                 setup: function(ed) {
                     self.setup(ed);
                 },
-                skin_url: this.skin_url
+                skin_url: this.skin_url,
+                images_upload_handler: function(blobInfo, success, failure) {
+                    self.uploadImage(blobInfo, success, failure);
+                },
+                automatic_uploads: true
             });
         } else if (mode === 'inline') {
             top.tinymce.init({
@@ -146,5 +151,34 @@ $.widget('boom.textEditor', {
             element.blur();
             element.addClass('b-editable');
         });
+    },
+
+    uploadImage: function(blobInfo, success, failure) {
+        var xhr, formData;
+
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', this.image_upload_url);
+        xhr.setRequestHeader('X-CSRF-TOKEN', BoomCMS.getCsrfToken());
+
+        xhr.onload = function() {
+          var json;
+
+          if (xhr.status !== 200) {
+            return failure('HTTP Error: ' + xhr.status);
+          }
+
+          json = JSON.parse(xhr.responseText);
+
+          if (!json || typeof json.location !== 'string') {
+            return failure('Invalid JSON: ' + xhr.responseText);
+          }
+
+          success(json.location);
+        };
+
+        formData = new FormData();
+        formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+        xhr.send(formData);
     }
 });

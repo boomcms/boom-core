@@ -58,6 +58,7 @@ Route::group(['middleware' => [
             Route::get('asset-picker', 'Asset\AssetPickerController@index');
             Route::get('asset-manager', 'Asset\AssetManagerController@index');
             Route::resource('asset', 'Asset\AssetController');
+            Route::post('asset/create-from-blob', 'Asset\AssetController@createFromBlob');
 
             Route::resource('album', 'Asset\AlbumController');
             Route::resource('album/{album}/assets', 'Asset\AlbumAssetsController');

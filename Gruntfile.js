@@ -68,6 +68,7 @@ module.exports = function(grunt) {
                     'node_modules/tinymce/plugins/emoticons/plugin.min.js',
                     'node_modules/tinymce/plugins/hr/plugin.min.js',
                     'node_modules/tinymce/plugins/image/plugin.min.js',
+                    'node_modules/tinymce/plugins/imagetools/plugin.min.js',
                     'node_modules/tinymce/plugins/table/plugin.min.js',
                     'node_modules/tinymce/plugins/link/plugin.min.js',
                     'node_modules/tinymce/plugins/lists/plugin.min.js',
