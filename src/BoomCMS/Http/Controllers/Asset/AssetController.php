@@ -39,7 +39,7 @@ class AssetController extends Controller
         }
 
         $description = trans('boomcms::asset.automatic-upload-description', [
-            'url' => $request->server('HTTP_REFERER'),
+            'url' => $request->input('url'),
         ]);
 
         $asset = AssetFacade::createFromFile($file);

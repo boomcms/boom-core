@@ -45970,6 +45970,7 @@ console.log(asset);
 
         formData = new FormData();
         formData.append('file', blobInfo.blob(), blobInfo.filename());
+        formData.append('url', top.location.url);
 
         xhr.send(formData);
     }
