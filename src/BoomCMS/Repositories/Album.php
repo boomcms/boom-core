@@ -73,6 +73,20 @@ class Album extends Repository implements AlbumRepositoryInterface
     /**
      * {@inheritdoc}
      *
+     * @param string $name
+     *
+     * @return AlbumInterface
+     */
+    public function findOrCreate($name): AlbumInterface
+    {
+        $album = $this->findByName($name);
+
+        return ($album === null) ? $this->create($name) : $album;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @param array $assetIds
      *
      * @return Collection

@@ -83,4 +83,38 @@ class AlbumTest extends BaseRepositoryTest
             $this->assertEquals($album, $this->repository->findByName($name));
         }
     }
+
+    public function testFindOrCreate()
+    {
+        $album = new Album();
+
+        $albums = [
+            'test album name'   => $album,
+            'no matching album' => null,
+        ];
+
+        $this->model
+            ->shouldReceive('create')
+            ->once()
+            ->with([
+                Album::ATTR_NAME        => 'no matching album',
+                Album::ATTR_DESCRIPTION => null,
+            ])
+            ->andReturn($album);
+
+        foreach ($albums as $name => $returnValue) {
+            $this->model
+                ->shouldReceive('where')
+                ->once()
+                ->with(Album::ATTR_NAME, $name)
+                ->andReturnSelf();
+
+            $this->model
+                ->shouldReceive('first')
+                ->once()
+                ->andReturn($returnValue);
+
+            $this->assertEquals($album, $this->repository->findOrCreate($name));
+        }
+    }
 }
