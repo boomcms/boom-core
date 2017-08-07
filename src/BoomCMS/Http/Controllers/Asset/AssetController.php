@@ -44,6 +44,7 @@ class AssetController extends Controller
 
         $asset = AssetFacade::createFromFile($file);
         $asset->setDescription($description);
+        AssetFacade::save($asset);
 
         $album = AlbumFacade::findOrCreate('Text editor uploads');
         $album->addAssets([$asset->getId()]);
