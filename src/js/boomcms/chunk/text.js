@@ -22,7 +22,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
         $.ui.chunk.prototype.bind.call(this);
 
         element.textEditor({
-            edit: function() {
+            save: function() {
                 if (!self.hasContent()) {
                     self.remove();
                     self.element.text('Default text.');

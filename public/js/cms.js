@@ -46018,7 +46018,8 @@ console.log(asset);
                 setup: function(ed) {
                     self.setup(ed);
                 },
-                skin_url: this.skin_url
+                skin_url: this.skin_url,
+                custom_ui_selector: '#b-title-length'
             });
         }
     },
@@ -46059,19 +46060,27 @@ console.log(asset);
     },
 
     save: function() {
-        this._trigger('edit', this.editor.getContent());
+        this._trigger('save', this.editor.getContent());
     },
 
     setup: function(editor) {
-        var element = this.element;
+        var textEditor = this,
+            element = this.element;
 
         this.editor = editor;
 
         editor
+            .on('change undo redo', function(e) {
+                textEditor._trigger('change', editor.getContent());
+            })
             .on('focus', function() {
+                textEditor._trigger('focus');
+
                 element.removeClass('b-editable');
             })
             .on('blur', function() {
+                textEditor._trigger('blur');
+
                 // Ensures that any edited images are uploaded before the content is saved.
                 element.find('img').blur();
 
@@ -46348,7 +46357,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
         $.ui.chunk.prototype.bind.call(this);
 
         element.textEditor({
-            edit: function() {
+            save: function() {
                 if (!self.hasContent()) {
                     self.remove();
                     self.element.text('Default text.');
@@ -47647,24 +47656,30 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     /* The length at which the title won't save */
     hardLimit: 100,
 
-    saveOnBlur: false,
-
     bind: function() {
         $.ui.chunk.prototype.bind.call(this);
 
-        var self = this,
-            oldText = this.getTitle();
+        var self = this;
+
+        this.createLengthCounter(self.getLength());
 
         this.element.textEditor({
-            edit: function() {
-                var title = self.getTitle();
-
-                if (title !== '' && title !== oldText && title.length <= self.hardLimit) {
-                    self._save(title, oldText);
+            blur: function() {
+                self.hideTitleLengthCounter();
+            },
+            change: function() {
+                self.updateCounterPosition();
+                self.updateLengthCounter(self.getLength());
+            },
+            focus: function() {
+                if (self.isUntitled()) {
+                    self.element.text('');
                 }
 
-                oldText = title;
-                self.removeTitleLengthCounter();
+                self.showLengthCounter();
+            },
+            save: function() {
+                self._save();
             }
         });
 
@@ -47674,37 +47689,21 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     self.updateCounterPosition();
                     self.updateLengthCounter(self.getLength());
                 }, 0);
-            })
-            .on('blur', function() {
-                self.removeTitleLengthCounter();
-            })
-            .on('focus', function() {
-                if (self.isUntitled()) {
-                    self.element.text('');
-                }
-
-                if (!self.lengthCounterCreated) {
-                    self.createLengthCounter(self.getLength());
-                    self.lengthCounterCreated = true;
-                }
             });
     },
 
     createLengthCounter: function() {
-        this.$counter = $counter = $('<div id="b-title-length"><span></span></div>');
+        this.$counter = $counter = $('<div id="b-title-length"><span></span></div>').hide();
 
         $(top.document)
-                .find('body')
-                .first()
-                .append($counter);
+            .find('body')
+            .first()
+            .append($counter);
 
         var title = this;
 
         $('<p><a href="#" id="b-title-help">What is this?</a></p>')
             .appendTo(this.$counter)
-            .on('mousedown', 'a', function() {
-                title.element.textEditor('disableAutoSave');
-            })
             .on('keydown', function(e) {
                 if (e.which === 13) {
                     title.openHelp();
@@ -47758,6 +47757,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         return this.element.text().trim();
     },
 
+    hideTitleLengthCounter: function() {
+        this.$counter.hide();
+    },
+
     isUntitled: function() {
         return this.getTitle() === 'Untitled';
     },
@@ -47770,31 +47773,24 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             width: '600px',
             cancelButton: false
         }).always(function() {
-            title.element.textEditor('enableAutoSave');
             title.element.focus();
         });
     },
 
-    removeTitleLengthCounter: function() {
-        this.lengthCounterCreated = false;
-        $(top.document).find('#b-title-length').remove();
-    },
-
-    _save: function(title, old_title) {
+    _save: function(title) {
         this.options.currentPage.setTitle(title)
             .done(function(data) {
                 if (data.location !== top.window.location) {
                     top.history.replaceState({}, title, data.location);
-                    BoomCMS.Notification('Page title saved');
-                    window.BoomCMS.page.toolbar.status.set(data.status);
-                } else {
-                    BoomCMS.Notification('Page title saved');
-                    window.BoomCMS.page.toolbar.status.set(data);
                 }
 
-                var page_title = top.$('title').text().replace(old_title, title);
-                top.$('title').text(page_title);
+                BoomCMS.Notification('Page title saved');
+                window.BoomCMS.page.toolbar.status.set(data.status);
             });
+    },
+
+    showLengthCounter: function() {
+        this.$counter.show();
     },
 
     updateCounterPosition: function() {
