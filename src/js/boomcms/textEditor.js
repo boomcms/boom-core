@@ -95,7 +95,8 @@ $.widget('boom.textEditor', {
                 setup: function(ed) {
                     self.setup(ed);
                 },
-                skin_url: this.skin_url
+                skin_url: this.skin_url,
+                custom_ui_selector: '#b-title-length'
             });
         }
     },
@@ -136,19 +137,27 @@ $.widget('boom.textEditor', {
     },
 
     save: function() {
-        this._trigger('edit', this.editor.getContent());
+        this._trigger('save', this.editor.getContent());
     },
 
     setup: function(editor) {
-        var element = this.element;
+        var textEditor = this,
+            element = this.element;
 
         this.editor = editor;
 
         editor
+            .on('change undo redo', function(e) {
+                textEditor._trigger('change', editor.getContent());
+            })
             .on('focus', function() {
+                textEditor._trigger('focus');
+
                 element.removeClass('b-editable');
             })
             .on('blur', function() {
+                textEditor._trigger('blur');
+
                 // Ensures that any edited images are uploaded before the content is saved.
                 element.find('img').blur();
 
