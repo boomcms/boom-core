@@ -11,7 +11,7 @@ class BoomCMS
      *
      * @var string
      */
-    const VERSION = '7.0.28';
+    const VERSION = '7.0.29';
 
     /**
      * @var Repository
