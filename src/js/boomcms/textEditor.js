@@ -19,7 +19,7 @@ $.widget('boom.textEditor', {
                 inline: true,
                 plugins: 'autolink anchor autoresize charmap hr image imagetools table link lists paste searchreplace contextmenu textpattern save media',
                 menubar: 'edit insert format image table',
-                toolbar: 'save | undo redo | bold italic | bullist numlist | superscript subscript | hr blockquote | image link',
+                toolbar: 'save | undo redo | styleselect bold italic underline strikethrough | bullist numlist | superscript subscript | hr image link',
                 contextmenu: 'link image | charmap | inserttable cell row column deletetable',
                 link_context_toolbar: true,
                 link_class_list: [
@@ -59,7 +59,13 @@ $.widget('boom.textEditor', {
                 images_upload_handler: function(blobInfo, success, failure) {
                     self.uploadImage(blobInfo, success, failure);
                 },
-                automatic_uploads: true
+                automatic_uploads: true,
+                style_formats: [
+                    {title: 'Heading', block: 'h2'},
+                    {title: 'Sub-heading', block: 'h3'},
+                    {title: 'Paragraph', block: 'p'},
+                    {title: 'Quote', block: 'blockquote'}
+               ]
             });
         } else if (mode === 'inline') {
             top.tinymce.init({
