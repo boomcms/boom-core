@@ -59,7 +59,13 @@ $.widget('boom.textEditor', {
                 images_upload_handler: function(blobInfo, success, failure) {
                     self.uploadImage(blobInfo, success, failure);
                 },
-                automatic_uploads: true
+                automatic_uploads: true,
+                style_formats: [
+                    {title: 'Heading', block: 'h2'},
+                    {title: 'Sub-heading', block: 'h3'},
+                    {title: 'Paragraph', block: 'p'},
+                    {title: 'Quote', block: 'blockquote'}
+               ]
             });
         } else if (mode === 'inline') {
             top.tinymce.init({
