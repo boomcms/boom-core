@@ -12,7 +12,7 @@ class AddUpdatedAtToPages extends Migration
      */
     public function up()
     {
-        DB::statement('alter table pages add updated_at timestamp');
+        DB::statement('alter table pages add updated_at timestamp null');
     }
 
     /**
