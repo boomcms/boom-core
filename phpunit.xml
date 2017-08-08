@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="./vendor/autoload.php"
-	colors="true"
-	convertErrorsToExceptions="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
-	stopOnFailure="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    stopOnFailure="false"
 >
-	<testsuites>
-		<testsuite name="BoomCMS tests">
-			<directory suffix=".php">./tests/</directory>
-		</testsuite>
-	</testsuites>
+    <testsuites>
+        <testsuite name="BoomCMS tests">
+            <directory suffix=".php">./tests/</directory>
+        </testsuite>
+    </testsuites>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
@@ -18,16 +18,16 @@
         </whitelist>
     </filter>
 
-	<php>
-		<env name="APP_KEY" value="base64:W2MgfK3FYpkjijGxpQBFvL9K3SngokYEcEo0LFDfuYA=" />
-        	<env name="APP_ENV" value="testing"/>
-        	<env name="CACHE_DRIVER" value="array"/>
-        	<env name="SESSION_DRIVER" value="array"/>
-        	<env name="QUEUE_DRIVER" value="sync"/>
-        	<env name="DB_DATABASE" value="boomcms_tests"/>
-		<env name="DB_HOST" value="127.0.0.1"/>
-		<env name="DB_DRIVER" value="mysql"/>
-		<env name="DB_USERNAME" value="root"/>
-		<env name="DB_PASSWORD" value=""/>
-    	</php>
+    <php>
+        <env name="APP_KEY" value="base64:W2MgfK3FYpkjijGxpQBFvL9K3SngokYEcEo0LFDfuYA=" />
+        <env name="APP_ENV" value="testing"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_DRIVER" value="sync"/>
+        <env name="DB_DATABASE" value="boomcms_tests"/>
+        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_DRIVER" value="mysql"/>
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value=""/>
+    </php>
 </phpunit>
