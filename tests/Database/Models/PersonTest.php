@@ -97,7 +97,7 @@ class PersonTest extends AbstractModelTestCase
         $person = new Person();
         $person->{Person::ATTR_LAST_LOGIN} = $time;
 
-        $this->assertEquals($time, $person->getLastLogin());
+        $this->assertSame($time->toDateTimeString(), $person->getLastLogin()->toDateTimeString());
     }
 
     public function testGetRememberTokenName()
