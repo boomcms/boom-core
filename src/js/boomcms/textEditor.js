@@ -65,7 +65,8 @@ $.widget('boom.textEditor', {
                     {title: 'Sub-heading', block: 'h3'},
                     {title: 'Paragraph', block: 'p'},
                     {title: 'Quote', block: 'blockquote'}
-               ]
+               ],
+                media_alt_source: false
             });
         } else if (mode === 'inline') {
             top.tinymce.init({
