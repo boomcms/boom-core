@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Tests\Link;
 
+use BoomCMS\Database\Models\Asset;
 use BoomCMS\Link;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Page;
 use BoomCMS\Support\Facades\URL;
 use BoomCMS\Tests\AbstractTestCase;
@@ -10,9 +12,9 @@ use Mockery as m;
 
 class BaseLinkTest extends AbstractTestCase
 {
-    public function testFactoryReturnsInternalLink()
+    public function testFactoryReturnsPageLink()
     {
-        $internalLinks = [
+        $pageLinks = [
             '1',
             1,
             '/test',
@@ -35,8 +37,30 @@ class BaseLinkTest extends AbstractTestCase
             ->with('test')
             ->andReturn($this->validPage());
 
-        foreach ($internalLinks as $link) {
-            $this->assertInstanceOf(Link\Internal::class, Link\Link::factory($link), $link);
+        foreach ($pageLinks as $link) {
+            $this->assertInstanceOf(Link\PageLink::class, Link\Link::factory($link), $link);
+        }
+    }
+
+    public function testFactoryReturnsAssetLink()
+    {
+        $assetLinks = [
+            '/asset/1',
+            '/asset/1/view',
+            '/asset/1/download',
+            "http://{$this->baseUrl}/asset/1",
+            "https://{$this->baseUrl}/asset/1/view",
+            "http://{$this->baseUrl}/asset/1/download",
+        ];
+
+        $asset = new Asset();
+
+        AssetFacade::shouldReceive('find')
+            ->with(1)
+            ->andReturn($asset);
+
+        foreach ($assetLinks as $link) {
+            $this->assertInstanceOf(Link\AssetLink::class, Link\Link::factory($link), $link);
         }
     }
 

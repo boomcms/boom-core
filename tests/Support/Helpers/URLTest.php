@@ -20,6 +20,22 @@ class URLTest extends AbstractTestCase
         RequestFacade::swap($request);
     }
 
+    public function testGetAssetId()
+    {
+        $urls = [
+            '/asset/1/view'                    => 1,
+            '/asset/1'                         => 1,
+            '/asset/1/view/2'                  => 1,
+            '/asset'                           => 0,
+            '/something-else'                  => 0,
+            'http://www.othersite.com/asset/1' => 0,
+        ];
+
+        foreach ($urls as $path => $assetId) {
+            $this->assertEquals($assetId, URL::getAssetId($path), $path);
+        }
+    }
+
     public function testFromTitle()
     {
         $base = '/blog';

@@ -46,8 +46,15 @@ abstract class Link implements LinkableInterface
      */
     public static function factory($link, array $attrs = [])
     {
-        return (is_numeric($link) || URL::isInternal($link)) ?
-            new Internal($link, $attrs) : new External($link, $attrs);
+        if (URL::getAssetId($link) > 0) {
+            return new AssetLink($link);
+        }
+
+        if (is_numeric($link) || URL::isInternal($link)) {
+            return new PageLink($link, $attrs);
+        }
+
+        return new External($link, $attrs);
     }
 
     /**

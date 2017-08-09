@@ -21,7 +21,7 @@ interface Asset
     /**
      * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * @return int
@@ -92,14 +92,14 @@ interface Asset
     /**
      * @return int
      */
-    public function getThumbnailAssetId();
+    public function getThumbnailAssetId(): int;
 
     public function getThumbnail();
 
     /**
      * @return string
      */
-    public function getTitle();
+    public function getTitle(): string;
 
     /**
      * @return string
