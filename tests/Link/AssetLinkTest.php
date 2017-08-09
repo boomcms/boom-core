@@ -49,6 +49,7 @@ class AssetLinkTest extends InternalTest
 
         $this->assertEquals($asset, $link->getAsset());
     }
+
     public function testGetTitleReturnsAssetTitle()
     {
         $attrs = [
