@@ -7,10 +7,11 @@ use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterfa
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
 use BoomCMS\FileInfo\Facade as FileInfo;
+use BoomCMS\Foundation\Repository;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AssetVersion implements AssetVersionRepositoryInterface
+class AssetVersion extends Repository implements AssetVersionRepositoryInterface
 {
     /**
      * @var Filesystem

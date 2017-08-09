@@ -8,13 +8,14 @@ use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterfa
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Facade as FileInfo;
+use BoomCMS\Foundation\Repository;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Imagick;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class Asset implements AssetRepositoryInterface
+class Asset extends Repository implements AssetRepositoryInterface
 {
     /**
      * @var AssetModel
