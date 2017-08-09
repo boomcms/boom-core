@@ -45858,8 +45858,7 @@ console.log(asset);
                     {title: 'Paragraph', block: 'p'},
                     {title: 'Quote', block: 'blockquote'}
                ],
-                media_alt_source: false,
-                media_live_embeds: false
+                media_alt_source: false
             });
         } else if (mode === 'inline') {
             top.tinymce.init({
@@ -49167,7 +49166,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     if (assetPicker.currentAsset && assetPicker.currentAsset.getId() > 0) {
                         assetPicker.picker
                             .find('#b-assets-picker-current img')
-                            .attr('src', assetPicker.currentAsset.getUrl());
+                            .attr('src', assetPicker.currentAsset.getUrl('thumb'));
                     } else {
                         assetPicker.hideCurrentAsset();
                     }
