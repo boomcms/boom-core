@@ -32,7 +32,7 @@ abstract class URL
     }
 
     /**
-     * Extracts an asset ID from a given URL
+     * Extracts an asset ID from a given URL.
      *
      * Returns 0 if the given URL isn't a URL to an asset
      *
@@ -44,7 +44,7 @@ abstract class URL
      */
     public static function getAssetId($url): int
     {
-        /**
+        /*
          * It would be much nicer to use Laravel's routing code to check the path matches the asset route
          * and extract the asset parameter from the url
          *

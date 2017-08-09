@@ -5,7 +5,9 @@ namespace BoomCMS\Link;
 abstract class Internal extends Link
 {
     abstract protected function getContentFeatureImageId(): int;
+
     abstract protected function getContentText(): string;
+
     abstract protected function getContentTitle(): string;
 
     public function getFeatureImageId(): int

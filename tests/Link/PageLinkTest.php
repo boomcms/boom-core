@@ -129,6 +129,7 @@ class PageLinkTest extends InternalTest
 
         $this->assertEquals($page, $link->getPage());
     }
+
     public function testGetTitleReturnsPageTitle()
     {
         $attrs = [

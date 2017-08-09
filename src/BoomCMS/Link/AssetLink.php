@@ -20,7 +20,7 @@ class AssetLink extends Internal
 
         if ($link instanceof Asset) {
             $this->asset = $link;
-        } elseif(is_numeric($link)) {
+        } elseif (is_numeric($link)) {
             $this->asset = AssetFacade::find($link);
         } else {
             $assetId = URL::getAssetId($link);
@@ -62,7 +62,7 @@ class AssetLink extends Internal
 
     public function url()
     {
-        return is_string($this->link) && !ctype_digit($this->link) ? 
+        return is_string($this->link) && !ctype_digit($this->link) ?
             $this->link : route('asset', ['asset' => $this->asset]);
     }
 }
