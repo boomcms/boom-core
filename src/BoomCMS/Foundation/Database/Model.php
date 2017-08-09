@@ -3,9 +3,12 @@
 namespace BoomCMS\Foundation\Database;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
+use Illuminate\Support\Traits\Macroable;
 
 abstract class Model extends BaseModel
 {
+    use Macroable;
+
     const ATTR_ID = 'id';
 
     public $guarded = [
