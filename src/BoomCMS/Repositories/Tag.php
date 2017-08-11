@@ -6,9 +6,10 @@ use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Repositories\Tag as TagRepositoryInterface;
 use BoomCMS\Database\Models\Tag as Model;
+use BoomCMS\Foundation\Repository;
 use InvalidArgumentException;
 
-class Tag implements TagRepositoryInterface
+class Tag extends Repository implements TagRepositoryInterface
 {
     /**
      * @var Model

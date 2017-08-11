@@ -6,9 +6,10 @@ use BoomCMS\Contracts\Models\Group as GroupModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Contracts\Repositories\Group as GroupRepositoryInterface;
 use BoomCMS\Database\Models\Group as Model;
+use BoomCMS\Foundation\Repository;
 use Illuminate\Database\Eloquent\Collection;
 
-class Group implements GroupRepositoryInterface
+class Group extends Repository implements GroupRepositoryInterface
 {
     /**
      * @var Model

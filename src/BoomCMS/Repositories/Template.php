@@ -4,8 +4,9 @@ namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Database\Models\Template as TemplateModel;
+use BoomCMS\Foundation\Repository;
 
-class Template
+class Template extends Repository
 {
     /**
      * @var Model

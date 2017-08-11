@@ -7,12 +7,13 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
 use BoomCMS\Database\Models\Person as Model;
+use BoomCMS\Foundation\Repository;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class Person implements PersonRepositoryInterface, UserProvider
+class Person extends Repository implements PersonRepositoryInterface, UserProvider
 {
     /**
      * @var Hasher

@@ -6,10 +6,11 @@ use BoomCMS\Contracts\Models\Page as PageModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Page as PageRepositoryInterface;
 use BoomCMS\Database\Models\Page as Model;
+use BoomCMS\Foundation\Repository;
 use BoomCMS\Page\Finder;
 use Illuminate\Database\Eloquent\Collection;
 
-class Page implements PageRepositoryInterface
+class Page extends Repository implements PageRepositoryInterface
 {
     /**
      * @var Model
