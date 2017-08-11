@@ -1,0 +1,107 @@
+.mce-window {
+    background-color: @white;
+    color: @darkest-grey;
+    border-width: 0 !important;
+
+    * {
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+    }
+
+    .mce-window-head {
+        .text-large;
+        background-color: @red;
+        padding: 1rem 1.5rem;
+
+        .mce-title {
+            color: @white;
+        }
+    }
+
+    .mce-close {
+        display: none;
+    }
+
+    .mce-tabs {
+        padding: 1.5rem 1.5rem 0 1.5rem;
+        border-bottom: 0;
+
+        .mce-tab {
+            .text-normal;
+            border: 1px solid @grey;
+            border-bottom: 0;
+            margin: 0 0.5rem 0 0;
+            font-weight: bold;
+            padding: 1rem 1.5rem;
+            color: @darkest-grey;
+            background: @lightest-grey;
+            height: auto;
+            text-shadow: none;
+
+            &:hover, &:focus {
+                background: @light-grey;
+                outline: 0;
+            }
+
+            &.mce-active {
+                background: @light-grey;
+            }
+        }
+    }
+
+    .mce-container[role=tabpanel] {
+        > .mce-container-body {
+            background: @lightest-grey;
+        }
+    }
+
+	.mce-foot{
+		background: @lightest-grey;
+        border-top: 0;
+
+        .mce-abs-layout {
+            padding: 1.5rem;
+        }
+
+		.mce-btn {
+            background: none;
+            border: 0;
+
+            &:hover, &:focus {
+                background: none;
+                border: 0;
+            }
+
+            button {
+                border: 0;
+                padding: 1rem 1rem;
+                margin: 0;
+                height: 50px;
+            }
+		}
+
+		.mce-primary button {
+			border-radius: 5px;
+			background: @dark-green;
+			color: @white;
+			transition: all 0.5s;
+			padding: 1rem 2rem;
+            box-sizing: border-box;
+
+			&:hover, &:focus {
+				background: @light-green;
+				color: @black;
+				transition: all 0.5s;
+			}
+		}
+
+		.mce-last button {
+			background: none;
+			color: @black;
+
+			&:hover, &:focus {
+				text-decoration: underline;
+                background: none;
+			}
+		}
+	}
+}
