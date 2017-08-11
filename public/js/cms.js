@@ -45859,7 +45859,8 @@ console.log(asset);
                     {title: 'Paragraph', block: 'p'},
                     {title: 'Quote', block: 'blockquote'}
                ],
-                media_alt_source: false
+                media_alt_source: false,
+                media_dimensions: false
             });
         } else if (mode === 'inline') {
             top.tinymce.init({
