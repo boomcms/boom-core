@@ -1,18 +1,26 @@
+.mce-content-body {
+    line-height: inherit;
+}
+
 .mce-window {
     background-color: @white;
     color: @darkest-grey;
     border-width: 0 !important;
 
     * {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
+        .text-normal;
+    }
+
+    .mce-ico {
+        font-family: 'tinymce';
     }
 
     .mce-window-head {
-        .text-large;
         background-color: @red;
         padding: 1rem 1.5rem;
 
         .mce-title {
+            .text-large;
             color: @white;
         }
     }
@@ -76,6 +84,8 @@
                 padding: 1rem 1rem;
                 margin: 0;
                 height: 50px;
+                font-size: 14px;
+                line-height: 20px;
             }
 		}
 

@@ -1,5 +1,4 @@
     <?= $before_closing_head ?>
-    <link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/inpage.css" />
 </head>
 <?= $body_tag ?>
 
@@ -12,4 +11,5 @@
 <?php endif ?>
 
 <script src="/vendor/boomcms/boom-core/js/tinymce.js"></script>
+<link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/inpage.css">
 <iframe id="b-editor-iframe" data-state="<?= $editor->getState() ?>" src='/boomcms/editor/toolbar?page_id=<?= $page_id ?>'></iframe>
