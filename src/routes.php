@@ -170,12 +170,15 @@ Route::group([
         Middleware\RequireAssetVisible::class,
     ],
 ], function () {
-    Route::get('{asset}/download', [
+    Route::get('{asset}/download{extension?}', [
         'as'         => 'asset-download',
         'middleware' => [
             Middleware\LogAssetDownload::class,
         ],
         'uses' => 'BoomCMS\Http\Controllers\Asset\AssetController@download',
+    ])
+    ->where([
+        'extension' => '.[a-z]+',
     ]);
 
     Route::get('{asset}/embed', 'BoomCMS\Http\Controllers\Asset\AssetController@embed');

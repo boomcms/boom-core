@@ -4,9 +4,12 @@ namespace BoomCMS\Foundation;
 
 use BoomCMS\Contracts\Repositories\Repository as RepositoryInterface;
 use BoomCMS\Foundation\Database\Model;
+use Illuminate\Support\Traits\Macroable;
 
 abstract class Repository
 {
+    use Macroable;
+
     /**
      * @var Model
      */

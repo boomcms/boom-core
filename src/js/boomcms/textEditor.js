@@ -34,6 +34,7 @@ $.widget('boom.textEditor', {
                 ],
                 link_title: false,
                 image_context_toolbar: true,
+                image_dimensions: false,
                 file_picker_callback: this.filePicker,
                 media_url_resolver: function (data, resolve) {
                     var link = new BoomCMS.Link(data.url);
@@ -65,7 +66,9 @@ $.widget('boom.textEditor', {
                     {title: 'Sub-heading', block: 'h3'},
                     {title: 'Paragraph', block: 'p'},
                     {title: 'Quote', block: 'blockquote'}
-               ]
+               ],
+                media_alt_source: false,
+                media_dimensions: false
             });
         } else if (mode === 'inline') {
             top.tinymce.init({

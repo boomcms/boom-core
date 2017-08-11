@@ -134,7 +134,7 @@
                     if (assetPicker.currentAsset && assetPicker.currentAsset.getId() > 0) {
                         assetPicker.picker
                             .find('#b-assets-picker-current img')
-                            .attr('src', assetPicker.currentAsset.getUrl());
+                            .attr('src', assetPicker.currentAsset.getUrl('thumb'));
                     } else {
                         assetPicker.hideCurrentAsset();
                     }

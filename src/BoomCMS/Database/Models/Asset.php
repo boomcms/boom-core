@@ -46,6 +46,9 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     ];
 
     protected $casts = [
+        self::ATTR_DESCRIPTION  => 'string',
+        self::ATTR_THUMBNAIL_ID => 'int',
+        self::ATTR_TITLE        => 'string',
         self::ATTR_PUBLISHED_AT => 'datetime',
         self::ATTR_PUBLIC       => 'boolean',
     ];
@@ -91,7 +94,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->{self::ATTR_DESCRIPTION};
     }
@@ -191,7 +194,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     /**
      * @return int
      */
-    public function getThumbnailAssetId()
+    public function getThumbnailAssetId(): int
     {
         return (int) $this->{self::ATTR_THUMBNAIL_ID};
     }
@@ -204,7 +207,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->{self::ATTR_TITLE};
     }

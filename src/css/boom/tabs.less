@@ -1,57 +1,55 @@
 .boom-tabs {
-	padding: 0;
-	background: transparent;
-	border: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
 
-	> ul.ui-tabs-nav {
-		margin: 0;
-		padding: 0;
+    > ul.ui-tabs-nav {
+        margin: 0;
+        padding: 0;
 
-		> li {
-			display: inline-block;
-			list-style: none;
-			border: 1px solid @grey;
-			border-bottom: 0;
-			margin: 0 0.5rem 0 0;
-			
-			
-			
-			&.ui-state-active {
-				margin-bottom: -1px;
-				padding-bottom: 1px;
-				background: @light-grey;
-				
-				a {
-					background: transparent;
-				}
-			}
+        > li {
+            display: inline-block;
+            list-style: none;
+            border: 1px solid @grey;
+            border-bottom: 0;
+            margin: 0 0.5rem 0 0;
 
-			a {
-				font-weight: bold;
-				padding: 1rem 1.5rem;
-				display: block;
-				color: @darkest-grey;
-				background: @lightest-grey;
+            &.ui-state-active {
+                margin-bottom: -1px;
+                padding-bottom: 1px;
+                background: @light-grey;
 
-				&:hover, &:focus {
-					background: @light-grey;
-					outline: 0;
-				}	
-			}
-		}
-	}
-	
-	button.b-button {
-		color: @darkest-grey;
-		
-		&:hover, &:focus {
-			color: @red;
-		}
-	}
+                a {
+                    background: transparent;
+                }
+            }
 
-	.ui-tabs-panel {
-		border: 1px solid @grey;
-		padding: 1.5rem;
-		background: @lightest-grey;
-	}
+            a {
+                font-weight: bold;
+                padding: 1rem 1.5rem;
+                display: block;
+                color: @darkest-grey;
+                background: @lightest-grey;
+
+                &:hover, &:focus {
+                    background: @light-grey;
+                    outline: 0;
+                }	
+            }
+        }
+    }
+
+    button.b-button {
+        color: @darkest-grey;
+
+        &:hover, &:focus {
+            color: @red;
+        }
+    }
+
+    .ui-tabs-panel {
+        border: 1px solid @grey;
+        padding: 1.5rem;
+        background: @lightest-grey;
+    }
 }

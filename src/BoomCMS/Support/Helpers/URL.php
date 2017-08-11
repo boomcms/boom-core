@@ -32,6 +32,33 @@ abstract class URL
     }
 
     /**
+     * Extracts an asset ID from a given URL.
+     *
+     * Returns 0 if the given URL isn't a URL to an asset
+     *
+     * e.g. /asset/1/view would return 1, /something-else would return 0
+     *
+     * @param type $url
+     *
+     * @return 0
+     */
+    public static function getAssetId($url): int
+    {
+        /*
+         * It would be much nicer to use Laravel's routing code to check the path matches the asset route
+         * and extract the asset parameter from the url
+         *
+         * But unfortunately there doesn't appear to be a nice API which we can use
+         * that doesn't relate to the current Request
+         *
+         * Therefore if the asset route is changed this method will also need to be updated.
+         */
+        preg_match('|^/asset/([\d]+)|', self::makeRelative($url), $matches);
+
+        return $matches[1] ?? 0;
+    }
+
+    /**
      * Returns a path which can be used to query the database of internal URLs.
      *
      * Removes the leading forward slash for non-root URLs

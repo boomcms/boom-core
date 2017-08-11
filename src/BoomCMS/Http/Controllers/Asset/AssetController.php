@@ -74,7 +74,8 @@ class AssetController extends Controller
     public function download(Asset $asset): Response
     {
         return new Response(AssetFacade::file($asset), 200, [
-            'content-disposition' => 'download; filename="'.$asset->getOriginalFilename().'"',
+            'Content-Type'        => $asset->getMimetype(),
+            'Content-Disposition' => 'download; filename="'.$asset->getOriginalFilename().'"',
         ]);
     }
 
