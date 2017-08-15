@@ -426,11 +426,13 @@
                 this.searchResultsView.on('filtered', function(params) {
                     router.goToSearchResults(params);
                 });
-            } else {
-                this.searchResultsView.setParams(params);
-            }
 
-            this.searchResultsView.getAssets();
+                this.searchResultsView.getAssets();
+            } else {
+                if (this.searchResultsView.setParams(params) === true) {
+                    this.searchResultsView.getAssets();
+                }
+            }
         },
 
         viewSelection: function(section) {

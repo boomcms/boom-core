@@ -48597,11 +48597,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 this.searchResultsView.on('filtered', function(params) {
                     router.goToSearchResults(params);
                 });
-            } else {
-                this.searchResultsView.setParams(params);
-            }
 
-            this.searchResultsView.getAssets();
+                this.searchResultsView.getAssets();
+            } else {
+                if (this.searchResultsView.setParams(params) === true) {
+                    this.searchResultsView.getAssets();
+                }
+            }
         },
 
         viewSelection: function(section) {
@@ -49039,6 +49041,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
     BoomCMS.AssetManager.SearchResults = BoomCMS.AssetManager.ViewSelection.extend({
         page: 1,
+        params: {},
 
         bind: function() {
             var assetSearch = this;
@@ -49102,10 +49105,15 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         getPage: function(page) {
-            this.params['page'] = page;
-            this.page = page;
+            var params = {};
 
-            this.trigger('filtered', this.params);
+            for (var key in this.params) {
+                params[key] = this.params[key];
+            }
+
+            params.page = page;
+
+            this.trigger('filtered', params);
         },
 
         initPagination: function() {
@@ -49164,9 +49172,24 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         setParams: function(params) {
-            this.params = params;
+            var oldParams = this.params;
 
-            this.page = (typeof this.params.page !== 'undefined') ? parseInt(this.params.page) : 1;
+            params.page = (typeof params.page !== 'undefined') ? parseInt(params.page) : 1;
+            this.params = params;
+            this.page = params.page;
+
+            // Return true if the parameters have changed, false if they haven't
+            if (oldParams.length !== params.length) {
+                return true;
+            }
+
+            for (var key in params) {
+                if (params[key] !== oldParams[key]) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     });
 }(jQuery, Backbone, BoomCMS));
