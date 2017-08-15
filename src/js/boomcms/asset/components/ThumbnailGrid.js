@@ -4,6 +4,7 @@
     BoomCMS.AssetManager.ThumbnailGrid = Backbone.View.extend({
         loading: 'loading',
         none: 'none',
+        renderTimeout: null,
         thumbnailsSelector: '.thumbnails > div',
         thumbnails: [],
 
@@ -58,36 +59,43 @@
                 selection = this.selection,
                 assetCount = this.assets.models.length;
 
-            this.$thumbnails = this.$(this.thumbnailsSelector).html('');
-
-            if (assetCount === 0 && this.assets.fetched === true) {
-                this.$el.removeClass(this.loading).addClass(this.none);
-
-                return this;
+            // Use a timeout to avoid performance issues when multiple assets are added (e.g. when a collection is fetched)
+            if (this.renderTimeout !== null) {
+                clearTimeout(this.renderTimeout);
             }
 
-            this.assets.each(function(asset, i) {
-                view.$el.removeClass(view.none);
+            this.renderTimeout = setTimeout(function() {
+                view.$thumbnails = view.$(view.thumbnailsSelector).html('');
 
-                var thumbnail = new BoomCMS.AssetManager.Thumbnail({
-                    model: asset
+                if (assetCount === 0) {
+                    view.$el.removeClass(view.loading).addClass(view.none);
+
+                    return view;
+                }
+
+                view.assets.each(function(asset, i) {
+                    view.$el.removeClass(view.none);
+
+                    var thumbnail = new BoomCMS.AssetManager.Thumbnail({
+                        model: asset
+                    });
+
+                    view.thumbnails.push(thumbnail);
+                    view.$thumbnails.append(thumbnail.render().el);
+
+                    if (selection.get(asset.getId())) {
+                        thumbnail.select();
+                    }
+
+                    if (i === (assetCount - 1)) {
+                        setTimeout(function() {
+                            view.$el.removeClass(view.loading);
+                            view.justify();
+                            view.lazyLoadThumbnails();
+                        }, 0);
+                    }
                 });
-
-                view.thumbnails.push(thumbnail);
-                view.$thumbnails.append(thumbnail.render().el);
-
-                if (selection.get(asset.getId())) {
-                    thumbnail.select();
-                }
-
-                if (i === (assetCount - 1)) {
-                    setTimeout(function() {
-                        view.$el.removeClass(view.loading);
-                        view.justify();
-                        view.lazyLoadThumbnails();
-                    }, 0);
-                }
-            });
+            }, 200);
 
             return this;
         }

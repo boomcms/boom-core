@@ -49046,6 +49046,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.selection = options.selection;
             this.$container = options.$container;
 
+            this.thumbnails = new BoomCMS.AssetManager.ThumbnailGrid({
+                el: this.$('.b-assets-view-thumbs'),
+                assets: this.assets,
+                selection: this.selection,
+                $container: this.$container
+            });
+
             this.bind();
             this.setAssetsPerPage();
             this.setParams(options.params);
@@ -49060,12 +49067,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             for (var key in this.params) {
                 data[key] = this.params[key];
             }
-            
+
+            // Reset before fetching to clear the thumbnail grid
+            // and ensure there's no on screen 'flash' of the old search results
+            this.assets.reset();
+
             this.assets.fetch({
                 data: data,
-                reset: true,
                 success: function() {
                     search.trigger('fetched', search.assets);
+                    search.initPagination();
                 }
             });
         },
@@ -49082,7 +49093,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.lastPage = Math.ceil(this.assets.total / this.perpage);
 
-            if (this.$pagination.data('jqPagination')) {
+            if (this.$pagination.data('jqPagination') !== undefined) {
                 this.$pagination.jqPagination('destroy');
             }
 
@@ -49093,6 +49104,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 max_page: this.lastPage,
                 current_page: this.assets.total > 0 ? this.page : 0
             });
+
+            this.$pagination.data('jqPagination').updateInput(true);
         },
 
         nextPage: function() {
@@ -49113,16 +49126,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             }
         },
 
-        render: function() {
-            new BoomCMS.AssetManager.ThumbnailGrid({
-                el: this.$('.b-assets-view-thumbs'),
-                assets: this.assets,
-                selection: this.selection,
-                $container: this.$container
-            }).render();
-
-            this.initPagination();
-        },
+        render: function() {},
 
         setAssetsPerPage: function() {
             var rowHeight = 200,
@@ -49142,9 +49146,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         setParams: function(params) {
             this.params = params;
 
-            if (typeof this.params.page !== 'undefined') {
-                this.page = parseInt(this.params.page);
-            }
+            this.page = (typeof this.params.page !== 'undefined') ? parseInt(this.params.page) : 1;
         }
     });
 }(jQuery, Backbone, BoomCMS));
@@ -49309,6 +49311,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     BoomCMS.AssetManager.ThumbnailGrid = Backbone.View.extend({
         loading: 'loading',
         none: 'none',
+        renderTimeout: null,
         thumbnailsSelector: '.thumbnails > div',
         thumbnails: [],
 
@@ -49363,36 +49366,43 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 selection = this.selection,
                 assetCount = this.assets.models.length;
 
-            this.$thumbnails = this.$(this.thumbnailsSelector).html('');
-
-            if (assetCount === 0 && this.assets.fetched === true) {
-                this.$el.removeClass(this.loading).addClass(this.none);
-
-                return this;
+            // Use a timeout to avoid performance issues when multiple assets are added (e.g. when a collection is fetched)
+            if (this.renderTimeout !== null) {
+                clearTimeout(this.renderTimeout);
             }
 
-            this.assets.each(function(asset, i) {
-                view.$el.removeClass(view.none);
+            this.renderTimeout = setTimeout(function() {
+                view.$thumbnails = view.$(view.thumbnailsSelector).html('');
 
-                var thumbnail = new BoomCMS.AssetManager.Thumbnail({
-                    model: asset
+                if (assetCount === 0) {
+                    view.$el.removeClass(view.loading).addClass(view.none);
+
+                    return view;
+                }
+
+                view.assets.each(function(asset, i) {
+                    view.$el.removeClass(view.none);
+
+                    var thumbnail = new BoomCMS.AssetManager.Thumbnail({
+                        model: asset
+                    });
+
+                    view.thumbnails.push(thumbnail);
+                    view.$thumbnails.append(thumbnail.render().el);
+
+                    if (selection.get(asset.getId())) {
+                        thumbnail.select();
+                    }
+
+                    if (i === (assetCount - 1)) {
+                        setTimeout(function() {
+                            view.$el.removeClass(view.loading);
+                            view.justify();
+                            view.lazyLoadThumbnails();
+                        }, 0);
+                    }
                 });
-
-                view.thumbnails.push(thumbnail);
-                view.$thumbnails.append(thumbnail.render().el);
-
-                if (selection.get(asset.getId())) {
-                    thumbnail.select();
-                }
-
-                if (i === (assetCount - 1)) {
-                    setTimeout(function() {
-                        view.$el.removeClass(view.loading);
-                        view.justify();
-                        view.lazyLoadThumbnails();
-                    }, 0);
-                }
-            });
+            }, 200);
 
             return this;
         }

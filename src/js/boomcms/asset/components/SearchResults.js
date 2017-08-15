@@ -30,6 +30,13 @@
             this.selection = options.selection;
             this.$container = options.$container;
 
+            this.thumbnails = new BoomCMS.AssetManager.ThumbnailGrid({
+                el: this.$('.b-assets-view-thumbs'),
+                assets: this.assets,
+                selection: this.selection,
+                $container: this.$container
+            });
+
             this.bind();
             this.setAssetsPerPage();
             this.setParams(options.params);
@@ -44,12 +51,16 @@
             for (var key in this.params) {
                 data[key] = this.params[key];
             }
-            
+
+            // Reset before fetching to clear the thumbnail grid
+            // and ensure there's no on screen 'flash' of the old search results
+            this.assets.reset();
+
             this.assets.fetch({
                 data: data,
-                reset: true,
                 success: function() {
                     search.trigger('fetched', search.assets);
+                    search.initPagination();
                 }
             });
         },
@@ -66,7 +77,7 @@
 
             this.lastPage = Math.ceil(this.assets.total / this.perpage);
 
-            if (this.$pagination.data('jqPagination')) {
+            if (this.$pagination.data('jqPagination') !== undefined) {
                 this.$pagination.jqPagination('destroy');
             }
 
@@ -77,6 +88,8 @@
                 max_page: this.lastPage,
                 current_page: this.assets.total > 0 ? this.page : 0
             });
+
+            this.$pagination.data('jqPagination').updateInput(true);
         },
 
         nextPage: function() {
@@ -97,16 +110,7 @@
             }
         },
 
-        render: function() {
-            new BoomCMS.AssetManager.ThumbnailGrid({
-                el: this.$('.b-assets-view-thumbs'),
-                assets: this.assets,
-                selection: this.selection,
-                $container: this.$container
-            }).render();
-
-            this.initPagination();
-        },
+        render: function() {},
 
         setAssetsPerPage: function() {
             var rowHeight = 200,
@@ -126,9 +130,7 @@
         setParams: function(params) {
             this.params = params;
 
-            if (typeof this.params.page !== 'undefined') {
-                this.page = parseInt(this.params.page);
-            }
+            this.page = (typeof this.params.page !== 'undefined') ? parseInt(this.params.page) : 1;
         }
     });
 }(jQuery, Backbone, BoomCMS));
