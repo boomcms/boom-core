@@ -79,7 +79,7 @@
         },
 
         searchResults: function(queryString) {
-            this.trigger('viewSearchResults', queryString.fromQueryParams());
+            this.trigger('viewSearchResults', queryString.toQueryParams());
         },
 
         viewAssetInSearch: function(queryString, assetId, section) {
