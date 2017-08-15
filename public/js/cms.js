@@ -48191,7 +48191,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             new BoomCMS.AssetManager.ThumbnailGrid({
                 assets: this.uploaded,
                 selection: this.selection,
-                el: this.$('#b-assets-upload .b-assets-view-thumbs')
+                el: this.$('#b-assets-upload .b-assets-view-thumbs'),
+                $container: this.$el
             }).render();
         },
 
