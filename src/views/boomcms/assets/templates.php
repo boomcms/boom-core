@@ -100,7 +100,7 @@
                     <?= $button('times', 'cancel', ['class' => 'cancel']) ?>
                 </div>
 
-                <input type="file" name="b-assets-upload-files[]" id="b-assets-album-upload-<%= album.getId() %>">
+                <input type="file" name="b-assets-upload-files[]" multiple id="b-assets-album-upload-<%= album.getId() %>">
             </div>
         <% } %>
     </div>
