@@ -29230,15 +29230,29 @@ var widgetsTooltip = $.ui.tooltip;
 @function
 */
 String.prototype.ucfirst = function() {
-	return this.substr(0, 1).toUpperCase() + this.substr(1, this.length);
+    return this.substr(0, 1).toUpperCase() + this.substr(1, this.length);
 };
 
 /**
 @function
 */
 String.prototype.toInt = function() {
-	return parseInt(this, 10);
-};;/**
+    return parseInt(this, 10);
+};
+
+String.prototype.toQueryParams = function() {
+    var params = {},
+        queryArray = this.split('&');
+
+    for (var i = 0; i < queryArray.length; i++) {
+        var q = queryArray[i].split('=');
+
+        params[q[0]] = q[1];
+    }
+
+    return params;
+};
+;/**
  * jGrowl 1.4.5
  *
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
@@ -48996,16 +49010,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         searchResults: function(queryString) {
-            var params = {},
-                queryArray = queryString.split('&');
-
-            for (var i = 0; i < queryArray.length; i++) {
-                var q = queryArray[i].split('=');
-
-                params[q[0]] = q[1];
-            }
-
-            this.trigger('viewSearchResults', params);
+            this.trigger('viewSearchResults', queryString.fromQueryParams());
         },
 
         viewAssetInSearch: function(queryString, assetId, section) {
@@ -49707,10 +49712,17 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .on('click', '#b-assets-picker-current-remove', function() {
                     assetPicker.pick(new BoomCMS.Asset());
                 })
-                .on('click', '.b-assets-album-list a', function(e) {
+                .on('click', '.b-assets-album-list [data-album] a', function(e) {
                     e.preventDefault();
 
                     assetPicker.viewAlbum($(this).attr('href').replace('#albums/', ''));
+                })
+                .on('click', '.b-assets-album-list .search a', function(e) {
+                    e.preventDefault();
+
+                    var params = $(this).attr('href').replace('#search/', '');
+
+                    assetPicker.search(params.toQueryParams());
                 })
                 .on('click', '#b-assets-picker-albums', function(e) {
                     e.preventDefault();

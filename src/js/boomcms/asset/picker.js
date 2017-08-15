@@ -64,10 +64,17 @@
                 .on('click', '#b-assets-picker-current-remove', function() {
                     assetPicker.pick(new BoomCMS.Asset());
                 })
-                .on('click', '.b-assets-album-list a', function(e) {
+                .on('click', '.b-assets-album-list [data-album] a', function(e) {
                     e.preventDefault();
 
                     assetPicker.viewAlbum($(this).attr('href').replace('#albums/', ''));
+                })
+                .on('click', '.b-assets-album-list .search a', function(e) {
+                    e.preventDefault();
+
+                    var params = $(this).attr('href').replace('#search/', '');
+
+                    assetPicker.search(params.toQueryParams());
                 })
                 .on('click', '#b-assets-picker-albums', function(e) {
                     e.preventDefault();

@@ -79,16 +79,7 @@
         },
 
         searchResults: function(queryString) {
-            var params = {},
-                queryArray = queryString.split('&');
-
-            for (var i = 0; i < queryArray.length; i++) {
-                var q = queryArray[i].split('=');
-
-                params[q[0]] = q[1];
-            }
-
-            this.trigger('viewSearchResults', params);
+            this.trigger('viewSearchResults', queryString.fromQueryParams());
         },
 
         viewAssetInSearch: function(queryString, assetId, section) {
