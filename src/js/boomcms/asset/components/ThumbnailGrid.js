@@ -35,7 +35,9 @@
         },
 
         justify: function() {
-            this.$thumbnails.justifyAssets();
+            if (this.$thumbnails !== undefined) {
+                this.$thumbnails.justifyAssets();
+            }
 
             return this;
         },

@@ -82,11 +82,6 @@
             this.trigger('viewSearchResults', queryString.toQueryParams());
         },
 
-        viewAssetInSearch: function(queryString, assetId, section) {
-            this.searchResults(queryString);
-            this.trigger('route:viewAsset', assetId, section);
-        },
-
         viewSelection: function(selection, section) {
             var assetIds = selection.split(',');
 

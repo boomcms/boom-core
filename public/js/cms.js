@@ -48362,6 +48362,19 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                         });
                     }
                 })
+                .on('route:viewAssetInSearch', function(queryString, assetId, section) {
+                    var asset = assetManager.assets.findWhere({id: parseInt(assetId)});
+
+                    if (asset === undefined) {
+                        assetManager.viewSearchResults(queryString.toQueryParams());
+
+                        assetManager.assets.on('sync', function() {
+                            assetManager.viewAsset(assetId, section);
+                        });
+                    } else {
+                        assetManager.viewAsset(assetId, section);
+                    }
+                })
                 .on('route:viewAlbum', function(slug) {
                     assetManager.viewAlbum(slug);
                 })
@@ -48574,11 +48587,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         viewSearchResults: function(params) {
             var assetManager = this;
 
-            this.assets = new BoomCMS.Collections.Assets();
-            this.bindAssetEvents(this.assets);
-
             if (this.searchResultsView === undefined) {
                 var router = this.router;
+
+                this.assets = new BoomCMS.Collections.Assets();
+                this.bindAssetEvents(this.assets);
 
                 this.searchResultsView = new BoomCMS.AssetManager.SearchResults({
                     el: this.$('#b-assets-search-results'),
@@ -48600,8 +48613,18 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                 this.searchResultsView.getAssets();
             } else {
+                this.assets = this.searchResultsView.assets;
+
                 if (this.searchResultsView.setParams(params) === true) {
                     this.searchResultsView.getAssets();
+                } else {
+                    // If a user navigates directly to an asset within a search results list
+                    // The thumbnail grid won't have been visible to be justified,
+                    // so if have to do it manually when the search results page is viewed (i.e. the asset view is closed)
+                    // The setTimeout ensures the thumbnails are visible
+                    setTimeout(function() {
+                        assetManager.searchResultsView.justifyThumbnails();
+                    }, 0);
                 }
             }
         },
@@ -49015,11 +49038,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.trigger('viewSearchResults', queryString.toQueryParams());
         },
 
-        viewAssetInSearch: function(queryString, assetId, section) {
-            this.searchResults(queryString);
-            this.trigger('route:viewAsset', assetId, section);
-        },
-
         viewSelection: function(selection, section) {
             var assetIds = selection.split(',');
 
@@ -49134,6 +49152,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             });
 
             this.$pagination.data('jqPagination').updateInput(true);
+        },
+
+        justifyThumbnails: function() {
+            this.thumbnails.justify();
         },
 
         nextPage: function() {
@@ -49385,7 +49407,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         justify: function() {
-            this.$thumbnails.justifyAssets();
+            if (this.$thumbnails !== undefined) {
+                this.$thumbnails.justifyAssets();
+            }
 
             return this;
         },

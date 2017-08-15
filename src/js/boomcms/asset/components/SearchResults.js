@@ -98,6 +98,10 @@
             this.$pagination.data('jqPagination').updateInput(true);
         },
 
+        justifyThumbnails: function() {
+            this.thumbnails.justify();
+        },
+
         nextPage: function() {
             var page = this.page;
 
