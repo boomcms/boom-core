@@ -141,16 +141,11 @@
     </a>
 </script>
 
-<script type="text/template" id="b-album-name-template">
-    <form>
+<script type="text/template" id="b-album-create-name-template">
+    <form id="b-album-create-name">
         <label>
             <p><?= trans('boomcms::asset.album-name') ?></p>
-            <input type="text" name="filename" value="<?= trans('boomcms::asset.album-name') ?>" />
+            <input type="text" name="filename" value="" />
         </label>
-
-        <?= $button('save', 'create-album', [
-            'type'  => 'submit',
-            'class' => 'b-button-withtext',
-        ]) ?>
-    </form>    
+    </form>
 </script>

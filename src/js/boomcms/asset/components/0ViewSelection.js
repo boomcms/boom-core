@@ -62,22 +62,37 @@
 
         createAlbumAndAddSelection: function() {
             var view = this,
-                now = new Date();
-                
-            this.albums.create({
-                name: 'Untitled Album ' + now.getFullYear() + now.getMonth() + now.getDate()
-            }, {
-                success: function(album) {
-                    view.addAlbum(album);
+                dialog;
 
-//                    setTimeout(function() {
-//                        console.log(view.$('#b-asset-albums [data-album="' + album.getId() + '"]'));
-//
-//                        view.$('#b-asset-albums').animate({
-//                            scrollTop: view.$('#b-asset-albums [data-album="' + album.getId() + '"]').offset().top
-//                        }, 500);
-//                    }, 0);
+            dialog = new BoomCMS.Dialog({
+                msg: $('#b-album-create-name-template').html(),
+                width: 600,
+                onLoad: function() {
+                    dialog.contents.find('form').on('submit', function() {
+                        dialog.close();
+                    });
                 }
+            })
+            .done(function() {
+                var name = dialog.contents.find('input').val();
+
+                if (name.trim() === '') {
+                    return;
+                }
+
+                view.albums.create({
+                    name: name
+                }, {
+                    success: function(album) {
+                        view.viewAlbums();
+
+                        $('html,body').animate({
+                            scrollTop: view.$('#b-asset-albums [data-album="' + album.getId() + '"]').offset().top - $('#b-topbar').height()
+                        }, 1000, function() {
+                            view.addAlbum(album);
+                        });
+                    }
+                });
             });
         },
 
@@ -146,9 +161,9 @@
                 albums: this.albums,
                 selected: this.relatedAlbums,
                 $container: $(this.$el[0].ownerDocument)
-            });
+            }).render();
 
-            this.$('#b-asset-albums > div').html(view.render().el);
+            this.$('#b-asset-albums > div').html(view.el);
         },
 
         viewSection: function(section) {

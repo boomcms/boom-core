@@ -3,7 +3,7 @@
 return [
     'albums'                       => 'Albums',
     'album-create'                 => 'Create album',
-    'album-name'                   => 'Album name',
+    'album-name'                   => 'Enter a name for the album',
     'all'                          => 'All assets',
     'automatic-upload-description' => "File automatically uploaded for use in page\n\nUploaded from: :url",
     'close'                        => 'Close',
