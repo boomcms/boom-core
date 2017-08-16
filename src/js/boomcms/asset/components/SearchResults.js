@@ -8,8 +8,6 @@
         bind: function() {
             var assetSearch = this;
 
-            this.listenTo(this.assets, 'reset sync add remove', this.render);
-
             this.$el
                 .parents('body')
                 .on('keydown', function(e) {
@@ -120,6 +118,10 @@
         },
 
         render: function() {},
+
+        reset: function() {
+            this.params = {};
+        },
 
         setAssetsPerPage: function() {
             var rowHeight = 200,

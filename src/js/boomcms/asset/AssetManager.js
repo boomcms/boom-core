@@ -343,6 +343,13 @@
                 this.uploaded.add(new BoomCMS.Asset(assets[i]));
             }
 
+            // Force any existing, cached search to be re-done.
+            // Otherwise if the user searched for most recent assets before uploading
+            // the new asset won't appear in the search results if they go back.
+            if (this.searchResultsView !== undefined) {
+                this.searchResultsView.reset();
+            }
+
             if (errors.length > 0) {
                 for (var i = 0; i < errors.length; i++) {
                     var $li = $('<li></li>').text(errors[i]);

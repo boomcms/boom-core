@@ -48192,6 +48192,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         // Map of asset collections which have had event listeners bound.
         assetCollections: {},
+
         selection: new BoomCMS.Collections.Assets(),
         uploaded: new BoomCMS.Collections.Assets(),
         selectedClass: 'selected',
@@ -48522,6 +48523,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             for (var i = 0; i < assets.length; i++) {
                 this.uploaded.add(new BoomCMS.Asset(assets[i]));
+            }
+
+            // Force any existing, cached search to be re-done.
+            // Otherwise if the user searched for most recent assets before uploading
+            // the new asset won't appear in the search results if they go back.
+            if (this.searchResultsView !== undefined) {
+                this.searchResultsView.reset();
             }
 
             if (errors.length > 0) {
@@ -49088,8 +49096,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         bind: function() {
             var assetSearch = this;
 
-            this.listenTo(this.assets, 'reset sync add remove', this.render);
-
             this.$el
                 .parents('body')
                 .on('keydown', function(e) {
@@ -49200,6 +49206,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         render: function() {},
+
+        reset: function() {
+            this.params = {};
+        },
 
         setAssetsPerPage: function() {
             var rowHeight = 200,
