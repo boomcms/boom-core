@@ -43843,6 +43843,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             window.location = url;
         },
 
+        findById: function(id) {
+            return this.findWhere({id: parseInt(id)});
+        },
+
         fetchOnce: function(success) {
             if (this.fetched === false) {
                 this.fetched = true;
@@ -48186,8 +48190,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         assetViews: [],
         assets: new BoomCMS.Collections.Assets(),
 
-        // Map of asset collections which have had evnet listeners bound.
-        boundCollections: {},
+        // Map of asset collections which have had event listeners bound.
+        assetCollections: {},
         selection: new BoomCMS.Collections.Assets(),
         uploaded: new BoomCMS.Collections.Assets(),
         selectedClass: 'selected',
@@ -48204,7 +48208,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         bindAssetEvents: function(assets) {
             var assetManager = this;
 
-            if (typeof this.boundCollections[assets._listenId] === 'undefined') {
+            if (typeof this.assetCollections[assets._listenId] === 'undefined') {
                 this.listenTo(assets, 'select', function(asset) {
                     assetManager.selection.add(asset);
                 });
@@ -48223,7 +48227,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     assetManager.removeFromAllCollections(asset.getId());
                 });
 
-                this.boundCollections[assets._listenId] = true;
+                this.assetCollections[assets._listenId] = assets;
             }
         },
 
@@ -48405,7 +48409,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         loadAlbum: function(album) {
             if (album) {
-                this.selection.reset();
+                this.selectNone();
 
                 if (!album.isNew()) {
                     this.assets = album.getAssets();
@@ -48457,9 +48461,26 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         selectNone: function() {
-            this.assets.each(function(asset) {
-                asset.trigger('unselect', asset);
-            });
+            var selectedIds = this.selection.getAssetIds();
+
+            if (selectedIds.length === 0) {
+                return;
+            }
+
+            // Ensure that the unselect event is triggered for equivalent models in all collections.
+            for (var key in this.assetCollections) {
+                var assets = this.assetCollections[key];
+
+                for (var i = 0; i < selectedIds.length; i++) {
+                    var asset = assets.findById(selectedIds[i]);
+
+                    if (asset) {
+                        asset.trigger('unselect', asset);
+                    }
+                };
+            }
+
+            this.selection.reset();
         },
 
         setView: function(section) {

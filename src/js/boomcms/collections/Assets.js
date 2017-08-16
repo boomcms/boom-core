@@ -37,6 +37,10 @@
             window.location = url;
         },
 
+        findById: function(id) {
+            return this.findWhere({id: parseInt(id)});
+        },
+
         fetchOnce: function(success) {
             if (this.fetched === false) {
                 this.fetched = true;
