@@ -60,7 +60,6 @@
             this.assets.fetch({
                 data: data,
                 success: function() {
-                    search.trigger('fetched', search.assets);
                     search.initPagination();
                 }
             });

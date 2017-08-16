@@ -48402,9 +48402,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
          * An asset can appear in collections for multiple albums
          * This ensures that when an asset is deleted all other albums are kept in sync 
          * And their thumbnail lists updated
-         *
-         * @param {type} asset
-         * @returns {undefined}
          */
         removeFromAlbums: function(asset) {
             this.albums.each(function(album) {
@@ -48584,11 +48581,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     params: params,
                     selection: this.selection,
                     $container: $(this.$el[0].ownerDocument)
-                });
-
-                this.searchResultsView.on('fetched', function(assets) {
-                    assetManager.assets = assets;
-                    assetManager.bindAssetEvents(assetManager.assets);
                 });
 
                 this.searchResultsView.on('filtered', function(params) {
@@ -49101,7 +49093,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.assets.fetch({
                 data: data,
                 success: function() {
-                    search.trigger('fetched', search.assets);
                     search.initPagination();
                 }
             });
