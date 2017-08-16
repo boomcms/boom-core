@@ -57,7 +57,7 @@
 
             this.setAssetsUrl();
 
-            this.assets.on('destroy', function() {
+            this.assets.on('destroy remove', function() {
                 album.set('asset_count', album.get('asset_count') - 1);
             });
 

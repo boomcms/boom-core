@@ -43091,7 +43091,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
             this.setAssetsUrl();
 
-            this.assets.on('destroy', function() {
+            this.assets.on('destroy remove', function() {
                 album.set('asset_count', album.get('asset_count') - 1);
             });
 
@@ -43814,7 +43814,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         comparator: 'name',
 
 		destroy: function() {
-			var assets = this;
+			var assets = this,
+                assetIds = this.getAssetIds();
 
             return $.ajax({
                 url: this.url,
@@ -43824,9 +43825,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
                 }
             })
             .done(function() {
-                while (assets.length > 0) {
-                    assets.models[0].trigger('destroy', assets.models[0]);
-                }
+                assets.trigger('destroy-all', assetIds);
             });
         },
     
@@ -43902,6 +43901,14 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
                 if (this.models[i].getId() === asset.getId()) {
                     return i;
                 }
+            }
+        },
+
+        removeIfExists: function(assetId) {
+            var matched = this.findWhere({id: assetId});
+
+            if (matched !== undefined) {
+                this.remove(matched);
             }
         },
 
@@ -48178,6 +48185,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         albumViews: [],
         assetViews: [],
         assets: new BoomCMS.Collections.Assets(),
+
+        // Map of asset collections which have had evnet listeners bound.
+        boundCollections: {},
         selection: new BoomCMS.Collections.Assets(),
         uploaded: new BoomCMS.Collections.Assets(),
         selectedClass: 'selected',
@@ -48194,26 +48204,27 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         bindAssetEvents: function(assets) {
             var assetManager = this;
 
-            this.stopListening(assets);
+            if (typeof this.boundCollections[assets._listenId] === 'undefined') {
+                this.listenTo(assets, 'select', function(asset) {
+                    assetManager.selection.add(asset);
+                });
 
-            this.listenTo(assets, 'select', function(asset) {
-                assetManager.selection.add(asset);
-            });
+                this.listenTo(assets, 'unselect', function(asset) {
+                    assetManager.selection.remove(asset);
+                });
 
-            this.listenTo(assets, 'unselect', function(asset) {
-                assetManager.selection.remove(asset);
-            });
+                this.listenTo(assets, 'sync', this.assetsChanged);
 
-            this.listenTo(assets, 'sync', this.assetsChanged);
+                this.listenTo(assets, 'view', function(asset) {
+                    assetManager.router.goToAsset(asset);
+                });
 
-            this.listenTo(assets, 'view', function(asset) {
-                assetManager.router.goToAsset(asset);
-            });
+                this.listenTo(assets, 'destroy', function(asset) {
+                    assetManager.removeFromAllCollections(asset.getId());
+                });
 
-            this.listenTo(assets, 'destroy', function(asset) {
-                assetManager.removeFromAlbums(asset);
-                assetManager.selection.reset();
-            });  
+                this.boundCollections[assets._listenId] = true;
+            }
         },
 
         bind: function() {
@@ -48369,6 +48380,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         initialize: function(options) {
+            var assetManager = this;
+
             this.albums = options.albums;
 
             this.uploader = this.$('#b-assets-upload form');
@@ -48376,6 +48389,12 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.listenTo(this.albums, 'add remove reset', this.showAlbums);
             this.listenTo(this.selection, 'reset update', this.toggleButtons);
+
+            this.listenTo(this.selection, 'destroy-all', function(assetIds) {
+                for (var i = 0; i < assetIds.length; i++) {
+                    assetManager.removeFromAllCollections(assetIds[i]);
+                }
+            });
 
             this.bindAssetEvents(this.uploaded);
             this.listenTo(this.uploaded, 'add', this.assetsUploaded);
@@ -48397,20 +48416,23 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         /**
-         * Remove an asset from all album collections.
+         * Remove an asset from all album collections and search.
          *
          * An asset can appear in collections for multiple albums
          * This ensures that when an asset is deleted all other albums are kept in sync 
          * And their thumbnail lists updated
          */
-        removeFromAlbums: function(asset) {
+        removeFromAllCollections: function(assetId) {
             this.albums.each(function(album) {
-                var matched = album.getAssets().findWhere({id: asset.getId()});
-
-                if (matched !== undefined) {
-                    album.remove(matched);
-                }
+                album.getAssets().removeIfExists(assetId);
             });
+
+            if (this.searchResultsView !== undefined) {
+                this.searchResultsView.assets.removeIfExists(assetId);
+            }
+
+            this.selection.removeIfExists(assetId);
+            this.uploaded.removeIfExists(assetId);
         },
 
         showAlbums: function() {
@@ -48424,6 +48446,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                 $el.html(view.render().el);
             }
+
+            this.selectNone();
         },
 
         selectAll: function() {
@@ -48567,6 +48591,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         viewSearchResults: function(params) {
             var assetManager = this;
+
+            this.selectNone();
 
             if (this.searchResultsView === undefined) {
                 var router = this.router;
@@ -49364,7 +49390,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.selection = options.selection;
             this.$container = options.$container;
 
-            this.listenTo(this.assets, 'sort add remove sync destroy', this.render);
+            this.listenTo(this.assets, 'sort add remove sync remove', this.render);
             this.listenTo(this.assets, 'change change:image', this.justify);
 
             this.listenTo(this.assets, 'reset', function() {
@@ -49608,6 +49634,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             var view = this;
 
             this.selection = new BoomCMS.Collections.Assets([this.model]);
+
+            this.listenTo(this.selection, 'destroy-all', function() {
+                view.model.trigger('destroy', view.model);
+            });
 
             this.listenTo(this.model, 'sync', function() {
                 view.render();

@@ -7,6 +7,9 @@
         albumViews: [],
         assetViews: [],
         assets: new BoomCMS.Collections.Assets(),
+
+        // Map of asset collections which have had evnet listeners bound.
+        boundCollections: {},
         selection: new BoomCMS.Collections.Assets(),
         uploaded: new BoomCMS.Collections.Assets(),
         selectedClass: 'selected',
@@ -23,26 +26,27 @@
         bindAssetEvents: function(assets) {
             var assetManager = this;
 
-            this.stopListening(assets);
+            if (typeof this.boundCollections[assets._listenId] === 'undefined') {
+                this.listenTo(assets, 'select', function(asset) {
+                    assetManager.selection.add(asset);
+                });
 
-            this.listenTo(assets, 'select', function(asset) {
-                assetManager.selection.add(asset);
-            });
+                this.listenTo(assets, 'unselect', function(asset) {
+                    assetManager.selection.remove(asset);
+                });
 
-            this.listenTo(assets, 'unselect', function(asset) {
-                assetManager.selection.remove(asset);
-            });
+                this.listenTo(assets, 'sync', this.assetsChanged);
 
-            this.listenTo(assets, 'sync', this.assetsChanged);
+                this.listenTo(assets, 'view', function(asset) {
+                    assetManager.router.goToAsset(asset);
+                });
 
-            this.listenTo(assets, 'view', function(asset) {
-                assetManager.router.goToAsset(asset);
-            });
+                this.listenTo(assets, 'destroy', function(asset) {
+                    assetManager.removeFromAllCollections(asset.getId());
+                });
 
-            this.listenTo(assets, 'destroy', function(asset) {
-                assetManager.removeFromAlbums(asset);
-                assetManager.selection.reset();
-            });  
+                this.boundCollections[assets._listenId] = true;
+            }
         },
 
         bind: function() {
@@ -198,6 +202,8 @@
         },
 
         initialize: function(options) {
+            var assetManager = this;
+
             this.albums = options.albums;
 
             this.uploader = this.$('#b-assets-upload form');
@@ -205,6 +211,12 @@
 
             this.listenTo(this.albums, 'add remove reset', this.showAlbums);
             this.listenTo(this.selection, 'reset update', this.toggleButtons);
+
+            this.listenTo(this.selection, 'destroy-all', function(assetIds) {
+                for (var i = 0; i < assetIds.length; i++) {
+                    assetManager.removeFromAllCollections(assetIds[i]);
+                }
+            });
 
             this.bindAssetEvents(this.uploaded);
             this.listenTo(this.uploaded, 'add', this.assetsUploaded);
@@ -215,7 +227,7 @@
 
         loadAlbum: function(album) {
             if (album) {
-                this.selection.reset();
+                this.selectionNone();
 
                 if (!album.isNew()) {
                     this.assets = album.getAssets();
@@ -226,20 +238,23 @@
         },
 
         /**
-         * Remove an asset from all album collections.
+         * Remove an asset from all album collections and search.
          *
          * An asset can appear in collections for multiple albums
          * This ensures that when an asset is deleted all other albums are kept in sync 
          * And their thumbnail lists updated
          */
-        removeFromAlbums: function(asset) {
+        removeFromAllCollections: function(assetId) {
             this.albums.each(function(album) {
-                var matched = album.getAssets().findWhere({id: asset.getId()});
-
-                if (matched !== undefined) {
-                    album.remove(matched);
-                }
+                album.getAssets().removeIfExists(assetId);
             });
+
+            if (this.searchResultsView !== undefined) {
+                this.searchResultsView.assets.removeIfExists(assetId);
+            }
+
+            this.selection.removeIfExists(assetId);
+            this.uploaded.removeIfExists(assetId);
         },
 
         showAlbums: function() {
@@ -253,6 +268,8 @@
 
                 $el.html(view.render().el);
             }
+
+            this.selectNone();
         },
 
         selectAll: function() {
@@ -396,6 +413,8 @@
 
         viewSearchResults: function(params) {
             var assetManager = this;
+
+            this.selectNone();
 
             if (this.searchResultsView === undefined) {
                 var router = this.router;

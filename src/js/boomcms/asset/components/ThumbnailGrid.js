@@ -16,7 +16,7 @@
             this.selection = options.selection;
             this.$container = options.$container;
 
-            this.listenTo(this.assets, 'sort add remove sync destroy', this.render);
+            this.listenTo(this.assets, 'sort add remove sync remove', this.render);
             this.listenTo(this.assets, 'change change:image', this.justify);
 
             this.listenTo(this.assets, 'reset', function() {

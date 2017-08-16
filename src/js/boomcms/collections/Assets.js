@@ -8,7 +8,8 @@
         comparator: 'name',
 
 		destroy: function() {
-			var assets = this;
+			var assets = this,
+                assetIds = this.getAssetIds();
 
             return $.ajax({
                 url: this.url,
@@ -18,9 +19,7 @@
                 }
             })
             .done(function() {
-                while (assets.length > 0) {
-                    assets.models[0].trigger('destroy', assets.models[0]);
-                }
+                assets.trigger('destroy-all', assetIds);
             });
         },
     
@@ -96,6 +95,14 @@
                 if (this.models[i].getId() === asset.getId()) {
                     return i;
                 }
+            }
+        },
+
+        removeIfExists: function(assetId) {
+            var matched = this.findWhere({id: assetId});
+
+            if (matched !== undefined) {
+                this.remove(matched);
             }
         },
 

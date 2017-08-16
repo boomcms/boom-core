@@ -46,6 +46,10 @@
 
             this.selection = new BoomCMS.Collections.Assets([this.model]);
 
+            this.listenTo(this.selection, 'destroy-all', function() {
+                view.model.trigger('destroy', view.model);
+            });
+
             this.listenTo(this.model, 'sync', function() {
                 view.render();
                 view.viewSection(view.getSection());
