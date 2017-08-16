@@ -62,7 +62,7 @@ class Album extends Model implements AlbumInterface, SingleSiteInterface
     public function assetsUpdated(): AlbumInterface
     {
         $assets = $this->assets();
-        $feature = $assets->first();
+        $feature = $assets->orderBy(Asset::ATTR_UPLOADED_AT, 'desc')->first();
 
         $this->update([
             self::ATTR_FEATURE_IMAGE => $feature ? $feature->getId() : null,

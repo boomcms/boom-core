@@ -47,6 +47,12 @@ class AlbumTest extends AbstractModelTestCase
             ->andReturn($assetCount);
 
         $relation
+            ->shouldReceive('orderBy')
+            ->with(Asset::ATTR_UPLOADED_AT, 'desc')
+            ->once()
+            ->andReturn($relation);
+
+        $relation
             ->shouldReceive('first')
             ->once()
             ->andReturn($asset);
