@@ -48211,7 +48211,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             });
 
             this.listenTo(assets, 'destroy', function(asset) {
-                assetManager.router.goToContext();
                 assetManager.removeFromAlbums(asset);
                 assetManager.selection.reset();
             });  
@@ -48397,6 +48396,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             }
         },
 
+        /**
+         * Remove an asset from all album collections.
+         *
+         * An asset can appear in collections for multiple albums
+         * This ensures that when an asset is deleted all other albums are kept in sync 
+         * And their thumbnail lists updated
+         *
+         * @param {type} asset
+         * @returns {undefined}
+         */
         removeFromAlbums: function(asset) {
             this.albums.each(function(album) {
                 var matched = album.getAssets().findWhere({id: asset.getId()});
@@ -48646,6 +48655,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 })
                 .on('click', '.b-assets-delete', function() {
                     selection.destroy();
+                    view.router.goToContext();
                 })
                 .on('click', 'a[data-section]', function(e) {
                     e.preventDefault();

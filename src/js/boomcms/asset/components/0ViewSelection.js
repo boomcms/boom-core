@@ -28,6 +28,7 @@
                 })
                 .on('click', '.b-assets-delete', function() {
                     selection.destroy();
+                    view.router.goToContext();
                 })
                 .on('click', 'a[data-section]', function(e) {
                     e.preventDefault();

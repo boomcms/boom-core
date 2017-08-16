@@ -40,7 +40,6 @@
             });
 
             this.listenTo(assets, 'destroy', function(asset) {
-                assetManager.router.goToContext();
                 assetManager.removeFromAlbums(asset);
                 assetManager.selection.reset();
             });  
@@ -226,6 +225,13 @@
             }
         },
 
+        /**
+         * Remove an asset from all album collections.
+         *
+         * An asset can appear in collections for multiple albums
+         * This ensures that when an asset is deleted all other albums are kept in sync 
+         * And their thumbnail lists updated
+         */
         removeFromAlbums: function(asset) {
             this.albums.each(function(album) {
                 var matched = album.getAssets().findWhere({id: asset.getId()});
