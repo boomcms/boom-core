@@ -48175,31 +48175,12 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     BoomCMS.AssetManager = Backbone.View.extend({
         el: '#b-assets-manager',
 
-        activeAsset: null,
         albumViews: [],
         assetViews: [],
         assets: new BoomCMS.Collections.Assets(),
         selection: new BoomCMS.Collections.Assets(),
         uploaded: new BoomCMS.Collections.Assets(),
         selectedClass: 'selected',
-
-        /**
-         * When the assets in the collection change (e.g. the page or filters are changed)
-         *
-         * If an asset is being viewed which isn't in the collection
-         * Then view the first asset in the collection instead
-         *
-         * @returns {undefined}
-         */
-        assetsChanged: function() {
-            if (this.activeAsset !== null && this.assets.get(this.activeAsset) === undefined) {
-                var first = this.assets.at(0);
-
-                if (first) {
-                    first.trigger('view', first);
-                }
-            }
-        },
 
         assetsUploaded: function() {
             new BoomCMS.AssetManager.ThumbnailGrid({
@@ -48470,10 +48451,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .removeClass('active')
                 .filter('[data-view="' + section + '"]')
                 .addClass('active');
-
-            if (section !== 'asset') {
-                this.activeAsset = null;
-            }
         },
 
         toggleButtons: function() {
@@ -48537,8 +48514,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         viewAsset: function(assetId, section) {
             var assetManager = this,
                 asset = this.assets.getOrFetch(assetId);
-
-            this.activeAsset = asset;
 
             if (this.assetViews[assetId] === undefined) {
                 this.assetViews[assetId] = new BoomCMS.AssetManager.ViewAsset({
@@ -48621,7 +48596,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     // If a user navigates directly to an asset within a search results list
                     // The thumbnail grid won't have been visible to be justified,
                     // so if have to do it manually when the search results page is viewed (i.e. the asset view is closed)
-                    // The setTimeout ensures the thumbnails are visible
+                    // The setTimeout ensures the thumbnails are visible before justificiation
                     setTimeout(function() {
                         assetManager.searchResultsView.justifyThumbnails();
                     }, 0);

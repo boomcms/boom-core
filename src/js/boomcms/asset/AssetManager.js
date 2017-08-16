@@ -4,31 +4,12 @@
     BoomCMS.AssetManager = Backbone.View.extend({
         el: '#b-assets-manager',
 
-        activeAsset: null,
         albumViews: [],
         assetViews: [],
         assets: new BoomCMS.Collections.Assets(),
         selection: new BoomCMS.Collections.Assets(),
         uploaded: new BoomCMS.Collections.Assets(),
         selectedClass: 'selected',
-
-        /**
-         * When the assets in the collection change (e.g. the page or filters are changed)
-         *
-         * If an asset is being viewed which isn't in the collection
-         * Then view the first asset in the collection instead
-         *
-         * @returns {undefined}
-         */
-        assetsChanged: function() {
-            if (this.activeAsset !== null && this.assets.get(this.activeAsset) === undefined) {
-                var first = this.assets.at(0);
-
-                if (first) {
-                    first.trigger('view', first);
-                }
-            }
-        },
 
         assetsUploaded: function() {
             new BoomCMS.AssetManager.ThumbnailGrid({
@@ -299,10 +280,6 @@
                 .removeClass('active')
                 .filter('[data-view="' + section + '"]')
                 .addClass('active');
-
-            if (section !== 'asset') {
-                this.activeAsset = null;
-            }
         },
 
         toggleButtons: function() {
@@ -366,8 +343,6 @@
         viewAsset: function(assetId, section) {
             var assetManager = this,
                 asset = this.assets.getOrFetch(assetId);
-
-            this.activeAsset = asset;
 
             if (this.assetViews[assetId] === undefined) {
                 this.assetViews[assetId] = new BoomCMS.AssetManager.ViewAsset({
