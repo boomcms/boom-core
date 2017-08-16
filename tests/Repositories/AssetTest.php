@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Tests\Repositories;
 
+use BoomCMS\Database\Models\Album;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
 use BoomCMS\Repositories\Asset as AssetRepository;
@@ -120,22 +121,32 @@ class AssetTest extends BaseRepositoryTest
 
     public function testDeleteWithArrayOfIds()
     {
-        AlbumFacade::shouldReceive('removeAssetsFromCounts')
+        $album = m::mock(Album::class);
+
+        AlbumFacade::shouldReceive('findByAssetIds')
             ->once()
-            ->with([1, 2, 3]);
+            ->with([1, 2, 3])
+            ->andReturn(collect([$album]));
+
+        $album->shouldReceive('assetsUpdated')->once();
 
         parent::testDeleteWithArrayOfIds();
     }
 
     public function testDeleteWithModel()
     {
+        $album = m::mock(Album::class);
+
         $this->model
             ->shouldReceive('getId')
             ->andReturn(1);
 
-        AlbumFacade::shouldReceive('removeAssetsFromCounts')
+        AlbumFacade::shouldReceive('findByAssetIds')
             ->once()
-            ->with([$this->model->getId()]);
+            ->with([$this->model->getId()])
+            ->andReturn(collect([$album]));
+
+        $album->shouldReceive('assetsUpdated')->once();
 
         parent::testDeleteWithModel();
     }

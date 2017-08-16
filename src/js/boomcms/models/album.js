@@ -58,7 +58,8 @@
             this.setAssetsUrl();
 
             this.assets.on('destroy remove', function() {
-                album.set('asset_count', album.get('asset_count') - 1);
+                // Get the album details from the server again to update asset count and feature image ID
+                album.fetch();
             });
 
             this.on('change:id', function() {

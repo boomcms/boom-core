@@ -28,6 +28,11 @@ class AlbumController extends Controller
         return AlbumFacade::all();
     }
 
+    public function show(Album $album)
+    {
+        return $album;
+    }
+
     public function store(Request $request)
     {
         $name = $request->input(Album::ATTR_NAME, 'Untitled');

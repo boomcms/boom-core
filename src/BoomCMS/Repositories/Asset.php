@@ -72,10 +72,16 @@ class Asset extends Repository implements AssetRepositoryInterface
     public function delete($param): RepositoryInterface
     {
         $assetIds = is_array($param) ? $param : [$param->getId()];
+        $albums = AlbumFacade::findByAssetIds($assetIds);
 
-        AlbumFacade::removeAssetsFromCounts($assetIds);
+        parent::delete($param);
 
-        return parent::delete($param);
+        // Update the asset counts and feature image of the albums which these assets appeared in.
+        foreach ($albums as $album) {
+            $album->assetsUpdated();
+        }
+
+        return $this;
     }
 
     /**

@@ -3,6 +3,7 @@
 
     BoomCMS.AssetManager.AlbumList = Backbone.View.extend({
         el: $('<ul class="b-assets-album-list"></ul>'),
+        renderTimeout: null,
         selectedClass: 'selected',
 
         initialize: function(options) {
@@ -15,7 +16,7 @@
 
             this.template = _.template($('#b-assets-album-list-template').html());
 
-            this.listenTo(this.albums, 'change add', this.render);
+            this.listenTo(this.albums, 'change add sync', this.render);
             this.listenTo(this.albums, 'remove', this.removeAlbum);
             this.listenTo(this.selected, 'add', this.selectAlbum);
             this.listenTo(this.selected, 'remove', this.unselectAlbum);
@@ -62,21 +63,27 @@
         render: function() {
             var view = this;
 
-            this.$el.html($(this.template({
-                albums: this.albums
-            })));
-
-            this.$('li').removeClass('selected');
-
-            if (this.selected !== undefined) {
-                this.selected.each(function(album) {
-                    view.$('li[data-album=' + album.getId() + ']').addClass(view.selectedClass);
-                });
+            if (this.renderTimeout !== null) {
+                clearTimeout(this.renderTimeout);
             }
 
-            setTimeout(function() {
-                view.lazyLoadThumbnails();
-            }, 0);
+            this.renderTimeout = setTimeout(function() {
+                view.$el.html($(view.template({
+                    albums: view.albums
+                })));
+
+                view.$('li').removeClass('selected');
+
+                if (view.selected !== undefined) {
+                    view.selected.each(function(album) {
+                        view.$('li[data-album=' + album.getId() + ']').addClass(view.selectedClass);
+                    });
+                }
+
+                setTimeout(function() {
+                    view.lazyLoadThumbnails();
+                }, 0);
+            }, 500);
 
             return this;
         },

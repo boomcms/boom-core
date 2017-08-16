@@ -43092,7 +43092,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             this.setAssetsUrl();
 
             this.assets.on('destroy remove', function() {
-                album.set('asset_count', album.get('asset_count') - 1);
+                // Get the album details from the server again to update asset count and feature image ID
+                album.fetch();
             });
 
             this.on('change:id', function() {
@@ -48858,6 +48859,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
     BoomCMS.AssetManager.AlbumList = Backbone.View.extend({
         el: $('<ul class="b-assets-album-list"></ul>'),
+        renderTimeout: null,
         selectedClass: 'selected',
 
         initialize: function(options) {
@@ -48870,7 +48872,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.template = _.template($('#b-assets-album-list-template').html());
 
-            this.listenTo(this.albums, 'change add', this.render);
+            this.listenTo(this.albums, 'change add sync', this.render);
             this.listenTo(this.albums, 'remove', this.removeAlbum);
             this.listenTo(this.selected, 'add', this.selectAlbum);
             this.listenTo(this.selected, 'remove', this.unselectAlbum);
@@ -48917,21 +48919,27 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         render: function() {
             var view = this;
 
-            this.$el.html($(this.template({
-                albums: this.albums
-            })));
-
-            this.$('li').removeClass('selected');
-
-            if (this.selected !== undefined) {
-                this.selected.each(function(album) {
-                    view.$('li[data-album=' + album.getId() + ']').addClass(view.selectedClass);
-                });
+            if (this.renderTimeout !== null) {
+                clearTimeout(this.renderTimeout);
             }
 
-            setTimeout(function() {
-                view.lazyLoadThumbnails();
-            }, 0);
+            this.renderTimeout = setTimeout(function() {
+                view.$el.html($(view.template({
+                    albums: view.albums
+                })));
+
+                view.$('li').removeClass('selected');
+
+                if (view.selected !== undefined) {
+                    view.selected.each(function(album) {
+                        view.$('li[data-album=' + album.getId() + ']').addClass(view.selectedClass);
+                    });
+                }
+
+                setTimeout(function() {
+                    view.lazyLoadThumbnails();
+                }, 0);
+            }, 500);
 
             return this;
         },
