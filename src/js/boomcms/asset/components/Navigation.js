@@ -4,6 +4,17 @@
     BoomCMS.AssetManager.Navigation = Backbone.View.extend({
         el: '#b-assets-navigation',
 
+        centerActiveAsset: function() {
+            var middle = this.$el.width() / 2,
+                $active = this.$el.find('.active'),
+                activeMiddle = $active.offset().left + ($active.outerWidth(true) / 2),
+                moveBy = middle - activeMiddle;
+
+            this.$el
+                .find('> div')
+                .css('transform', 'translateX(' + moveBy + 'px)');
+        },
+
         initialize: function(options) {
             this.selection = options.selection;
         },
@@ -36,6 +47,7 @@
             }
 
             this.$el.html($container);
+            this.centerActiveAsset();
         }
     });
 }(jQuery, BoomCMS));

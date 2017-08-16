@@ -48593,15 +48593,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.assetViews[assetId].viewSection(section);
 
             setTimeout(function() {
-                var position = assetManager.assets.position(asset),
-                    assets = assetManager.assets,
-                    navStart = position > 5 ? position - 5 : 0,
-                    navEnd = position > 5 ? position + 4 : position + 4 + (5 - position);
-
-                if (assets.length > 1) {
-                    var navigationAssets = new BoomCMS.Collections.Assets(assets.slice(navStart, navEnd));
-
-                    assetManager.viewNavigation(navigationAssets, asset);
+                if (assetManager.assets.length > 1) {
+                    assetManager.viewNavigation(asset);
                     assetManager.assetViews[assetId].$('.b-assets-view').removeClass('no-navigation');
                 } else {
                     assetManager.assetViews[assetId].$('.b-assets-view').addClass('no-navigation');
@@ -48609,14 +48602,20 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             }, 0);
         },
 
-        viewNavigation: function(assets, active) {
+        viewNavigation: function(active) {
+            var position = this.assets.position(active),
+                assets = this.assets,
+                navStart = position > 5 ? position - 5 : 0,
+                navEnd = (position < assets.length - 6) ? position + 6 : assets.length - 1,
+                navigationAssets = new BoomCMS.Collections.Assets(assets.slice(navStart, navEnd));
+
             if (this.navigation === undefined) {
                 this.navigation = new BoomCMS.AssetManager.Navigation({
                     selection: this.selection
                 });
             }
 
-            this.navigation.render(assets, active);
+            this.navigation.render(navigationAssets, active);
         },
 
         viewSearchResults: function(params) {
@@ -48959,6 +48958,17 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     BoomCMS.AssetManager.Navigation = Backbone.View.extend({
         el: '#b-assets-navigation',
 
+        centerActiveAsset: function() {
+            var middle = this.$el.width() / 2,
+                $active = this.$el.find('.active'),
+                activeMiddle = $active.offset().left + ($active.outerWidth(true) / 2),
+                moveBy = middle - activeMiddle;
+
+            this.$el
+                .find('> div')
+                .css('transform', 'translateX(' + moveBy + 'px)');
+        },
+
         initialize: function(options) {
             this.selection = options.selection;
         },
@@ -48991,6 +49001,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             }
 
             this.$el.html($container);
+            this.centerActiveAsset();
         }
     });
 }(jQuery, BoomCMS));
