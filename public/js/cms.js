@@ -49109,7 +49109,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     'use strict';
 
     BoomCMS.AssetManager.SearchResults = BoomCMS.AssetManager.ViewSelection.extend({
-        forceUpdate: false,
+        updateForced: false,
         page: 1,
         params: {},
 
@@ -49128,6 +49128,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                             break;
                     }
                 });
+
+            this.listenTo(this.assets, 'destroy remove', function(asset) {
+                assetSearch.forceUpdate().getAssets();
+            });
         },
 
         initialize: function(options) {
@@ -49147,6 +49151,15 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.bind();
             this.setAssetsPerPage();
             this.setParams(options.params);
+        },
+
+        /**
+         * Force search results to be updated even if the parameters haven't changed.
+         */
+        forceUpdate: function() {
+            this.updateForced = true;
+
+            return this;
         },
 
         getAssets: function() {
@@ -49227,15 +49240,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         render: function() {},
 
-        /**
-         * Force search results to be updated even if the parameters haven't changed.
-         *
-         * @returns {undefined}
-         */
-        forceUpdate: function() {
-            this.forceUpdate = true;
-        },
-
         setAssetsPerPage: function() {
             var rowHeight = 200,
                 avgAspectRatio = 1.5,
@@ -49258,8 +49262,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.params = params;
             this.page = params.page;
 
-            if (this.forceUpdate === true) {
-                this.forceUpdate = false;
+            if (this.updateForced === true) {
+                this.updateForced = false;
 
                 return true;
             }
