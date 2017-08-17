@@ -146,7 +146,7 @@ $.widget('boom.textEditor', {
     },
 
     save: function() {
-        this._trigger('save', this.editor.getContent());
+        this._trigger('save', null, this.editor.getContent());
     },
 
     setup: function(editor) {

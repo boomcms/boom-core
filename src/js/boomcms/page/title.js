@@ -29,8 +29,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
                 self.showLengthCounter();
             },
-            save: function() {
-                self._save();
+            save: function(e, title) {
+                self._save(title);
             }
         });
 

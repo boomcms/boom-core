@@ -46097,7 +46097,7 @@ $.widget( 'boom.pageToolbar', {
     },
 
     save: function() {
-        this._trigger('save', this.editor.getContent());
+        this._trigger('save', null, this.editor.getContent());
     },
 
     setup: function(editor) {
@@ -47715,8 +47715,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                 self.showLengthCounter();
             },
-            save: function() {
-                self._save();
+            save: function(e, title) {
+                self._save(title);
             }
         });
 
