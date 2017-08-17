@@ -14,8 +14,7 @@
             'search/:query/selection/:selection/:section': 'viewSelectionInSearch',
             'search/:query': 'searchResults',
             'search': 'search',
-            'asset/:asset/:section': 'viewAsset',
-            'selection/:selection/:section': 'viewSelection'
+            'asset/:asset/:section': 'viewAsset'
         },
 
         createAlbum: function() {
@@ -80,12 +79,6 @@
 
         searchResults: function(queryString) {
             this.trigger('viewSearchResults', queryString.toQueryParams());
-        },
-
-        viewSelection: function(selection, section) {
-            var assetIds = selection.split(',');
-
-            this.trigger('selection', assetIds, section);
         }
     });
 }(Backbone, BoomCMS));

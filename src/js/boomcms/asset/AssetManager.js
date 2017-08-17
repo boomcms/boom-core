@@ -146,9 +146,6 @@
                 assets = this.assets;
 
             this.router
-                .on('selection', function(assetIds, section) {
-                    assetManager.viewSelection(assetIds, section);
-                })
                 .on('route', function(section) {
                     assetManager.setView(section);
                 })
