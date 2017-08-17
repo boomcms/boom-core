@@ -411,11 +411,13 @@
             this.assetViews[assetId].viewSection(section);
 
             setTimeout(function() {
+                var $el = assetManager.assetViews[assetId].$el.find('.b-assets-view');
+
                 if (assetManager.assets.length > 1) {
                     assetManager.viewNavigation(asset);
-                    assetManager.assetViews[assetId].$('.b-assets-view').removeClass('no-navigation');
+                    $el.removeClass('no-navigation');
                 } else {
-                    assetManager.assetViews[assetId].$('.b-assets-view').addClass('no-navigation');
+                    $el.addClass('no-navigation');
                 }
             }, 0);
         },

@@ -48331,9 +48331,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 assets = this.assets;
 
             this.router
-                .on('selection', function(assetIds, section) {
-                    assetManager.viewSelection(assetIds, section);
-                })
                 .on('route', function(section) {
                     assetManager.setView(section);
                 })
@@ -48599,11 +48596,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.assetViews[assetId].viewSection(section);
 
             setTimeout(function() {
+                var $el = assetManager.assetViews[assetId].$el.find('.b-assets-view');
+
                 if (assetManager.assets.length > 1) {
                     assetManager.viewNavigation(asset);
-                    assetManager.assetViews[assetId].$('.b-assets-view').removeClass('no-navigation');
+                    $el.removeClass('no-navigation');
                 } else {
-                    assetManager.assetViews[assetId].$('.b-assets-view').addClass('no-navigation');
+                    $el.addClass('no-navigation');
                 }
             }, 0);
         },
@@ -49049,8 +49048,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             'search/:query/selection/:selection/:section': 'viewSelectionInSearch',
             'search/:query': 'searchResults',
             'search': 'search',
-            'asset/:asset/:section': 'viewAsset',
-            'selection/:selection/:section': 'viewSelection'
+            'asset/:asset/:section': 'viewAsset'
         },
 
         createAlbum: function() {
@@ -49115,12 +49113,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         searchResults: function(queryString) {
             this.trigger('viewSearchResults', queryString.toQueryParams());
-        },
-
-        viewSelection: function(selection, section) {
-            var assetIds = selection.split(',');
-
-            this.trigger('selection', assetIds, section);
         }
     });
 }(Backbone, BoomCMS));
