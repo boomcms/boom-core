@@ -43856,6 +43856,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
                     reset: true,
                     success: success
                 });
+            } else if (typeof success === 'function') {
+                success();
             }
         },
 
@@ -48330,14 +48332,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.router
                 .on('selection', function(assetIds, section) {
-                    assetManager.selection.reset();
-
-                    for (var i = 0; i < assetIds.length; i++) {
-                        var asset = assets.getOrFetch(assetIds[i]);
-                        assetManager.selection.add(asset);
-                    }
-
-                    assetManager.viewSelection(section);
+                    assetManager.viewSelection(assetIds, section);
                 })
                 .on('route', function(section) {
                     assetManager.setView(section);
@@ -48348,16 +48343,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .on('route:viewAssetInAlbum', function(album, assetId, section) {
                     album = assetManager.albums.findBySlug(album);
 
-                    if (assetManager.assets.length > 0) {
-                        assetManager.loadAlbum(album);
+                    assetManager.loadAlbum(album, function() {
                         assetManager.viewAsset(assetId, section);
-                    } else {
-                        assetManager.assets = album.getAssets();
-                        assetManager.bindAssetEvents(assetManager.assets);
-                        assetManager.assets.fetchOnce(function() {
-                            assetManager.viewAsset(assetId, section);
-                        });
-                    }
+                    });
+                })
+                .on('route:viewSelectionInAlbum', function(album, selection, section) {
+                    album = assetManager.albums.findBySlug(album);
+
+                    assetManager.loadAlbum(album, function() {
+                        assetManager.viewSelection(selection.split(','), section);
+                    });
                 })
                 .on('route:viewAssetInSearch', function(queryString, assetId, section) {
                     var asset = assetManager.assets.findWhere({id: parseInt(assetId)});
@@ -48370,6 +48365,17 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                         });
                     } else {
                         assetManager.viewAsset(assetId, section);
+                    }
+                })
+                .on('route:viewSelectionInSearch', function(queryString, selection, section) {
+                    if (assetManager.assets.length === 0) {
+                        assetManager.viewSearchResults(queryString.toQueryParams());
+
+                        assetManager.assets.on('sync', function() {
+                            assetManager.viewSelection(selection.split(','), section);
+                        });
+                    } else {
+                        assetManager.viewSelection(selection.split(','), section);
                     }
                 })
                 .on('route:viewAlbum', function(slug) {
@@ -48409,14 +48415,14 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.bindRoutes();
         },
 
-        loadAlbum: function(album) {
+        loadAlbum: function(album, success) {
             if (album) {
                 this.selectNone();
 
                 if (!album.isNew()) {
                     this.assets = album.getAssets();
                     this.bindAssetEvents(this.assets);
-                    this.assets.fetchOnce();
+                    this.assets.fetchOnce(success);
                 }
             }
         },
@@ -48660,7 +48666,14 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             }
         },
 
-        viewSelection: function(section) {
+        viewSelection: function(assetIds, section) {
+            this.selection.reset();
+console.log(this.assets, this.selection, assetIds, section);
+            for (var i = 0; i < assetIds.length; i++) {
+                var asset = this.assets.getOrFetch(assetIds[i]);
+                this.selection.add(asset);
+            }
+
             var view = new BoomCMS.AssetManager.ViewSelection({
                 selection: this.selection,
                 router: this.router,
@@ -49093,15 +49106,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             var assetIds = selection.split(',');
 
             this.trigger('selection', assetIds, section);
-        },
-
-        viewSelectionInAlbum: function(album, selection, section) {
-            this.viewSelection(selection, section);
-        },
-
-        viewSelectionInSearch: function(queryString, selection, section) {
-            this.searchResults(queryString);
-            this.viewSelection(selection, section);
         }
     });
 }(Backbone, BoomCMS));
@@ -49129,7 +49133,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     }
                 });
 
-            this.listenTo(this.assets, 'destroy remove', function(asset) {
+            this.listenTo(this.assets, 'destroy remove', function() {
                 assetSearch.forceUpdate().getAssets();
             });
         },

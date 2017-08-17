@@ -49,6 +49,8 @@
                     reset: true,
                     success: success
                 });
+            } else if (typeof success === 'function') {
+                success();
             }
         },
 
