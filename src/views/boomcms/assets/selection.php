@@ -74,7 +74,12 @@
 
                 <ul>
                     <% for (var i = 0; i < selection.models.length; i++) { %>
-                        <li><%= selection.models[i].getTitle() %></li>
+                        <li>
+                            <a href="#" data-asset="<%= selection.models[i].getId() %>" class="remove">
+                                <%= selection.models[i].getTitle() %>
+                                <span class="fa fa-times-circle"></span>
+                            </a>
+                        </li>
                     <% } %>
                 </ul>
 

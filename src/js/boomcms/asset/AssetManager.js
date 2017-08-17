@@ -483,7 +483,7 @@
 
         viewSelection: function(assetIds, section) {
             this.selection.reset();
-console.log(this.assets, this.selection, assetIds, section);
+
             for (var i = 0; i < assetIds.length; i++) {
                 var asset = this.assets.getOrFetch(assetIds[i]);
                 this.selection.add(asset);

@@ -56,6 +56,11 @@
                     if (album !== undefined) {
                         view.toggleAlbum(album);
                     }
+                })
+                .on('click', '#b-selection-delete a', function(e) {
+                    e.preventDefault();
+
+                    view.removeFromSelection($(this).attr('data-asset'));
                 });
 
             this.$el.ui();
@@ -126,6 +131,16 @@
             album.removeAssets(this.selection);
 
             this.relatedAlbums.remove(album);
+        },
+
+        removeFromSelection: function(assetId) {
+            var asset = this.selection.findById(assetId);
+
+            if (asset !== undefined) {
+                this.selection.remove(asset);
+            }
+
+            this.router.updateSelection(this.selection, this.getSection());
         },
 
         render: function() {
