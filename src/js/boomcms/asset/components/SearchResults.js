@@ -2,6 +2,7 @@
     'use strict';
 
     BoomCMS.AssetManager.SearchResults = BoomCMS.AssetManager.ViewSelection.extend({
+        forceUpdate: false,
         page: 1,
         params: {},
 
@@ -119,8 +120,13 @@
 
         render: function() {},
 
-        reset: function() {
-            this.params = {};
+        /**
+         * Force search results to be updated even if the parameters haven't changed.
+         *
+         * @returns {undefined}
+         */
+        forceUpdate: function() {
+            this.forceUpdate = true;
         },
 
         setAssetsPerPage: function() {
@@ -144,6 +150,12 @@
             params.page = (typeof params.page !== 'undefined') ? parseInt(params.page) : 1;
             this.params = params;
             this.page = params.page;
+
+            if (this.forceUpdate === true) {
+                this.forceUpdate = false;
+
+                return true;
+            }
 
             // Return true if the parameters have changed, false if they haven't
             if (oldParams.length !== params.length) {

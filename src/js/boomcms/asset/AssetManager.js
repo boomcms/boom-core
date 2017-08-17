@@ -347,7 +347,7 @@
             // Otherwise if the user searched for most recent assets before uploading
             // the new asset won't appear in the search results if they go back.
             if (this.searchResultsView !== undefined) {
-                this.searchResultsView.reset();
+                this.searchResultsView.forceUpdate();
             }
 
             if (errors.length > 0) {

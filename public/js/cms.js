@@ -48530,7 +48530,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             // Otherwise if the user searched for most recent assets before uploading
             // the new asset won't appear in the search results if they go back.
             if (this.searchResultsView !== undefined) {
-                this.searchResultsView.reset();
+                this.searchResultsView.forceUpdate();
             }
 
             if (errors.length > 0) {
@@ -49109,6 +49109,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     'use strict';
 
     BoomCMS.AssetManager.SearchResults = BoomCMS.AssetManager.ViewSelection.extend({
+        forceUpdate: false,
         page: 1,
         params: {},
 
@@ -49226,8 +49227,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         render: function() {},
 
-        reset: function() {
-            this.params = {};
+        /**
+         * Force search results to be updated even if the parameters haven't changed.
+         *
+         * @returns {undefined}
+         */
+        forceUpdate: function() {
+            this.forceUpdate = true;
         },
 
         setAssetsPerPage: function() {
@@ -49251,6 +49257,12 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             params.page = (typeof params.page !== 'undefined') ? parseInt(params.page) : 1;
             this.params = params;
             this.page = params.page;
+
+            if (this.forceUpdate === true) {
+                this.forceUpdate = false;
+
+                return true;
+            }
 
             // Return true if the parameters have changed, false if they haven't
             if (oldParams.length !== params.length) {
