@@ -16,9 +16,9 @@
         </div>
 
         <div id="selection-controls">
-            <?= $button('trash-o', 'delete', ['class' => 'small', 'id' => 'b-assets-selection-delete', 'disabled' => 'disabled']) ?>
-            <?= $button('download', 'download', ['class' => 'small', 'id' => 'b-assets-selection-download', 'disabled' => 'disabled']) ?>
-            <?= $button('book', 'albums', ['class' => 'small', 'id' => 'b-assets-selection-albums', 'disabled' => 'disabled']) ?>
+            <?= $button('trash-o', 'delete', ['class' => 'small', 'data-selection' => 'delete', 'disabled' => 'disabled']) ?>
+            <?= $button('download', 'download', ['class' => 'small', 'data-selection' => 'download', 'disabled' => 'disabled']) ?>
+            <?= $button('book', 'albums', ['class' => 'small', 'data-selection' => 'albums', 'disabled' => 'disabled']) ?>
 
             <a href="#" id="b-assets-select-all"><?= trans('boomcms::asset.select.all') ?></a>
             &nbsp;:&nbsp;

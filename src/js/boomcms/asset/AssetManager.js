@@ -68,14 +68,10 @@
 
                     assetManager.router.goToSearchResults(active);
                 })
-                .on('click', '#b-assets-selection-delete', function() {
-                    assetManager.router.updateSelection(assetManager.selection, 'delete', {trigger: true});
-                })
-                .on('click', '#b-assets-selection-download', function() {
-                    assetManager.router.updateSelection(assetManager.selection, 'download', {trigger: true});
-                })
-                .on('click', '#b-assets-selection-albums', function() {
-                    assetManager.router.updateSelection(assetManager.selection, 'albums', {trigger: true});
+                .on('click', '#selection-controls button', function() {
+                    var action = $(this).attr('data-selection');
+
+                    assetManager.router.updateSelection(assetManager.selection, action, {trigger: true});
                 })
                 .on('click', '#b-assets-select-all', function(e) {
                     e.preventDefault();
