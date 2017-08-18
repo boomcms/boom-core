@@ -48979,7 +48979,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         }
     });
 }(jQuery, Backbone, BoomCMS));
-;(function($, BoomCMS) {
+;(function($, Backbone, BoomCMS) {
     'use strict';
 
     BoomCMS.AssetManager.Navigation = Backbone.View.extend({
@@ -49069,9 +49069,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.$container = $('<div></div>');
 
             this.$el.html(this.$container);
+            this.recenterActiveAssetOnWindowResize();
         },
 
         insertThumbnail: function(thumbnail, after, timeout) {
+            // Wrap the thumbnail element in a div which has the padding and border to indicate the active asset
             var $el = $('<div></div>').html(thumbnail.$el).css('width', 0);
 
             $el.animate({
@@ -49089,19 +49091,43 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .after($el);
         },
 
-        loadImages: function() {
-            var thumbnails = this.thumbnails;
-
+        loadImages: function(inserts) {
             setTimeout(function() {
-                for (var i = 0; i < thumbnails.length; i++) {
-                    thumbnails[i].loadImageOnce();
+                for (var i = 0; i < inserts.length; i++) {
+                    inserts[i].thumbnail.loadImageOnce();
                 }
             }, 0);
+        },
+
+        recenterActiveAssetOnWindowResize: function() {
+            var navigation = this,
+                resizeTimeout = null;
+
+            $(window)
+                .on('resize', function() {
+                    if (resizeTimeout !== null) {
+                        clearTimeout(resizeTimeout);
+                    }
+
+                    resizeTimeout = setTimeout(function() {
+                        navigation.centerActiveAsset();
+                    }, 100);
+                });
         },
 
         removeThumbnail: function(thumbnail, timeout) {
             var thumbnails = this.thumbnails,
                 $el = thumbnail.$el.parent();
+
+            for (var i = 0; i < thumbnails.length; i++) {
+                if (thumbnails[i] === thumbnail) {
+                    thumbnails.splice(i, 1);
+                }
+            }
+
+            if (timeout === 0) {
+                return $el.remove();
+            }
 
             $el
                 .animate({
@@ -49109,14 +49135,19 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 }, timeout, function() {
                     $el.remove();
                 });
-
-            for (var i = 0; i < thumbnails.length; i++) {
-                if (thumbnails[i] === thumbnail) {
-                    thumbnails.splice(i, 1);
-                }
-            }
         },
 
+        /**
+         * Show the navigation bar with the given assets
+         *
+         * The assets are compared whats currently displayed and inserts and removals are calculated
+         * This is better than starting again each time as it allows the active asset to be scrolled nicely into the center of the viewport
+         * 
+         * This is done by animating removed assets to a width of 0 and animating inserted assets to their full width
+         *
+         * @param {type} assets
+         * @param {type} active
+         */
         render: function(assets, active) {
             var navigation = this,
                 freshStart, inserts, removals, i, timeout;
@@ -49139,7 +49170,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             }
 
             this.setActive(active);
-            this.loadImages();
+            this.loadImages(inserts);
 
             timeout = freshStart ? 0 : (Math.abs(inserts.length - removals.length) * 100) + 100;
 
@@ -49161,7 +49192,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .addClass(active);
         }
     });
-}(jQuery, BoomCMS));
+}(jQuery, Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
     'use strict';
 
