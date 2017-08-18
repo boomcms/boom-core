@@ -200,7 +200,15 @@ html.boom .b-assets-view {
     }
 }
 
-@media all and (min-height: 768px) {
+@media all and (max-width: 768px) {
+    html.boom .b-assets-view {
+        #b-imageeditor-toolbar {
+            display: none;
+        }
+    }
+}
+
+@media all and (min-width: 767px) {
     html.boom .b-assets-view:not(.no-navigation) {
         .b-settings {
             .b-settings-menu {
