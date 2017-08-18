@@ -48276,9 +48276,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                     $(this).blur();
                 })
-                .on('click', '#b-assets-selection-albums', function() {
-                    assetManager.viewSelection('albums');
-                })
                 .on('click', '#b-assets-upload', function() {
                     assetManager.router.navigate('upload', {trigger: true});
                 })
