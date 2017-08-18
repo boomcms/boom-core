@@ -6,6 +6,10 @@
         renderTimeout: null,
         selectedClass: 'selected',
 
+        getAlbumElement: function(album) {
+            return this.$('li[data-album=' + album.getId() + ']');
+        },
+
         initialize: function(options) {
             var view = this,
                 scrollTimeout = null;
@@ -89,11 +93,11 @@
         },
 
         selectAlbum: function(album) {
-            this.$('li[data-album=' + album.getId() + ']').addClass(this.selectedClass);
+            this.getAlbumElement(album).addClass(this.selectedClass);
         },
 
         unselectAlbum: function(album) {
-            this.$('li[data-album=' + album.getId() + ']').removeClass(this.selectedClass);
+            this.getAlbumElement(album).removeClass(this.selectedClass);
         }
     });
 }(jQuery, Backbone, BoomCMS));

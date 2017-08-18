@@ -47866,11 +47866,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         };
 
         BoomCMS.Link.prototype.isHttp = function() {
-            return this.url.substring(0,7) === 'http://';
+            return this.startsWith('http://');
         };
 
         BoomCMS.Link.prototype.isHttps = function() {
-            return this.url.substring(0,8) === 'https://';
+            return this.startsWith('https://');
         };
 
         BoomCMS.Link.prototype.isInternal = function() {
@@ -47878,11 +47878,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         };
 
         BoomCMS.Link.prototype.isMailto = function() {
-            return this.url.substring(0,7) === 'mailto:';
+            return this.startsWith('mailto:');
         };
 
         BoomCMS.Link.prototype.isTel = function() {
-            return this.url.substring(0,4) === 'tel:';
+            return this.startsWith('tel:');
         };
 
         BoomCMS.Link.prototype.getAsset = function() {
@@ -47921,6 +47921,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             return (this.url.indexOf(window.location.hostname) > -1) ?
                 this.url.replace(/^https?:\/\//, '').replace(window.location.hostname, '') :
                 this.url;
+        };
+
+        BoomCMS.Link.prototype.startsWith = function(string) {
+            return this.url.substring(0, string.length) === string;
         };
     };
 }(BoomCMS));
@@ -48885,6 +48889,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         renderTimeout: null,
         selectedClass: 'selected',
 
+        getAlbumElement: function(album) {
+            return this.$('li[data-album=' + album.getId() + ']');
+        },
+
         initialize: function(options) {
             var view = this,
                 scrollTimeout = null;
@@ -48968,11 +48976,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         selectAlbum: function(album) {
-            this.$('li[data-album=' + album.getId() + ']').addClass(this.selectedClass);
+            this.getAlbumElement(album).addClass(this.selectedClass);
         },
 
         unselectAlbum: function(album) {
-            this.$('li[data-album=' + album.getId() + ']').removeClass(this.selectedClass);
+            this.getAlbumElement(album).removeClass(this.selectedClass);
         }
     });
 }(jQuery, Backbone, BoomCMS));

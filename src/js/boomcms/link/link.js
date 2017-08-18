@@ -15,11 +15,11 @@
         };
 
         BoomCMS.Link.prototype.isHttp = function() {
-            return this.url.substring(0,7) === 'http://';
+            return this.startsWith('http://');
         };
 
         BoomCMS.Link.prototype.isHttps = function() {
-            return this.url.substring(0,8) === 'https://';
+            return this.startsWith('https://');
         };
 
         BoomCMS.Link.prototype.isInternal = function() {
@@ -27,11 +27,11 @@
         };
 
         BoomCMS.Link.prototype.isMailto = function() {
-            return this.url.substring(0,7) === 'mailto:';
+            return this.startsWith('mailto:');
         };
 
         BoomCMS.Link.prototype.isTel = function() {
-            return this.url.substring(0,4) === 'tel:';
+            return this.startsWith('tel:');
         };
 
         BoomCMS.Link.prototype.getAsset = function() {
@@ -70,6 +70,10 @@
             return (this.url.indexOf(window.location.hostname) > -1) ?
                 this.url.replace(/^https?:\/\//, '').replace(window.location.hostname, '') :
                 this.url;
+        };
+
+        BoomCMS.Link.prototype.startsWith = function(string) {
+            return this.url.substring(0, string.length) === string;
         };
     };
 }(BoomCMS));
