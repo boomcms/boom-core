@@ -50,7 +50,7 @@
                 view.model.trigger('destroy', view.model);
             });
 
-            this.listenTo(this.model, 'sync', function() {
+            this.listenTo(this.model, 'sync change:image', function() {
                 view.render();
                 view.viewSection(view.getSection());
             });
@@ -85,8 +85,6 @@
                 uploadFinished: function(e, data) {
                     asset.set(data.result);
                     asset.trigger('change:image');
-
-                    view.setSection('info');
                 }
             });
         },
