@@ -1,72 +1,81 @@
 .b-assets-upload {
-	form {
-		color: @red;
+    color: @darkest-grey;
 
-		label {
-			display: inline-block;
-			float: none;
-			clear: none;
-			padding-right: 0;
-			cursor: pointer;
-			overflow: inherit;
-			color: @red;
-		}
-	}
+    &[data-status=uploading] {
+        .info {
+            display: none;
+        }
 
-	&-cancel {
-		margin: 1em auto;
-		color: @darkest-grey;
-		
-		&:hover, &:focus {
-			color: @red;
-		}
-	}
-
-	&-container {
-		border: 10px dashed @darkest-grey;
-		margin: 10px 7px 0 3px;
-	}
-
-    &-error {
-        text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%);
-
-        p {
-            max-width: 60rem;
+        .progress, .cancel {
+            display: inline-block;
         }
     }
 
-	&-info {
-		text-align: center;
-		color: @darkest-grey;
-		position: relative;
-		top: 33%;
+    &[data-status=failed] {
+        .info {
+            display: none;
+        }
 
-		p:first-of-type {
-			margin: 0;
-		}
+        .failed {
+            display: block;
+        }
+    }
 
-		.message {
-			display: none;
-		}
-	}
+    input[type=file] {
+        position: absolute;
+        top: -1000%;
+    }
 
-	&-progress {
-		width: 50%;
-		margin: 2rem auto 0 auto;
-		height: 5rem;
-		border: 1px solid @darkest-grey;
+    label[for='b-assets-upload-file'], label[for='b-assets-replace-file'] {
+        .asset-manager-button;
+        margin: 0 2rem 0 0;
+        vertical-align: middle;
+        cursor: pointer;
 
-		.ui-progressbar-value {
-			background: @blue;
-			height: 100%;
-		}
-	}
+        + p {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+        }
+    }
 
-	&-progress, &-cancel, input[type=file] {
-		display: none;
-	}
+    .b-button.cancel {
+        background: @red;
+        color: @white;
+        float: right;
+
+        &:hover, &:focus {
+            color: @blue;
+        }
+    }
+
+    .errors {
+        display: none;
+        margin: 3rem 0 0 0;
+
+        h2, ul {
+            margin: 0;
+        }
+
+        li {
+            margin: 0.5rem 0 0 0;
+        }
+    }
+
+    .progress {
+        width: calc(~"100% - 50px");
+        margin: 0;
+        height: 5rem;
+        border: 1px solid @darkest-grey;
+        float: left;
+
+        .ui-progressbar-value {
+            background: @blue;
+            height: 100%;
+        }
+    }
+
+    .progress, .cancel, .failed {
+        display: none;
+    }
 }

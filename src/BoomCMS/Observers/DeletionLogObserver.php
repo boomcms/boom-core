@@ -21,7 +21,7 @@ class DeletionLogObserver
     }
 
     /**
-     * Set created_by on the model prior to deletion.
+     * Set deleted_by on the model prior to deletion.
      *
      * @param Model $model
      *

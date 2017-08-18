@@ -4,27 +4,16 @@ namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Repositories\Template as TemplateRepository;
-use BoomCMS\Tests\AbstractTestCase;
-use Mockery as m;
 
-class TemplateTest extends AbstractTestCase
+class TemplateTest extends BaseRepositoryTest
 {
-    public function testDelete()
+    protected $modelClass = Template::class;
+
+    public function setUp()
     {
-        $template = m::mock(Template::class);
-        $template->shouldReceive('delete');
+        parent::setUp();
 
-        $repository = new TemplateRepository(new Template());
-        $this->assertEquals($repository, $repository->delete($template));
-    }
-
-    public function testFind()
-    {
-        $model = m::mock(Template::class);
-        $model->shouldReceive('find')->with(1);
-
-        $repository = new TemplateRepository($model);
-        $repository->find(1);
+        $this->repository = new TemplateRepository($this->model);
     }
 
     public function testCreate()
@@ -34,10 +23,7 @@ class TemplateTest extends AbstractTestCase
             'name'     => 'test',
         ];
 
-        $model = m::mock(Template::class);
-        $model->shouldReceive('create')->with($attrs);
-
-        $repository = new TemplateRepository($model);
-        $repository->create($attrs);
+        $this->model->shouldReceive('create')->with($attrs);
+        $this->repository->create($attrs);
     }
 }

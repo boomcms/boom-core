@@ -17,9 +17,7 @@ trait ValidatesAssetUpload
             foreach ($files as $file) {
                 $error = $this->validateFile($file);
 
-                $error === true ? $validFiles[] = $file : $errors[] = $error;
-
-                $validFiles[] = $file;
+                $error === true ? ($validFiles[] = $file) : ($errors[] = $error);
             }
         }
 

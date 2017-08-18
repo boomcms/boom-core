@@ -11,12 +11,10 @@
     right: 0;
 
     &.loading {
+        border: 1px solid @light-grey;
+
         img {
             visibility: hidden;
-        }
-
-        .progress {
-            display: block;
         }
     }
 
@@ -78,7 +76,7 @@
     &:hover, &:focus, &:active, &.selected {
         .b-asset-details {
             transform: translateY(0);
-            transition: all 1.5s ease-out;
+            transition: all 0.75s ease-out;
         }
 
         + .edit {
@@ -96,7 +94,7 @@
         display: none;
     }
 
-    .progress, .failed {
+    .failed {
         position: absolute;
         top: 0;
         left: 0;
@@ -112,17 +110,7 @@
             left: 50%;
             transform: translateX(-50%) translateY(-50%);
         }
-    }
 
-    .progress {
-        .pace-activity {
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    }
-
-    .failed {
         .fa {
             color: @red;
             font-size: 5rem;
@@ -147,9 +135,9 @@
         background: fade(@darkest-grey, 70%);
         color: @white;
         z-index: 2;
-        transition: all 1.5s ease-in;
+        transition: all 0.5s ease-in;
         text-align: center;
-        transform: translateY(100%);
+        transform: translateY(100%) translateY(1px);
         padding-top: 3rem;
 
         h2, p {

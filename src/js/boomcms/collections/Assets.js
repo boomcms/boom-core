@@ -2,19 +2,14 @@
     'use strict';
 
     BoomCMS.Collections.Assets = Backbone.Collection.extend({
+        fetched: false,
         model: BoomCMS.Asset,
         url: BoomCMS.urlRoot + 'asset',
         comparator: 'name',
 
-        addTag: function(tag) {
-            return $.post(this.url + '/tags', {
-                assets: this.getAssetIds(),
-                tag: tag
-            });
-        },
-
-        destroy: function() {
-            var assets = this;
+		destroy: function() {
+			var assets = this,
+                assetIds = this.getAssetIds();
 
             return $.ajax({
                 url: this.url,
@@ -24,9 +19,7 @@
                 }
             })
             .done(function() {
-                assets.each(function(model) {
-                    model.trigger('destroy');
-                });
+                assets.trigger('destroy-all', assetIds);
             });
         },
     
@@ -44,6 +37,37 @@
             window.location = url;
         },
 
+        findById: function(id) {
+            return this.findWhere({id: parseInt(id)});
+        },
+
+        fetchOnce: function(success) {
+            if (this.fetched === false) {
+                this.fetched = true;
+
+                this.fetch({
+                    reset: true,
+                    success: success
+                });
+            } else if (typeof success === 'function') {
+                success();
+            }
+        },
+
+        getAlbums: function() {
+            if (this.albums === undefined) {
+                this.albums = new BoomCMS.Collections.Albums();
+
+                this.albums.fetch({
+                    data: {
+                        'assets': this.getAssetIds()
+                    }
+                });
+            }
+
+            return this.albums;
+        },
+
         getAssetIds: function() {
             return this.pluck('id');
         },
@@ -52,51 +76,62 @@
             return this.getAssetIds().join(',');
         },
 
-        getTags: function() {
-            if (this.allTags === undefined) {
-                this.allTags = $.get(this.url + '/tags', {
-                    assets: this.getAssetIds()
-                });
+        getOrFetch: function(assetId) {
+            var assetId = parseInt(assetId),
+                asset = this.findWhere({id: assetId});
+
+            if (asset === undefined) {
+                asset = new BoomCMS.Asset({id: assetId});
+                asset.fetch();
+
+                this.add(asset);
             }
 
-            return this.allTags;
+            return asset;
         },
 
         parse: function(data) {
+            this.total = data.total;
+
             return data.assets;
         },
 
-        removeTag: function(tag) {
-            return $.ajax(this.url + '/tags', {
-                type: 'delete',
-                data: {
-                    assets: this.getAssetIds(),
-                    tag: tag
+        position: function(asset) {
+            for (var i = 0; i < this.models.length; i++) {
+                if (this.models[i].getId() === asset.getId()) {
+                    return i;
                 }
-            });
+            }
         },
 
-        tag: function() {
-            var assetSelection = this,
-                url = this.url + 'tags/list/' + this.assets.join('-'),
-                dialog;
+        removeIfExists: function(assetId) {
+            var matched = this.findWhere({id: assetId});
 
-            dialog = new BoomCMS.Dialog({
-                url: url,
-                title: 'Asset tags',
-                width: 440,
-                cancelButton : false,
-                onLoad: function() {
-                    dialog.contents.find('#b-tags').assetTagSearch({
-                        addTag: function(e, tag) {
-                            assetSelection.addTag(tag);
-                        },
-                        removeTag: function(e, tag) {
-                            assetSelection.removeTag(tag);
-                        }
-                    });
-                }
-            });
+            if (matched !== undefined) {
+                this.remove(matched);
+            }
+        },
+
+        setOrderBy: function(column, direction) {
+            this.comparator = function(a, b) {
+                var value1 = direction === 'asc' ? a.get(column) : b.get(column),
+                    value2 = direction === 'asc' ? b.get(column) : a.get(column);
+
+                return value1 > value2 ?  1
+                    : value1 < value2 ? -1
+                    :  0;
+            };
+        },
+
+        /**
+         * Remove the asset if it exists in the collection, otherwise add it to
+         *
+         * @param BoomCMS.Models.Asset asset
+         */
+        toggle: function(asset) {
+            var method = this.findWhere({id: asset.getId()}) ? 'remove' : 'add';
+
+            this[method](asset);
         }
     });
 }(Backbone, BoomCMS));

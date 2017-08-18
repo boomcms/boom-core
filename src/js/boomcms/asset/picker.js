@@ -12,13 +12,23 @@
 
         this.url = BoomCMS.urlRoot + 'asset-picker';
 
-        this.assetsUploaded = function(assetIds) {
-            if (assetIds.length === 1) {
-                this.pick(new BoomCMS.Asset({id: assetIds[0]}));
+        this.assetsUploaded = function(assets) {
+            var assetPicker = this;
+
+            if (this.activeAlbum) {
+                this.activeAlbum.addAssets(assets);
+            }
+
+            if (assets.length === 1) {
+                this.pick(assets.at(0));
             } else {
-                this.dialog.contents.find('.b-assets-upload-form').assetUploader('reset');
-                this.dialog.contents.assetSearch('removeFilters');
-                this.dialog.contents.assetSearch('getAssets');
+                assetPicker.assets.reset();
+
+                assets.each(function(asset) {
+                    assetPicker.assets.add(asset);
+                });
+
+                this.showAssets();
             }
         };
 
@@ -34,16 +44,48 @@
                 });
 
             this.picker
+                .on('submit', '#b-assets-search form', function(e) {
+                    e.preventDefault();
+
+                    var search = $(this).serializeArray(),
+                        active = {};
+
+                    for (var i = 0; i < search.length; i++) {
+                        if (search[i].value !== '0' && search[i].value !== '') {
+                            active[search[i].name] = search[i].value;
+                        }
+                    }
+
+                    assetPicker.search(active);
+                })
                 .on('click', '#b-assets-picker-close', function() {
                     assetPicker.cancel();
                 })
                 .on('click', '#b-assets-picker-current-remove', function() {
                     assetPicker.pick(new BoomCMS.Asset());
                 })
-                .find('.b-assets-upload-form')
+                .on('click', '.b-assets-album-list [data-album] a', function(e) {
+                    e.preventDefault();
+
+                    assetPicker.viewAlbum($(this).attr('href').replace('#albums/', ''));
+                })
+                .on('click', '.b-assets-album-list .search a', function(e) {
+                    e.preventDefault();
+
+                    var params = $(this).attr('href').replace('#search/', '');
+
+                    assetPicker.search(params.toQueryParams());
+                })
+                .on('click', '#b-assets-picker-albums', function(e) {
+                    e.preventDefault();
+
+                    assetPicker.viewAlbumsList();
+                })
+                .find('.b-assets-upload')
                 .assetUploader({
+                    dropArea: this.picker,
                     uploadFinished: function(e, data) {
-                        assetPicker.assetsUploaded(data.result);
+                        assetPicker.assetsUploaded(new BoomCMS.Collections.Assets(data.result.assets));
                     }
                 });
         };
@@ -67,6 +109,9 @@
             var assetPicker = this;
 
             this.assets = new BoomCMS.Collections.Assets();
+            this.albums = new BoomCMS.Collections.Albums();
+
+            this.albums.fetch();
 
             this.dialog = new BoomCMS.Dialog({
                 url: this.url,
@@ -79,18 +124,18 @@
                         overflow: 'visible'
                     });
 
+                    new BoomCMS.AssetManager.AlbumList({
+                        albums: assetPicker.albums,
+                        el: assetPicker.dialog.contents.find('.b-assets-album-list'),
+                        $container: assetPicker.dialog.contents.find('#b-assets-picker-content')
+                    }).render();
+
                     assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
 
                     if (typeof(assetPicker.filters.type) !== 'undefined') {
                         assetPicker.showActiveTypeFilter(assetPicker.filters.type);
                     }
 
-                    assetPicker.dialog.contents.assetSearch({
-                        filters: assetPicker.filters,
-                        assets: assetPicker.assets
-                    });
-
-                    assetPicker.dialog.contents.assetSearch('getAssets');
                     assetPicker.bind();
 
                     if (assetPicker.currentAsset && assetPicker.currentAsset.getId() > 0) {
@@ -116,6 +161,47 @@
             this.close();
         };
 
+        this.search = function(params) {
+            var assetPicker = this,
+                $pagination = this.picker.find('#b-assets-pagination');
+
+            this.activeAlbum = null;
+
+            if (this.searchResultsView === undefined) {
+                this.searchResultsView = new BoomCMS.AssetManager.SearchResults({
+                    el: this.picker,
+                    pagination: $pagination,
+                    assets: this.assets,
+                    params: params,
+                    selection: new BoomCMS.Collections.Assets(),
+                    $container: this.dialog.contents.find('#b-assets-picker-content')
+                });
+
+                this.searchResultsView.on('filtered', function(params) {
+                    assetPicker.search(params);
+                });
+            } else {
+                this.searchResultsView.setParams(params);
+            }
+
+            this.searchResultsView.getAssets();
+
+            $pagination.show();
+
+            this.picker.attr('data-view', 'assets');
+        },
+
+        this.showAssets = function() {
+            new BoomCMS.AssetManager.ThumbnailGrid({
+                assets: this.assets,
+                selection: new BoomCMS.Collections.Assets(),
+                el: this.picker.find('.b-assets-view-thumbs'),
+                $container: this.dialog.contents.find('#b-assets-picker-content')
+            }).render();
+
+            this.picker.attr('data-view', 'assets');
+        };
+
         /**
          * Selects an option in the type filter select box to show that the type filter is active.
          * Used when the asset picker is opened with an active type filter.
@@ -135,6 +221,30 @@
             });
 
             return this;
+        };
+
+        this.viewAlbumsList = function() {
+            this.picker.removeAttr('data-view');
+            this.picker.find('#b-assets-pagination').hide();
+        };
+
+        this.viewAlbum = function(slug) {
+            var view = this,
+                album = this.albums.findBySlug(slug);
+
+            this.activeAlbum = album;
+
+            this.assets.fetch({
+                data: {
+                    album: album.getId()
+                },
+                reset: true,
+                complete: function() {
+                    view.showAssets();
+                }
+            });
+            
+            this.picker.find('#b-assets-pagination').hide();
         };
 
         return this.open();

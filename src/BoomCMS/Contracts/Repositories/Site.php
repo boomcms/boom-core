@@ -6,7 +6,7 @@ use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Database\Models\Site as SiteModel;
 
-interface Site
+interface Site extends Repository
 {
     /**
      * @param SiteModel $model
@@ -19,18 +19,6 @@ interface Site
      * @return SiteModel
      */
     public function create(array $attrs);
-
-    /**
-     * @param SiteInterface $site
-     */
-    public function delete(SiteInterface $site);
-
-    /**
-     * @param int $siteId
-     *
-     * @return SiteInterface
-     */
-    public function find($siteId);
 
     public function findAll();
 
@@ -59,11 +47,4 @@ interface Site
      * @param SiteInterface $site
      */
     public function makeDefault(SiteInterface $site);
-
-    /**
-     * @param SiteInterface $site
-     *
-     * @return SiteInterface
-     */
-    public function save(SiteInterface $site);
 }

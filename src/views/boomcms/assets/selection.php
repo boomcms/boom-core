@@ -1,4 +1,4 @@
-<div class="b-assets-view">
+<div class="b-assets-view no-filmroll">
     <div class="b-settings">
         <div class="b-settings-menu">
             <ul>
@@ -10,9 +10,9 @@
                 </li>
 
                 <li>
-                    <a href="#b-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
-                        <span class="fa fa-tags"></span>
-                        <?= trans('boomcms::asset.tags') ?>
+                    <a href="#b-selection-albums"<% if (section === 'albums') { %> class="selected"<% } %> data-section='albums'>
+                        <span class="fa fa-book"></span>
+                        <?= trans('boomcms::asset.albums') ?>
                     </a>
                 </li>
 
@@ -39,11 +39,12 @@
         </div>
 
         <div class="b-settings-content">
-            <div id="b-selection-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
-                <?= view('boomcms::assets.tags') ?>
+            <div id="b-asset-albums" data-section="albums"<% if (section === 'albums') { %> class="selected"<% } %>>
+                <h1><?= trans('boomcms::asset.albums') ?></h1>
+                <div></div>
             </div>
 
-            <div id="b-selection-download"<% if (section === 'download') { %> class="selected"<% } %>>
+            <div id="b-selection-download" data-section="download"<% if (section === 'download') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.selection.download.heading') ?></h1>
 
                 <p class="about">
@@ -67,13 +68,18 @@
                 </form>
             </div>
 
-            <div id="b-selection-delete"<% if (section === 'delete') { %> class="selected"<% } %>>
+            <div id="b-selection-delete" data-section="delete"<% if (section === 'delete') { %> class="selected"<% } %>>
                 <h1><?= trans('boomcms::asset.selection.delete.heading') ?></h1>
                 <p><?= trans('boomcms::asset.selection.delete.confirm') ?></p>
 
                 <ul>
                     <% for (var i = 0; i < selection.models.length; i++) { %>
-                        <li><%= selection.models[i].getTitle() %></li>
+                        <li>
+                            <a href="#" data-asset="<%= selection.models[i].getId() %>" class="remove">
+                                <%= selection.models[i].getTitle() %>
+                                <span class="fa fa-times-circle"></span>
+                            </a>
+                        </li>
                     <% } %>
                 </ul>
 

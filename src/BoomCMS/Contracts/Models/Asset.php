@@ -85,11 +85,6 @@ interface Asset
     public function getSite();
 
     /**
-     * @return array
-     */
-    public function getTags();
-
-    /**
      * @return int
      */
     public function getThumbnailAssetId(): int;

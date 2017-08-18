@@ -5,10 +5,12 @@ namespace BoomCMS\Repositories;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
 use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
+use BoomCMS\Contracts\Repositories\Repository as RepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Foundation\Repository;
+use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
@@ -17,11 +19,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Asset extends Repository implements AssetRepositoryInterface
 {
-    /**
-     * @var AssetModel
-     */
-    protected $model;
-
     /**
      * @var AssetVersionRepositoryInterface
      */
@@ -70,13 +67,19 @@ class Asset extends Repository implements AssetRepositoryInterface
     }
 
     /**
-     * @param array $assetIds
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function delete(array $assetIds): self
+    public function delete($param): RepositoryInterface
     {
-        $this->model->destroy($assetIds);
+        $assetIds = is_array($param) ? $param : [$param->getId()];
+        $albums = AlbumFacade::findByAssetIds($assetIds);
+
+        parent::delete($param);
+
+        // Update the asset counts and feature image of the albums which these assets appeared in.
+        foreach ($albums as $album) {
+            $album->assetsUpdated();
+        }
 
         return $this;
     }
@@ -114,16 +117,6 @@ class Asset extends Repository implements AssetRepositoryInterface
         return $this->filesystem->get($asset->getLatestVersionId());
     }
 
-    /**
-     * @param int $assetId
-     *
-     * @return AssetModel|null
-     */
-    public function find($assetId)
-    {
-        return $this->model->find($assetId);
-    }
-
     protected function getThumbnailFilename(AssetInterface $asset): string
     {
         return $asset->getLatestVersionId().'.thumb';
@@ -155,18 +148,6 @@ class Asset extends Repository implements AssetRepositoryInterface
         }
 
         return $asset;
-    }
-
-    /**
-     * @param AssetInterface $model
-     *
-     * @return AssetModel
-     */
-    public function save(AssetModel $model)
-    {
-        $model->save();
-
-        return $model;
     }
 
     public function saveFile(AssetInterface $asset, UploadedFile $file, Imagick $thumbnail = null)

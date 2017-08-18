@@ -2,11 +2,11 @@
 
 namespace BoomCMS\Http\Controllers\Asset;
 
-use BoomCMS\Core\Asset\Collection;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
 use Illuminate\Http\JsonResponse;
@@ -44,10 +44,10 @@ class AssetController extends Controller
 
         $asset = AssetFacade::createFromFile($file);
         $asset->setDescription($description);
-
         AssetFacade::save($asset);
 
-        (new Collection([$asset->getId()]))->addTag('Text editor uploads');
+        $album = AlbumFacade::findOrCreate('Text editor uploads');
+        $album->addAssets([$asset->getId()]);
 
         return [
             'location' => route('asset', ['asset' => $asset]),
@@ -157,15 +157,18 @@ class AssetController extends Controller
     {
         $this->authorize('uploadAssets', $site);
 
-        $assetIds = [];
+        $assets = [];
 
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
-            $assetIds[] = AssetFacade::createFromFile($file)->getId();
+            $assets[] = AssetFacade::createFromFile($file);
         }
 
-        return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
+        return [
+            'errors' => $errors,
+            'assets' => $assets,
+        ];
     }
 
     /**
@@ -180,6 +183,7 @@ class AssetController extends Controller
             ->with('versions')
             ->with('versions.editedBy')
             ->with('uploadedBy')
+            ->with('albums')
             ->find($asset->getId());
     }
 

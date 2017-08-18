@@ -1,40 +1,44 @@
-#b-assets-filmroll {
+#b-assets-navigation {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 23rem;
+    height: 21rem;
     z-index: 10;
-    padding: 2rem 0 4rem 0;
     background: @lightest-grey;
-    display: none;
     border-top: 1px solid @darkest-grey;
 
-    > div {
-        width: 100%;
-        height: 100%;
+    &:empty {
+        display: none;
     }
 
-    .film_roll_child {
-        position: relative;
-        height: 100%;
+    > div {
         overflow: hidden;
-        padding: 1rem;
-        border: 1px solid transparent;
-
-        &.active {
-            border-color: @darkest-grey;
-        }
-
-        &.selected {
-            border-color: @red;
-        }
+        position: absolute;
+        width: max-content;
+        left: 0;
+        top: 2rem;
+        bottom: 2rem;
 
         > div {
             position: relative;
+            display: inline-block;
+            float: left;
+            position: relative;
             height: 100%;
-            width: 100%;
             overflow: hidden;
+            padding: 1rem;
+            border: 1px solid transparent;
+
+            > div {
+                position: relative;
+                height: 15rem;
+                overflow: hidden;
+            }
+
+            &.active {
+                border-color: @red;
+            }
         }
     }
 
@@ -70,8 +74,8 @@
     }
 }
 
-@media all and (min-height: 768px) {
-    #b-assets-filmroll {
-        display: block;
+@media all and (max-width: 767px) {
+    #b-assets-navigation {
+        display: none;
     }
 }

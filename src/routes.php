@@ -53,15 +53,16 @@ Route::group(['middleware' => [
                 Route::delete('', 'AssetSelectionController@destroy');
                 Route::post('{asset}/replace', 'AssetController@replace');
                 Route::post('{asset}/revert', 'AssetController@revert');
-                Route::get('tags', 'TagsController@listTags');
-                Route::post('tags', 'TagsController@add');
-                Route::delete('tags', 'TagsController@remove');
             });
 
             Route::get('asset-picker', 'Asset\AssetPickerController@index');
             Route::get('asset-manager', 'Asset\AssetManagerController@index');
             Route::resource('asset', 'Asset\AssetController');
             Route::post('asset/create-from-blob', 'Asset\AssetController@createFromBlob');
+
+            Route::resource('album', 'Asset\AlbumController');
+            Route::resource('album/{album}/assets', 'Asset\AlbumAssetsController');
+            Route::delete('album/{album}/assets', 'Asset\AlbumAssetsController@destroy');
 
             Route::group([
                 'namespace'  => 'People',

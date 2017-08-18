@@ -49,18 +49,21 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
+        Models\Album::observe(CreationLogObserver::class);
         Models\Asset::observe(CreationLogObserver::class);
         Models\AssetVersion::observe(CreationLogObserver::class);
         Models\Page::observe(CreationLogObserver::class);
         Models\PageVersion::observe(CreationLogObserver::class);
         Models\Person::observe(CreationLogObserver::class);
 
+        Models\Album::observe(SetSiteObserver::class);
         Models\Asset::observe(SetSiteObserver::class);
         Models\Group::observe(SetSiteObserver::class);
         Models\Page::observe(SetSiteObserver::class);
         Models\Tag::observe(SetSiteObserver::class);
         Models\URL::observe(SetSiteObserver::class);
 
+        Models\Album::observe(DeletionLogObserver::class);
         Models\Page::observe(DeletionLogObserver::class);
     }
 }

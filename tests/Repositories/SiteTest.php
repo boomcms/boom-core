@@ -5,49 +5,18 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Database\Models\Site as SiteModel;
 use BoomCMS\Repositories\Site as SiteRepository;
-use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery as m;
 
-class SiteTest extends AbstractTestCase
+class SiteTest extends BaseRepositoryTest
 {
-    /**
-     * @var SiteModel
-     */
-    protected $model;
-
-    /**
-     * @var SiteRepository
-     */
-    protected $repository;
+    protected $modelClass = SiteModel::class;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->model = m::mock(SiteModel::class);
         $this->repository = new SiteRepository($this->model);
-    }
-
-    public function testDelete()
-    {
-        $model = m::mock(SiteModel::class);
-        $model->shouldReceive('delete')->once();
-
-        $this->assertEquals($this->repository, $this->repository->delete($model));
-    }
-
-    public function testFind()
-    {
-        $id = 1;
-
-        $this->model
-            ->shouldReceive('find')
-            ->once()
-            ->with($id)
-            ->andReturnSelf();
-
-        $this->assertEquals($this->model, $this->repository->find($id));
     }
 
     public function testFindAll()
@@ -183,15 +152,5 @@ class SiteTest extends AbstractTestCase
         $repository->shouldReceive('save')->never()->with($default);
 
         $repository->makeDefault($default);
-    }
-
-    public function testSave()
-    {
-        $model = m::mock(SiteModel::class);
-        $repository = new SiteRepository($model);
-
-        $model->shouldReceive('save')->once();
-
-        $repository->save($model);
     }
 }

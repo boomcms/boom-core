@@ -2,10 +2,12 @@
 
 namespace BoomCMS\Tests\Database\Models;
 
+use BoomCMS\Database\Models\Album;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
 class AssetTest extends AbstractModelTestCase
@@ -97,6 +99,13 @@ class AssetTest extends AbstractModelTestCase
         }
     }
 
+    public function testIsPublicByDefault()
+    {
+        $asset = new Asset();
+
+        $this->assertTrue($asset->isPublic());
+    }
+
     public function testIsVideo()
     {
         $video = new Asset([Asset::ATTR_TYPE => 'video']);
@@ -168,6 +177,32 @@ class AssetTest extends AbstractModelTestCase
         $asset->setVersion($version);
 
         $this->assertEquals($version, $asset->getLatestVersion());
+    }
+
+    public function testWhereAlbumScope()
+    {
+        $asset = new Asset();
+        $query = m::mock(Builder::class);
+
+        $album = new Album();
+        $album->{Album::ATTR_ID} = 1;
+
+        $query
+            ->shouldReceive('whereHas')
+            ->once()
+            ->with('albums', m::on(function ($closure) use ($query) {
+                $closure($query);
+
+                return true;
+            }))
+            ->andReturnSelf();
+
+        $query
+            ->shouldReceive('whereIn')
+            ->once()
+            ->with('albums.id', [$album->getId()]);
+
+        $this->assertEquals($query, $asset->scopeWhereAlbum($query, $album));
     }
 
     protected function mockVersionedAttribute($attrs)

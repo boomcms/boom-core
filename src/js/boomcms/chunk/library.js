@@ -3,7 +3,6 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
         var $el = this.dialog.contents;
 
         $el.find('select').prop('selectedIndex', 0);
-        $el.find('#b-tags-search li').remove();
         $el.find('input[type=text]').val('');
     },
 
@@ -18,8 +17,8 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
                     .on('click', '.b-button.clear', function() {
                         library.clearFilters();
                     })
-                    .find('#b-tags-search')
-                    .assetTagSearch();
+                    .find('select[name=album]')
+                    .chosen();
             }
         })
         .always(function() {
@@ -38,8 +37,8 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
                 type: $el.find('#b-assets-types :selected').val(),
                 order: $el.find('#b-assets-sortby :selected').val(),
                 limit: $el.find('input[name=limit]').val(),
-                tag: $el.find('#b-tags-search [data-tag]').map(function() {
-                    return $(this).attr('data-tag');
+                album: $el.find('select[name=album] :selected').map(function() {
+                    return $(this).val();
                 }).toArray()
             }
         };

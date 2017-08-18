@@ -129,19 +129,19 @@ $.widget('ui.chunk',
         data.chunkId = this.options.chunkId;
 
         return chunk.save(data)
-        .done(function(data) {
-            self.options.chunkId = data.chunkId;
+            .done(function(data) {
+                self.options.chunkId = data.chunkId;
 
-            self._update_html(data.html);
-            window.BoomCMS.page.toolbar.status.set(data.status);
+                self._update_html(data.html);
+                window.BoomCMS.page.toolbar.status.set(data.status);
 
-            BoomCMS.Notification('Page content saved');
-        })
-        .fail(function(response) {
-            if (response.responseJSON.error === 'conflict') {
-                self.resolveConflict(response.responseJSON, data);
-            }
-        });
+                BoomCMS.Notification('Page content saved');
+            })
+            .fail(function(response) {
+                if (response.responseJSON.error === 'conflict') {
+                    self.resolveConflict(response.responseJSON, data);
+                }
+            });
     },
 
     /**

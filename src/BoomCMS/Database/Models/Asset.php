@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Database\Models;
 
+use BoomCMS\Contracts\Models\Album as AlbumInterface;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\SingleSiteInterface;
@@ -12,7 +13,6 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\DB;
 
 class Asset extends Model implements AssetInterface, SingleSiteInterface
 {
@@ -41,6 +41,10 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      */
     protected $latestVersion;
 
+    protected $attributes = [
+        self::ATTR_PUBLIC => true,
+    ];
+
     protected $casts = [
         self::ATTR_DESCRIPTION  => 'string',
         self::ATTR_THUMBNAIL_ID => 'int',
@@ -65,6 +69,11 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         'version:id'         => '',
         'extension'          => '',
     ];
+
+    public function albums()
+    {
+        return $this->belongsToMany(Album::class);
+    }
 
     /**
      * @return float
@@ -182,17 +191,6 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         return Str::filesize($this->getFilesize());
     }
 
-    public function getTags()
-    {
-        if ($this->tags === null) {
-            $this->tags = DB::table('assets_tags')
-                ->where('asset_id', '=', $this->getId())
-                ->lists('tag');
-        }
-
-        return $this->tags;
-    }
-
     /**
      * @return int
      */
@@ -286,6 +284,18 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function isVideo()
     {
         return $this->getType() === 'video';
+    }
+
+    public function scopeWhereAlbum(Builder $query, $albums): Builder
+    {
+        $albumIds = $albums instanceof AlbumInterface ? [$albums->getId()] : $albums->map(function ($album) {
+            return $album->getId();
+        });
+
+        return $query
+            ->whereHas('albums', function (Builder $query) use ($albumIds) {
+                $query->whereIn('albums.id', $albumIds);
+            });
     }
 
     /**
@@ -404,7 +414,9 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      */
     public function toArray()
     {
-        if ($this->attributes[self::ATTR_PUBLISHED_AT] === '0000-00-00 00:00:00') {
+        if (isset($this->attributes[self::ATTR_PUBLISHED_AT])
+            && $this->attributes[self::ATTR_PUBLISHED_AT] === '0000-00-00 00:00:00'
+        ) {
             $this->attributes[self::ATTR_PUBLISHED_AT] = null;
         }
 

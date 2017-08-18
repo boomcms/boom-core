@@ -1,0 +1,143 @@
+.b-assets-album-list {
+    margin: -1rem;
+    padding: 0;
+    overflow: hidden;
+    clear: both;
+
+    li {
+        padding: 1rem;
+        display: inline-block;
+        list-style-type: none;
+        width: 100%;
+
+        &.search, &.b-assets-create-album {
+            a {
+                background: @blue;
+
+                &:before {
+                    display: none;
+                }
+
+                &:hover, &:focus {
+                    h3,span {
+                        color: @black;
+                    }
+                }
+
+                span {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    color: @white;
+                    font-size: 3rem;
+                }
+            }
+        }
+
+        &.b-assets-create-album {
+            a {
+                background: @darkest-grey;
+
+                &:hover, &:focus {
+                    h3, span {
+                        color: @blue;
+                    }
+                }
+
+                span {
+                    font-size: 10rem;
+                    left: 50%;
+                    bottom: 1rem;
+                    transform: translateX(-50%);
+                }
+            }
+        }
+
+        &.without-albums a {
+            background: @red;
+        }
+
+        a {
+            height: 20rem;
+            width: 100%;
+            position: relative;
+            display: block;
+            padding: 2rem;
+            color: @lightest-grey;
+            background-position: 50% 50%;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+            &:before {
+                content: ' ';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: fade(@darkest-grey, 80);
+                z-index: 2;
+            }
+
+            &:hover, &:focus {
+                color: @white;
+
+                &:before {
+                    .transition;
+                    background-color: fade(@darkest-grey, 50);
+                }
+            }
+
+            > div {
+                position: relative;
+                height: 100%;
+                z-index: 3;
+            }
+
+            .count {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                margin: 0;
+
+                span {
+                    .text-large;
+                }
+            }
+        }
+    }
+}
+
+@media all and (min-width: 500px) {
+    .b-assets-album-list {
+        li {
+            float: left;
+            width: 50%;
+        }
+    }
+}
+
+@media all and (min-width: 600px) {
+    .b-assets-album-list {
+        li {
+            float: left;
+            width: 100/3%;
+        }
+    }
+}
+
+@media all and (min-width: 768px) {
+    .b-assets-album-list {
+        li {
+            width: 25%;
+        }
+    }
+}
+
+@media all and (min-width: 1024px) {
+    .b-assets-album-list {
+        li {
+            width: 20%;
+        }
+    }
+}

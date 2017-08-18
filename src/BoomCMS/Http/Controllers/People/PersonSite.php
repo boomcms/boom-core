@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\People;
 
-use BoomCMS\Database\Models\Person;
+use BoomCMS\Database\Models\Person as PersonModel;
 use BoomCMS\Database\Models\Site;
 
 class PersonSite extends PeopleManager
@@ -10,10 +10,10 @@ class PersonSite extends PeopleManager
     /**
      * Add the user to a site.
      *
-     * @param Person $person
-     * @param Site   $site
+     * @param PersonModel $person
+     * @param Site        $site
      */
-    public function update(Person $person, Site $site)
+    public function update(PersonModel $person, Site $site)
     {
         $person->addSite($site);
     }
@@ -21,10 +21,10 @@ class PersonSite extends PeopleManager
     /**
      * Remove the user from a site.
      *
-     * @param Person $person
-     * @param Site   $site
+     * @param PersonModel $person
+     * @param Site        $site
      */
-    public function destroy(Person $person, Site $site)
+    public function destroy(PersonModel $person, Site $site)
     {
         $person->removeSite($site);
     }

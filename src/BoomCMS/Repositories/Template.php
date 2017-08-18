@@ -3,16 +3,12 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
+use BoomCMS\Contracts\Repositories\Template as TemplateRepositoryInterface;
 use BoomCMS\Database\Models\Template as TemplateModel;
 use BoomCMS\Foundation\Repository;
 
-class Template extends Repository
+class Template extends Repository implements TemplateRepositoryInterface
 {
-    /**
-     * @var Model
-     */
-    protected $model;
-
     /**
      * @param TemplateModel $model
      */
@@ -29,32 +25,6 @@ class Template extends Repository
     public function create(array $attrs)
     {
         return $this->model->create($attrs);
-    }
-
-    /**
-     * Delete the given template.
-     *
-     * @param TemplateModel $template
-     *
-     * @return $this
-     */
-    public function delete(TemplateModel $template)
-    {
-        $template->delete();
-
-        return $this;
-    }
-
-    /**
-     * Returns the template with the given ID.
-     *
-     * @param int $templateId
-     *
-     * @return null|TemplateInterface
-     */
-    public function find($templateId)
-    {
-        return $this->model->find($templateId);
     }
 
     public function findAll()
@@ -93,17 +63,5 @@ class Template extends Repository
         }
 
         return $valid;
-    }
-
-    /**
-     * @param TemplateInterface $model
-     *
-     * @return TemplateInterface
-     */
-    public function save(TemplateInterface $model)
-    {
-        $model->save();
-
-        return $model;
     }
 }

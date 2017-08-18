@@ -5,6 +5,7 @@ namespace BoomCMS\Foundation\Exceptions;
 use BoomCMS\Support\Facades\Page;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
@@ -22,7 +23,7 @@ class Handler extends ExceptionHandler
         \Illuminate\Auth\AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
         \Symfony\Component\HttpKernel\Exception\HttpException::class,
-        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        ModelNotFoundException::class,
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
     ];
@@ -56,7 +57,7 @@ class Handler extends ExceptionHandler
 
     protected function prepareException(Exception $e)
     {
-        if ($e instanceof FileNotFoundException) {
+        if ($e instanceof FileNotFoundException || $e instanceof ModelNotFoundException) {
             return new NotFoundHttpException($e->getMessage(), $e);
         }
 

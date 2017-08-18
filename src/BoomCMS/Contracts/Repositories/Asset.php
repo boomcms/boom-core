@@ -9,7 +9,7 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-interface Asset
+interface Asset extends Repository
 {
     public function __construct(
         AssetObject $model,
@@ -34,26 +34,12 @@ interface Asset
     public function extensions(): Collection;
 
     /**
-     * Retrieve an asset by ID.
-     *
-     * @param int $assetId
-     */
-    public function find($assetId);
-
-    /**
      * Revert an asset to a previous version ID.
      *
      * @param AssetInterface $asset
      * @param int            $versionId
      */
     public function revert(AssetInterface $asset, $versionId);
-
-    /**
-     * Save an asset.
-     *
-     * @param AssetObject $asset
-     */
-    public function save(AssetObject $asset);
 
     /**
      * Returns a read stream for the given asset.

@@ -3,7 +3,6 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Auth\Hasher;
-use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
 use BoomCMS\Database\Models\Person as Model;
@@ -19,11 +18,6 @@ class Person extends Repository implements PersonRepositoryInterface, UserProvid
      * @var Hasher
      */
     protected $hasher;
-
-    /**
-     * @var Model
-     */
-    protected $model;
 
     /**
      * @var SiteInterface
@@ -43,30 +37,6 @@ class Person extends Repository implements PersonRepositoryInterface, UserProvid
     public function create(array $credentials)
     {
         return $this->model->create($credentials);
-    }
-
-    /**
-     * @param PersonInterface $person
-     *
-     * @return $this
-     */
-    public function delete(PersonInterface $person)
-    {
-        $person->delete();
-
-        return $this;
-    }
-
-    /**
-     * Returns the person with the given ID.
-     *
-     * @param int $personId
-     *
-     * @return null|PersonInterface
-     */
-    public function find($personId)
-    {
-        return $this->model->find($personId);
     }
 
     public function findAll()
@@ -161,13 +131,6 @@ class Person extends Repository implements PersonRepositoryInterface, UserProvid
             ->where($this->model->getKeyName(), '=', $identifier)
             ->where($this->model->getRememberTokenName(), '=', $token)
             ->first();
-    }
-
-    public function save(PersonInterface $person)
-    {
-        $person->save();
-
-        return $person;
     }
 
     /**

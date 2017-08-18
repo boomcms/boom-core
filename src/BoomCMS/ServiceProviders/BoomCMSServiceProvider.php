@@ -15,6 +15,7 @@ use Illuminate\Support\ServiceProvider;
 class BoomCMSServiceProvider extends ServiceProvider
 {
     protected $aliases = [
+        'Album'       => Facades\Album::class,
         'Asset'       => Facades\Asset::class,
         'AssetHelper' => Asset::class,
         'BoomCMS'     => Facades\BoomCMS::class,

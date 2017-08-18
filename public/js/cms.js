@@ -29230,15 +29230,29 @@ var widgetsTooltip = $.ui.tooltip;
 @function
 */
 String.prototype.ucfirst = function() {
-	return this.substr(0, 1).toUpperCase() + this.substr(1, this.length);
+    return this.substr(0, 1).toUpperCase() + this.substr(1, this.length);
 };
 
 /**
 @function
 */
 String.prototype.toInt = function() {
-	return parseInt(this, 10);
-};;/**
+    return parseInt(this, 10);
+};
+
+String.prototype.toQueryParams = function() {
+    var params = {},
+        queryArray = this.split('&');
+
+    for (var i = 0; i < queryArray.length; i++) {
+        var q = queryArray[i].split('=');
+
+        params[q[0]] = q[1];
+    }
+
+    return params;
+};
+;/**
  * jGrowl 1.4.5
  *
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
@@ -43021,6 +43035,99 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 ;(function(BoomCMS) {
     'use strict';
 
+    BoomCMS.Album = BoomCMS.Model.extend({
+        defaults: {
+            asset_count: 0
+        },
+
+        urlRoot: BoomCMS.urlRoot + 'album',
+
+        addAssets: function(assets) {
+            var model = this;
+
+            $.post(this.assets.url, {
+                'assets[]': assets.getAssetIds()
+            })
+            .done(function(response) {
+                model.set(response);
+            });
+
+            assets.each(function(asset) {
+                model.assets.add(asset);
+            });
+        },
+
+        getAssets: function() {
+            return this.assets;
+        },
+
+        getAssetCount: function() {
+            return this.get('asset_count');
+        },
+
+        getDescription: function() {
+            return this.get('description');
+        },
+
+        getFeatureImage: function() {
+            var featureImageId = this.get('feature_image_id');
+
+            return featureImageId ? new BoomCMS.Asset({id: featureImageId}) : null;
+        },
+
+        getName: function() {
+            return this.get('name');
+        },
+
+        getSlug: function() {
+            return this.get('slug');
+        },
+
+        initialize: function() {
+            var album = this;
+
+            this.assets = new BoomCMS.Collections.Assets();
+            this.assets.setOrderBy('created_at', 'desc');
+
+            this.setAssetsUrl();
+
+            this.assets.on('destroy remove', function() {
+                // Get the album details from the server again to update asset count and feature image ID
+                album.fetch();
+            });
+
+            this.on('change:id', function() {
+                this.setAssetsUrl();
+            });
+        },
+
+        removeAssets: function(assets) {
+            var model = this;
+
+            $.ajax({
+                url: this.assets.url,
+                method: 'delete',
+                data: {
+                    'assets[]': assets.getAssetIds()
+                }
+            })
+            .done(function(response) {
+                model.set(response);
+            });
+
+            assets.each(function(asset) {
+                model.assets.remove(asset);
+            });
+        },
+
+        setAssetsUrl: function() {
+            this.assets.url = BoomCMS.urlRoot + 'album/' + this.getId() + '/assets';
+        }
+    });
+}(BoomCMS));
+;(function(BoomCMS) {
+    'use strict';
+
     BoomCMS.Asset = BoomCMS.Model.extend({
         urlRoot: BoomCMS.urlRoot + 'asset',
 
@@ -43683,22 +43790,33 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     };
 }($, BoomCMS));
 ;(function(Backbone, BoomCMS) {
+	'use strict';
+
+	BoomCMS.Collections.Albums = Backbone.Collection.extend({
+		model: BoomCMS.Album,
+		url: BoomCMS.urlRoot + 'album',
+
+		comparator: function(album) {
+            return album.getName().toLowerCase();
+        },
+
+        findBySlug: function(slug) {
+            return this.findWhere({slug: slug});
+        }
+	});
+}(Backbone, BoomCMS));
+;(function(Backbone, BoomCMS) {
     'use strict';
 
     BoomCMS.Collections.Assets = Backbone.Collection.extend({
+        fetched: false,
         model: BoomCMS.Asset,
         url: BoomCMS.urlRoot + 'asset',
         comparator: 'name',
 
-        addTag: function(tag) {
-            return $.post(this.url + '/tags', {
-                assets: this.getAssetIds(),
-                tag: tag
-            });
-        },
-
-        destroy: function() {
-            var assets = this;
+		destroy: function() {
+			var assets = this,
+                assetIds = this.getAssetIds();
 
             return $.ajax({
                 url: this.url,
@@ -43708,9 +43826,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
                 }
             })
             .done(function() {
-                assets.each(function(model) {
-                    model.trigger('destroy');
-                });
+                assets.trigger('destroy-all', assetIds);
             });
         },
     
@@ -43728,6 +43844,37 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             window.location = url;
         },
 
+        findById: function(id) {
+            return this.findWhere({id: parseInt(id)});
+        },
+
+        fetchOnce: function(success) {
+            if (this.fetched === false) {
+                this.fetched = true;
+
+                this.fetch({
+                    reset: true,
+                    success: success
+                });
+            } else if (typeof success === 'function') {
+                success();
+            }
+        },
+
+        getAlbums: function() {
+            if (this.albums === undefined) {
+                this.albums = new BoomCMS.Collections.Albums();
+
+                this.albums.fetch({
+                    data: {
+                        'assets': this.getAssetIds()
+                    }
+                });
+            }
+
+            return this.albums;
+        },
+
         getAssetIds: function() {
             return this.pluck('id');
         },
@@ -43736,51 +43883,62 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             return this.getAssetIds().join(',');
         },
 
-        getTags: function() {
-            if (this.allTags === undefined) {
-                this.allTags = $.get(this.url + '/tags', {
-                    assets: this.getAssetIds()
-                });
+        getOrFetch: function(assetId) {
+            var assetId = parseInt(assetId),
+                asset = this.findWhere({id: assetId});
+
+            if (asset === undefined) {
+                asset = new BoomCMS.Asset({id: assetId});
+                asset.fetch();
+
+                this.add(asset);
             }
 
-            return this.allTags;
+            return asset;
         },
 
         parse: function(data) {
+            this.total = data.total;
+
             return data.assets;
         },
 
-        removeTag: function(tag) {
-            return $.ajax(this.url + '/tags', {
-                type: 'delete',
-                data: {
-                    assets: this.getAssetIds(),
-                    tag: tag
+        position: function(asset) {
+            for (var i = 0; i < this.models.length; i++) {
+                if (this.models[i].getId() === asset.getId()) {
+                    return i;
                 }
-            });
+            }
         },
 
-        tag: function() {
-            var assetSelection = this,
-                url = this.url + 'tags/list/' + this.assets.join('-'),
-                dialog;
+        removeIfExists: function(assetId) {
+            var matched = this.findWhere({id: assetId});
 
-            dialog = new BoomCMS.Dialog({
-                url: url,
-                title: 'Asset tags',
-                width: 440,
-                cancelButton : false,
-                onLoad: function() {
-                    dialog.contents.find('#b-tags').assetTagSearch({
-                        addTag: function(e, tag) {
-                            assetSelection.addTag(tag);
-                        },
-                        removeTag: function(e, tag) {
-                            assetSelection.removeTag(tag);
-                        }
-                    });
-                }
-            });
+            if (matched !== undefined) {
+                this.remove(matched);
+            }
+        },
+
+        setOrderBy: function(column, direction) {
+            this.comparator = function(a, b) {
+                var value1 = direction === 'asc' ? a.get(column) : b.get(column),
+                    value2 = direction === 'asc' ? b.get(column) : a.get(column);
+
+                return value1 > value2 ?  1
+                    : value1 < value2 ? -1
+                    :  0;
+            };
+        },
+
+        /**
+         * Remove the asset if it exists in the collection, otherwise add it to
+         *
+         * @param BoomCMS.Models.Asset asset
+         */
+        toggle: function(asset) {
+            var method = this.findWhere({id: asset.getId()}) ? 'remove' : 'add';
+
+            this[method](asset);
         }
     });
 }(Backbone, BoomCMS));
@@ -43976,12 +44134,13 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             };
 
         $this
+            .attr('contenteditable', true)
             .addClass(BoomCMS.editableClass)
             .on('click', function() {
                 edit($(this));
             })
             .on('blur', function() {
-                $(this).addClass(BoomCMS.editableClass)
+                $(this).addClass(BoomCMS.editableClass);
             })
             .next('a')
             .on('click', function(e) {
@@ -45241,11 +45400,11 @@ $.widget( 'boom.pageToolbar', {
             .on('click', '.b-page-feature-set', function() {
                 pageFeatureEditor.setFeature(new BoomCMS.Asset({id: $(this).attr('data-asset-id')}));
             });
-console.log(this.imagesInPage);
+
         if (this.imagesInPage.length) {
             for (var i = 0; i < this.imagesInPage.length; i++) {
                 var asset = new BoomCMS.Asset({id: this.imagesInPage[i]});
-console.log(asset);
+
                 $imagesInPageContainer.append('<li><a href=\'#\' class=\'b-page-feature-set\' data-asset-id=\'' + asset.getId() + '\'><img src=\'' + asset.getUrl() + '\' /></a></li>');
             }
         } else {
@@ -46129,19 +46288,19 @@ $.widget('ui.chunk',
         data.chunkId = this.options.chunkId;
 
         return chunk.save(data)
-        .done(function(data) {
-            self.options.chunkId = data.chunkId;
+            .done(function(data) {
+                self.options.chunkId = data.chunkId;
 
-            self._update_html(data.html);
-            window.BoomCMS.page.toolbar.status.set(data.status);
+                self._update_html(data.html);
+                window.BoomCMS.page.toolbar.status.set(data.status);
 
-            BoomCMS.Notification('Page content saved');
-        })
-        .fail(function(response) {
-            if (response.responseJSON.error === 'conflict') {
-                self.resolveConflict(response.responseJSON, data);
-            }
-        });
+                BoomCMS.Notification('Page content saved');
+            })
+            .fail(function(response) {
+                if (response.responseJSON.error === 'conflict') {
+                    self.resolveConflict(response.responseJSON, data);
+                }
+            });
     },
 
     /**
@@ -46557,7 +46716,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         var $el = this.dialog.contents;
 
         $el.find('select').prop('selectedIndex', 0);
-        $el.find('#b-tags-search li').remove();
         $el.find('input[type=text]').val('');
     },
 
@@ -46572,8 +46730,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     .on('click', '.b-button.clear', function() {
                         library.clearFilters();
                     })
-                    .find('#b-tags-search')
-                    .assetTagSearch();
+                    .find('select[name=album]')
+                    .chosen();
             }
         })
         .always(function() {
@@ -46592,8 +46750,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 type: $el.find('#b-assets-types :selected').val(),
                 order: $el.find('#b-assets-sortby :selected').val(),
                 limit: $el.find('input[name=limit]').val(),
-                tag: $el.find('#b-tags-search [data-tag]').map(function() {
-                    return $(this).attr('data-tag');
+                album: $el.find('select[name=album] :selected').map(function() {
+                    return $(this).val();
                 }).toArray()
             }
         };
@@ -48031,59 +48189,78 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     BoomCMS.AssetManager = Backbone.View.extend({
         el: '#b-assets-manager',
 
-        activeAsset: null,
+        albumViews: [],
+        assetViews: [],
         assets: new BoomCMS.Collections.Assets(),
+
+        // Map of asset collections which have had event listeners bound.
+        assetCollections: {},
+
         selection: new BoomCMS.Collections.Assets(),
+        uploaded: new BoomCMS.Collections.Assets(),
         selectedClass: 'selected',
 
-        /**
-         * When the assets in the collection change (e.g. the page or filters are changed)
-         *
-         * If an asset is being viewed which isn't in the collection
-         * Then view the first asset in the collection instead
-         *
-         * @returns {undefined}
-         */
-        assetsChanged: function() {
-            if (this.activeAsset !== null && this.assets.get(this.activeAsset) === undefined) {
-                var first = this.assets.at(0);
-
-                if (first) {
-                    first.trigger('view', first);
-                }
-            }
+        assetsUploaded: function() {
+            new BoomCMS.AssetManager.ThumbnailGrid({
+                assets: this.uploaded,
+                selection: this.selection,
+                el: this.$('#b-assets-upload .b-assets-view-thumbs'),
+                $container: this.$el
+            }).render();
         },
 
-        assetsUploaded: function() {
-            this.router.navigate('', {trigger: true});
-            this.uploader.assetUploader('reset');
-            this.getAssets();
+        bindAssetEvents: function(assets) {
+            var assetManager = this;
+
+            if (typeof this.assetCollections[assets._listenId] === 'undefined') {
+                this.listenTo(assets, 'select', function(asset) {
+                    assetManager.selection.add(asset);
+                });
+
+                this.listenTo(assets, 'unselect', function(asset) {
+                    assetManager.selection.remove(asset);
+                });
+
+                this.listenTo(assets, 'sync', this.assetsChanged);
+
+                this.listenTo(assets, 'view', function(asset) {
+                    assetManager.router.goToAsset(asset);
+                });
+
+                this.listenTo(assets, 'destroy', function(asset) {
+                    assetManager.removeFromAllCollections(asset.getId());
+                });
+
+                this.assetCollections[assets._listenId] = assets;
+            }
         },
 
         bind: function() {
             var assetManager = this;
 
-            this.selection
-                .on('add', function(asset) {
-                    setTimeout(function() {
-                        assetManager.getThumb(asset).addClass(assetManager.selectedClass);
-                    }, 0);
-                })
-                .on('remove', function(asset) {
-                    setTimeout(function() {
-                        assetManager.getThumb(asset).removeClass(assetManager.selectedClass);
-                    }, 0);
-                })
-                .on('reset', function() {
-                    assetManager.$('.b-assets-thumbnail').removeClass(assetManager.selectedClass);
-                });
-
             this.$el
+                .on('submit', '#b-assets-search form', function(e) {
+                    e.preventDefault();
+
+                    var search = $(this).serializeArray(),
+                        active = {};
+
+                    for (var i = 0; i < search.length; i++) {
+                        if (search[i].value !== '0' && search[i].value !== '') {
+                            active[search[i].name] = search[i].value;
+                        }
+                    }
+
+                    assetManager.router.goToSearchResults(active);
+                })
                 .on('click', '#b-assets-selection-delete', function() {
                     assetManager.router.updateSelection(assetManager.selection, 'delete', {trigger: true});
                 })
                 .on('click', '#b-assets-selection-download', function() {
                     assetManager.router.updateSelection(assetManager.selection, 'download', {trigger: true});
+                })
+                .on('click', '#b-assets-selection-albums', function() {
+                    assetManager.router.updateSelection(assetManager.selection, 'albums', {trigger: true});
                 })
                 .on('click', '#b-assets-select-all', function(e) {
                     e.preventDefault();
@@ -48099,23 +48276,18 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                     $(this).blur();
                 })
-                .on('click', '#b-assets-selection-tag', function() {
-                    assetManager.viewSelection('tags');
+                .on('click', '#b-assets-selection-albums', function() {
+                    assetManager.viewSelection('albums');
                 })
                 .on('click', '#b-assets-upload', function() {
                     assetManager.router.navigate('upload', {trigger: true});
                 })
-                .on('click', '#b-assets-search', function() {
-                    assetManager.toggleSearch();
-                })                        
-                .on('keydown', '.thumb', function(e) {
-                    if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                .on('click', '[data-view]', function(e) {
+                    e.preventDefault();
 
-                        $(this).parent().data('model').destroy();
-                    }
+                    assetManager.router.goTo($(this).attr('data-view'));
                 })
+                .parents('body')
                 .on('keydown', function(e) {
                     if ($(e.target).is('input')) {
                         return;
@@ -48125,7 +48297,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                         (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE)
                         && assetManager.selection.models.length > 0
                     ) {
-                        assetManager.viewSelection(assetManager.selection, 'delete');
+                        assetManager.router.viewSelection(assetManager.selection.getIdString(), 'delete');
                     }
 
                     if (e.metaKey || e.ctrlKey) {
@@ -48140,7 +48312,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                                 break;
                             case 70:
                                 e.preventDefault();
-                                assetManager.toggleSearch();
+                                assetManager.router.navigate('search', {trigger: true});
                                 break;
                         }
                     }
@@ -48149,18 +48321,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.uploader
                 .assetUploader({
                     uploadFinished: function(e, data) {
-                        assetManager.assetsUploaded(data.result);
-                    },
-                    uploadFailed: function() {
-                        // Update asset list even though an error occurred
-                        // For situations where multiple files were uploaded but one caused an error.
-                        assetManager.getAssets();
+                        assetManager.uploadCompleted(data.result.assets, data.result.errors);
                     }
-                })
-                .on('click', '.b-assets-upload-close', function(e) {
-                    e.preventDefault();
-
-                    assetManager.router.navigate('', {trigger: true});
                 });
         },
 
@@ -48169,180 +48331,356 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 assets = this.assets;
 
             this.router
-                .on('selection', function(assetIds, section) {
-                    assetManager.selection.reset();
-
-                    for (var i = 0; i < assetIds.length; i++) {
-                        var asset = assets.get(assetIds[i]);
-
-                        if (asset === undefined) {
-                            asset = new BoomCMS.Asset({id: assetIds[i]});
-                            asset.fetch({
-                                success: function() {
-                                    assetManager.selection.add(asset);
-                                }
-                            });
-                        } else {
-                            assetManager.selection.add(asset);
-                        }
-                    }
-
-                    assetManager.viewSelection(section);
-                })
                 .on('route', function(section) {
                     assetManager.setView(section);
+                })
+                .on('route:viewAsset', function(assetId, section) {
+                    assetManager.viewAsset(assetId, section);
+                })
+                .on('route:viewAssetInAlbum', function(album, assetId, section) {
+                    album = assetManager.albums.findBySlug(album);
+
+                    assetManager.loadAlbum(album, function() {
+                        assetManager.viewAsset(assetId, section);
+                    });
+                })
+                .on('route:viewSelectionInAlbum', function(album, selection, section) {
+                    album = assetManager.albums.findBySlug(album);
+
+                    assetManager.loadAlbum(album, function() {
+                        assetManager.viewSelection(selection.split(','), section);
+                    });
+                })
+                .on('route:viewAssetInSearch', function(queryString, assetId, section) {
+                    var asset = assetManager.assets.findWhere({id: parseInt(assetId)});
+
+                    if (asset === undefined) {
+                        assetManager.viewSearchResults(queryString.toQueryParams());
+
+                        assetManager.assets.on('sync', function() {
+                            assetManager.viewAsset(assetId, section);
+                        });
+                    } else {
+                        assetManager.viewAsset(assetId, section);
+                    }
+                })
+                .on('route:viewSelectionInSearch', function(queryString, selection, section) {
+                    if (assetManager.assets.length === 0) {
+                        assetManager.viewSearchResults(queryString.toQueryParams());
+
+                        assetManager.assets.on('sync', function() {
+                            assetManager.viewSelection(selection.split(','), section);
+                        });
+                    } else {
+                        assetManager.viewSelection(selection.split(','), section);
+                    }
+                })
+                .on('route:viewAlbum', function(slug) {
+                    assetManager.viewAlbum(slug);
+                })
+                .on('route:home', function() {
+                    assetManager.showAlbums();
+                })
+                .on('viewSearchResults', function(params) {
+                    assetManager.viewSearchResults(params);
                 });
 
             Backbone.history.start();
         },
 
-        getAssets: function() {
-            var assetManager = this,
-                selection = this.selection,
-                deferred = $.Deferred();
-
-            this.$el
-                .assetSearch('getAssets')
-                .done(function() {
-                    var remove = [];
-
-                    // Ensure that any assets in the selection are marked as selected.
-                    // If the asset thumbnail isn't in view then remove it from the selection.
-                    selection.each(function(asset) {
-                        var $thumb = assetManager.getThumb(asset);
-
-                        if ($thumb.length && !$thumb.hasClass(assetManager.selectedClass)) {
-                            $thumb.addClass(assetManager.selectedClass);
-                        } else if ($thumb.length === 0) {
-                            remove.push(asset);
-                        }
-                    });
-
-                    for (var i = 0; i < remove.length; i++) {
-                        selection.remove(remove[i]);
-                    }
-
-                    deferred.resolve();
-                });
-
-            return deferred;
-        },
-
-        getThumb: function(asset) {
-            return this.$el.find('.b-assets-thumbnail[data-asset="' + asset.getId() + '"]').addClass('hello');
-        },
-
-        initialize: function() {
+        initialize: function(options) {
             var assetManager = this;
 
-            this.$content = this.$('#b-assets-content');
-            this.$viewAssetContainer = this.$('#b-assets-view-asset-container');
-            this.$viewSelectionContainer = this.$('#b-assets-view-selection-container');
-            this.uploader = this.$content.find('> .b-assets-upload .b-assets-upload-form').eq(0);
+            this.albums = options.albums;
 
-            this.$el.assetSearch({
-                assets: this.assets
-            });
-
+            this.uploader = this.$('#b-assets-upload form');
             this.router = new BoomCMS.AssetManager.Router({assets: this.assets}); 
 
-            this.getAssets()
-                .done(function() {
-                    assetManager.filmroll = new BoomCMS.AssetManager.Filmroll({
-                        assets: assetManager.assets
-                    }).render();
+            this.listenTo(this.albums, 'add remove reset', this.showAlbums);
+            this.listenTo(this.selection, 'reset update', this.toggleButtons);
 
-                    assetManager.bindRoutes();
-                });
-
-            this.listenTo(this.assets, 'select', this.select);
-            this.listenTo(this.assets, 'view', this.viewAsset);
-
-            this.listenTo(this.assets, 'reset', this.assetsChanged);
-
-            this.listenTo(this.assets, 'destroy', function() {
-                assetManager.getAssets();
-                assetManager.selection.reset();
+            this.listenTo(this.selection, 'destroy-all', function(assetIds) {
+                for (var i = 0; i < assetIds.length; i++) {
+                    assetManager.removeFromAllCollections(assetIds[i]);
+                }
             });
 
-            this.listenTo(this.selection, 'reset update', this.toggleButtons);
-            
+            this.bindAssetEvents(this.uploaded);
+            this.listenTo(this.uploaded, 'add', this.assetsUploaded);
+
             this.bind();
+            this.bindRoutes();
+        },
+
+        loadAlbum: function(album, success) {
+            if (album) {
+                this.selectNone();
+
+                if (!album.isNew()) {
+                    this.assets = album.getAssets();
+                    this.bindAssetEvents(this.assets);
+                    this.assets.fetchOnce(success);
+                }
+            }
+        },
+
+        /**
+         * Remove an asset from all album collections and search.
+         *
+         * An asset can appear in collections for multiple albums
+         * This ensures that when an asset is deleted all other albums are kept in sync 
+         * And their thumbnail lists updated
+         */
+        removeFromAllCollections: function(assetId) {
+            this.albums.each(function(album) {
+                album.getAssets().removeIfExists(assetId);
+            });
+
+            if (this.searchResultsView !== undefined) {
+                this.searchResultsView.assets.removeIfExists(assetId);
+            }
+
+            this.selection.removeIfExists(assetId);
+            this.uploaded.removeIfExists(assetId);
+        },
+
+        showAlbums: function() {
+            var $el = this.$('#b-assets-all-albums > .content');
+
+            if ($el.is(':empty')) {
+                var view = new BoomCMS.AssetManager.AlbumList({
+                    albums: this.albums,
+                    $container: $(this.$el[0].ownerDocument)
+                });
+
+                $el.html(view.render().el);
+            }
+
+            this.selectNone();
         },
 
         selectAll: function() {
-            var assetManager = this;
-
             this.assets.each(function(asset) {
-                assetManager.selection.add(asset);
+                asset.trigger('select', asset);
             });
         },
 
         selectNone: function() {
+            var selectedIds = this.selection.getAssetIds();
+
+            if (selectedIds.length === 0) {
+                return;
+            }
+
+            // Ensure that the unselect event is triggered for equivalent models in all collections.
+            for (var key in this.assetCollections) {
+                var assets = this.assetCollections[key];
+
+                for (var i = 0; i < selectedIds.length; i++) {
+                    var asset = assets.findById(selectedIds[i]);
+
+                    if (asset) {
+                        asset.trigger('unselect', asset);
+                    }
+                };
+            }
+
             this.selection.reset();
         },
 
-        select: function(asset) {
-            var selection = this.selection,
-                method = selection.findWhere({id: asset.getId()}) ? 'remove' : 'add';
-
-            selection[method](asset);
-        },
-
         setView: function(section) {
+            if (section === 'home') {
+                section = '';
+            }
+
+            if (section === 'viewAssetInAlbum' || section === 'viewAssetInSearch') {
+                section = 'viewAsset';
+            }
+
+            if (section === 'viewSelectionInAlbum' || section === 'viewSelectionInSearch') {
+                section = 'viewSelection';
+            }
+
             this.$el.attr('data-view', section);
 
-            if (section !== 'asset') {
-                this.activeAsset = null;
-            }
+            this.$('button[data-view]')
+                .removeClass('active')
+                .filter('[data-view="' + section + '"]')
+                .addClass('active');
         },
 
         toggleButtons: function() {
-            var $buttons = this.$('.b-assets-multi');
+            var $controls = this.$('#selection-controls'),
+                $buttons = $controls.find('button');
 
-            $buttons.prop('disabled', this.selection.length ? false : true);
+            if (this.selection.length > 0) {
+                $controls.addClass('visible');
+                $buttons.prop('disabled', false);
+            } else {
+                $controls.removeClass('visible');
+                $buttons.prop('disabled', true);
+            }
         },
 
-        toggleSearch: function() {
-            this.$el.find('#b-assets-filters').toggleClass('visible');
-            this.$el.find('#b-assets-search').toggleClass('open');
-        },
+        uploadCompleted: function(assets, errors) {
+            var $errors = this.$('#b-assets-upload .errors');
 
-        updateTagFilters: function(tags) {
-            this.addFilter('tag', tags);
-            this.getAssets();
-        },
-
-        viewAsset: function(asset, section) {
-            this.activeAsset = asset;
-
-            if (section === undefined) {
-                section = 'info';
+            for (var i = 0; i < assets.length; i++) {
+                this.uploaded.add(new BoomCMS.Asset(assets[i]));
             }
 
-            var view = new BoomCMS.AssetManager.ViewAsset({
-                model: asset,
-                assets: this.assets,
-                router: this.router
-            });
+            // Force any existing, cached search to be re-done.
+            // Otherwise if the user searched for most recent assets before uploading
+            // the new asset won't appear in the search results if they go back.
+            if (this.searchResultsView !== undefined) {
+                this.searchResultsView.forceUpdate();
+            }
 
-            this.router.navigate('asset/' + asset.getId() + '/' + section, {trigger: true});
+            if (errors.length > 0) {
+                for (var i = 0; i < errors.length; i++) {
+                    var $li = $('<li></li>').text(errors[i]);
 
-            this.filmroll.select(asset);
+                    $errors.find('ul').append($li);
+                } 
 
-            this.$viewAssetContainer.html(view.render(section).$el);
+                $errors.show();
+            }
         },
 
-        viewSelection: function(section) {
+        viewAlbum: function(slug) {
+            var albums = this.albums,
+                album = slug ? albums.findBySlug(slug) : new BoomCMS.Album();
+
+            this.loadAlbum(album);
+
+            if (album) {
+                if (this.albumViews[slug] === undefined) {
+                    this.albumViews[slug] = new BoomCMS.AssetManager.ViewAlbum({
+                        model: album,
+                        albums: this.albums,
+                        router: this.router,
+                        selection: this.selection,
+                        $container: $(this.$el[0].ownerDocument)
+                    }).render();
+                }
+
+                this.$('#b-assets-view-album-container')
+                    .children()
+                    .detach()
+                    .end()
+                    .html(this.albumViews[slug].el)
+                    .parents('#b-assets-content')
+                    .scrollTop();
+            }
+        },
+
+        viewAsset: function(assetId, section) {
+            var assetManager = this,
+                asset = this.assets.getOrFetch(assetId);
+
+            if (this.assetViews[assetId] === undefined) {
+                this.assetViews[assetId] = new BoomCMS.AssetManager.ViewAsset({
+                    model: asset,
+                    router: this.router,
+                    albums: this.albums,
+                    section: section
+                }).render();
+            }
+
+            this.$('#b-assets-view-asset-container')
+                .children()
+                .detach()
+                .end()
+                .html(this.assetViews[assetId].el);
+
+            this.assetViews[assetId].viewSection(section);
+
+            setTimeout(function() {
+                var $el = assetManager.assetViews[assetId].$el.find('.b-assets-view');
+
+                if (assetManager.assets.length > 1) {
+                    assetManager.viewNavigation(asset);
+                    $el.removeClass('no-navigation');
+                } else {
+                    $el.addClass('no-navigation');
+                }
+            }, 0);
+        },
+
+        viewNavigation: function(active) {
+            var position = this.assets.position(active),
+                assets = this.assets,
+                navStart = position > 5 ? position - 5 : 0,
+                navEnd = (position < assets.length - 6) ? position + 6 : assets.length,
+                navigationAssets = new BoomCMS.Collections.Assets(assets.slice(navStart, navEnd));
+
+            if (this.navigation === undefined) {
+                this.navigation = new BoomCMS.AssetManager.Navigation({
+                    selection: this.selection
+                });
+            }
+
+            this.navigation.render(navigationAssets, active);
+        },
+
+        viewSearchResults: function(params) {
+            var assetManager = this;
+
+            this.selectNone();
+
+            if (this.searchResultsView === undefined) {
+                var router = this.router;
+
+                this.assets = new BoomCMS.Collections.Assets();
+                this.bindAssetEvents(this.assets);
+
+                this.searchResultsView = new BoomCMS.AssetManager.SearchResults({
+                    el: this.$('#b-assets-search-results'),
+                    pagination: this.$('#b-assets-pagination'),
+                    assets: this.assets,
+                    params: params,
+                    selection: this.selection,
+                    $container: $(this.$el[0].ownerDocument)
+                });
+
+                this.searchResultsView.on('filtered', function(params) {
+                    router.goToSearchResults(params);
+                });
+
+                this.searchResultsView.getAssets();
+            } else {
+                this.assets = this.searchResultsView.assets;
+
+                if (this.searchResultsView.setParams(params) === true) {
+                    this.searchResultsView.getAssets();
+                } else {
+                    // If a user navigates directly to an asset within a search results list
+                    // The thumbnail grid won't have been visible to be justified,
+                    // so if have to do it manually when the search results page is viewed (i.e. the asset view is closed)
+                    // The setTimeout ensures the thumbnails are visible before justificiation
+                    setTimeout(function() {
+                        assetManager.searchResultsView.justifyThumbnails();
+                    }, 0);
+                }
+            }
+        },
+
+        viewSelection: function(assetIds, section) {
+            this.selection.reset();
+
+            for (var i = 0; i < assetIds.length; i++) {
+                var asset = this.assets.getOrFetch(assetIds[i]);
+                this.selection.add(asset);
+            }
+
             var view = new BoomCMS.AssetManager.ViewSelection({
                 selection: this.selection,
-                assets: this.assets,
-                router: this.router
+                router: this.router,
+                albums: this.albums,
+                section: section
             });
 
-            this.filmroll.select(this.selection.models[0]);
-
-            this.$viewSelectionContainer.html(view.render(section).$el);
+            this.$('#b-assets-view-selection-container').html(view.render().el);
         }
     });
 }(Backbone, BoomCMS));
@@ -48350,60 +48688,38 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     'use strict';
 
     BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
-        routePrefix: 'selection',
-        tagName: 'div',
+        eventsBound: false,
+        selected: 'selected',
         tagsDisplayed: false,
+        tagName: 'div',
         templateSelector: '#b-assets-selection-template',
 
-        addTag: function(tag) {
-            if (!tag) {
-                return;
-            }
+        addAlbum: function(album) {
+            album.addAssets(this.selection);
 
-            var $tagList = this.$('.b-tags').eq(0),
-                $tagTemplate = this.$('#b-tag-template').html(),
-                $el = $($tagTemplate);
-
-            return $el
-                .find('a')
-                .attr('data-tag', tag)
-                .find('span:first-of-type')
-                .text(tag)
-                .end()
-                .end()
-                .insertBefore($tagList.find('.b-tags-add').parent());
+            this.relatedAlbums.add(album);
         },
 
         bind: function() {
             var view = this,
                 selection = this.selection;
 
+            this.eventsBound = true;
+
             this.$el
-                .on('submit', '.b-tags-add', function(e) {
+                .on('click', '.b-settings-close', function(e) {
                     e.preventDefault();
 
-                    var $input = $(this).find('input[type=text]'),
-                        $el = view.addTag($input.val());
-
-                    if ($el !== undefined) {
-                        view.toggleTag($el.find('a'));
-                        $input.val('');
-                    }
-                })
-                .on('click', '.b-settings-close', function(e) {
-                    view.close(e);
+                    view.router.goToContext();
                 })
                 .on('click', '.b-assets-delete', function() {
                     selection.destroy();
+                    view.router.goToContext();
                 })
-                .on('click', 'a[data-section]', function() {
-                    var section = $(this).attr('data-section');
+                .on('click', 'a[data-section]', function(e) {
+                    e.preventDefault();
 
-                    view.router.navigate(view.routePrefix + '/' + selection.getIdString() + '/' + section);
-
-                    if (section === 'tags') {
-                        view.showTags();
-                    }
+                    view.viewSection($(this).attr('data-section'));
                 })
                 .on('submit', '#b-assets-download-filename', function(e) {
                     e.preventDefault();
@@ -48411,29 +48727,65 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     var filename = $(this).find('input[name=filename]').val();
 
                     selection.download(filename);
+                })
+                .on('click', '.b-assets-create-album a', function(e) {
+                    e.preventDefault();
+
+                    view.createAlbumAndAddSelection();
+                })
+                .on('click', '#b-asset-albums [data-album] a', function(e) {
+                    e.preventDefault();
+
+                    var albumId = $(this).parent().attr('data-album'),
+                        album = view.albums.get(albumId);
+
+                    if (album !== undefined) {
+                        view.toggleAlbum(album);
+                    }
+                })
+                .on('click', '#b-selection-delete a', function(e) {
+                    e.preventDefault();
+
+                    view.removeFromSelection($(this).attr('data-asset'));
                 });
 
-            this.$('.b-settings-menu a[href^="#"]').boomTabs();
             this.$el.ui();
         },
 
-        close: function() {
-            this.router.navigate('', {trigger: true});
-        },
+        createAlbumAndAddSelection: function() {
+            var view = this,
+                dialog;
 
-        displayTags: function(tags) {
-            var view = this;
+            dialog = new BoomCMS.Dialog({
+                msg: $('#b-album-create-name-template').html(),
+                width: 600,
+                onLoad: function() {
+                    dialog.contents.find('form').on('submit', function() {
+                        dialog.close();
+                    });
+                }
+            })
+            .done(function() {
+                var name = dialog.contents.find('input').val();
 
-            for (var i = 0; i < tags.length; i++) {
-                view.addTag(tags[i]);
-            }
+                if (name.trim() === '') {
+                    return;
+                }
 
-            this.$el
-                .on('click', '.b-tags a', function(e) {
-                    e.preventDefault();
+                view.albums.create({
+                    name: name
+                }, {
+                    success: function(album) {
+                        view.viewAlbums();
 
-                    view.toggleTag($(this));
+                        $('html,body').animate({
+                            scrollTop: view.$('#b-asset-albums [data-album="' + album.getId() + '"]').offset().top - $('#b-topbar').height()
+                        }, 1000, function() {
+                            view.addAlbum(album);
+                        });
+                    }
                 });
+            });
         },
 
         getSection: function() {
@@ -48441,42 +48793,56 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         init: function(options) {
-            var view = this;
-
-            this.assets = options.assets;
+            this.section = options.section;
             this.router = options.router;
+            this.albums = options.albums;
+            this.relatedAlbums = this.selection.getAlbums();
 
             this.template = _.template($(this.templateSelector).html());
-
-            this.listenTo(this.selection, 'add remove', function() {
-                this.render(view.getSection());
-            });
-
-            this.listenTo(this.selection, 'destroy', function() {
-                view.close();
-            });
         },
 
         initialize: function(options) {
+            var view = this;
+
             this.selection = options.selection;
+
+            this.listenTo(this.selection, 'sync add remove', function() {
+                this.render(view.getSection());
+            });
 
             this.init(options);
         },
 
-        render: function(section) {
+        removeAlbum: function(album) {
+            album.removeAssets(this.selection);
+
+            this.relatedAlbums.remove(album);
+        },
+
+        removeFromSelection: function(assetId) {
+            var asset = this.selection.findById(assetId);
+
+            if (asset !== undefined) {
+                this.selection.remove(asset);
+            }
+
+            this.router.updateSelection(this.selection, this.getSection());
+        },
+
+        render: function() {
             this.$el.html($(this.template({
                 selection: this.selection,
-                section: section
+                section: this.section
             })));
             
             var $about = this.$('.about');
             $about.text($about.text().replace(':count', this.selection.length));
 
-            if (section === 'tags') {
-                this.showTags();
+            if (this.eventsBound === false) {
+                this.bind();
             }
 
-            this.bind();
+            this.viewAlbums();
 
             this.listenTo(this.assets, 'select', function() {
                 this.router.updateSelection(this.selection, this.getSection());
@@ -48485,114 +48851,348 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             return this;
         },
 
-        showTags: function() {
-            var view = this;
+        toggleAlbum: function(album) {
+            var method = this.relatedAlbums.get(album.getId()) === undefined ? 
+                'addAlbum' : 'removeAlbum';
 
-            if (this.allTags === undefined) {
-                this.allTags = new BoomCMS.Collections.Assets([]).getTags();
-            }    
+            this[method](album);
+        },
 
-            this.allTags.done(function(tags) {
-                view.displayTags(tags);
+        viewAlbums: function() {
+            var view = new BoomCMS.AssetManager.AlbumList({
+                albums: this.albums,
+                selected: this.relatedAlbums,
+                $container: $(this.$el[0].ownerDocument)
+            }).render();
+
+            this.$('#b-asset-albums > div').html(view.el);
+        },
+
+        viewSection: function(section) {
+            section = section ? section : 'info';
+
+            this.$('.b-settings-menu a, .b-settings-content > div')
+                .removeClass('selected')
+                .filter('[data-section=' + section + ']')
+                .addClass('selected');
+
+            this.router.updateSection(section);
+        }
+    });
+}(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
+    'use strict';
+
+    BoomCMS.AssetManager.AlbumList = Backbone.View.extend({
+        el: $('<ul class="b-assets-album-list"></ul>'),
+        renderTimeout: null,
+        selectedClass: 'selected',
+
+        initialize: function(options) {
+            var view = this,
+                scrollTimeout = null;
+
+            this.albums = options.albums;
+            this.selected = options.selected;
+            this.$container = options.$container;
+
+            this.template = _.template($('#b-assets-album-list-template').html());
+
+            this.listenTo(this.albums, 'change add sync', this.render);
+            this.listenTo(this.albums, 'remove', this.removeAlbum);
+            this.listenTo(this.selected, 'add', this.selectAlbum);
+            this.listenTo(this.selected, 'remove', this.unselectAlbum);
+
+            this.$container.on('scroll', function() {
+                if (scrollTimeout !== null) {
+                    clearTimeout(scrollTimeout);
+                }
+
+                scrollTimeout = setTimeout(function() {
+                    view.lazyLoadThumbnails();
+                }, 300);
             });
+        },
 
-            $.when(this.allTags, this.selection.getTags()).done(function(response1, response2) {
-                if (typeof response2[0] !== 'undefined') {
-                    var tags = response2[0];
+        lazyLoadThumbnails: function() {
+            var $window = $(this.$el[0].ownerDocument),
+                windowTop = $window.scrollTop(),
+                windowBottom = windowTop + document.documentElement.clientHeight,
+                $thumbnails = this.$('[data-asset]');
 
-                    for (var i = 0; i < tags.length; i++) {
-                        view.$('.b-tags').find('a[data-tag="' + tags[i] + '"]').addClass('active');
-                    }
+            $thumbnails.each(function(i, el) {
+                var $el = $(el),
+                    top = $el.offset().top;
+
+                if (top >= windowTop && top <= windowBottom) {
+                    var asset = new BoomCMS.Asset({id: parseInt($el.attr('data-asset'))});
+
+                    $el
+                        .css('background-image', 'url(' + asset.getUrl('thumb', 500, 500) + ')')
+                        .removeAttr('data-asset');
                 }
             });
         },
 
-        toggleTag: function($a) {
-            var activeClass = 'active',
-                funcName = $a.hasClass(activeClass) ? 'removeTag' : 'addTag';
-
-            this.selection[funcName]($a.attr('data-tag')).done(function() {
-                $a.toggleClass(activeClass).blur();
-            });
-        }
-    });
-}(jQuery, Backbone, BoomCMS));
-;(function($, BoomCMS) {
-    'use strict';
-
-    BoomCMS.AssetManager.Filmroll = Backbone.View.extend({
-        el: '#b-assets-filmroll',
-
-        initialize: function(options) {
-            this.assets = options.assets;
-
-            this.listenTo(this.assets, 'reset', this.render);
-        },
-
-        /**
-         * Init the filmroll plugin
-         *
-         * These needs to be called after render() and after the element has been inserted into the DOM
-         *
-         * Otherwise Filmroll calculates its width as 0
-         *
-         * @returns {undefined}
-         */
-        initFilmroll: function() {
-            this.filmroll = new FilmRoll({
-                container: this.$el.find('> div'),
-                scroll: false,
-                configure_load: true,
-                resize: false
-            });
-
-            for (var i = 0; i < this.thumbnails.length; i++) {
-                this.thumbnails[i].$el.css('width', '100%');
-                this.thumbnails[i].loadImage();
-            }
+        removeAlbum: function(album) {
+            this.$el
+                .find('li[data-album=' + album.getId() + ']')
+                .fadeOut(600, function() {
+                    $(this).remove();
+                });
         },
 
         render: function() {
-            var filmroll = this,
-                $container = $('<div></div>');
+            var view = this;
 
-            this.thumbnails = [];
+            if (this.renderTimeout !== null) {
+                clearTimeout(this.renderTimeout);
+            }
 
-            this.$el.html($container);
+            this.renderTimeout = setTimeout(function() {
+                view.$el.html($(view.template({
+                    albums: view.albums
+                })));
 
-            this.assets.each(function(asset) {
-                var thumbnail = new BoomCMS.AssetManager.Thumbnail({
-                        model: asset
-                    }).render(),
-                    width = Math.floor(150 * asset.getAspectRatio());
+                view.$('li').removeClass('selected');
 
-                thumbnail.$el.css('width', width);
+                if (view.selected !== undefined) {
+                    view.selected.each(function(album) {
+                        view.$('li[data-album=' + album.getId() + ']').addClass(view.selectedClass);
+                    });
+                }
 
-                $container.append($('<div></div>').append(thumbnail.$el));
-
-                filmroll.thumbnails.push(thumbnail);
-            });
-
-            this.initFilmroll();
+                setTimeout(function() {
+                    view.lazyLoadThumbnails();
+                }, 0);
+            }, 500);
 
             return this;
         },
 
-        select: function(asset) {
-            var $el = this.$el.find('[data-asset="' + asset.getId() + '"]').parent().parent();
+        selectAlbum: function(album) {
+            this.$('li[data-album=' + album.getId() + ']').addClass(this.selectedClass);
+        },
 
-            this.$el.find('.selected').removeClass('selected');
-
-            if ($el.length) {
-                $el.addClass('selected');
-                this.filmroll.moveToChild($el[0]);
-                this.$el.find('.film_roll_pager .active').addClass('selected');
-            } 
-
-            return this;
+        unselectAlbum: function(album) {
+            this.$('li[data-album=' + album.getId() + ']').removeClass(this.selectedClass);
         }
     });
-}(jQuery, BoomCMS));
+}(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
+    'use strict';
+
+    BoomCMS.AssetManager.Navigation = Backbone.View.extend({
+        el: '#b-assets-navigation',
+        centerOffset: 0,
+        thumbnails: [],
+
+        calculateInserts: function(assets) {
+            var inserts = [];
+
+            for (var i = 0; i < assets.length; i++) {
+                if (!this.hasThumbnail(assets.models[i])) {
+                    var thumbnail = this.createThumbnail(assets.models[i]),
+                        after = i === 0 ? null : assets.models[i - 1];
+
+                    inserts.push({
+                        after: after,
+                        thumbnail: thumbnail
+                    });
+                }
+            }
+
+            return inserts;
+        },
+
+        calculateRemovals: function(assets) {
+            var thumbnails = this.thumbnails,
+                removals = [];
+
+            for (var i = 0; i < thumbnails.length; i++) {
+                if (!assets.findById(thumbnails[i].model.getId())) {
+                    removals.push(thumbnails[i]);
+                }
+            }
+
+            return removals;
+        },
+
+        centerActiveAsset: function() {
+            var middle = this.$el.width() / 2,
+                $active = this.$el.find('.active'),
+                activeMiddle, moveBy;
+
+            if ($active.length === 0) {
+                return;
+            }
+
+            activeMiddle = ($active.offset().left + ($active.outerWidth(true) / 2)) - this.centerOffset;
+            moveBy =  middle - activeMiddle;
+
+            this.$el
+                .find('> div')
+                .animate({
+                    left: moveBy + 'px'
+                }, 300);
+
+            this.centerOffset = moveBy;
+        },
+
+        createThumbnail: function(asset) {
+            var thumbnail = new BoomCMS.AssetManager.Thumbnail({
+                    model: asset
+                }).render(),
+                width = Math.floor(150 * asset.getAspectRatio());
+
+            thumbnail.$el
+                .attr('data-width', width)
+                .css('width', width);
+
+            this.thumbnails.push(thumbnail);
+
+            return thumbnail;
+        },
+
+        hasThumbnail: function(asset) {
+            for (var i = 0; i < this.thumbnails.length; i++) {
+                if (this.thumbnails[i].model.getId() === asset.getId()) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
+
+        initialize: function(options) {
+            this.selection = options.selection;
+            this.$container = $('<div></div>');
+
+            this.$el.html(this.$container);
+            this.recenterActiveAssetOnWindowResize();
+        },
+
+        insertThumbnail: function(thumbnail, after, timeout) {
+            // Wrap the thumbnail element in a div which has the padding and border to indicate the active asset
+            var $el = $('<div></div>').html(thumbnail.$el).css('width', 0);
+
+            $el.animate({
+                width: parseFloat($el.find('> div').attr('data-width')) + 20 + 'px'
+            }, timeout);
+
+            if (after === null) {
+                return this.$container.prepend($el);
+            }
+
+            this.$container
+                .find('[data-asset="' + after.getId() + '"]')
+                .parent()
+                .parent()
+                .after($el);
+        },
+
+        loadImages: function(inserts) {
+            setTimeout(function() {
+                for (var i = 0; i < inserts.length; i++) {
+                    inserts[i].thumbnail.loadImageOnce();
+                }
+            }, 0);
+        },
+
+        recenterActiveAssetOnWindowResize: function() {
+            var navigation = this,
+                resizeTimeout = null;
+
+            $(window)
+                .on('resize', function() {
+                    if (resizeTimeout !== null) {
+                        clearTimeout(resizeTimeout);
+                    }
+
+                    resizeTimeout = setTimeout(function() {
+                        navigation.centerActiveAsset();
+                    }, 100);
+                });
+        },
+
+        removeThumbnail: function(thumbnail, timeout) {
+            var thumbnails = this.thumbnails,
+                $el = thumbnail.$el.parent();
+
+            for (var i = 0; i < thumbnails.length; i++) {
+                if (thumbnails[i] === thumbnail) {
+                    thumbnails.splice(i, 1);
+                }
+            }
+
+            if (timeout === 0) {
+                return $el.remove();
+            }
+
+            $el
+                .animate({
+                    width: 0
+                }, timeout, function() {
+                    $el.remove();
+                });
+        },
+
+        /**
+         * Show the navigation bar with the given assets
+         *
+         * The assets are compared whats currently displayed and inserts and removals are calculated
+         * This is better than starting again each time as it allows the active asset to be scrolled nicely into the center of the viewport
+         * 
+         * This is done by animating removed assets to a width of 0 and animating inserted assets to their full width
+         *
+         * @param {type} assets
+         * @param {type} active
+         */
+        render: function(assets, active) {
+            var navigation = this,
+                freshStart, inserts, removals, i, timeout;
+
+            removals = this.calculateRemovals(assets);
+            inserts = this.calculateInserts(assets);
+
+            freshStart = (inserts.length + removals.length === this.thumbnails.length);
+
+            for (i = 0; i < removals.length; i++) {
+                timeout = freshStart ? 0 : i * 100;
+
+                this.removeThumbnail(removals[i], timeout);
+            }
+
+            for (i = 0; i < inserts.length; i++) {
+                timeout = freshStart ? 0 : i * 100;
+
+                this.insertThumbnail(inserts[i].thumbnail, inserts[i].after, timeout);
+            }
+
+            this.setActive(active);
+            this.loadImages(inserts);
+
+            timeout = freshStart ? 0 : (Math.abs(inserts.length - removals.length) * 100) + 100;
+
+            setTimeout(function() {
+                navigation.centerActiveAsset();
+            }, timeout);
+        },
+
+        setActive: function(asset) {
+            var active = 'active';
+
+            this.$container
+                .find('.' + active)
+                .removeClass(active)
+                .end()
+                .find('[data-asset="' + asset.getId() + '"]')
+                .parent()
+                .parent()
+                .addClass(active);
+        }
+    });
+}(jQuery, Backbone, BoomCMS));
 ;(function(Backbone, BoomCMS) {
     'use strict';
 
@@ -48600,46 +49200,266 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         routes: {
             '': 'home',
             'upload': 'upload',
-            'asset/:asset/:section': 'viewAsset',
-            'selection/:selection/:section': 'viewSelection'
+            'albums/create': 'createAlbum',
+            'albums/:album': 'viewAlbum',
+            'albums/:album/upload': 'upload',
+            'albums/:album/asset/:asset/:section': 'viewAssetInAlbum',
+            'albums/:album/selection/:selection/:section': 'viewSelectionInAlbum',
+            'search/:query/asset/:asset/:section': 'viewAssetInSearch',
+            'search/:query/selection/:selection/:section': 'viewSelectionInSearch',
+            'search/:query': 'searchResults',
+            'search': 'search',
+            'asset/:asset/:section': 'viewAsset'
+        },
+
+        createAlbum: function() {
+            this.trigger('route:viewAlbum');
+        },
+
+        getContext: function(path) {
+            var matches = path.match(/^(albums|search)\/([^\/]+)/i);
+
+            if (matches !== null && typeof matches[2] !== 'undefined') {
+                return matches[1] + '/' + matches[2];
+            }
+
+            return '';
+        },
+
+        goTo: function(route) {
+            this.navigate(route, {trigger: true});
+        },
+
+        goToAsset: function(asset) {
+            var current = Backbone.history.getFragment(),
+                context = this.getContext(current),
+                prefix = context === '' ? '' : context + '/';
+    
+            this.navigate(prefix + 'asset/' + asset.getId() + '/info', {trigger: true});
+        },
+
+        goToContext: function() {
+            var current = Backbone.history.getFragment(),
+                context = this.getContext(current);
+
+            return this.goTo(context);
+        },
+
+        /**
+         * Accepts an array of search parameters, as created from jQuery.serliazeArray()
+         *
+         */
+        goToSearchResults: function(search) {
+            this.goTo('search/' + $.param(search));
         },
 
         initialize: function(options) {
             this.assets = options.assets;
         },
 
+        updateSection: function(section) {
+            var current = Backbone.history.getFragment(),
+                newPath = current.replace(/(.*)\/[a-z]+$/, '$1/' + section);
+
+            this.navigate(newPath);
+        },
+
         updateSelection: function(assets, section, options) {
-            this.navigate('selection/' + assets.getIdString() + '/' + section, options);
+            var current = Backbone.history.getFragment(),
+                context = this.getContext(current),
+                prefix = context === '' ? '' : context + '/';
+
+            this.navigate(prefix + 'selection/' + assets.getIdString() + '/' + section, options);
         },
 
-        viewAsset: function(id, section) {
-            var asset = this.assets.get(id);
-
-            if (asset === undefined) {
-                asset = new BoomCMS.Asset({id: id});
-                asset.fetch({
-                    success: function() {
-                        asset.trigger('view', asset, section);
-                    }
-                });
-
-                this.assets.add(asset);
-            } else {
-                asset.trigger('view', asset, section);
-            }
-        },
-
-        viewSelection: function(selection, section) {
-            var assetIds = selection.split(',');
-
-            this.trigger('selection', assetIds, section);
+        searchResults: function(queryString) {
+            this.trigger('viewSearchResults', queryString.toQueryParams());
         }
     });
 }(Backbone, BoomCMS));
 ;(function($, Backbone, BoomCMS) {
     'use strict';
 
+    BoomCMS.AssetManager.SearchResults = BoomCMS.AssetManager.ViewSelection.extend({
+        updateForced: false,
+        page: 1,
+        params: {},
+
+        bind: function() {
+            var assetSearch = this;
+
+            this.$el
+                .parents('body')
+                .on('keydown', function(e) {
+                    switch (e.which) {
+                        case $.ui.keyCode.LEFT:
+                            assetSearch.previousPage();
+                            break;
+                        case $.ui.keyCode.RIGHT:
+                            assetSearch.nextPage();
+                            break;
+                    }
+                });
+
+            this.listenTo(this.assets, 'destroy remove', function() {
+                assetSearch.forceUpdate().getAssets();
+            });
+        },
+
+        initialize: function(options) {
+            this.assets = options.assets;
+            this.$pagination = options.pagination;
+            this.router = options.router;
+            this.selection = options.selection;
+            this.$container = options.$container;
+
+            this.thumbnails = new BoomCMS.AssetManager.ThumbnailGrid({
+                el: this.$('.b-assets-view-thumbs'),
+                assets: this.assets,
+                selection: this.selection,
+                $container: this.$container
+            });
+
+            this.bind();
+            this.setAssetsPerPage();
+            this.setParams(options.params);
+        },
+
+        /**
+         * Force search results to be updated even if the parameters haven't changed.
+         */
+        forceUpdate: function() {
+            this.updateForced = true;
+
+            return this;
+        },
+
+        getAssets: function() {
+            var data = {
+                limit: this.perpage,
+                page: this.page
+            }, search = this;
+
+            for (var key in this.params) {
+                data[key] = this.params[key];
+            }
+
+            // Reset before fetching to clear the thumbnail grid
+            // and ensure there's no on screen 'flash' of the old search results
+            this.assets.reset();
+
+            this.assets.fetch({
+                data: data,
+                success: function() {
+                    search.initPagination();
+                }
+            });
+        },
+
+        getPage: function(page) {
+            var params = {};
+
+            for (var key in this.params) {
+                params[key] = this.params[key];
+            }
+
+            params.page = page;
+
+            this.trigger('filtered', params);
+        },
+
+        initPagination: function() {
+            var view = this;
+
+            this.lastPage = Math.ceil(this.assets.total / this.perpage);
+
+            if (this.$pagination.data('jqPagination') !== undefined) {
+                this.$pagination.jqPagination('destroy');
+            }
+
+            this.$pagination.jqPagination({
+                paged: function(page) {
+                    view.getPage(page);
+                },
+                max_page: this.lastPage,
+                current_page: this.assets.total > 0 ? this.page : 0
+            });
+
+            this.$pagination.data('jqPagination').updateInput(true);
+        },
+
+        justifyThumbnails: function() {
+            this.thumbnails.justify();
+        },
+
+        nextPage: function() {
+            var page = this.page;
+
+            if (page < this.lastPage) {
+                this.getPage(page + 1);
+                this.initPagination();
+            }
+        },
+
+        previousPage: function() {
+            var page = this.page;
+
+            if (page > 1) {
+                this.getPage(page - 1);
+                this.initPagination();
+            }
+        },
+
+        render: function() {},
+
+        setAssetsPerPage: function() {
+            var rowHeight = 200,
+                avgAspectRatio = 1.5,
+                height = this.$el.height(),
+                rows = Math.ceil(height / rowHeight),
+                perrow = Math.ceil(this.$el.width() / (rowHeight * avgAspectRatio)),
+                perpage = Math.ceil(rows * perrow);
+
+            if (perpage === NaN || perpage < 20) {
+                perpage = 20;
+            }
+
+            this.perpage = perpage;
+        },
+
+        setParams: function(params) {
+            var oldParams = this.params;
+
+            params.page = (typeof params.page !== 'undefined') ? parseInt(params.page) : 1;
+            this.params = params;
+            this.page = params.page;
+
+            if (this.updateForced === true) {
+                this.updateForced = false;
+
+                return true;
+            }
+
+            // Return true if the parameters have changed, false if they haven't
+            if (oldParams.length !== params.length) {
+                return true;
+            }
+
+            for (var key in params) {
+                if (params[key] !== oldParams[key]) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    });
+}(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
+    'use strict';
+
     BoomCMS.AssetManager.Thumbnail = Backbone.View.extend({
+        selected: 'selected',
         tagName: 'div',
 
         initialize: function() {
@@ -48649,10 +49469,17 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.template = _.template($('#b-asset-thumb').html());
 
-            this.listenTo(model, 'change change:image', function() {
+            this.listenTo(model, 'change:image change:width change:height', function() {
                 view.render();
                 view.loadImage();
             });
+
+            this.listenTo(model, 'change:title', this.setTitle);
+            this.listenTo(model, 'change:type', this.setType);
+            this.listenTo(model, 'change:readable_filesize', this.setFilesize);
+            this.listenTo(model, 'change:public', this.setVisibility);
+            this.listenTo(model, 'select', this.select);
+            this.listenTo(model, 'unselect', this.unselect);
 
             $el
                 .on('click', function(e) {
@@ -48661,17 +49488,12 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .data('model', model)
                 .dblclick()
                 .on('sclick', function() {
-                    model.trigger('select', model);
+                    view.toggleSelected();
 
                     $el.blur();
                 })
                 .on('dclick', function() {
                     model.trigger('view', model);
-                })
-                .on('keypress', '.edit', function(e) {
-                    if (e.which === $.ui.keyCode.ENTER) {
-                        model.trigger('view', model);
-                    }
                 })
                 .on('click', '.edit', function(e) {
                     e.preventDefault();
@@ -48679,8 +49501,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                     model.trigger('view', model);
                 })
-                .on('justified', function() {
-                    view.loadImage();
+                .on('keydown', '.thumb', function(e) {
+                    if (e.which === $.ui.keyCode.DELETE || e.which === $.ui.keyCode.BACKSPACE) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        model.destroy();
+                    }
                 })
                 .on('keypress', '.thumb', function(e) {
                     if (e.which === $.ui.keyCode.ENTER) {
@@ -48696,6 +49523,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
          * 
          * Ensures that an image can be loaded to the correct dimensions of the thumbnail.
          *
+         * Rounds dimensions to the nearest 500px to avoid excessive generation of thumbnail sizes.
+         *
          * @returns {undefined}
          */
         loadImage: function() {
@@ -48705,8 +49534,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .find('[data-asset]')
                 .each(function() {
                     var $this = $(this),
-                        width = Math.round(($this.width() + 1) / 10) * 10,
-                        height = Math.round(($this.height() + 1) / 10) * 10,
+                        width = Math.round(($this.width() + 1) / 500) * 500,
+                        height = Math.round(($this.height() + 1) / 500) * 500,
                         url = asset.getUrl('thumb', width, height) + '?' + asset.getEditedAt(),
                         loadingClass = 'loading';
 
@@ -48721,6 +49550,17 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 });
         },
 
+        loadImageOnce: function() {
+            var src = this.$el
+                .find('[data-asset]')
+                .eq(0)
+                .attr('src');
+
+            if (!src) {
+                this.loadImage();
+            }
+        },
+
         render: function() {
             var aspectRatio = this.model.getAspectRatio();
 
@@ -48730,6 +49570,147 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 }))
                 .attr('data-aspect-ratio', aspectRatio > 0 ? aspectRatio : 1);
 
+            this.$thumbnail = this.$('.b-assets-thumbnail');
+
+            return this;
+        },
+
+        select: function() {
+            this.$thumbnail.addClass(this.selected);
+        },
+
+        setFilesize: function() {
+            this.$('filesize').text(this.model.getReadableFilesize());
+        },
+
+        setTitle: function() {
+            this.$('.b-asset-details h2')
+                .text(this.model.getTitle());
+        },
+
+        setType: function() {
+            this.$('.type').text(this.model.getType());
+        },
+
+        setVisibility: function() {
+            var $el = this.$('.b-assets-thumbnail'),
+                className = 'private';
+
+            this.model.isPublic() ? $el.removeClass(className) : $el.addClass(className);
+        },
+
+        toggleSelected: function() {
+            var event = this.$thumbnail.hasClass(this.selected) ? 'unselect' : 'select';
+
+            this.model.trigger(event, this.model);
+        },
+
+        unselect: function() {
+            this.$thumbnail.removeClass(this.selected);
+        }
+    });
+}(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
+    'use strict';
+
+    BoomCMS.AssetManager.ThumbnailGrid = Backbone.View.extend({
+        loading: 'loading',
+        none: 'none',
+        renderTimeout: null,
+        thumbnailsSelector: '.thumbnails > div',
+        thumbnails: [],
+
+        initialize: function(options) {
+            var view = this,
+                scrollTimeout = null;
+
+            this.assets = options.assets;
+            this.selection = options.selection;
+            this.$container = options.$container;
+
+            this.listenTo(this.assets, 'sort add remove sync remove', this.render);
+            this.listenTo(this.assets, 'change change:image', this.justify);
+
+            this.listenTo(this.assets, 'reset', function() {
+                view.$el.removeClass(view.none).addClass(view.loading);
+            });
+
+            this.$container.on('scroll', function() {
+                if (scrollTimeout !== null) {
+                    clearTimeout(scrollTimeout);
+                }
+
+                scrollTimeout = setTimeout(function() {
+                    view.lazyLoadThumbnails();
+                }, 300);
+            });
+        },
+
+        justify: function() {
+            if (this.$thumbnails !== undefined) {
+                this.$thumbnails.justifyAssets();
+            }
+
+            return this;
+        },
+
+        lazyLoadThumbnails: function() {
+            var $window = $(this.$el[0].ownerDocument),
+                windowTop = $window.scrollTop(),
+                windowBottom = windowTop + document.documentElement.clientHeight;
+
+            for (var i = 0; i < this.thumbnails.length; i++) {
+                var top = this.thumbnails[i].$el.offset().top;
+
+                if (top >= windowTop && top <= windowBottom) {
+                    this.thumbnails[i].loadImageOnce();
+                }
+            }
+        },
+
+        render: function() {
+            var view = this,
+                selection = this.selection,
+                assetCount = this.assets.models.length;
+
+            // Use a timeout to avoid performance issues when multiple assets are added (e.g. when a collection is fetched)
+            if (this.renderTimeout !== null) {
+                clearTimeout(this.renderTimeout);
+            }
+
+            this.renderTimeout = setTimeout(function() {
+                view.$thumbnails = view.$(view.thumbnailsSelector).html('');
+
+                if (assetCount === 0) {
+                    view.$el.removeClass(view.loading).addClass(view.none);
+
+                    return view;
+                }
+
+                view.assets.each(function(asset, i) {
+                    view.$el.removeClass(view.none);
+
+                    var thumbnail = new BoomCMS.AssetManager.Thumbnail({
+                        model: asset
+                    });
+
+                    view.thumbnails.push(thumbnail);
+                    view.$thumbnails.append(thumbnail.render().el);
+
+                    if (selection.get(asset.getId())) {
+                        thumbnail.select();
+                    }
+
+                    if (i === (assetCount - 1)) {
+                        setTimeout(function() {
+                            view.$el.removeClass(view.loading);
+                            view.justify();
+                            view.lazyLoadThumbnails();
+                        }, 0);
+                    }
+                });
+            }, 200);
+
             return this;
         }
     });
@@ -48737,12 +49718,118 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 ;(function($, Backbone, BoomCMS) {
     'use strict';
 
-    BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
-        routePrefix: 'asset',
+    BoomCMS.AssetManager.ViewAlbum = Backbone.View.extend({
         tagName: 'div',
-        tagsDisplayed: false,
+
+        events: {
+            'blur h1': 'save',
+            'blur .description': 'save',
+            'click .delete': 'delete'
+        },
+
+        delete: function() {
+            var album = this.model;
+
+            BoomCMS.Confirmation('Please confirm', 'Are you sure you want to delete this album?')
+                .done(function() {
+                    album.destroy();    
+                });
+        },
+
+        initialize: function(options) {
+            var album = this.model,
+                albums = options.albums,
+                router = options.router,
+                routerParams = this.model.isNew() ? {trigger: true} : {replace: true};
+
+            this.options = options;
+
+            this.router = options.router;
+
+            this.template = _.template($('#b-assets-view-album-template').html());
+
+            if (!this.model.isNew()) {
+                this.assets = this.model.getAssets();
+            }
+
+            this.model.on('change:slug', function() {
+                albums.add(album);
+                router.navigate('albums/' + album.getSlug(), routerParams);
+            });
+
+            this.model.on('destroy', function() {
+                router.goTo('');
+            });
+        },
+
+        render: function() {
+            var album = this.model,
+                view = this,
+                sortbyId = 'b-assets-sortby' + this.model.getId();
+
+            this.$el.html($(this.template({
+                album: this.model
+            })));
+
+            this.$el
+                .find('#b-assets-sortby')
+                .attr('id', sortbyId)
+                .end()
+                .find('label[for="#b-assets-sortby"]')
+                .attr('for', sortbyId);
+
+            this.$el.on('change', '#' + sortbyId, function(e) {
+                view.reorder(e);
+            });
+
+            this.$('h1, .description').boomcmsEditableHeading();
+
+            if (!this.model.isNew()) {
+                new BoomCMS.AssetManager.ThumbnailGrid({
+                    assets: this.assets,
+                    selection: this.options.selection,
+                    el: this.$('.b-assets-view-thumbs'),
+                    $container: this.options.$container
+                }).render();
+            }
+
+            this.$('.b-assets-upload')
+                .assetUploader({
+                    dropArea: this.$el,
+                    uploadFinished: function(e, data) {
+                        var assets = new BoomCMS.Collections.Assets(data.result.assets);
+
+                        album.addAssets(assets);
+                    }
+                });
+
+            return this;
+        },
+
+        reorder: function(e) {
+            var value = $(e.target).val(),
+                parts = value.split(' '),
+                assets = this.model.getAssets();
+
+            assets.setOrderBy(parts[0], parts[1]);
+            assets.sort();
+        },
+
+        save: function() {
+            this.model
+                .set({
+                    name: this.$('h1').text(),
+                    description: this.$('.description').text()
+                })
+                .save();
+        }
+    });
+}(jQuery, Backbone, BoomCMS));
+;(function($, Backbone, BoomCMS) {
+    'use strict';
+
+    BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
         templateSelector: '#b-assets-view-template',
-        loaded: false,
 
         bind: function() {
             var view = this,
@@ -48763,33 +49850,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                     BoomCMS.Notification('Asset details saved');
                 })
-                .on('remove', function() {
-                    this.$('.b-assets-upload').assetUploader('reset');
-                })
-                .on('click', '[data-section]', function(e) {
-                    e.preventDefault();
-
-                    var section = $(this).attr('data-section');
-
-                    view.router.navigate('asset/' + asset.getId() + '/' + section);
-                    view.render(section);
-                });
-        },
-
-        initialize: function(options) {
-            var asset = this.model;
-
-            this.selection = new BoomCMS.Collections.Assets([this.model]);
-
-            this.listenTo(this.model, 'revert', function() {
-                BoomCMS.Notification('This asset has been reverted to the previous version');
-            });
-
-            this.listenTo(this.model, 'change:image revert', function() {
-                this.render('info');
-            });
-
-            this.$el
                 .on('click', '#b-assets-thumbnail-change', function(e) {
                     e.preventDefault();
 
@@ -48800,6 +49860,35 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                                 .save();
                         });
                 });
+
+            this.$('#b-asset-replace form')
+                .assetUploader({
+                    dropArea: this.$('#b-asset-replace'),
+                    asset: asset
+                });
+        },
+
+        initialize: function(options) {
+            var view = this;
+
+            this.selection = new BoomCMS.Collections.Assets([this.model]);
+
+            this.listenTo(this.selection, 'destroy-all', function() {
+                view.model.trigger('destroy', view.model);
+            });
+
+            this.listenTo(this.model, 'sync', function() {
+                view.render();
+                view.viewSection(view.getSection());
+            });
+
+            this.listenTo(this.model, 'revert', function() {
+                BoomCMS.Notification('This asset has been reverted to the previous version');
+            });
+
+            this.listenTo(this.model, 'change:image revert', function() {
+                this.router.goToAsset(this.model);
+            });
 
             this.init(options);
         },
@@ -48824,252 +49913,30 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     asset.set(data.result);
                     asset.trigger('change:image');
 
-                    view.render('info');
+                    view.setSection('info');
                 }
             });
         },
 
-        render: function(section) {
-            this.$el.html($(this.template({
-                asset: this.model,
-                section: section
-            })));
+        render: function() {
+            this.$el.html(this.template({
+                asset: this.model
+            }));
 
-            if (section === 'tags') {
-                this.showTags();
-            }
+            this.$el.find('time').localTime();
 
-            if (section === 'replace') {
-                this.initUploader();
-            }
+            this.initUploader();
+            this.initImageEditor();
+            this.viewAlbums();
 
-            if (this.loaded === false) {
+            if (this.eventsBound === false) {
                 this.bind();
-                this.initImageEditor();
-
-                this.loaded = true;
             }
-            
+
             return this;
         }
     });
 }(jQuery, Backbone, BoomCMS));
-;(function($, BoomCMS) {
-    'use strict';
-
-    $.widget('boom.assetSearch', {
-        listUrl: BoomCMS.urlRoot + 'assets/get',
-
-        initialFilters: {},
-
-        postData: {
-            page: 1,
-            order: 'created_at desc'
-        },
-
-        addFilter: function(type, value) {
-            this.postData.page = 1;
-            this.postData[type] = value;
-        },
-
-        bind: function() {
-            var assetSearch = this;
-
-            this.element
-                .on('click', '#b-assets-all', function() {
-                    assetSearch.removeFilters();
-                })
-                .on('change', 'select[name=type], select[name=extension], select[name=uploadedby]', function() {
-                    var $this = $(this);
-
-                    assetSearch.addFilter($this.attr('name'), $this.val());
-                    assetSearch.getAssets();
-                })
-                .on('change', '#b-assets-sortby', function() {
-                    assetSearch.sortBy(this.value);
-                })
-                .find('#b-assets-filter-title')
-                .assetTitleFilter({
-                    search: function() {
-                        assetSearch.addFilter('title', $(this).val());
-                        assetSearch.getAssets();
-                    },
-                    select: function(event, ui) {
-                        assetSearch.addFilter('title', ui.item.value);
-                        assetSearch.getAssets();
-                    }
-                })
-                .end()
-                .on('keydown', function(e) {
-                    switch (e.which) {
-                        case $.ui.keyCode.LEFT:
-                            assetSearch.previousPage();
-                            break;
-                        case $.ui.keyCode.RIGHT:
-                            assetSearch.nextPage();
-                            break;
-                    }
-                });
-
-            this.element.find('#b-tags-search')
-                .assetTagSearch({
-                    update: function(e, data) {
-                        assetSearch.updateTagFilters(data.tags);
-                    }
-                });
-        },
-
-        _create: function() {
-            var assetSearch = this;
-
-            this.assets = this.options.assets;
-
-            if (typeof(this.options.filters) !== 'undefined') {
-                for (var filter in this.options.filters) {
-                    this.postData[filter] = this.options.filters[filter];
-                }
-            }
-
-            this.assets.on('change:image', function() {
-                assetSearch.justify();
-            });
-
-            for (var key in this.postData) {
-                this.initialFilters[key] = this.postData[key];
-            }
-
-            this.bind();
-            this.setAssetsPerPage();
-        },
-
-        getAssets: function() {
-            var assetSearch = this,
-                deferred = $.Deferred();
-
-            this.postData.limit = this.perpage;
-            this.assets.fetch({
-                data: this.postData,
-                reset: true,
-                success: function(collection, response) {
-                    assetSearch.initPagination(response.total);
-                    assetSearch.renderGrid();
-
-                    deferred.resolve(collection);
-                }
-            });
-
-            return deferred;
-        },
-
-        getPage: function(page) {
-            if (this.postData.page !== page) {
-                this.postData.page = page;
-                this.getAssets();
-            }
-        },
-
-        initPagination: function(total) {
-            var assetManager = this,
-                $el = assetManager.element.find('.b-pagination');
-
-            this.lastPage = Math.ceil(total / this.postData.limit);
-
-            // Max page isn't set correctly when re-initialising
-            if ($el.data('jqPagination')) {
-                $el.jqPagination('destroy');
-            }
-
-            $el.jqPagination({
-                paged: function(page) {
-                    assetManager.getPage(page);
-                },
-                max_page: this.lastPage,
-                current_page: total > 0 ? this.postData.page : 0
-            });
-
-            $el.show();
-        },
-
-        justify: function() {
-            this.element.find('#b-assets-view-thumbs').justifyAssets();
-        },
-
-        nextPage: function() {
-            var page = this.postData.page;
-
-            if (page < this.lastPage) {
-                this.getPage(page + 1);
-            }
-        },
-
-        previousPage: function() {
-            var page = this.postData.page;
-
-            if (page > 1) {
-                this.getPage(page - 1);
-            }
-        },
-
-        removeFilters: function() {
-            this.postData = {};
-
-            for (var key in this.initialFilters) {
-                this.postData[key] = this.initialFilters[key];
-            }
-
-            this.element.find('#b-assets-types, #b-assets-extensions, select[name=uploadedby]').val(0);
-            this.element.find('#b-tags-search li').remove();
-
-            this.getAssets();
-        },
-
-        renderGrid: function() {
-            var $el = this.element.find('#b-assets-view-thumbs');
-
-            $el.html('');
-
-            if (!this.assets.length) {
-                return $el.html(this.element.find('#b-assets-none-template').html());
-            }
-
-            this.assets.each(function(asset) {
-                var thumbnail = new BoomCMS.AssetManager.Thumbnail({
-                    model: asset
-                });
-
-                $el.append(thumbnail.render().el);
-            });
-
-            this.justify();
-        },
-
-        setAssetsPerPage: function() {
-            var $thumbs = this.element.find('#b-assets-view-thumbs'),
-                rowHeight = 200,
-                avgAspectRatio = 1.5,
-                height = $thumbs.height(),
-                rows = Math.ceil(height / rowHeight),
-                perrow = Math.ceil($thumbs.width() / (rowHeight * avgAspectRatio)),
-                perpage = Math.ceil(rows * perrow);
-
-            if (perpage < 30) {
-                perpage = 30;
-            }
-
-            this.perpage = perpage;
-        },
-
-        sortBy: function(sort) {
-            this.postData['order'] = sort;
-            this.getAssets();
-        },
-
-        updateTagFilters: function(tags) {
-            this.addFilter('tag', tags);
-            this.getAssets();
-        }
-    });
-}(jQuery, BoomCMS));
 ;(function(BoomCMS) {
     'use strict';
 
@@ -49084,13 +49951,23 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         this.url = BoomCMS.urlRoot + 'asset-picker';
 
-        this.assetsUploaded = function(assetIds) {
-            if (assetIds.length === 1) {
-                this.pick(new BoomCMS.Asset({id: assetIds[0]}));
+        this.assetsUploaded = function(assets) {
+            var assetPicker = this;
+
+            if (this.activeAlbum) {
+                this.activeAlbum.addAssets(assets);
+            }
+
+            if (assets.length === 1) {
+                this.pick(assets.at(0));
             } else {
-                this.dialog.contents.find('.b-assets-upload-form').assetUploader('reset');
-                this.dialog.contents.assetSearch('removeFilters');
-                this.dialog.contents.assetSearch('getAssets');
+                assetPicker.assets.reset();
+
+                assets.each(function(asset) {
+                    assetPicker.assets.add(asset);
+                });
+
+                this.showAssets();
             }
         };
 
@@ -49106,16 +49983,48 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 });
 
             this.picker
+                .on('submit', '#b-assets-search form', function(e) {
+                    e.preventDefault();
+
+                    var search = $(this).serializeArray(),
+                        active = {};
+
+                    for (var i = 0; i < search.length; i++) {
+                        if (search[i].value !== '0' && search[i].value !== '') {
+                            active[search[i].name] = search[i].value;
+                        }
+                    }
+
+                    assetPicker.search(active);
+                })
                 .on('click', '#b-assets-picker-close', function() {
                     assetPicker.cancel();
                 })
                 .on('click', '#b-assets-picker-current-remove', function() {
                     assetPicker.pick(new BoomCMS.Asset());
                 })
-                .find('.b-assets-upload-form')
+                .on('click', '.b-assets-album-list [data-album] a', function(e) {
+                    e.preventDefault();
+
+                    assetPicker.viewAlbum($(this).attr('href').replace('#albums/', ''));
+                })
+                .on('click', '.b-assets-album-list .search a', function(e) {
+                    e.preventDefault();
+
+                    var params = $(this).attr('href').replace('#search/', '');
+
+                    assetPicker.search(params.toQueryParams());
+                })
+                .on('click', '#b-assets-picker-albums', function(e) {
+                    e.preventDefault();
+
+                    assetPicker.viewAlbumsList();
+                })
+                .find('.b-assets-upload')
                 .assetUploader({
+                    dropArea: this.picker,
                     uploadFinished: function(e, data) {
-                        assetPicker.assetsUploaded(data.result);
+                        assetPicker.assetsUploaded(new BoomCMS.Collections.Assets(data.result.assets));
                     }
                 });
         };
@@ -49139,6 +50048,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             var assetPicker = this;
 
             this.assets = new BoomCMS.Collections.Assets();
+            this.albums = new BoomCMS.Collections.Albums();
+
+            this.albums.fetch();
 
             this.dialog = new BoomCMS.Dialog({
                 url: this.url,
@@ -49151,18 +50063,18 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                         overflow: 'visible'
                     });
 
+                    new BoomCMS.AssetManager.AlbumList({
+                        albums: assetPicker.albums,
+                        el: assetPicker.dialog.contents.find('.b-assets-album-list'),
+                        $container: assetPicker.dialog.contents.find('#b-assets-picker-content')
+                    }).render();
+
                     assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
 
                     if (typeof(assetPicker.filters.type) !== 'undefined') {
                         assetPicker.showActiveTypeFilter(assetPicker.filters.type);
                     }
 
-                    assetPicker.dialog.contents.assetSearch({
-                        filters: assetPicker.filters,
-                        assets: assetPicker.assets
-                    });
-
-                    assetPicker.dialog.contents.assetSearch('getAssets');
                     assetPicker.bind();
 
                     if (assetPicker.currentAsset && assetPicker.currentAsset.getId() > 0) {
@@ -49188,6 +50100,47 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.close();
         };
 
+        this.search = function(params) {
+            var assetPicker = this,
+                $pagination = this.picker.find('#b-assets-pagination');
+
+            this.activeAlbum = null;
+
+            if (this.searchResultsView === undefined) {
+                this.searchResultsView = new BoomCMS.AssetManager.SearchResults({
+                    el: this.picker,
+                    pagination: $pagination,
+                    assets: this.assets,
+                    params: params,
+                    selection: new BoomCMS.Collections.Assets(),
+                    $container: this.dialog.contents.find('#b-assets-picker-content')
+                });
+
+                this.searchResultsView.on('filtered', function(params) {
+                    assetPicker.search(params);
+                });
+            } else {
+                this.searchResultsView.setParams(params);
+            }
+
+            this.searchResultsView.getAssets();
+
+            $pagination.show();
+
+            this.picker.attr('data-view', 'assets');
+        },
+
+        this.showAssets = function() {
+            new BoomCMS.AssetManager.ThumbnailGrid({
+                assets: this.assets,
+                selection: new BoomCMS.Collections.Assets(),
+                el: this.picker.find('.b-assets-view-thumbs'),
+                $container: this.dialog.contents.find('#b-assets-picker-content')
+            }).render();
+
+            this.picker.attr('data-view', 'assets');
+        };
+
         /**
          * Selects an option in the type filter select box to show that the type filter is active.
          * Used when the asset picker is opened with an active type filter.
@@ -49209,37 +50162,39 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             return this;
         };
 
+        this.viewAlbumsList = function() {
+            this.picker.removeAttr('data-view');
+            this.picker.find('#b-assets-pagination').hide();
+        };
+
+        this.viewAlbum = function(slug) {
+            var view = this,
+                album = this.albums.findBySlug(slug);
+
+            this.activeAlbum = album;
+
+            this.assets.fetch({
+                data: {
+                    album: album.getId()
+                },
+                reset: true,
+                complete: function() {
+                    view.showAssets();
+                }
+            });
+            
+            this.picker.find('#b-assets-pagination').hide();
+        };
+
         return this.open();
     };
 }(BoomCMS));
-;$.widget('boom.assetTitleFilter', {
-    options : {
-        delay: 400,
-        minLength: 3
-    },
-
-    _create: function() {
-        var element = this.element;
-
-        this.options.source = function(request, response) {
-            $.ajax({
-                url: '/boomcms/autocomplete/assets',
-                dataType: 'json',
-                data: {
-                    text : element.val()
-                }
-            })
-            .done(function(data) {
-                response(data);
-            });
-        };
-
-        this.element.autocomplete(this.options);
-    }
-});;(function($, BoomCMS) {
+;(function($, BoomCMS) {
     'use strict';
 
     $.widget('boom.assetUploader', {
+        uploading: 'uploading',
+
         uploaderOptions: {
             /**
             @type string
@@ -49284,12 +50239,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         _create: function() {
-            this.cancelButton = this.element.find('.b-assets-upload-cancel').eq(0);
-            this.dropArea = this.element.find('.b-assets-upload-container').eq(0);
-            this.progressBar = this.element.find('.b-assets-upload-progress').eq(0);
+            this.cancelButton = this.element.find('.cancel').eq(0);
+            this.progressBar = this.element.find('.progress').eq(0);
             this.uploadForm = this.element;
-            this.originalMessage = this.dropArea.find('.message').html();
-
             this.bind();
         },
 
@@ -49299,8 +50251,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 this.uploaderOptions.singleFileUploads = true;
             }
 
-            this.uploaderOptions.dropZone = this.element;
-            
+            this.uploaderOptions.dropZone = this.options.dropArea;
             this.initUploader();
         },
 
@@ -49327,61 +50278,27 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 });
         },
 
-        notify: function(message) {
-            if (!message) {
-                message = this.originalMessage;
-            }
-
-            this.dropArea
-                .find('p.message')
-                .show()
-                .html(message);
-        },
-
-        reset: function() {
-            this.progressBar
-                .css('display', 'none')
-                .progressbar('destroy');
-
-            this.cancelButton.hide();
-
-            // If we don't call disable first then when the uploader is reintialized
-            // we end up with multiple file uploads taking place.
-            this.uploadForm.fileupload('disable').fileupload('destroy');
-            this.initUploader();
-        },
-
         updateProgressBar: function(e, percentComplete) {
             this.progressBar.progressbar('value', percentComplete);
 
             this._trigger('uploadProgress', e, [percentComplete]);
         },
 
-        uploadFailed: function(e, data) {
-            var message = 'Errors occurred during file upload:<br />',
-                errors = $.parseJSON(data.jqXHR.responseText),
-                i;
-
-            for (i = 0; i < errors.length; i++) {
-                message = message + errors[i] + '<br />';
-            }
-
-            this.notify(message);
-            this.reset();
-
-            this._trigger('uploadFailed', e, data);
+        uploadFailed: function(e) {
+            this.element.attr('data-status', 'failed');
+            this._trigger('uploadFailed', e);
         },
 
         uploadFinished: function(e, data) {
+            this.element.attr('data-status', 'complete');
+
             this._trigger('uploadFinished', e, data);
         },
 
         uploadStarted: function(e, data) {
-            this.progressBar
-                .css('display', 'block')
-                .progressbar();
+            this.element.attr('data-status', 'uploading');
 
-            this.cancelButton.css('display', 'block');
+            this.progressBar.progressbar();
 
             this.fileData = data;
 
@@ -49400,6 +50317,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.currentRow.expandTo(this.targetRightOffset);
         } else if (this.rows > 1) {
             this.prevRow.merge(this.currentRow);
+        } else {
+            $.each(this.currentRow.elements, function(index, $el) {
+                $el.trigger('justified');
+            });
         }
     },
 
@@ -49438,7 +50359,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         this.prevRow = null;
         this.rows = 0;
         this.windowWidth = $(window).width();
-        this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
+        this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.outerWidth(true)));
 
         if (this.hasElements()) {
             this.resetInitialDimensions();
@@ -49540,8 +50461,8 @@ function Row() {
     };
 
     Row.prototype.shrinkBy = function(size) {
-
         var total_aspect_ratio = 0;
+
         $.each(this.elements, function(index, $el) {
             total_aspect_ratio += $el.data('aspect-ratio');
         });
@@ -49587,106 +50508,7 @@ function Row() {
 
         return ($el.offset.top >= (this.elements[this.elements.length - 1].offset.top + $el.height()));
     };
-};(function($, BoomCMS) {
-    'use strict';
-
-    $.widget('boom.assetTagSearch',  {
-        assets: new BoomCMS.Collections.Assets(),
-        tags : [],
-
-        addTag: function(tag) {
-            this.tags.push(tag);
-
-            var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag + '"></a></li>');
-
-            if (this.tagList.children().length) {
-                $newTag.insertBefore(this.tagList.children().last());
-            } else {
-                $newTag.prependTo(this.tagList);
-            }
-
-            this._trigger('addTag', null, tag);
-            this.update();
-        },
-
-        autocompleteSource: function(request, response) {
-            this.assets.getTags().done(function(tags) {
-                response(tags);
-            });
-        },
-
-        bind: function() {
-            var tagSearch = this;
-
-            this.assets.getTags().done(function(tags) {
-                tagSearch.element.find('input[type=text]').autocomplete({
-                    source: tags,
-                    minLength: 0,
-                    select: function(event, ui) {
-                        event.preventDefault();
-
-                        tagSearch.element.find('input[type=text]').val('');
-                        tagSearch.addTag(ui.item.value);
-                    }
-                });
-            });
-
-            this.element
-                .find('button')
-                .on('click', function(e) {
-                    e.preventDefault();
-
-                    tagSearch.addTag(tagSearch.input.val());
-                    tagSearch.input.val('');
-                })
-                .end()
-                .on('click', '.b-tag-remove', function() {
-                    tagSearch.removeTag($(this));
-                })
-                .on('keypress', function(e) {
-                    // Add a tag when the enter key is pressed.
-                    // This allows us to add a tag which doesn't already exist.
-                    if (e.which === $.ui.keyCode.ENTER && tagSearch.element.val()) {
-                        e.preventDefault();
-
-                        var tags, i;
-
-                        // If the text entered contains commas then it will be treated as a list of tags with each one 'completed'
-                        tags = tagSearch.element.val().split(',');
-
-                        for (i = 0; i < tags.length; i++) {
-                            tagSearch.tagSelected(tags[i]);
-                        }
-
-                        tagSearch.element.val('');
-                        tagSearch.element.autocomplete('close');
-                    }
-                });
-        },
-
-        _create: function() {
-            this.tagList = this.element.find('ul');
-            this.input = this.element.find('input');
-
-            this.bind();
-        },
-
-        removeTag: function($a) {
-            var tag = $a.attr('data-tag');
-
-            $a.parent().remove();
-            this.tags.splice(this.tags.indexOf(tag));
-
-            this._trigger('removeTag', null, tag);
-            this.update();
-        },
-
-        update: function() {
-            this._trigger('update', null, {tags : this.tags});
-        }
-    });
-}(jQuery, BoomCMS));
-;$.widget('boom.groupPermissionsEditor', {
+};$.widget('boom.groupPermissionsEditor', {
     group : null,
 
     bind: function() {

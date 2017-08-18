@@ -1,149 +1,171 @@
 #b-assets-picker {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	top: 0;
-	width: 100vw;
-	z-index: 100002;
-	height: auto;
-	overflow: auto;
-	background: @white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100vw;
+    z-index: 100002;
+    height: auto;
+    overflow: auto;
+    background: @white;
+
+    &[data-view=assets] {
+        .b-assets-view-thumbs {
+            display: block;
+            position: relative;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        .b-assets-album-list {
+            display: none;
+        }
+    }
 
     &.show-edit {
-        #b-assets-view-thumbs {
+        .b-assets-view-thumbs {
             .edit {
                 display: block;
             }
         }
     }
 
-	.b-assets-upload-progress {
-		height: 1.5rem;
-	}
-
-	.b-assets-upload-close {
-		display: none;
-	}
+    .b-assets-upload-progress {
+        height: 1.5rem;
+    }
 
     .b-assets-upload-cancel {
         margin: auto;
     }
 
-	#b-assets-view-thumbs {
-		width: calc(~"100vw - 25em");
-		margin: 0;
-		overflow: auto;
-		background: transparent;
+    #b-assets-picker-content {
+        width: calc(~"100vw - 25em");
+        height: 100%;
+        padding: 2.5rem;
+        overflow: auto;
+    }
 
-		.edit {
-			display: none;
-		}
-	}
+    .b-assets-view-thumbs {
+        display: none;
 
-	&-current {
-		margin-bottom: 2em;
+        .thumbnails {
+            width: calc(~"100vw - 25em - 5rem");
+            margin: 0;
+        }
 
-		img {
-			max-width: 100%;
-		}
-	}
+        .edit {
+            display: none;
+        }
+    }
 
-	&-sidebar {
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		width: 25em;
-		background: @lightest-grey;
-		padding: 1rem 1.5rem;
-		z-index: 2;
-		max-width: 100%;
-		overflow-y: auto;
-		overflow-x: hidden;
+    .b-assets-create-album {
+        display: none;
+    }
 
-		section {
-			width: 100%;
-		}
-	}
+    &-current {
+        margin-bottom: 2em;
 
-	&-filter {
-		margin-top: 1.5rem;
+        img {
+            max-width: 100%;
+        }
+    }
 
-		> div {
-			border: 1px solid @light-grey;
-			padding: 1.5rem;
-			margin-top: 1.5rem;
-		}
+    &-sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 25em;
+        background: @lightest-grey;
+        padding: 2.5rem;
+        z-index: 2;
+        max-width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
 
-		h2 {
-			text-align: center;
-			margin: 0 0 1.5rem 0;
-		}
+        section {
+            width: 100%;
+        }
+    }
 
-		input, select {
-			width: 100%;
-		}
-	}
+    #b-assets-picker-filter {
+        overflow: hidden;
 
-	&-close {
-		margin-top: 50px;
-		float: right;
-	}
+        label {
+            position: absolute;
+            top: -1000
+        }
+    }
 
-	&-all {
-		display: block;
-		margin: 1.5rem auto;
-		border: 1px solid @grey;
-		min-width: 15rem;
-	}
+    #b-assets-search {
+        margin-top: 5rem;
 
-	.b-assets-upload-container {
-		border-color: @grey;
-		height: 20rem;
-	}
+        form > div + div {
+            margin-top: 2rem;
+        }
 
-	.b-assets-upload-info {
-		padding: 0 1.5rem;
-		top: 50%;
-		transform: translateY(-50%);
-	}
+        .input input {
+            padding: 2rem 1rem 1rem;
+        }
 
-	#b-assets-pagination {
-		border: 0;
-		margin-top: 2em;
-		width: 100%;
+        select {
+            padding: 1rem;
+        }
 
-		input, a {
-			color: @black;
-		}
+        button {
+            margin-top: 3rem;
+        }
+    }
 
-		input:hover {
-			color: @red;
-		}
+    &-all {
+        display: block;
+        margin: 1.5rem auto;
+        border: 1px solid @grey;
+        min-width: 15rem;
+    }
 
-		a {
-			&.disabled {
-				color: @grey;
+    .b-assets-upload {
+        .info {
+            p {
+                display: none;
+            }
+        }
 
-				&:hover, &:focus {
-					color: @grey;
-				}
-			}
+        .progress {
+            margin-bottom: 3rem;
+        }
+    }
 
-			&:hover, &:focus {
-				color: @red;
-			}
-		}
-	}
+    #b-assets-picker-close, #b-assets-picker-albums {
+        margin-top: 5rem;
+    }
 
-	.b-tags-list {
-		padding-left: 0;
-		margin: auto -0.5em;
-		float: none;
+    #b-assets-pagination {
+        border: 0;
+        width: 100%;
+        margin-top: 5rem;
 
-		.b-tag {
-			border-color: @light-grey;
-		}
-	}
+        input, a {
+            color: @black;
+        }
+
+        input:hover {
+            color: @red;
+        }
+
+        a {
+            &.disabled {
+                color: @grey;
+
+                &:hover, &:focus {
+                    color: @grey;
+                }
+            }
+
+            &:hover, &:focus {
+                color: @red;
+            }
+        }
+    }
 }

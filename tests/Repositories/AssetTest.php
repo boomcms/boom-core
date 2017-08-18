@@ -2,16 +2,17 @@
 
 namespace BoomCMS\Tests\Repositories;
 
+use BoomCMS\Database\Models\Album;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
 use BoomCMS\Repositories\Asset as AssetRepository;
 use BoomCMS\Repositories\AssetVersion as AssetVersionRepository;
-use BoomCMS\Tests\AbstractTestCase;
+use BoomCMS\Support\Facades\Album as AlbumFacade;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Mockery as m;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AssetTest extends AbstractTestCase
+class AssetTest extends BaseRepositoryTest
 {
     /**
      * @var Asset
@@ -22,6 +23,11 @@ class AssetTest extends AbstractTestCase
      * @var Filesystem
      */
     protected $fileystem;
+
+    /**
+     * @var string
+     */
+    protected $modelClass = Asset::class;
 
     /**
      * @var Asset
@@ -49,7 +55,6 @@ class AssetTest extends AbstractTestCase
 
         $this->filesystem = m::mock(Filesystem::class);
         $this->version = new AssetVersion();
-        $this->model = m::mock(Asset::class);
         $this->asset = m::mock(Asset::class);
         $this->versionRepository = new AssetVersionRepository($this->version);
 
@@ -58,18 +63,6 @@ class AssetTest extends AbstractTestCase
             ->andReturn(1);
 
         $this->repository = new AssetRepository($this->model, $this->versionRepository, $this->filesystem);
-    }
-
-    public function testDelete()
-    {
-        $assetIds = [1, 2, 3];
-
-        $this->model
-            ->shouldReceive('destroy')
-            ->once()
-            ->with($assetIds);
-
-        $this->repository->delete($assetIds);
     }
 
     public function testExists()
@@ -126,6 +119,38 @@ class AssetTest extends AbstractTestCase
         $this->assertEquals($extensions, $this->repository->extensions());
     }
 
+    public function testDeleteWithArrayOfIds()
+    {
+        $album = m::mock(Album::class);
+
+        AlbumFacade::shouldReceive('findByAssetIds')
+            ->once()
+            ->with([1, 2, 3])
+            ->andReturn(collect([$album]));
+
+        $album->shouldReceive('assetsUpdated')->once();
+
+        parent::testDeleteWithArrayOfIds();
+    }
+
+    public function testDeleteWithModel()
+    {
+        $album = m::mock(Album::class);
+
+        $this->model
+            ->shouldReceive('getId')
+            ->andReturn(1);
+
+        AlbumFacade::shouldReceive('findByAssetIds')
+            ->once()
+            ->with([$this->model->getId()])
+            ->andReturn(collect([$album]));
+
+        $album->shouldReceive('assetsUpdated')->once();
+
+        parent::testDeleteWithModel();
+    }
+
     public function testFile()
     {
         $file = 'test file contents';
@@ -137,26 +162,6 @@ class AssetTest extends AbstractTestCase
             ->andReturn($file);
 
         $this->assertEquals($file, $this->repository->file($this->asset));
-    }
-
-    public function testFindReturnsAssetById()
-    {
-        $this->model
-            ->shouldReceive('find')
-            ->with(1)
-            ->andReturn($this->asset);
-
-        $this->assertEquals($this->asset, $this->repository->find(1));
-    }
-
-    public function testFindReturnsNull()
-    {
-        $this->model
-            ->shouldReceive('find')
-            ->with(1)
-            ->andReturn(null);
-
-        $this->assertNull($this->repository->find(1));
     }
 
     public function testSaveFileUsesVersionIdAsFileName()

@@ -4,7 +4,7 @@ namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 
-interface Tag
+interface Tag extends Repository
 {
     /**
      * @param SiteInterface $site
@@ -14,13 +14,6 @@ interface Tag
      * @return TagInterface
      */
     public function create($name, $group);
-
-    /**
-     * @param int $tagId
-     *
-     * @return TagInterface
-     */
-    public function find($tagId);
 
     /**
      * @param string $name

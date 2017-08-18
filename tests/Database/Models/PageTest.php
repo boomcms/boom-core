@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Tests\Database\Models;
 
-use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\PageVersion;
 use BoomCMS\Database\Models\Site;
@@ -18,6 +17,9 @@ use Mockery as m;
 
 class PageTest extends AbstractModelTestCase
 {
+    use Traits\HasCreatedByTests;
+    use Traits\HasFeatureImageTests;
+
     protected $model = Page::class;
 
     public function testAclEnabled()
@@ -346,30 +348,6 @@ class PageTest extends AbstractModelTestCase
         $this->assertInternalType('integer', $page->getGrandchildTemplateId());
     }
 
-    public function testGetFeatureImageId()
-    {
-        $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
-        $this->assertEquals(1, $page->getFeatureImageId());
-
-        $page = new Page();
-        $this->assertEquals(0, $page->getFeatureImageId());
-    }
-
-    public function testGetFeatureImage()
-    {
-        $builder = m::mock(Builder::class);
-        $builder->shouldReceive('first')->once();
-
-        $page = m::mock(Page::class.'[belongsTo]');
-        $page
-            ->shouldReceive('belongsTo')
-            ->once()
-            ->with(Asset::class, 'feature_image_id')
-            ->andReturn($builder);
-
-        $page->getFeatureImage();
-    }
-
     public function testGetDescriptionReturnsDescriptionIfSet()
     {
         $page = new Page([Page::ATTR_DESCRIPTION => 'test']);
@@ -412,15 +390,6 @@ class PageTest extends AbstractModelTestCase
             ->andReturn($site);
 
         $this->assertEquals($site, $page->getSite());
-    }
-
-    public function testHasFeatureImage()
-    {
-        $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
-        $this->assertTrue($page->hasFeatureImage());
-
-        $page = new Page();
-        $this->assertFalse($page->hasFeatureImage());
     }
 
     public function testIsDeleted()

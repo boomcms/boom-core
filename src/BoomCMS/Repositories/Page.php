@@ -13,11 +13,6 @@ use Illuminate\Database\Eloquent\Collection;
 class Page extends Repository implements PageRepositoryInterface
 {
     /**
-     * @var Model
-     */
-    protected $model;
-
-    /**
      * @var SiteInterface
      */
     protected $site;
@@ -35,13 +30,6 @@ class Page extends Repository implements PageRepositoryInterface
     public function create(array $attrs = [])
     {
         return Model::create($attrs);
-    }
-
-    public function delete(PageModelInterface $page)
-    {
-        $page->delete();
-
-        return $this;
     }
 
     /**
@@ -138,19 +126,5 @@ class Page extends Repository implements PageRepositoryInterface
         }
 
         $closure($page);
-    }
-
-    /**
-     * Save a page.
-     *
-     * @param PageModelInterface $page
-     *
-     * @return PageModelInterface
-     */
-    public function save(PageModelInterface $page)
-    {
-        $page->save();
-
-        return $page;
     }
 }

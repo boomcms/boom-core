@@ -7,7 +7,7 @@ use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-interface AssetVersion
+interface AssetVersion extends Repository
 {
     public function __construct(AssetVersionModel $model);
 
@@ -34,15 +34,6 @@ interface AssetVersion
         UploadedFile $file,
         FileInfoDriver $info = null
     ): AssetVersionModel;
-
-    /**
-     * Find an asset version by it's ID.
-     *
-     * @param int $versionId
-     *
-     * @return AssetVersionModel
-     */
-    public function find($versionId): AssetVersionModel;
 
     /**
      * Find the asset which has the version with the given ID.

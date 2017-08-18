@@ -2,11 +2,7 @@
     'use strict';
 
     BoomCMS.AssetManager.ViewAsset = BoomCMS.AssetManager.ViewSelection.extend({
-        routePrefix: 'asset',
-        tagName: 'div',
-        tagsDisplayed: false,
         templateSelector: '#b-assets-view-template',
-        loaded: false,
 
         bind: function() {
             var view = this,
@@ -27,33 +23,6 @@
 
                     BoomCMS.Notification('Asset details saved');
                 })
-                .on('remove', function() {
-                    this.$('.b-assets-upload').assetUploader('reset');
-                })
-                .on('click', '[data-section]', function(e) {
-                    e.preventDefault();
-
-                    var section = $(this).attr('data-section');
-
-                    view.router.navigate('asset/' + asset.getId() + '/' + section);
-                    view.render(section);
-                });
-        },
-
-        initialize: function(options) {
-            var asset = this.model;
-
-            this.selection = new BoomCMS.Collections.Assets([this.model]);
-
-            this.listenTo(this.model, 'revert', function() {
-                BoomCMS.Notification('This asset has been reverted to the previous version');
-            });
-
-            this.listenTo(this.model, 'change:image revert', function() {
-                this.render('info');
-            });
-
-            this.$el
                 .on('click', '#b-assets-thumbnail-change', function(e) {
                     e.preventDefault();
 
@@ -64,6 +33,35 @@
                                 .save();
                         });
                 });
+
+            this.$('#b-asset-replace form')
+                .assetUploader({
+                    dropArea: this.$('#b-asset-replace'),
+                    asset: asset
+                });
+        },
+
+        initialize: function(options) {
+            var view = this;
+
+            this.selection = new BoomCMS.Collections.Assets([this.model]);
+
+            this.listenTo(this.selection, 'destroy-all', function() {
+                view.model.trigger('destroy', view.model);
+            });
+
+            this.listenTo(this.model, 'sync', function() {
+                view.render();
+                view.viewSection(view.getSection());
+            });
+
+            this.listenTo(this.model, 'revert', function() {
+                BoomCMS.Notification('This asset has been reverted to the previous version');
+            });
+
+            this.listenTo(this.model, 'change:image revert', function() {
+                this.router.goToAsset(this.model);
+            });
 
             this.init(options);
         },
@@ -88,32 +86,26 @@
                     asset.set(data.result);
                     asset.trigger('change:image');
 
-                    view.render('info');
+                    view.setSection('info');
                 }
             });
         },
 
-        render: function(section) {
-            this.$el.html($(this.template({
-                asset: this.model,
-                section: section
-            })));
+        render: function() {
+            this.$el.html(this.template({
+                asset: this.model
+            }));
 
-            if (section === 'tags') {
-                this.showTags();
-            }
+            this.$el.find('time').localTime();
 
-            if (section === 'replace') {
-                this.initUploader();
-            }
+            this.initUploader();
+            this.initImageEditor();
+            this.viewAlbums();
 
-            if (this.loaded === false) {
+            if (this.eventsBound === false) {
                 this.bind();
-                this.initImageEditor();
-
-                this.loaded = true;
             }
-            
+
             return this;
         }
     });

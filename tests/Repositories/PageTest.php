@@ -4,40 +4,37 @@ namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Repositories\Page as PageRepository;
-use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
-class PageTest extends AbstractTestCase
+class PageTest extends BaseRepositoryTest
 {
-    /**
-     * @var Page
-     */
-    protected $model;
+    protected $modelClass = Page::class;
 
     /**
      * @var Page
      */
     protected $page;
 
-    /**
-     * @var PageRepository
-     */
-    protected $repository;
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->model = m::mock(Page::class);
         $this->repository = m::mock(PageRepository::class, [$this->model, $this->site])->makePartial();
         $this->page = m::mock(Page::class);
     }
 
-    public function testDelete()
+    public function testFindReturnsModelById()
     {
-        $this->page->shouldReceive('delete');
+        $this->withCurrentVersion();
 
-        $this->assertEquals($this->repository, $this->repository->delete($this->page));
+        parent::testFindReturnsModelById();
+    }
+
+    public function testFindReturnsNull()
+    {
+        $this->withCurrentVersion();
+
+        parent::testFindReturnsNull();
     }
 
     public function testFindByPrimaryUri()
@@ -224,5 +221,13 @@ class PageTest extends AbstractTestCase
         $this->repository->recurse($this->model, function (Page $page) {
             $page->save();
         });
+    }
+
+    protected function withCurrentVersion()
+    {
+        $this->model
+            ->shouldReceive('currentVersion')
+            ->once()
+            ->andReturnSelf();
     }
 }

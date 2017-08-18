@@ -1,17 +1,4 @@
 html.boom .b-assets-view {
-	overflow: hidden;
-	position: fixed;
-	top: 6rem;
-	left: 0;
-	right: 0;
-	bottom: 0;
-
-	form.b-tags-add {
-		margin: 0;
-		float: none;
-		height: 3.9rem;
-	}
-
 	.b-settings-content {
 		> * {
 			display: none;
@@ -67,14 +54,6 @@ html.boom .b-assets-view {
 		height: 6em;
 	}
 
-	#b-tags {
-		overflow: hidden;
-
-		.b-tag {
-			background: @white;
-		}
-	}
-
 	#b-asset-metadata {
 		dl {
 			dt {
@@ -96,39 +75,37 @@ html.boom .b-assets-view {
     }
 
 	#b-asset-replace {
-		.b-assets-upload-form {
-			display: block;
-			position: relative;
-			width: calc(~"100% + 10rem");
-			height: calc(~"100vh - 6rem");
-			margin: -5rem;
-		}
-
-		.b-assets-upload-info {
-			p {
-				max-width: 100%;
-			}
-		}
-
-		.b-assets-upload-container {
-			border: 0;
-			background: @white;
-		}
-
-		a {
-			&:hover, &:focus {
-				text-decoration: none;
-			}
-		}
-
-		.b-assets-upload-cancel {
-			margin: 2.5rem auto 0 auto;
-		}
+        width: calc(~"100% + 10rem");
+        height: calc(~"100vh - 6rem");
+        margin: -5rem;
+        padding: 5rem;
 	}
 
     #b-assets-view-thumbnail {
         button {
             display: block;
+        }
+    }
+
+    #b-asset-albums {
+        .selected a {
+            &:before {
+                .transition;
+                background: @blue;
+            }
+        }
+
+        .search {
+            display: none;
+        }
+
+        a {
+            color: @white;
+            border: 1px solid @darkest-grey;
+
+            &:hover, &:focus {
+                text-decoration: none;
+            }
         }
     }
 
@@ -197,17 +174,49 @@ html.boom .b-assets-view {
 			}
 		}
 	}
+
+    #b-selection-delete {
+        a {
+            overflow: hidden;
+            color: @black;
+
+            &:hover, &:focus {
+                color: @red;
+                text-decoration: none;
+
+                span {
+                    opacity: 1;
+                    color: @red;
+                    transition: opacity 0.3s;
+                }
+            }
+
+            span {
+                opacity: 0;
+                color: @white;
+                margin: 0 0 0 2rem;
+            }
+        }
+    }
 }
 
-@media all and (min-height: 768px) {
+@media all and (max-width: 768px) {
     html.boom .b-assets-view {
+        #b-imageeditor-toolbar {
+            display: none;
+        }
+    }
+}
+
+@media all and (min-width: 767px) {
+    html.boom .b-assets-view:not(.no-navigation) {
         .b-settings {
             .b-settings-menu {
-                height: calc(~"100% - 17.5rem");
+                height: calc(~"100vh - 29rem");
             }
 
             .b-settings-content {
-                height: calc(~"100% - 17rem");
+                height: calc(~"100vh - 29rem");
                 min-height: 0;
             }
         }

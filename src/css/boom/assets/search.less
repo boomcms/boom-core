@@ -1,0 +1,42 @@
+#b-assets-search {
+    form > div {
+        + div {
+            margin-top: 3rem;
+        }
+    }
+
+    .input {
+        input {
+            padding: 3rem 2rem 1rem 2rem;
+        }
+
+        label {
+            padding: 0 0 0 2rem;
+            color: @grey;
+            z-index: 5;
+        }
+    }
+
+    input, select {
+        background-color: @lightest-grey;
+        padding: 2rem;
+        color: @grey;
+        height: auto;
+        width: 100%;
+    }
+
+    select {        
+        border: 1px solid @light-grey;
+        background-position: calc(~"100% - 1rem") 50%;
+
+        + label {
+            position: absolute;
+            left: -200vw;
+        }
+    }
+
+    button[type=submit] {
+        .asset-manager-button;
+        margin-top: 5rem;
+    }
+}

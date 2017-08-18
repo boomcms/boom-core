@@ -1,8 +1,6 @@
 <div>
-    <h2><?= trans('boomcms::asset.search.type') ?></h2>
-
     <select id="b-assets-types" name="type">
-        <option value="0">Filter by type</option>
+        <option value="0"><?= trans('boomcms::asset.type.all') ?></option>
 
         <?php foreach (array_keys(AssetHelper::types()) as $type): ?>
             <option value="<?= $type ?>"<?php if (isset($selected) && $selected == $type): ?> selected="selected"<?php endif ?>>
@@ -10,4 +8,6 @@
             </option>
         <?php endforeach ?>
     </select>
+
+    <label for="b-assets-types"><?= trans('boomcms::asset.search.type') ?></label>
 </div>

@@ -4,9 +4,12 @@
 @import 'pagination.less';
 @import 'view.less';
 @import 'chunk-editor.less';
-@import 'view-thumbs.less';
+@import 'search.less';
 @import 'thumbnail.less';
-@import 'filmroll.less';
+@import 'navigation.less';
+@import 'album-list.less';
+@import 'view-album.less';
+@import 'view-thumbs.less';
 
 #b-assets-download-filename {
 	p {
@@ -14,56 +17,14 @@
 	}
 }
 
-#b-assets {
-	&-buttons {
-		display: inline-block;
-		width: 100%;
+#b-album-create-name {
+    label {
+        margin: 0;
 
-		> a {
-			text-decoration: underline;
-
-			&:hover, &:focus {
-				color: @red;
-				text-decoration: none;
-			}
-		}
-		
-		#b-assets-select-all {
-			margin-left: 1.5rem;
-		}
-	}
-
-	&-content {
-		overflow: hidden;
-
-		&.hide-thumbs {
-			#b-assets-view-thumbs {
-				z-index: -1;
-				transition: all 1s;
-
-				.thumb {
-					max-height: 0;
-					transition: max-height 1s ease-out;
-					overflow: hidden;
-
-					+ .edit {
-						top: -1000%;
-					}
-				}
-			}
-		}
-
-		img {
-			border: none;
-		}
-	}
-
-	&-none {
-		.text-large;
-		line-height: 85vh;
-		font-weight: bold;
-		text-align: center;
-		height: 100vh;
-		color: @black;
-	}
+        input {
+            width: 100%;
+            float: none;
+            margin: 2rem 0 0 0;
+        }
+    }
 }

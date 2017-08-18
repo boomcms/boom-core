@@ -1,0 +1,21 @@
+.transition {
+    transition: all 0.25s ease-in-out;
+}
+
+.asset-manager-button {
+    background: @blue;
+    color: @white;
+    padding: 2rem 7rem;
+    height: auto;
+    text-align: center;
+    display: inline-block;
+
+    .b-button-text {
+        padding: 0;
+    }
+
+    &:hover, &:focus {
+        background: @red;
+        transition: all 0.25s ease-in-out;
+    }
+}

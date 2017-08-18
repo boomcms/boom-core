@@ -9,6 +9,10 @@ $.widget('boom.justifyAssets', {
             this.currentRow.expandTo(this.targetRightOffset);
         } else if (this.rows > 1) {
             this.prevRow.merge(this.currentRow);
+        } else {
+            $.each(this.currentRow.elements, function(index, $el) {
+                $el.trigger('justified');
+            });
         }
     },
 
@@ -47,7 +51,7 @@ $.widget('boom.justifyAssets', {
         this.prevRow = null;
         this.rows = 0;
         this.windowWidth = $(window).width();
-        this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.innerWidth()));
+        this.targetRightOffset = (this.windowWidth - (this.element.offset().left + this.element.outerWidth(true)));
 
         if (this.hasElements()) {
             this.resetInitialDimensions();
@@ -149,8 +153,8 @@ function Row() {
     };
 
     Row.prototype.shrinkBy = function(size) {
-
         var total_aspect_ratio = 0;
+
         $.each(this.elements, function(index, $el) {
             total_aspect_ratio += $el.data('aspect-ratio');
         });

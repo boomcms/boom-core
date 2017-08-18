@@ -2,6 +2,8 @@
     'use strict';
 
     $.widget('boom.assetUploader', {
+        uploading: 'uploading',
+
         uploaderOptions: {
             /**
             @type string
@@ -46,12 +48,9 @@
         },
 
         _create: function() {
-            this.cancelButton = this.element.find('.b-assets-upload-cancel').eq(0);
-            this.dropArea = this.element.find('.b-assets-upload-container').eq(0);
-            this.progressBar = this.element.find('.b-assets-upload-progress').eq(0);
+            this.cancelButton = this.element.find('.cancel').eq(0);
+            this.progressBar = this.element.find('.progress').eq(0);
             this.uploadForm = this.element;
-            this.originalMessage = this.dropArea.find('.message').html();
-
             this.bind();
         },
 
@@ -61,8 +60,7 @@
                 this.uploaderOptions.singleFileUploads = true;
             }
 
-            this.uploaderOptions.dropZone = this.element;
-            
+            this.uploaderOptions.dropZone = this.options.dropArea;
             this.initUploader();
         },
 
@@ -89,61 +87,27 @@
                 });
         },
 
-        notify: function(message) {
-            if (!message) {
-                message = this.originalMessage;
-            }
-
-            this.dropArea
-                .find('p.message')
-                .show()
-                .html(message);
-        },
-
-        reset: function() {
-            this.progressBar
-                .css('display', 'none')
-                .progressbar('destroy');
-
-            this.cancelButton.hide();
-
-            // If we don't call disable first then when the uploader is reintialized
-            // we end up with multiple file uploads taking place.
-            this.uploadForm.fileupload('disable').fileupload('destroy');
-            this.initUploader();
-        },
-
         updateProgressBar: function(e, percentComplete) {
             this.progressBar.progressbar('value', percentComplete);
 
             this._trigger('uploadProgress', e, [percentComplete]);
         },
 
-        uploadFailed: function(e, data) {
-            var message = 'Errors occurred during file upload:<br />',
-                errors = $.parseJSON(data.jqXHR.responseText),
-                i;
-
-            for (i = 0; i < errors.length; i++) {
-                message = message + errors[i] + '<br />';
-            }
-
-            this.notify(message);
-            this.reset();
-
-            this._trigger('uploadFailed', e, data);
+        uploadFailed: function(e) {
+            this.element.attr('data-status', 'failed');
+            this._trigger('uploadFailed', e);
         },
 
         uploadFinished: function(e, data) {
+            this.element.attr('data-status', 'complete');
+
             this._trigger('uploadFinished', e, data);
         },
 
         uploadStarted: function(e, data) {
-            this.progressBar
-                .css('display', 'block')
-                .progressbar();
+            this.element.attr('data-status', 'uploading');
 
-            this.cancelButton.css('display', 'block');
+            this.progressBar.progressbar();
 
             this.fileData = data;
 

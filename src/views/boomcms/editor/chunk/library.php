@@ -7,9 +7,16 @@
     </section>
 
     <section id="b-tags-search">
-        <h2><?= trans('boomcms::asset.search.tag') ?></h2>
-        <p><?= trans('boomcms::editor.chunk.library.tag-info') ?></p>
-        <?= view('boomcms::assets.search.tag', ['tags' => $chunk->getTags()]) ?>        
+        <h2><?= trans('boomcms::editor.chunk.library.albums.heading') ?></h2>
+        <p><?= trans('boomcms::editor.chunk.library.albums.info') ?></p>
+
+        <select name="album" multiple>
+            <?php foreach (Album::all() as $album): ?>
+                <option value="<?= $album->getId() ?>"<?php if (in_array($album->getId(), $chunk->getAlbums())): ?> selected<?php endif ?>>
+                    <?= $album->getName() ?>
+                </option>
+            <?php endforeach ?>
+        </select>
     </section>
 
     <section>

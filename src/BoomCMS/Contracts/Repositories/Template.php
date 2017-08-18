@@ -4,7 +4,7 @@ namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 
-interface Template
+interface Template extends Repository
 {
     /**
      * @param array $attrs
@@ -12,20 +12,6 @@ interface Template
      * @return TemplateInterface
      */
     public function create(array $attrs);
-
-    /**
-     * @param int $templateId
-     *
-     * @return TemplateInterface
-     */
-    public function deleteById($templateId);
-
-    /**
-     * @param int $templateId
-     *
-     * @return TemplateInterface
-     */
-    public function find($templateId);
 
     public function findAll();
 
@@ -41,11 +27,4 @@ interface Template
      * @return array
      */
     public function findValid();
-
-    /**
-     * @param TemplateInterface $model
-     *
-     * @return $this
-     */
-    public function save(TemplateInterface $model);
 }

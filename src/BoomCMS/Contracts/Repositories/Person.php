@@ -5,7 +5,7 @@ namespace BoomCMS\Contracts\Repositories;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use Illuminate\Support\Collection;
 
-interface Person
+interface Person extends Repository
 {
     /**
      * @param array $credentials
@@ -14,21 +14,7 @@ interface Person
      */
     public function create(array $credentials);
 
-    /**
-     * @param PersonInterface $person
-     *
-     * @return $this
-     */
-    public function delete(PersonInterface $person);
-
     public function findAll();
-
-    /**
-     * @param int $personId
-     *
-     * @return PersonInterface
-     */
-    public function find($personId);
 
     /**
      * @param int $groupId
@@ -50,11 +36,4 @@ interface Person
      * @return Collection
      */
     public function getAssetUploaders();
-
-    /**
-     * @param PersonInterface $person
-     *
-     * @return $this
-     */
-    public function save(PersonInterface $person);
 }

@@ -19,11 +19,6 @@ class AssetVersion extends Repository implements AssetVersionRepositoryInterface
     protected $filesystem;
 
     /**
-     * @var AssetVersionModel
-     */
-    protected $model;
-
-    /**
      * @param AssetVersionModel $model
      */
     public function __construct(AssetVersionModel $model)
@@ -74,18 +69,6 @@ class AssetVersion extends Repository implements AssetVersionRepositoryInterface
         $asset->setVersion($version);
 
         return $version;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param int $versionId
-     *
-     * @return AssetVersionModel
-     */
-    public function find($versionId): AssetVersionModel
-    {
-        return $this->model->find($versionId);
     }
 
     /**

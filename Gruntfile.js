@@ -1,14 +1,14 @@
 module.exports = function(grunt) {
-	// Project configuration.
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
-		autoprefixer: {
-			options: {
-			},
-			no_dest: {
-				src : 'public/css/cms.css'
-			}
-		},
+    // Project configuration.
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        autoprefixer: {
+            options: {
+            },
+            no_dest: {
+                src : 'public/css/cms.css'
+            }
+        },
         copy: {
             main: {
                 files: [
@@ -27,31 +27,30 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-		},
-		concat: {
-			options: {
-				separator: ';',
-				process: function(src, filepath) {
-				  return src.replace(/@VERSION/g, grunt.config.get('pkg.version'));
-				}
-			},
+        },
+        concat: {
+            options: {
+                separator: ';',
+                process: function(src, filepath) {
+                  return src.replace(/@VERSION/g, grunt.config.get('pkg.version'));
+                }
+            },
             'asset-manager': {
                 src: [
-					'bower_components/caman/dist/caman.full.js',
+                    'bower_components/caman/dist/caman.full.js',
                     'bower_components/jcrop/js/Jcrop.js',
-                    'bower_components/FilmRoll/js/jquery.film_roll.js',
-					'src/js/boomcms/asset/imageEditor.js'
+                    'src/js/boomcms/asset/imageEditor.js'
                 ],
                 'dest': 'public/js/asset-manager.js'
             },
-			'people-manager': {
-				src: [
-					'src/js/boomcms/people-manager/PeopleManager.js',
-					'src/js/boomcms/people-manager/components/*.js'
-				],
-				dest: 'public/js/people-manager.js'
-			},
-			'template-manager': {
+            'people-manager': {
+                src: [
+                    'src/js/boomcms/people-manager/PeopleManager.js',
+                    'src/js/boomcms/people-manager/components/*.js'
+                ],
+                dest: 'public/js/people-manager.js'
+            },
+            'template-manager': {
                 src: [
                     'src/js/boomcms/template-manager/TemplateManager.js',
                     'src/js/boomcms/template-manager/components/*.js'
@@ -160,70 +159,70 @@ module.exports = function(grunt) {
 					'public/js/cms.min.js': 'public/js/cms.js',
 					'public/js/people-manager.min.js': 'public/js/people-manager.js',
                     'public/js/template-manager.min.js': 'public/js/template-manager.js'
-				}
-			}
-		},
-		less: {
-			production: {
-				options: {
-					paths: ["src/css"]
-				},
-				files: {
-					"public/css/cms.css": "src/css/cms.less",
-					"public/css/inpage.css": "src/css/inpage.less",
-					"public/css/default-template.css": "src/css/default-template.less"
-				}
-			}
-		},
-		cssmin: {
-			options: {
-				shorthandCompacting: false,
-				roundingPrecision: -1
-			},
-			target: {
-				files: {
-					'public/css/default-template.css': [
-						'bower_components/normalize.css/normalize.css',
-						'public/css/default-template.css'
-					],
-					'public/css/inpage.css': [
-						'public/css/inpage.css'
-					],
-					'public/css/cms.css': [
-						'bower_components/normalize.css/normalize.css',
-						'bower_components/jquery-ui/themes/base/datepicker.css',
-						'bower_components/datetimepicker/jquery.datetimepicker.css',
-						'bower_components/jquery-ui/themes/base/autocomplete.css',
-						'bower_components/leaflet/dist/leaflet.css',
-						'bower_components/jcrop/css/Jcrop.css',
-						'bower_components/pace/themes/red/pace-theme-flash.css',
-						'bower_components/jgrowl/jquery.jgrowl.css',
-						'src/css/libraries/jqpagination.css',
-						'bower_components/chosen/chosen.css',
-						'public/css/cms.css'
-					 ]
-				}
-			}
-		},
-		watch: {
-			css: {
-				files: 'src/css/**/*.less',
-				tasks: ['build-css']
-			},
-			js: {
-				files: 'src/js/**/*.js',
-				tasks: ['build-js']
-			}
-		}
-	});
+                }
+            }
+        },
+        less: {
+            production: {
+                options: {
+                    paths: ["src/css"]
+                },
+                files: {
+                    "public/css/cms.css": "src/css/cms.less",
+                    "public/css/inpage.css": "src/css/inpage.less",
+                    "public/css/default-template.css": "src/css/default-template.less"
+                }
+            }
+        },
+        cssmin: {
+            options: {
+                shorthandCompacting: false,
+                roundingPrecision: -1
+            },
+            target: {
+                files: {
+                    'public/css/default-template.css': [
+                        'bower_components/normalize.css/normalize.css',
+                        'public/css/default-template.css'
+                    ],
+                    'public/css/inpage.css': [
+                        'public/css/inpage.css'
+                    ],
+                    'public/css/cms.css': [
+                        'bower_components/normalize.css/normalize.css',
+                        'bower_components/jquery-ui/themes/base/datepicker.css',
+                        'bower_components/datetimepicker/jquery.datetimepicker.css',
+                        'bower_components/jquery-ui/themes/base/autocomplete.css',
+                        'bower_components/leaflet/dist/leaflet.css',
+                        'bower_components/jcrop/css/Jcrop.css',
+                        'bower_components/pace/themes/red/pace-theme-flash.css',
+                        'bower_components/jgrowl/jquery.jgrowl.css',
+                        'src/css/libraries/jqpagination.css',
+                        'bower_components/chosen/chosen.css',
+                        'public/css/cms.css'
+                     ]
+                }
+            }
+        },
+        watch: {
+            css: {
+                files: 'src/css/**/*.less',
+                tasks: ['build-css']
+            },
+            js: {
+                files: 'src/js/**/*.js',
+                tasks: ['build-js']
+            }
+        }
+    });
 
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-less');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-autoprefixer');
-	grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-autoprefixer');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.registerTask('build-css', ['less', 'autoprefixer:no_dest', 'cssmin']);
 	grunt.registerTask('build-js', ['concat:dist', 'concat:tinymce', 'concat:asset-manager', 'concat:people-manager', 'concat:template-manager', 'uglify']);

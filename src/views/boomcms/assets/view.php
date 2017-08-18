@@ -10,14 +10,14 @@
                 </li>
 
                 <li>
-                    <a href="#b-assets-view-info"<% if (!section || section === 'info') { %> class="selected"<% } %> data-section="info">
+                    <a href="#b-assets-view-info" data-section="info">
                         <span class="fa fa-info"></span>
                         <?= trans('boomcms::asset.info') ?>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#b-assets-view-attributes"<% if (section === 'attributes') { %> class="selected"<% } %> data-section='attributes'>
+                    <a href="#b-assets-view-attributes" data-section='attributes'>
                         <span class="fa fa-cogs"></span>
                         <?= trans('boomcms::asset.attributes') ?>
                     </a>
@@ -25,7 +25,7 @@
 
                 <% if (asset.isDocument()) { %>
                     <li>
-                        <a href="#b-asset-preview"<% if (section === 'preview') { %> class="selected"<% } %> data-section='preview'>
+                        <a href="#b-asset-preview" data-section='preview'>
                             <span class="fa fa-eye"></span>
                             <?= trans('boomcms::asset.preview.heading') ?>
                         </a>
@@ -34,7 +34,7 @@
 
                 <% if (!asset.isImage()) { %>
                     <li>
-                        <a href="#b-assets-view-thumbnail"<% if (section === 'thumbnail') { %> class="selected"<% } %> data-section='thumbnail'>
+                        <a href="#b-assets-view-thumbnail" data-section='thumbnail'>
                             <span class="fa fa-image"></span>
                             <?= trans('boomcms::asset.thumbnail') ?>
                         </a>
@@ -42,15 +42,15 @@
                 <% } %>
 
                 <li>
-                    <a href="#b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %> data-section='tags'>
-                        <span class="fa fa-tags"></span>
-                        <?= trans('boomcms::asset.tags') ?>
+                    <a href="#b-asset-albums" data-section='albums'>
+                        <span class="fa fa-book"></span>
+                        <?= trans('boomcms::asset.albums') ?>
                     </a>
                 </li>
 
                 <% if (asset.hasMetadata()) { %>
                     <li>
-                        <a href="#b-asset-metadata"<% if (section === 'metadata') { %> class="selected"<% } %> data-section='metadata'>
+                        <a href="#b-asset-metadata" data-section='metadata'>
                         <span class="fa fa-asterisk"></span>
                             <?= trans('boomcms::asset.metadata') ?>
                         </a>
@@ -59,7 +59,7 @@
 
                 <% if (asset.hasPreviousVersions()) { %>
                     <li>
-                        <a href="#b-assets-view-files"<% if (section === 'history') { %> class="selected"<% } %> data-section='history'>
+                        <a href="#b-assets-view-files" data-section='history'>
                         <span class="fa fa-history"></span>
                             <?= trans('boomcms::asset.history') ?>
                         </a>
@@ -67,7 +67,7 @@
                 <% } %>
 
                 <li>
-                    <a href="#b-asset-replace"<% if (section === 'replace') { %> class="selected"<% } %> data-section="replace">
+                    <a href="#b-asset-replace" data-section="replace">
                         <span class="fa fa-upload"></span>
                         <?= trans('boomcms::asset.replace.heading') ?>
                     </a>
@@ -81,7 +81,7 @@
                 </li>
 
                 <li class="b-setting-delete">
-                    <a href="#b-assets-delete"<% if (section === 'delete') { %> class="selected"<% } %> data-section='delete'>
+                    <a href="#b-assets-delete" data-section='delete'>
                         <span class="fa fa-trash-o"></span>
                         <?= trans('boomcms::asset.delete.heading') ?>
                     </a>
@@ -96,7 +96,7 @@
         </div>
 
         <div class="b-settings-content">
-            <div id="b-assets-view-attributes"<% if (section === 'attributes') { %> class="selected"<% } %>>
+            <div id="b-assets-view-attributes" data-section="attributes">
                 <h1><?= trans('boomcms::asset.attributes') ?></h1>
 
                 <form>
@@ -139,7 +139,7 @@
             </div>
 
             <% if (!asset.isImage()) { %>
-                <div id="b-assets-view-thumbnail"<% if (section === 'thumbnail') { %> class="selected"<% } %>>
+                <div id="b-assets-view-thumbnail" data-section="thumbnail">
                     <h1><?= trans('boomcms::asset.thumbnail') ?></h1>
                     <img src="<%= asset.getUrl('thumb', 500) %>?<%= Date.now() %>" alt="<?= trans('boomcms::asset.thumbnail.heading') ?>">
 
@@ -150,7 +150,7 @@
                 </div>
             <% } %>
 
-            <div id="b-assets-view-info"<% if (!section || section === 'info') { %> class="selected"<% } %>>
+            <div id="b-assets-view-info" data-section="info">
                 <h1><%= asset.getTitle() %></h1>
 
                 <% if (asset.isVideo()) { %>
@@ -240,12 +240,13 @@
                 </dl>
             </div>
 
-            <div id="b-asset-tags"<% if (section === 'tags') { %> class="selected"<% } %>>
-                <?= view('boomcms::assets.tags') ?>
+            <div id="b-asset-albums" data-section="albums">
+                <h1><?= trans('boomcms::asset.albums') ?></h1>
+                <div></div>
             </div>
 
             <% if (asset.isDocument()) { %>
-                <div id="b-asset-preview"<% if (section === 'preview') { %> class="selected"<% } %>>
+                <div id="b-asset-preview" data-section="preview">
                     <h1><?= trans('boomcms::asset.preview.heading') ?></h1>
                     <p><?= trans('boomcms::asset.preview.about') ?></p>
 
@@ -254,7 +255,7 @@
             <% } %>
 
             <% if (asset.hasMetadata()) { %>
-                <div id="b-asset-metadata"<% if (section === 'metadata') { %> class="selected"<% } %>>
+                <div id="b-asset-metadata" data-section="metadata">
                     <h1><?= trans('boomcms::asset.metadata') ?></h1>
 
                     <dl>
@@ -269,7 +270,7 @@
             <% } %>
 
             <% if (asset.hasPreviousVersions()) { %>
-                <div id="b-assets-view-files"<% if (section === 'history') { %> class="selected"<% } %>>
+                <div id="b-assets-view-files" data-section="history">
                     <h1><?= trans('boomcms::asset.history') ?></h1>
                     <p><?= trans('boomcms::asset.history-intro') ?></p>
 
@@ -301,32 +302,30 @@
                 </div>
             <% } %>
 
-            <div id="b-asset-replace"<% if (section === 'replace') { %> class="selected"<% } %>>
-                <div class="b-assets-upload">
-                    <form method="post" enctype="multipart/form-data" class="b-assets-upload-form">
-                        <div class="b-assets-upload-container">
-                            <div class="b-assets-upload-info">
-                                <p>
-                                    <?= trans('boomcms::asset.replace.info1') ?>
-                                    <label for="b-asset-replace-file">
-                                        <?= trans('boomcms::asset.replace.info2') ?>
-                                    </label>
-                                    <?= trans('boomcms::asset.replace.info3') ?>
-                                </p>
+            <div id="b-asset-replace" data-section="replace">
+                <h1><?= trans('boomcms::asset.replace.heading') ?></h1>
 
-                                <p class="message"></p>
+                <form method="post" enctype="multipart/form-data" class="b-assets-upload">
+                    <div class='info'>
+                        <label for="b-assets-replace-file"><?= trans('boomcms::asset.replace.select-file') ?></label>
+                        <p><?= trans('boomcms::asset.replace.drag-drop') ?></p>
+                    </div>
 
-                                <div class="b-assets-upload-progress"></div>
-                                <?= $button('times', 'cancel', ['class' => 'b-assets-upload-cancel']) ?>
-                            </div>
+                    <div class='errors'>
+                        <h2><?= trans('boomcms::asset.upload.errors') ?></h2>
 
-                            <input type="file" name="b-assets-upload-files[]" id="b-asset-replace-file" multiple min="1" max="5" />
-                        </div>
-                    </form>
-                </div>
+                        <ul></ul>
+                    </div>
+
+                    <p class='failed'><?= trans('boomcms::asset.upload.failed') ?></p>
+                    <div class="progress"></div>
+                    <?= $button('times', 'cancel', ['class' => 'cancel']) ?>
+
+                    <input type="file" name="b-assets-upload-files[]" id="b-assets-replace-file">
+                </form>
             </div>
 
-            <div id="b-assets-delete"<% if (section === 'delete') { %> class="selected"<% } %>>
+            <div id="b-assets-delete" data-section="delete">
                 <h1><?= trans('boomcms::asset.delete.heading') ?></h1>
                 <p><?= trans('boomcms::asset.delete.confirm') ?></p>
 
@@ -337,5 +336,3 @@
         </div>
     </div>
 </div>
-
-<?= view('boomcms::tags.tag') ?>

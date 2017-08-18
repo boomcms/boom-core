@@ -12,11 +12,6 @@ use InvalidArgumentException;
 class Tag extends Repository implements TagRepositoryInterface
 {
     /**
-     * @var Model
-     */
-    protected $model;
-
-    /**
      * @var SiteInterface
      */
     protected $site;
@@ -49,18 +44,6 @@ class Tag extends Repository implements TagRepositoryInterface
             Model::ATTR_NAME  => $name,
             Model::ATTR_GROUP => $group,
         ]);
-    }
-
-    /**
-     * Returns the tag with the given ID.
-     *
-     * @param int $tagId
-     *
-     * @return null|TagInterface
-     */
-    public function find($tagId)
-    {
-        return $this->model->find($tagId);
     }
 
     /**

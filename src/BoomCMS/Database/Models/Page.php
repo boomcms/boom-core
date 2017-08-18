@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Database\Models;
 
+use BoomCMS\Contracts\LinkableInterface;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\PageVersion as PageVersionInterface;
-use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
@@ -12,6 +12,8 @@ use BoomCMS\Contracts\SingleSiteInterface;
 use BoomCMS\Foundation\Database\Model;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
+use BoomCMS\Support\Traits\HasCreatedBy;
+use BoomCMS\Support\Traits\HasFeatureImage;
 use BoomCMS\Support\Traits\SingleSite;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,8 +23,10 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class Page extends Model implements PageInterface, SingleSiteInterface
+class Page extends Model implements PageInterface, LinkableInterface, SingleSiteInterface
 {
+    use HasCreatedBy;
+    use HasFeatureImage;
     use SingleSite;
     use SoftDeletes;
 
@@ -247,11 +251,6 @@ class Page extends Model implements PageInterface, SingleSiteInterface
         return $this->children->count();
     }
 
-    public function createdBy()
-    {
-        return $this->hasOne(Person::class, Person::ATTR_ID, self::ATTR_CREATED_BY);
-    }
-
     /**
      * Returns an array of IDs for groups which can view this page.
      *
@@ -326,14 +325,6 @@ class Page extends Model implements PageInterface, SingleSiteInterface
     }
 
     /**
-     * @return PersonInterface
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
      * @return DateTime
      */
     public function getCreatedTime()
@@ -394,23 +385,6 @@ class Page extends Model implements PageInterface, SingleSiteInterface
         $grandchildTemplateId = $this->getGrandchildTemplateId();
 
         return empty($grandchildTemplateId) ? $this->getTemplateId() : $grandchildTemplateId;
-    }
-
-    /**
-     * @return AssetInterface
-     */
-    public function getFeatureImage()
-    {
-        if ($this->featureImage === null) {
-            $this->featureImage = $this->belongsTo(Asset::class, self::ATTR_FEATURE_IMAGE)->first();
-        }
-
-        return $this->featureImage;
-    }
-
-    public function getFeatureImageId(): int
-    {
-        return $this->{self::ATTR_FEATURE_IMAGE} ?? 0;
     }
 
     public function getGrandchildTemplateId()
@@ -549,16 +523,6 @@ class Page extends Model implements PageInterface, SingleSiteInterface
     public function hasChildren()
     {
         return $this->children()->exists();
-    }
-
-    /**
-     * Whether the page has a feature image defined.
-     *
-     * @return bool
-     */
-    public function hasFeatureImage(): bool
-    {
-        return !empty($this->getFeatureImageId());
     }
 
     /**
@@ -817,18 +781,6 @@ class Page extends Model implements PageInterface, SingleSiteInterface
     }
 
     /**
-     * @param int $featureImageId
-     *
-     * @return $this
-     */
-    public function setFeatureImageId($featureImageId)
-    {
-        $this->{self::ATTR_FEATURE_IMAGE} = $featureImageId > 0 ? $featureImageId : null;
-
-        return $this;
-    }
-
-    /**
      * @param int $templateId
      *
      * @return $this
@@ -1036,11 +988,6 @@ class Page extends Model implements PageInterface, SingleSiteInterface
         }
 
         return $this->primaryUrl;
-    }
-
-    public function wasCreatedBy(PersonInterface $person)
-    {
-        return $this->getCreatedBy() === $person->getId();
     }
 
     public function getCurrentVersionQuery()
