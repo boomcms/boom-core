@@ -21,6 +21,18 @@
             this.trigger('route:viewAlbum');
         },
 
+        getCurrentContext: function() {
+            return this.getContext(Backbone.history.getFragment());
+        },
+
+        /**
+         * Returns the asset manager context from the given path
+         *
+         * The context will be viewing an album or viewing search results
+         * Within which the user can view an asset or selection
+         *
+         * @returns {String}
+         */
         getContext: function(path) {
             var matches = path.match(/^(albums|search)\/([^\/]+)/i);
 
@@ -36,18 +48,14 @@
         },
 
         goToAsset: function(asset) {
-            var current = Backbone.history.getFragment(),
-                context = this.getContext(current),
+            var context = this.getCurrentContext(),
                 prefix = context === '' ? '' : context + '/';
     
             this.navigate(prefix + 'asset/' + asset.getId() + '/info', {trigger: true});
         },
 
         goToContext: function() {
-            var current = Backbone.history.getFragment(),
-                context = this.getContext(current);
-
-            return this.goTo(context);
+            return this.goTo(this.getCurrentContext());
         },
 
         /**
