@@ -46097,7 +46097,11 @@ $.widget( 'boom.pageToolbar', {
     },
 
     save: function() {
-        this._trigger('save', null, this.editor.getContent());
+        var textEditor = this;
+
+        this.editor.uploadImages(function() {
+            textEditor._trigger('save', null, textEditor.editor.getContent());
+        });
     },
 
     setup: function(editor) {
@@ -46117,9 +46121,6 @@ $.widget( 'boom.pageToolbar', {
             })
             .on('blur', function() {
                 textEditor._trigger('blur');
-
-                // Ensures that any edited images are uploaded before the content is saved.
-                element.find('img').blur();
 
                 editor.execCommand('mceSave');
                 element.blur();
@@ -46411,10 +46412,8 @@ $.widget('ui.chunkText', $.ui.chunk, {
 
     edit: function() {},
 
-    /**
-    Get the chunk HTML, escaped and cleaned.
-    */
     getData: function() {
+        console.log('getData');
         return {
             text : this.element.html()
         };

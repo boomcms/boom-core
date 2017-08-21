@@ -146,7 +146,11 @@ $.widget('boom.textEditor', {
     },
 
     save: function() {
-        this._trigger('save', null, this.editor.getContent());
+        var textEditor = this;
+
+        this.editor.uploadImages(function() {
+            textEditor._trigger('save', null, textEditor.editor.getContent());
+        });
     },
 
     setup: function(editor) {
@@ -166,9 +170,6 @@ $.widget('boom.textEditor', {
             })
             .on('blur', function() {
                 textEditor._trigger('blur');
-
-                // Ensures that any edited images are uploaded before the content is saved.
-                element.find('img').blur();
 
                 editor.execCommand('mceSave');
                 element.blur();
