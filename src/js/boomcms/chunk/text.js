@@ -22,12 +22,14 @@ $.widget('ui.chunkText', $.ui.chunk, {
         $.ui.chunk.prototype.bind.call(this);
 
         element.textEditor({
-            save: function() {
+            save: function(e, text) {
                 if (!self.hasContent()) {
                     self.remove();
                     self.element.text('Default text.');
                 } else {
-                    self._save();
+                    self._save({
+                        text: text
+                    });
                 }
 
                 $.ui.chunk.prototype.bind.call(self);
@@ -37,16 +39,9 @@ $.widget('ui.chunkText', $.ui.chunk, {
 
     edit: function() {},
 
-    /**
-    Get the chunk HTML, escaped and cleaned.
-    */
-    getData: function(){
-        var $content = this.element.find('.slot-content');
-
-        this.content = ($content.length)? $content.html() : this.element.html();
-
+    getData: function() {
         return {
-            text : this.content
+            text : this.element.html()
         };
     },
 
