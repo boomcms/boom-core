@@ -6,7 +6,7 @@ use GenPhrase\Loader;
 use GenPhrase\Password;
 
 /**
- * Wrapper around GenPhrase password generator
+ * Wrapper around GenPhrase password generator.
  *
  * Uses the EFF Diceware list to generate a six word password
  *
@@ -36,7 +36,7 @@ class RandomPassword
     }
 
     /**
-     * Add a word list to the generator
+     * Add a word list to the generator.
      *
      * @param string $path
      * @param string $name
@@ -51,7 +51,7 @@ class RandomPassword
     }
 
     /**
-     * Returns a password with 65 bits of entropy (6 words)
+     * Returns a password with 65 bits of entropy (6 words).
      *
      * @return string
      */
