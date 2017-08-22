@@ -11,7 +11,7 @@ class Autocomplete extends Controller
     {
         $count = ($request->input('count') > 0) ? $request->input('count') : 10;
         $results = [];
-        $pages = Page::autocompleteTitle($this->request->input('text'), $this->count)->get();
+        $pages = Page::autocompleteTitle($this->request->input('text'), $count)->get();
 
         foreach ($pages as $p) {
             $primaryUri = substr($p->primary_uri, 0, 1) === '/' ? $p->primary_uri : '/'.$p->primary_uri;
