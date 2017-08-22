@@ -1,35 +1,35 @@
 {
-  "name": "boom-core",
-  "version": "7.1.0-dev",
-  "dependencies": {
-    "bower": "~1.4.1",
-    "geodesy": "~1.0.2",
-    "grunt": "~0.4.5",
-    "grunt-contrib-copy": "~0.8.0",
-    "jstimezonedetect": "~1.0.6",
-    "tinymce": "^4.6.5"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-jshint": "~0.11.2",
-    "grunt-contrib-uglify": "~0.9.1",
-    "grunt-contrib-concat": "~0.5.1",
-    "grunt-contrib-cssmin": "~0.12.2",
-    "grunt-contrib-less": "~1.0.1",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-autoprefixer": "~3.0.0",
-    "grunt-contrib-copy": "~0.8.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/boomcms/boom-core.git"
-  },
-  "author": "",
-  "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/boomcms/boom-core/issues"
-  }
+    "name": "boom-core",
+    "version": "7.1.0-dev",
+    "dependencies": {
+        "bower": "~1.4.1",
+        "geodesy": "~1.0.2",
+        "grunt": "~0.4.5",
+        "grunt-contrib-copy": "~0.8.0",
+        "jstimezonedetect": "~1.0.6",
+        "tinymce": "^4.6.5"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.5",
+        "grunt-contrib-jshint": "~0.11.2",
+        "grunt-contrib-uglify": "~0.9.1",
+        "grunt-contrib-concat": "~0.5.1",
+        "grunt-contrib-cssmin": "~0.12.2",
+        "grunt-contrib-less": "~1.0.1",
+        "grunt-contrib-watch": "~0.6.1",
+        "grunt-autoprefixer": "~3.0.0",
+        "grunt-contrib-copy": "~0.8.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/boomcms/boom-core.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/boomcms/boom-core/issues"
+    }
 }
