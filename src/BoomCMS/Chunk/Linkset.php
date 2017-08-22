@@ -91,7 +91,7 @@ class Linkset extends BaseChunk
     }
 
     /**
-     * Removes links which are:
+     * Removes links which are:.
      *
      *  * Invalid because they don't have a target page ID or a URL to link to
      *  * Hidden because they're an internal link but the page isn't visible to the current user

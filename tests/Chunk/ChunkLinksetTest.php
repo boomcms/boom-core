@@ -7,7 +7,6 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\URL;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Support\Facades\View;
 use Mockery as m;
 
 class ChunkLinksetTest extends AbstractTestCase
