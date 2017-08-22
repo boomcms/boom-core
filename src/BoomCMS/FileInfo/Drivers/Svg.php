@@ -22,7 +22,7 @@ class Svg extends Image
             return 0;
         }
 
-        list(,, $width, $height) = explode(' ', $attrs->viewBox);
+        list(, , $width, $height) = explode(' ', $attrs->viewBox);
 
         return $width / $height;
     }
