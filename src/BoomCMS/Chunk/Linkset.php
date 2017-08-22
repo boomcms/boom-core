@@ -10,11 +10,6 @@ class Linkset extends BaseChunk
     protected $defaultTemplate = 'quicklinks';
 
     /**
-     * @var int
-     */
-    protected $limit = 0;
-
-    /**
      * @var links
      */
     protected $links;
@@ -27,6 +22,7 @@ class Linkset extends BaseChunk
         'link-text'  => false,
         'link-title' => false,
         'link-asset' => false,
+        'limit'      => 0,
     ];
 
     /**
@@ -34,10 +30,6 @@ class Linkset extends BaseChunk
      */
     public function attributes()
     {
-        $attrs = [
-            $this->attributePrefix.'limit' => $this->limit,
-        ];
-
         foreach ($this->options as $key => $value) {
             $attrs[$this->attributePrefix.$key] = (int) $value;
         }
@@ -56,47 +48,31 @@ class Linkset extends BaseChunk
      */
     public function feature(): Linkset
     {
-        $this->limit = 1;
-
-        foreach (['link-text', 'link-title', 'link-asset'] as $option) {
-            $this->options[$option] = true;
-        }
-
-        return $this;
+        return $this->setOptions([
+            'link-text'   => true,
+            'linkt-title' => true,
+            'link-asset'  => true,
+            'limit'       => 1,
+        ]);
     }
 
     /**
      * Returns an array of links in the linkset.
      *
-     * Or an empty array if the linkset doesn't contain any links
+     * Or an empty array if the linkset doesn't contain any (valid, visible) links
+     *
+     * @param int $limit
      *
      * @return array
      */
-    public function getLinks(): array
+    public function getLinks(int $limit = 0): array
     {
-        if ($this->links !== null) {
-            return $this->links;
+        if ($this->links === null) {
+            $links = $this->attrs['links'] ?? [];
+            $this->links = $this->removeInvalidOrHiddenLinks($links);
         }
 
-        $this->links = $this->attrs['links'] ?? [];
-
-        foreach ($this->links as $i => &$link) {
-            if (!isset($link['target_page_id']) && !isset($link['url'])) {
-                unset($this->links[$i]);
-
-                continue;
-            }
-
-            $target = empty($link['target_page_id']) ? $link['url'] : $link['target_page_id'];
-
-            $link = Link::factory($target, $link);
-
-            if (!$link->isValid() || (!$this->editable && !$link->isVisible())) {
-                unset($this->links[$i]);
-            }
-        }
-
-        return $this->links;
+        return $limit > 0 ? array_slice($this->links, 0, $limit) : $this->links;
     }
 
     /**
@@ -115,6 +91,57 @@ class Linkset extends BaseChunk
     }
 
     /**
+     * Removes links which are:
+     *
+     *  * Invalid because they don't have a target page ID or a URL to link to
+     *  * Hidden because they're an internal link but the page isn't visible to the current user
+     *
+     * @param array $links
+     *
+     * @return array
+     */
+    protected function removeInvalidOrHiddenLinks(array $links): array
+    {
+        foreach ($links as $i => &$link) {
+            if (!isset($link['target_page_id']) && !isset($link['url'])) {
+                unset($links[$i]);
+
+                continue;
+            }
+
+            $target = empty($link['target_page_id']) ? $link['url'] : $link['target_page_id'];
+
+            $link = Link::factory($target, $link);
+
+            if (!$link->isValid() || (!$this->editable && !$link->isVisible())) {
+                unset($links[$i]);
+            }
+        }
+
+        return $links;
+    }
+
+    /**
+     * Sets a limit on the number of links which are displayed.
+     *
+     * This is an alias for the setOptions() method.
+     *
+     * The specified limit is not enforced by the linkset editor (unless the limit is 1)
+     * Rather, setting a limit will ensure that the $links variable in the chunk view will contain a subset of the linkset links.
+     * This may be useful when displaying the first n links of a linkset in a different page.
+     *
+     * When the limit is set to 1 then the editor ensures that only a single link is inserted.
+     *
+     * @param int $limit
+     *
+     * @return $this
+     */
+    public function setLimit(int $limit): Linkset
+    {
+        return $this->setOptions(['limit' => $limit]);
+    }
+
+    /**
      * @param array $options
      *
      * @return $this
@@ -128,7 +155,7 @@ class Linkset extends BaseChunk
 
     protected function show()
     {
-        $links = $this->getLinks();
+        $links = $this->getLinks($this->options['limit']);
 
         return View::make($this->viewPrefix."linkset.$this->template", [
             'title'  => $this->getTitle(),

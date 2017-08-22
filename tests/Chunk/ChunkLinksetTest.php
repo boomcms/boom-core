@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\URL;
 use BoomCMS\Tests\AbstractTestCase;
+use Illuminate\Support\Facades\View;
 use Mockery as m;
 
 class ChunkLinksetTest extends AbstractTestCase
@@ -122,6 +123,15 @@ class ChunkLinksetTest extends AbstractTestCase
         $chunk = $this->chunk(['links' => [['url' => '/test']]], false);
 
         $this->assertEquals([], $chunk->getLinks());
+    }
+
+    public function testGetLinksReturnsASubsetWhenALimitIsGiven()
+    {
+        $limit = 6;
+        $links = array_fill(0, 10, ['url' => 'http://www.test.com']);
+        $chunk = $this->chunk(['links' => $links], false);
+
+        $this->assertCount($limit, $chunk->getLinks($limit));
     }
 
     protected function chunk(array $attrs = [], $editable = false)
