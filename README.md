@@ -28,3 +28,49 @@ Then add the service provider to the provider's section in your application's co
 ```
 'BoomCMS\ServiceProviders\BoomCMSServiceProvider'
 ```
+
+---
+
+## Development
+
+### Running tests
+
+First install PHP dependencies with composer:
+
+```
+    composer install
+```
+
+You can then run tests with `phpunit`. However, some tests require access to a database. For these tests to pass you may need to specify database credentials:
+
+```
+    DB_PASSWORD=<password> DB_USERNAME=<username> DB_DATABASE=<database> DB_HOST=<host> DB_DRIVER=<driver> phpunit
+```
+
+The default values for these variables are:
+
+ * DB_PASSWORD: empty
+ * DB_USERNAME: root
+ * DB_DATABASE: boomcms_tests
+ * DB_HOST: 127.0.0.1
+ * DB_DRIVER: mysql
+ 
+ You won't need to specify these options on the command line if the default values work for you.
+ 
+
+### Building JavaScript and CSS files
+
+First install dependencies via NPM and bower:
+
+```
+    npm install
+    bower install
+```
+
+Then create minified JavaScript and CSS files with grunt:
+
+```
+    grunt dist
+```
+
+The default grunt task is `grunt watch` which will build the JavaScript and CSS files when changes are made.
