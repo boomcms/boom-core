@@ -16,7 +16,7 @@ class Query
         $this->params = $params;
     }
 
-    public function addFilters($finder, array $params)
+    public function addFilters(Finder\Finder $finder, array $params)
     {
         foreach ($params as $param => $args) {
             $param = strtolower($param);

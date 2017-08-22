@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Support\Facades\Asset;
+use Intervention\Image\ImageCache;
 use Intervention\Image\ImageManager;
 
 class Pdf extends BaseController
@@ -12,8 +13,8 @@ class Pdf extends BaseController
         $manager = new ImageManager();
 
         if ($width && $height) {
-            $image = $manager->cache(function ($manager) use ($width, $height) {
-                return $manager->make(Asset::thumbnail($this->asset))->fit($width, $height);
+            $image = $manager->cache(function (ImageCache $cache) use ($width, $height) {
+                return $cache->make(Asset::thumbnail($this->asset))->fit($width, $height);
             });
         } else {
             $image = $manager->make(Asset::thumbnail($this->asset))->encode();

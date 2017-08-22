@@ -288,7 +288,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
 
     public function scopeWhereAlbum(Builder $query, $albums): Builder
     {
-        $albumIds = $albums instanceof AlbumInterface ? [$albums->getId()] : $albums->map(function ($album) {
+        $albumIds = $albums instanceof AlbumInterface ? [$albums->getId()] : $albums->map(function (AlbumInterface $album) {
             return $album->getId();
         });
 
