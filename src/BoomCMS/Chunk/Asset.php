@@ -17,11 +17,6 @@ class Asset extends BaseChunk
     /**
      * @var string
      */
-    protected $defaultTemplate = 'image';
-
-    /**
-     * @var string
-     */
     private $filterByType;
 
     /**

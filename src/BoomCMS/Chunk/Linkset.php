@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\View;
 
 class Linkset extends BaseChunk
 {
-    protected $defaultTemplate = 'quicklinks';
-
     /**
      * @var links
      */
