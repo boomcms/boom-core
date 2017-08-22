@@ -86,7 +86,6 @@ module.exports = function(grunt) {
 					'bower_components/jquery-ui/jquery-ui.js',
 					'bower_components/jquery.serializeJSON/jquery.serializejson.js',
 					'src/js/string.js',
-					'bower_components/jgrowl/jquery.jgrowl.js',
 					'bower_components/tablesorter/jquery.tablesorter.js',
 					'bower_components/datetimepicker/jquery.datetimepicker.js',
 					'bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js',
@@ -196,7 +195,6 @@ module.exports = function(grunt) {
                         'bower_components/leaflet/dist/leaflet.css',
                         'bower_components/jcrop/css/Jcrop.css',
                         'bower_components/pace/themes/red/pace-theme-flash.css',
-                        'bower_components/jgrowl/jquery.jgrowl.css',
                         'src/css/libraries/jqpagination.css',
                         'bower_components/chosen/chosen.css',
                         'public/css/cms.css'
