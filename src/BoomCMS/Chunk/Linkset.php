@@ -25,10 +25,7 @@ class Linkset extends BaseChunk
         'limit'      => 0,
     ];
 
-    /**
-     * @return array
-     */
-    public function attributes()
+    public function attributes(): array
     {
         foreach ($this->options as $key => $value) {
             $attrs[$this->attributePrefix.$key] = (int) $value;
@@ -77,17 +74,15 @@ class Linkset extends BaseChunk
 
     /**
      * Returns true if the linkset contains any links.
-     *
-     * @return bool
      */
-    public function hasContent()
+    public function hasContent(): bool
     {
         return count($this->getLinks()) > 0;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
-        return isset($this->attrs['title']) ? $this->attrs['title'] : '';
+        return $this->attrs['title'] ?? '';
     }
 
     /**
