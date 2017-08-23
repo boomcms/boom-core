@@ -15,7 +15,8 @@
         paceOptions = {
             ajax: true,
             startOnPageLoad: false,
-            restartOnRequestAfter: 100
+            restartOnRequestAfter: 100,
+            restartOnPushState: false
         };
     </script>
 
