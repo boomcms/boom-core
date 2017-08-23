@@ -190,6 +190,7 @@
                 .filter('[data-section=' + section + ']')
                 .addClass('selected');
 
+            this.section = section;
             this.router.updateSection(section);
         }
     });
