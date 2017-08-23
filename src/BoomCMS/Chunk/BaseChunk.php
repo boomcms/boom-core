@@ -33,11 +33,6 @@ abstract class BaseChunk
     protected $before;
 
     /**
-     * @var string
-     */
-    protected $defaultTemplate;
-
-    /**
      * @var bool
      */
     protected $editable = false;
@@ -69,7 +64,7 @@ abstract class BaseChunk
     /**
      * @var string
      */
-    protected $template;
+    protected $template = 'default';
 
     protected $viewPrefix = 'boomcms.chunks::';
 
@@ -290,10 +285,6 @@ abstract class BaseChunk
             return '';
         }
 
-        if ($this->template === null) {
-            $this->template = $this->defaultTemplate;
-        }
-
         $content = $this->hasContent() ? $this->show() : $this->showDefault();
 
         // If the return data is a View then assign any parameters to it.
@@ -332,9 +323,8 @@ abstract class BaseChunk
      *
      * @return Chunk
      */
-    public function template($template = null)
+    public function template($template)
     {
-        // Set the template filename.
         $this->template = $template;
 
         return $this;

@@ -124,6 +124,15 @@ class ChunkLinksetTest extends AbstractTestCase
         $this->assertEquals([], $chunk->getLinks());
     }
 
+    public function testGetLinksReturnsASubsetWhenALimitIsGiven()
+    {
+        $limit = 6;
+        $links = array_fill(0, 10, ['url' => 'http://www.test.com']);
+        $chunk = $this->chunk(['links' => $links], false);
+
+        $this->assertCount($limit, $chunk->getLinks($limit));
+    }
+
     protected function chunk(array $attrs = [], $editable = false)
     {
         return new Linkset(new Page(), $attrs, 'test', $editable);

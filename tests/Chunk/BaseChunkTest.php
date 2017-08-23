@@ -100,7 +100,7 @@ class BaseChunkTest extends AbstractTestCase
         $requiredAttributes = [
             'data-boom-chunk'         => 'testType',
             'data-boom-slot-name'     => 'test',
-            'data-boom-slot-template' => null,
+            'data-boom-slot-template' => 'default',
             'data-boom-page'          => 1,
             'data-boom-chunk-id'      => 2,
             'data-boom-has-content'   => 1,

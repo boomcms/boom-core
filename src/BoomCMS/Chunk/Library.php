@@ -13,8 +13,6 @@ class Library extends BaseChunk
      */
     protected $params;
 
-    protected $defaultTemplate = 'gallery';
-
     public function __construct(Page $page, array $attrs, $slotname)
     {
         parent::__construct($page, $attrs, $slotname);
