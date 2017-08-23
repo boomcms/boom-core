@@ -299,10 +299,6 @@
         },
 
         setView: function(section) {
-            if (section === 'home') {
-                section = '';
-            }
-
             if (section === 'viewAssetInAlbum' || section === 'viewAssetInSearch' || section === 'viewAssetInUpload') {
                 section = 'viewAsset';
             }

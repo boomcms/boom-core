@@ -44,10 +44,10 @@ class Button extends AbstractUIElement
 
         $attrs_string = '';
         foreach ($this->attrs as $key => $value) {
-            $attrs_string .= "$key = \"$value\"";
+            $attrs_string .= " $key=\"$value\"";
         }
 
-        return "<button $attrs_string><span class='b-button-icon fa-2x fa fa-{$this->type}'></span><span class='b-button-text'>{$this->text}</span></button>";
+        return "<button$attrs_string><span class='b-button-icon fa-2x fa fa-{$this->type}'></span><span class='b-button-text'>{$this->text}</span></button>";
     }
 
     public function translate($text)
