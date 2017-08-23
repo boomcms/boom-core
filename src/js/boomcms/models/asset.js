@@ -148,7 +148,7 @@
             var asset = this,
                 data = new FormData();
 
-            data.append('files[]', blob);
+            data.append('files[]', new File([blob], this.getFilename()));
 
             return $.ajax({
                 data: data,
@@ -160,7 +160,7 @@
                 delete data.id;
 
                 asset.set(data);
-                asset.trigger('change:image');
+                asset.trigger('change:image', asset);
             });
         },
 
@@ -174,7 +174,7 @@
                 delete data.id;
 
                 asset.set(data);
-                asset.trigger('change:image');
+                asset.trigger('change:image', asset);
             });
         }
     });

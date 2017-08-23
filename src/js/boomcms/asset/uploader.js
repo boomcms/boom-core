@@ -108,7 +108,6 @@
             this.element.attr('data-status', 'uploading');
 
             this.progressBar.progressbar();
-
             this.fileData = data;
 
             this._trigger('uploadStarted', e, data);

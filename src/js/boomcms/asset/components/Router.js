@@ -5,6 +5,8 @@
         routes: {
             '': 'home',
             'upload': 'upload',
+            'upload/asset/:asset/:section': 'viewAssetInUpload',
+            'upload/selection/:selection/:section': 'viewSelectionInUpload',
             'albums/create': 'createAlbum',
             'albums/:album': 'viewAlbum',
             'albums/:album/upload': 'upload',
@@ -34,7 +36,13 @@
          * @returns {String}
          */
         getContext: function(path) {
-            var matches = path.match(/^(albums|search)\/([^\/]+)/i);
+            var matches;
+
+            if (path.match(/^upload/i) !== null) {
+                return 'upload';
+            }
+
+            matches = path.match(/^(albums|search)\/([^\/]+)/i);
 
             if (matches !== null && typeof matches[2] !== 'undefined') {
                 return matches[1] + '/' + matches[2];
@@ -50,7 +58,7 @@
         goToAsset: function(asset) {
             var context = this.getCurrentContext(),
                 prefix = context === '' ? '' : context + '/';
-    
+
             this.navigate(prefix + 'asset/' + asset.getId() + '/info', {trigger: true});
         },
 
@@ -64,10 +72,6 @@
          */
         goToSearchResults: function(search) {
             this.goTo('search/' + $.param(search));
-        },
-
-        initialize: function(options) {
-            this.assets = options.assets;
         },
 
         updateSection: function(section) {

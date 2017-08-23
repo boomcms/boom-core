@@ -2,7 +2,7 @@
     'use strict';
 
     BoomCMS.AssetManager.AlbumList = Backbone.View.extend({
-        el: $('<ul class="b-assets-album-list"></ul>'),
+        tagName: 'div',
         renderTimeout: null,
         selectedClass: 'selected',
 
@@ -18,12 +18,21 @@
             this.selected = options.selected;
             this.$container = options.$container;
 
+            this.albumTemplate = _.template($('#b-assets-album-thumbnail-template').html());
             this.template = _.template($('#b-assets-album-list-template').html());
 
-            this.listenTo(this.albums, 'change add sync', this.render);
+            this.listenTo(this.albums, 'add sync', this.render);
             this.listenTo(this.albums, 'remove', this.removeAlbum);
             this.listenTo(this.selected, 'add', this.selectAlbum);
             this.listenTo(this.selected, 'remove', this.unselectAlbum);
+
+            this.listenTo(this.albums, 'change:asset_count change:description change:slug change:name', function(album) {
+                view.updateAlbum(album);
+            });
+
+            this.listenTo(this.albums, 'change:thumbnail change:feature_image_id', function(album) {
+                view.refreshThumbnail(album);
+            });
 
             this.$container.on('scroll', function() {
                 if (scrollTimeout !== null) {
@@ -56,6 +65,17 @@
             });
         },
 
+        refreshThumbnail: function(album) {
+            var $li = this.getAlbumElement(album),
+                $a = $li.find('a'),
+                assetId = album.get('feature_image_id'),
+                asset = new BoomCMS.Asset({id: parseInt(assetId)});
+
+            if (assetId) {
+                $a.css('background-image', 'url(' + asset.getUrl('thumb', 500, 500) + '?' + (new Date()).valueOf() + ')');
+            }
+        },
+
         removeAlbum: function(album) {
             this.$el
                 .find('li[data-album=' + album.getId() + ']')
@@ -65,22 +85,30 @@
         },
 
         render: function() {
-            var view = this;
+            var view = this,
+                $el = this.$el,
+                albums = this.albums;
 
             if (this.renderTimeout !== null) {
                 clearTimeout(this.renderTimeout);
             }
 
             this.renderTimeout = setTimeout(function() {
-                view.$el.html($(view.template({
-                    albums: view.albums
-                })));
+                var $ul, $li, i;
+
+                $el.html($(view.template()));
+                $ul = $el.find('ul');
+
+                for (i = 0; i < albums.models.length; i++) {
+                    $li = view.renderAlbum(albums.models[i]);
+                    $ul.append($li);
+                }
 
                 view.$('li').removeClass('selected');
 
                 if (view.selected !== undefined) {
                     view.selected.each(function(album) {
-                        view.$('li[data-album=' + album.getId() + ']').addClass(view.selectedClass);
+                        view.getAlbumElement(album).addClass(view.selectedClass);
                     });
                 }
 
@@ -92,12 +120,24 @@
             return this;
         },
 
+        renderAlbum: function(album) {
+            return this.albumTemplate({
+                album: album
+            });
+        },
+
         selectAlbum: function(album) {
             this.getAlbumElement(album).addClass(this.selectedClass);
         },
 
         unselectAlbum: function(album) {
             this.getAlbumElement(album).removeClass(this.selectedClass);
+        },
+
+        updateAlbum: function(album) {
+            var $li = this.getAlbumElement(album);
+
+            $li.replaceWith(this.renderAlbum(album));
         }
     });
 }(jQuery, Backbone, BoomCMS));

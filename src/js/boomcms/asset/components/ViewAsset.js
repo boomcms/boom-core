@@ -77,8 +77,7 @@
         },
 
         initUploader: function() {
-            var view = this,
-                asset = this.model;
+            var asset = this.model;
 
             this.$('.b-assets-upload').assetUploader({
                 asset: asset,

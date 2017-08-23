@@ -75,7 +75,7 @@
 
 	#b-topbar {
 		position: fixed;
-		z-index: 5;
+		z-index: 100;
 
         div {
             display: inline-block;
@@ -168,9 +168,21 @@
             }
 
             .b-settings-content {
-                min-height: 0;
                 padding-left: 12rem;
                 max-width: 100%;
+        		min-height: calc(~"100vh - 60px");
+            }
+        }
+
+        .no-navigation {
+            .b-settings {
+                .b-settings-menu {
+                    z-index: 12;
+                }
+
+                .b-settings-content {
+                    z-index: 11;
+                }
             }
         }
 	}

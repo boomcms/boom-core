@@ -1,69 +1,69 @@
 <script type="text/template" id="b-assets-album-list-template">
-    <li class="b-assets-create-album">
-        <a href="#albums/create">
-            <h3><?= trans('boomcms::asset.album-create') ?></h3>
-            <span class="fa fa-plus"></span>
-        </a>
-    </li>
+    <ul class="b-assets-album-list">
+        <li class="b-assets-create-album">
+            <a href="#albums/create">
+                <h3><?= trans('boomcms::asset.album-create') ?></h3>
+                <span class="fa fa-plus"></span>
+            </a>
+        </li>
 
-    <li class='search without-albums'>
-        <a href='#search/withoutalbums=1&order=created_at desc'>
-            <div>
-                <h3><?= trans('boomcms::asset.search-shortcuts.without-albums') ?></h3>
-                <span class='fa fa-search'></span>
-            </div>
-        </a>
-    </li>
-
-    <li class='search'>
-        <a href='#search/order=created_at desc'>
-            <div>
-                <h3><?= trans('boomcms::asset.search-shortcuts.all') ?></h3>
-                <span class='fa fa-search'></span>
-            </div>
-        </a>
-    </li>
-
-    <li class='search'>
-        <a href='#search/type=image&order=created_at desc'>
-            <div>
-                <h3><?= trans('boomcms::asset.search-shortcuts.all-images') ?></h3>
-                <span class='fa fa-search'></span>
-            </div>
-        </a>
-    </li>
-
-    <li class='search'>
-        <a href='#search/type=doc&order=created_at desc'>
-            <div>
-                <h3><?= trans('boomcms::asset.search-shortcuts.all-documents') ?></h3>
-                <span class='fa fa-search'></span>
-            </div>
-        </a>
-    </li>
-
-    <li class='search'>
-        <a href='#search/type=video&order=created_at desc'>
-            <div>
-                <h3><?= trans('boomcms::asset.search-shortcuts.all-videos') ?></h3>
-                <span class='fa fa-search'></span>
-            </div>
-        </a>
-    </li>
-
-    <% for (var i = 0; i < albums.models.length; i++) { %>
-        <% var album = albums.models[i] %>
-
-        <li data-album='<%= album.getId() %>'>
-            <a href='#albums/<%= album.getSlug() %>'<% if (album.getFeatureImage()) { %> data-asset="<%= album.getFeatureImage().getId() %>"<% } %>>
+        <li class='search without-albums'>
+            <a href='#search/withoutalbums=1&order=created_at desc'>
                 <div>
-                    <h3><%= album.getName() %></h3>
-                    <p class='description'><%= album.getDescription() %></p>
-                    <p class='count'><span><%= album.getAssetCount().toLocaleString() %></span> asset<% if (album.getAssetCount() !== 1) { %>s<% } %></p>
+                    <h3><?= trans('boomcms::asset.search-shortcuts.without-albums') ?></h3>
+                    <span class='fa fa-search'></span>
                 </div>
             </a>
         </li>
-    <% } %>
+
+        <li class='search'>
+            <a href='#search/order=created_at desc'>
+                <div>
+                    <h3><?= trans('boomcms::asset.search-shortcuts.all') ?></h3>
+                    <span class='fa fa-search'></span>
+                </div>
+            </a>
+        </li>
+
+        <li class='search'>
+            <a href='#search/type=image&order=created_at desc'>
+                <div>
+                    <h3><?= trans('boomcms::asset.search-shortcuts.all-images') ?></h3>
+                    <span class='fa fa-search'></span>
+                </div>
+            </a>
+        </li>
+
+        <li class='search'>
+            <a href='#search/type=doc&order=created_at desc'>
+                <div>
+                    <h3><?= trans('boomcms::asset.search-shortcuts.all-documents') ?></h3>
+                    <span class='fa fa-search'></span>
+                </div>
+            </a>
+        </li>
+
+        <li class='search'>
+            <a href='#search/type=video&order=created_at desc'>
+                <div>
+                    <h3><?= trans('boomcms::asset.search-shortcuts.all-videos') ?></h3>
+                    <span class='fa fa-search'></span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</script>
+
+<script type='text/template' id='b-assets-album-thumbnail-template'>
+    <li data-album='<%= album.getId() %>'>
+        <a href='#albums/<%= album.getSlug() %>'<% if (album.getFeatureImage()) { %> data-asset="<%= album.getFeatureImage().getId() %>"<% } %>>
+            <div>
+                <h3><%= album.getName() %></h3>
+                <p class='description'><%= album.getDescription() %></p>
+                <p class='count'><span><%= album.getAssetCount().toLocaleString() %></span> asset<% if (album.getAssetCount() !== 1) { %>s<% } %></p>
+            </div>
+        </a>
+    </li>
 </script>
 
 <script type='text/template' id='b-assets-view-album-template'>

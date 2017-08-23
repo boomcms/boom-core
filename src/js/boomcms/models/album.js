@@ -50,16 +50,28 @@
         },
 
         initialize: function() {
-            var album = this;
+            var album = this,
+                destroyTimeout = null;
 
             this.assets = new BoomCMS.Collections.Assets();
             this.assets.setOrderBy('created_at', 'desc');
 
             this.setAssetsUrl();
 
+            this.assets.on('change:image', function(asset) {
+                if (asset.getId() === album.get('feature_image_id')) {
+                    album.trigger('change:thumbnail', album);
+                }
+            });
+
             this.assets.on('destroy remove', function() {
                 // Get the album details from the server again to update asset count and feature image ID
-                album.fetch();
+                if (!destroyTimeout) {
+                    destroyTimeout = setTimeout(function() {
+                        album.fetch();
+                        clearTimeout(destroyTimeout);
+                    }, 0);
+                }
             });
 
             this.on('change:id', function() {

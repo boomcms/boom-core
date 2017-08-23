@@ -121,6 +121,8 @@
                     : value1 < value2 ? -1
                     :  0;
             };
+
+            return this;
         },
 
         /**
