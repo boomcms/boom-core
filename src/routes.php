@@ -56,7 +56,12 @@ Route::group(['middleware' => [
             });
 
             Route::get('asset-picker', 'Asset\AssetPickerController@index');
-            Route::get('asset-manager', 'Asset\AssetManagerController@index');
+
+            Route::get('asset-manager{path}', 'Asset\AssetManagerController@index')
+                ->where([
+                    'path' => '(/.*)?',
+                ]);
+
             Route::resource('asset', 'Asset\AssetController');
             Route::post('asset/create-from-blob', 'Asset\AssetController@createFromBlob');
 

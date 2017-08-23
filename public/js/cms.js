@@ -47848,6 +47848,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                     assetManager.router.goToSearchResults(active);
                 })
+                .on('click', '#b-assets-all-albums a', function(e) {
+                    e.preventDefault();
+
+                    assetManager.router.goTo('albums/' + $(this).attr('data-slug'));
+                })
                 .on('click', '#selection-controls button', function() {
                     var action = $(this).attr('data-selection');
 
@@ -47978,7 +47983,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     assetManager.viewSearchResults(params);
                 });
 
-            Backbone.history.start();
+            Backbone.history.start({
+                pushState: true,
+                root: '/boomcms/asset-manager'
+            });
         },
 
         initialize: function(options) {
