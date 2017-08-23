@@ -48,27 +48,27 @@
         },
 
         _create: function() {
+            var uploaderOptions = $.extend({}, this.uploaderOptions);
+
             this.cancelButton = this.element.find('.cancel').eq(0);
             this.progressBar = this.element.find('.progress').eq(0);
             this.uploadForm = this.element;
             this.bind();
-        },
 
-        _init: function() {
-            if (this.options.asset !== undefined) {
-                this.uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
-                this.uploaderOptions.singleFileUploads = true;
+            if (this.options.asset) {
+                uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
+                uploaderOptions.singleFileUploads = true;
             }
 
-            this.uploaderOptions.dropZone = this.options.dropArea;
-            this.initUploader();
+            uploaderOptions.dropZone = this.options.dropArea;
+            this.initUploader(uploaderOptions);
         },
 
-        initUploader: function() {
+        initUploader: function(uploaderOptions) {
             var assetUploader = this;
 
             this.uploadForm
-                .fileupload(this.uploaderOptions)
+                .fileupload(uploaderOptions)
                 .fileupload('option', {
                     start: function(e, data) {
                         assetUploader.uploadStarted(e, data);

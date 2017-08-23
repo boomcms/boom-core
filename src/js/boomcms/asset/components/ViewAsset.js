@@ -33,12 +33,6 @@
                                 .save();
                         });
                 });
-
-            this.$('#b-asset-replace form')
-                .assetUploader({
-                    dropArea: this.$('#b-asset-replace'),
-                    asset: asset
-                });
         },
 
         initialize: function(options) {
@@ -79,13 +73,15 @@
         initUploader: function() {
             var asset = this.model;
 
-            this.$('.b-assets-upload').assetUploader({
-                asset: asset,
-                uploadFinished: function(e, data) {
-                    asset.set(data.result);
-                    asset.trigger('change:image');
-                }
-            });
+            this.$el.find('#b-asset-replace form')
+                .assetUploader({
+                    dropArea: this.$('#b-asset-replace'),
+                    asset: asset,
+                    uploadFinished: function(e, data) {
+                        asset.set(data.result);
+                        asset.trigger('change:image', asset);
+                    }
+                });
         },
 
         render: function() {

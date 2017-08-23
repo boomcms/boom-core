@@ -321,7 +321,7 @@
                     <div class="progress"></div>
                     <?= $button('times', 'cancel', ['class' => 'cancel']) ?>
 
-                    <input type="file" name="b-assets-upload-files[]" id="b-assets-replace-file">
+                    <input type="file" name="b-assets-upload-files-asset-<%= asset.getId() %>[]" id="b-assets-replace-file">
                 </form>
             </div>
 

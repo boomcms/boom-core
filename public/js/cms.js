@@ -49449,8 +49449,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 }).render();
             }
 
-            this.$('.b-assets-upload')
+            this.$('#b-assets-album-upload-' + album.getId())
                 .assetUploader({
+                    asset: undefined,
                     dropArea: this.$el,
                     uploadFinished: function(e, data) {
                         var assets = new BoomCMS.Collections.Assets(data.result.assets);
@@ -49516,12 +49517,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                                 .save();
                         });
                 });
-
-            this.$('#b-asset-replace form')
-                .assetUploader({
-                    dropArea: this.$('#b-asset-replace'),
-                    asset: asset
-                });
         },
 
         initialize: function(options) {
@@ -49562,13 +49557,15 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         initUploader: function() {
             var asset = this.model;
 
-            this.$('.b-assets-upload').assetUploader({
-                asset: asset,
-                uploadFinished: function(e, data) {
-                    asset.set(data.result);
-                    asset.trigger('change:image');
-                }
-            });
+            this.$el.find('#b-asset-replace form')
+                .assetUploader({
+                    dropArea: this.$('#b-asset-replace'),
+                    asset: asset,
+                    uploadFinished: function(e, data) {
+                        asset.set(data.result);
+                        asset.trigger('change:image', asset);
+                    }
+                });
         },
 
         render: function() {
@@ -49892,27 +49889,27 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         _create: function() {
+            var uploaderOptions = $.extend({}, this.uploaderOptions);
+
             this.cancelButton = this.element.find('.cancel').eq(0);
             this.progressBar = this.element.find('.progress').eq(0);
             this.uploadForm = this.element;
             this.bind();
-        },
 
-        _init: function() {
-            if (this.options.asset !== undefined) {
-                this.uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
-                this.uploaderOptions.singleFileUploads = true;
+            if (this.options.asset) {
+                uploaderOptions.url = BoomCMS.urlRoot + 'asset/' + this.options.asset.getId() + '/replace',
+                uploaderOptions.singleFileUploads = true;
             }
 
-            this.uploaderOptions.dropZone = this.options.dropArea;
-            this.initUploader();
+            uploaderOptions.dropZone = this.options.dropArea;
+            this.initUploader(uploaderOptions);
         },
 
-        initUploader: function() {
+        initUploader: function(uploaderOptions) {
             var assetUploader = this;
 
             this.uploadForm
-                .fileupload(this.uploaderOptions)
+                .fileupload(uploaderOptions)
                 .fileupload('option', {
                     start: function(e, data) {
                         assetUploader.uploadStarted(e, data);

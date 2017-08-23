@@ -76,8 +76,9 @@
                 }).render();
             }
 
-            this.$('.b-assets-upload')
+            this.$('#b-assets-album-upload-' + album.getId())
                 .assetUploader({
+                    asset: undefined,
                     dropArea: this.$el,
                     uploadFinished: function(e, data) {
                         var assets = new BoomCMS.Collections.Assets(data.result.assets);

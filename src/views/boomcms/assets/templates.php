@@ -74,34 +74,36 @@
         </div>
 
         <% if (!album.isNew()) { %>
-            <div class='controls'>
-                <?= view('boomcms::assets.search.sort') ?>
+            <form method="post" enctype="multipart/form-data" id="b-assets-album-upload-<%= album.getId() %>">
+                <div class='controls'>
+                    <?= view('boomcms::assets.search.sort') ?>
 
-                <label for="b-assets-album-upload-<%= album.getId() %>" tabindex='0'>
-                    <span class="fa fa-upload"></span>
-                </label>
+                    <label for="b-assets-album-upload-input-<%= album.getId() %>" tabindex='0'>
+                        <span class="fa fa-upload"></span>
+                    </label>
 
-                <?= $button('trash', 'delete', ['class' => 'delete small dark']) ?>
-            </div>
-
-            <?= view('boomcms::assets.thumbs') ?>
-
-            <div class="b-assets-upload">
-                <div class='errors'>
-                    <h2><?= trans('boomcms::asset.upload.errors') ?></h2>
-
-                    <ul></ul>
+                    <?= $button('trash', 'delete', ['class' => 'delete small dark']) ?>
                 </div>
 
-                <p class='failed'><?= trans('boomcms::asset.upload.failed') ?></p>
+                <?= view('boomcms::assets.thumbs') ?>
 
-                <div class='progress-cancel'>
-                    <div class="progress"></div>
-                    <?= $button('times', 'cancel', ['class' => 'cancel']) ?>
+                <div class="b-assets-upload">
+                    <div class='errors'>
+                        <h2><?= trans('boomcms::asset.upload.errors') ?></h2>
+
+                        <ul></ul>
+                    </div>
+
+                    <p class='failed'><?= trans('boomcms::asset.upload.failed') ?></p>
+
+                    <div class='progress-cancel'>
+                        <div class="progress"></div>
+                        <?= $button('times', 'cancel', ['class' => 'cancel']) ?>
+                    </div>
+
+                    <input type="file" name="b-assets-upload-files-album-<%= album.getId() %>[]" multiple id="b-assets-album-upload-input-<%= album.getId() %>">
                 </div>
-
-                <input type="file" name="b-assets-upload-files[]" multiple id="b-assets-album-upload-<%= album.getId() %>">
-            </div>
+            </form>
         <% } %>
     </div>
 </script>
