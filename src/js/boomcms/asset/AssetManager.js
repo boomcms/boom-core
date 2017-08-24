@@ -70,7 +70,7 @@
                 .on('click', '#b-assets-all-albums a', function(e) {
                     e.preventDefault();
 
-                    assetManager.router.goTo('albums/' + $(this).attr('data-slug'));
+                    assetManager.router.goTo($(this).attr('href').replace('#', ''));
                 })
                 .on('click', '#selection-controls button', function() {
                     var action = $(this).attr('data-selection');
