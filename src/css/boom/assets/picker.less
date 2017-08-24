@@ -46,6 +46,68 @@
         overflow: auto;
     }
 
+    #b-assets-picker-selected {
+        display: none;
+        padding: 0 0 3rem 0;
+
+        #b-assets-picker-use-selection {
+            .text-normal;
+            .asset-manager-button;
+            width: auto;
+            height: auto;
+            margin: 2rem 0;
+
+            .fa {
+                display: none;
+            }
+
+            .b-button-text {
+                display: inline;
+                text-indent: 0;
+            }
+        }
+
+        ul {
+            padding: 0 0 0 2rem;
+            max-height: 20rem;
+            overflow: auto;
+
+            li + li {
+                margin: 0.5rem 0 0 0;
+            }
+
+            a {
+                overflow: hidden;
+                color: @black;
+                position: relative;
+                display: inline-block;
+                padding: 0 2rem 0 0;
+                vertical-align: middle;
+                width: 100%;
+
+                &:hover, &:focus {
+                    color: @red;
+                    text-decoration: none;
+
+                    span {
+                        opacity: 1;
+                        color: @red;
+                        transition: opacity 0.3s;
+                    }
+                }
+
+                span {
+                    opacity: 0;
+                    color: @white;
+                    position: absolute;
+                    top: 50%;
+                    right: 0;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+
     .b-assets-view-thumbs {
         display: none;
 

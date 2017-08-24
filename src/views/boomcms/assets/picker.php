@@ -7,6 +7,14 @@
    
 
     <section id="b-assets-picker-sidebar">
+        <section id="b-assets-picker-selected">
+            <h1><?= trans('boomcms::asset.picker.selected') ?></h1>
+
+            <ul></ul>
+
+            <?= $button('check', 'assets-use', ['id' => 'b-assets-picker-use-selection']) ?>
+        </section>
+
         <section id="b-assets-picker-current">
             <h1><?= trans('boomcms::asset.picker.current') ?></h1>
             <img src="" />

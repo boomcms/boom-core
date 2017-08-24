@@ -7,7 +7,19 @@
         events: {
             'blur h1': 'save',
             'blur .description': 'save',
-            'click .delete': 'delete'
+            'click .delete': 'delete',
+            'click .add-assets': 'addAssets'
+        },
+
+        addAssets: function(e) {
+            e.preventDefault();
+
+            var album = this.model;
+
+            BoomCMS.AssetPicker(null, {}, true)
+                .done(function(assets) {
+                    album.addAssets(assets);
+                });
         },
 
         delete: function(e) {

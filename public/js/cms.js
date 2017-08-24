@@ -49385,7 +49385,19 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         events: {
             'blur h1': 'save',
             'blur .description': 'save',
-            'click .delete': 'delete'
+            'click .delete': 'delete',
+            'click .add-assets': 'addAssets'
+        },
+
+        addAssets: function(e) {
+            e.preventDefault();
+
+            var album = this.model;
+
+            BoomCMS.AssetPicker(null, {}, true)
+                .done(function(assets) {
+                    album.addAssets(assets);
+                });
         },
 
         delete: function(e) {
@@ -49597,7 +49609,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 ;(function(BoomCMS) {
     'use strict';
 
-    BoomCMS.AssetPicker = function(currentAsset, filters) {
+    BoomCMS.AssetPicker = function(currentAsset, filters, multiple) {
         this.currentAsset = typeof(currentAsset) === 'object' ? 
             currentAsset : new BoomCMS.Asset();
 
@@ -49607,6 +49619,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         this.filters = filters ? filters : {};
 
         this.url = BoomCMS.urlRoot + 'asset-picker';
+        this.multiple = (multiple === true);
+        this.selection = new BoomCMS.Collections.Assets();
 
         this.assetsUploaded = function(assets) {
             var assetPicker = this;
@@ -49615,13 +49629,17 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 this.activeAlbum.addAssets(assets);
             }
 
-            if (assets.length === 1) {
+            if (this.multiple === false && assets.length === 1) {
                 this.pick(assets.at(0));
             } else {
                 assetPicker.assets.reset();
 
                 assets.each(function(asset) {
                     assetPicker.assets.add(asset);
+
+                    if (assetPicker.multiple === true) {
+                        assetPicker.selection.add(asset);
+                    }
                 });
 
                 this.showAssets();
@@ -49629,14 +49647,34 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         };
 
         this.bind = function() {
-            var assetPicker = this;
+            var assetPicker = this,
+                selection = this.selection;
 
             this.assets
                 .on('select', function(asset) {
-                    assetPicker.pick(asset);
+                    var selection = assetPicker.selection;
+
+                    if (assetPicker.multiple === true) {
+                        if (!selection.get(asset.getId())) {
+                            selection.add(asset);
+                        }
+                    } else {
+                        assetPicker.pick(asset);
+                    }
+                })
+                .on('unselect', function(asset) {
+                    selection.remove(asset);
                 })
                 .on('view', function(asset) {
                     window.open('/boomcms/asset-manager#asset/' + asset.getId() + '/info');
+                });
+
+            this.selection
+                .on('add', function(asset) {
+                    assetPicker.select(asset);
+                })
+                .on('remove', function(asset) {
+                    assetPicker.unselect(asset);
                 });
 
             this.picker
@@ -49657,6 +49695,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .on('click', '#b-assets-picker-close', function() {
                     assetPicker.cancel();
                 })
+                .on('click', '#b-assets-picker-use-selection', function() {
+                    assetPicker.pick(assetPicker.assets);
+                })
                 .on('click', '#b-assets-picker-current-remove', function() {
                     assetPicker.pick(new BoomCMS.Asset());
                 })
@@ -49676,6 +49717,18 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     e.preventDefault();
 
                     assetPicker.viewAlbumsList();
+                })
+                .on('click', '#b-assets-picker-selected a', function(e) {
+                    e.preventDefault();
+
+                    var assetId = parseInt($(this).parent().attr('data-asset')),
+                        asset = assetPicker.assets.get(assetId);
+
+                    assetPicker.selection.remove(assetId);
+
+                    if (asset) {
+                        asset.trigger('unselect', asset);
+                    }
                 })
                 .find('.b-assets-upload')
                 .assetUploader({
@@ -49787,10 +49840,20 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.picker.attr('data-view', 'assets');
         },
 
+        this.select = function(asset) {
+            var $a = $('<a href="#"></a>').html(asset.getTitle() + '<span class="fa fa-times-circle"></span>'),
+                $li = $('<li>').html($a).attr('data-asset', asset.getId());
+
+            this.dialog.contents.find('#b-assets-picker-selected')
+                .show()
+                .find('ul')
+                .append($li);
+        };
+
         this.showAssets = function() {
             new BoomCMS.AssetManager.ThumbnailGrid({
                 assets: this.assets,
-                selection: new BoomCMS.Collections.Assets(),
+                selection: this.selection,
                 el: this.picker.find('.b-assets-view-thumbs'),
                 $container: this.dialog.contents.find('#b-assets-picker-content')
             }).render();
@@ -49817,6 +49880,14 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             });
 
             return this;
+        };
+
+        this.unselect = function(asset) {
+            this.dialog.contents.find('#b-assets-picker-selected li[data-asset="' + asset.getId() + '"]').remove();
+
+            if (this.selection.length === 0) {
+                this.dialog.contents.find('#b-assets-picker-selected').hide();
+            }
         };
 
         this.viewAlbumsList = function() {

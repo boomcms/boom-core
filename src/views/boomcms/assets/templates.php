@@ -77,6 +77,7 @@
             <form method="post" enctype="multipart/form-data" id="b-assets-album-upload-<%= album.getId() %>">
                 <div class='controls'>
                     <?= view('boomcms::assets.search.sort') ?>
+                    <?= $button('plus', 'album-add-assets', ['class' => 'add-assets small dark']) ?>
 
                     <label for="b-assets-album-upload-input-<%= album.getId() %>" tabindex='0'>
                         <span class="fa fa-upload"></span>

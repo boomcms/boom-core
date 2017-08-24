@@ -57,9 +57,10 @@ return [
         'confirm' => 'Are you sure you want to delete this asset?',
     ],
     'picker'          => [
-        'current' => 'Current Asset',
-        'upload'  => 'Upload Asset',
-        'filter'  => 'Filter Assets',
+        'current'  => 'Current Asset',
+        'filter'   => 'Filter Assets',
+        'upload'   => 'Upload Asset',
+        'selected' => 'Selected assets',
     ],
     'preview'         => [
         'heading' => 'Preview',
