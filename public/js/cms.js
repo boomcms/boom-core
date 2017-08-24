@@ -49383,7 +49383,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             'click .delete': 'delete'
         },
 
-        delete: function() {
+        delete: function(e) {
+            e.preventDefault();
+
             var album = this.model;
 
             BoomCMS.Confirmation('Please confirm', 'Are you sure you want to delete this album?')
