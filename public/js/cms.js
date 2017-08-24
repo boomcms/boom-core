@@ -48020,7 +48020,12 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 if (!album.isNew()) {
                     this.assets = album.getAssets();
                     this.bindAssetEvents(this.assets);
-                    this.assets.fetchOnce(success);
+
+                    if (album.getAssetCount() > 0) {
+                        this.assets.fetchOnce(success);
+                    } else if (typeof success === 'function') {
+                        success();
+                    }
                 }
             }
         },
