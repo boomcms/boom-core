@@ -48214,8 +48214,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         viewNavigation: function(active) {
             var position = this.assets.position(active),
                 assets = this.assets,
-                navStart = position > 5 ? position - 5 : 0,
-                navEnd = (position < assets.length - 6) ? position + 6 : assets.length,
+                navStart = position > 10 ? position - 10 : 0,
+                navEnd = (position < assets.length - 11) ? position + 11 : assets.length,
                 navigationAssets = new BoomCMS.Collections.Assets(assets.slice(navStart, navEnd));
 
             if (this.navigation === undefined) {
