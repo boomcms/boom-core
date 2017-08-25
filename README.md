@@ -17,18 +17,6 @@ This is the core code for BoomCMS which is designed to be integrated into a lara
 
 To create a new BoomCMS app follow the installation instructions in the [BoomCMS app](https://github.com/boomcms/boomcms).
 
-To integrate BoomCMS with an existing Laravel application add it to your composer.json file:
-
-```json
-    "boomcms/boom-core": ">=3.0"
-```
-
-Then add the service provider to the provider's section in your application's config/app.php file:
-
-```
-'BoomCMS\ServiceProviders\BoomCMSServiceProvider'
-```
-
 ---
 
 ## Development
