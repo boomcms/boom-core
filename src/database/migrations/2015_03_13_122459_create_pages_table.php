@@ -3,6 +3,7 @@
 use BoomCMS\Database\Models\Page;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
 class CreatePagesTable extends Migration
 {
@@ -34,7 +35,7 @@ class CreatePagesTable extends Migration
             $table->text('description', 65535)->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('created_time')->unsigned()->nullable();
-            $table->string('primary_uri', 2048)->nullable()->index('pages_primary_uri');
+            $table->string('primary_uri', 2048)->nullable()->index(DB::raw('pages_primary_uri(2048)'));
             $table->integer('feature_image_id')->unsigned()->nullable()->index('pages_feature_image_id');
             $table->index(['visible', 'visible_from', 'visible_to', 'visible_in_nav'], 'pages_sitelist');
             $table->index(['visible_in_nav_cms', 'visible_from'], 'pages_cmslist');
