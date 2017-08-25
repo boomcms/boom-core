@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests;
 
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Schema;
 use PDO;
 
 class MigrationsTest extends AbstractTestCase
