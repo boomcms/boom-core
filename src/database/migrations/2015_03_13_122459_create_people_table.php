@@ -14,7 +14,7 @@ class CreatePeopleTable extends Migration
     {
         Schema::create('people', function (Blueprint $table) {
             $table->integer('id', true, true);
-            $table->string('name')->nullable();
+            $table->string('name', 191)->nullable();
             $table->string('email', 191);
             $table->boolean('enabled')->default(1);
             $table->string('password', 60)->nullable();
