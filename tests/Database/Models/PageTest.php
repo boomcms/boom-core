@@ -17,7 +17,6 @@ use Mockery as m;
 
 class PageTest extends AbstractModelTestCase
 {
-    use Traits\HasCreatedByTests;
     use Traits\HasFeatureImageTests;
 
     protected $model = Page::class;

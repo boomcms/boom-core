@@ -11,7 +11,6 @@ use Mockery as m;
 
 class AlbumTest extends AbstractModelTestCase
 {
-    use Traits\HasCreatedByTests;
     use Traits\HasFeatureImageTests;
 
     /**
