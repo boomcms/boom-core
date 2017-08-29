@@ -18,6 +18,15 @@ class AssetTest extends AbstractModelTestCase
         $this->assertEquals(2, $asset->getAspectRatio());
     }
 
+    /**
+     * @depends testGetAspectRatio
+     */
+    public function testGetAspectRatioReturnsZeroIfNull()
+    {
+        $asset = $this->mockVersionedAttribute([]);
+        $this->assertEquals(0, $asset->getAspectRatio());
+    }
+
     public function testGetCreditsReturnsCreditsAttribute()
     {
         $asset = new Asset([Asset::ATTR_CREDITS => 'test']);

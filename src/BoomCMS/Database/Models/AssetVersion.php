@@ -41,7 +41,7 @@ class AssetVersion extends Model
 
     public function getAspectRatio(): float
     {
-        return $this->{self::ATTR_ASPECT_RATIO};
+        return $this->{self::ATTR_ASPECT_RATIO} ?? 0;
     }
 
     public function getAsset()
