@@ -88,7 +88,7 @@
                     assetPicker.cancel();
                 })
                 .on('click', '#b-assets-picker-use-selection', function() {
-                    assetPicker.pick(assetPicker.assets);
+                    assetPicker.pick(assetPicker.selection);
                 })
                 .on('click', '#b-assets-picker-current-remove', function() {
                     assetPicker.pick(new BoomCMS.Asset());
