@@ -20,7 +20,7 @@ class TitleOrDescriptionContains extends BaseFilter
             ->where(function (Builder $query) {
                 $query
                     ->where('title', 'like', "%{$this->text}%")
-                    ->where('description', 'like', "%{$this->text}%");
+                    ->orWhere('description', 'like', "%{$this->text}%");
             });
     }
 
