@@ -3,6 +3,7 @@
 namespace BoomCMS\Chunk;
 
 use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
+use Carbon\Carbon;
 use Closure;
 use DateTime;
 
@@ -78,6 +79,26 @@ class Timestamp extends BaseChunk
         return isset($this->attrs['format']) ? $this->attrs['format'] : static::$defaultFormat;
     }
 
+    /**
+     * @return string
+     */
+    public function getFormattedString(): string
+    {
+        return $this->getLocalised()->format($this->getFormat());
+    }
+
+    /**
+     * Timestamps are saved as UTC.
+     *
+     * Returns a Carbon object with timezone set to the configured local timezone
+     *
+     * @return Carbon
+     */
+    public function getLocalised(): Carbon
+    {
+        return Carbon::createFromTimestampUTC($this->getTimeStamp())->tz(config('app.timezone'));
+    }
+
     public function getTimestamp()
     {
         return isset($this->attrs['timestamp']) ? $this->attrs['timestamp'] : 0;
@@ -95,7 +116,7 @@ class Timestamp extends BaseChunk
     {
         $content = (is_callable($this->closure)) ?
             call_user_func($this->closure, $this)
-            : date($this->getFormat(), $this->getTimestamp());
+            : $this->getFormattedString();
 
         return $this->addContentToHtml($content);
     }

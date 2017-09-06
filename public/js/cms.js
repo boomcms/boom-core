@@ -32390,28 +32390,38 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
 ;(function (window) {
   'use strict'
 
-  var CanvasPrototype = window.HTMLCanvasElement &&
-                          window.HTMLCanvasElement.prototype
-  var hasBlobConstructor = window.Blob && (function () {
-    try {
-      return Boolean(new Blob())
-    } catch (e) {
-      return false
-    }
-  }())
-  var hasArrayBufferViewSupport = hasBlobConstructor && window.Uint8Array &&
+  var CanvasPrototype =
+    window.HTMLCanvasElement && window.HTMLCanvasElement.prototype
+  var hasBlobConstructor =
+    window.Blob &&
+    (function () {
+      try {
+        return Boolean(new Blob())
+      } catch (e) {
+        return false
+      }
+    })()
+  var hasArrayBufferViewSupport =
+    hasBlobConstructor &&
+    window.Uint8Array &&
     (function () {
       try {
         return new Blob([new Uint8Array(100)]).size === 100
       } catch (e) {
         return false
       }
-    }())
-  var BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
-                      window.MozBlobBuilder || window.MSBlobBuilder
+    })()
+  var BlobBuilder =
+    window.BlobBuilder ||
+    window.WebKitBlobBuilder ||
+    window.MozBlobBuilder ||
+    window.MSBlobBuilder
   var dataURIPattern = /^data:((.*?)(;charset=.*?)?)(;base64)?,/
-  var dataURLtoBlob = (hasBlobConstructor || BlobBuilder) && window.atob &&
-    window.ArrayBuffer && window.Uint8Array &&
+  var dataURLtoBlob =
+    (hasBlobConstructor || BlobBuilder) &&
+    window.atob &&
+    window.ArrayBuffer &&
+    window.Uint8Array &&
     function (dataURI) {
       var matches,
         mediaType,
@@ -32448,10 +32458,9 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
       }
       // Write the ArrayBuffer (or ArrayBufferView) to a blob:
       if (hasBlobConstructor) {
-        return new Blob(
-          [hasArrayBufferViewSupport ? intArray : arrayBuffer],
-          {type: mediaType}
-        )
+        return new Blob([hasArrayBufferViewSupport ? intArray : arrayBuffer], {
+          type: mediaType
+        })
       }
       bb = new BlobBuilder()
       bb.append(arrayBuffer)
@@ -32460,15 +32469,21 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
   if (window.HTMLCanvasElement && !CanvasPrototype.toBlob) {
     if (CanvasPrototype.mozGetAsFile) {
       CanvasPrototype.toBlob = function (callback, type, quality) {
-        if (quality && CanvasPrototype.toDataURL && dataURLtoBlob) {
-          callback(dataURLtoBlob(this.toDataURL(type, quality)))
-        } else {
-          callback(this.mozGetAsFile('blob', type))
-        }
+        var self = this
+        setTimeout(function () {
+          if (quality && CanvasPrototype.toDataURL && dataURLtoBlob) {
+            callback(dataURLtoBlob(self.toDataURL(type, quality)))
+          } else {
+            callback(self.mozGetAsFile('blob', type))
+          }
+        })
       }
     } else if (CanvasPrototype.toDataURL && dataURLtoBlob) {
       CanvasPrototype.toBlob = function (callback, type, quality) {
-        callback(dataURLtoBlob(this.toDataURL(type, quality)))
+        var self = this
+        setTimeout(function () {
+          callback(dataURLtoBlob(self.toDataURL(type, quality)))
+        })
       }
     }
   }
@@ -32481,7 +32496,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
   } else {
     window.dataURLtoBlob = dataURLtoBlob
   }
-}(window))
+})(window)
 ;/*
  * jQuery File Upload Plugin 5.42.3
  * https://github.com/blueimp/jQuery-File-Upload
@@ -43679,7 +43694,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         this.find('.boom-datepicker')
             .each(function() {
                 var $this = $(this),
-                    timestamp = $this.attr('data-timestamp');
+                    timestamp = parseInt($this.attr('data-timestamp'));
 
                 if (timestamp) {
                     $this.val(moment(timestamp, 'X').format('DD MMMM YYYY HH:mm'));
@@ -45774,6 +45789,8 @@ $.widget('ui.chunk',
     */
     {
 
+    attrPrefix: 'data-boom-',
+
     edited : false,
 
     bind: function() {
@@ -45799,6 +45816,10 @@ $.widget('ui.chunk',
 
     destroy: function() {
         this.bind();
+    },
+
+    getAttr: function(key) {
+        return this.element.attr(this.attrPrefix + key);
     },
 
     hasContent: function() {
@@ -46240,14 +46261,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     */
     {
 
-        format : '',
-
-        timestamp : '',
+        format: '',
+        timestamp: '',
 
         _create: function() {
-            this.format = this.element.attr('data-boom-format');
-            this.timestamp = this.element.attr('data-boom-timestamp');
-            this.formatIsEditable = (this.element.attr('data-boom-formatIsEditable') === '1');
+            this.format = this.getAttr('format');
+            this.timestamp = this.getAttr('timestamp');
+            this.formatIsEditable = (this.getAttr('formatIsEditable') === '1');
 
             $.ui.chunk.prototype._create.call(this);
         },
@@ -46266,25 +46286,20 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     } else {
                         self.dialog.contents.find('label:first-of-type').hide();
                     }
-
-                    var time = (data.timestamp)? new Date(data.timestamp * 1000) : new Date();
-
-                    $( '#timestamp' ).datepicker('setDate', time);
                 },
-                destroy: function(){
+                destroy: function() {
                     self.destroy();
                 }
             }).done(function() {
-                var    format = $('#format').val(),
+                var format = $('#format').val(),
                     stringDate = $('#timestamp').val(),
-                    dateyDate = new Date(stringDate),
-                    timestamp = (dateyDate.valueOf() / 1000) - (dateyDate.getTimezoneOffset() * 60);
+                    dateyDate = new Date(stringDate);
 
-                self.insert(format, timestamp);
+                self.insert(format, dateyDate.valueOf() / 1000);
             })
-        .always(function() {
-            self.bind();
-        });
+            .always(function() {
+                self.bind();
+            });
         },
 
         insert: function(format, timestamp) {
@@ -46297,7 +46312,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             return this._save();
         },
 
-        getData: function(){
+        getData: function() {
             return {
                 format : this.format,
                 timestamp: this.timestamp
