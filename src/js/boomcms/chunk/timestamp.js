@@ -12,14 +12,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     */
     {
 
-        format : '',
-
-        timestamp : '',
+        format: '',
+        timestamp: '',
 
         _create: function() {
-            this.format = this.element.attr('data-boom-format');
-            this.timestamp = this.element.attr('data-boom-timestamp');
-            this.formatIsEditable = (this.element.attr('data-boom-formatIsEditable') === '1');
+            this.format = this.getAttr('format');
+            this.timestamp = this.getAttr('timestamp');
+            this.formatIsEditable = (this.getAttr('formatIsEditable') === '1');
 
             $.ui.chunk.prototype._create.call(this);
         },
@@ -38,25 +37,20 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     } else {
                         self.dialog.contents.find('label:first-of-type').hide();
                     }
-
-                    var time = (data.timestamp)? new Date(data.timestamp * 1000) : new Date();
-
-                    $( '#timestamp' ).datepicker('setDate', time);
                 },
-                destroy: function(){
+                destroy: function() {
                     self.destroy();
                 }
             }).done(function() {
-                var    format = $('#format').val(),
+                var format = $('#format').val(),
                     stringDate = $('#timestamp').val(),
-                    dateyDate = new Date(stringDate),
-                    timestamp = (dateyDate.valueOf() / 1000) - (dateyDate.getTimezoneOffset() * 60);
+                    dateyDate = new Date(stringDate);
 
-                self.insert(format, timestamp);
+                self.insert(format, dateyDate.valueOf() / 1000);
             })
-        .always(function() {
-            self.bind();
-        });
+            .always(function() {
+                self.bind();
+            });
         },
 
         insert: function(format, timestamp) {
@@ -69,7 +63,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             return this._save();
         },
 
-        getData: function(){
+        getData: function() {
             return {
                 format : this.format,
                 timestamp: this.timestamp

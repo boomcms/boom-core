@@ -18,6 +18,8 @@ $.widget('ui.chunk',
     */
     {
 
+    attrPrefix: 'data-boom-',
+
     edited : false,
 
     bind: function() {
@@ -43,6 +45,10 @@ $.widget('ui.chunk',
 
     destroy: function() {
         this.bind();
+    },
+
+    getAttr: function(key) {
+        return this.element.attr(this.attrPrefix + key);
     },
 
     hasContent: function() {

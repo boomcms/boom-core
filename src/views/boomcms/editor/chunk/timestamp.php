@@ -1,3 +1,7 @@
+<?php
+    $localised = $chunk->getLocalised();
+?>
+
 <form>
     <p><?= trans('boomcms::editor.timestamp.intro') ?></p>
 
@@ -14,6 +18,6 @@
     <label>
         <?= trans('boomcms::editor.timestamp.value') ?>
 
-        <input id="timestamp" type="text" name="timestamp" class="boom-datepicker" value="<?= $chunk->getTimestamp() ? date('d F Y H:i', $chunk->getTimestamp()) : 'Select a date and time' ?>" />
+        <input id="timestamp" type="text" name="timestamp" class="boom-datepicker" <?php if ($chunk->hasContent()): ?>data-timestamp="<?= $localised->getTimestamp() ?>"<?php endif ?> value="<?= $chunk->hasContent() ? $localised->format('d F Y H:i') : 'Select a date and time' ?>" />
     </label>
 </form>
