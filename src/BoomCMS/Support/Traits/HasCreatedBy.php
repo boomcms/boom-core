@@ -27,6 +27,12 @@ trait HasCreatedBy
 
     public function wasCreatedBy(PersonInterface $person): bool
     {
-        return $this->getCreatedBy()->is($person);
+        $createdBy = $this->getCreatedBy();
+
+        if ($createdBy === null) {
+            return false;
+        }
+
+        return $createdBy->is($person);
     }
 }

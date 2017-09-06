@@ -62,7 +62,7 @@
             var thumbnail = new BoomCMS.AssetManager.Thumbnail({
                     model: asset
                 }).render(),
-                width = Math.floor(150 * asset.getAspectRatio());
+                width = Math.floor(98 * asset.getAspectRatio());
 
             thumbnail.$el
                 .attr('data-width', width)

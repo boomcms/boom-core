@@ -3,7 +3,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 21rem;
+    height: 12rem;
     z-index: 10;
     background: @lightest-grey;
     border-top: 1px solid @darkest-grey;
@@ -17,8 +17,8 @@
         position: absolute;
         width: max-content;
         left: 0;
-        top: 2rem;
-        bottom: 2rem;
+        top: 1rem;
+        bottom: 1rem;
 
         > div {
             position: relative;
@@ -27,29 +27,37 @@
             position: relative;
             height: 100%;
             overflow: hidden;
-            padding: 1rem;
-            border: 1px solid transparent;
+            padding: 0;
 
             > div {
                 position: relative;
-                height: 15rem;
+                height: calc(~"10rem - 2px");
                 overflow: hidden;
+                border: 1px solid transparent;
             }
 
-            &.active {
+            &.active > div {
                 border-color: @red;
             }
         }
     }
 
     .b-assets-thumbnail {
-        height: 15rem;
+        height: 100%;
         width: auto;
         display: inline-block;
 
         a, img {
             height: 100%;
             width: 100%;
+        }
+
+        h2 {
+            .text-small;
+        }
+
+        p {
+            display: none;
         }
     }
 }
