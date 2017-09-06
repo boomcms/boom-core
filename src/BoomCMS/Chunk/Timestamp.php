@@ -88,7 +88,7 @@ class Timestamp extends BaseChunk
     }
 
     /**
-     * Timestamps are saved as UTC
+     * Timestamps are saved as UTC.
      *
      * Returns a Carbon object with timezone set to the configured local timezone
      *
