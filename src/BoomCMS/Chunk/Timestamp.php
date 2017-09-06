@@ -74,9 +74,9 @@ class Timestamp extends BaseChunk
         return (new DateTime())->setTimestamp($this->getTimestamp());
     }
 
-    public function getFormat()
+    public function getFormat(): string
     {
-        return isset($this->attrs['format']) ? $this->attrs['format'] : static::$defaultFormat;
+        return $this->attrs['format'] ?? static::$defaultFormat;
     }
 
     /**
@@ -99,9 +99,13 @@ class Timestamp extends BaseChunk
         return Carbon::createFromTimestampUTC($this->getTimeStamp())->tz(config('app.timezone'));
     }
 
-    public function getTimestamp()
+    public function getTimestamp(): int
     {
-        return isset($this->attrs['timestamp']) ? $this->attrs['timestamp'] : 0;
+        if (isset($this->attrs['timestamp'])) {
+            return (int) isset($this->attrs['timestamp']);
+        }
+
+        return 0;
     }
 
     public function setFormat($format)
