@@ -37,7 +37,7 @@ class TitleOrDescriptionContainsTest extends AbstractTestCase
         $query
             ->shouldReceive('where')
             ->once()
-            ->with(m::on(function($closure) use($subQuery) {
+            ->with(m::on(function ($closure) use ($subQuery) {
                 $closure($subQuery);
 
                 return true;

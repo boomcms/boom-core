@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class AlbumAssetsController extends Controller
 {
     /**
-     * The request input key which holds the assets to add / remove to / from the album
+     * The request input key which holds the assets to add / remove to / from the album.
      *
      * @var string
      */
