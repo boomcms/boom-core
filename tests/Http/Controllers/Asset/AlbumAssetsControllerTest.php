@@ -38,6 +38,17 @@ class AlbumAssetsControllerTest extends BaseControllerTest
         $this->assertEquals($this->album, $this->controller->destroy($request, $this->album));
     }
 
+    public function testDestroyWithNoAssetsGiven()
+    {
+        $request = new Request();
+
+        $this->album
+            ->shouldReceive('removeAssets')
+            ->never();
+
+        $this->assertEquals($this->album, $this->controller->destroy($request, $this->album));        
+    }
+
     public function testStore()
     {
         $assetIds = [1, 2, 3];
@@ -50,5 +61,16 @@ class AlbumAssetsControllerTest extends BaseControllerTest
             ->andReturnSelf();
 
         $this->assertEquals($this->album, $this->controller->store($request, $this->album));
+    }
+
+    public function testStoreWithNoAssetsGiven()
+    {
+        $request = new Request();
+
+        $this->album
+            ->shouldReceive('addAssets')
+            ->never();
+
+        $this->assertEquals($this->album, $this->controller->destroy($request, $this->album));        
     }
 }

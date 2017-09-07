@@ -48289,6 +48289,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     'use strict';
 
     BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
+        albumsSelector: '#b-asset-albums',
         eventsBound: false,
         selected: 'selected',
         tagName: 'div',
@@ -48296,7 +48297,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         addAlbum: function(album) {
             album.addAssets(this.selection);
-
+console.log('1', album);
             this.relatedAlbums.add(album);
         },
 
@@ -48333,7 +48334,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                     view.createAlbumAndAddSelection();
                 })
-                .on('click', '#b-asset-albums [data-album] a', function(e) {
+                .on('click', this.albumsSelector + ' [data-album] a', function(e) {
                     e.preventDefault();
 
                     var albumId = $(this).parent().attr('data-album'),
@@ -48376,13 +48377,23 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     name: name
                 }, {
                     success: function(album) {
-                        view.viewAlbums();
+                        setTimeout(function() {
+                            var $el = view.$(view.albumsSelector + ' [data-album="' + album.getId() + '"]');
 
-                        $('html,body').animate({
-                            scrollTop: view.$('#b-asset-albums [data-album="' + album.getId() + '"]').offset().top - $('#b-topbar').height()
-                        }, 1000, function() {
+                            if ($el.length > 0) {
+                                // Try not add add the assets to the album until we scroll to the album element
+                                // This way the animation of the album become active acts as confirmation that the task completed
+                                return $('html,body').animate({
+                                    scrollTop: $el.offset().top - $('#b-topbar').height()
+                                }, 1000, function() {
+                                    view.addAlbum(album);
+                                });
+                            }
+
+                            // Something went wrong and the element doesn't exist.
+                            // Ensure that the assets are added to the album anyway.
                             view.addAlbum(album);
-                        });
+                        }, 1000);
                     }
                 });
             });
@@ -48458,14 +48469,21 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this[method](album);
         },
 
-        viewAlbums: function() {
-            var view = new BoomCMS.AssetManager.AlbumList({
-                albums: this.albums,
-                selected: this.relatedAlbums,
-                $container: $(this.$el[0].ownerDocument)
-            }).render();
+        viewAlbums: function(callback) {
+            var view = this;
 
-            this.$('#b-asset-albums > div').html(view.el);
+            if (typeof this.albumList === 'undefined') {
+                this.albumList = new BoomCMS.AssetManager.AlbumList({
+                    albums: this.albums,
+                    selected: this.relatedAlbums,
+                    $container: $(this.$el[0].ownerDocument)
+                });
+            }
+
+//            deferred.done(function() {
+                this.albumList.render();
+                view.$(view.albumsSelector + ' > div').html(this.albumList.el);
+//            });
         },
 
         viewSection: function(section) {
@@ -48610,6 +48628,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         selectAlbum: function(album) {
+            console.log(this.getAlbumElement(album), album);
             this.getAlbumElement(album).addClass(this.selectedClass);
         },
 
