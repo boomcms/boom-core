@@ -85,6 +85,17 @@ This file will be merged with the main `composer.json` file when `composer updat
 This allows website administrators to define themes
 while still being able to keep a [BoomCMS application](https://www.github.com/boomcms/boomcms) up to date with upstream changes to the composer.json file.
 
+For installation via composer a theme's `composer.json` file must include the following:
+
+```
+{
+    "name": "vendor/name"
+    "type": "boomcms-theme"
+}
+```
+
+Setting the package type to boomcms-theme ensures that the package is installed to the `storage/boomcms/themes` directory.
+
 ## init.php
 
 Themes may contain an `init.php` file which will be included by the Theme Service Provider.
