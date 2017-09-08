@@ -105,7 +105,6 @@ class Theme
 
     /**
      * Includes the theme's init file, if it exists.
-     *
      */
     public function init()
     {
