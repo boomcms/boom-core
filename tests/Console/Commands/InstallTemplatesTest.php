@@ -3,7 +3,7 @@
 namespace BoomCMS\Tests\Console\Commands;
 
 use BoomCMS\Console\Commands\InstallTemplates;
-use BoomCMS\Core\Template\Manager;
+use BoomCMS\Theme\ThemeManager;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Cache\Repository as Cache;
@@ -25,7 +25,7 @@ class InstallTemplatesTest extends AbstractTestCase
         $filesystem = m::mock(Filesystem::class);
         $cache = m::mock(Cache::class)->makePartial();
 
-        $this->manager = m::mock(Manager::class, [$filesystem, $repository, $cache]);
+        $this->manager = m::mock(ThemeManager::class, [$filesystem, $repository, $cache]);
     }
 
     public function testTemplatesAreInstalledFeedback()

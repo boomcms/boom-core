@@ -1,14 +1,13 @@
 <?php
 
-namespace BoomCMS\Core\Template;
+namespace BoomCMS\Theme;
 
 use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Support\Str;
-use BoomCMS\Theme\Theme;
 use Illuminate\Cache\Repository as Cache;
 use Illuminate\Filesystem\Filesystem;
 
-class Manager
+class ThemeManager
 {
     /**
      * @var Cache
@@ -48,7 +47,7 @@ class Manager
         ]);
     }
 
-    public function findAndInstallNewTemplates()
+    public function findAndInstallNewTemplates(): array
     {
         $installed = [];
 
@@ -64,12 +63,7 @@ class Manager
         return $installed;
     }
 
-    /**
-     * @param Theme $theme
-     *
-     * @return array
-     */
-    public function findAvailableTemplates(Theme $theme)
+    public function findAvailableTemplates(Theme $theme): array
     {
         $files = $this->filesystem->files($theme->getTemplateDirectory());
         $templates = [];
@@ -87,10 +81,8 @@ class Manager
 
     /**
      * Create a cache of the themes which are available on the filesystem.
-     *
-     * @return array
      */
-    public function findAndInstallThemes()
+    public function findAndInstallThemes(): array
     {
         $theme = new Theme();
         $directories = $this->filesystem->directories($theme->getThemesDirectory());
@@ -109,13 +101,11 @@ class Manager
     }
 
     /**
-     * Retrives the installed themes from the cache.
+     * Retrieves the installed themes from the cache.
      *
-     * If the cahce entry doesn't exist then it is created.
-     *
-     * @return array
+     * If the cache entry doesn't exist then it is created.
      */
-    public function getInstalledThemes()
+    public function getInstalledThemes(): array
     {
         $installed = $this->cache->get($this->cacheKey);
 
@@ -126,7 +116,7 @@ class Manager
         return $this->findAndInstallThemes();
     }
 
-    public function templateIsInstalled($theme, $filename)
+    public function templateIsInstalled($theme, $filename): bool
     {
         $template = $this->repository->findByThemeAndFilename($theme, $filename);
 

@@ -1,8 +1,10 @@
 <?php
 
-namespace BoomCMS\Tests;
+namespace BoomCMS\Tests\Theme;
 
+use BoomCMS\Tests\AbstractTestCase;
 use BoomCMS\Theme\Theme;
+use Illuminate\Support\Facades\File;
 
 class ThemeTest extends AbstractTestCase
 {
@@ -47,5 +49,41 @@ class ThemeTest extends AbstractTestCase
     {
         $theme = new Theme('test');
         $this->assertEquals(storage_path().'/boomcms/themes/test/public', $theme->getPublicDirectory());
+    }
+
+    public function testInitFileIsRequiredIfItExists()
+    {
+        $filename = storage_path('boomcms/themes/test/init.php');
+
+        File::shouldReceive('exists')
+            ->once()
+            ->with($filename)
+            ->andReturn(true);
+
+        File::shouldReceive('requireOnce')
+            ->once()
+            ->with($filename);
+
+        $theme = new Theme('test');
+
+        $theme->init();
+    }
+
+    public function testInitFileIsNotRequiredIfItDoesntExist()
+    {
+        $filename = storage_path('boomcms/themes/test/init.php');
+
+        File::shouldReceive('exists')
+            ->once()
+            ->with($filename)
+            ->andReturn(false);
+
+        File::shouldReceive('requireOnce')
+            ->never()
+            ->with($filename);
+
+        $theme = new Theme('test');
+
+        $theme->init();
     }
 }
