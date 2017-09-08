@@ -4,43 +4,6 @@ namespace BoomCMS\Theme;
 
 use Illuminate\Support\Facades\File;
 
-/**
- * This class represents an installed theme within the application.
- *
- * In practice a theme is simply a sub-directory within the storage/boomcms/themes directory
- * The storage directory is used to permit the future development of a theme store with interface to install themes
- *
- * BoomCMS is therefore agnostic to how a theme is installed
- * While themes will most commonly be installed via composer (e.g. defined in the storage/boomcms/addons.json file)
- * They could also be installed by extracting a .zip into the storage/boomcms/themes directory, or copying the directory into place
- *
- *
- * The themes directory may look something like this:
- *
- * - storage/boomcms/themes/
- *   - theme1/
- *     - migrations/
- *     - public/
- *     - src/
- *       - config/
- *         - boomcms.php
- *       - views/
- *         - boomcms/
- *         - chunks/
- *         - templates/
- *           - template1.php
- *           - template2.php
- *     - init.php
- *
- * No directories are required, although a theme which defines no templates may be a little unhelpful
- *
- * By following a common directory structure themes do not need their own service provider
- * to include views or publish public files / migrations.
- *
- * A theme object is created for every directory within the storage/boomcms/themes directory by the ThemeManager
- *
- * @see https://github.com/boomcms/boom-core/blob/master/src/BoomCMS/Theme/ThemeManager.php#L93
- */
 class Theme
 {
     /**
@@ -143,9 +106,6 @@ class Theme
     /**
      * Includes the theme's init file, if it exists.
      *
-     * This allows the theme to define code which is executed on each request.
-     *
-     * E.g. defining routes, event listeners, or functions which are used in the theme's templates
      */
     public function init()
     {

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Foundation\Console;
 
-use BoomCMS\Console\Commands;
+use BoomCMS\Theme\Commands;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Console\Commands;
 
-use BoomCMS\Console\Commands\InstallTemplates;
+use BoomCMS\Theme\Commands\InstallTemplates;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Tests\AbstractTestCase;
 use BoomCMS\Theme\ThemeManager;

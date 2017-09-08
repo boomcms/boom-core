@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Console\Commands;
+namespace BoomCMS\Theme\Commands;
 
 use BoomCMS\Theme\ThemeManager;
 use Illuminate\Console\Command;

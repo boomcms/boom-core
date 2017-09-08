@@ -1,14 +1,12 @@
 <?php
 
-namespace BoomCMS\ServiceProviders;
+namespace BoomCMS\Theme;
 
 use BoomCMS\Repositories\Template;
 use BoomCMS\Support\Helpers\Config;
-use BoomCMS\Theme\Theme;
-use BoomCMS\Theme\ThemeManager;
 use Illuminate\Support\ServiceProvider;
 
-class TemplateServiceProvider extends ServiceProvider
+class ThemeServiceProvider extends ServiceProvider
 {
     protected $themes = [];
 
@@ -39,17 +37,6 @@ class TemplateServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the theme's views directory to load views from.
-     *
-     * The main views directory is registered with the theme name as the namespace
-     * This ensures that multiple themes can define views with the same filename
-     *
-     * Views in the views/boomcms are registered to the boomcms namespace
-     * This allows themes to override boomcms views (e.g. to replace with BoomCMS login page with a branded login page)
-     *
-     * Views in the views/chunks directory are registered to the boomcms.chunks namespace
-     * This namespace is checked by the chunk provider for chunk views.
-     *
      * @see https://laravel.com/docs/5.4/packages#views
      *
      * @param Theme $theme
