@@ -11,7 +11,7 @@ use Illuminate\Cache\Repository as Cache;
 use Illuminate\Filesystem\Filesystem;
 use Mockery as m;
 
-class TemplateManagerTest extends AbstractTestCase
+class ThemeManagerTest extends AbstractTestCase
 {
     /**
      * @var Cache

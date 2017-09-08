@@ -2,10 +2,10 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Theme\Theme;
-use BoomCMS\Theme\ThemeManager;
 use BoomCMS\Repositories\Template;
 use BoomCMS\Support\Helpers\Config;
+use BoomCMS\Theme\Theme;
+use BoomCMS\Theme\ThemeManager;
 use Illuminate\Support\ServiceProvider;
 
 class TemplateServiceProvider extends ServiceProvider
@@ -39,7 +39,7 @@ class TemplateServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the theme's views directory to load views from
+     * Register the theme's views directory to load views from.
      *
      * The main views directory is registered with the theme name as the namespace
      * This ensures that multiple themes can define views with the same filename
@@ -55,7 +55,7 @@ class TemplateServiceProvider extends ServiceProvider
      * @param Theme $theme
      */
     protected function loadViewsFromTheme(Theme $theme)
-    {        
+    {
         $views = $theme->getViewDirectory();
 
         $this->loadViewsFrom($views, $theme->getName());

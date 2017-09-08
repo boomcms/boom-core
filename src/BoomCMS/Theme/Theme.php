@@ -5,7 +5,7 @@ namespace BoomCMS\Theme;
 use Illuminate\Support\Facades\File;
 
 /**
- * This class represents an installed theme within the application
+ * This class represents an installed theme within the application.
  *
  * In practice a theme is simply a sub-directory within the storage/boomcms/themes directory
  * The storage directory is used to permit the future development of a theme store with interface to install themes
@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\File;
  *
  * By following a common directory structure themes do not need their own service provider
  * to include views or publish public files / migrations.
- * 
+ *
  * A theme object is created for every directory within the storage/boomcms/themes directory by the ThemeManager
  *
  * @see https://github.com/boomcms/boom-core/blob/master/src/BoomCMS/Theme/ThemeManager.php#L93
@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\File;
 class Theme
 {
     /**
-     * The name of the init file
+     * The name of the init file.
      *
      * @see init()
      *
@@ -71,7 +71,7 @@ class Theme
     }
 
     /**
-     * Returns the root directory for this theme within the themes directory
+     * Returns the root directory for this theme within the themes directory.
      */
     public function getDirectory(): string
     {
@@ -79,19 +79,18 @@ class Theme
     }
 
     /**
-     * The directory containing database migrations for the theme
+     * The directory containing database migrations for the theme.
      *
      * These will be published to the applications migrations/boomcms directory
      * Allowing all theme defined migrations to be applied via `php artisan migrate --path=migrations/boomcms`
-     * 
      */
     public function getMigrationsDirectory(): string
     {
-        return $this->getDirectory().DIRECTORY_SEPARATOR.'migrations';   
+        return $this->getDirectory().DIRECTORY_SEPARATOR.'migrations';
     }
 
     /**
-     * The directory containing the theme's public files
+     * The directory containing the theme's public files.
      *
      * These will be published to the application's main public directory in order to make them accessible to the webserver
      *
@@ -118,7 +117,6 @@ class Theme
      * Returns the path of the directory containing all the BoomCMS themes.
      *
      * This is usually the boomcms/themes directory within the application's storage directory
-     *
      */
     public function getThemesDirectory(): string
     {
@@ -131,12 +129,11 @@ class Theme
     }
 
     /**
-     * Returns the name of the theme
+     * Returns the name of the theme.
      *
      * The theme's name is used to namespace views etc. to isolate themes from one another
      *
      * The name is taken from name of the directory containing the theme within the themes directory
-     *
      */
     public function getName(): string
     {
@@ -144,10 +141,10 @@ class Theme
     }
 
     /**
-     * Includes the theme's init file, if it exists
+     * Includes the theme's init file, if it exists.
      *
      * This allows the theme to define code which is executed on each request.
-     * 
+     *
      * E.g. defining routes, event listeners, or functions which are used in the theme's templates
      */
     public function init()
