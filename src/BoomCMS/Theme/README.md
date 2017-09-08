@@ -85,6 +85,7 @@ This file will be merged with the main `composer.json` file when `composer updat
 This allows website administrators to define themes
 while still being able to keep a [BoomCMS application](https://www.github.com/boomcms/boomcms) up to date with upstream changes to the composer.json file.
 
+### composer.json
 For installation via composer a theme's `composer.json` file must include the following:
 
 ```
@@ -94,7 +95,8 @@ For installation via composer a theme's `composer.json` file must include the fo
 }
 ```
 
-Setting the package type to boomcms-theme ensures that the package is installed to the `storage/boomcms/themes` directory.
+Setting the package type to `boomcms-theme` ensures that the package is installed to the `storage/boomcms/themes` directory,
+therefore allowing the contents of the `src/views/templates` directory to be searched for templates.
 
 ## init.php
 
