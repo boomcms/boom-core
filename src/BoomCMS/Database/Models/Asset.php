@@ -75,66 +75,42 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         return $this->belongsToMany(Album::class);
     }
 
-    /**
-     * @return float
-     */
-    public function getAspectRatio()
+    public function getAspectRatio(): float
     {
-        return $this->getLatestVersion()->getAspectRatio();
+        return (float) $this->getLatestVersion()->getAspectRatio();
     }
 
-    /**
-     * @return string
-     */
-    public function getCredits()
+    public function getCredits(): string
     {
-        return $this->{self::ATTR_CREDITS};
+        return (string) $this->{self::ATTR_CREDITS};
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
-        return $this->{self::ATTR_DESCRIPTION};
+        return (string) $this->{self::ATTR_DESCRIPTION};
     }
 
-    /**
-     * @return int
-     */
-    public function getDownloads()
+    public function getDownloads(): int
     {
         return (int) $this->{self::ATTR_DOWNLOADS};
     }
 
-    /**
-     * @return string
-     */
-    public function getExtension()
+    public function getExtension(): string
     {
-        return $this->getLatestVersion()->getExtension();
+        return (string) $this->getLatestVersion()->getExtension();
     }
 
-    /**
-     * @return int
-     */
-    public function getFilesize()
+    public function getFilesize(): int
     {
-        return $this->getLatestVersion()->getFilesize();
+        return (int) $this->getLatestVersion()->getFilesize();
     }
 
-    /**
-     * @return int
-     */
-    public function getHeight()
+    public function getHeight(): int
     {
         return (int) $this->getLatestVersion()->getHeight();
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getLastModified()
+    public function getLastModified(): DateTime
     {
         return $this->getLatestVersion()->getEditedAt();
     }
@@ -163,12 +139,9 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         return $this->getLatestVersion()->getMetadata();
     }
 
-    /**
-     * @return string
-     */
-    public function getMimetype()
+    public function getMimetype(): string
     {
-        return $this->getLatestVersion()->getMimetype();
+        return (string) $this->getLatestVersion()->getMimetype();
     }
 
     /**
@@ -191,9 +164,6 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         return Str::filesize($this->getFilesize());
     }
 
-    /**
-     * @return int
-     */
     public function getThumbnailAssetId(): int
     {
         return (int) $this->{self::ATTR_THUMBNAIL_ID};
@@ -204,17 +174,11 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         return $this->belongsTo(static::class, 'thumbnail_asset_id', 'id')->first();
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->{self::ATTR_TITLE};
     }
 
-    /**
-     * @return int
-     */
     public function getType()
     {
         return $this->{self::ATTR_TYPE};
@@ -232,56 +196,42 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         return $this->uploadedBy;
     }
 
-    public function getUploadedTime()
+    public function getUploadedTime(): DateTime
     {
         return (new DateTime())->setTimestamp($this->{self::ATTR_UPLOADED_AT});
     }
 
-    /**
-     * @return int
-     */
-    public function getWidth()
+    public function getWidth(): int
     {
         return (int) $this->getLatestVersion()->getWidth();
     }
 
-    public function hasThumbnail()
+    public function hasThumbnail(): bool
     {
         return $this->getThumbnailAssetId() > 0;
     }
 
-    /**
-     * @return $this
-     */
-    public function incrementDownloads()
+    public function incrementDownloads(): Asset
     {
         $this->increment(self::ATTR_DOWNLOADS);
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isImage()
+    public function isImage(): bool
     {
         return $this->getType() === 'image';
     }
 
     /**
      * Whether the asset is public (visible to users who aren't logged in to the CMS).
-     *
-     * @return bool
      */
     public function isPublic(): bool
     {
         return $this->{self::ATTR_PUBLIC} === true;
     }
 
-    /**
-     * @return bool
-     */
-    public function isVideo()
+    public function isVideo(): bool
     {
         return $this->getType() === 'video';
     }
@@ -303,7 +253,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      *
      * @return $this
      */
-    public function setCredits($credits)
+    public function setCredits($credits): Asset
     {
         $this->{self::ATTR_CREDITS} = $credits;
 
@@ -315,7 +265,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      *
      * @return $this
      */
-    public function setDescription($description)
+    public function setDescription($description): Asset
     {
         $this->{self::ATTR_DESCRIPTION} = $description;
 

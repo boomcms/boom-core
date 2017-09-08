@@ -37,9 +37,9 @@ class AssetTest extends AbstractTestCase
         $namespace = 'BoomCMS\Http\Controllers\ViewAsset\\';
 
         $asset = $this->createMock(Asset::class, ['getExtension']);
-        $asset->expects($this->any())->method('getExtension')->will($this->returnValue(null));
+        $asset->expects($this->any())->method('getExtension')->will($this->returnValue(''));
 
-        $this->assertEquals(null, AssetHelper::controller($asset));
+        $this->assertEquals('', AssetHelper::controller($asset));
 
         $pdf = $this->createMock(Asset::class, ['getExtension']);
         $pdf->expects($this->any())->method('getExtension')->will($this->returnValue('pdf'));
