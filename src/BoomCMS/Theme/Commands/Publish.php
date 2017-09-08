@@ -1,8 +1,8 @@
 <?php
 
-namespace BoomCMS\Console\Commands;
+namespace BoomCMS\Theme\Commands;
 
-use BoomCMS\Core\Template\Manager as TemplateManager;
+use BoomCMS\Theme\ThemeManager;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Console\VendorPublishCommand;
 
@@ -30,11 +30,11 @@ class Publish extends VendorPublishCommand
     protected $signature = 'boomcms:publish {--force : Overwrite any existing files.}';
 
     /**
-     * @var Manager
+     * @var ThemeManager
      */
     protected $manager;
 
-    public function __construct(Filesystem $files, TemplateManager $manager)
+    public function __construct(Filesystem $files, ThemeManager $manager)
     {
         parent::__construct($files);
 
@@ -42,7 +42,13 @@ class Publish extends VendorPublishCommand
     }
 
     /**
-     * Execute the console command.
+     * Publishes migrations and public files for all themes to their respective directories.
+     *
+     * The /public directory within all themes is copied to the application's public directory
+     * to make them accessible to the webserver
+     *
+     * The migrations directory for all themes is copied to a shared migrations/boomcms directory
+     * from where they can be run together
      *
      * @return mixed
      */
@@ -52,9 +58,8 @@ class Publish extends VendorPublishCommand
 
         foreach ($themes as $theme) {
             $directories = [
-                $theme->getViewDirectory().DIRECTORY_SEPARATOR.'auth' => base_path('resources/views/auth'),
-                $theme->getPublicDirectory()                          => public_path('vendor/boomcms/themes/'.$theme->getName()),
-                $theme->getDirectory().'/migrations/'                 => base_path('/migrations/boomcms'),
+                $theme->getPublicDirectory()     => public_path('vendor/boomcms/themes/'.$theme->getName()),
+                $theme->getMigrationsDirectory() => base_path('migrations/boomcms'),
             ];
 
             foreach ($directories as $from => $to) {

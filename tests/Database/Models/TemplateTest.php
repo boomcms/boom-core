@@ -92,7 +92,7 @@ class TemplateTest extends AbstractModelTestCase
 
     public function testGetViewReturnsDefaultViewWithNoView()
     {
-        $template = new Template();
+        $template = new Template(['theme' => 'test']);
 
         View::shouldReceive('exists')->with(\Mockery::any())->andReturn(false);
         View::shouldReceive('make')->with('boomcms::templates.default');

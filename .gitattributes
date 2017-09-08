@@ -12,3 +12,4 @@ package.json export-ignore
 phpunit.xml export-ignore
 composer.lock export-ignore
 .gitignore export-ignore
+*README.md export-ignore

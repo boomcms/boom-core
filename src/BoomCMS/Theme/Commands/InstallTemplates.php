@@ -1,8 +1,8 @@
 <?php
 
-namespace BoomCMS\Console\Commands;
+namespace BoomCMS\Theme\Commands;
 
-use BoomCMS\Core\Template\Manager as TemplateManager;
+use BoomCMS\Theme\ThemeManager;
 use Illuminate\Console\Command;
 use PDOException;
 
@@ -27,7 +27,7 @@ class InstallTemplates extends Command
      *
      * @return mixed
      */
-    public function fire(TemplateManager $manager)
+    public function fire(ThemeManager $manager)
     {
         try {
             $installed = $manager->findAndInstallNewTemplates();

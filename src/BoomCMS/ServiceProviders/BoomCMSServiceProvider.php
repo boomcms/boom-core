@@ -8,6 +8,7 @@ use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
 use BoomCMS\Support\Helpers\Asset;
 use BoomCMS\Support\Str;
+use BoomCMS\Theme\ThemeServiceProvider;
 use Collective\Html\HtmlServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
@@ -34,7 +35,7 @@ class BoomCMSServiceProvider extends ServiceProvider
     ];
 
     protected $serviceProviders = [
-        ServiceProviders\TemplateServiceProvider::class,
+        ThemeServiceProvider::class,
         ServiceProviders\RouteServiceProvider::class,
         ServiceProviders\RepositoryServiceProvider::class,
         ServiceProviders\AuthServiceProvider::class,

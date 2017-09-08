@@ -1,16 +1,17 @@
 <?php
 
-namespace BoomCMS\Tests;
+namespace BoomCMS\Tests\Theme;
 
-use BoomCMS\Core\Template\Manager;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Repositories\Template as TemplateRepository;
+use BoomCMS\Tests\AbstractTestCase;
 use BoomCMS\Theme\Theme;
+use BoomCMS\Theme\ThemeManager;
 use Illuminate\Cache\Repository as Cache;
 use Illuminate\Filesystem\Filesystem;
 use Mockery as m;
 
-class TemplateManagerTest extends AbstractTestCase
+class ThemeManagerTest extends AbstractTestCase
 {
     /**
      * @var Cache
@@ -46,7 +47,7 @@ class TemplateManagerTest extends AbstractTestCase
             'filename' => $filename,
         ]);
 
-        $manager = new Manager($this->getFilesystem(), $repository, $this->cache);
+        $manager = new ThemeManager($this->getFilesystem(), $repository, $this->cache);
         $manager->createTemplateWithFilename($theme, $filename);
     }
 
@@ -66,7 +67,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->with($this->equalTo(storage_path().'/boomcms/themes'))
             ->will($this->returnValue($themes));
 
-        $manager = new Manager($filesystem, $this->getTemplateRepository(), $this->cache);
+        $manager = new ThemeManager($filesystem, $this->getTemplateRepository(), $this->cache);
         $this->assertEquals([new Theme($themes[0]), new Theme($themes[1])], $manager->findAndInstallThemes());
     }
 
@@ -86,7 +87,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->once()
             ->with('installedThemes', null);
 
-        $manager = new Manager($filesystem, $this->getTemplateRepository(), $this->cache);
+        $manager = new ThemeManager($filesystem, $this->getTemplateRepository(), $this->cache);
         $this->assertEquals($themes, $manager->findAndInstallThemes());
     }
 
@@ -101,7 +102,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->with($this->equalTo(storage_path().'/boomcms/themes/test1/src/views/templates'))
             ->will($this->returnValue(['test1.php', 'test2.php']));
 
-        $manager = new Manager($filesystem, $this->getTemplateRepository(), $this->cache);
+        $manager = new ThemeManager($filesystem, $this->getTemplateRepository(), $this->cache);
         $this->assertEquals($templates, $manager->findAvailableTemplates(new Theme('test1')));
     }
 
@@ -114,7 +115,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->with($this->equalTo(storage_path().'/boomcms/themes/test1/src/views/templates'))
             ->will($this->returnValue(['test1.png', 'test2.php', 'test3']));
 
-        $manager = new Manager($filesystem, $this->getTemplateRepository(), $this->cache);
+        $manager = new ThemeManager($filesystem, $this->getTemplateRepository(), $this->cache);
         $this->assertEquals(['test2'], $manager->findAvailableTemplates(new Theme('test1')));
     }
 
@@ -127,7 +128,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->with($this->equalTo(storage_path().'/boomcms/themes/test1/src/views/templates'))
             ->will($this->returnValue(null));
 
-        $manager = new Manager($filesystem, $this->getTemplateRepository(), $this->cache);
+        $manager = new ThemeManager($filesystem, $this->getTemplateRepository(), $this->cache);
         $this->assertEquals([], $manager->findAvailableTemplates(new Theme('test1')));
     }
 
@@ -142,7 +143,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->with($theme, $filename)
             ->andReturn($template);
 
-        $manager = new Manager($this->getFilesystem(), $provider, $this->cache);
+        $manager = new ThemeManager($this->getFilesystem(), $provider, $this->cache);
         $this->assertTrue($manager->templateIsInstalled($theme, $filename));
     }
 
@@ -156,7 +157,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->with($theme, $filename)
             ->andReturn(null);
 
-        $manager = new Manager($this->getFilesystem(), $provider, $this->cache);
+        $manager = new ThemeManager($this->getFilesystem(), $provider, $this->cache);
         $this->assertFalse($manager->templateIsInstalled($theme, $filename));
     }
 
@@ -170,7 +171,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->with('installedThemes')
             ->andReturn($themes);
 
-        $manager = m::mock(Manager::class, [
+        $manager = m::mock(ThemeManager::class, [
             $this->getFilesystem(),
             $this->getTemplateRepository(),
             $this->cache,
@@ -193,7 +194,7 @@ class TemplateManagerTest extends AbstractTestCase
             ->with('installedThemes')
             ->andReturn(null);
 
-        $manager = m::mock(Manager::class, [
+        $manager = m::mock(ThemeManager::class, [
             $this->getFilesystem(),
             $this->getTemplateRepository(),
             $this->cache,
