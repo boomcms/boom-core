@@ -42,7 +42,7 @@ class Publish extends VendorPublishCommand
     }
 
     /**
-     * Publishes migrations and public files for all themes to their respective directories
+     * Publishes migrations and public files for all themes to their respective directories.
      *
      * The /public directory within all themes is copied to the application's public directory
      * to make them accessible to the webserver
