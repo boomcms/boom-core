@@ -45,7 +45,7 @@ class TemplateServiceProvider extends ServiceProvider
      * This ensures that multiple themes can define views with the same filename
      *
      * Views in the views/boomcms are registered to the boomcms namespace
-     * This allows themes to override boomcms views, e.g. to change the login page appearance
+     * This allows themes to override boomcms views (e.g. to replace with BoomCMS login page with a branded login page)
      *
      * Views in the views/chunks directory are registered to the boomcms.chunks namespace
      * This namespace is checked by the chunk provider for chunk views.
