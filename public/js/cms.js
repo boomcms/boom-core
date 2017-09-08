@@ -47404,6 +47404,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     },
 
     _save: function(title) {
+        if (title.trim() === '') {
+            title = 'Untitled';
+        }
+
         this.options.currentPage.setTitle(title)
             .done(function(data) {
                 if (data.location !== top.window.location) {
