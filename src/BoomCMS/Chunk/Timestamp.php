@@ -38,21 +38,21 @@ class Timestamp extends BaseChunk
      *
      * @return $this
      */
-    public function apply(Closure $closure)
+    public function apply(Closure $closure): Timestamp
     {
         $this->closure = $closure;
 
         return $this;
     }
 
-    protected function addContentToHtml($content)
+    protected function addContentToHtml($content): string
     {
         $html = $this->html ?: $this->defaultHtml;
 
         return str_replace('{time}', $content, $html);
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             $this->attributePrefix.'timestamp'        => $this->getTimestamp(),
@@ -61,7 +61,7 @@ class Timestamp extends BaseChunk
         ];
     }
 
-    public function hasContent()
+    public function hasContent(): bool
     {
         return $this->getFormat() && $this->getTimestamp() > 0;
     }
@@ -69,7 +69,7 @@ class Timestamp extends BaseChunk
     /**
      * @return DateTime
      */
-    public function getDateTime()
+    public function getDateTime(): DateTime
     {
         return (new DateTime())->setTimestamp($this->getTimestamp());
     }
@@ -102,13 +102,13 @@ class Timestamp extends BaseChunk
     public function getTimestamp(): int
     {
         if (isset($this->attrs['timestamp'])) {
-            return (int) isset($this->attrs['timestamp']);
+            return (int) $this->attrs['timestamp'];
         }
 
         return 0;
     }
 
-    public function setFormat($format)
+    public function setFormat($format): Timestamp
     {
         $this->formatIsEditable = false;
         $this->attrs['format'] = $format;
