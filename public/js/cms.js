@@ -49144,7 +49144,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             }
 
             // Return true if the parameters have changed, false if they haven't
-            if (oldParams.length !== params.length) {
+            if (Object.keys(oldParams).length !== Object.keys(params).length) {
                 return true;
             }
 
