@@ -21,7 +21,7 @@
             this.albumTemplate = _.template($('#b-assets-album-thumbnail-template').html());
             this.template = _.template($('#b-assets-album-list-template').html());
 
-            this.listenTo(this.albums, 'add sync', this.render);
+            this.listenTo(this.albums, 'add sync', this.queueRender);
             this.listenTo(this.albums, 'remove', this.removeAlbum);
             this.listenTo(this.selected, 'add', this.selectAlbum);
             this.listenTo(this.selected, 'remove', this.unselectAlbum);
@@ -32,6 +32,10 @@
 
             this.listenTo(this.albums, 'change:thumbnail change:feature_image_id', function(album) {
                 view.refreshThumbnail(album);
+            });
+
+            this.listenTo(this.$el, 'rendered', function() {
+                view.lazyLoadThumbnails();
             });
 
             this.$container.on('scroll', function() {
@@ -65,6 +69,24 @@
             });
         },
 
+        /**
+         * Prevents the render() function being executed every time an album is added
+         * which would cause render to run for every album when the AM is first loaded.
+         */
+        queueRender: function() {
+            var view = this;
+
+            if (this.renderTimeout !== null) {
+                clearTimeout(this.renderTimeout);
+            }
+
+            this.renderTimeout = setTimeout(function() {
+                view.render();
+            }, 0);
+
+            return this;
+        },
+
         refreshThumbnail: function(album) {
             var $li = this.getAlbumElement(album),
                 $a = $li.find('a'),
@@ -86,43 +108,35 @@
 
         render: function() {
             var view = this,
-                $el = this.$el,
-                albums = this.albums;
+                $ul, $li, i;
 
-            if (this.renderTimeout !== null) {
-                clearTimeout(this.renderTimeout);
+            this.$el.html($(this.template()));
+            $ul = this.$el.find('ul');
+
+            for (i = 0; i < this.albums.models.length; i++) {
+                $li = this.renderAlbum(this.albums.models[i]);
+                $ul.append($li);
             }
 
-            this.renderTimeout = setTimeout(function() {
-                var $ul, $li, i;
+            this.$('li').removeClass(this.selectedClass);
 
-                $el.html($(view.template()));
-                $ul = $el.find('ul');
+            if (this.selected !== undefined) {
+                this.selected.each(function(album) {
+                    view.getAlbumElement(album).addClass(view.selectedClass);
+                });
+            }
 
-                for (i = 0; i < albums.models.length; i++) {
-                    $li = view.renderAlbum(albums.models[i]);
-                    $ul.append($li);
-                }
-
-                view.$('li').removeClass('selected');
-
-                if (view.selected !== undefined) {
-                    view.selected.each(function(album) {
-                        view.getAlbumElement(album).addClass(view.selectedClass);
-                    });
-                }
-
-                setTimeout(function() {
-                    view.lazyLoadThumbnails();
-                }, 0);
-            }, 500);
+            setTimeout(function() {
+                view.$el.trigger('rendered');
+            }, 0);
 
             return this;
         },
 
-        renderAlbum: function(album) {
+        renderAlbum: function(album, selected) {
             return this.albumTemplate({
-                album: album
+                album: album,
+                selected: selected
             });
         },
 
@@ -135,9 +149,10 @@
         },
 
         updateAlbum: function(album) {
-            var $li = this.getAlbumElement(album);
+            var $li = this.getAlbumElement(album),
+                selected = $li.hasClass(this.selectedClass);
 
-            $li.replaceWith(this.renderAlbum(album));
+            $li.replaceWith(this.renderAlbum(album, selected));
         }
     });
 }(jQuery, Backbone, BoomCMS));

@@ -10,13 +10,22 @@ use Illuminate\Http\Request;
 class AlbumAssetsController extends Controller
 {
     /**
+     * The request input key which holds the assets to add / remove to / from the album.
+     *
+     * @var string
+     */
+    protected $assetsKey = 'assets';
+
+    /**
      * @var string
      */
     protected $role = 'manageAlbums';
 
     public function destroy(Request $request, Album $album)
     {
-        $album->removeAssets($request->input('assets'));
+        if ($request->has($this->assetsKey)) {
+            $album->removeAssets($request->input($this->assetsKey));
+        }
 
         return $album;
     }
@@ -33,7 +42,9 @@ class AlbumAssetsController extends Controller
 
     public function store(Request $request, Album $album)
     {
-        $album->addAssets($request->input('assets'));
+        if ($request->has($this->assetsKey)) {
+            $album->addAssets($request->input($this->assetsKey));
+        }
 
         return $album;
     }

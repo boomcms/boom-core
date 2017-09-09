@@ -55,7 +55,7 @@
 </script>
 
 <script type='text/template' id='b-assets-album-thumbnail-template'>
-    <li data-album='<%= album.getId() %>'>
+    <li data-album='<%= album.getId() %>'<% if (selected === true) {%> class="selected"<% } %>>
         <a href='#albums/<%= album.getSlug() %>'<% if (album.getFeatureImage()) { %> data-asset="<%= album.getFeatureImage().getId() %>"<% } %>>
             <div>
                 <h3><%= album.getName() %></h3>

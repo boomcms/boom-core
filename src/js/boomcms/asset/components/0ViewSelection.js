@@ -2,6 +2,7 @@
     'use strict';
 
     BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
+        albumsSelector: '#b-asset-albums',
         eventsBound: false,
         selected: 'selected',
         tagName: 'div',
@@ -46,7 +47,7 @@
 
                     view.createAlbumAndAddSelection();
                 })
-                .on('click', '#b-asset-albums [data-album] a', function(e) {
+                .on('click', this.albumsSelector + ' [data-album] a', function(e) {
                     e.preventDefault();
 
                     var albumId = $(this).parent().attr('data-album'),
@@ -69,36 +70,34 @@
             var view = this,
                 dialog;
 
-            dialog = new BoomCMS.Dialog({
-                msg: $('#b-album-create-name-template').html(),
-                width: 600,
-                onLoad: function() {
-                    dialog.contents.find('form').on('submit', function() {
-                        dialog.close();
+            dialog = this.showCreateAlbumDialog()
+                .done(function() {
+                    var name = dialog.contents.find('input').val(),
+                        album = new BoomCMS.Album();
+
+                    if (name.trim() === '') {
+                        return;
+                    }
+
+                    // Save the album and then add it to the albums collection
+                    // Ensures that the album details are complete when it's added to the collection
+                    album.save({name: name}, {
+                        success: function() {
+                            view.albums.add(album);
+                        }
                     });
-                }
-            })
-            .done(function() {
-                var name = dialog.contents.find('input').val();
 
-                if (name.trim() === '') {
-                    return;
-                }
-
-                view.albums.create({
-                    name: name
-                }, {
-                    success: function(album) {
-                        view.viewAlbums();
+                    view.$el.one('rendered', function() {
+                        var selector = view.albumsSelector + ' [data-album="' + album.getId() + '"]',
+                            $el = view.$(selector);
 
                         $('html,body').animate({
-                            scrollTop: view.$('#b-asset-albums [data-album="' + album.getId() + '"]').offset().top - $('#b-topbar').height()
+                            scrollTop: $el.offset().top - $('#b-topbar').height()
                         }, 1000, function() {
                             view.addAlbum(album);
                         });
-                    }
+                    });
                 });
-            });
         },
 
         getSection: function() {
@@ -164,6 +163,22 @@
             return this;
         },
 
+        showCreateAlbumDialog: function() {
+            var dialog = new BoomCMS.Dialog({
+                msg: $('#b-album-create-name-template').html(),
+                width: 600,
+                onLoad: function() {
+                    dialog.contents.find('form').on('submit', function(e) {
+                        e.preventDefault();
+
+                        dialog.close();
+                    });
+                }
+            });
+
+            return dialog;
+        },
+
         toggleAlbum: function(album) {
             var method = this.relatedAlbums.get(album.getId()) === undefined ? 
                 'addAlbum' : 'removeAlbum';
@@ -172,13 +187,18 @@
         },
 
         viewAlbums: function() {
-            var view = new BoomCMS.AssetManager.AlbumList({
-                albums: this.albums,
-                selected: this.relatedAlbums,
-                $container: $(this.$el[0].ownerDocument)
-            }).render();
+            var view = this;
 
-            this.$('#b-asset-albums > div').html(view.el);
+            if (typeof this.albumList === 'undefined') {
+                this.albumList = new BoomCMS.AssetManager.AlbumList({
+                    albums: this.albums,
+                    selected: this.relatedAlbums,
+                    $container: $(this.$el[0].ownerDocument)
+                });
+            }
+
+            this.albumList.render();
+            view.$(view.albumsSelector + ' > div').html(this.albumList.el);
         },
 
         viewSection: function(section) {

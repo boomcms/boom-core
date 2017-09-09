@@ -114,9 +114,15 @@
         },
 
         save: function() {
+            var name = this.$('h1').text();
+
+            if (name.trim() === '' || name === 'Untitled') {
+                return;
+            }
+            
             this.model
                 .set({
-                    name: this.$('h1').text(),
+                    name: name,
                     description: this.$('.description').text()
                 })
                 .save();

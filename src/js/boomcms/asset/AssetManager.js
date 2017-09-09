@@ -142,6 +142,7 @@
             this.router
                 .on('route', function(section) {
                     assetManager.setView(section);
+                    assetManager.scrollToTop();
                 })
                 .on('route:viewAsset', function(assetId, section) {
                     assetManager.viewAsset(assetId, section);
@@ -196,7 +197,11 @@
                     assetManager.viewAlbum(slug);
                 })
                 .on('route:home', function() {
+                    assetManager.selectNone();
                     assetManager.showAlbums();
+                })
+                .on('route:createAlbum', function() {
+                    assetManager.$('#b-assets-view-album-container h1').text('Untitled');
                 })
                 .on('viewSearchResults', function(params) {
                     assetManager.viewSearchResults(params);
@@ -269,6 +274,10 @@
             this.uploaded.removeIfExists(assetId);
         },
 
+        scrollToTop: function() {
+            $('html,body').scrollTop(0);
+        },
+
         showAlbums: function() {
             if (this.albumList === null) {
                 this.albumList = new BoomCMS.AssetManager.AlbumList({
@@ -278,8 +287,6 @@
 
                 this.$('#b-assets-all-albums > .content').html(this.albumList.render().el);
             }
-
-            this.selectNone();
         },
 
         selectAll: function() {

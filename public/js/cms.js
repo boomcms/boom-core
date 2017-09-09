@@ -47924,6 +47924,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.router
                 .on('route', function(section) {
                     assetManager.setView(section);
+                    assetManager.scrollToTop();
                 })
                 .on('route:viewAsset', function(assetId, section) {
                     assetManager.viewAsset(assetId, section);
@@ -47978,7 +47979,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     assetManager.viewAlbum(slug);
                 })
                 .on('route:home', function() {
+                    assetManager.selectNone();
                     assetManager.showAlbums();
+                })
+                .on('route:createAlbum', function() {
+                    assetManager.$('#b-assets-view-album-container h1').text('Untitled');
                 })
                 .on('viewSearchResults', function(params) {
                     assetManager.viewSearchResults(params);
@@ -48051,6 +48056,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.uploaded.removeIfExists(assetId);
         },
 
+        scrollToTop: function() {
+            $('html,body').scrollTop(0);
+        },
+
         showAlbums: function() {
             if (this.albumList === null) {
                 this.albumList = new BoomCMS.AssetManager.AlbumList({
@@ -48060,8 +48069,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                 this.$('#b-assets-all-albums > .content').html(this.albumList.render().el);
             }
-
-            this.selectNone();
         },
 
         selectAll: function() {
@@ -48293,6 +48300,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
     'use strict';
 
     BoomCMS.AssetManager.ViewSelection = Backbone.View.extend({
+        albumsSelector: '#b-asset-albums',
         eventsBound: false,
         selected: 'selected',
         tagName: 'div',
@@ -48337,7 +48345,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
                     view.createAlbumAndAddSelection();
                 })
-                .on('click', '#b-asset-albums [data-album] a', function(e) {
+                .on('click', this.albumsSelector + ' [data-album] a', function(e) {
                     e.preventDefault();
 
                     var albumId = $(this).parent().attr('data-album'),
@@ -48360,36 +48368,34 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             var view = this,
                 dialog;
 
-            dialog = new BoomCMS.Dialog({
-                msg: $('#b-album-create-name-template').html(),
-                width: 600,
-                onLoad: function() {
-                    dialog.contents.find('form').on('submit', function() {
-                        dialog.close();
+            dialog = this.showCreateAlbumDialog()
+                .done(function() {
+                    var name = dialog.contents.find('input').val(),
+                        album = new BoomCMS.Album();
+
+                    if (name.trim() === '') {
+                        return;
+                    }
+
+                    // Save the album and then add it to the albums collection
+                    // Ensures that the album details are complete when it's added to the collection
+                    album.save({name: name}, {
+                        success: function() {
+                            view.albums.add(album);
+                        }
                     });
-                }
-            })
-            .done(function() {
-                var name = dialog.contents.find('input').val();
 
-                if (name.trim() === '') {
-                    return;
-                }
-
-                view.albums.create({
-                    name: name
-                }, {
-                    success: function(album) {
-                        view.viewAlbums();
+                    view.$el.one('rendered', function() {
+                        var selector = view.albumsSelector + ' [data-album="' + album.getId() + '"]',
+                            $el = view.$(selector);
 
                         $('html,body').animate({
-                            scrollTop: view.$('#b-asset-albums [data-album="' + album.getId() + '"]').offset().top - $('#b-topbar').height()
+                            scrollTop: $el.offset().top - $('#b-topbar').height()
                         }, 1000, function() {
                             view.addAlbum(album);
                         });
-                    }
+                    });
                 });
-            });
         },
 
         getSection: function() {
@@ -48455,6 +48461,22 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             return this;
         },
 
+        showCreateAlbumDialog: function() {
+            var dialog = new BoomCMS.Dialog({
+                msg: $('#b-album-create-name-template').html(),
+                width: 600,
+                onLoad: function() {
+                    dialog.contents.find('form').on('submit', function(e) {
+                        e.preventDefault();
+
+                        dialog.close();
+                    });
+                }
+            });
+
+            return dialog;
+        },
+
         toggleAlbum: function(album) {
             var method = this.relatedAlbums.get(album.getId()) === undefined ? 
                 'addAlbum' : 'removeAlbum';
@@ -48463,13 +48485,18 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         viewAlbums: function() {
-            var view = new BoomCMS.AssetManager.AlbumList({
-                albums: this.albums,
-                selected: this.relatedAlbums,
-                $container: $(this.$el[0].ownerDocument)
-            }).render();
+            var view = this;
 
-            this.$('#b-asset-albums > div').html(view.el);
+            if (typeof this.albumList === 'undefined') {
+                this.albumList = new BoomCMS.AssetManager.AlbumList({
+                    albums: this.albums,
+                    selected: this.relatedAlbums,
+                    $container: $(this.$el[0].ownerDocument)
+                });
+            }
+
+            this.albumList.render();
+            view.$(view.albumsSelector + ' > div').html(this.albumList.el);
         },
 
         viewSection: function(section) {
@@ -48508,7 +48535,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.albumTemplate = _.template($('#b-assets-album-thumbnail-template').html());
             this.template = _.template($('#b-assets-album-list-template').html());
 
-            this.listenTo(this.albums, 'add sync', this.render);
+            this.listenTo(this.albums, 'add sync', this.queueRender);
             this.listenTo(this.albums, 'remove', this.removeAlbum);
             this.listenTo(this.selected, 'add', this.selectAlbum);
             this.listenTo(this.selected, 'remove', this.unselectAlbum);
@@ -48519,6 +48546,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.listenTo(this.albums, 'change:thumbnail change:feature_image_id', function(album) {
                 view.refreshThumbnail(album);
+            });
+
+            this.listenTo(this.$el, 'rendered', function() {
+                view.lazyLoadThumbnails();
             });
 
             this.$container.on('scroll', function() {
@@ -48552,6 +48583,24 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             });
         },
 
+        /**
+         * Prevents the render() function being executed every time an album is added
+         * which would cause render to run for every album when the AM is first loaded.
+         */
+        queueRender: function() {
+            var view = this;
+
+            if (this.renderTimeout !== null) {
+                clearTimeout(this.renderTimeout);
+            }
+
+            this.renderTimeout = setTimeout(function() {
+                view.render();
+            }, 0);
+
+            return this;
+        },
+
         refreshThumbnail: function(album) {
             var $li = this.getAlbumElement(album),
                 $a = $li.find('a'),
@@ -48573,43 +48622,35 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         render: function() {
             var view = this,
-                $el = this.$el,
-                albums = this.albums;
+                $ul, $li, i;
 
-            if (this.renderTimeout !== null) {
-                clearTimeout(this.renderTimeout);
+            this.$el.html($(this.template()));
+            $ul = this.$el.find('ul');
+
+            for (i = 0; i < this.albums.models.length; i++) {
+                $li = this.renderAlbum(this.albums.models[i]);
+                $ul.append($li);
             }
 
-            this.renderTimeout = setTimeout(function() {
-                var $ul, $li, i;
+            this.$('li').removeClass(this.selectedClass);
 
-                $el.html($(view.template()));
-                $ul = $el.find('ul');
+            if (this.selected !== undefined) {
+                this.selected.each(function(album) {
+                    view.getAlbumElement(album).addClass(view.selectedClass);
+                });
+            }
 
-                for (i = 0; i < albums.models.length; i++) {
-                    $li = view.renderAlbum(albums.models[i]);
-                    $ul.append($li);
-                }
-
-                view.$('li').removeClass('selected');
-
-                if (view.selected !== undefined) {
-                    view.selected.each(function(album) {
-                        view.getAlbumElement(album).addClass(view.selectedClass);
-                    });
-                }
-
-                setTimeout(function() {
-                    view.lazyLoadThumbnails();
-                }, 0);
-            }, 500);
+            setTimeout(function() {
+                view.$el.trigger('rendered');
+            }, 0);
 
             return this;
         },
 
-        renderAlbum: function(album) {
+        renderAlbum: function(album, selected) {
             return this.albumTemplate({
-                album: album
+                album: album,
+                selected: selected
             });
         },
 
@@ -48622,9 +48663,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         updateAlbum: function(album) {
-            var $li = this.getAlbumElement(album);
+            var $li = this.getAlbumElement(album),
+                selected = $li.hasClass(this.selectedClass);
 
-            $li.replaceWith(this.renderAlbum(album));
+            $li.replaceWith(this.renderAlbum(album, selected));
         }
     });
 }(jQuery, Backbone, BoomCMS));
@@ -49492,9 +49534,15 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         save: function() {
+            var name = this.$('h1').text();
+
+            if (name.trim() === '' || name === 'Untitled') {
+                return;
+            }
+            
             this.model
                 .set({
-                    name: this.$('h1').text(),
+                    name: name,
                     description: this.$('.description').text()
                 })
                 .save();
