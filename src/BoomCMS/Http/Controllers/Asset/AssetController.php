@@ -8,7 +8,7 @@ use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
-use Illuinate\Support\Facades\Response;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
