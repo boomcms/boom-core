@@ -8,9 +8,9 @@ use BoomCMS\Foundation\Http\ValidatesAssetUpload;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
+use Illuinate\Support\Facades\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class AssetController extends Controller
@@ -31,12 +31,10 @@ class AssetController extends Controller
      * Download the given asset.
      *
      * @param Asset $asset
-     *
-     * @return Response
      */
-    public function download(Asset $asset): Response
+    public function download(Asset $asset)
     {
-        return new Response(AssetFacade::file($asset), 200, [
+        return Response::file(AssetFacade::path($asset), [
             'Content-Type'        => $asset->getMimetype(),
             'Content-Disposition' => 'download; filename="'.$asset->getOriginalFilename().'"',
         ]);
