@@ -41,7 +41,7 @@ interface Asset
     public function find($assetId);
 
     /**
-     * Returns the path to the given asset
+     * Returns the path to the given asset.
      *
      * @param AssetInterface $asset
      */

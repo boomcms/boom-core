@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Contracts\Models\Asset;
-use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Http\Request;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageCache;
