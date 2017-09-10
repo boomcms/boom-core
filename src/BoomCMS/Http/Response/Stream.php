@@ -59,10 +59,11 @@ class Stream
         }
 
         $headers = [
-            'Content-Type'   => $this->asset->getMimetype(),
-            'Content-Range'  => "bytes $start-$end/$size",
-            'Content-Length' => $length,
-            'Accept-Ranges'  => 'bytes',
+            'Content-Type'        => $this->asset->getMimetype(),
+            'Content-Range'       => "bytes $start-$end/$size",
+            'Content-Disposition' => "filename='{$this->asset->getOriginalFilename()}'",
+            'Content-Length'      => $length,
+            'Accept-Ranges'       => 'bytes',
         ];
 
         return Response::stream(function () use ($stream, $end) {

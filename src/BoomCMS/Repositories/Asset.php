@@ -17,6 +17,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Asset implements AssetRepositoryInterface
 {
     /**
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    /**
      * @var AssetModel
      */
     protected $model;
@@ -108,11 +113,6 @@ class Asset implements AssetRepositoryInterface
             ->pluck('e');
     }
 
-    public function file(AssetInterface $asset): string
-    {
-        return $this->filesystem->get($asset->getLatestVersionId());
-    }
-
     /**
      * @param int $assetId
      *
@@ -126,6 +126,11 @@ class Asset implements AssetRepositoryInterface
     protected function getThumbnailFilename(AssetInterface $asset): string
     {
         return $asset->getLatestVersionId().'.thumb';
+    }
+
+    public function path(AssetInterface $asset): string
+    {
+        return $this->filesystem->path($asset->getLatestVersionId());
     }
 
     public function replaceWith(AssetInterface $asset, UploadedFile $file)
@@ -187,8 +192,8 @@ class Asset implements AssetRepositoryInterface
         return $this->filesystem->readStream($asset->getLatestVersionId());
     }
 
-    public function thumbnail(AssetInterface $asset): string
+    public function thumbnail(AssetInterface $asset)
     {
-        return $this->filesystem->get($this->getThumbnailFilename($asset));
+        return $this->filesystem->readStream($this->getThumbnailFilename($asset));
     }
 }

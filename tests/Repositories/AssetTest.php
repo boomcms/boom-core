@@ -126,17 +126,17 @@ class AssetTest extends AbstractTestCase
         $this->assertEquals($extensions, $this->repository->extensions());
     }
 
-    public function testFile()
+    public function testPath()
     {
-        $file = 'test file contents';
+        $path = '/path/to/asset';
 
         $this->filesystem
-            ->shouldReceive('get')
+            ->shouldReceive('path')
             ->once()
             ->with($this->asset->getLatestVersionId())
-            ->andReturn($file);
+            ->andReturn($path);
 
-        $this->assertEquals($file, $this->repository->file($this->asset));
+        $this->assertEquals($path, $this->repository->path($this->asset));
     }
 
     public function testFindReturnsAssetById()

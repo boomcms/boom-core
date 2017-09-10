@@ -9,6 +9,7 @@ use BoomCMS\Support\Facades\AssetVersion;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response as ResponseFacade;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageCache;
 use Intervention\Image\ImageManager;
@@ -30,43 +31,67 @@ class BaseController extends Controller
         }
     }
 
-    public function view($width = null, $height = null)
+    public function addHeaders(Response $response)
     {
-        return $this->response
-            ->header('Content-type', $this->asset->getMimetype())
-            ->setContent(AssetFacade::file($this->asset));
+        foreach ($this->getHeaders() as $header => $value) {
+            $response->header($header, $value);
+        }
+
+        return $response;
+    }
+
+    public function fileResponse(Asset $asset)
+    {
+        $path = AssetFacade::path($asset);
+
+        return ResponseFacade::file($path, $this->getHeaders());
+    }
+
+    public function getHeaders(): array
+    {
+        return [
+            'Content-Type'        => $this->asset->getMimetype(),
+            'Content-Disposition' => "filename='{$this->asset->getOriginalFilename()}'",
+        ];
+    }
+
+    protected function getStream()
+    {
+        return AssetFacade::stream($this->asset);
     }
 
     public function thumb($width = null, $height = null)
     {
         if (!$this->asset->hasThumbnail()) {
-            return $this->response
-                ->header('Content-type', 'image/png')
-                ->setContent(readfile(__DIR__."/../../../../../public/img/extensions/{$this->asset->getExtension()}.png"));
+            $path = __DIR__."/../../../../../public/img/extensions/{$this->asset->getExtension()}.png";
+
+            return ResponseFacade::file($path, $this->getHeaders());
         }
 
         $thumbnail = $this->asset->getThumbnail();
-        $im = new ImageManager();
 
-        if ($width || $height) {
-            $image = $im->cache(function (ImageCache $cache) use ($width, $height, $thumbnail) {
-                $width = empty($width) ? null : $width;
-                $height = empty($height) ? null : $height;
-
-                return $cache
-                    ->make(AssetFacade::file($thumbnail))
-                    ->resize($width, $height, function (Constraint $constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->encode('image/png');
-            });
-        } else {
-            $image = $im->make(AssetFacade::file($thumbnail))->encode();
+        if (empty($width) && empty($height)) {
+            return $this->fileResponse($thumbnail);
         }
 
-        return $this->response
-                ->header('content-type', $thumbnail->getMimetype())
-                ->setContent($image);
+        $image = (new ImageManager())->cache(function (ImageCache $cache) use ($width, $height, $thumbnail) {
+            $width = empty($width) ? null : $width;
+            $height = empty($height) ? null : $height;
+
+            return $cache
+                ->make(AssetFacade::stream($thumbnail))
+                ->resize($width, $height, function (Constraint $constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('image/png');
+        });
+
+        return $this->addHeaders($this->response)->setContent($image);
+    }
+
+    public function view($width = null, $height = null)
+    {
+        return $this->fileResponse($this->asset);
     }
 }

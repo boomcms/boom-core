@@ -2,31 +2,16 @@
 
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
-use BoomCMS\Support\Facades\Asset;
-use Illuminate\Http\Response;
-
+/**
+ * Gifs are treated differently to other images.
+ *
+ * They are not resized as resizing breaks animated gifs.
+ */
 class Gif extends BaseController
 {
     public function crop($width = null, $height = null)
     {
         return $this->view($width, $height);
-    }
-
-    /**
-     * Gifs are not resized to ensure that animated gifs animate.
-     *
-     * Width and height parameters are therefore ignored.
-     *
-     * @param int $width
-     * @param int $height
-     *
-     * @return Response
-     */
-    public function view($width = null, $height = null)
-    {
-        return $this->response
-            ->header('content-type', $this->asset->getMimetype())
-            ->setContent(Asset::file($this->asset));
     }
 
     public function thumb($width = null, $height = null)
