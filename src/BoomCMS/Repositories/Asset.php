@@ -20,6 +20,19 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Asset extends Repository implements AssetRepositoryInterface
 {
     /**
+<<<<<<< HEAD
+=======
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    /**
+     * @var AssetModel
+     */
+    protected $model;
+
+    /**
+>>>>>>> 7.0
      * @var AssetVersionRepositoryInterface
      */
     protected $version;
@@ -112,14 +125,24 @@ class Asset extends Repository implements AssetRepositoryInterface
             ->pluck('e');
     }
 
-    public function file(AssetInterface $asset): string
+    /**
+     * @param int $assetId
+     *
+     * @return AssetModel|null
+     */
+    public function find($assetId)
     {
-        return $this->filesystem->get($asset->getLatestVersionId());
+        return $this->model->find($assetId);
     }
 
     protected function getThumbnailFilename(AssetInterface $asset): string
     {
         return $asset->getLatestVersionId().'.thumb';
+    }
+
+    public function path(AssetInterface $asset): string
+    {
+        return $this->filesystem->path($asset->getLatestVersionId());
     }
 
     public function replaceWith(AssetInterface $asset, UploadedFile $file)
@@ -169,8 +192,8 @@ class Asset extends Repository implements AssetRepositoryInterface
         return $this->filesystem->readStream($asset->getLatestVersionId());
     }
 
-    public function thumbnail(AssetInterface $asset): string
+    public function thumbnail(AssetInterface $asset)
     {
-        return $this->filesystem->get($this->getThumbnailFilename($asset));
+        return $this->filesystem->readStream($this->getThumbnailFilename($asset));
     }
 }

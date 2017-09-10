@@ -21,7 +21,7 @@ class Pdf extends BaseController
         }
 
         return $this->response
-                ->header('content-type', 'image/png')
-                ->setContent($image);
+            ->header('content-type', 'image/png')
+            ->setContent($image);
     }
 }

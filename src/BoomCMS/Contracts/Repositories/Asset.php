@@ -34,6 +34,20 @@ interface Asset extends Repository
     public function extensions(): Collection;
 
     /**
+     * Retrieve an asset by ID.
+     *
+     * @param int $assetId
+     */
+    public function find($assetId);
+
+    /**
+     * Returns the path to the given asset.
+     *
+     * @param AssetInterface $asset
+     */
+    public function path(AssetInterface $asset): string;
+
+    /**
      * Revert an asset to a previous version ID.
      *
      * @param AssetInterface $asset
