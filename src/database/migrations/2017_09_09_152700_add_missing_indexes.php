@@ -21,7 +21,8 @@ class AddMissingIndexes extends Migration
 
         try {
             DB::statement('alter table assets drop index asset_v_rid');
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
     }
 
     /**
