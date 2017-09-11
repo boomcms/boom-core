@@ -45562,6 +45562,7 @@ $.widget( 'boom.pageToolbar', {
     $.widget('boom.textEditor', {
         skin_url: '/vendor/boomcms/boom-core/tinymce/skins/lightgray',
         image_upload_url: '/boomcms/asset/create-from-blob',
+        invalid_styles: 'color font font-family font-size line-height background border margin padding',
 
         /**
         * @function
@@ -45629,7 +45630,8 @@ $.widget( 'boom.pageToolbar', {
                         {title: 'Quote', block: 'blockquote'}
                    ],
                     media_alt_source: false,
-                    media_dimensions: false
+                    media_dimensions: false,
+                    invalid_styles: self.invalid_styles
                 });
             } else if (mode === 'inline') {
                 tinymce.init({
@@ -45649,7 +45651,8 @@ $.widget( 'boom.pageToolbar', {
                     setup: function(ed) {
                         self.setup(ed);
                     },
-                    skin_url: this.skin_url
+                    skin_url: this.skin_url,
+                    invalid_styles: self.invalid_styles
                 });
             } else {
                 tinymce.init({
@@ -45666,7 +45669,8 @@ $.widget( 'boom.pageToolbar', {
                         self.setup(ed);
                     },
                     skin_url: this.skin_url,
-                    custom_ui_selector: '#b-title-length'
+                    custom_ui_selector: '#b-title-length',
+                    invalid_styles: self.invalid_styles
                 });
             }
         },
