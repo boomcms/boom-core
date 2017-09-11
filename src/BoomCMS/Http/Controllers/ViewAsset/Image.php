@@ -26,7 +26,7 @@ class Image extends BaseController
 
     public function crop($width = null, $height = null)
     {
-        if (empty($width) && empty($height)) {
+        if (empty($width) || empty($height)) {
             return parent::view();
         }
 
