@@ -18,7 +18,10 @@ class AddMissingIndexes extends Migration
         DB::statement('create index assets_created_at_desc on assets(created_at desc)');
         DB::statement('create index albums_deleted_at on albums(deleted_at)');
         DB::statement('create index albums_name_asc_deleted_at on albums(name asc, deleted_at)');
-        DB::statement('alter table assets drop index asset_v_rid');
+
+        try {
+            DB::statement('alter table assets drop index asset_v_rid');
+        } catch (\Exception $e) {}
     }
 
     /**
