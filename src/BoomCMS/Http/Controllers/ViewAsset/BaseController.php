@@ -79,7 +79,7 @@ class BaseController extends Controller
             $height = empty($height) ? null : $height;
 
             return $cache
-                ->make(AssetFacade::stream($thumbnail))
+                ->make(AssetFacade::path($thumbnail))
                 ->resize($width, $height, function (Constraint $constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();

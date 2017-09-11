@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Contracts\Models\Asset;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Http\Request;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageCache;
@@ -31,7 +32,7 @@ class Image extends BaseController
         }
 
         $image = $this->manager->cache(function (ImageCache $cache) use ($width, $height) {
-            return $cache->make($this->getStream())
+            return $cache->make(AssetFacade::path($this->asset))
                 ->fit($width, $height)
                 ->encode($this->encoding);
         });
@@ -55,7 +56,7 @@ class Image extends BaseController
             $height = empty($height) ? null : $height;
 
             return $cache
-                ->make($this->getStream())
+                ->make(AssetFacade::path($this->asset))
                 ->resize($width, $height, function (Constraint $constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
