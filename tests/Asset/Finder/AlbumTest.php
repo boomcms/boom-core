@@ -56,7 +56,7 @@ class AlbumTest extends AbstractTestCase
 
         $query->shouldReceive('whereAlbum')
             ->once()
-            ->with([$album])
+            ->with($album)
             ->andReturnSelf();
 
         $this->assertEquals($query, $filter->build($query));
