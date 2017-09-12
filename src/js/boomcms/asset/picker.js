@@ -138,6 +138,7 @@
 
         this.close = function() {
             this.dialog.cancel();
+            this.searchResultsView = undefined;
         };
 
         this.hideCurrentAsset = function() {

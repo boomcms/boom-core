@@ -49009,6 +49009,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         updateForced: false,
         page: 1,
         params: {},
+        requestTimeout: null,
 
         bind: function() {
             var assetSearch = this;
@@ -49060,25 +49061,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         getAssets: function() {
-            var data = {
-                limit: this.perpage,
-                page: this.page
-            }, search = this;
+            var searchResults = this;
 
-            for (var key in this.params) {
-                data[key] = this.params[key];
+            if (this.requestTimeout !== null) {
+                clearTimeout(this.requestTimeout);
             }
 
-            // Reset before fetching to clear the thumbnail grid
-            // and ensure there's no on screen 'flash' of the old search results
-            this.assets.reset();
-
-            this.assets.fetch({
-                data: data,
-                success: function() {
-                    search.initPagination();
-                }
-            });
+            // Wrap the request in a timeout to avoid stale HTTP requests when user rapidly moves through pages.
+            this.requestTimeout = setTimeout(function() {
+                searchResults.sendGetAssetsRequest();
+            }, 300);
         },
 
         getPage: function(page) {
@@ -49136,6 +49128,28 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         render: function() {},
+
+        sendGetAssetsRequest: function() {
+            var data = {
+                limit: this.perpage,
+                page: this.page
+            }, search = this;
+
+            for (var key in this.params) {
+                data[key] = this.params[key];
+            }
+
+            // Reset before fetching to clear the thumbnail grid
+            // and ensure there's no on screen 'flash' of the old search results
+            this.assets.reset();
+
+            this.assets.fetch({
+                data: data,
+                success: function() {
+                    search.initPagination();
+                }
+            });
+        },
 
         setAssetsPerPage: function() {
             var rowHeight = 200,
@@ -49816,6 +49830,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         this.close = function() {
             this.dialog.cancel();
+            this.searchResultsView = undefined;
         };
 
         this.hideCurrentAsset = function() {
