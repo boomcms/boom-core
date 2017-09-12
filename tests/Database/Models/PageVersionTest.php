@@ -100,6 +100,21 @@ class PageVersionTest extends AbstractModelTestCase
         $this->assertEquals($prev, $version->getPrevious());
     }
 
+    public function testGetTitleReturnsEmptyStringIfNull()
+    {
+        $version = new Version();
+
+        $this->assertEquals('', $version->getTitle());
+    }
+
+    public function testGetTitleReturnsTitleAttribute()
+    {
+        $title = 'test';
+        $version = new Version([Version::ATTR_TITLE => $title]);
+
+        $this->assertEquals($title, $version->getTitle());
+    }
+
     public function testIsPublishedIfEmbargoedTimeIsPast()
     {
         $published = new Version(['embargoed_until' => time() - 10]);
