@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 interface Page
 {
     /**
-     * Whether ACL is enabled
+     * Whether ACL is enabled.
      */
     public function aclEnabled(): bool;
 
