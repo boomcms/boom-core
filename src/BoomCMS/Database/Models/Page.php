@@ -354,7 +354,7 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
      */
     public function getUrlAttribute(): string
     {
-        return $this->url();
+        return (string) $this->url();
     }
 
     /**
