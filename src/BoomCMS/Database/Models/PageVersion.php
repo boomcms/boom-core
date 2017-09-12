@@ -29,6 +29,7 @@ class PageVersion extends Model implements PageVersionInterface
         self::ATTR_PENDING_APPROVAL => 'boolean',
         self::ATTR_CHUNK_ID         => 'integer',
         self::ATTR_RESTORED_FROM    => 'integer',
+        self::ATTR_TITLE            => 'string',
     ];
 
     protected $table = 'page_versions';
@@ -170,12 +171,9 @@ class PageVersion extends Model implements PageVersionInterface
         return $this->template;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
-        return $this->{self::ATTR_TITLE};
+        return (string) $this->{self::ATTR_TITLE};
     }
 
     /**
