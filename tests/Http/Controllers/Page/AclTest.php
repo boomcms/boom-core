@@ -44,7 +44,8 @@ class AclTest extends BaseControllerTest
         $this->page
             ->shouldReceive('removeAclGroupId')
             ->once()
-            ->with($this->group->getId());
+            ->with($this->group->getId())
+            ->andReturnSelf();
 
         PageFacade::shouldReceive('recurse')
             ->once()

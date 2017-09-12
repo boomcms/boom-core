@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -115,20 +116,12 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
      */
     protected $primaryUrl;
 
-    /**
-     * @return bool
-     */
-    public function aclEnabled()
+    public function aclEnabled(): bool
     {
         return $this->{self::ATTR_ENABLE_ACL} === true;
     }
 
-    /**
-     * @param int $groupId
-     *
-     * @return $this
-     */
-    public function addAclGroupId($groupId)
+    public function addAclGroupId(int $groupId): PageInterface
     {
         try {
             DB::table('page_acl')
@@ -142,7 +135,7 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this;
     }
 
-    public function addRelation(PageInterface $page)
+    public function addRelation(PageInterface $page): PageInterface
     {
         $this->relations()->attach($page, [
             'created_at'  => time(),
@@ -152,7 +145,7 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this;
     }
 
-    public function addTag(TagInterface $tag)
+    public function addTag(TagInterface $tag): PageInterface
     {
         $this->tags()->syncWithoutDetaching([$tag->getId()]);
 
@@ -164,12 +157,8 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
      *
      * If the current version is embargoed then the new version is also embargoed.
      * If the current version is published then the new version becomes a draft.
-     *
-     * @param array $attrs
-     *
-     * @return PageVersion
      */
-    public function addVersion(array $attrs = [])
+    public function addVersion(array $attrs = []): PageVersionInterface
     {
         if ($oldVersion = $this->getCurrentVersion()) {
             $attrs += $oldVersion->toArray();
@@ -198,26 +187,17 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this->getCurrentVersion();
     }
 
-    /**
-     * @return bool
-     */
-    public function allowsExternalIndexing()
+    public function allowsExternalIndexing(): bool
     {
-        return $this->{self::ATTR_EXTERNAL_INDEXING};
+        return $this->{self::ATTR_EXTERNAL_INDEXING} === true;
     }
 
-    /**
-     * @return bool
-     */
-    public function allowsInternalIndexing()
+    public function allowsInternalIndexing(): bool
     {
-        return $this->{self::ATTR_INTERNAL_INDEXING};
+        return $this->{self::ATTR_INTERNAL_INDEXING} === true;
     }
 
-    /**
-     * @return bool
-     */
-    public function canBeDeleted()
+    public function canBeDeleted(): bool
     {
         return $this->{self::ATTR_DISABLE_DELETE} === false;
     }
@@ -227,36 +207,25 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this->hasMany(self::class, 'parent_id');
     }
 
-    /**
-     * @return bool
-     */
-    public function childrenAreVisibleInNav()
+    public function childrenAreVisibleInNav(): bool
     {
-        return $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV};
+        return $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV} === true;
     }
 
-    /**
-     * @return bool
-     */
-    public function childrenAreVisibleInCmsNav()
+    public function childrenAreVisibleInCmsNav(): bool
     {
-        return $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV_CMS};
+        return $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV_CMS} === true;
     }
 
-    /**
-     * @return int
-     */
-    public function countChildren()
+    public function countChildren(): int
     {
         return $this->children->count();
     }
 
     /**
      * Returns an array of IDs for groups which can view this page.
-     *
-     * @return array
      */
-    public function getAclGroupIds()
+    public function getAclGroupIds(): Collection
     {
         return DB::table('page_acl')
             ->select('group_id')
@@ -264,18 +233,12 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
             ->pluck('group_id');
     }
 
-    /**
-     * @return int
-     */
-    public function getAddPageBehaviour()
+    public function getAddPageBehaviour(): int
     {
         return $this->{self::ATTR_ADD_BEHAVIOUR} ?: self::ADD_PAGE_NONE;
     }
 
-    /**
-     * @return Page
-     */
-    public function getAddPageParent()
+    public function getAddPageParent(): PageInterface
     {
         $behaviour = $this->{self::ATTR_ADD_BEHAVIOUR};
 
@@ -290,20 +253,15 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getChildAddPageBehaviour()
+    public function getChildAddPageBehaviour(): int
     {
         return $this->{self::ATTR_CHILD_ADD_BEHAVIOUR} ?: self::ADD_PAGE_NONE;
     }
 
     /**
      * Returns an array of [column, direction] indicating the page's child ordering policy.
-     *
-     * @return array
      */
-    public function getChildOrderingPolicy()
+    public function getChildOrderingPolicy(): array
     {
         $order = $this->{self::ATTR_CHILD_ORDERING_POLICY};
         $column = 'sequence';
@@ -319,15 +277,12 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return [$column, $direction];
     }
 
-    public function getChildPageUrlPrefix()
+    public function getChildPageUrlPrefix(): string
     {
-        return $this->{self::ATTR_CHILD_URL_PREFIX};
+        return (string) $this->{self::ATTR_CHILD_URL_PREFIX};
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getCreatedTime()
+    public function getCreatedTime(): DateTime
     {
         return (new DateTime())->setTimestamp($this->{self::ATTR_CREATED_AT});
     }
@@ -347,23 +302,19 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
 
     /**
      * Get the description property for the page.
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
-        return $this->{self::ATTR_DESCRIPTION};
+        return (string) $this->{self::ATTR_DESCRIPTION};
     }
 
     /**
      * Returns the default template ID that child pages should use.
-     *
-     * @return int
      */
-    public function getDefaultChildTemplateId()
+    public function getDefaultChildTemplateId(): int
     {
-        if ($templateId = $this->{self::ATTR_CHILD_TEMPLATE}) {
-            return $templateId;
+        if (!empty($this->{self::ATTR_CHILD_TEMPLATE})) {
+            return (int) $this->{self::ATTR_CHILD_TEMPLATE};
         }
 
         $parent = $this->getParent();
@@ -377,85 +328,69 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
      * If a default grandchild template ID is set then that is returned.
      *
      * Otherwise the current template ID of this page is returned.
-     *
-     * @return int
      */
-    public function getDefaultGrandchildTemplateId()
+    public function getDefaultGrandchildTemplateId(): int
     {
         $grandchildTemplateId = $this->getGrandchildTemplateId();
 
-        return empty($grandchildTemplateId) ? $this->getTemplateId() : $grandchildTemplateId;
+        return empty($grandchildTemplateId) ? $this->getTemplateId() : (int) $grandchildTemplateId;
     }
 
-    public function getGrandchildTemplateId()
+    public function getGrandchildTemplateId(): int
     {
-        return $this->{self::ATTR_GRANDCHILD_TEMPLATE};
+        return (int) $this->{self::ATTR_GRANDCHILD_TEMPLATE};
     }
 
     /**
      * Returns the has_children attribute for the JSON form.
-     *
-     * @return int
      */
-    public function getHasChildrenAttribute()
+    public function getHasChildrenAttribute(): bool
     {
-        return (bool) $this->hasChildren();
+        return $this->hasChildren();
     }
 
     /**
      * Returns the url attribute for the JSON form.
-     *
-     * @return string
      */
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
-        return (string) $this->url();
+        return $this->url();
     }
 
     /**
      * Returns the visible attribute for the JSON form.
-     *
-     * @return int
      */
-    public function getVisibleAttribute()
+    public function getVisibleAttribute(): int
     {
-        return (int) $this->isVisible();
+        return $this->isVisible();
     }
 
-    public function getInternalName()
+    public function getInternalName(): string
     {
-        return $this->{self::ATTR_INTERNAL_NAME};
+        return (string) $this->{self::ATTR_INTERNAL_NAME};
     }
 
-    /**
-     * @return string
-     */
-    public function getKeywords()
+    public function getKeywords(): string
     {
-        return $this->{self::ATTR_KEYWORDS};
+        return (string) $this->{self::ATTR_KEYWORDS};
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getLastModified()
+    public function getLastModified(): DateTime
     {
         return $this->getCurrentVersion()->getEditedTime();
     }
 
     /**
      * Returns the last published version for the page.
-     *
-     * @return PageVersionInterface
      */
-    public function getLastPublished()
+    public function getLastPublished(): PageVersionInterface
     {
         return PageVersion::forPage($this)->lastPublished()->first();
     }
 
-    public function getManualOrderPosition()
+    public function getManualOrderPosition(): int
     {
-        return $this->{self::ATTR_SEQUENCE};
+        return (int) $this->{self::ATTR_SEQUENCE};
     }
 
     /**
@@ -467,7 +402,7 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getParentId()
     {
@@ -497,10 +432,7 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this->hasMany(URL::class)->orderBy(URL::ATTR_LOCATION, 'asc')->get();
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getVisibleFrom()
+    public function getVisibleFrom(): DateTime
     {
         $timestamp = $this->{self::ATTR_VISIBLE_FROM} ?: time();
 
@@ -517,20 +449,15 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return empty($this->{self::ATTR_VISIBLE_TO}) ? null : new DateTime('@'.$this->{self::ATTR_VISIBLE_TO});
     }
 
-    /**
-     * @return bool
-     */
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return $this->children()->exists();
     }
 
     /**
      * Whether the page has been deleted.
-     *
-     * @return bool
      */
-    public function isDeleted()
+    public function isDeleted(): bool
     {
         return !empty($this->{self::ATTR_DELETED_AT});
     }
@@ -539,74 +466,53 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
      * Returns whether this page is the parent of a given page.
      *
      * @param PageInterface $page
-     *
-     * @return bool
      */
-    public function isParentOf(PageInterface $page)
+    public function isParentOf(PageInterface $page): bool
     {
         return $page->getParentId() === $this->getId();
     }
 
-    public function isRoot()
+    public function isRoot(): bool
     {
         return $this->getParentId() === null;
     }
 
-    public function isVisible()
+    public function isVisible(): bool
     {
         return $this->isVisibleAtTime(new DateTime('now'));
     }
 
-    /**
-     * @return bool
-     */
-    public function isVisibleAtAnyTime()
+    public function isVisibleAtAnyTime(): bool
     {
         return isset($this->attributes[self::ATTR_VISIBLE])
             && (bool) $this->attributes[self::ATTR_VISIBLE] === true;
     }
 
-    /**
-     * @param DateTime $time
-     *
-     * @return bool
-     */
-    public function isVisibleAtTime(DateTime $time)
+    public function isVisibleAtTime(DateTime $time): bool
     {
         return $this->isVisibleAtAnyTime() &&
             $this->getVisibleFrom()->getTimestamp() <= $time->getTimestamp() &&
             ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $time->getTimestamp());
     }
 
-    /**
-     * @return bool
-     */
-    public function isVisibleInCmsNav()
+    public function isVisibleInCmsNav(): bool
     {
-        return $this->{self::ATTR_VISIBLE_IN_NAV_CMS};
+        return $this->{self::ATTR_VISIBLE_IN_NAV_CMS} === true;
     }
 
-    /**
-     * @return bool
-     */
-    public function isVisibleInNav()
+    public function isVisibleInNav(): bool
     {
-        return $this->{self::ATTR_VISIBLE_IN_NAV};
+        return $this->{self::ATTR_VISIBLE_IN_NAV} === true;
     }
 
-    public function markUpdatesAsPendingApproval()
+    public function markUpdatesAsPendingApproval(): PageInterface
     {
         $this->addVersion(['pending_approval' => true]);
 
         return $this;
     }
 
-    /**
-     * @param int $groupId
-     *
-     * @return $this
-     */
-    public function removeAclGroupId($groupId)
+    public function removeAclGroupId(int $groupId): PageInterface
     {
         DB::table('page_acl')
             ->where([
@@ -618,14 +524,14 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this;
     }
 
-    public function removeRelation(PageInterface $page)
+    public function removeRelation(PageInterface $page): PageInterface
     {
         $this->relations()->detach($page);
 
         return $this;
     }
 
-    public function removeTag(TagInterface $tag)
+    public function removeTag(TagInterface $tag): PageInterface
     {
         $this->tags()->detach($tag);
 
@@ -642,75 +548,49 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this->belongsToMany(self::class, 'pages_relations', 'page_id', 'related_page_id');
     }
 
-    /**
-     * @param bool $enabled
-     *
-     * @return $this
-     */
-    public function setAclEnabled($enabled)
+    public function setAclEnabled(bool $enabled): PageInterface
     {
         $this->{self::ATTR_ENABLE_ACL} = $enabled;
 
         return $this;
     }
 
-    /**
-     * @param int $value
-     *
-     * @return $this
-     */
-    public function setAddPageBehaviour($value)
+    public function setAddPageBehaviour(int $value): PageInterface
     {
         $this->{self::ATTR_ADD_BEHAVIOUR} = $value;
 
         return $this;
     }
 
-    /**
-     * @param int $value
-     *
-     * @return $this
-     */
-    public function setChildAddPageBehaviour($value)
+    public function setChildAddPageBehaviour(int $value): PageInterface
     {
         $this->{self::ATTR_CHILD_ADD_BEHAVIOUR} = $value;
 
         return $this;
     }
 
-    /**
-     * Set the current version of the page.
-     *
-     * @param PageVersion $version
-     *
-     * @return $this
-     */
-    public function setCurrentVersion(PageVersionInterface $version)
+    public function setCurrentVersion(PageVersionInterface $version): PageInterface
     {
         $this->currentVersion = $version;
 
         return $this;
     }
 
-    public function setDisableDelete($value)
+    public function setDisableDelete(bool $value): PageInterface
     {
         $this->{self::ATTR_DISABLE_DELETE} = $value;
 
         return $this;
     }
 
-    public function setChildTemplateId($templateId)
+    public function setChildTemplateId(int $templateId): PageInterface
     {
         $this->{self::ATTR_CHILD_TEMPLATE} = $templateId;
 
         return $this;
     }
 
-    /**
-     * @param string $column
-     * @param string $direction
-     */
-    public function setChildOrderingPolicy($column, $direction)
+    public function setChildOrderingPolicy(string $column, string $direction): PageInterface
     {
         $column = constant(self::class.'::ORDER_'.strtoupper($column));
         $direction = ($direction === 'asc') ? self::ORDER_ASC : self::ORDER_DESC;
@@ -720,60 +600,35 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this;
     }
 
-    /**
-     * @param string $prefix
-     *
-     * @return $this
-     */
-    public function setChildrenUrlPrefix($prefix)
+    public function setChildrenUrlPrefix(string $prefix): PageInterface
     {
         $this->{self::ATTR_CHILD_URL_PREFIX} = $prefix;
 
         return $this;
     }
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setChildrenVisibleInNav($visible)
+    public function setChildrenVisibleInNav(bool $visible): PageInterface
     {
         $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV} = $visible;
 
         return $this;
     }
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setChildrenVisibleInNavCMS($visible)
+    public function setChildrenVisibleInNavCMS(bool $visible): PageInterface
     {
         $this->{self::ATTR_CHILDREN_VISIBLE_IN_NAV_CMS} = $visible;
 
         return $this;
     }
 
-    /**
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): PageInterface
     {
         $this->{self::ATTR_DESCRIPTION} = $description;
 
         return $this;
     }
 
-    /**
-     * @param bool $indexing
-     *
-     * @return $this
-     */
-    public function setExternalIndexing($indexing)
+    public function setExternalIndexing(bool $indexing): PageInterface
     {
         $this->{self::ATTR_EXTERNAL_INDEXING} = $indexing;
 
@@ -781,27 +636,11 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
     }
 
     /**
-     * @param int $templateId
-     *
-     * @return $this
-     */
-    public function setGrandchildTemplateId($templateId)
-    {
-        $this->{self::ATTR_GRANDCHILD_TEMPLATE} = $templateId;
-
-        return $this;
-    }
-
-    /**
      * Set an embargo time for any unpublished changes.
      *
-     * If the time is in the past then the changes become published
-     *
-     * @param DateTime $time
-     *
-     * @return $this
+     * If the time is in the past then the changes become published.
      */
-    public function setEmbargoTime(DateTime $time)
+    public function setEmbargoTime(DateTime $time): PageInterface
     {
         $this->addVersion([
             PageVersion::ATTR_PENDING_APPROVAL => false,
@@ -811,48 +650,42 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this;
     }
 
-    /**
-     * @param bool $indexing
-     *
-     * @return $this
-     */
-    public function setInternalIndexing($indexing)
+    public function setFeatureImageId(int $featureImageId = null): PageInterface
+    {
+        $this->{self::ATTR_FEATURE_IMAGE} = $featureImageId > 0 ? $featureImageId : null;
+
+        return $this;
+    }
+
+    public function setGrandchildTemplateId(int $templateId): PageInterface
+    {
+        $this->{self::ATTR_GRANDCHILD_TEMPLATE} = $templateId;
+
+        return $this;
+    }
+
+    public function setInternalIndexing(bool $indexing): PageInterface
     {
         $this->{self::ATTR_INTERNAL_INDEXING} = $indexing;
 
         return $this;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setInternalName($name)
+    public function setInternalName(string $name): PageInterface
     {
         $this->{self::ATTR_INTERNAL_NAME} = $name;
 
         return $this;
     }
 
-    /**
-     * @param string $keywords
-     *
-     * @return $this
-     */
-    public function setKeywords($keywords)
+    public function setKeywords(string $keywords): PageInterface
     {
         $this->{self::ATTR_KEYWORDS} = $keywords;
 
         return $this;
     }
 
-    /**
-     * @param PageInterface $parent
-     *
-     * @return $this
-     */
-    public function setParent(PageInterface $parent)
+    public function setParent(PageInterface $parent): PageInterface
     {
         if (!$parent->is($this) && $parent->getParentId() !== $this->getId()) {
             $this->{self::ATTR_PARENT} = $parent->getId();
@@ -861,98 +694,63 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         return $this;
     }
 
-    public function setPrimaryUri($uri)
+    public function setPrimaryUri(string $uri): PageInterface
     {
         $this->{self::ATTR_PRIMARY_URI} = $uri;
 
         return $this;
     }
 
-    /**
-     * @param int $sequence
-     *
-     * @return $this
-     */
-    public function setSequence($sequence)
+    public function setSequence(int $sequence): PageInterface
     {
         $this->{self::ATTR_SEQUENCE} = $sequence;
 
         return $this;
     }
 
-    /**
-     * @param TemplateInterface $template
-     *
-     * @return $this
-     */
-    public function setTemplate(TemplateInterface $template)
+    public function setTemplate(TemplateInterface $template): PageInterface
     {
         $this->addVersion(['template_id' => $template->getId()]);
 
         return $this;
     }
 
-    public function setTitle($title)
+    public function setTitle(string $title): PageInterface
     {
         $this->addVersion(['title' => $title]);
 
         return $this;
     }
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setVisibleAtAnyTime($visible)
+    public function setVisibleAtAnyTime(bool $visible): PageInterface
     {
         $this->attributes[self::ATTR_VISIBLE] = $visible;
 
         return $this;
     }
 
-    /**
-     * @param DateTime $time
-     *
-     * @return $this
-     */
-    public function setVisibleFrom(DateTime $time = null)
+    public function setVisibleFrom(DateTime $time = null): PageInterface
     {
         $this->{self::ATTR_VISIBLE_FROM} = ($time === null ? null : $time->getTimestamp());
 
         return $this;
     }
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setVisibleInCmsNav($visible)
+    public function setVisibleInCmsNav(bool $visible): PageInterface
     {
         $this->{self::ATTR_VISIBLE_IN_NAV_CMS} = $visible;
 
         return $this;
     }
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setVisibleInNav($visible)
+    public function setVisibleInNav(bool $visible): PageInterface
     {
         $this->{self::ATTR_VISIBLE_IN_NAV} = $visible;
 
         return $this;
     }
 
-    /**
-     * @param DateTime $time
-     *
-     * @return $this
-     */
-    public function setVisibleTo(DateTime $time = null)
+    public function setVisibleTo(DateTime $time = null): PageInterface
     {
         $this->{self::ATTR_VISIBLE_TO} = $time ? $time->getTimestamp() : null;
 
@@ -1054,22 +852,11 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
             });
     }
 
-    /**
-     * @param Builder $query
-     *
-     * @return Builder
-     */
     public function scopeIsVisible(Builder $query)
     {
         return $query->isVisibleAtTime(time());
     }
 
-    /**
-     * @param Builder $query
-     * @param int     $time
-     *
-     * @return Builder
-     */
     public function scopeIsVisibleAtTime(Builder $query, $time)
     {
         return $query
@@ -1082,9 +869,6 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
             });
     }
 
-    /**
-     * @param string $value
-     */
     public function setDescriptionAttribute($value)
     {
         $this->attributes[self::ATTR_DESCRIPTION] = strip_tags($value);
@@ -1097,9 +881,6 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
         $this->attributes[self::ATTR_INTERNAL_NAME] = $value ? $value : null;
     }
 
-    /**
-     * @param string $value
-     */
     public function setPrimaryUriAttribute($value)
     {
         $this->attributes[self::ATTR_PRIMARY_URI] = URLHelper::sanitise($value);

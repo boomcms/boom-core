@@ -125,7 +125,8 @@ class VersionTest extends BaseControllerTest
             ->once()
             ->with(m::on(function (\DateTime $value) use ($now) {
                 return $value->getTimestamp() === $now;
-            }));
+            }))
+            ->andReturnSelf();
 
         $this->version
             ->shouldReceive('getStatus')
@@ -144,7 +145,8 @@ class VersionTest extends BaseControllerTest
         $this->page
             ->shouldReceive('setTemplate')
             ->once()
-            ->with($template);
+            ->with($template)
+            ->andReturnSelf();
 
         $this->version
             ->shouldReceive('getStatus')

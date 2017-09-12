@@ -89,7 +89,7 @@ class PagePolicyTest extends AbstractTestCase
         $page
             ->shouldReceive('getAclGroupIds')
             ->once()
-            ->andReturn([]);
+            ->andReturn(collect([]));
 
         $page
             ->shouldReceive('aclEnabled')

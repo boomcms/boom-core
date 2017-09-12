@@ -32,7 +32,7 @@ class CreatePageTest extends AbstractTestCase
 
         $this->parent
             ->shouldReceive('getAclGroupIds')
-            ->andReturn([]);
+            ->andReturn(collect([]));
 
         $this->expectsEvents(PageWasCreated::class);
     }

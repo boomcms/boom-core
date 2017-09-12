@@ -43,8 +43,13 @@ class DeletePageJobTest extends AbstractTestCase
     {
         $page = $this->validPage();
         $newParent = $this->validPage(2);
+
         $child = m::mock(PageModel::class);
-        $child->shouldReceive('setParent')->with($newParent);
+        $child
+            ->shouldReceive('setParent')
+            ->once()
+            ->with($newParent)
+            ->andReturnSelf();
 
         $job = new Jobs\DeletePage($page, ['reparentChildrenTo' => $newParent->getId()]);
 

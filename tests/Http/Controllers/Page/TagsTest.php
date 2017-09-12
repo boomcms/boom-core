@@ -59,7 +59,11 @@ class TagsTest extends BaseControllerTest
 
     public function testRemove()
     {
-        $this->page->shouldReceive('removeTag')->with($this->tag);
+        $this->page
+            ->shouldReceive('removeTag')
+            ->once()
+            ->with($this->tag)
+            ->andReturnSelf();
 
         $this->controller->remove($this->page, $this->tag);
     }

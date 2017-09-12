@@ -37,7 +37,8 @@ class RelationsTest extends BaseControllerTest
         $this->page
             ->shouldReceive('removeRelation')
             ->once()
-            ->with($this->related);
+            ->with($this->related)
+            ->andReturnSelf();
 
         $this->expectsEvents(PageRelationshipRemoved::class);
 

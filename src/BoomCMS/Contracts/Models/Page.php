@@ -3,196 +3,119 @@
 namespace BoomCMS\Contracts\Models;
 
 use DateTime;
+use Illuminate\Support\Collection;
 
 interface Page
 {
     /**
-     * Whether ACL is enabled.
-     *
-     * @return bool
+     * Whether ACL is enabled
      */
-    public function aclEnabled();
+    public function aclEnabled(): bool;
 
     /**
      * Add a group which can view this page.
-     *
-     * @param int $groupId
      */
-    public function addAclGroupId($groupId);
+    public function addAclGroupId(int $groupId): Page;
 
     /**
      * Add a related page.
      *
      * @param Page $page
-     *
-     * @return $this
      */
-    public function addRelation(Page $page);
+    public function addRelation(Page $page): Page;
 
     /**
      * Add a tag to the page.
      *
      * @param Tag $tag
-     *
-     * @return $this
      */
-    public function addTag(Tag $tag);
+    public function addTag(Tag $tag): Page;
 
-    /**
-     * @return bool
-     */
-    public function allowsExternalIndexing();
+    public function allowsExternalIndexing(): bool;
 
-    /**
-     * @return bool
-     */
-    public function allowsInternalIndexing();
+    public function allowsInternalIndexing(): bool;
 
-    /**
-     * @return bool
-     */
-    public function canBeDeleted();
+    public function canBeDeleted(): bool;
 
-    /**
-     * @return bool
-     */
-    public function childrenAreVisibleInNav();
+    public function childrenAreVisibleInNav(): bool;
 
-    /**
-     * @return bool
-     */
-    public function childrenAreVisibleInCmsNav();
+    public function childrenAreVisibleInCmsNav(): bool;
 
-    /**
-     * @return int
-     */
-    public function countChildren();
+    public function countChildren(): int;
 
-    /**
-     * @return array
-     */
-    public function getAclGroupIds();
+    public function getAclGroupIds(): Collection;
 
-    /**
-     * @return int
-     */
-    public function getAddPageBehaviour();
+    public function getAddPageBehaviour(): int;
 
     /**
      * Returns the Page to use as the parent when the add page button is used on this page.
      *
      * Either the current page or its parent depending on the add page behaviour settings.
-     *
-     * @return Page
      */
-    public function getAddPageParent();
+    public function getAddPageParent(): Page;
 
-    /**
-     * @return int
-     */
-    public function getChildAddPageBehaviour();
+    public function getChildAddPageBehaviour(): int;
 
     /**
      * Returns an array of [column, direction].
-     *
-     * @return array
      */
-    public function getChildOrderingPolicy();
+    public function getChildOrderingPolicy(): array;
 
-    /**
-     * @return string
-     */
-    public function getChildPageUrlPrefix();
+    public function getChildPageUrlPrefix(): string;
 
-    /**
-     * @return int
-     */
     public function getCreatedBy();
 
-    /**
-     * @return DateTime
-     */
-    public function getCreatedTime();
+    public function getCreatedTime(): DateTime;
+
+    public function getDescription(): string;
+
+    public function getDefaultChildTemplateId(): int;
+
+    public function getDefaultGrandchildTemplateId(): int;
 
     /**
-     * @return string
-     */
-    public function getDescription();
-
-    /**
-     * @return int
-     */
-    public function getDefaultChildTemplateId();
-
-    /**
-     * @return int
-     */
-    public function getDefaultGrandchildTemplateId();
-
-    /**
-     * @return Asset
+     * @return Asset|null
      */
     public function getFeatureImage();
 
-    /**
-     * @return int
-     */
-    public function getGrandchildTemplateId();
+    public function getGrandchildTemplateId(): int;
+
+    public function getId(): int;
+
+    public function getInternalName(): string;
+
+    public function getKeywords(): string;
+
+    public function getLastModified(): DateTime;
+
+    public function getLastPublished(): PageVersion;
+
+    public function getManualOrderPosition(): int;
 
     /**
-     * @return int
-     */
-    public function getId();
-
-    /**
-     * @return string
-     */
-    public function getInternalName();
-
-    /**
-     * @return string
-     */
-    public function getKeywords();
-
-    /**
-     * @return DateTime
-     */
-    public function getLastModified();
-
-    /**
-     * @return PageVersion
-     */
-    public function getLastPublished();
-
-    /**
-     * @return int
-     */
-    public function getManualOrderPosition();
-
-    /**
-     * @return Page
+     * @return Page|null
      */
     public function getParent();
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getParentId();
 
     /**
      * Returns the site that the page belongs to.
      *
-     * @return Site
+     * @return Site|null
      */
     public function getSite();
 
     /**
-     * @return Template
+     * @return Template|null
      */
     public function getTemplate();
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getTemplateId();
 
@@ -201,310 +124,117 @@ interface Page
      */
     public function getUrls();
 
-    /**
-     * @return DateTime
-     */
-    public function getVisibleFrom();
+    public function getVisibleFrom(): DateTime;
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getVisibleTo();
 
-    /**
-     * @return bool
-     */
-    public function hasChildren();
+    public function hasChildren(): bool;
 
-    /**
-     * @return bool
-     */
-    public function isDeleted();
+    public function isDeleted(): bool;
 
     /**
      * Returns whether this page is the parent of a given page.
      *
      * @param Page $page
-     *
-     * @return bool
      */
-    public function isParentOf(Page $page);
+    public function isParentOf(Page $page): bool;
 
     /**
      * Returns true if the page doesn't have a parent.
-     *
-     * @return bool
      */
-    public function isRoot();
+    public function isRoot(): bool;
 
     /**
      * Returns true if the page is visible at the current time.
-     *
-     * @return bool
      */
-    public function isVisible();
+    public function isVisible(): bool;
 
-    /**
-     * @return bool
-     */
-    public function isVisibleAtAnyTime();
+    public function isVisibleAtAnyTime(): bool;
 
-    /**
-     * @param DateTime
-     *
-     * @return bool
-     */
-    public function isVisibleAtTime(DateTime $time);
+    public function isVisibleAtTime(DateTime $time): bool;
 
-    /**
-     * @return bool
-     */
-    public function isVisibleInCmsNav();
+    public function isVisibleInCmsNav(): bool;
 
-    /**
-     * @return bool
-     */
-    public function isVisibleInNav();
+    public function isVisibleInNav(): bool;
 
-    /**
-     * @return $this
-     */
-    public function markUpdatesAsPendingApproval();
+    public function markUpdatesAsPendingApproval(): Page;
 
     /**
      * Remove a group from being able to view this page.
-     *
-     * @param int $groupId
      */
-    public function removeAclGroupId($groupId);
+    public function removeAclGroupId(int $groupId): Page;
 
     /**
      * Remove the relationship with another page.
-     *
-     * @param Page $page
-     *
-     * @return $this
      */
-    public function removeRelation(Page $page);
+    public function removeRelation(Page $page): Page;
 
     /**
      * Remove a tag from the page.
-     *
-     * @param Tag $tag
-     *
-     * @return $this
      */
-    public function removeTag(Tag $tag);
+    public function removeTag(Tag $tag): Page;
 
     /**
      * Set whether ACL is enabled for the page.
-     *
-     * @param bool $enabled
      */
-    public function setAclEnabled($enabled);
+    public function setAclEnabled(bool $enabled): Page;
 
-    /**
-     * @param int $value
-     *
-     * @return $this
-     */
-    public function setAddPageBehaviour($value);
+    public function setAddPageBehaviour(int $value): Page;
 
-    /**
-     * @param int $value
-     *
-     * @return $this
-     */
-    public function setChildAddPageBehaviour($value);
+    public function setChildAddPageBehaviour(int $value): Page;
 
-    /**
-     * @param PageVersion $version
-     *
-     * @return $this
-     */
-    public function setCurrentVersion(PageVersion $version);
+    public function setCurrentVersion(PageVersion $version): Page;
 
-    /**
-     * @param bool $value
-     *
-     * @return $this
-     */
-    public function setDisableDelete($value);
+    public function setDisableDelete(bool $value): Page;
 
-    /**
-     * @param int
-     *
-     * @return $this
-     */
-    public function setChildTemplateId($id);
+    public function setChildTemplateId(int $id): Page;
 
-    /**
-     * @param string $column
-     * @param string $direction
-     *
-     * @return $this
-     */
-    public function setChildOrderingPolicy($column, $direction);
+    public function setChildOrderingPolicy(string $column, string $direction): Page;
 
-    /**
-     * @param string $prefix
-     *
-     * @return $this
-     */
-    public function setChildrenUrlPrefix($prefix);
+    public function setChildrenUrlPrefix(string $prefix): Page;
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setChildrenVisibleInNav($visible);
+    public function setChildrenVisibleInNav(bool $visible): Page;
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setChildrenVisibleInNavCMS($visible);
+    public function setChildrenVisibleInNavCMS(bool $visible): Page;
 
-    /**
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description);
+    public function setDescription(string $description): Page;
 
-    /**
-     * @param bool $indexing
-     *
-     * @return $this
-     */
-    public function setExternalIndexing($indexing);
+    public function setExternalIndexing(bool $indexing): Page;
 
-    /**
-     * @param int $featureImageId
-     *
-     * @return $this
-     */
-    public function setFeatureImageId($featureImageId);
+    public function setFeatureImageId(int $featureImageId = null): Page;
 
-    /**
-     * @param int $templateId
-     *
-     * @return $this
-     */
-    public function setGrandchildTemplateId($templateId);
+    public function setGrandchildTemplateId(int $templateId): Page;
 
-    /**
-     * Set an embargo time for the current version.
-     *
-     * @param DateTime $time
-     *
-     * @return $this
-     */
-    public function setEmbargoTime(DateTime $time);
+    public function setEmbargoTime(DateTime $time): Page;
 
-    /**
-     * @param bool $indexing
-     *
-     * @return $this
-     */
-    public function setInternalIndexing($indexing);
+    public function setInternalIndexing(bool $indexing): Page;
 
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setInternalName($name);
+    public function setInternalName(string $name): Page;
 
-    /**
-     * @param string $keywords
-     *
-     * @return $this
-     */
-    public function setKeywords($keywords);
+    public function setKeywords(string $keywords): Page;
 
-    /**
-     * @param Page $parent
-     *
-     * @return $this
-     */
-    public function setParent(self $parent);
+    public function setParent(Page $parent): Page;
 
-    /**
-     * Set the primary URI attribute.
-     *
-     * @param string
-     *
-     * @return $this
-     */
-    public function setPrimaryUri($uri);
+    public function setPrimaryUri(string $uri): Page;
 
-    /**
-     * @param int $sequence
-     *
-     * @return $this
-     */
-    public function setSequence($sequence);
+    public function setSequence(int $sequence): Page;
 
-    /**
-     * @param Template $template
-     *
-     * @return $this
-     */
-    public function setTemplate(Template $template);
+    public function setTemplate(Template $template): Page;
 
-    /**
-     * Set the title of the page.
-     *
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function setTitle($title);
+    public function setTitle(string $title): Page;
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setVisibleAtAnyTime($visible);
+    public function setVisibleAtAnyTime(bool $visible): Page;
 
-    /**
-     * @param DateTime $time
-     *
-     * @return $this
-     */
-    public function setVisibleFrom(DateTime $time);
+    public function setVisibleFrom(DateTime $time): Page;
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setVisibleInCmsNav($visible);
+    public function setVisibleInCmsNav(bool $visible): Page;
 
-    /**
-     * @param bool $visible
-     *
-     * @return $this
-     */
-    public function setVisibleInNav($visible);
+    public function setVisibleInNav(bool $visible): Page;
 
-    /**
-     * @param DateTime $time
-     *
-     * @return $this
-     */
-    public function setVisibleTo(DateTime $time = null);
+    public function setVisibleTo(DateTime $time = null): Page;
 
-    /**
-     * Returns true if the given person created the page.
-     *
-     * @param Person $person
-     *
-     * @return bool
-     */
-    public function wasCreatedBy(Person $person);
+    public function wasCreatedBy(Person $person): bool;
 }

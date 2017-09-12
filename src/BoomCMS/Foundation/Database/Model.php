@@ -21,8 +21,8 @@ abstract class Model extends BaseModel
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
-        return $this->{static::ATTR_ID};
+        return (int) $this->{static::ATTR_ID};
     }
 }
