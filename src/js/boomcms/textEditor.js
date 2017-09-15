@@ -92,6 +92,7 @@
                     },
                     setup: function(ed) {
                         self.setup(ed);
+                        self.removeTinymceClass();
                     },
                     skin_url: this.skin_url,
                     invalid_styles: self.invalid_styles
@@ -109,6 +110,7 @@
                     },
                     setup: function(ed) {
                         self.setup(ed);
+                        self.removeTinymceClass();
                     },
                     skin_url: this.skin_url,
                     custom_ui_selector: '#b-title-length',
@@ -150,6 +152,24 @@
                         }
                     });
             }
+        },
+
+        /**
+         * Removes the mce-content-body class from the editable element.
+         *
+         * This is added to elements by TinyMCE and there doesn't appear to be a away of disabling it.
+         *
+         * This class causes uses for inline elements by messing up the line height.
+         * As inline elements can't contain tables, images, etc. there's no need for this class to be added.
+         *
+         * @returns {undefined}
+         */
+        removeTinymceClass: function() {
+            var $el = this.element;
+
+            setTimeout(function() {
+                $el.removeClass('mce-content-body');
+            }, 0);
         },
 
         save: function() {
