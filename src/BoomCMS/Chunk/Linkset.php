@@ -111,7 +111,7 @@ class Linkset extends BaseChunk
             }
         }
 
-        return $links;
+        return array_values($links);
     }
 
     /**
