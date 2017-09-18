@@ -48155,7 +48155,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.$('button[data-view]')
                 .removeClass('active')
-                .filter('[data-view="' + section + '"]')
+                .filter('[data-active="' + section + '"]')
                 .addClass('active');
         },
 
