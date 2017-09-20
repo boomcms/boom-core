@@ -133,6 +133,23 @@ class ChunkLinksetTest extends AbstractTestCase
         $this->assertCount($limit, $chunk->getLinks($limit));
     }
 
+    public function testFeature()
+    {
+        $linkset = m::mock(Linkset::class)->makePartial();
+
+        $linkset
+            ->shouldReceive('setOptions')
+            ->once()
+            ->with([
+                'link-text'   => true,
+                'link-title'  => true,
+                'link-asset'  => true,
+                'limit'       => 1,
+            ]);
+
+        $linkset->feature();
+    }
+
     protected function chunk(array $attrs = [], $editable = false)
     {
         return new Linkset(new Page(), $attrs, 'test', $editable);

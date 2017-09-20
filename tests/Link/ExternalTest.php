@@ -39,7 +39,6 @@ class ExternalTest extends AbstractTestCase
 
         foreach ($attrs as $a) {
             $links = [
-                'http://www.google.com/test',
                 'www.google.com/test',
                 'www.google.com/test?test=test#test',
             ];
@@ -49,6 +48,22 @@ class ExternalTest extends AbstractTestCase
 
                 $this->assertEquals($l, $link->getTitle());
             }
+        }
+    }
+
+    /**
+     * @depends testGetTitleReturnsTheUrl
+     */
+    public function testGetTitleTitleReturnsTheUrlWithoutTheProtocol()
+    {
+        $protocols = ['http://', 'https://', 'mailto:', 'tel:'];
+
+        foreach ($protocols as $protocol) {
+            $url = 'test'; // Doesn't really matter whether the URL is valid or not
+
+            $link = new Link($protocol.$url);
+
+            $this->assertEquals($url, $link->getTitle());
         }
     }
 
