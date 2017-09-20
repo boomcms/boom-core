@@ -6,8 +6,11 @@ class External extends Link
 {
     public function getTitle(): string
     {
-        return (isset($this->attrs['title']) && !empty($this->attrs['title'])) ?
-            $this->attrs['title'] : $this->url();
+        if (isset($this->attrs['title']) && !empty($this->attrs['title'])) {
+            return $this->attrs['title'];
+        }
+
+        return preg_replace('~^https?://|mailto:|tel:~', '', $this->url());
     }
 
     public function url()
