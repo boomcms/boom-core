@@ -46728,6 +46728,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         };
 
         BoomCMS.ChunkLinksetEditor.prototype.editLink = function($a) {
+            var $div = this.dialog.contents.find('form div');
+
             this.currentLink = $a;
 
             this.dialog.contents
@@ -46735,10 +46737,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .addClass('visible')
                 .find('.back')
                 .focus()
-                .end()
-                .find('form div')
-                .removeClass()
-                .addClass($a.attr('data-page-id') ? 'optional' : '')
                 .end()
                 .find('.b-linkset-target input[type=text]')
                 .val($a.attr('data-url'))
@@ -46750,8 +46748,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .val($a.attr('data-text'))
                 .end();
 
-            this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
+            if (this.options['linkTitle'] || this.options['linkText'] || this.options['linkAsset']) {
+                $div
+                    .show()
+                    .removeClass()
+                    .addClass($a.attr('data-page-id') ? 'optional' : '');
+            } else {
+                $div.hide();
+            }
 
+            this.toggleLinkAsset(new BoomCMS.Asset({id: $a.attr('data-asset')}));
             this.resize();
         };
 
