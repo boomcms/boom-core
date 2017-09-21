@@ -6,7 +6,7 @@
 
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
         <div id="tab-controls">
-            <?= $button('th', 'view-assets', ['data-view' => '', 'data-active' => 'home']) ?>
+            <?= $button('th', 'view-albums', ['data-view' => '', 'data-active' => 'home']) ?>
 
             <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
                 <?= $button('upload', 'upload', ['data-view' => 'upload', 'data-active' => 'upload']) ?>
