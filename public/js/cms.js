@@ -47592,15 +47592,12 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.externalTypeSelector
                 .on('change', function() {
                     var type = linkPicker.externalTypeSelector.val(),
-                        val = linkPicker.externalUrl.val();
+                        val = linkPicker.externalUrl.val(),
+                        autocomplete = (type === 'http' || type === 'https') ? 'enable' : 'disable';
 
-                    if (type === 'http' || type === 'https') {
-                        linkPicker.externalUrl.autocomplete('enable');
-                    } else {
-                        linkPicker.externalUrl.autocomplete('disable');
-                    }
+                    linkPicker.externalUrl.autocomplete(autocomplete);
 
-                    if (val === 'http://') {
+                    if (val === 'http://' || val === 'https://') {
                         linkPicker.externalUrl.val('');
                     }
 
