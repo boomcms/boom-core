@@ -44,10 +44,10 @@ class Linkset extends BaseChunk
     public function feature(): Linkset
     {
         return $this->setOptions([
-            'link-text'   => true,
-            'linkt-title' => true,
-            'link-asset'  => true,
-            'limit'       => 1,
+            'link-text'  => true,
+            'link-title' => true,
+            'link-asset' => true,
+            'limit'      => 1,
         ]);
     }
 
