@@ -49848,12 +49848,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
         this.cancel = function() {
             this.deferred.reject();
-            this.dialog.cancel();
+            this.close();
         };
 
         this.close = function() {
             this.dialog.cancel();
+
             this.searchResultsView = undefined;
+
+            this.assets.off();
+            this.assets = undefined;
         };
 
         this.hideCurrentAsset = function() {
