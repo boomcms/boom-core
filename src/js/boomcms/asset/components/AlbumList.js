@@ -34,7 +34,7 @@
                 view.refreshThumbnail(album);
             });
 
-            this.listenTo(this.$el, 'rendered', function() {
+            this.$el.on('rendered', function() {
                 view.lazyLoadThumbnails();
             });
 
