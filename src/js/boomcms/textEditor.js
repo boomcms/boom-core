@@ -73,7 +73,8 @@
                    ],
                     media_alt_source: false,
                     media_dimensions: false,
-                    invalid_styles: self.invalid_styles
+                    invalid_styles: self.invalid_styles,
+                    browser_spellcheck: true
                 });
             } else if (mode === 'inline') {
                 tinymce.init({
@@ -95,7 +96,8 @@
                         self.removeTinymceClass();
                     },
                     skin_url: this.skin_url,
-                    invalid_styles: self.invalid_styles
+                    invalid_styles: self.invalid_styles,
+                    browser_spellcheck: true
                 });
             } else {
                 tinymce.init({
@@ -114,7 +116,8 @@
                     },
                     skin_url: this.skin_url,
                     custom_ui_selector: '#b-title-length',
-                    invalid_styles: self.invalid_styles
+                    invalid_styles: self.invalid_styles,
+                    browser_spellcheck: true
                 });
             }
         },
