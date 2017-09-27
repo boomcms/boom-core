@@ -48187,6 +48187,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             if (errors.length > 0) {
                 this.showUploadErrors(errors);
             }
+
+            this.assets = this.uploaded;
+            this.$el.addClass('has-uploads');
         },
 
         viewAlbum: function(slug) {
