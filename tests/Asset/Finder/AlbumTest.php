@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Asset\Finder;
 
-use BoomCMS\Core\Asset\Finder\Album as Filter;
+use BoomCMS\Asset\Finder\Album as Filter;
 use BoomCMS\Database\Models\Album;
 use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Tests\AbstractTestCase;

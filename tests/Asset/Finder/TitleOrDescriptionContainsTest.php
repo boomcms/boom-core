@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Asset\Finder;
 
-use BoomCMS\Core\Asset\Finder\TitleOrDescriptionContains;
+use BoomCMS\Asset\Finder\TitleOrDescriptionContains;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;

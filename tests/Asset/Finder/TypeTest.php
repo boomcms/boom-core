@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Asset\Finder;
 
-use BoomCMS\Core\Asset\Finder\Type;
+use BoomCMS\Asset\Finder\Type;
 use BoomCMS\Tests\AbstractTestCase;
 
 class TypeTest extends AbstractTestCase

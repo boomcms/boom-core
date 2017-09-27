@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Asset\Finder;
+namespace BoomCMS\Asset\Finder;
 
 use BoomCMS\Contracts\Models\Album as AlbumContract;
 use BoomCMS\Foundation\Finder\Filter as BaseFilter;

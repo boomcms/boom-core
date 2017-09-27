@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Asset\Finder;
 
-use BoomCMS\Core\Asset\Finder\Extension;
+use BoomCMS\Asset\Finder\Extension;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;

@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Asset;
+namespace BoomCMS\Asset;
 
 use BoomCMS\Foundation\Query as BaseQuery;
 

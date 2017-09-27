@@ -4,7 +4,7 @@ namespace BoomCMS\Support;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
-use BoomCMS\Core\Asset;
+use BoomCMS\Asset;
 use BoomCMS\Core\Tag;
 use BoomCMS\Database\Models\Chunk;
 use BoomCMS\Page;

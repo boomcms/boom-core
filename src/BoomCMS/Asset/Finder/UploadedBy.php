@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Asset\Finder;
+namespace BoomCMS\Asset\Finder;
 
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Database\Models\Asset;

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Asset\Finder;
 
-use BoomCMS\Core\Asset\Finder\Site as SiteFilter;
+use BoomCMS\Asset\Finder\Site as SiteFilter;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;

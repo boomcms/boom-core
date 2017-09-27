@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Asset\Finder;
+namespace BoomCMS\Asset\Finder;
 
 use BoomCMS\Database\Models\Asset as Model;
 use BoomCMS\Foundation\Finder\Finder as BaseFinder;

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Asset\Finder;
 
-use BoomCMS\Core\Asset\Finder\UploadedBy;
+use BoomCMS\Asset\Finder\UploadedBy;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Support\Facades\Person as PersonFacade;
