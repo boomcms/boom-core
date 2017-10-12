@@ -194,6 +194,6 @@ class Asset implements AssetRepositoryInterface
 
     public function thumbnail(AssetInterface $asset)
     {
-        return $this->filesystem->readStream($this->getThumbnailFilename($asset));
+        return $this->filesystem->get($this->getThumbnailFilename($asset));
     }
 }
