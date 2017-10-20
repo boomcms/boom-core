@@ -44,7 +44,7 @@ class AssetSelectionController extends Controller
         $zip->open($filename, ZipArchive::CREATE);
 
         foreach ($assets as $asset) {
-            $zip->addFromString($asset->getOriginalFilename(), file_get_contents(AssetFacade::path($asset)));
+            $zip->addFile(AssetFacade::path($asset), $asset->getOriginalFilename());
         }
 
         $zip->close();
