@@ -9,7 +9,6 @@ abstract class BaseDriverTest extends AbstractTestCase
 {
     protected function getInfo($filename)
     {
-        
         $filesystem = new FilesystemAdapter($driver);
 
         $path = realpath(__DIR__."/../files/$filename");

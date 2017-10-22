@@ -5,7 +5,6 @@ namespace BoomCMS\Contracts\Repositories;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface AssetVersion extends Repository
 {

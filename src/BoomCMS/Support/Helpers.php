@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Support;
 
+use BoomCMS\Asset;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
-use BoomCMS\Asset;
 use BoomCMS\Core\Tag;
 use BoomCMS\Database\Models\Chunk;
 use BoomCMS\Page;
