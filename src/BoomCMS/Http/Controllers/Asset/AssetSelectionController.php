@@ -32,8 +32,9 @@ class AssetSelectionController extends Controller
         }
 
         if (count($assets) === 1) {
-            return Response::make(AssetFacade::file($assets[0]), 200, [
-                'content-disposition' => 'download; filename="'.$assets[0]->getOriginalFilename().'"',
+            return Response::file(AssetFacade::path($assets[0]), [
+                'Content-Type'        => $assets[0]->getMimetype(),
+                'Content-Disposition' => 'download; filename="'.$assets[0]->getOriginalFilename().'"',
             ]);
         }
 
@@ -43,7 +44,7 @@ class AssetSelectionController extends Controller
         $zip->open($filename, ZipArchive::CREATE);
 
         foreach ($assets as $asset) {
-            $zip->addFromString($asset->getOriginalFilename(), AssetFacade::file($asset));
+            $zip->addFile(AssetFacade::path($asset), $asset->getOriginalFilename());
         }
 
         $zip->close();
