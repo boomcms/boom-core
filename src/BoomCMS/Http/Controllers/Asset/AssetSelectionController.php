@@ -33,8 +33,8 @@ class AssetSelectionController extends Controller
 
         if (count($assets) === 1) {
             return Response::file(AssetFacade::path($assets[0]), [
-                        'Content-Type'        => $assets[0]->getMimetype(),
-                        'Content-Disposition' => 'download; filename="'.$assets[0]->getOriginalFilename().'"',
+                'Content-Type'        => $assets[0]->getMimetype(),
+                'Content-Disposition' => 'download; filename="'.$assets[0]->getOriginalFilename().'"',
             ]);
         }
 
