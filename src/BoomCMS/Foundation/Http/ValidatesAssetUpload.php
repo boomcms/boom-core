@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Foundation\Http;
 
-use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
