@@ -49,13 +49,6 @@ class AssetSelectionController extends Controller
 
         $zip->close();
 
-        $response = Response::make()
-            ->header('Content-type', 'application/zip')
-            ->header('Content-Disposition', "attachment; filename=$downloadFilename")
-            ->setContent(file_get_contents($filename));
-
-        unlink($filename);
-
-        return $response;
+        return Response::download($filename, $downloadFilename)->deleteFileAfterSend(true);
     }
 }
