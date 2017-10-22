@@ -54,7 +54,7 @@ class Svg extends Image
     protected function getXmlAttrs()
     {
         if ($this->xmlAttrs === null) {
-            $xml = simplexml_load_file($this->file->getPathname());
+            $xml = simplexml_load_file($this->readStream());
             $this->xmlAttrs = $xml->attributes();
         }
 

@@ -5,26 +5,19 @@ namespace BoomCMS\Contracts\Repositories;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetObject;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use BoomCMS\FileInfo\Contracts\FileInfoDriver;
+use Illuminate\Contracts\Filesystem\Factory as Filesystem;
 use Illuminate\Support\Collection;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface Asset extends Repository
 {
     public function __construct(
         AssetObject $model,
         AssetVersionRepositoryInterface $version,
-        Filesystem $filesystem
+        Filesystem $filesystems
     );
 
-    /**
-     * Create an asset from an uploaded file.
-     *
-     * @param UploadedFile $file
-     *
-     * @return AssetInterface
-     */
-    public function createFromFile(UploadedFile $file): AssetInterface;
+    public function createFromFile(string $disk, FileInfoDriver $file): AssetInterface;
 
     /**
      * Returns the extensions which exist in the database.

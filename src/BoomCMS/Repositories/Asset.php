@@ -8,11 +8,11 @@ use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterfa
 use BoomCMS\Contracts\Repositories\Repository as RepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
-use BoomCMS\FileInfo\Facade as FileInfo;
+use BoomCMS\FileInfo\Contracts\FileInfoDriver;
 use BoomCMS\Foundation\Repository;
 use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Contracts\Filesystem\Factory as Filesystem;
 use Illuminate\Support\Collection;
 use Imagick;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -20,12 +20,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Asset extends Repository implements AssetRepositoryInterface
 {
     /**
-     * <<<<<<< HEAD
-     * =======.
-     *
      * @var Filesystem
      */
-    protected $filesystem;
+    protected $filesystems;
 
     /**
      * @var AssetModel
@@ -33,8 +30,6 @@ class Asset extends Repository implements AssetRepositoryInterface
     protected $model;
 
     /**
-     * >>>>>>> 7.0.
-     *
      * @var AssetVersionRepositoryInterface
      */
     protected $version;
@@ -46,11 +41,11 @@ class Asset extends Repository implements AssetRepositoryInterface
     public function __construct(
         AssetModel $model,
         AssetVersionRepositoryInterface $version,
-        Filesystem $filesystem)
+        Filesystem $filesystems)
     {
         $this->model = $model;
         $this->version = $version;
-        $this->filesystem = $filesystem;
+        $this->filesystems = $filesystems;
     }
 
     /**
@@ -60,7 +55,7 @@ class Asset extends Repository implements AssetRepositoryInterface
      *
      * @return int
      */
-    public function createFromFile(UploadedFile $file): AssetInterface
+    public function createFromUploadedFile(UploadedFile $file): AssetInterface
     {
         $info = FileInfo::create($file);
 
@@ -68,7 +63,7 @@ class Asset extends Repository implements AssetRepositoryInterface
         $asset
             ->setTitle($info->getTitle() ?: $file->getClientOriginalName())
             ->setPublishedAt($info->getCreatedAt())
-            ->setType(AssetHelper::typeFromMimetype($file->getMimeType()))
+            ->setType($info->getType())
             ->setDescription($info->getDescription())
             ->setCredits($info->getCopyright());
 
@@ -77,6 +72,27 @@ class Asset extends Repository implements AssetRepositoryInterface
         $this->version->createFromFile($asset, $file, $info);
 
         $this->saveFile($asset, $file, $info->getThumbnail());
+
+        return $asset;
+    }
+
+    public function createFromFile(string $disk, FileInfoDriver $file): AssetInterface
+    {
+        $asset = new AssetModel();
+        $asset
+            ->setTitle($file->getTitle() ?: $file->getFilename())
+            ->setPublishedAt($file->getCreatedAt())
+            ->setType($file->getAssetType())
+            ->setDescription($file->getDescription())
+            ->setCredits($file->getCopyright());
+
+        $this->save($asset);
+
+        $this->version->createFromFile($asset, $disk, $file);
+
+        if (!$asset->isImage() && $file->getThumbnail()) {
+            $this->saveThumbnail($asset, $disk, $file->getThumbnail());
+        }
 
         return $asset;
     }
@@ -108,7 +124,9 @@ class Asset extends Repository implements AssetRepositoryInterface
      */
     public function exists(AssetInterface $asset): bool
     {
-        return $this->filesystem->exists($asset->getLatestVersionId());
+        return $this->filesystems
+            ->disk($asset->getLatestVersion()->getFilesystem())
+            ->exists($asset->getPath());
     }
 
     /**
@@ -144,7 +162,9 @@ class Asset extends Repository implements AssetRepositoryInterface
 
     public function path(AssetInterface $asset): string
     {
-        return $this->filesystem->path($asset->getLatestVersionId());
+        return $this->filesystems
+            ->disk($asset->getLatestVersion()->getFilesystem())
+            ->path($asset->getPath());
     }
 
     public function replaceWith(AssetInterface $asset, UploadedFile $file)
@@ -175,13 +195,11 @@ class Asset extends Repository implements AssetRepositoryInterface
         return $asset;
     }
 
-    public function saveFile(AssetInterface $asset, UploadedFile $file, Imagick $thumbnail = null)
+    public function saveThumbnail(AssetInterface $asset, string $disk, Imagick $thumbnail = null)
     {
-        $this->filesystem->putFileAs(null, $file, $asset->getLatestVersionId());
-
-        if ($thumbnail) {
-            $this->filesystem->put($this->getThumbnailFilename($asset), $thumbnail->getImageBlob());
-        }
+        $this->filesystems
+            ->disk($disk)
+            ->put($this->getThumbnailFilename($asset), $thumbnail->getImageBlob());
     }
 
     /**
@@ -191,11 +209,15 @@ class Asset extends Repository implements AssetRepositoryInterface
      */
     public function stream(AssetInterface $asset)
     {
-        return $this->filesystem->readStream($asset->getLatestVersionId());
+        return $this->filesystems
+            ->disk($asset->getLatestVersion->getFilesystem())
+            ->readStream($asset->getLatestVersionId());
     }
 
     public function thumbnail(AssetInterface $asset)
     {
-        return $this->filesystem->readStream($this->getThumbnailFilename($asset));
+        return $this->filesystems
+            ->disk($asset->getLatestVersion()->getFilesystem())
+            ->readStream($this->getThumbnailFilename($asset));
     }
 }

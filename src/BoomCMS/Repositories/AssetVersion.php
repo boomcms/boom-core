@@ -6,10 +6,8 @@ use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
-use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Foundation\Repository;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AssetVersion extends Repository implements AssetVersionRepositoryInterface
 {
@@ -38,32 +36,23 @@ class AssetVersion extends Repository implements AssetVersionRepositoryInterface
         return $this->model->create($attrs);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param AssetInterface $asset
-     * @param UploadedFile   $file
-     * @param FileInfoDriver $info
-     *
-     * @return AssetVersionModel
-     */
     public function createFromFile(
         AssetInterface $asset,
-        UploadedFile $file,
-        FileInfoDriver $info = null
+        string $disk,
+        FileInfoDriver $info
     ): AssetVersionModel {
-        $info = $info ?: FileInfo::create($file);
-
         $version = $this->create([
             AssetVersionModel::ATTR_ASPECT_RATIO => $info->getAspectRatio(),
             AssetVersionModel::ATTR_WIDTH        => $info->getWidth(),
             AssetVersionModel::ATTR_HEIGHT       => $info->getHeight(),
             AssetVersionModel::ATTR_METADATA     => $info->getMetadata(),
-            AssetVersionModel::ATTR_EXTENSION    => $file->guessExtension(),
-            AssetVersionModel::ATTR_FILESIZE     => $file->getClientSize(),
-            AssetVersionModel::ATTR_FILENAME     => $file->getClientOriginalName(),
-            AssetVersionModel::ATTR_MIME         => $file->getMimeType(),
+            AssetVersionModel::ATTR_EXTENSION    => $info->getExtension(),
+            AssetVersionModel::ATTR_FILESIZE     => $info->getFilesize(),
+            AssetVersionModel::ATTR_FILENAME     => $info->getFilename(),
+            AssetVersionModel::ATTR_MIME         => $info->getMimetype(),
+            AssetVersionModel::ATTR_PATH         => $info->getPath(),
             AssetVersionModel::ATTR_ASSET        => $asset->getId(),
+            AssetVersionModel::ATTR_FILESYSTEM   => $disk,
         ]);
 
         $asset->setVersion($version);
@@ -85,5 +74,13 @@ class AssetVersion extends Repository implements AssetVersionRepositoryInterface
         $asset->setVersion($version);
 
         return $asset;
+    }
+
+    public function existsByFilesystemAndPath(string $disk, string $path): bool
+    {
+        return $this->model
+            ->where(AssetVersionModel::ATTR_FILESYSTEM, $disk)
+            ->where(AssetVersionModel::ATTR_PATH, $path)
+            ->exists();
     }
 }

@@ -51,4 +51,29 @@ class AssetVersionTest extends AbstractTestCase
 
         $this->assertEquals($version, $this->repository->find(1));
     }
+
+    public function testExistsByFilesystemAndPath()
+    {
+        $filesystem = 'local';
+        $path = 'test.jpg';
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with(AssetVersion::ATTR_FILESYSYEM, $filesystem)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('where')
+            ->once()
+            ->with(AssetVersion::ATTR_PATH, $path)
+            ->andReturnSelf();
+
+        $this->model
+            ->shouldReceive('exists')
+            ->once()
+            ->andReturn(true);
+
+        $this->assertEquals(true, $this->repository->existsByFilesystemAndPath($filesystem, $path));
+    }
 }

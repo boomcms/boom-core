@@ -3,7 +3,7 @@
 namespace BoomCMS\FileInfo;
 
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
-use Symfony\Component\HttpFoundation\File\File;
+use Illuminate\Filesystem\FilesystemAdapter;
 
 class FileInfo
 {
@@ -27,12 +27,12 @@ class FileInfo
      *
      * @return FileInfoDriver
      */
-    public function create(File $file): FileInfoDriver
+    public function create(FilesystemAdapter $filesystem, string $path): FileInfoDriver
     {
-        $driver = $this->getDriver($file->getMimeType());
+        $driver = $this->getDriver($filesystem->mimeType($path));
         $className = __NAMESPACE__.'\Drivers\\'.$driver;
 
-        return new $className($file);
+        return new $className($filesystem, $path);
     }
 
     /**

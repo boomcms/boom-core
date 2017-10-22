@@ -28,7 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
             return new Repositories\Asset(
                 new Models\Asset(),
                 $this->app[Repositories\AssetVersion::class],
-                $filesystem->disk('boomcms-assets')
+                $filesystem
             );
         });
 

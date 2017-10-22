@@ -5,6 +5,7 @@ namespace BoomCMS\Foundation\Http;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 
 trait ValidatesAssetUpload
@@ -30,15 +31,13 @@ trait ValidatesAssetUpload
             return $file->getErrorMessage();
         }
 
-        $type = AssetHelper::typeFromMimetype($file->getMimetype());
-
-        if ($type === null) {
-            return Lang::get('boomcms::asset.unsupported', [
-                'filename' => $file->getClientOriginalName(),
-                'mimetype' => $file->getMimetype(),
-            ]);
+        if (in_array($file->getMimeType(), Config::get('boomcms.assets.supported'))) {
+            return true;
         }
 
-        return true;
+        return Lang::get('boomcms::asset.unsupported', [
+            'filename' => $file->getClientOriginalName(),
+            'mimetype' => $file->getMimetype(),
+        ]);
     }
 }

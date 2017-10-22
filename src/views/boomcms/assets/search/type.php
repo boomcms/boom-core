@@ -2,7 +2,7 @@
     <select id="b-assets-types" name="type">
         <option value="0"><?= trans('boomcms::asset.type.all') ?></option>
 
-        <?php foreach (array_keys(AssetHelper::types()) as $type): ?>
+        <?php foreach (['audip', 'doc', 'image', 'video'] as $type): ?>
             <option value="<?= $type ?>"<?php if (isset($selected) && $selected == $type): ?> selected="selected"<?php endif ?>>
                 <?= trans('boomcms::asset.type.'.$type) ?>
             </option>

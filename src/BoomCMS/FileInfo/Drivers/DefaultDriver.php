@@ -3,14 +3,15 @@
 namespace BoomCMS\FileInfo\Drivers;
 
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
-use Symfony\Component\HttpFoundation\File\File;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 
 class DefaultDriver implements FileInfoDriver
 {
     /**
-     * @var File
+     * @var FilesystemAdapter
      */
-    protected $file;
+    protected $filesystem;
 
     /**
      * @var array
@@ -18,11 +19,19 @@ class DefaultDriver implements FileInfoDriver
     protected $metadata = null;
 
     /**
-     * @param File $file
+     * @var string
      */
-    public function __construct(File $file)
+    protected $originalFilename;
+
+    /**
+     * @var string
+     */
+    protected $path;
+
+    public function __construct(FilesystemAdapter $filesystem, string $path)
     {
-        $this->file = $file;
+        $this->filesystem = $filesystem;
+        $this->path = $path;
     }
 
     /**
@@ -37,6 +46,16 @@ class DefaultDriver implements FileInfoDriver
         }
 
         return $this->getWidth() / $this->getHeight();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return string
+     */
+    public function getAssetType(): string
+    {
+        return 'doc';
     }
 
     /**
@@ -66,6 +85,27 @@ class DefaultDriver implements FileInfoDriver
         return '';
     }
 
+    public function getExtension(): string
+    {
+        $extension = pathinfo($this->getPath(), PATHINFO_EXTENSION);
+
+        if (!empty($extension)) {
+            return $extension;
+        }
+
+        ExtensionGuesser::getInstance()->guess($this->getMimetype());
+    }
+
+    public function getFilename(): string
+    {
+        return $this->originalFilename ?: basename($this->getPath());
+    }
+
+    public function getFilesize(): int
+    {
+        return $this->filesystem->size($this->getPath());
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -90,6 +130,16 @@ class DefaultDriver implements FileInfoDriver
         }
 
         return $this->metadata;
+    }
+
+    public function getMimetype(): string
+    {
+        return $this->filesystem->mimeType($this->getPath());
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
     }
 
     /**
@@ -143,12 +193,24 @@ class DefaultDriver implements FileInfoDriver
     }
 
     /**
-     * This method should be overridden by drivers to provide custom behavior for reading metadata from a file.
+     * This method should be overridden by drivers to provide custom behaviour for reading metadata from a file.
      *
      * @return array
      */
     protected function readMetadata(): array
     {
         return [];
+    }
+
+    protected function readStream()
+    {
+        return $this->filesystem->path($this->path);
+    }
+
+    public function setOriginalFilename(string $filename): FileInfoDriver
+    {
+        $this->originalFilename = $filename;
+
+        return $this;
     }
 }

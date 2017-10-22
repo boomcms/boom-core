@@ -71,7 +71,7 @@ class AssetTest extends BaseRepositoryTest
             $this->filesystem
                 ->shouldReceive('exists')
                 ->once()
-                ->with($this->asset->getLatestVersionId())
+                ->with($this->asset->getLocalFilename())
                 ->andReturn($value);
 
             $this->repository->exists($this->asset);
@@ -158,7 +158,7 @@ class AssetTest extends BaseRepositoryTest
         $this->filesystem
             ->shouldReceive('path')
             ->once()
-            ->with($this->asset->getLatestVersionId())
+            ->with($this->asset->getLocalFilename())
             ->andReturn($path);
 
         $this->assertEquals($path, $this->repository->path($this->asset));
@@ -171,7 +171,7 @@ class AssetTest extends BaseRepositoryTest
         $this->filesystem
             ->shouldReceive('putFileAs')
             ->once()
-            ->with(null, $file, $this->asset->getLatestVersionId());
+            ->with(null, $file, $this->asset->getLocalFilename());
 
         $this->repository->saveFile($this->asset, $file);
     }
@@ -181,7 +181,7 @@ class AssetTest extends BaseRepositoryTest
         $this->filesystem
             ->shouldReceive('readStream')
             ->once()
-            ->with($this->asset->getLatestVersionId());
+            ->with($this->asset->getLocalFilename());
 
         $this->repository->stream($this->asset);
     }

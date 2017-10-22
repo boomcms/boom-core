@@ -44,7 +44,7 @@ class Word extends DefaultDriver
     protected function readMetadata(): array
     {
         try {
-            $phpWord = IOFactory::load($this->file->getPathname());
+            $phpWord = IOFactory::load($this->readStream());
             $docinfo = $phpWord->getDocInfo();
 
             $attrs = [

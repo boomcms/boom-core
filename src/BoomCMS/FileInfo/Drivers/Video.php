@@ -9,6 +9,11 @@ use Imagick;
 
 class Video extends Mpeg
 {
+    public function getAssetType(): string
+    {
+        return 'video';
+    }
+
     /**
      * Generates a thumbnail for the video from the first frame.
      *
@@ -18,10 +23,10 @@ class Video extends Mpeg
     {
         try {
             $ffmpeg = FFMpeg::create();
-            $video = $ffmpeg->open($this->file->getPathname());
+            $video = $ffmpeg->open($this->readStream());
 
             $frame = $video->frame(TimeCode::fromSeconds(0));
-            $base64 = $frame->save(tempnam(sys_get_temp_dir(), $this->file->getBasename()), true, true);
+            $base64 = $frame->save(tempnam(sys_get_temp_dir(), basename($this->path)), true, true);
 
             return Imagick::readImageBlob($base64);
         } catch (Exception $e) {

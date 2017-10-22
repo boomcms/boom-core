@@ -36,7 +36,7 @@ class Pdf extends DefaultDriver
      */
     public function getThumbnail(): Imagick
     {
-        $image = new Imagick($this->file->getPathname().'[0]');
+        $image = new Imagick($this->readStream().'[0]');
         $image->setImageFormat('png');
 
         return $image;
@@ -67,7 +67,7 @@ class Pdf extends DefaultDriver
     {
         try {
             $parser = new Parser();
-            $pdf = $parser->parseFile($this->file->getPathname());
+            $pdf = $parser->parseFile($this->readStream());
 
             return $pdf->getDetails();
         } catch (Exception $e) {

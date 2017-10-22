@@ -20,20 +20,13 @@ interface AssetVersion extends Repository
      */
     public function create(array $attrs): AssetVersionModel;
 
-    /**
-     * Create an asset version from an uploaded file.
-     *
-     * @param AssetInterface $asset
-     * @param UploadedFile   $file
-     * @param FileInfoDriver $info
-     *
-     * @return AssetVersionModel
-     */
     public function createFromFile(
         AssetInterface $asset,
-        UploadedFile $file,
-        FileInfoDriver $info = null
+        string $disk,
+        FileInfoDriver $info
     ): AssetVersionModel;
+
+    public function existsByFilesystemAndPath(string $disk, string $path): bool;
 
     /**
      * Find the asset which has the version with the given ID.

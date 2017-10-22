@@ -13,6 +13,8 @@ class AssetVersion extends Model
     const ATTR_HEIGHT = 'height';
     const ATTR_FILENAME = 'filename';
     const ATTR_FILESIZE = 'filesize';
+    const ATTR_FILESYSTEM = 'filesystem';
+    const ATTR_PATH = 'path';
     const ATTR_CREATED_AT = 'created_at';
     const ATTR_CREATED_BY = 'created_by';
     const ATTR_EXTENSION = 'extension';
@@ -25,6 +27,7 @@ class AssetVersion extends Model
         self::ATTR_ASSET        => 'integer',
         self::ATTR_METADATA     => 'array',
         self::ATTR_ASPECT_RATIO => 'float',
+        self::ATTR_PATH         => 'string',
     ];
 
     public $table = 'asset_versions';
@@ -90,6 +93,11 @@ class AssetVersion extends Model
         return $this->{self::ATTR_FILENAME};
     }
 
+    public function getFilesystem(): string
+    {
+        return $this->{self::ATTR_FILESYSTEM};
+    }
+
     /**
      * @return int
      */
@@ -122,6 +130,11 @@ class AssetVersion extends Model
     public function getMimetype()
     {
         return $this->{self::ATTR_MIME};
+    }
+
+    public function getPath(): string
+    {
+        return (string) $this->{self::ATTR_PATH};
     }
 
     /**

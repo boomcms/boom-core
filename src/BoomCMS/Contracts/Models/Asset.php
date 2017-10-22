@@ -72,6 +72,8 @@ interface Asset
      */
     public function getOriginalFilename();
 
+    public function getPath(): string;
+
     /**
      * Returns the published_at property.
      *

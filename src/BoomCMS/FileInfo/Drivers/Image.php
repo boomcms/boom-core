@@ -13,6 +13,11 @@ class Image extends DefaultDriver
      */
     protected $dimensions;
 
+    public function getAssetType(): string
+    {
+        return 'image';
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -57,7 +62,7 @@ class Image extends DefaultDriver
     public function getDimensions(): array
     {
         if ($this->dimensions === null) {
-            $this->dimensions = getimagesize($this->file->getPathname());
+            $this->dimensions = getimagesize($this->readStream());
         }
 
         return $this->dimensions;
@@ -90,7 +95,7 @@ class Image extends DefaultDriver
      */
     public function readMetadata(): array
     {
-        $im = new Imagick($this->file->getPathname());
+        $im = new Imagick($this->readStream());
 
         return $im->getImageProperties('');
     }

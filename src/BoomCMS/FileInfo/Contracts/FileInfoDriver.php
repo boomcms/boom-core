@@ -16,6 +16,13 @@ interface FileInfoDriver
     public function getAspectRatio(): float;
 
     /**
+     * Returns the type of asset, either doc, image, video, or audio.
+     *
+     * @return string
+     */
+    public function getAssetType(): string;
+
+    /**
      * Returns the date and time that the file was created.
      *
      * Returns null if the created time can't be determined
@@ -38,6 +45,12 @@ interface FileInfoDriver
      */
     public function getDescription(): string;
 
+    public function getExtension(): string;
+
+    public function getFilename(): string;
+
+    public function getFilesize(): int;
+
     /**
      * Returns the height of the file, or 0 if it doesn't have a height.
      *
@@ -51,6 +64,10 @@ interface FileInfoDriver
      * @return array
      */
     public function getMetadata(): array;
+
+    public function getMimetype(): string;
+
+    public function getPath(): string;
 
     /**
      * Returns an Imagick object representing a thumbnail for the file, or null.
@@ -72,4 +89,6 @@ interface FileInfoDriver
      * @return float
      */
     public function getWidth(): float;
+
+    public function setOriginalFilename(string $filename): FileInfoDriver;
 }

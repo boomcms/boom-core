@@ -49,8 +49,17 @@ abstract class AbstractTestCase extends TestCase
             return $this->site;
         });
 
+        $app['config']->set('filesystems', [
+            'default' => 'local',
+            'disks' => [
+                'boomcms-assets' => [
+                    'driver' => 'local',
+                    'root'   => storage_path('boomcms/assets'),
+                ],
+            ],
+        ]);
+
         $app['config']->set('auth', require __DIR__.'/../src/config/auth.php');
-        $app['config']->set('filesystems', require __DIR__.'/../src/config/filesystems.php');
         $app['config']->set('auth.providers.boomcms.driver', 'boomcms_test');
 
         $app['auth']->provider('boomcms_test', function () {

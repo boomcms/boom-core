@@ -144,6 +144,11 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         return (string) $this->getLatestVersion()->getMimetype();
     }
 
+    public function getPath(): string
+    {
+        return $this->getLatestVersion()->getPath();
+    }
+
     /**
      * Returns the published_at property.
      *

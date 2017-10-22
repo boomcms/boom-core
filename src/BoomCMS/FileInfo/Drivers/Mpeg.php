@@ -7,6 +7,11 @@ use FFMpeg\FFProbe;
 
 class Mpeg extends DefaultDriver
 {
+    public function getAssetType(): string
+    {
+        return 'audio';
+    }
+
     /**
      * Extracts metadata via FFProbe.
      *
@@ -18,7 +23,7 @@ class Mpeg extends DefaultDriver
             $ffprobe = FFProbe::create();
 
             return $ffprobe
-                ->format($this->file->getPathname())
+                ->format($this->readStream())
                 ->all();
         } catch (ExecutableNotFoundException $e) {
             return [];
