@@ -66,7 +66,11 @@
 
             thumbnail.$el
                 .attr('data-width', width)
-                .css('width', width);
+                .css('width', width)
+                .off('sclick')
+                .on('sclick', function() {
+                    asset.trigger('view', asset);
+                });
 
             this.thumbnails.push(thumbnail);
 
