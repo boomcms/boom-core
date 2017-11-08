@@ -138,8 +138,8 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
     public function addRelation(PageInterface $page): PageInterface
     {
         $this->relations()->attach($page, [
-            'created_at'  => time(),
-            'created_by'  => Auth::user()->getId(),
+            'created_at' => time(),
+            'created_by' => Auth::user()->getId(),
         ]);
 
         return $this;

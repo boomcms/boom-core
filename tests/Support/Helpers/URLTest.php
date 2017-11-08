@@ -118,13 +118,13 @@ class URLTest extends AbstractTestCase
     public function testMakeRelative()
     {
         $urls = [
-            "https://{$this->baseUrl}/test"   => '/test',
-            "http://{$this->baseUrl}/test"    => '/test',
-            "https://{$this->baseUrl}/"       => '/',
-            "http://{$this->baseUrl}/"        => '/',
-            'http://other.com/test'           => 'http://other.com/test',
-            'https://other.com/test'          => 'https://other.com/test',
-            '/test'                           => '/test',
+            "https://{$this->baseUrl}/test" => '/test',
+            "http://{$this->baseUrl}/test"  => '/test',
+            "https://{$this->baseUrl}/"     => '/',
+            "http://{$this->baseUrl}/"      => '/',
+            'http://other.com/test'         => 'http://other.com/test',
+            'https://other.com/test'        => 'https://other.com/test',
+            '/test'                         => '/test',
         ];
 
         foreach ($urls as $original => $after) {
