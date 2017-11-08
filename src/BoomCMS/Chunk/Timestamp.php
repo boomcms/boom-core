@@ -38,7 +38,7 @@ class Timestamp extends BaseChunk
      *
      * @return $this
      */
-    public function apply(Closure $closure): Timestamp
+    public function apply(Closure $closure): self
     {
         $this->closure = $closure;
 
@@ -108,7 +108,7 @@ class Timestamp extends BaseChunk
         return 0;
     }
 
-    public function setFormat($format): Timestamp
+    public function setFormat($format): self
     {
         $this->formatIsEditable = false;
         $this->attrs['format'] = $format;
