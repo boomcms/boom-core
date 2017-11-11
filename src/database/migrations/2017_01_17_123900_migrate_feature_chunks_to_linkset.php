@@ -31,10 +31,10 @@ class MigrateFeatureChunksToLinkset extends Migration
             }
 
             Linkset::create([
-                'slotname'       => $slotname,
-                'page_vid'       => $feature['page_vid'],
-                'page_id'        => $feature['page_id'],
-                'links'          => [
+                'slotname' => $slotname,
+                'page_vid' => $feature['page_vid'],
+                'page_id'  => $feature['page_id'],
+                'links'    => [
                     ['target_page_id' => $feature['target_page_id']],
                 ],
             ]);
