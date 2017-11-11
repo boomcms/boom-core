@@ -43434,6 +43434,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     'use strict';
 
     BoomCMS.Collections.Assets = Backbone.Collection.extend({
+        albums: null,
         fetched: false,
         model: BoomCMS.Asset,
         url: BoomCMS.urlRoot + 'asset',
@@ -43487,12 +43488,19 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         },
 
         getAlbums: function() {
-            if (this.albums === undefined) {
-                this.albums = new BoomCMS.Collections.Albums();
+            var assets = this;
 
-                this.albums.fetch({
+            if (this.albums === null) {
+                this.albums = $.Deferred();
+
+                var albums = new BoomCMS.Collections.Albums();
+
+                albums.fetch({
                     data: {
                         'assets': this.getAssetIds()
+                    },
+                    complete: function() {
+                        assets.albums.resolve(albums);
                     }
                 });
             }
@@ -43520,6 +43528,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             }
 
             return asset;
+        },
+
+        initialize: function() {
+            this.on('reset', function() {
+                this.albums = null;
+            });
         },
 
         parse: function(data) {
@@ -48451,10 +48465,16 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         },
 
         init: function(options) {
+            var view = this;
+
             this.section = options.section;
             this.router = options.router;
             this.albums = options.albums;
-            this.relatedAlbums = this.selection.getAlbums();
+            this.relatedAlbumsPromise = this.selection.getAlbums();
+
+            this.relatedAlbumsPromise.done(function(albums) {
+                view.relatedAlbums = albums;
+            });
 
             this.template = _.template($(this.templateSelector).html());
         },
@@ -48535,16 +48555,18 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         viewAlbums: function() {
             var view = this;
 
-            if (typeof this.albumList === 'undefined') {
-                this.albumList = new BoomCMS.AssetManager.AlbumList({
-                    albums: this.albums,
-                    selected: this.relatedAlbums,
-                    $container: $(this.$el[0].ownerDocument)
-                });
-            }
+            this.relatedAlbumsPromise.done(function(albums) {
+                if (view.albumList === undefined) {
+                        view.albumList = new BoomCMS.AssetManager.AlbumList({
+                            albums: view.albums,
+                            selected: albums,
+                            $container: $(view.$el[0].ownerDocument)
+                        });
+                }
 
-            this.albumList.render();
-            view.$(view.albumsSelector + ' > div').html(this.albumList.el);
+                view.albumList.render();
+                view.$(view.albumsSelector + ' > div').html(view.albumList.el);
+            });
         },
 
         viewSection: function(section) {
