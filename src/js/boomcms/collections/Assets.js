@@ -2,6 +2,7 @@
     'use strict';
 
     BoomCMS.Collections.Assets = Backbone.Collection.extend({
+        albums: null,
         fetched: false,
         model: BoomCMS.Asset,
         url: BoomCMS.urlRoot + 'asset',
@@ -55,12 +56,19 @@
         },
 
         getAlbums: function() {
-            if (this.albums === undefined) {
-                this.albums = new BoomCMS.Collections.Albums();
+            var assets = this;
 
-                this.albums.fetch({
+            if (this.albums === null) {
+                this.albums = $.Deferred();
+
+                var albums = new BoomCMS.Collections.Albums();
+
+                albums.fetch({
                     data: {
                         'assets': this.getAssetIds()
+                    },
+                    complete: function() {
+                        assets.albums.resolve(albums);
                     }
                 });
             }
@@ -88,6 +96,12 @@
             }
 
             return asset;
+        },
+
+        initialize: function() {
+            this.on('reset', function() {
+                this.albums = null;
+            });
         },
 
         parse: function(data) {
