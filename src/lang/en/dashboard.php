@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'approvals' => [
+    'approvals'      => [
         'heading' => 'Pages pending approval',
         'none'    => 'No pages are pending approval',
     ],
@@ -10,7 +10,7 @@ return [
     'news'           => [
         'heading' => 'News from BoomCMS',
     ],
-    'recent-pages' => 'Recently added',
-    'view-site'    => 'View site',
-    'welcome'      => 'Welcome :name',
+    'recent-pages'   => 'Recently added',
+    'view-site'      => 'View site',
+    'welcome'        => 'Welcome :name',
 ];
