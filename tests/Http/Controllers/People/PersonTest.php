@@ -56,8 +56,8 @@ class PersonTest extends BaseControllerTest
         Event::shouldReceive('fire');
 
         $request = new Request([
-            'email' => $email,
-            'name'  => 'Test user',
+            'email'  => $email,
+            'name'   => 'Test user',
         ]);
 
         $this->controller->store($request, $site);

@@ -11,14 +11,14 @@ interface Album
      *
      * @return $this
      */
-    public function addAssets(array $assetIds): self;
+    public function addAssets(array $assetIds): Album;
 
     /**
      * Updates the count of assets in this album and the featured asset.
      *
      * @return Album $this
      */
-    public function assetsUpdated(): self;
+    public function assetsUpdated(): Album;
 
     /**
      * @return Asset
@@ -47,7 +47,7 @@ interface Album
      *
      * @return $this
      */
-    public function removeAssets(array $assetIds): self;
+    public function removeAssets(array $assetIds): Album;
 
     /**
      * @param string $name

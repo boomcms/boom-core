@@ -35,7 +35,7 @@ return [
     'unsupported'                  => 'File :filename is of an unsuported type: :mimetype',
     'selection'                    => [
         'download' => [
-            'about' => [
+            'about'    => [
                 'singular' => 'The selected asset will be downloaded as a .zip file',
                 'plural'   => 'The :count selected assets will be downloaded as a .zip file',
             ],
@@ -43,40 +43,40 @@ return [
             'filename' => 'Enter the name of the download',
             'default'  => 'BoomCMS Asset Download',
         ],
-        'delete' => [
+        'delete'   => [
             'heading' => 'Delete assets',
             'confirm' => 'Are you sure you want to delete the selected assets?',
         ],
     ],
-    'select' => [
+    'select'          => [
         'all'  => 'Select all',
         'none' => 'Select none',
     ],
-    'delete' => [
+    'delete'          => [
         'heading' => 'Delete asset',
         'confirm' => 'Are you sure you want to delete this asset?',
     ],
-    'picker' => [
+    'picker'          => [
         'current'  => 'Current Asset',
         'filter'   => 'Filter Assets',
         'upload'   => 'Upload Asset',
         'selected' => 'Selected assets',
     ],
-    'preview' => [
+    'preview'         => [
         'heading' => 'Preview',
         'about'   => 'Previews are provided by Google Docs Viewer',
     ],
-    'public' => [
-        'title' => 'Publicity',
-        '0'     => 'Visible to logged in users only',
-        '1'     => 'Visible to all users',
+    'public'          => [
+        'title'   => 'Publicity',
+        '0'       => 'Visible to logged in users only',
+        '1'       => 'Visible to all users',
     ],
-    'replace' => [
-        'heading'     => 'Replace asset',
-        'drag-drop'   => 'Or drag and drop a file here to upload',
-        'select-file' => 'Select a file',
+    'replace'         => [
+        'heading'      => 'Replace asset',
+        'drag-drop'    => 'Or drag and drop a file here to upload',
+        'select-file'  => 'Select a file',
     ],
-    'search' => [
+    'search'          => [
         'all-extensions'  => 'All file extensions',
         'heading'         => 'Search assets',
         'results'         => 'Search results',
@@ -95,26 +95,26 @@ return [
         'without-albums' => 'Without albums',
     ],
     'sort' => [
-        'created_at desc'    => 'Upload time: most recent first',
-        'created_at asc'     => 'Upload time: oldest first',
-        'last_modified desc' => 'Last modified: most recent first',
-        'last_modified asc'  => 'Last modified: oldest first',
-        'title asc'          => 'Title A - Z',
-        'title desc'         => 'Title Z - A',
-        'filesize asc'       => 'Size (smallest)',
-        'filesize desc'      => 'Size (largest)',
-        'published_at desc'  => 'Publish time: most recent first',
-        'published_at asc'   => 'Publish time: oldest first',
-        'downloads desc'     => 'Most downloaded',
+        'created_at desc'      => 'Upload time: most recent first',
+        'created_at asc'       => 'Upload time: oldest first',
+        'last_modified desc'   => 'Last modified: most recent first',
+        'last_modified asc'    => 'Last modified: oldest first',
+        'title asc'            => 'Title A - Z',
+        'title desc'           => 'Title Z - A',
+        'filesize asc'         => 'Size (smallest)',
+        'filesize desc'        => 'Size (largest)',
+        'published_at desc'    => 'Publish time: most recent first',
+        'published_at asc'     => 'Publish time: oldest first',
+        'downloads desc'       => 'Most downloaded',
     ],
-    'type' => [
-        'all'   => 'All asset types',
-        'image' => 'Image',
-        'doc'   => 'Document',
-        'video' => 'Video',
-        'audio' => 'Audio',
+    'type'                    => [
+        'all'      => 'All asset types',
+        'image'    => 'Image',
+        'doc'      => 'Document',
+        'video'    => 'Video',
+        'audio'    => 'Audio',
     ],
-    'upload' => [
+    'upload'      => [
         'heading'      => 'Upload',
         'drag-drop'    => 'Or drag and drop files here to upload',
         'errors'       => 'Errors',
@@ -122,6 +122,6 @@ return [
         'not-writable' => 'Unable to upload assets. Please ensure you asset storage location is writable',
         'select-files' => 'Select files',
     ],
-    'loading' => 'Loading thumbnail',
-    'failed'  => 'Unable to load thumbnail',
+    'loading'                => 'Loading thumbnail',
+    'failed'                 => 'Unable to load thumbnail',
 ];

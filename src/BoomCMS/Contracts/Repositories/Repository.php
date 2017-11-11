@@ -13,7 +13,7 @@ interface Repository
      *
      * @return $this
      */
-    public function delete($param): self;
+    public function delete($param): Repository;
 
     /**
      * Returns the model with the given ID.

@@ -211,7 +211,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         return $this->getThumbnailAssetId() > 0;
     }
 
-    public function incrementDownloads(): self
+    public function incrementDownloads(): Asset
     {
         $this->increment(self::ATTR_DOWNLOADS);
 
@@ -253,7 +253,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      *
      * @return $this
      */
-    public function setCredits($credits): self
+    public function setCredits($credits): Asset
     {
         $this->{self::ATTR_CREDITS} = $credits;
 
@@ -265,7 +265,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
      *
      * @return $this
      */
-    public function setDescription($description): self
+    public function setDescription($description): Asset
     {
         $this->{self::ATTR_DESCRIPTION} = $description;
 
