@@ -15,21 +15,21 @@ interface Page
     /**
      * Add a group which can view this page.
      */
-    public function addAclGroupId(int $groupId): Page;
+    public function addAclGroupId(int $groupId): self;
 
     /**
      * Add a related page.
      *
      * @param Page $page
      */
-    public function addRelation(Page $page): Page;
+    public function addRelation(self $page): self;
 
     /**
      * Add a tag to the page.
      *
      * @param Tag $tag
      */
-    public function addTag(Tag $tag): Page;
+    public function addTag(Tag $tag): self;
 
     public function allowsExternalIndexing(): bool;
 
@@ -52,7 +52,7 @@ interface Page
      *
      * Either the current page or its parent depending on the add page behaviour settings.
      */
-    public function getAddPageParent(): Page;
+    public function getAddPageParent(): self;
 
     public function getChildAddPageBehaviour(): int;
 
@@ -140,7 +140,7 @@ interface Page
      *
      * @param Page $page
      */
-    public function isParentOf(Page $page): bool;
+    public function isParentOf(self $page): bool;
 
     /**
      * Returns true if the page doesn't have a parent.
@@ -160,81 +160,81 @@ interface Page
 
     public function isVisibleInNav(): bool;
 
-    public function markUpdatesAsPendingApproval(): Page;
+    public function markUpdatesAsPendingApproval(): self;
 
     /**
      * Remove a group from being able to view this page.
      */
-    public function removeAclGroupId(int $groupId): Page;
+    public function removeAclGroupId(int $groupId): self;
 
     /**
      * Remove the relationship with another page.
      */
-    public function removeRelation(Page $page): Page;
+    public function removeRelation(self $page): self;
 
     /**
      * Remove a tag from the page.
      */
-    public function removeTag(Tag $tag): Page;
+    public function removeTag(Tag $tag): self;
 
     /**
      * Set whether ACL is enabled for the page.
      */
-    public function setAclEnabled(bool $enabled): Page;
+    public function setAclEnabled(bool $enabled): self;
 
-    public function setAddPageBehaviour(int $value): Page;
+    public function setAddPageBehaviour(int $value): self;
 
-    public function setChildAddPageBehaviour(int $value): Page;
+    public function setChildAddPageBehaviour(int $value): self;
 
-    public function setCurrentVersion(PageVersion $version): Page;
+    public function setCurrentVersion(PageVersion $version): self;
 
-    public function setDisableDelete(bool $value): Page;
+    public function setDisableDelete(bool $value): self;
 
-    public function setChildTemplateId(int $id): Page;
+    public function setChildTemplateId(int $id): self;
 
-    public function setChildOrderingPolicy(string $column, string $direction): Page;
+    public function setChildOrderingPolicy(string $column, string $direction): self;
 
-    public function setChildrenUrlPrefix(string $prefix): Page;
+    public function setChildrenUrlPrefix(string $prefix): self;
 
-    public function setChildrenVisibleInNav(bool $visible): Page;
+    public function setChildrenVisibleInNav(bool $visible): self;
 
-    public function setChildrenVisibleInNavCMS(bool $visible): Page;
+    public function setChildrenVisibleInNavCMS(bool $visible): self;
 
-    public function setDescription(string $description): Page;
+    public function setDescription(string $description): self;
 
-    public function setExternalIndexing(bool $indexing): Page;
+    public function setExternalIndexing(bool $indexing): self;
 
-    public function setFeatureImageId(int $featureImageId = null): Page;
+    public function setFeatureImageId(int $featureImageId = null): self;
 
-    public function setGrandchildTemplateId(int $templateId): Page;
+    public function setGrandchildTemplateId(int $templateId): self;
 
-    public function setEmbargoTime(DateTime $time): Page;
+    public function setEmbargoTime(DateTime $time): self;
 
-    public function setInternalIndexing(bool $indexing): Page;
+    public function setInternalIndexing(bool $indexing): self;
 
-    public function setInternalName(string $name): Page;
+    public function setInternalName(string $name): self;
 
-    public function setKeywords(string $keywords): Page;
+    public function setKeywords(string $keywords): self;
 
-    public function setParent(Page $parent): Page;
+    public function setParent(self $parent): self;
 
-    public function setPrimaryUri(string $uri): Page;
+    public function setPrimaryUri(string $uri): self;
 
-    public function setSequence(int $sequence): Page;
+    public function setSequence(int $sequence): self;
 
-    public function setTemplate(Template $template): Page;
+    public function setTemplate(Template $template): self;
 
-    public function setTitle(string $title): Page;
+    public function setTitle(string $title): self;
 
-    public function setVisibleAtAnyTime(bool $visible): Page;
+    public function setVisibleAtAnyTime(bool $visible): self;
 
-    public function setVisibleFrom(DateTime $time): Page;
+    public function setVisibleFrom(DateTime $time): self;
 
-    public function setVisibleInCmsNav(bool $visible): Page;
+    public function setVisibleInCmsNav(bool $visible): self;
 
-    public function setVisibleInNav(bool $visible): Page;
+    public function setVisibleInNav(bool $visible): self;
 
-    public function setVisibleTo(DateTime $time = null): Page;
+    public function setVisibleTo(DateTime $time = null): self;
 
     public function wasCreatedBy(Person $person): bool;
 }

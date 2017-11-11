@@ -64,8 +64,8 @@ class Version extends Controller
         $this->authorize('editTemplate', $page);
 
         return view("$this->viewPrefix.template", [
-            'current'     => $page->getTemplate(),
-            'templates'   => TemplateFacade::findValid(),
+            'current'   => $page->getTemplate(),
+            'templates' => TemplateFacade::findValid(),
         ]);
     }
 
