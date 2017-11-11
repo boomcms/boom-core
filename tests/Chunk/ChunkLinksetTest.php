@@ -141,10 +141,10 @@ class ChunkLinksetTest extends AbstractTestCase
             ->shouldReceive('setOptions')
             ->once()
             ->with([
-                'link-text'   => true,
-                'link-title'  => true,
-                'link-asset'  => true,
-                'limit'       => 1,
+                'link-text'  => true,
+                'link-title' => true,
+                'link-asset' => true,
+                'limit'      => 1,
             ]);
 
         $linkset->feature();
