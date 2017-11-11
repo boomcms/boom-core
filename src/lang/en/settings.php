@@ -19,7 +19,7 @@ return [
         'info'       => 'Page information',
         'history'    => 'History',
     ],
-    'acl' => [
+    'acl'   => [
         'heading'        => 'Page access control',
         'description'    => 'Restrict access to this page to certain user groups only. Changing these settings will apply changes to all descendent pages as well.',
         'is-enabled'     => 'Enable access control',
@@ -54,7 +54,7 @@ return [
             'visible_from' => 'Date by visible from time',
             'title'        => 'Alphabetic by title',
         ],
-        'direction' => [
+        'direction'           => [
             'asc'  => 'Ascending',
             'desc' => 'Descending',
         ],
@@ -70,7 +70,7 @@ return [
             'reparent'        => 'Assign these pages to a new parent',
             'reparent-target' => 'New parent page: ',
         ],
-        'urls' => [
+        'urls'     => [
             'heading'              => 'Page URLs',
             'intro'                => 'Set the behaviour of this page\'s URLs after the page is deleted.',
             'leave'                => 'Don\'t redirect the URLs to a new page.',
@@ -92,7 +92,7 @@ return [
         'options'        => [
             'heading' => 'Publish options',
         ],
-        'preview' => [
+        'preview'        => [
             'heading'               => 'Preview',
             'description-draft'     => 'View the current version before publishing. Other invisible pages will still be displayed.',
             'description-invisible' => 'View the published content despite the page being invisible.',
@@ -109,7 +109,7 @@ return [
         'visible-note' => 'Note: page visibility is calculated by the current visibility settings',
         'restore'      => 'Restore',
     ],
-    'info' => [
+    'info'    => [
         'heading'          => 'Page information',
         'created-by'       => 'Created by',
         'created-at'       => 'Created at',
@@ -123,7 +123,7 @@ return [
         'no-parent' => 'This page has no parent',
         'parent'    => 'Parent page',
     ],
-    'relations' => [
+    'relations'   => [
         'heading' => 'Page relationships',
         'intro'   => '<p>You can define relationships between pages.</p>
                     <p>This might be useful, for example, when your site contains blog templates and you need to define a relationship between blog posts and author pages.</p>

@@ -135,9 +135,9 @@ class ChunkLibraryTest extends AbstractTestCase
         // Possible values of the params attribute which should be counted as the chunk having content.
         $values = [
             ['tag' => 'test'],
-            ['type' => 'image'],
-            ['tag'  => 'test', 'type' => null],
-            ['tag'  => ['test']],
+            ['type'  => 'image'],
+            ['tag'   => 'test', 'type' => null],
+            ['tag'   => ['test']],
         ];
 
         foreach ($values as $v) {

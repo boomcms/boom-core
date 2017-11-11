@@ -18,9 +18,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Site::class   => SitePolicy::class,
-        Page::class   => PagePolicy::class,
-        Person::class => PersonPolicy::class,
+        Site::class    => SitePolicy::class,
+        Page::class    => PagePolicy::class,
+        Person::class  => PersonPolicy::class,
     ];
 
     public function boot(Gate $gate)

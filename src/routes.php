@@ -70,7 +70,7 @@ Route::group(['middleware' => [
             Route::delete('album/{album}/assets', 'Asset\AlbumAssetsController@destroy');
 
             Route::group([
-                'namespace' => 'People',
+                'namespace'  => 'People',
             ], function () {
                 Route::get('people-manager', [
                     'uses' => 'PeopleManager@index',
