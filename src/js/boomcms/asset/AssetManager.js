@@ -127,6 +127,8 @@
                     }
                 });
 
+            this.$('#b-assets-search input[name=text]').assetNameAutocomplete();
+
             this.uploader
                 .assetUploader({
                     uploadFinished: function(e, data) {
