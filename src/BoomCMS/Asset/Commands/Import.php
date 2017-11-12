@@ -58,8 +58,14 @@ class Import extends Command
 
     protected function importDisk(string $disk)
     {
+        $fileCount = $this->importer->countFiles($disk);
+        $bar = $this->output->createProgressBar($fileCount);
+
         foreach ($this->importer->import($disk) as $file) {
-            $this->info("Imported $file");
+            $bar->setMessage("Importing $file");
+            $bar->advance();
         }
+
+        $bar->finish();
     }
 }

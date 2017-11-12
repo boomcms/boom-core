@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Config;
 class Importer
 {
     /**
+     * @var array
+     */
+    protected $files;
+
+    /**
      * @var FilesystemManager
      */
     protected $filesystems;
@@ -34,23 +39,44 @@ class Importer
         $this->filesystems = $filesystems;
     }
 
+    public function countFiles(string $disk): int
+    {
+        return count($this->getFiles($disk));
+    }
+
     public function fileNeedsImport(string $disk, string $path): bool
     {
         return $this->isSupportedType($disk, $path) && !$this->versions->existsByFilesystemAndPath($disk, $path);
+    }
+
+    public function getFiles(string $disk): array
+    {
+        if (!isset($this->files[$disk])) {
+            $this->files[$disk] = $this->getImportableFiles($disk);
+        }
+
+        return $this->files[$disk];
+    }
+
+    public function getImportableFiles(string $disk): array
+    {
+        $files = $this->filesystems->disk($disk)->allFiles();
+
+        return array_filter($files, function(string $path) use($disk) {
+            return $this->fileNeedsImport($disk, $path);
+        });
     }
 
     public function import(string $disk): Generator
     {
         $filesystem = $this->filesystems->disk($disk);
 
-        foreach ($filesystem->allFiles() as $path) {
-            if ($this->fileNeedsImport($disk, $path)) {
-                $file = FileInfo::create($filesystem, $path);
+        foreach ($this->getFiles($disk) as $path) {
+            $file = FileInfo::create($filesystem, $path);
 
-                $this->importFile($disk, $file);
+            $this->importFile($disk, $file);
 
-                yield $path;
-            }
+            yield $path;
         }
     }
 
