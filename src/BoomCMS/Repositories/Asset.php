@@ -9,11 +9,13 @@ use BoomCMS\Contracts\Repositories\Repository as RepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Contracts\FileInfoDriver;
+use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Foundation\Repository;
 use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Contracts\Filesystem\Factory as Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Imagick;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -57,23 +59,15 @@ class Asset extends Repository implements AssetRepositoryInterface
      */
     public function createFromUploadedFile(UploadedFile $file): AssetInterface
     {
-        $info = FileInfo::create($file);
+        $diskName = Config::get('filesystems.assets');
 
-        $asset = new AssetModel();
-        $asset
-            ->setTitle($info->getTitle() ?: $file->getClientOriginalName())
-            ->setPublishedAt($info->getCreatedAt())
-            ->setType($info->getType())
-            ->setDescription($info->getDescription())
-            ->setCredits($info->getCopyright());
+        $disk = $this->filesystems->disk($diskName);
+        $path = $disk->put('', $file);
 
-        $this->save($asset);
+        $info = FileInfo::create($disk, $path);
+        $info->setOriginalFilename($file->getClientOriginalName());
 
-        $this->version->createFromFile($asset, $file, $info);
-
-        $this->saveFile($asset, $file, $info->getThumbnail());
-
-        return $asset;
+        return $this->createFromFile($diskName, $info);
     }
 
     public function createFromFile(string $disk, FileInfoDriver $file): AssetInterface

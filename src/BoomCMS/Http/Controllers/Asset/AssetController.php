@@ -160,7 +160,7 @@ class AssetController extends Controller
         list($validFiles, $errors) = $this->validateAssetUpload($request);
 
         foreach ($validFiles as $file) {
-            $assets[] = AssetFacade::createFromFile($file);
+            $assets[] = AssetFacade::createFromUploadedFile($file);
         }
 
         return [
