@@ -218,6 +218,6 @@ class Asset extends Repository implements AssetRepositoryInterface
     {
         return $this->filesystems
             ->disk($asset->getLatestVersion()->getFilesystem())
-            ->readStream($this->getThumbnailFilename($asset));
+            ->get($this->getThumbnailFilename($asset));
     }
 }
