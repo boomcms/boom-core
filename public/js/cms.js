@@ -47968,6 +47968,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     }
                 });
 
+            this.$('#b-assets-search input[name=text]').assetNameAutocomplete();
+
             this.uploader
                 .assetUploader({
                     uploadFinished: function(e, data) {
@@ -49872,7 +49874,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     uploadFinished: function(e, data) {
                         assetPicker.assetsUploaded(new BoomCMS.Collections.Assets(data.result.assets));
                     }
-                });
+                })
+                .end()
+                .find('input[name=text]')
+                .assetNameAutocomplete();
         };
 
         this.cancel = function() {
@@ -50376,7 +50381,32 @@ function Row() {
 
         return ($el.offset.top >= (this.elements[this.elements.length - 1].offset.top + $el.height()));
     };
-};$.widget('boom.groupPermissionsEditor', {
+};
+$.widget('boom.assetNameAutocomplete', {
+    options : {
+        delay: 400,
+        minLength: 3
+    },
+
+    _create: function() {
+        var element = this.element;
+
+        this.options.source = function(request, response) {
+            $.ajax({
+                url: '/boomcms/autocomplete/assets',
+                dataType: 'json',
+                data: {
+                    text : element.val()
+                }
+            })
+            .done(function(data) {
+                response(data);
+            });
+        };
+
+        this.element.autocomplete(this.options);
+    }
+});;$.widget('boom.groupPermissionsEditor', {
     group : null,
 
     bind: function() {
