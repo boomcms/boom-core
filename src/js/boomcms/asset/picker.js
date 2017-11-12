@@ -128,7 +128,10 @@
                     uploadFinished: function(e, data) {
                         assetPicker.assetsUploaded(new BoomCMS.Collections.Assets(data.result.assets));
                     }
-                });
+                })
+                .end()
+                .find('input[name=text]')
+                .assetNameAutocomplete();
         };
 
         this.cancel = function() {
