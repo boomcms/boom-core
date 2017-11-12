@@ -10,7 +10,7 @@ return [
         'editlink' => 'Edit HTML chunk',
     ],
     'link-picker' => [
-        'tabs'            => [
+        'tabs' => [
             'internal' => 'Select page',
             'external' => 'Enter URL',
             'asset'    => 'Link to asset',
@@ -34,7 +34,7 @@ return [
     ],
     'chunk' => [
         'library' => [
-            'albums'      => [
+            'albums' => [
                 'heading' => 'Albums',
                 'info'    => 'Filter assets by album',
             ],
@@ -44,9 +44,9 @@ return [
             'limit_about' => 'Set an (optional) limit on the number of results to be returned. Leave empty for no limit',
             'tag-info'    => 'Search will only return assets which have ALL given tags',
         ],
-        'linkset'  => [
-            'all-links'     => 'All links',
-            'current'       => [
+        'linkset' => [
+            'all-links' => 'All links',
+            'current'   => [
                 'asset'         => 'Asset',
                 'heading'       => 'Current link',
                 'no-asset'      => 'None set',
