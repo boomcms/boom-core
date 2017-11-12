@@ -12,15 +12,15 @@ class Dashboard extends Controller
     public function index(BoomCMS $boomcms, Site $site)
     {
         return view('boomcms::dashboard.index', [
-            'person'    => auth()->user(),
-            'pages'     => Helpers::getPages([
+            'person' => auth()->user(),
+            'pages'  => Helpers::getPages([
                 'limit' => 20,
                 'order' => 'date desc',
             ]),
             'approvals' => Gate::denies('managePages', $site) ? [] : Helpers::getPages([
                 'pendingapproval' => true,
             ]),
-            'news'      => $boomcms->getNews(),
+            'news' => $boomcms->getNews(),
         ]);
     }
 }
