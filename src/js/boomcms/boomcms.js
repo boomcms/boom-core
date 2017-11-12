@@ -51,13 +51,13 @@
         BoomCMS.prototype.getTimezone = function() {
             var key = 'boomcms.timezone';
 
-            if (!sessionStorage.getItem(key)) {
+            if (!this.Storage.get(key)) {
                 var tz = jstz.determine() || 'UTC';
 
-                sessionStorage.setItem(key, tz.name());
+                this.Storage.save(key, tz.name());
             }
 
-            return sessionStorage.getItem(key);
+            return this.Storage.get(key);
         };
     }
 

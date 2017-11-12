@@ -42612,18 +42612,37 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         BoomCMS.prototype.getTimezone = function() {
             var key = 'boomcms.timezone';
 
-            if (!sessionStorage.getItem(key)) {
+            if (!this.Storage.get(key)) {
                 var tz = jstz.determine() || 'UTC';
 
-                sessionStorage.setItem(key, tz.name());
+                this.Storage.save(key, tz.name());
             }
 
-            return sessionStorage.getItem(key);
+            return this.Storage.get(key);
         };
     }
 
     window.BoomCMS = top.BoomCMS = new BoomCMS();
 }(jQuery, Backbone));
+;(function(BoomCMS, storage) {
+    'use strict';
+
+    BoomCMS.Storage = {
+        get: function(key) {
+            var data = storage.getItem(key);
+
+            try {
+               return JSON.parse(data);
+            } catch(e) {
+               return data;
+            }
+        },
+
+        save: function(key, data) {
+            storage.setItem(key, JSON.stringify(data));
+        }
+    };
+}(BoomCMS, window.sessionStorage));
 ;(function(BoomCMS) {
     'use strict';
 
@@ -49759,6 +49778,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         this.url = BoomCMS.urlRoot + 'asset-picker';
         this.multiple = (multiple === true);
         this.selection = new BoomCMS.Collections.Assets();
+        this.stateStorageKey = 'asset-picker-state';
 
         this.assetsUploaded = function(assets) {
             var assetPicker = this;
@@ -49940,6 +49960,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     } else {
                         assetPicker.hideCurrentAsset();
                     }
+
+                    assetPicker.restoreState();
                 }
             });
         };
@@ -49956,9 +49978,31 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.close();
         };
 
+        this.restoreState = function() {
+            var state = BoomCMS.Storage.get(this.stateStorageKey);
+
+            if (state === undefined) {
+                return;
+            }
+
+            if (typeof state.album !== 'undefined') {
+                return this.viewAlbum(state.album);
+            }
+
+            if (typeof state.searchParams !== 'undefined') {
+                return this.search(state.searchParams);
+            }
+        };
+
+        this.saveState = function(state) {
+            BoomCMS.Storage.save(this.stateStorageKey, state);
+        };
+
         this.search = function(params) {
             var assetPicker = this,
                 $pagination = this.picker.find('#b-assets-pagination');
+
+            this.saveState({searchParams: params});
 
             this.activeAlbum = null;
 
@@ -50039,6 +50083,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         this.viewAlbumsList = function() {
             this.picker.removeAttr('data-view');
             this.picker.find('#b-assets-pagination').hide();
+
+            this.saveState({});
         };
 
         this.viewAlbum = function(slug) {
@@ -50046,6 +50092,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 album = this.albums.findBySlug(slug);
 
             this.activeAlbum = album;
+
+            this.saveState({album: slug});
 
             this.assets.fetch({
                 data: {
