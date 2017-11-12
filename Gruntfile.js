@@ -135,12 +135,9 @@ module.exports = function(grunt) {
 					'src/js/boomcms/link/picker.js',
 					'src/js/boomcms/asset/AssetManager.js',
 					'src/js/boomcms/asset/components/*.js',
-					'src/js/boomcms/asset/search.js',
 					'src/js/boomcms/asset/picker.js',
-					'src/js/boomcms/asset/titleFilter.js',
 					'src/js/boomcms/asset/uploader.js',
 					'src/js/boomcms/asset/justify.js',
-					'src/js/boomcms/asset/tagSearch.js',
 					'src/js/boomcms/group/permissionsEditor.js',
 					'src/js/jquery/jqpagination.js',
 					'src/js/boomcms/page/manager.js'
