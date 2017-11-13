@@ -10,6 +10,10 @@ class Pdf extends BaseController
 {
     public function thumb($width = null, $height = null)
     {
+        if ($this->asset->hasThumbnail()) {
+            return parent::thumb($width, $height);
+        }
+
         $manager = new ImageManager();
 
         if ($width && $height) {

@@ -13,6 +13,7 @@
         this.url = BoomCMS.urlRoot + 'asset-picker';
         this.multiple = (multiple === true);
         this.selection = new BoomCMS.Collections.Assets();
+        this.stateStorageKey = 'asset-picker-state';
 
         this.assetsUploaded = function(assets) {
             var assetPicker = this;
@@ -128,7 +129,10 @@
                     uploadFinished: function(e, data) {
                         assetPicker.assetsUploaded(new BoomCMS.Collections.Assets(data.result.assets));
                     }
-                });
+                })
+                .end()
+                .find('input[name=text]')
+                .assetNameAutocomplete();
         };
 
         this.cancel = function() {
@@ -191,6 +195,8 @@
                     } else {
                         assetPicker.hideCurrentAsset();
                     }
+
+                    assetPicker.restoreState();
                 }
             });
         };
@@ -207,9 +213,31 @@
             this.close();
         };
 
+        this.restoreState = function() {
+            var state = BoomCMS.Storage.get(this.stateStorageKey);
+
+            if (state === undefined) {
+                return;
+            }
+
+            if (typeof state.album !== 'undefined') {
+                return this.viewAlbum(state.album);
+            }
+
+            if (typeof state.searchParams !== 'undefined') {
+                return this.search(state.searchParams);
+            }
+        };
+
+        this.saveState = function(state) {
+            BoomCMS.Storage.save(this.stateStorageKey, state);
+        };
+
         this.search = function(params) {
             var assetPicker = this,
                 $pagination = this.picker.find('#b-assets-pagination');
+
+            this.saveState({searchParams: params});
 
             this.activeAlbum = null;
 
@@ -290,6 +318,8 @@
         this.viewAlbumsList = function() {
             this.picker.removeAttr('data-view');
             this.picker.find('#b-assets-pagination').hide();
+
+            this.saveState({});
         };
 
         this.viewAlbum = function(slug) {
@@ -297,6 +327,8 @@
                 album = this.albums.findBySlug(slug);
 
             this.activeAlbum = album;
+
+            this.saveState({album: slug});
 
             this.assets.fetch({
                 data: {
