@@ -25,6 +25,5 @@ class IncludeDeletedAtOnAlbumsSlugIndex extends Migration
     {
         DB::statement('alter table albums drop index albums_deleted_at_slug_unique');
         DB::statement('alter table albums add unique index albums_slug_unique(slug)');
-
     }
 }
