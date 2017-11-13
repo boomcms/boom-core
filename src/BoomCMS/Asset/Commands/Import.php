@@ -3,6 +3,7 @@
 namespace BoomCMS\Asset\Commands;
 
 use BoomCMS\Asset\Importer;
+use BoomCMS\Repositories\Album as AlbumRepository;
 use BoomCMS\Repositories\Asset as AssetRepository;
 use BoomCMS\Repositories\AssetVersion as AssetVersionRepository;
 use Illuminate\Console\Command;
@@ -36,11 +37,15 @@ class Import extends Command
      */
     protected $importer;
 
-    public function __construct(AssetRepository $repository, AssetVersionRepository $versions, FilesystemManager $filesystems)
+    public function __construct(
+        AssetRepository $repository,
+        AssetVersionRepository $versions,
+        AlbumRepository $albums,
+        FilesystemManager $filesystems)
     {
         parent::__construct();
 
-        $this->importer = new Importer($repository, $versions, $filesystems);
+        $this->importer = new Importer($repository, $versions, $albums, $filesystems);
     }
 
     public function fire()
