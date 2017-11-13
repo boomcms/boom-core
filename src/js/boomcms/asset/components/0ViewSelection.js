@@ -105,10 +105,16 @@
         },
 
         init: function(options) {
+            var view = this;
+
             this.section = options.section;
             this.router = options.router;
             this.albums = options.albums;
-            this.relatedAlbums = this.selection.getAlbums();
+            this.relatedAlbumsPromise = this.selection.getAlbums();
+
+            this.relatedAlbumsPromise.done(function(albums) {
+                view.relatedAlbums = albums;
+            });
 
             this.template = _.template($(this.templateSelector).html());
         },
@@ -189,16 +195,18 @@
         viewAlbums: function() {
             var view = this;
 
-            if (typeof this.albumList === 'undefined') {
-                this.albumList = new BoomCMS.AssetManager.AlbumList({
-                    albums: this.albums,
-                    selected: this.relatedAlbums,
-                    $container: $(this.$el[0].ownerDocument)
-                });
-            }
+            this.relatedAlbumsPromise.done(function(albums) {
+                if (view.albumList === undefined) {
+                        view.albumList = new BoomCMS.AssetManager.AlbumList({
+                            albums: view.albums,
+                            selected: albums,
+                            $container: $(view.$el[0].ownerDocument)
+                        });
+                }
 
-            this.albumList.render();
-            view.$(view.albumsSelector + ' > div').html(this.albumList.el);
+                view.albumList.render();
+                view.$(view.albumsSelector + ' > div').html(view.albumList.el);
+            });
         },
 
         viewSection: function(section) {
