@@ -94,7 +94,7 @@ class Importer
     {
         $files = $this->filesystems->disk($disk)->allFiles();
 
-        return array_filter($files, function(string $path) use($disk) {
+        return array_filter($files, function (string $path) use ($disk) {
             return $this->fileNeedsImport($disk, $path);
         });
     }
