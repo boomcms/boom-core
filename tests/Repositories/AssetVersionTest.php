@@ -60,7 +60,7 @@ class AssetVersionTest extends AbstractTestCase
         $this->model
             ->shouldReceive('where')
             ->once()
-            ->with(AssetVersion::ATTR_FILESYSYEM, $filesystem)
+            ->with(AssetVersion::ATTR_FILESYSTEM, $filesystem)
             ->andReturnSelf();
 
         $this->model

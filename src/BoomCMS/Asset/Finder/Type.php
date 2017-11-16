@@ -10,6 +10,8 @@ class Type extends BaseFilter
 {
     protected $type;
 
+    protected $validTypes = ['image', 'doc', 'video', 'audio'];
+
     public function __construct($types = null)
     {
         $types = is_array($types) ? $types : [$types];
@@ -23,9 +25,7 @@ class Type extends BaseFilter
 
     public function removeInvalidTypes(array $types)
     {
-        $validTypes = array_keys(Asset::types());
-
-        return array_intersect($validTypes, $types);
+        return array_intersect($this->validTypes, $types);
     }
 
     public function shouldBeApplied()

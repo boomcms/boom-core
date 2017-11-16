@@ -52,9 +52,9 @@ abstract class AbstractTestCase extends TestCase
         $app['config']->set('filesystems', [
             'default' => 'local',
             'disks'   => [
-                'boomcms-assets' => [
+                'local' => [
                     'driver' => 'local',
-                    'root'   => storage_path('boomcms/assets'),
+                    'root'   => realpath(__DIR__.'/files'),
                 ],
             ],
         ]);

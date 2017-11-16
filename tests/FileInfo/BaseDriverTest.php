@@ -4,17 +4,14 @@ namespace BoomCMS\Tests\FileInfo;
 
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Tests\AbstractTestCase;
+use Illuminate\Support\Facades\Storage;
 
 abstract class BaseDriverTest extends AbstractTestCase
 {
     protected function getInfo($filename)
     {
-        $filesystem = new FilesystemAdapter($driver);
+        $filesystem = Storage::disk('local');
 
-        $path = realpath(__DIR__."/../files/$filename");
-        $file = new File($path);
-        $info = FileInfo::create($file);
-
-        return $info;
+        return FileInfo::create($filesystem, $filename);
     }
 }

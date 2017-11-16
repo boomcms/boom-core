@@ -8,9 +8,9 @@ use BoomCMS\Database\Models\AssetVersion;
 use BoomCMS\Repositories\Asset as AssetRepository;
 use BoomCMS\Repositories\AssetVersion as AssetVersionRepository;
 use BoomCMS\Support\Facades\Album as AlbumFacade;
+use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Mockery as m;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AssetTest extends BaseRepositoryTest
 {
@@ -22,7 +22,12 @@ class AssetTest extends BaseRepositoryTest
     /**
      * @var Filesystem
      */
-    protected $fileystem;
+    protected $disk;
+
+    /**
+     * @var FilesystemFactory
+     */
+    protected $fileystems;
 
     /**
      * @var string
@@ -53,25 +58,34 @@ class AssetTest extends BaseRepositoryTest
     {
         parent::setUp();
 
-        $this->filesystem = m::mock(Filesystem::class);
+        $this->filesystems = m::mock(FilesystemFactory::class);
         $this->version = new AssetVersion();
         $this->asset = m::mock(Asset::class);
         $this->versionRepository = new AssetVersionRepository($this->version);
+        $this->disk = m::mock(Filesysytem::class);
+
+        $this->filesystems
+            ->shouldReceive('disk')
+            ->andReturn($this->disk);
 
         $this->asset
             ->shouldReceive('getLatestVersionId')
             ->andReturn(1);
 
-        $this->repository = new AssetRepository($this->model, $this->versionRepository, $this->filesystem);
+        $this->asset
+            ->shouldReceive('getPath')
+            ->andReturn('path/to/asset');
+
+        $this->repository = new AssetRepository($this->model, $this->versionRepository, $this->filesystems);
     }
 
     public function testExists()
     {
         foreach ([true, false] as $value) {
-            $this->filesystem
+            $this->disk
                 ->shouldReceive('exists')
                 ->once()
-                ->with($this->asset->getLocalFilename())
+                ->with($this->asset->getPath())
                 ->andReturn($value);
 
             $this->repository->exists($this->asset);
@@ -153,35 +167,20 @@ class AssetTest extends BaseRepositoryTest
 
     public function testPath()
     {
-        $path = '/path/to/asset';
-
-        $this->filesystem
+        $this->disk
             ->shouldReceive('path')
             ->once()
-            ->with($this->asset->getLocalFilename())
-            ->andReturn($path);
+            ->with($this->asset->getPath());
 
-        $this->assertEquals($path, $this->repository->path($this->asset));
-    }
-
-    public function testSaveFileUsesVersionIdAsFileName()
-    {
-        $file = m::mock(UploadedFile::class);
-
-        $this->filesystem
-            ->shouldReceive('putFileAs')
-            ->once()
-            ->with(null, $file, $this->asset->getLocalFilename());
-
-        $this->repository->saveFile($this->asset, $file);
+        $this->assertEquals($this->asset->getPath(), $this->repository->path($this->asset));
     }
 
     public function testStream()
     {
-        $this->filesystem
-            ->shouldReceive('readStream')
+        $this->disk
+            ->shouldReceive('read')
             ->once()
-            ->with($this->asset->getLocalFilename());
+            ->with($this->asset->getPath());
 
         $this->repository->stream($this->asset);
     }
