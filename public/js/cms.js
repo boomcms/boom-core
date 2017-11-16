@@ -49981,7 +49981,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         this.restoreState = function() {
             var state = BoomCMS.Storage.get(this.stateStorageKey);
 
-            if (state === undefined) {
+            if (state === null) {
                 return;
             }
 
