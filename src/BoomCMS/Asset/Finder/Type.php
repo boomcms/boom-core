@@ -3,7 +3,6 @@
 namespace BoomCMS\Asset\Finder;
 
 use BoomCMS\Foundation\Finder\Filter as BaseFilter;
-use BoomCMS\Support\Helpers\Asset;
 use Illuminate\Database\Eloquent\Builder;
 
 class Type extends BaseFilter
