@@ -71,7 +71,7 @@ class Importer
         $albumName = basename(dirname($path));
 
         if (empty($albumName)) {
-            return null;
+            return;
         }
 
         if (!isset($this->albums[$albumName])) {
