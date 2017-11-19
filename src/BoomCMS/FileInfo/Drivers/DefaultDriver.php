@@ -202,9 +202,14 @@ class DefaultDriver implements FileInfoDriver
         return [];
     }
 
+    protected function read(): string
+    {
+        return (string) $this->filesystem->read($this->path);
+    }
+
     protected function readStream()
     {
-        return $this->filesystem->path($this->path);
+        return $this->filesystem->readStream($this->path);
     }
 
     public function setOriginalFilename(string $filename): FileInfoDriver

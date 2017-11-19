@@ -62,7 +62,9 @@ class Image extends DefaultDriver
     public function getDimensions(): array
     {
         if ($this->dimensions === null) {
-            $this->dimensions = getimagesize($this->readStream());
+            $im = $this->getImagick();
+
+            $this->dimensions = [$im->getImageWidth(), $im->getImageHeight()];
         }
 
         return $this->dimensions;
@@ -76,6 +78,14 @@ class Image extends DefaultDriver
     public function getHeight(): float
     {
         return $this->getDimensions()[1];
+    }
+
+    public function getImagick(): Imagick
+    {
+        $im = new Imagick();
+        $im->readimageblob($this->read());
+
+        return $im;
     }
 
     /**
@@ -95,7 +105,7 @@ class Image extends DefaultDriver
      */
     public function readMetadata(): array
     {
-        $im = new Imagick($this->readStream());
+        $im = $this->getImagick();
 
         return $im->getImageProperties('');
     }
