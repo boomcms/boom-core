@@ -30,7 +30,7 @@
         <?php endif ?>
 
         <section id="b-assets-search" class="ui-front">
-            <h1><?= trans('boomcms::asset.picker.filter') ?></h1>
+            <h1><?= trans('boomcms::asset.picker.search') ?></h1>
 
             <?= view('boomcms::assets.search') ?>
         </section>
