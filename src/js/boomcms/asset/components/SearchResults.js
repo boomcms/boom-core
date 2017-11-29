@@ -35,6 +35,8 @@
             this.selection = options.selection;
             this.$container = options.$container;
 
+            this.assets.comparator = null;
+
             this.thumbnails = new BoomCMS.AssetManager.ThumbnailGrid({
                 el: this.$('.b-assets-view-thumbs'),
                 assets: this.assets,

@@ -54,7 +54,7 @@
                 destroyTimeout = null;
 
             this.assets = new BoomCMS.Collections.Assets();
-            this.assets.setOrderBy('created_at', 'desc');
+            this.assets.mostRecentUploadsFirst();
 
             this.setAssetsUrl();
 
