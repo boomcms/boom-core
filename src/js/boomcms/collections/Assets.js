@@ -104,6 +104,10 @@
             });
         },
 
+        mostRecentUploadsFirst: function() {
+            this.setOrderBy('created_at', 'desc');
+        },
+
         parse: function(data) {
             this.total = data.total;
 
