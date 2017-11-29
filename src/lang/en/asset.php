@@ -58,7 +58,7 @@ return [
     ],
     'picker' => [
         'current'  => 'Current Asset',
-        'filter'   => 'Filter Assets',
+        'search'   => 'Search Assets',
         'upload'   => 'Upload Asset',
         'selected' => 'Selected assets',
     ],
