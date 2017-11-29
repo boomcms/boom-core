@@ -238,6 +238,7 @@
                 $pagination = this.picker.find('#b-assets-pagination');
 
             this.saveState({searchParams: params});
+            this.assets.comparator = null;
 
             this.activeAlbum = null;
 
@@ -330,6 +331,7 @@
 
             this.saveState({album: slug});
 
+            this.assets.mostRecentUploadsFirst();
             this.assets.fetch({
                 data: {
                     album: album.getId()
