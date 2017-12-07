@@ -3,6 +3,7 @@
 namespace BoomCMS\Asset\Finder;
 
 use BoomCMS\Contracts\Models\Site as SiteInterface;
+use BoomCMS\Database\Models\Asset;
 use BoomCMS\Foundation\Finder\Filter as BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -21,10 +22,8 @@ class Site extends BaseFilter
         $this->site = $site;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
-        return $query
-            ->join('asset_site', 'asset.id', '=', 'asset_site.asset_id')
-            ->where('asset_site.site_id', '=', $this->site->getId());
+        return $query->where(Asset::ATTR_SITE, $this->site->getId());
     }
 }
