@@ -102,11 +102,13 @@ class AssetController extends Controller
         ]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request, Site $site)
     {
+        $params = ['site' => $site] + $request->input();
+
         return [
-            'total'  => Helpers::countAssets($request->input()),
-            'assets' => Helpers::getAssets($request->input()),
+            'total'  => Helpers::countAssets($params),
+            'assets' => Helpers::getAssets($params),
         ];
     }
 
