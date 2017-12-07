@@ -179,8 +179,12 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
      *
      * @return Buider
      */
-    public function scopeWhereSite(Builder $query, SiteInterface $site)
+    public function scopeWhereSite(Builder $query, SiteInterface $site = null)
     {
+        if ($site === null) {
+            return $query;
+        }
+
         return $query
             ->join('person_site', 'people.id', '=', 'person_site.person_id')
             ->where('person_site.site_id', '=', $site->getId());

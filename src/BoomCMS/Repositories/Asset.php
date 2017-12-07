@@ -161,6 +161,13 @@ class Asset extends Repository implements AssetRepositoryInterface
             ->path($asset->getPath());
     }
 
+    public function read(AssetInterface $asset)
+    {
+        return $this->filesystems
+            ->disk($asset->getLatestVersion()->getFilesystem())
+            ->read($asset->getPath());
+    }
+
     public function replaceWith(AssetInterface $asset, UploadedFile $file)
     {
         $info = FileInfo::create($file);
@@ -204,7 +211,7 @@ class Asset extends Repository implements AssetRepositoryInterface
     public function stream(AssetInterface $asset)
     {
         return $this->filesystems
-            ->disk($asset->getLatestVersion->getFilesystem())
+            ->disk($asset->getLatestVersion()->getFilesystem())
             ->readStream($asset->getLatestVersionId());
     }
 

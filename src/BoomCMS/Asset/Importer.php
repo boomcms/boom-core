@@ -70,7 +70,7 @@ class Importer
     {
         $albumName = basename(dirname($path));
 
-        if (empty($albumName)) {
+        if (empty($albumName) || $albumName === '.') {
             return;
         }
 
@@ -106,12 +106,14 @@ class Importer
         foreach ($this->getFiles($disk) as $path) {
             $file = FileInfo::create($filesystem, $path);
 
-            $asset = $this->importFile($disk, $file);
-            $album = $this->getAlbumForPath($path);
+            try {
+                $asset = $this->importFile($disk, $file);
+                $album = $this->getAlbumForPath($path);
 
-            if ($album !== null) {
-                $album->addAssets([$asset->getId()]);
-            }
+                if ($album !== null) {
+                    $album->addAssets([$asset->getId()]);
+                }
+            } catch (\Exception $e) {}
 
             yield $path;
         }

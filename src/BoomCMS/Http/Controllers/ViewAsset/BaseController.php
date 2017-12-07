@@ -42,9 +42,9 @@ class BaseController extends Controller
 
     public function fileResponse(Asset $asset)
     {
-        $path = AssetFacade::path($asset);
+        $path = AssetFacade::read($asset);
 
-        return ResponseFacade::file($path, $this->getHeaders());
+        return response($path)->withHeaders($this->getHeaders());
     }
 
     public function getHeaders(): array

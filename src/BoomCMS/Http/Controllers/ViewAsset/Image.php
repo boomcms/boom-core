@@ -32,7 +32,7 @@ class Image extends BaseController
         }
 
         $image = $this->manager->cache(function (ImageCache $cache) use ($width, $height) {
-            return $cache->make(AssetFacade::path($this->asset))
+            return $cache->make(AssetFacade::read($this->asset))
                 ->fit($width, $height)
                 ->encode($this->encoding);
         });
@@ -56,7 +56,7 @@ class Image extends BaseController
             $height = empty($height) ? null : $height;
 
             return $cache
-                ->make(AssetFacade::path($this->asset))
+                ->make(AssetFacade::read($this->asset))
                 ->resize($width, $height, function (Constraint $constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
