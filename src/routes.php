@@ -57,7 +57,10 @@ Route::group(['middleware' => [
 
             Route::get('asset-picker', 'Asset\AssetPickerController@index');
 
-            Route::get('asset-manager{path}', 'Asset\AssetManagerController@index')
+            Route::get('asset-manager{path}', [
+                    'uses' => 'Asset\AssetManagerController@index',
+                    'as' => 'asset-manager',
+                ])
                 ->where([
                     'path' => '(/.*)?',
                 ]);
