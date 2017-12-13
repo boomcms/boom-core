@@ -2,24 +2,13 @@
 
 namespace BoomCMS\Http\Controllers\Asset;
 
-use BoomCMS\Http\Controllers\Controller;
 use Illuminate\View\View;
 
-class AssetManagerController extends Controller
+class AssetManagerController extends AssetPickerController
 {
-    /**
-     * @var string
-     */
-    protected $viewPrefix = 'boomcms::assets.';
-
     protected $role = 'manageAssets';
 
-    /**
-     * Display the asset manager.
-     *
-     * @return View
-     */
-    public function index()
+    public function __invoke(): View
     {
         return view($this->viewPrefix.'index');
     }

@@ -55,10 +55,10 @@ Route::group(['middleware' => [
                 Route::post('{asset}/revert', 'AssetController@revert');
             });
 
-            Route::get('asset-picker', 'Asset\AssetPickerController@index');
+            Route::get('asset-picker', 'Asset\AssetPickerController');
 
             Route::get('asset-manager{path}', [
-                    'uses' => 'Asset\AssetManagerController@index',
+                    'uses' => 'Asset\AssetManagerController',
                     'as' => 'asset-manager',
                 ])
                 ->where([
