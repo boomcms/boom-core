@@ -90,7 +90,7 @@ class ConvertAssetTagsToAlbums extends Migration
             $params = $library->params;
 
             if (isset($params->tag) && !empty($params->tag)) {
-                $tags = is_array($params->tag) ? $params->tag : [$arams->tag];
+                $tags = is_array($params->tag) ? $params->tag : [$params->tag];
                 $params->albums = [];
 
                 foreach ($tags as $tag) {
