@@ -79,7 +79,8 @@
 <script type="text/javascript">
     window.onload = function() {
         new BoomCMS.AssetManager({
-            albums: new BoomCMS.Collections.Albums(<?= Album::all() ?>)
+            albums: new BoomCMS.Collections.Albums(<?= Album::all() ?>),
+            baseUrl: '<?= URL::route('asset-manager', ['path' => ''], false) ?>'
         });
     };
 </script>
