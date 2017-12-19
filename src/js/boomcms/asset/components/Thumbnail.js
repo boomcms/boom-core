@@ -77,8 +77,8 @@
                 .find('[data-asset]')
                 .each(function() {
                     var $this = $(this),
-                        width = Math.round(($this.width() + 1) / 500) * 500,
-                        height = Math.round(($this.height() + 1) / 500) * 500,
+                        width = 500,
+                        height = 500,
                         url = asset.getUrl('thumb', width, height) + '?' + asset.getEditedAt(),
                         loadingClass = 'loading';
 
