@@ -211,7 +211,7 @@
 
             Backbone.history.start({
                 pushState: true,
-                root: '/boomcms/asset-manager'
+                root: this.baseUrl
             });
         },
 
@@ -219,6 +219,7 @@
             var assetManager = this;
 
             this.albums = options.albums;
+            this.baseUrl = options.baseUrl;
 
             this.uploader = this.$('#b-assets-upload form');
             this.router = new BoomCMS.AssetManager.Router(); 

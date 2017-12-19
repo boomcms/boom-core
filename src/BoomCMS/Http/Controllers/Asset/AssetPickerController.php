@@ -12,10 +12,7 @@ class AssetPickerController extends Controller
      */
     protected $viewPrefix = 'boomcms::assets.';
 
-    /**
-     * @return View
-     */
-    public function index()
+    public function __invoke(): View
     {
         return view($this->viewPrefix.'picker');
     }
