@@ -43,6 +43,7 @@ class BoomCMSServiceProvider extends ServiceProvider
         ServiceProviders\SettingsServiceProvider::class,
         ServiceProviders\ChunkServiceProvider::class,
         ServiceProviders\EventServiceProvider::class,
+        ServiceProviders\ImageCacheServiceProvider::class,
         HtmlServiceProvider::class,
         FileInfo\ServiceProvider::class,
     ];

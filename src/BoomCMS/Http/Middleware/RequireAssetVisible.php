@@ -35,9 +35,9 @@ class RequireAssetVisible
             abort(401);
         }
 
-        if (!Asset::exists($asset)) {
-            abort(404);
-        }
+//        if (!Asset::exists($asset)) {
+//            abort(404);
+//        }
 
         return $next($request);
     }

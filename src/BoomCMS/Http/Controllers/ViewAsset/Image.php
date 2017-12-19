@@ -2,27 +2,28 @@
 
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
+use BoomCMS\Asset\ImageCache;
 use BoomCMS\Contracts\Models\Asset;
-use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Http\Request;
-use Intervention\Image\Constraint;
-use Intervention\Image\ImageCache;
-use Intervention\Image\ImageManager;
 
 class Image extends BaseController
 {
     /**
-     * @var ImageManager
+     * @var ImageCache
      */
-    private $manager;
+    protected $cache;
 
     protected $encoding;
 
-    public function __construct(Request $request, Asset $asset)
+    public function __construct(Request $request, Asset $asset, ImageCache $cache)
     {
         parent::__construct($request, $asset);
 
-        $this->manager = new ImageManager(['driver' => 'imagick']);
+        $this->cache = $cache;
+
+        if (empty($this->encoding) === false) {
+            $this->cache->setEncoding($this->encoding);
+        }
     }
 
     public function crop($width = null, $height = null)
@@ -31,11 +32,7 @@ class Image extends BaseController
             return parent::view();
         }
 
-        $image = $this->manager->cache(function (ImageCache $cache) use ($width, $height) {
-            return $cache->make(AssetFacade::read($this->asset))
-                ->fit($width, $height)
-                ->encode($this->encoding);
-        });
+        $image = $this->cache->crop($this->asset, $width, $height);
 
         return $this->addHeaders($this->response)->setContent($image);
     }
@@ -51,18 +48,7 @@ class Image extends BaseController
             return parent::view();
         }
 
-        $image = $this->manager->cache(function (ImageCache $cache) use ($width, $height) {
-            $width = empty($width) ? null : $width;
-            $height = empty($height) ? null : $height;
-
-            return $cache
-                ->make(AssetFacade::read($this->asset))
-                ->resize($width, $height, function (Constraint $constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->encode($this->encoding);
-        });
+        $image = $this->cache->resize($this->asset, $width, $height);
 
         return $this->addHeaders($this->response)->setContent($image);
     }

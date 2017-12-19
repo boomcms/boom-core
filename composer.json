@@ -10,7 +10,7 @@
         "genphrase/genphrase": "1.*",
         "hautelook/phpass": "1.*",
         "thujohn/rss": "~1.0",
-        "intervention/imagecache" : "2.*",
+        "intervention/image" : "2.*",
         "laravel/framework": "5.4.*",
         "rych/bytesize": "1.0.*",
         "laravelcollective/html": "5.4.*",
