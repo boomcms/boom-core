@@ -44,7 +44,7 @@ class ImageCache
     {
         $key = "asset-crop-{$asset->getLatestVersionId()}-w$width-h$height";
 
-        return $this->cache->rememberForever($key, function() use ($asset, $width, $height) {
+        return $this->cache->rememberForever($key, function () use ($asset, $width, $height) {
             return $this->imageManager->make($this->repository->read($asset))
                 ->fit($width, $height)
                 ->encode($this->encoding);
@@ -58,14 +58,14 @@ class ImageCache
         $width = empty($width) ? null : $width;
         $height = empty($height) ? null : $height;
 
-        return $this->cache->rememberForever($key, function() use($asset, $width, $height) {
+        return $this->cache->rememberForever($key, function () use ($asset, $width, $height) {
             return $this->imageManager
                 ->make($this->repository->read($asset))
                 ->resize($width, $height, function (Constraint $constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })
-                ->encode($this->encoding); 
+                ->encode($this->encoding);
         });
     }
 
