@@ -113,7 +113,8 @@ class Importer
                 if ($album !== null) {
                     $album->addAssets([$asset->getId()]);
                 }
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
 
             yield $path;
         }
