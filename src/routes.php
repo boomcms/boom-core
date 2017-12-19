@@ -59,7 +59,7 @@ Route::group(['middleware' => [
 
             Route::get('asset-manager{path}', [
                     'uses' => 'Asset\AssetManagerController',
-                    'as' => 'asset-manager',
+                    'as'   => 'asset-manager',
                 ])
                 ->where([
                     'path' => '(/.*)?',
