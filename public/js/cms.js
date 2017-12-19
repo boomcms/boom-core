@@ -48075,7 +48075,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             Backbone.history.start({
                 pushState: true,
-                root: '/boomcms/asset-manager'
+                root: this.baseUrl
             });
         },
 
@@ -48083,6 +48083,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             var assetManager = this;
 
             this.albums = options.albums;
+            this.baseUrl = options.baseUrl;
 
             this.uploader = this.$('#b-assets-upload form');
             this.router = new BoomCMS.AssetManager.Router(); 
@@ -49352,8 +49353,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 .find('[data-asset]')
                 .each(function() {
                     var $this = $(this),
-                        width = Math.round(($this.width() + 1) / 500) * 500,
-                        height = Math.round(($this.height() + 1) / 500) * 500,
+                        width = 500,
+                        height = 500,
                         url = asset.getUrl('thumb', width, height) + '?' + asset.getEditedAt(),
                         loadingClass = 'loading';
 
