@@ -5,17 +5,18 @@ namespace BoomCMS\Http\Controllers\Asset;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Site;
 use BoomCMS\Foundation\Http\ValidatesAssetUpload;
+use BoomCMS\Http\Concerns\StreamsAssets;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 use Illuminate\View\View;
 
 class AssetController extends Controller
 {
+    use StreamsAssets;
     use ValidatesAssetUpload;
 
     /**
@@ -71,10 +72,7 @@ class AssetController extends Controller
      */
     public function download(Asset $asset)
     {
-        return Response::file(AssetFacade::path($asset), [
-            'Content-Type'        => $asset->getMimetype(),
-            'Content-Disposition' => 'download; filename="'.$asset->getOriginalFilename().'"',
-        ]);
+        return $this->streamAsset($asset)->download()->toResponse();
     }
 
     /**

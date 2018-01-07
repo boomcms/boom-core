@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\ViewAsset;
 
 use BoomCMS\Contracts\Models\Asset;
+use BoomCMS\Http\Concerns\StreamsAssets;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\AssetVersion;
@@ -16,6 +17,8 @@ use Intervention\Image\ImageManager;
 
 class BaseController extends Controller
 {
+    use StreamsAssets;
+
     /**
      * @var Asset
      */
@@ -24,40 +27,12 @@ class BaseController extends Controller
     public function __construct(Request $request, Asset $asset)
     {
         $this->asset = $asset;
+        $this->request = $request;
         $this->response = new Response();
 
         if ($request->has('version') && Auth::check()) {
             $asset->setVersion(AssetVersion::find($request->input('version')));
         }
-    }
-
-    public function addHeaders(Response $response)
-    {
-        foreach ($this->getHeaders() as $header => $value) {
-            $response->header($header, $value);
-        }
-
-        return $response;
-    }
-
-    public function fileResponse(Asset $asset)
-    {
-        $path = AssetFacade::read($asset);
-
-        return response($path)->withHeaders($this->getHeaders());
-    }
-
-    public function getHeaders(): array
-    {
-        return [
-            'Content-Type'        => $this->asset->getMimetype(),
-            'Content-Disposition' => "filename='{$this->asset->getOriginalFilename()}'",
-        ];
-    }
-
-    protected function getStream()
-    {
-        return AssetFacade::stream($this->asset);
     }
 
     public function thumb($width = null, $height = null)
@@ -71,7 +46,7 @@ class BaseController extends Controller
         $thumbnail = $this->asset->getThumbnail();
 
         if (empty($width) && empty($height)) {
-            return $this->fileResponse($thumbnail);
+            return $this->streamAsset($thumbnail);
         }
 
         $image = (new ImageManager())->cache(function (ImageCache $cache) use ($width, $height, $thumbnail) {
@@ -92,6 +67,8 @@ class BaseController extends Controller
 
     public function view($width = null, $height = null)
     {
-        return $this->fileResponse($this->asset);
-    }
+        return $this->streamAsset($this->asset)
+            ->partial($this->request->header('Range'))
+            ->toResponse();
+        }
 }

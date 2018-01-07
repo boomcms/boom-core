@@ -47,11 +47,4 @@ interface Asset extends Repository
      * @param int            $versionId
      */
     public function revert(AssetInterface $asset, $versionId);
-
-    /**
-     * Returns a read stream for the given asset.
-     *
-     * @param AssetObject $asset
-     */
-    public function stream(AssetInterface $asset);
 }

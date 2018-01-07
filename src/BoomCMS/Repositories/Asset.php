@@ -118,9 +118,7 @@ class Asset extends Repository implements AssetRepositoryInterface
      */
     public function exists(AssetInterface $asset): bool
     {
-        return $this->filesystems
-            ->disk($asset->getLatestVersion()->getFilesystem())
-            ->exists($asset->getPath());
+        return $this->filesystem($asset)->exists($asset->getPath());
     }
 
     /**
@@ -137,6 +135,11 @@ class Asset extends Repository implements AssetRepositoryInterface
             ->orderBy('e')
             ->distinct()
             ->pluck('e');
+    }
+
+    public function filesystem(AssetInterface $asset)
+    {
+        return $this->filesystems->disk($asset->getLatestVersion()->getFilesystem());
     }
 
     /**
@@ -156,16 +159,7 @@ class Asset extends Repository implements AssetRepositoryInterface
 
     public function path(AssetInterface $asset): string
     {
-        return $this->filesystems
-            ->disk($asset->getLatestVersion()->getFilesystem())
-            ->path($asset->getPath());
-    }
-
-    public function read(AssetInterface $asset)
-    {
-        return $this->filesystems
-            ->disk($asset->getLatestVersion()->getFilesystem())
-            ->read($asset->getPath());
+        return $this->filesystem($asset)->path($asset->getPath());
     }
 
     public function replaceWith(AssetInterface $asset, UploadedFile $file)
@@ -203,22 +197,8 @@ class Asset extends Repository implements AssetRepositoryInterface
             ->put($this->getThumbnailFilename($asset), $thumbnail->getImageBlob());
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param AssetInterface $asset
-     */
-    public function stream(AssetInterface $asset)
-    {
-        return $this->filesystems
-            ->disk($asset->getLatestVersion()->getFilesystem())
-            ->readStream($asset->getLatestVersionId());
-    }
-
     public function thumbnail(AssetInterface $asset)
     {
-        return $this->filesystems
-            ->disk($asset->getLatestVersion()->getFilesystem())
-            ->get($this->getThumbnailFilename($asset));
+        return $this->filesystem($asset)->get($this->getThumbnailFilename($asset));
     }
 }

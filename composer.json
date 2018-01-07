@@ -19,7 +19,8 @@
         "doctrine/dbal": "2.5.*",
         "php-ffmpeg/php-ffmpeg": "0.9.*",
         "smalot/pdfparser": "*",
-        "phpoffice/phpword": "0.13.*"
+        "phpoffice/phpword": "0.13.*",
+        "robbytaylor/filestream": "^0.1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "5.*",

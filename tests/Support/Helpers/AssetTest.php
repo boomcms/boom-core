@@ -31,10 +31,5 @@ class AssetTest extends AbstractTestCase
         $tiff->expects($this->any())->method('getType')->will($this->returnValue('image'));
         $tiff->expects($this->any())->method('getExtension')->will($this->returnValue('tiff'));
         $this->assertEquals($namespace.'Tiff', AssetHelper::controller($tiff));
-
-        $video = $this->createMock(Asset::class, ['getType', 'getExtension']);
-        $video->expects($this->any())->method('getExtension')->will($this->returnValue('mp4'));
-        $video->expects($this->any())->method('getType')->will($this->returnValue('video'));
-        $this->assertEquals($namespace.'Video', AssetHelper::controller($video));
     }
 }
