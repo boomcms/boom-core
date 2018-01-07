@@ -70,5 +70,5 @@ class BaseController extends Controller
         return $this->streamAsset($this->asset)
             ->partial($this->request->header('Range'))
             ->toResponse();
-        }
+    }
 }
