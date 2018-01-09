@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Builder;
 class IgnorePages extends Filter
 {
     protected $pages;
-    
-    public function __construct($pages) {
+
+    public function __construct($pages)
+    {
         $this->pages = $pages;
     }
+
     public function build(Builder $query)
     {
         if (is_array($this->pages)) {
