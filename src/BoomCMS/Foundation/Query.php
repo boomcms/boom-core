@@ -26,14 +26,13 @@ class Query
 
                 if (is_array($args)) {
                     $reflect = new ReflectionClass($class);
-                    
+
                     if ($param === 'not' || $param === 'ignorepages') {
                         $pages[] = $args;
                         $filter = $reflect->newInstanceArgs($pages);
                     } else {
                         $filter = $reflect->newInstanceArgs($args);
                     }
-                    
                 } else {
                     $filter = new $class($args);
                 }
