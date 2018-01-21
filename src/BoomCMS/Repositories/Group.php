@@ -3,12 +3,11 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
-use BoomCMS\Contracts\Repositories\Group as GroupRepositoryInterface;
 use BoomCMS\Database\Models\Group as Model;
 use BoomCMS\Foundation\Repository;
 use Illuminate\Database\Eloquent\Collection;
 
-class Group extends Repository implements GroupRepositoryInterface
+class Group extends Repository
 {
     public function __construct(Model $model = null)
     {

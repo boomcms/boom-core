@@ -3,13 +3,11 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
-use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
-use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
-use BoomCMS\Contracts\Repositories\Repository as RepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Foundation\Repository;
+use BoomCMS\Repositories\AssetVersion as AssetVersionRepository;
 use BoomCMS\Support\Facades\Album as AlbumFacade;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -17,7 +15,7 @@ use Illuminate\Support\Collection;
 use Imagick;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class Asset extends Repository implements AssetRepositoryInterface
+class Asset extends Repository
 {
     /**
      *
@@ -32,7 +30,7 @@ class Asset extends Repository implements AssetRepositoryInterface
 
     /**
      *
-     * @var AssetVersionRepositoryInterface
+     * @var AssetVersionRepository
      */
     protected $version;
 
@@ -42,7 +40,7 @@ class Asset extends Repository implements AssetRepositoryInterface
      */
     public function __construct(
         AssetModel $model,
-        AssetVersionRepositoryInterface $version,
+        AssetVersionRepository $version,
         Filesystem $filesystem)
     {
         $this->model = $model;
@@ -81,7 +79,7 @@ class Asset extends Repository implements AssetRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($param): RepositoryInterface
+    public function delete($param): Repository
     {
         $assetIds = is_array($param) ? $param : [$param->getId()];
         $albums = AlbumFacade::findByAssetIds($assetIds);

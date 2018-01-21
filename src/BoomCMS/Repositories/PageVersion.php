@@ -3,11 +3,10 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Page as PageModelInterface;
-use BoomCMS\Contracts\Repositories\PageVersion as PageVersionRepositoryInterface;
 use BoomCMS\Database\Models\PageVersion as Model;
 use BoomCMS\Support\Facades\Chunk;
 
-class PageVersion implements PageVersionRepositoryInterface
+class PageVersion
 {
     /**
      * @var Model
