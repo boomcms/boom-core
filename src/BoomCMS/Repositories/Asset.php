@@ -20,8 +20,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Asset extends Repository implements AssetRepositoryInterface
 {
     /**
-     * <<<<<<< HEAD
-     * =======.
      *
      * @var Filesystem
      */
@@ -33,7 +31,6 @@ class Asset extends Repository implements AssetRepositoryInterface
     protected $model;
 
     /**
-     * >>>>>>> 7.0.
      *
      * @var AssetVersionRepositoryInterface
      */
