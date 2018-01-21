@@ -7,7 +7,6 @@ use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Foundation\Repository;
 use BoomCMS\Page\Finder;
-use Illuminate\Database\Eloquent\Collection;
 
 class Page extends Repository
 {
