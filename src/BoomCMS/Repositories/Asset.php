@@ -34,10 +34,6 @@ class Asset extends Repository
      */
     protected $version;
 
-    /**
-     * @param AssetModel        $model
-     * @param AsserVersionModel $version
-     */
     public function __construct(
         AssetModel $model,
         AssetVersionRepository $version,
@@ -48,13 +44,6 @@ class Asset extends Repository
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * Create an asset from an uploaded file, setting default values.
-     *
-     * @param UploadedFile $file
-     *
-     * @return int
-     */
     public function createFromFile(UploadedFile $file): AssetInterface
     {
         $info = FileInfo::create($file);
@@ -76,9 +65,6 @@ class Asset extends Repository
         return $asset;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($param): Repository
     {
         $assetIds = is_array($param) ? $param : [$param->getId()];
@@ -94,23 +80,11 @@ class Asset extends Repository
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param AssetInterface $asset
-     *
-     * @return bool
-     */
     public function exists(AssetInterface $asset): bool
     {
         return $this->filesystem->exists($asset->getLatestVersionId());
     }
 
-    /**
-     * Returns an array of extensions which are in use with the latest versions.
-     *
-     * @return Collection
-     */
     public function extensions(): Collection
     {
         return $this->model
@@ -122,11 +96,6 @@ class Asset extends Repository
             ->pluck('e');
     }
 
-    /**
-     * @param int $assetId
-     *
-     * @return AssetModel|null
-     */
     public function find($assetId)
     {
         return $this->model->find($assetId);
@@ -179,11 +148,6 @@ class Asset extends Repository
         }
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param AssetInterface $asset
-     */
     public function stream(AssetInterface $asset)
     {
         return $this->filesystem->readStream($asset->getLatestVersionId());

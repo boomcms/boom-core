@@ -16,12 +16,7 @@ class Template extends Repository
         $this->model = $model;
     }
 
-    /**
-     * @param array $attrs
-     *
-     * @return TemplateInterface
-     */
-    public function create(array $attrs)
+    public function create(array $attrs): TemplateInterface
     {
         return $this->model->create($attrs);
     }
@@ -34,12 +29,6 @@ class Template extends Repository
             ->get();
     }
 
-    /**
-     * @param string $theme
-     * @param string $filename
-     *
-     * @return TemplateInterface
-     */
     public function findByThemeAndFilename($theme, $filename)
     {
         return $this->model->where('filename', '=', $filename)
@@ -47,10 +36,7 @@ class Template extends Repository
             ->first();
     }
 
-    /**
-     * @return array
-     */
-    public function findValid()
+    public function findValid(): array
     {
         $valid = [];
         $templates = $this->findAll();

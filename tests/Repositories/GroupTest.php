@@ -35,7 +35,7 @@ class GroupTest extends BaseRepositoryTest
 
     public function testFindAll()
     {
-        $group = new GroupModel();
+        $groups = collect([new GroupModel()]);
 
         $this->model
             ->shouldReceive('orderBy')
@@ -46,16 +46,16 @@ class GroupTest extends BaseRepositoryTest
         $this->model
             ->shouldReceive('get')
             ->once()
-            ->andReturn([$group]);
+            ->andReturn($groups);
 
-        $this->assertEquals([$group], $this->repository->findAll());
+        $this->assertEquals($groups, $this->repository->findAll());
     }
 
     public function testFindBySite()
     {
         $site = new Site();
         $site->{Site::ATTR_ID} = 1;
-        $groups = [new GroupModel(), new GroupModel()];
+        $groups = collect([new GroupModel(), new GroupModel()]);
 
         $this->model
             ->shouldReceive('where')

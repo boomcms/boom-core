@@ -52,7 +52,7 @@ class SiteTest extends BaseRepositoryTest
 
     public function testFindByPerson()
     {
-        $sites = [new SiteModel(), new SiteModel()];
+        $sites = collect([new SiteModel(), new SiteModel()]);
         $person = new Person();
         $person->{Person::ATTR_ID} = 1;
 

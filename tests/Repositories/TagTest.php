@@ -98,6 +98,7 @@ class TagTest extends BaseRepositoryTest
     public function testFindBySite()
     {
         $model = m::mock(Tag::class);
+        $collection = collect();
 
         $model
             ->shouldReceive('select')
@@ -118,11 +119,11 @@ class TagTest extends BaseRepositoryTest
 
         $model->shouldReceive('orderBy')->with('group')->andReturnSelf();
         $model->shouldReceive('orderBy')->with('name')->andReturnSelf();
-        $model->shouldReceive('get')->andReturnSelf();
+        $model->shouldReceive('get')->andReturn($collection);
 
         $repository = new TagRepository($model, $this->site);
 
-        $this->assertEquals($model, $repository->findBySite($this->site));
+        $this->assertEquals($collection, $repository->findBySite($this->site));
     }
 
     public function testFindBySlugAndGroup()

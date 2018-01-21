@@ -17,35 +17,16 @@ class AssetVersion extends Repository
      */
     protected $filesystem;
 
-    /**
-     * @param AssetVersionModel $model
-     */
     public function __construct(AssetVersionModel $model)
     {
         $this->model = $model;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param array $attrs
-     *
-     * @return AssetVersionModel
-     */
     public function create(array $attrs): AssetVersionModel
     {
         return $this->model->create($attrs);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param AssetInterface $asset
-     * @param UploadedFile   $file
-     * @param FileInfoDriver $info
-     *
-     * @return AssetVersionModel
-     */
     public function createFromFile(
         AssetInterface $asset,
         UploadedFile $file,
@@ -70,13 +51,6 @@ class AssetVersion extends Repository
         return $version;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param int $versionId
-     *
-     * @return AssetInterface
-     */
     public function findAssetByVersionId($versionId): AssetInterface
     {
         $version = $this->find($versionId);

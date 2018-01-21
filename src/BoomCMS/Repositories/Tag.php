@@ -6,6 +6,7 @@ use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Database\Models\Tag as Model;
 use BoomCMS\Foundation\Repository;
+use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 class Tag extends Repository
@@ -15,25 +16,13 @@ class Tag extends Repository
      */
     protected $site;
 
-    /**
-     * @param Model         $model
-     * @param SiteInterface $site
-     */
     public function __construct(Model $model, SiteInterface $site = null)
     {
         $this->model = $model;
         $this->site = $site;
     }
 
-    /**
-     * @param string $name
-     * @param string $group
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return TagInterface
-     */
-    public function create($name, $group)
+    public function create($name, $group): TagInterface
     {
         if (empty($name)) {
             throw new InvalidArgumentException('Tag name must not be empty');
@@ -45,11 +34,6 @@ class Tag extends Repository
         ]);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return TagInterface
-     */
     public function findByName($name)
     {
         return $this->model
@@ -58,12 +42,6 @@ class Tag extends Repository
             ->first();
     }
 
-    /**
-     * @param string $name
-     * @param string $group
-     *
-     * @return TagInterface
-     */
     public function findByNameAndGroup($name, $group = null)
     {
         return $this->model
@@ -73,12 +51,7 @@ class Tag extends Repository
             ->first();
     }
 
-    /**
-     * @param SiteInterface $site
-     *
-     * @return TagInterface
-     */
-    public function findBySite(SiteInterface $site)
+    public function findBySite(SiteInterface $site): Collection
     {
         return $this->model
             ->select('tags.*')
@@ -89,12 +62,6 @@ class Tag extends Repository
             ->get();
     }
 
-    /**
-     * @param string $slug
-     * @param string $group
-     *
-     * @return TagInterface
-     */
     public function findBySlugAndGroup($slug, $group = null)
     {
         return $this->model
@@ -104,12 +71,6 @@ class Tag extends Repository
             ->first();
     }
 
-    /**
-     * @param string $name
-     * @param string $group
-     *
-     * @return TagInterface
-     */
     public function findOrCreate($name, $group = null)
     {
         // Ensure group is null if an empty string is passed.

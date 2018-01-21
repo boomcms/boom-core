@@ -16,21 +16,12 @@ class Album extends Repository
      */
     protected $site;
 
-    /**
-     * @param Model         $model
-     * @param SiteInterface $site
-     */
     public function __construct(Model $model, SiteInterface $site = null)
     {
         $this->model = $model;
         $this->site = $site;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return Collection
-     */
     public function all(): Collection
     {
         return $this->model
@@ -39,14 +30,6 @@ class Album extends Repository
             ->get();
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param string      $name
-     * @param string|null $description
-     *
-     * @return AlbumInterface
-     */
     public function create($name, $description = null): AlbumInterface
     {
         return $this->model
@@ -56,25 +39,11 @@ class Album extends Repository
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param string $name
-     *
-     * @return null|AlbumInterface
-     */
     public function findByName($name)
     {
         return $this->model->where(Model::ATTR_NAME, $name)->first();
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param string $name
-     *
-     * @return AlbumInterface
-     */
     public function findOrCreate($name): AlbumInterface
     {
         $album = $this->findByName($name);
@@ -82,13 +51,6 @@ class Album extends Repository
         return ($album === null) ? $this->create($name) : $album;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param array $assetIds
-     *
-     * @return Collection
-     */
     public function findByAssetIds(array $assetIds): Collection
     {
         return $this->model
