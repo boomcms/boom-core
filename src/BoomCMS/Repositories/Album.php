@@ -4,13 +4,12 @@ namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Album as AlbumInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
-use BoomCMS\Contracts\Repositories\Album as AlbumRepositoryInterface;
 use BoomCMS\Database\Models\Album as Model;
 use BoomCMS\Foundation\Repository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
-class Album extends Repository implements AlbumRepositoryInterface
+class Album extends Repository
 {
     /**
      * @var SiteInterface

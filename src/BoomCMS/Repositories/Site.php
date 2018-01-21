@@ -4,12 +4,11 @@ namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Person as PersonModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
-use BoomCMS\Contracts\Repositories\Site as SiteRepositoryInterface;
 use BoomCMS\Database\Models\Site as Model;
 use BoomCMS\Foundation\Repository;
 use Illuminate\Database\Eloquent\Collection;
 
-class Site extends Repository implements SiteRepositoryInterface
+class Site extends Repository
 {
     public function __construct(Model $model)
     {

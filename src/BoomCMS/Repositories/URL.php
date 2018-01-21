@@ -5,12 +5,11 @@ namespace BoomCMS\Repositories;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Site as SiteInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
-use BoomCMS\Contracts\Repositories\URL as URLRepositoryInterface;
 use BoomCMS\Database\Models\URL as Model;
 use BoomCMS\Foundation\Repository;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 
-class URL extends Repository implements URLRepositoryInterface
+class URL extends Repository
 {
     /**
      * @var SiteInterface

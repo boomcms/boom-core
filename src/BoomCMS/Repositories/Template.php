@@ -3,11 +3,10 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
-use BoomCMS\Contracts\Repositories\Template as TemplateRepositoryInterface;
 use BoomCMS\Database\Models\Template as TemplateModel;
 use BoomCMS\Foundation\Repository;
 
-class Template extends Repository implements TemplateRepositoryInterface
+class Template extends Repository
 {
     /**
      * @param TemplateModel $model

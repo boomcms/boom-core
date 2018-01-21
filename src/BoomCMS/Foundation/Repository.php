@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Foundation;
 
-use BoomCMS\Contracts\Repositories\Repository as RepositoryInterface;
 use BoomCMS\Foundation\Database\Model;
 use Illuminate\Support\Traits\Macroable;
 
@@ -22,7 +21,7 @@ abstract class Repository
      *
      * @return $this
      */
-    public function delete($param): RepositoryInterface
+    public function delete($param): Repository
     {
         (is_array($param)) ? $this->model->destroy($param) : $param->delete();
 
