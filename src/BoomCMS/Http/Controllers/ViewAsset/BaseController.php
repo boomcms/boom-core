@@ -35,12 +35,22 @@ class BaseController extends Controller
         }
     }
 
+    protected function responseContent(string $content, string $mimetype = null): Response
+    {
+        $mimetype = $mimetype ?: $this->asset->getMimetype();
+
+        return $this->response
+            ->header('Content-Type', $mimetype)
+            ->header('Content-Disposition', "filename='{$this->asset->getOriginalFilename()}'")
+            ->setContent($content);
+    }
+
     public function thumb($width = null, $height = null)
     {
         if (!$this->asset->hasThumbnail()) {
             $path = __DIR__."/../../../../../public/img/extensions/{$this->asset->getExtension()}.png";
 
-            return ResponseFacade::file($path, $this->getHeaders());
+            return ResponseFacade::file($path);
         }
 
         $thumbnail = $this->asset->getThumbnail();
@@ -62,7 +72,7 @@ class BaseController extends Controller
                 ->encode('image/png');
         });
 
-        return $this->addHeaders($this->response)->setContent($image);
+        return $this->responseContent($image, 'image/png');
     }
 
     public function view($width = null, $height = null)

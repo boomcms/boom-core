@@ -34,7 +34,7 @@ class Image extends BaseController
 
         $image = $this->cache->crop($this->asset, $width, $height);
 
-        return $this->addHeaders($this->response)->setContent($image);
+        return $this->responseContent($image);
     }
 
     public function thumb($width = null, $height = null)
@@ -50,6 +50,6 @@ class Image extends BaseController
 
         $image = $this->cache->resize($this->asset, $width, $height);
 
-        return $this->addHeaders($this->response)->setContent($image);
+        return $this->responseContent($image);
     }
 }
