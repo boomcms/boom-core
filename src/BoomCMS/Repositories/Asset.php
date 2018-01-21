@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Asset extends Repository
 {
     /**
-     *
      * @var Filesystem
      */
     protected $filesystem;
@@ -29,7 +28,6 @@ class Asset extends Repository
     protected $model;
 
     /**
-     *
      * @var AssetVersionRepository
      */
     protected $version;
