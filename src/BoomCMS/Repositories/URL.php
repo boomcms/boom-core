@@ -16,24 +16,13 @@ class URL extends Repository
      */
     protected $site;
 
-    /**
-     * @param Model        $model
-     * @param SiteInteface $site
-     */
     public function __construct(Model $model, SiteInterface $site = null)
     {
         $this->model = $model;
         $this->site = $site;
     }
 
-    /**
-     * @param string        $location
-     * @param PageInterface $page
-     * @param bool          $isPrimary
-     *
-     * @return URLInterface
-     */
-    public function create($location, PageInterface $page, $isPrimary = false)
+    public function create($location, PageInterface $page, $isPrimary = false): URLInterface
     {
         $unique = URLHelper::makeUnique(URLHelper::sanitise($location));
 
@@ -44,11 +33,6 @@ class URL extends Repository
         ]);
     }
 
-    /**
-     * @param string $location
-     *
-     * @return URLInterface
-     */
     public function findByLocation($location)
     {
         return $this->model
@@ -57,14 +41,7 @@ class URL extends Repository
             ->first();
     }
 
-    /**
-     * Determine whether a URL is already being used by a page in the CMS.
-     *
-     * @param string $path
-     *
-     * @return bool
-     */
-    public function isAvailable($path)
+    public function isAvailable($path): bool
     {
         return !$this->model
             ->where(Model::ATTR_SITE, '=', $this->site->getId())
@@ -72,13 +49,6 @@ class URL extends Repository
             ->exists();
     }
 
-    /**
-     * Returns the primary URL for the given page.
-     *
-     * @param PageInterface $page
-     *
-     * @return URLInterface
-     */
     public function page(PageInterface $page)
     {
         return $this->model

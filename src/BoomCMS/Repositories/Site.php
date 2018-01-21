@@ -6,7 +6,7 @@ use BoomCMS\Contracts\Models\Person as PersonModelInterface;
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Database\Models\Site as Model;
 use BoomCMS\Foundation\Repository;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class Site extends Repository
 {
@@ -15,12 +15,7 @@ class Site extends Repository
         $this->model = $model;
     }
 
-    /**
-     * @param array $attributes
-     *
-     * @return Model
-     */
-    public function create(array $attributes)
+    public function create(array $attributes): Model
     {
         return Model::create($attributes);
     }
@@ -30,22 +25,12 @@ class Site extends Repository
         return $this->model->all();
     }
 
-    /**
-     * @param string $hostname
-     *
-     * @return null|Model
-     */
     public function findByHostname($hostname)
     {
         return $this->model->where(Model::ATTR_HOSTNAME, '=', $hostname)->first();
     }
 
-    /**
-     * @param PersonModelInterface $person
-     *
-     * @return Collection
-     */
-    public function findByPerson(PersonModelInterface $person)
+    public function findByPerson(PersonModelInterface $person): Collection
     {
         return $this->model
             ->join('person_site', 'person_site.site_id', '=', 'sites.id')
@@ -54,19 +39,11 @@ class Site extends Repository
             ->all();
     }
 
-    /**
-     * @return null|SiteModelInterface
-     */
     public function findDefault()
     {
         return $this->model->where(Model::ATTR_DEFAULT, '=', true)->first();
     }
 
-    /**
-     * @param SiteModelInterface $site
-     *
-     * @return $this
-     */
     public function makeDefault(SiteModelInterface $site)
     {
         if (!$site->isDefault()) {

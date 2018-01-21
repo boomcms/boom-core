@@ -5,7 +5,7 @@ namespace BoomCMS\Repositories;
 use BoomCMS\Contracts\Models\Site as SiteModelInterface;
 use BoomCMS\Database\Models\Group as Model;
 use BoomCMS\Foundation\Repository;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class Group extends Repository
 {
@@ -16,30 +16,19 @@ class Group extends Repository
         $this->model = $model ?: new $class();
     }
 
-    /**
-     * @param SiteModelInterface $site
-     * @param string             $name
-     *
-     * @return Model
-     */
-    public function create($name)
+    public function create($name): Model
     {
         return $this->model->create([
             Model::ATTR_NAME => $name,
         ]);
     }
 
-    public function findAll()
+    public function findAll(): Collection
     {
         return $this->model->orderBy('name', 'asc')->get();
     }
 
-    /**
-     * @param SiteInterface $site
-     *
-     * @return Collection
-     */
-    public function findBySite(SiteModelInterface $site)
+    public function findBySite(SiteModelInterface $site): Collection
     {
         return $this->model
             ->where(Model::ATTR_SITE, '=', $site->getId())

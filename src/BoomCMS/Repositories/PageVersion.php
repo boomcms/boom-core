@@ -27,14 +27,6 @@ class PageVersion
             ->get();
     }
 
-    /**
-     * Find a version by page and version ID.
-     *
-     * @param PageModelInterface $page
-     * @param type               $versionId
-     *
-     * @return Model
-     */
     public function find(PageModelInterface $page, $versionId)
     {
         return $this->model
@@ -43,16 +35,7 @@ class PageVersion
             ->first();
     }
 
-    /**
-     * Restore an older version of a page.
-     *
-     * Creates a new version based on the old one.
-     *
-     * @param Model $version
-     *
-     * @return Model
-     */
-    public function restore(Model $version)
+    public function restore(Model $version): Model
     {
         $newVersion = new Model($version->toArray());
         $newVersion->setRestoredFrom($version)->save();

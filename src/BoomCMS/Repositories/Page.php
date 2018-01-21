@@ -16,28 +16,17 @@ class Page extends Repository
      */
     protected $site;
 
-    /**
-     * @param Model         $model
-     * @param SiteInterface $site
-     */
     public function __construct(Model $model, SiteInterface $site = null)
     {
         $this->model = $model;
         $this->site = $site;
     }
 
-    public function create(array $attrs = [])
+    public function create(array $attrs = []): Model
     {
         return Model::create($attrs);
     }
 
-    /**
-     * Returns a page with the given ID.
-     *
-     * @param int $pageId
-     *
-     * @return null|PageModelInterface
-     */
     public function find($pageId)
     {
         return $this->model->currentVersion()->find($pageId);
@@ -56,11 +45,6 @@ class Page extends Repository
         return $finder->findAll();
     }
 
-    /**
-     * @param array|string $uri
-     *
-     * @return null|Model|Collection
-     */
     public function findByPrimaryUri($uri)
     {
         $query = $this->model->where(Model::ATTR_SITE, '=', $this->site->getId());
@@ -72,13 +56,6 @@ class Page extends Repository
         return $query->where(Model::ATTR_PRIMARY_URI, '=', $uri)->first();
     }
 
-    /**
-     * Find a page by URI.
-     *
-     * @param array|string $uri
-     *
-     * @return null|Model|Collection
-     */
     public function findByUri($uri)
     {
         $query = $this->model
@@ -93,14 +70,7 @@ class Page extends Repository
         return $query->where('location', '=', $uri)->first();
     }
 
-    /**
-     * Returns whether a given page internal name is already in use.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function internalNameExists($name)
+    public function internalNameExists($name): bool
     {
         return $this->model
             ->withTrashed()
@@ -108,13 +78,7 @@ class Page extends Repository
             ->exists();
     }
 
-    /**
-     * @param PageModelInterface $page
-     * @param callable           $closure
-     *
-     * @return void
-     */
-    public function recurse(PageModelInterface $page, callable $closure)
+    public function recurse(PageModelInterface $page, callable $closure): void
     {
         $children = $this->findByParentId($page->getId());
 

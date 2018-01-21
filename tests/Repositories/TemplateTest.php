@@ -23,7 +23,11 @@ class TemplateTest extends BaseRepositoryTest
             'name'     => 'test',
         ];
 
-        $this->model->shouldReceive('create')->with($attrs);
+        $this->model
+            ->shouldReceive('create')
+            ->with($attrs)
+            ->andReturn(new $this->modelClass());
+
         $this->repository->create($attrs);
     }
 }

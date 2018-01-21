@@ -23,9 +23,6 @@ class Person extends Repository implements UserProvider
      */
     protected $site;
 
-    /**
-     * @param Model $model
-     */
     public function __construct(Model $model, SiteInterface $site = null)
     {
         $this->hasher = new Hasher();
@@ -33,12 +30,12 @@ class Person extends Repository implements UserProvider
         $this->site = $site;
     }
 
-    public function create(array $credentials)
+    public function create(array $credentials): Model
     {
         return $this->model->create($credentials);
     }
 
-    public function findAll()
+    public function findAll(): Collection
     {
         return $this->model->all();
     }
@@ -52,9 +49,6 @@ class Person extends Repository implements UserProvider
             ->get();
     }
 
-    /**
-     * @return Person
-     */
     public function findBy($key, $value)
     {
         return $this->model->where($key, '=', $value)->first();
@@ -74,11 +68,6 @@ class Person extends Repository implements UserProvider
             ->get();
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return Collection
-     */
     public function getAssetUploaders(): Collection
     {
         return $this->model
@@ -87,13 +76,6 @@ class Person extends Repository implements UserProvider
             ->get();
     }
 
-    /**
-     * Retrieve a user by the given credentials.
-     *
-     * @param array $credentials
-     *
-     * @return null|Authenticatable
-     */
     public function retrieveByCredentials(array $credentials)
     {
         $query = $this->model->whereSite($this->site);
@@ -107,22 +89,11 @@ class Person extends Repository implements UserProvider
         return $query->first();
     }
 
-    /**
-     * @param int $personId
-     *
-     * @return null|Authenticatable
-     */
     public function retrieveById($personId)
     {
         return $this->find($personId);
     }
 
-    /**
-     * @param mixed  $identifier
-     * @param string $token
-     *
-     * @return null|Authenticatable
-     */
     public function retrieveByToken($identifier, $token)
     {
         return $this->model
@@ -132,26 +103,14 @@ class Person extends Repository implements UserProvider
             ->first();
     }
 
-    /**
-     * @param Authenticatable $person
-     * @param string          $token
-     */
-    public function updateRememberToken(Authenticatable $person, $token)
+    public function updateRememberToken(Authenticatable $person, $token): void
     {
         $person->setRememberToken($token);
 
         $this->save($person);
     }
 
-    /**
-     * Validate a user against the given credentials.
-     *
-     * @param Authenticatable $person
-     * @param array           $credentials
-     *
-     * @return bool
-     */
-    public function validateCredentials(Authenticatable $person, array $credentials)
+    public function validateCredentials(Authenticatable $person, array $credentials): bool
     {
         // User cannot be validated if they don't have a password
         if (empty($person->getAuthPassword())) {
