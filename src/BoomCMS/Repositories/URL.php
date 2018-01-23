@@ -52,8 +52,8 @@ class URL extends Repository implements URLRepositoryInterface
      */
     public function findByLocation($location)
     {
-        $site_id = ($this->site)? $this->site->getId() : 1;
-        
+        $site_id = ($this->site) ? $this->site->getId() : 1;
+
         return $this->model
             ->where(Model::ATTR_SITE, '=', $site_id)
             ->where(Model::ATTR_LOCATION, '=', URLHelper::sanitise($location))
@@ -69,8 +69,8 @@ class URL extends Repository implements URLRepositoryInterface
      */
     public function isAvailable($path)
     {
-        $site_id = ($this->site)? $this->site->getId() : 1;
-        
+        $site_id = ($this->site) ? $this->site->getId() : 1;
+
         return !$this->model
             ->where(Model::ATTR_SITE, '=', $site_id)
             ->where(Model::ATTR_LOCATION, '=', $path)
