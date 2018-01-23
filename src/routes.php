@@ -196,7 +196,13 @@ Route::group([
         'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
             App::instance(AssetContract::class, $asset);
 
-            return App::make(AssetHelper::controller($asset))->$action($width, $height);
+            $has_asset = AssetHelper::controller($asset);
+            
+            if($has_asset){
+                return App::make($has_asset)->$action($width, $height);
+            }
+            
+            return "";
         },
     ])->where([
         'action'    => 'view|thumb|download|crop|embed',
@@ -211,7 +217,13 @@ Route::group([
         'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
             App::instance(AssetContract::class, $asset);
 
-            return App::make(AssetHelper::controller($asset))->$action($width, $height);
+            $has_asset = AssetHelper::controller($asset);
+            
+            if($has_asset){
+                return App::make($has_asset)->$action($width, $height);
+            }
+            
+            return "";
         },
     ])->where([
         'action' => 'view|thumb|crop',
