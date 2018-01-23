@@ -28,7 +28,7 @@ interface Page extends LinkableInterface
      *
      * @return $this
      */
-    public function addRelation(Page $page);
+    public function addRelation(self $page);
 
     /**
      * Add a tag to the page.
@@ -229,7 +229,7 @@ interface Page extends LinkableInterface
      *
      * @return bool
      */
-    public function isParentOf(Page $page);
+    public function isParentOf(self $page);
 
     /**
      * Returns true if the page doesn't have a parent.
@@ -286,7 +286,7 @@ interface Page extends LinkableInterface
      *
      * @return $this
      */
-    public function removeRelation(Page $page);
+    public function removeRelation(self $page);
 
     /**
      * Remove a tag from the page.
