@@ -46,7 +46,7 @@ class Linkset extends BaseChunk
      *
      * @return $this
      */
-    public function feature(): Linkset
+    public function feature(): self
     {
         return $this->setOptions([
             'link-text'  => true,
@@ -136,7 +136,7 @@ class Linkset extends BaseChunk
      *
      * @return $this
      */
-    public function setLimit(int $limit): Linkset
+    public function setLimit(int $limit): self
     {
         return $this->setOptions(['limit' => $limit]);
     }
@@ -146,7 +146,7 @@ class Linkset extends BaseChunk
      *
      * @return $this
      */
-    public function setOptions(array $options): Linkset
+    public function setOptions(array $options): self
     {
         $this->options = $options + $this->options;
 

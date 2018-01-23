@@ -190,12 +190,12 @@ Route::group([
             App::instance(AssetContract::class, $asset);
 
             $has_asset = AssetHelper::controller($asset);
-            
-            if($has_asset){
+
+            if ($has_asset) {
                 return App::make($has_asset)->$action($width, $height);
             }
-            
-            return "";
+
+            return '';
         },
     ])->where([
         'action'    => 'view|thumb|download|crop|embed',
@@ -211,12 +211,12 @@ Route::group([
             App::instance(AssetContract::class, $asset);
 
             $has_asset = AssetHelper::controller($asset);
-            
-            if($has_asset){
+
+            if ($has_asset) {
                 return App::make($has_asset)->$action($width, $height);
             }
-            
-            return "";
+
+            return '';
         },
     ])->where([
         'action'    => 'view|thumb|crop',
