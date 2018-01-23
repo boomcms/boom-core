@@ -80,8 +80,10 @@ class URL implements URLRepositoryInterface
      */
     public function findByLocation($location)
     {
+        $site_id = ($this->site)? $this->site->getId() : 1;
+        
         return $this->model
-            ->where(Model::ATTR_SITE, '=', $this->site->getId())
+            ->where(Model::ATTR_SITE, '=', $site_id)
             ->where(Model::ATTR_LOCATION, '=', URLHelper::sanitise($location))
             ->first();
     }
@@ -95,8 +97,10 @@ class URL implements URLRepositoryInterface
      */
     public function isAvailable($path)
     {
+        $site_id = ($this->site)? $this->site->getId() : 1;
+        
         return !$this->model
-            ->where(Model::ATTR_SITE, '=', $this->site->getId())
+            ->where(Model::ATTR_SITE, '=', $site_id)
             ->where(Model::ATTR_LOCATION, '=', $path)
             ->exists();
     }
