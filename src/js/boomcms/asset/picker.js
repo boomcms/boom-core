@@ -123,7 +123,7 @@
                         asset.trigger('unselect', asset);
                     }
                 })
-                .find('.b-assets-upload')
+                .find('#common-upload-form')
                 .assetUploader({
                     dropArea: this.picker,
                     uploadFinished: function(e, data) {

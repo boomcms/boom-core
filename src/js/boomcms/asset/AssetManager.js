@@ -95,6 +95,8 @@
                     e.preventDefault();
 
                     assetManager.router.goTo($(this).attr('data-view'));
+
+                    $('#common-upload-form').fileupload('enable');
                 })
                 .parents('body')
                 .on('keydown', function(e) {
@@ -220,7 +222,7 @@
 
             this.albums = options.albums;
 
-            this.uploader = this.$('#b-assets-upload form');
+            this.uploader = this.$('#common-upload-form');
             this.router = new BoomCMS.AssetManager.Router(); 
 
             this.listenTo(this.albums, 'add remove reset', this.showAlbums);

@@ -47963,6 +47963,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     e.preventDefault();
 
                     assetManager.router.goTo($(this).attr('data-view'));
+
+                    $('#common-upload-form').fileupload('enable');
                 })
                 .parents('body')
                 .on('keydown', function(e) {
@@ -48088,7 +48090,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.albums = options.albums;
 
-            this.uploader = this.$('#b-assets-upload form');
+            this.uploader = this.$('#common-upload-form');
             this.router = new BoomCMS.AssetManager.Router(); 
 
             this.listenTo(this.albums, 'add remove reset', this.showAlbums);
@@ -49629,6 +49631,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                 }).render();
             }
 
+            $(document).on('drop', '#b-assets-album-upload-' + album.getId(), function () {
+                $('#common-upload-form').fileupload('disable');
+                console.log('disabled');
+            });
+
             this.$('#b-assets-album-upload-' + album.getId())
                 .assetUploader({
                     asset: undefined,
@@ -49898,7 +49905,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                         asset.trigger('unselect', asset);
                     }
                 })
-                .find('.b-assets-upload')
+                .find('#common-upload-form')
                 .assetUploader({
                     dropArea: this.picker,
                     uploadFinished: function(e, data) {
