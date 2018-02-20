@@ -6,6 +6,7 @@ use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Repositories\Template as TemplateRepositoryInterface;
 use BoomCMS\Database\Models\Template as TemplateModel;
 use BoomCMS\Foundation\Repository;
+use BoomCMS\Support\Helpers;
 
 class Template extends Repository implements TemplateRepositoryInterface
 {
@@ -63,5 +64,21 @@ class Template extends Repository implements TemplateRepositoryInterface
         }
 
         return $valid;
+    }
+
+    /**
+     * Returns the templates with no of pages
+     */
+    public function findAllWithPageNoOfPages()
+    {
+        $templates = $this->findAll();
+
+        if($templates->count()>0){
+            foreach($templates as $template){
+                $template->no_of_pages = count(Helpers::getPages(['template' => $template]));
+            }
+        }
+
+        return $templates;
     }
 }

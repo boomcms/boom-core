@@ -58,9 +58,19 @@
     <td><%= template.getTheme() %></td>
     <td><input type="text" name="filename" value="<%= template.getFilename() %>" /></td>
     <td>
-        <a href='#template/<%= template.getId() %>/pages'><?= trans('boomcms::template-manager.pages-view') ?>
+        <% if(template.getNoOfPages() == 1) { %>
+            <a href='#template/<%= template.getId() %>/pages'><%= template.getNoOfPages() %> <?= trans('boomcms::template-manager.page') ?></a>
+        <% } else if(template.getNoOfPages() > 1) { %>
+            <a href='#template/<%= template.getId() %>/pages'><%= template.getNoOfPages() %> <?= trans('boomcms::template-manager.pages') ?></a>
+            <% } else { %>
+            <span><?= trans('boomcms::template-manager.none') ?></span>
+        <% } %>
     </td>
-    <td><?= $button('trash', 'delete-template', ['class' => 'delete small']) ?>
+    <td>
+        <% if(template.getNoOfPages() <= 0) { %>
+            <?= $button('trash', 'delete-template', ['class' => 'delete small']) ?>
+        <% } %>  
+    </td>
 </script>
 
 <script type="text/javascript" src="/vendor/boomcms/boom-core/js/template-manager.js"></script>
@@ -68,7 +78,7 @@
 <script type="text/javascript">
     window.onload = function() {
         new BoomCMS.TemplateManager({
-            templates: <?= Template::findAll() ?>
+            templates: <?= Template::findAllWithPageNoOfPages() ?>
         });
     };
 </script>
