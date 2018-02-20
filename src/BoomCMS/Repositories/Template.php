@@ -67,14 +67,14 @@ class Template extends Repository implements TemplateRepositoryInterface
     }
 
     /**
-     * Returns the templates with no of pages
+     * Returns the templates with no of pages.
      */
     public function findAllWithPageNoOfPages()
     {
         $templates = $this->findAll();
 
-        if($templates->count()>0){
-            foreach($templates as $template){
+        if ($templates->count() > 0) {
+            foreach ($templates as $template) {
                 $template->no_of_pages = count(Helpers::getPages(['template' => $template]));
             }
         }
