@@ -8,6 +8,7 @@ return [
     'page-invisible' => 'No',
     'page-title'     => 'Page title',
     'page-visible'   => 'Yes',
+    'page'           => 'Page',
     'pages'          => 'Pages',
     'pages-heading'  => 'Pages with template: ',
     'pages-view'     => 'View',
@@ -15,4 +16,5 @@ return [
     'title'          => 'Manage Templates',
     'url'            => 'URL',
     'visible'        => 'Visible?',
+    'none'           => 'None'   
 ];
