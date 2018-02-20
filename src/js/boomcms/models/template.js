@@ -39,6 +39,10 @@
 
         getTheme: function() {
             return this.get('theme');
+        },
+
+        getNoOfPages: function () {
+            return this.get('no_of_pages');
         }
     });
 }(BoomCMS));
