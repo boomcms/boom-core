@@ -90,6 +90,11 @@
                 }).render();
             }
 
+            // temporary disabled main upload instance for specified album upload via drag and drop
+            $(document).on('drop', '#b-assets-album-upload-' + album.getId(), function () {
+                $('#common-upload-form').fileupload('disable');
+            });
+
             this.$('#b-assets-album-upload-' + album.getId())
                 .assetUploader({
                     asset: undefined,

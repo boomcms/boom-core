@@ -1,4 +1,4 @@
-<form method="post" enctype="multipart/form-data" class="b-assets-upload">
+<form method="post" enctype="multipart/form-data" class="b-assets-upload" id="common-upload-form">
     <div class='info'>
         <label for="b-assets-upload-file"><?= trans('boomcms::asset.upload.select-files') ?></label>
         <p><?= trans('boomcms::asset.upload.drag-drop') ?></p>
