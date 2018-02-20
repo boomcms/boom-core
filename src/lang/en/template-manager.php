@@ -16,5 +16,5 @@ return [
     'title'          => 'Manage Templates',
     'url'            => 'URL',
     'visible'        => 'Visible?',
-    'none'           => 'None'   
+    'none'           => 'None',
 ];
