@@ -383,8 +383,8 @@
             this.assets = this.uploaded;
             this.$el.addClass('has-uploads');
 
-            // reload the album after uploads
-            if(this.searchResultsView !== undefined){
+            // Reload the album after uploads
+            if(this.searchResultsView !== undefined) {
                 this.searchResultsView.getAssets();
             }
         },
