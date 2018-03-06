@@ -45620,6 +45620,7 @@ $.widget( 'boom.pageToolbar', {
                     plugins: 'autolink anchor autoresize charmap hr image imagetools table link lists paste searchreplace contextmenu textpattern save media',
                     menubar: 'edit insert format image table',
                     toolbar: 'save | undo redo | styleselect bold italic underline strikethrough | bullist numlist | superscript subscript | hr image link',
+                    image_caption: true,
                     contextmenu: 'link image | charmap | inserttable cell row column deletetable',
                     link_context_toolbar: true,
                     link_class_list: [
@@ -48250,6 +48251,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
             this.assets = this.uploaded;
             this.$el.addClass('has-uploads');
+
+            // Reload the album after uploads
+            if(this.searchResultsView !== undefined) {
+                this.searchResultsView.getAssets();
+            }
         },
 
         viewAlbum: function(slug) {
