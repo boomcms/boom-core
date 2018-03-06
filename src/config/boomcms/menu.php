@@ -17,7 +17,7 @@ return [
         'icon' => 'picture-o',
     ],
     'asset-upload' => [
-        'url'  => '/boomcms/asset-manager#upload',
+        'url'  => '/boomcms/asset-manager/upload',
         'role' => 'uploadAssets',
         'icon' => 'upload',
     ],
