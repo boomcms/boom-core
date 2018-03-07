@@ -38,11 +38,18 @@
                     assetPicker.cancel();
                 })
                 .on('click', '#b-assets-picker-current-remove', function() {
-                    assetPicker.pick(new BoomCMS.Asset());
+
+                   // new BoomCMS.Asset();
+                    console.log('removed');
+
+                    assetPicker.pick(new BoomCMS.Asset({id : 0}));
                 })
                 .find('.b-assets-upload-form')
                 .assetUploader({
                     uploadFinished: function(e, data) {
+
+                        console.log(data);
+
                         assetPicker.assetsUploaded(data.result);
                     }
                 });

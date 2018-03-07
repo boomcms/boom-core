@@ -1,13 +1,11 @@
 $.widget('ui.chunkLinkset', $.ui.chunk, {
     _create: function() {
         this.editorOptions = this.getOptions();
-
         this.bind();
     },
 
     edit: function() {
         var chunkLinkset = this;
-
         return new BoomCMS.ChunkLinksetEditor(this.options.currentPage.id, this.options.name, this.editorOptions)
             .done(function(data) {
                 chunkLinkset.insert(data);
@@ -33,7 +31,6 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
         }
 
         options.limit = parseInt($el.attr('data-boom-limit'));
-
         return options;
     },
 

@@ -75,6 +75,8 @@
                 .on('click', '#b-linkpicker-remove', function(e) {
                     e.preventDefault();
 
+                    console.log('asset removed');
+
                     linkPicker.deferred.resolve(new BoomCMS.Link());
                     linkPicker.dialog.cancel();
                 })
