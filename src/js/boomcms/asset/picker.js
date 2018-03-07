@@ -92,7 +92,7 @@
                     assetPicker.pick(assetPicker.selection);
                 })
                 .on('click', '#b-assets-picker-current-remove', function() {
-                    assetPicker.pick(new BoomCMS.Asset());
+                    assetPicker.pick(new BoomCMS.Asset({id: 0}));
                 })
                 .on('click', '.b-assets-album-list [data-album] a', function(e) {
                     e.preventDefault();
