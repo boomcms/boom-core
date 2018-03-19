@@ -28,8 +28,12 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
             title : this.elements.title.length
         })
         .done(function(chunkData) {
-            chunkAsset.asset = new BoomCMS.Asset({id: chunkData['asset_id']});
-            chunkAsset.save(chunkData);
+            if(chunkData['asset_id'] === 0){
+                chunkAsset.remove();
+            } else {
+                chunkAsset.asset = new BoomCMS.Asset({id: chunkData['asset_id']});
+                chunkAsset.save(chunkData);
+            }
         })
         .fail(function() {
             chunkAsset.destroy();

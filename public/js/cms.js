@@ -46190,8 +46190,12 @@ $.widget('ui.chunkText', $.ui.chunk, {
             title : this.elements.title.length
         })
         .done(function(chunkData) {
-            chunkAsset.asset = new BoomCMS.Asset({id: chunkData['asset_id']});
-            chunkAsset.save(chunkData);
+            if(chunkData['asset_id'] === 0){
+                chunkAsset.remove();
+            } else {
+                chunkAsset.asset = new BoomCMS.Asset({id: chunkData['asset_id']});
+                chunkAsset.save(chunkData);
+            }
         })
         .fail(function() {
             chunkAsset.destroy();
@@ -46995,14 +46999,18 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             this.asset = asset;
             this.assetElement.attr('data-asset-id', asset.getId());
 
-            var $img = this.assetElement.find('img');
+            if(asset.getId()) {
+                var $img = this.assetElement.find('img');
 
-            if ( ! $img.length) {
-                $img = $('<img />');
-                this.assetElement.find('p').replaceWith($img);
+                if ( ! $img.length ) {
+                    $img = $('<img />');
+                    this.assetElement.find('p').replaceWith($img);
+                }
+    
+                $img.attr('src', asset.getUrl('view', 400));
+            } else {
+                this.assetElement.find('img').replaceWith('<p>None set</p>');
             }
-
-            $img.attr('src', asset.getUrl('view', 400));
         };
 
         BoomCMS.ChunkAssetEditor.prototype.setLink = function(link) {
