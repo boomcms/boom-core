@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
             }
         }
 
-        if(App::environment('local')) {
+        if(App::environment('production')) {
             if ($e instanceof FileNotFoundException || $e instanceof ModelNotFoundException) {
                 return response()->view('boomcms::errors.404', ['title' => '404']);
             }
