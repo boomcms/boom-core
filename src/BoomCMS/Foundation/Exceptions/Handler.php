@@ -5,6 +5,7 @@ namespace BoomCMS\Foundation\Exceptions;
 use BoomCMS\Support\Facades\Page;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
@@ -51,12 +52,18 @@ class Handler extends ExceptionHandler
             }
         }
 
+        if(App::environment('local')) {
+            if ($e instanceof FileNotFoundException || $e instanceof ModelNotFoundException) {
+                return response()->view('boomcms::errors.404', ['title' => '404']);
+            }
+        }
+        
         return parent::render($request, $e);
     }
 
     protected function prepareException(Exception $e)
     {
-        if ($e instanceof FileNotFoundException) {
+        if ($e instanceof FileNotFoundException || $e instanceof ModelNotFoundException) {
             return new NotFoundHttpException($e->getMessage(), $e);
         }
 
