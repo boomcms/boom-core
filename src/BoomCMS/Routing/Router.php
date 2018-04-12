@@ -51,7 +51,7 @@ class Router
      */
     public function getActiveSite()
     {
-        return $this->site;
+        return ($this->site)? $this->site : null;
     }
 
     /**

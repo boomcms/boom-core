@@ -24,7 +24,7 @@ class Acl extends Filter
      * @param Site        $site
      * @param Person|null $person
      */
-    public function __construct(Site $site, Person $person = null)
+    public function __construct(Site $site = null, Person $person = null)
     {
         $this->site = $site;
         $this->person = $person;
