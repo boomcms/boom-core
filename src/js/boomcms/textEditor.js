@@ -35,6 +35,14 @@
                         {
                             title: 'CTA',
                             value: 'cta'
+                        },
+                        {
+                            title: 'CTA1',
+                            value: 'cta1'
+                        },
+                        {
+                            title: 'CTA2',
+                            value: 'cta2'
                         }
                     ],
                     link_title: false,
