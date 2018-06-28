@@ -135,8 +135,41 @@ html.boom .b-assets-view {
 			z-index: 2;
 		}
 
-		#b-imageeditor-original {
+		#b-imageeditor-original,  #b-imageeditor-save, #b-imageeditor-revert{
 			display: none;
+		}
+
+		.tools-box {
+			margin-top: 20px;
+			padding: 20px;
+			border: 1px solid @light-grey;
+			border-radius: 3px;
+			max-width: 600px;
+			overflow: hidden;
+		}
+
+		.resize-tools {
+			display: none;
+
+			select {
+				float: left;
+				width: 55%;
+			}
+
+			input[type=number] {
+				float: left;
+				margin: 0px 0px 0px 10px;
+				padding: 3px;
+				width: 25%;
+			}
+		}
+
+		.modify-tools {
+			display: none;
+
+			#b-imageeditor-modify-cancel {
+				float: right;
+			}
 		}
 
 		.crop-tools {
@@ -160,7 +193,7 @@ html.boom .b-assets-view {
 		}
 
 		#b-imageeditor-toolbar {
-			margin: -5rem 0 5rem 0;
+			margin: -3rem 0 5rem 0;
 
 			.b-button {
 				.text-small;
