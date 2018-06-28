@@ -39,7 +39,7 @@ return [
     'saturation'                   => 'Saturation',
     'exposure'                     => 'Exposure',
     'sepia'                        => 'Sepia',
-    'sharpen'                      => 'Sharpen', 
+    'sharpen'                      => 'Sharpen',
     'unsupported'                  => 'File :filename is of an unsuported type: :mimetype',
     'selection'                    => [
         'download' => [
@@ -131,9 +131,9 @@ return [
         'select-files' => 'Select files',
     ],
     'copy' => [
-        'title' => 'Copy',
+        'title'   => 'Copy',
         'heading' => 'Copy asset',
-        'confirm' => 'Are you sure to make a copy the asset?'
+        'confirm' => 'Are you sure to make a copy the asset?',
     ],
     'loading' => 'Loading thumbnail',
     'failed'  => 'Unable to load thumbnail',
