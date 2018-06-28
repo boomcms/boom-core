@@ -2,6 +2,7 @@
 
 return [
     'accept-crop'         => 'Crop to selection',
+    'accept-resize'       => 'Resize to selection',
     'add-group'           => 'Add group',
     'add-related-page'    => 'Add a related page',
     'add-tag'             => 'Add tag',
@@ -35,6 +36,7 @@ return [
     'image-revert'        => 'Restore to original',
     'linkset-edit-asset'  => 'Edit associated asset',
     'linkset-edit-target' => 'Edit link target',
+    'modify'              => 'Modify',
     'publish'             => 'Publish now',
     'page-revert'         => 'Revert to published version',
     'preview'             => 'Preview current version',

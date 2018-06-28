@@ -11,18 +11,50 @@
 
             this.$toolbar = this.element.find('#b-imageeditor-toolbar');
 
+            var saveButton = this.element.find('#b-imageeditor-save');
+            var revertButton = this.element.find('#b-imageeditor-revert');
+
             this.element
                 .on('click', '#b-imageeditor-rotate-left', function() {
                     Caman(imageEditor.imageSelector, function () {
                         this.rotate(-90).render();
                         imageEditor.saveImageDimensions();
                     });
+
+                    saveButton.show();
+                    revertButton.show();
                 })
                 .on('click', '#b-imageeditor-rotate-right', function() {
                     Caman(imageEditor.imageSelector, function () {
                         this.rotate(90).render();
                         imageEditor.saveImageDimensions();
                     });
+
+                    saveButton.show();
+                    revertButton.show();
+                })
+                .on('click', '#b-imageeditor-resize', function() {
+                    imageEditor.showResizeOptions();
+                })
+                .on('keyup', '#resize-value', function() {
+                    var value = parseInt($(this).val());
+
+                    if(isNaN(value) == false) {
+                        $('#b-imageeditor-resize-accept').prop('disabled', false);
+                        $(this).val(Math.abs(value));
+                    } else {
+                        $('#b-imageeditor-resize-accept').prop('disabled', true);
+                    }
+                })
+                .on('click', '#b-imageeditor-resize-accept', function() {
+                    $('.resize-tools').slideUp();
+                    imageEditor.resizeImage();
+                    imageEditor.$toolbar.children('.b-button').not(this).prop('disabled', false);
+                    saveButton.show();
+                    revertButton.show();
+                })
+                .on('click', '#b-imageeditor-resize-cancel', function() {
+                    imageEditor.hideResizeOptions();
                 })
                 .on('click', '#b-imageeditor-crop-cancel', function() {
                     imageEditor.hideCropTool();
@@ -37,7 +69,9 @@
                     $(this).blur();
                 })
                 .on('click', '#b-imageeditor-revert', function() {
+                    saveButton.hide();
                     imageEditor.loadImage();
+                    $(this).hide();
                 })
                 .on('change', '.crop-tools select', function() {
                     var $this = $(this);
@@ -45,6 +79,51 @@
                     imageEditor.$cropImage.Jcrop({
                         aspectRatio: $this.find(':selected').val()
                     });
+                })
+
+                .on('click', '#b-imageeditor-modify', function() {
+                    imageEditor.$toolbar.children('.b-button').not(this).prop('disabled', true);
+                    $('.modify-tools').slideDown();
+                    $('.modify-tools input').val(0);
+                })
+
+                .on('click', '#b-imageeditor-modify-cancel', function() {
+                    imageEditor.$toolbar.children('.b-button').not(this).prop('disabled', false);
+                    $('.modify-tools').slideUp();
+                })
+
+                .on('change', '.modify-tools input', function() {
+                    var $this = $(this);
+                    imageEditor.loadImage();
+
+                   var present = $this.data('present');
+                   var value = parseFloat($this.val());
+
+                   if(isNaN(value) == false) {
+                    Caman(imageEditor.imageSelector, function () {
+                        if(present == 'brightness') {
+                            this.brightness(value).render();
+                        } else if(present == 'contrast') {
+                            this.contrast(value).render();
+                        } else if(present == 'saturation') {
+                            this.saturation(value).render();
+                        } else if(present == 'hue') {
+                            this.hue(value).render();
+                        } else if(present == 'exposure') {
+                            this.exposure(value).render();
+                        } else if(present == 'sepia') {
+                            this.sepia(value).render();
+                        } else if(present == 'sharpen') {
+                            this.sharpen(value).render();
+                        } 
+                    });
+
+                    saveButton.prop('disabled', false);  
+                    saveButton.show();
+
+                    revertButton.prop('disabled', false);
+                    revertButton.show();
+                   }
                 })
                 .on('click', '.b-imageeditor-save', function() {
                     imageEditor.getImageBlob().done(function(blob) {
@@ -75,6 +154,63 @@
             this.$cropImage.appendTo(this.element.find('.image-container'));
 
             this.loadImage();
+        },
+
+        showResizeOptions: function() {
+            var imageEditor = this;
+            var resizeButton = $('#b-imageeditor-resize');
+
+            imageEditor.$toolbar.children('.b-button').not(resizeButton).prop('disabled', true);
+
+            $("#resize-type option:selected").prop("selected", false);
+            $("#resize-value").val('');
+            $('.resize-tools').slideDown();
+        },
+
+        hideResizeOptions: function() {
+            var imageEditor = this;
+            var resizeButton = $('#b-imageeditor-resize');
+
+            $("#resize-type option:selected").prop("selected", false);
+            $("#resize-value").val('');
+            $('.resize-tools').slideUp();
+            imageEditor.$toolbar.children('.b-button').not(resizeButton).prop('disabled', false);
+        },
+
+        resizeImage: function() {
+            var imageEditor = this;
+
+            var type = $('#resize-type').val();
+            var value = $('#resize-value').val(); 
+
+            var width = $('#current-width').val(); 
+            var height = $('#current-height').val(); 
+
+            if(isNaN(value) == false && value > 0){
+
+                if(type == 'width') {
+                    height = parseInt((value/width)*height);
+                    width = value;
+                } else if(type == 'height') {
+                    width = parseInt((value/height)*width);
+                    height = value;
+                } else if(type == 'percentage') {
+                    width = parseInt((width*value)/100);
+                    height = parseInt((height*value)/100);
+                }
+    
+                $("#dimensions").text(width+" x "+height);
+                $("#filesize").text('Please save to get filesize');
+    
+                Caman(imageEditor.imageSelector, function () {
+                    this.resize({
+                        width: width,
+                        height: height
+                      });
+                      this.render();
+                    imageEditor.saveImageDimensions();
+                });
+            }
         },
 
         cropImage: function(x, y, width, height) {
@@ -199,7 +335,7 @@
             this.getImageBase64()
                 .done(function(base64) {
                     var crop = {};
-
+       
                     imageEditor.$cropImage
                         .attr('src', base64)
                         .on('load', function() {
@@ -234,6 +370,9 @@
                                 .done(function() {
                                     imageEditor.hideCropTool();
                                 });
+
+                                $('#b-imageeditor-save').show();
+                                $('#b-imageeditor-revert').show();
                         }
                     });
                 });
