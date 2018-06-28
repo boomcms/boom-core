@@ -176,13 +176,72 @@
                             <?= $button('rotate-left', 'rotate-left', ['id' => 'b-imageeditor-rotate-left']) ?>
                             <?= $button('rotate-right', 'rotate-right', ['id' => 'b-imageeditor-rotate-right']) ?>
                             <?= $button('crop', 'crop', ['id' => 'b-imageeditor-crop']) ?>
-                            <?= $button('save', 'save-changes', ['class' => 'b-imageeditor-save b-button-withtext']) ?>
+                            <?= $button('arrows-alt', 'resize', ['id' => 'b-imageeditor-resize']) ?>
+                            <?= $button('cog', 'modify', ['id' => 'b-imageeditor-modify']) ?>
+                            <?= $button('save', 'save-changes', ['id' => 'b-imageeditor-save', 'class' => 'b-imageeditor-save b-button-withtext']) ?>
                             <?= $button('chevron-circle-left', 'asset-undo', ['id' => 'b-imageeditor-revert', 'class' => 'b-button-withtext']) ?>
 
-                            <div class="crop-tools">
+                            <div class="resize-tools tools-box">
+                                <label>
+                                    <p><?= trans('boomcms::asset.resize') ?></p>
+                                    <select name="resize_type" id="resize-type">
+                                        <option value="width">Width (pixel)</option>
+                                        <option value="height">Height (pixel)</option>
+                                        <option value="percentage">Percentage (%)</option>
+                                    </select>
+
+                                    <input type="hidden" id="current-width" value="<%= asset.getWidth() %>"/>
+                                    <input type="hidden" id="current-height" value="<%= asset.getHeight() %>"/>
+                                    <input type="number" name="resize_value" id="resize-value"/>
+                                </label>
+
+                                <?= $button('check', 'accept-resize', ['id' => 'b-imageeditor-resize-accept', 'class' => 'b-button-withtext', 'disabled' => true]) ?>
+                                <?= $button('times', 'cancel', ['id' => 'b-imageeditor-resize-cancel', 'class' => 'b-button-withtext']) ?>
+                             </div>
+
+                             <div class="modify-tools tools-box">
+
+                                <label>
+                                    <span><?= trans('boomcms::asset.brightness') ?></span>
+                                    <input type="range" data-present="brightness" min="-100" max="100" step="1" />
+                                </label>
+
+                                <label>
+                                    <span><?= trans('boomcms::asset.contrast') ?></span>
+                                    <input type="range" data-present="contrast" min="-100" max="100" step="1" />
+                                </label>
+
+                                <label>
+                                    <span><?= trans('boomcms::asset.hue') ?></span>
+                                    <input type="range" data-present="hue" min="0" max="100" step="1" />
+                                </label>
+
+                                <label>
+                                    <span><?= trans('boomcms::asset.saturation') ?></span>
+                                    <input type="range" data-present="saturation" min="-100" max="100" step="1" />
+                                </label>
+
+                                <label>
+                                    <span><?= trans('boomcms::asset.exposure') ?></span>
+                                    <input type="range" data-present="exposure" min="-100" max="100" step="1" />
+                                </label>
+
+                                <label>
+                                    <span><?= trans('boomcms::asset.sepia') ?></span>
+                                    <input type="range" data-present="sepia" min="0" max="100" step="1" />
+                                </label>
+
+                                <label>
+                                    <span><?= trans('boomcms::asset.sharpen') ?></span>
+                                    <input type="range" data-present="sharpen" min="0" max="100" step="1" />
+                                </label>
+
+                                <?= $button('times', 'cancel', ['id' => 'b-imageeditor-modify-cancel', 'class' => 'b-button-withtext']) ?>
+                              </div>
+
+                            <div class="crop-tools tools-box">
                                 <label class="aspect-ratio">
                                     <p><?= trans('boomcms::asset.aspect-ratio') ?></p>
-
                                     <select>
                                         <option value="">Fluid</option>
                                         <option value="1">1/1</option>
@@ -217,7 +276,7 @@
 
                     <% if (asset.getWidth() && asset.getHeight()) { %>
                         <dt><?= trans('boomcms::asset.dimensions') ?></dt>
-                        <dd><%= asset.getWidth() %> x <%= asset.getHeight() %></dd>
+                        <dd><span id="dimensions"><%= asset.getWidth() %> x <%= asset.getHeight() %></span></dd>
                     <% } %>
 
                     <% if (asset.getUploadedBy()) { %>
