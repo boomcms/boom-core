@@ -57,7 +57,7 @@ body#b-login {
 
 		form, > p {
 			width: 100%;
-			max-width: 600px;
+			max-width: 692px;
 			margin: auto;
 
 			label, input {
@@ -82,8 +82,13 @@ body#b-login {
 		}
 
         .input {
-            border: 1px solid @white;
+            border: 1px solid @pink;
             border-radius: 2px;
+
+            .fa {
+            	background: @pink;
+            	color: @white;
+            }
         }
 
         input[type=email], input[type=password] {
@@ -106,10 +111,11 @@ body#b-login {
 			min-width: 10em;
 			margin: 4rem auto;
 			transition: background,color 0.5s;
+			background: @pink;
 
 			&:hover, &:focus {
-				background: @red;
-				color: @white;
+				background: @white;
+				color: @pink;
 				transition: background,color 0.5s;
 				cursor: pointer;
 			}
