@@ -1,5 +1,5 @@
 <nav id="b-menu">
-	<img src="/vendor/boomcms/boom-core/img/logo.png" alt="BoomCMS Logo" />
+	<img src="/vendor/boomcms/boom-core/img/logo-mini.png" alt="BoomCMS Logo" />
 
     <ul>
         <li>
