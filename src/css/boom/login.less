@@ -74,15 +74,24 @@ body#b-login {
 					margin-top: 1.5rem;
 
 					input {
-						width: auto;
+						// width: auto;
+						-webkit-appearance: none;
 						margin: 0 1.5rem 0 0;
+						border: 2px solid @pink;
+						width: 20px;
+						height: 20px;
+						vertical-align: middle;
+					}
+
+					input[type=checkbox]:checked {
+						background: @pink;
 					}
 				}
 			}
 		}
 
         .input {
-            border: 1px solid @pink;
+            border: 2px solid @pink;
             border-radius: 2px;
 
             .fa {
@@ -112,6 +121,7 @@ body#b-login {
 			margin: 4rem auto;
 			transition: background,color 0.5s;
 			background: @pink;
+			color: @white;
 
 			&:hover, &:focus {
 				background: @white;
@@ -123,6 +133,7 @@ body#b-login {
 
 		fieldset {
 			border: 0;
+			font-weight: 500;
 		}
 	}
 }
