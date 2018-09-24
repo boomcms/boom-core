@@ -21,7 +21,7 @@
                             <span><?= trans('boomcms::auth.login.email') ?></span>
 						</label>
 
-                        <span class="fa fa-at"></span>
+                        <span class="fa fa-at fa-2x"></span>
                     </span>
 
                     <span class="input">
@@ -31,7 +31,7 @@
                             <span><?= trans('boomcms::auth.login.password') ?></span>
                         </label>
 
-                        <span class="fa fa-key"></span>
+                        <span class="fa fa-key fa-2x"></span>
                     </span>
 
                     <p>
