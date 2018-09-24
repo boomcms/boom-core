@@ -35,7 +35,7 @@
                             <span><?= trans('boomcms::auth.reset.password1') ?></span>
                         </label>
 
-                        <span class="fa fa-key"></span>
+                        <span class="fa fa-key fa-2x"></span>
                     </span>
 
                     <span class="input">
