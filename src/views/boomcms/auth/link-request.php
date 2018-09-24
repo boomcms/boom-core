@@ -29,7 +29,7 @@
                                 <span><?= trans('boomcms::auth.reset.email') ?></span>
                             </label>
 
-                            <span class="fa fa-at"></span>
+                            <span class="fa fa-at fa-2x"></span>
                         </span>
 
                         <input type='submit' value='<?= trans('boomcms::auth.reset.send-link') ?>' />
