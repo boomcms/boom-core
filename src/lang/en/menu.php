@@ -6,9 +6,9 @@ return [
     'asset-upload' => 'Asset upload',
     'dashboard'    => 'Dashboard',
     'logout'       => 'Logout',
-    'pages'        => 'Pages',
+    'pages'        => 'Page manager',
     'people'       => 'People manager',
     'settings'     => 'Settings',
     'templates'    => 'Template manager',
-    'view-site'    => 'View site',
+    'view-site'    => 'Edit site',
 ];
