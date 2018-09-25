@@ -39,7 +39,7 @@
 		</div>
 
         <div class="b-page-container">
-            <?= $button('question', 'toolbar.help', [
+            <?= $button('comment-o', 'toolbar.help', [
                 'id'         => 'b-gethelp',
                 'data-email' => Settings::get('site.support.email'),
             ]) ?>
