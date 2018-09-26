@@ -52,7 +52,7 @@ class Publish extends VendorPublishCommand
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         $themes = $this->manager->findAndInstallThemes();
 

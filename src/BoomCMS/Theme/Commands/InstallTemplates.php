@@ -27,7 +27,7 @@ class InstallTemplates extends Command
      *
      * @return mixed
      */
-    public function fire(ThemeManager $manager)
+    public function handle(ThemeManager $manager)
     {
         try {
             $installed = $manager->findAndInstallNewTemplates();
