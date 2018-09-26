@@ -7,22 +7,45 @@
 
 <main id="b-container">
     <div id="b-dashboard">
-        <h1><?= trans('boomcms::dashboard.welcome', ['name' => $person->getName()]) ?></h1>
+        <h1 class="dashboard-title"><?= trans('boomcms::dashboard.welcome', ['name' => $person->getName()]) ?></h1>
 
         <div class="cols">
-            <div>
+            <div class="col-7">
                 <div class="buttons">
                     <a href="/">
-                        <span class="fa fa-globe"></span>
+                        <span class="fa fa-pencil"></span>
                         <?= trans('boomcms::dashboard.view-site') ?>
                     </a>
 
+                    <a href="/boomcms/asset-manager">
+                        <span class="fa fa-pencil"></span>
+                        <?= trans('boomcms::dashboard.asset-manager') ?>
+                    </a>
+                    
+                    <a href="/boomcms/asset-manager/upload">
+                        <span class="fa fa-pencil"></span>
+                        <?= trans('boomcms::dashboard.asset-upload') ?>
+                    </a>
+                    
+                    <a href="/boomcms/page-manager">
+                        <span class="fa fa-pencil"></span>
+                        <?= trans('boomcms::dashboard.page-manager') ?>
+                    </a>
+                    
                     <a href="/boomcms/account">
-                        <span class="fa fa-user"></span>
+                        <span class="fa fa-pencil"></span>
                         <?= trans('boomcms::dashboard.manage-account') ?>
                     </a>
                 </div>
+            </div>
 
+            <div class="col-3">
+                <img class="logo" src="/vendor/boomcms/boom-core/img/logo.png" alt="BoomCMS Logo">
+            </div>
+        </div>
+
+        <div class="cols">
+            <div>
                 <?php if (count($pages)): ?>
                     <section>
                         <h2><?= trans('boomcms::dashboard.recent-pages') ?></h2>
@@ -67,8 +90,6 @@
             </div>
 
             <div>
-                <img class="logo" src="/vendor/boomcms/boom-core/img/logo.png" alt="BoomCMS Logo">
-
                 <?php if (!empty($news)): ?>
                     <section>
                         <h2><?= trans('boomcms::dashboard.news.heading') ?></h2>

@@ -1,4 +1,8 @@
 #b-dashboard {
+    .dashboard-title {
+        border-bottom: 0;
+    }
+
     section {
         background: @lightest-grey;
         padding: 2rem;
@@ -22,29 +26,44 @@
         > * + * {
             margin-top: 5rem;
         }
+
+        .col-7 {
+            width: 100%;
+
+            @media all and (min-width: 768px) {
+                width: 70%;                
+            }
+        }
+
+        .col-3 {
+            width: 100%;
+
+            @media all and (min-width: 768px) {
+                width: 30%;                
+            }
+        }
     }
 
     .buttons {
-        overflow: hidden;
-        margin: 0 0 3rem 0;
+        display: flex;
+        flex-wrap: wrap;
 
         a {
-            border: 1px solid @blue;
-            padding: 2rem;
+            background: @pink;
+            border: 1px solid @pink;
+            color: @white;
+            padding: 1.5rem;
             min-width: 15rem;
             display: block;
-
-            + a {
-                margin-top: 3rem;
-            }
-
+            margin-right: 1rem;
+            
             .fa {
                 margin-right: 1rem;
             }
 
             &:hover, &:focus {
-                background: @blue;
-                color: @white;
+                color: @pink;
+                background: @white;
             }
         }
     }
@@ -64,24 +83,6 @@
         time {
             display: block;
             margin-bottom: 1.5rem;
-        }
-    }
-}
-
-@media all and (min-width: 550px) {
-    #b-dashboard {
-        .buttons {
-            overflow: hidden;
-
-            a {
-                display: inline-block;
-                float: left;
-
-                + a {
-                    margin-top: 0;
-                    margin-left: 3rem;
-                }
-            }
         }
     }
 }
