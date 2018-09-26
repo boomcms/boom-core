@@ -13,27 +13,27 @@
             <div class="col-7">
                 <div class="buttons">
                     <a href="/">
-                        <span class="fa fa-pencil"></span>
+                        <span class="fa fa-globe"></span>
                         <?= trans('boomcms::dashboard.view-site') ?>
                     </a>
 
                     <a href="/boomcms/asset-manager">
-                        <span class="fa fa-pencil"></span>
+                        <span class="fa fa-picture-o"></span>
                         <?= trans('boomcms::dashboard.asset-manager') ?>
                     </a>
                     
                     <a href="/boomcms/asset-manager/upload">
-                        <span class="fa fa-pencil"></span>
+                        <span class="fa fa-upload"></span>
                         <?= trans('boomcms::dashboard.asset-upload') ?>
                     </a>
                     
                     <a href="/boomcms/page-manager">
-                        <span class="fa fa-pencil"></span>
+                        <span class="fa fa-sitemap"></span>
                         <?= trans('boomcms::dashboard.page-manager') ?>
                     </a>
                     
                     <a href="/boomcms/account">
-                        <span class="fa fa-pencil"></span>
+                        <span class="fa fa-user"></span>
                         <?= trans('boomcms::dashboard.manage-account') ?>
                     </a>
                 </div>
