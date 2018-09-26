@@ -10,10 +10,10 @@ return [
     'news'           => [
         'heading' => 'News from BoomCMS',
     ],
-    'recent-pages' => 'Recently added',
-    'view-site'    => 'Edit site',
-    'welcome'      => 'Welcome :name',
+    'recent-pages'  => 'Recently added',
+    'view-site'     => 'Edit site',
+    'welcome'       => 'Welcome :name',
     'asset-manager' => 'Assets',
     'asset-upload'  => 'Upload',
-    'page-manager'  => 'Pages'
+    'page-manager'  => 'Pages',
 ];
