@@ -1,6 +1,6 @@
 $.widget( 'boom.pageManager', {
     addActionButtons: function($li) {
-        $li.append('<div><a href=\'#\' class=\'fa fa-plus b-pages-add\'><span>Add page</span></a><a href=\'#\' class=\'fa fa-trash-o b-pages-delete\'><span>Delete page</span></a><a href=\'#\' class=\'fa fa-cog b-pages-settings\'><span>Settings</span></a></div>');
+        $li.append('<div><a href=\'#\' class=\'fa fa-plus b-pages-add\'><span>Add page</span></a><a href=\'#\' class=\'fa fa-trash-o b-pages-delete\'><span>Delete page</span></a><a href=\'#\' class=\'fa fa-cog b-pages-settings\'><span>Settings</span></a><a href=\'#\' class=\'fa fa-eye b-pages-visibility\'><span>Visible</span></a></div>');
     },
 
     addPage: function($el) {
@@ -27,6 +27,7 @@ $.widget( 'boom.pageManager', {
             .pageTree({
                 add: function(e, $li) {
                     pageManager.addActionButtons($li);
+                    pageManager.showVisibilityIcons($li);
                 },
                 onPageSelect: function(link) {
                     window.open(link.getUrl());
@@ -62,6 +63,11 @@ $.widget( 'boom.pageManager', {
                 e.preventDefault();
 
                 pageManager.editSettings($(this).closest('li'));
+            })
+            .on('click', '.b-pages-visibility', function(e) {
+                e.preventDefault();
+
+                pageManager.showVisibility($(this).closest('li'));
             });
     },
 
@@ -84,8 +90,20 @@ $.widget( 'boom.pageManager', {
                     });
 
                 if (section) {
-                    $settings.pageSettings('show', 'delete');
+                    $settings.pageSettings('show', section);
                 }
             });
+    },
+
+    showVisibilityIcons: function($el) {
+        var page = $el.data('page');
+
+        if (page.attributes.visible === 0) {
+            $el.find('.b-pages-visibility').removeClass('fa-eye').addClass('fa-eye-slash text-pink');
+        }
+    },
+
+    showVisibility: function($el) {
+        this.showPageSettings($el, 'visibility');
     }
 });
