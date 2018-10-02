@@ -51279,7 +51279,7 @@ if (!console) {
     showStatusIcons: function($el) {
         var page = $el.data('page');
 
-        $.get('/boomcms/editor/toolbar?page_id='+page.attributes.id, function(response, status) {
+        $.get('/boomcms/editor/toolbar?page_id='+page.attributes.id).done(function(response) {
             var status = $(response).find('#b-page-version-status').data('status'),
                 icon = $el.find('.b-pages-version-status');
 
