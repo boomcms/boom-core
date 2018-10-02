@@ -23,7 +23,7 @@ class AlbumAssetsController extends Controller
 
     public function destroy(Request $request, Album $album)
     {
-        if ($request->has($this->assetsKey)) {
+        if ($request->filled($this->assetsKey)) {
             $album->removeAssets($request->input($this->assetsKey));
         }
 
@@ -42,7 +42,7 @@ class AlbumAssetsController extends Controller
 
     public function store(Request $request, Album $album)
     {
-        if ($request->has($this->assetsKey)) {
+        if ($request->filled($this->assetsKey)) {
             $album->addAssets($request->input($this->assetsKey));
         }
 

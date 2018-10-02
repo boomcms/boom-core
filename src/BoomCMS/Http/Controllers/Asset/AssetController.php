@@ -196,7 +196,7 @@ class AssetController extends Controller
             Asset::ATTR_CREDITS, Asset::ATTR_THUMBNAIL_ID, Asset::ATTR_PUBLIC, ];
 
         $asset
-            ->fill($request->only($fields))
+            ->fill($request->all($fields))
             ->setPublishedAt($request->input(Asset::ATTR_PUBLISHED_AT));
 
         AssetFacade::save($asset);
