@@ -45,10 +45,10 @@ class Person extends PeopleManager
     {
         $person
             ->setName($request->input('name'))
-            ->setEnabled($request->has('enabled'));
+            ->setEnabled($request->filled('enabled'));
 
         if (Gate::allows('editSuperuser', $person)) {
-            $person->setSuperuser($request->has('superuser'));
+            $person->setSuperuser($request->filled('superuser'));
         }
 
         PersonFacade::save($person);

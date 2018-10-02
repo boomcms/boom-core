@@ -26,7 +26,7 @@ class BaseController extends Controller
         $this->asset = $asset;
         $this->response = new Response();
 
-        if ($request->has('version') && Auth::check()) {
+        if ($request->filled('version') && Auth::check()) {
             $asset->setVersion(AssetVersion::find($request->input('version')));
         }
     }

@@ -28,7 +28,7 @@ class Chunk extends PageController
     {
         $this->authorize('edit', $page);
 
-        if (!$request->has('force')) {
+        if (!$request->filled('force')) {
             $latest = ChunkFacade::get($request->input('type'), $request->input('slotname'), $page);
 
             if ($request->input('chunkId') < $latest->getId()) {

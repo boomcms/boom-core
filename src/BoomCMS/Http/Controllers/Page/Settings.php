@@ -192,7 +192,7 @@ class Settings extends Controller
             ->setInternalName($request->input('internal_name'))
             ->setAddPageBehaviour($request->input('add_behaviour'))
             ->setChildAddPageBehaviour($request->input('child_add_behaviour'))
-            ->setDisableDelete($request->has('disable_delete'));
+            ->setDisableDelete($request->filled('disable_delete'));
 
         PageFacade::save($page);
     }
@@ -214,8 +214,8 @@ class Settings extends Controller
         if (Gate::allows('editChildrenAdvanced', $page)) {
             $page
                 ->setChildrenUrlPrefix($request->input('children_url_prefix'))
-                ->setChildrenVisibleInNav($request->has('children_visible_in_nav'))
-                ->setChildrenVisibleInNavCms($request->has('children_visible_in_nav_cms'))
+                ->setChildrenVisibleInNav($request->filled('children_visible_in_nav'))
+                ->setChildrenVisibleInNavCms($request->filled('children_visible_in_nav_cms'))
                 ->setGrandchildTemplateId($request->input('grandchild_template_id'));
         }
 
@@ -271,8 +271,8 @@ class Settings extends Controller
         }
 
         $page
-            ->setVisibleInNav($request->has('visible_in_nav'))
-            ->setVisibleInCmsNav($request->has('visible_in_nav_cms'));
+            ->setVisibleInNav($request->filled('visible_in_nav'))
+            ->setVisibleInCmsNav($request->filled('visible_in_nav_cms'));
 
         PageFacade::save($page);
     }
@@ -287,8 +287,8 @@ class Settings extends Controller
 
         if (Gate::allows('editSearchAdvanced', $page)) {
             $page
-                ->setExternalIndexing($request->has('external_indexing'))
-                ->setInternalIndexing($request->has('internal_indexing'));
+                ->setExternalIndexing($request->filled('external_indexing'))
+                ->setInternalIndexing($request->filled('internal_indexing'));
         }
 
         PageFacade::save($page);
@@ -326,11 +326,11 @@ class Settings extends Controller
         $page->setVisibleAtAnyTime($request->input('visible'));
 
         if ($page->isVisibleAtAnyTime()) {
-            if ($request->has('visible_from')) {
+            if ($request->filled('visible_from')) {
                 $page->setVisibleFrom(new DateTime($request->input('visible_from')));
             }
 
-            $visibleTo = ($request->has('toggle_visible_to')) ?
+            $visibleTo = ($request->filled('toggle_visible_to')) ?
                 new DateTime($request->input('visible_to'))
                 : null;
 

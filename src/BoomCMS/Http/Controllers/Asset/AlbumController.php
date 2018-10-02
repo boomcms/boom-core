@@ -21,7 +21,7 @@ class AlbumController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->has('assets')) {
+        if ($request->filled('assets')) {
             return AlbumFacade::findByAssetIds($request->input('assets'));
         }
 
@@ -44,7 +44,7 @@ class AlbumController extends Controller
     public function update(Album $album, Request $request)
     {
         $expected = [Album::ATTR_NAME, Album::ATTR_DESCRIPTION, Album::ATTR_ORDER];
-        $album->fill($request->only($expected));
+        $album->fill($request->all($expected));
 
         return AlbumFacade::save($album);
     }
