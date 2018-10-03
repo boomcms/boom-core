@@ -38,10 +38,12 @@
                         </a>
                     <?php endif ?>
 
-                    <a href="/boomcms/account">
-                        <span class="fa fa-user"></span>
-                        <?= trans('boomcms::dashboard.manage-account') ?>
-                    </a>
+                    <?php if (Gate::allows('manageAccount', Router::getActiveSite())): ?>
+                        <a href="/boomcms/account">
+                            <span class="fa fa-user"></span>
+                            <?= trans('boomcms::dashboard.manage-account') ?>
+                        </a>
+                    <?php endif ?>
                 </div>
             </div>
 
