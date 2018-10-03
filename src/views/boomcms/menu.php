@@ -17,9 +17,11 @@
             </li>
         <?php endforeach ?>
 
-        <li class="break">
-            <a target='_top' href='/boomcms/account'><span class="fa fa-user"></span><?= trans('boomcms::menu.account') ?></a>
-        </li>
+        <?php if (Gate::allows('manageAccount', Router::getActiveSite())): ?>
+            <li class="break">
+                <a target='_top' href='/boomcms/account'><span class="fa fa-user"></span><?= trans('boomcms::menu.account') ?></a>
+            </li>
+        <?php endif ?>
 
         <li>
             <a target='_top' href='/boomcms/logout'><span class="fa fa-sign-out"></span><?= trans('boomcms::menu.logout') ?></a>
