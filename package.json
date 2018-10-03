@@ -1,6 +1,6 @@
 {
     "name": "boom-core",
-    "version": "8.0.3",
+    "version": "8.0.4",
     "dependencies": {
         "bower": "~1.4.1",
         "geodesy": "~1.0.2",
