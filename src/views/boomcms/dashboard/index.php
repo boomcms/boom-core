@@ -17,21 +17,27 @@
                         <?= trans('boomcms::dashboard.view-site') ?>
                     </a>
 
-                    <a href="/boomcms/asset-manager">
-                        <span class="fa fa-picture-o"></span>
-                        <?= trans('boomcms::dashboard.asset-manager') ?>
-                    </a>
-                    
-                    <a href="/boomcms/asset-manager/upload">
-                        <span class="fa fa-upload"></span>
-                        <?= trans('boomcms::dashboard.asset-upload') ?>
-                    </a>
-                    
-                    <a href="/boomcms/page-manager">
-                        <span class="fa fa-sitemap"></span>
-                        <?= trans('boomcms::dashboard.page-manager') ?>
-                    </a>
-                    
+                    <?php if (Gate::allows('manageAssets', Router::getActiveSite())): ?>
+                        <a href="/boomcms/asset-manager">
+                            <span class="fa fa-picture-o"></span>
+                            <?= trans('boomcms::dashboard.asset-manager') ?>
+                        </a>
+                    <?php endif ?>
+
+                    <?php if (Gate::allows('uploadAssets', Router::getActiveSite())): ?>
+                        <a href="/boomcms/asset-manager/upload">
+                            <span class="fa fa-upload"></span>
+                            <?= trans('boomcms::dashboard.asset-upload') ?>
+                        </a>
+                    <?php endif ?>
+
+                    <?php if (Gate::allows('managePages', Router::getActiveSite())): ?>
+                        <a href="/boomcms/page-manager">
+                            <span class="fa fa-sitemap"></span>
+                            <?= trans('boomcms::dashboard.page-manager') ?>
+                        </a>
+                    <?php endif ?>
+
                     <a href="/boomcms/account">
                         <span class="fa fa-user"></span>
                         <?= trans('boomcms::dashboard.manage-account') ?>

@@ -18,7 +18,7 @@ class AssetSelectionController extends Controller
 
     public function destroy(Request $request, Asset $asset = null)
     {
-        $assetIds = ($asset->getId()) ? [$asset->getId()] : $request->input('assets');
+        $assetIds = ($asset) ? [$asset->getId()] : $request->input('assets');
 
         AssetFacade::delete($assetIds);
     }
