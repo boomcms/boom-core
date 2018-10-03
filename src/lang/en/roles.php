@@ -16,6 +16,7 @@ return [
     'editUrls'             => 'Edit URLs',
     'editAcl'              => 'Edit page access control',
     'manageAssets'         => 'Asset manager - view and edit',
+    'manageAccount'        => 'Manage account',
     'managePages'          => 'Page manager - view and edit',
     'managePeople'         => 'People manager - view and edit',
     'manageSettings'       => 'View the site settings editor',
