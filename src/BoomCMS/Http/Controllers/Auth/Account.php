@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Event;
 
 class Account extends Controller
 {
+    /**
+     * @var string
+     */
+    protected $role = 'manageAccount';
+
     public function __construct(Request $request)
     {
         $this->request = $request;
