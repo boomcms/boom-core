@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="./vendor/autoload.php"
+    beStrictAboutTestsThatDoNotTestAnything="false"
     colors="true"
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
+    processIsolation="true"
     stopOnFailure="false"
 >
     <testsuites>
@@ -24,10 +26,10 @@
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
-        <env name="DB_DATABASE" value="boomcms_tests"/>
+        <env name="DB_DATABASE" value="boomcms_test"/>
         <env name="DB_HOST" value="127.0.0.1"/>
         <env name="DB_DRIVER" value="mysql"/>
-        <env name="DB_USERNAME" value="root"/>
-        <env name="DB_PASSWORD" value=""/>
+        <env name="DB_USERNAME" value="adminboom"/>
+        <env name="DB_PASSWORD" value="Proverbs356"/>
     </php>
 </phpunit>

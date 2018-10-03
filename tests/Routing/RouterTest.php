@@ -108,7 +108,7 @@ class RouterTest extends AbstractTestCase
 
     public function testRouteUrlDoesNotExist()
     {
-        $this->setExpectedException(NotFoundHttpException::class);
+        $this->expectException(NotFoundHttpException::class);
 
         URLFacade::shouldReceive('findByLocation')
             ->with($this->uri)
@@ -120,7 +120,7 @@ class RouterTest extends AbstractTestCase
 
     public function testRouteInvisiblePageIsNotFoundWhenEditorDisabled()
     {
-        $this->setExpectedException(NotFoundHttpException::class);
+        $this->expectException(NotFoundHttpException::class);
 
         Editor::shouldReceive('isDisabled')
             ->once()
@@ -193,7 +193,7 @@ class RouterTest extends AbstractTestCase
 
     public function testRoutePageDeleted()
     {
-        $this->setExpectedException(GoneHttpException::class);
+        $this->expectException(GoneHttpException::class);
 
         $page = m::mock(Page::class);
 

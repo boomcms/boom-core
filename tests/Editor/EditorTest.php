@@ -123,7 +123,7 @@ class EditorTest extends AbstractTestCase
         $invalidStates = [0, null, 5, 'invalid'];
 
         foreach ($invalidStates as $state) {
-            $this->setExpectedException(InvalidArgumentException::class);
+            $this->expectException(InvalidArgumentException::class);
             $editor->setState($state);
         }
     }
