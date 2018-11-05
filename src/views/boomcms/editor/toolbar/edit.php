@@ -48,7 +48,7 @@
         <div class="b-page-container">
             <?= $button('book', 'toolbar.support', [
                 'id'         => 'b-support',
-                'onclick'		 => "window.open('https://www.boomcms.net/boom-support', '_blank')"
+                'onclick'		  => "window.open('https://www.boomcms.net/boom-support', '_blank')",
             ]) ?>
         </div>
 	</div>
