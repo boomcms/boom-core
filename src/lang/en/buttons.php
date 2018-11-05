@@ -67,6 +67,7 @@ return [
         'invisible' => 'This page is hidden regardless of whether there is a published version',
         'nodelete'  => 'Page delete has been disabled for this page',
         'settings'  => 'Page settings which apply whichever version is published',
+        'support'   => 'Visit boomcms.net for user guidelines',
         'visible'   => 'This page is visible. The content displayed will depend on which version of the page is published',
     ],
     'upload'      => 'Upload files',
