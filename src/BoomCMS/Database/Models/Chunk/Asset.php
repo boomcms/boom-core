@@ -22,7 +22,7 @@ class Asset extends BaseChunk
     {
         $link = LinkObject::factory($value);
 
-        $this->attributes['url'] = $link->isInternal() ?
+        $this->attributes['url'] = ($link instanceof PageLink) ?
             $link->getPage()->getId() :
             $link->url();
     }
