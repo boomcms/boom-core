@@ -36,17 +36,8 @@ class Pdf extends DefaultDriver
      */
     public function getThumbnail(): Imagick
     {
-        try {
-
-            $image = new Imagick($this->file->getPathname().'[0]1');
-            $image->setImageFormat('png');
-
-        } catch (Exception $e) {
-
-            $default_pdf_thumbnail = __DIR__.'/../../../../public/img/extensions/pdf.png';
-            $image = new Imagick($default_pdf_thumbnail);
-            
-        }
+        $image = new Imagick($this->file->getPathname().'[0]');
+        $image->setImageFormat('png');
 
         return $image;
     }
