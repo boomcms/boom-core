@@ -157,7 +157,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function getOriginalFilename()
     {
          //return str_replace(['\\', '/'], '', $this->getLatestVersion()->getFilename()); // old version
-         return preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(['\\', '/'], '-', $this->getLatestVersion()->getFilename())); 
+         return preg_replace('/[^A-Za-z0-9\-. ]/', '', str_replace(['\\', '/', ' '], '-', $this->getLatestVersion()->getFilename())); 
     }
 
     public function getReadableFilesizeAttribute()
