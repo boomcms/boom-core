@@ -1,6 +1,5 @@
-#b-page-relations {
+#b-page-relations, #b-page-relatedlangpages {
 	padding-left: 0;
-
 	li {
 		list-style-type: none;
 		position: relative;
@@ -36,6 +35,15 @@
 			&:hover, &:focus {
 				color: @red;
 			}
+		}
+	}
+
+	.b-error {
+		color: @red;
+		font-weight: bold;
+		
+		&:hover {
+			cursor: pointer;
 		}
 	}
 }

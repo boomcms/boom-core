@@ -5,6 +5,7 @@ return [
     'accept-resize'       => 'Resize to selection',
     'add-group'           => 'Add group',
     'add-related-page'    => 'Add a related page',
+    'add-related-lang-page'    => 'Add a related language page',
     'add-tag'             => 'Add tag',
     'add-tag-group'       => 'Add tag group',
     'add-tags'            => 'Add tags',

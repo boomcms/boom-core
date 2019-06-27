@@ -885,4 +885,51 @@ class Page extends Model implements PageInterface, LinkableInterface, SingleSite
     {
         $this->attributes[self::ATTR_PRIMARY_URI] = URLHelper::sanitise($value);
     }
+
+    public function hasRelatedLanguagePage($language, $related_page_id)
+    {
+        $has_related_page = DB::table('page_related_languages')
+            ->whereNull('deleted_at')
+            ->where('language', $language)
+            ->where('related_page_id', $related_page_id)->count();
+
+            return $has_related_page;
+    }
+
+    public function addRelatedLanguagePage($page_id, $language, $related_page_id)
+    {
+        try {
+            $insert = DB::table('page_related_languages')
+                ->insert([
+                    'page_id'  => $page_id,
+                    'language' => $language,
+                    'related_page_id' => $related_page_id,
+                    'created_by' => Auth::id()
+                ]);
+        } catch (QueryException $e) {
+            return false;
+        }
+
+        return ($insert)? true : false;
+    }
+
+    public function remvoeRelatedLanguagePage($language, $related_page_id)
+    {
+        try {
+
+            $update = DB::table('page_related_languages')
+                ->where([
+                    'language' => $language,
+                    'related_page_id'  => $related_page_id,
+                ])->update([
+                    'deleted_by' => Auth::id(), 
+                    'deleted_at' => date('Y-m-d H:i:s')
+                    ]);
+
+        } catch (QueryException $e) {
+            return false;
+        }
+
+        return $update;
+    }
 }

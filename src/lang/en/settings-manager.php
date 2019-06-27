@@ -23,5 +23,9 @@ return [
                 '_info'  => 'Email address that support queries will be sent to',
             ],
         ],
+        'languages' => [
+            '_label' => 'Site languages',
+            '_info' => 'Please choose languages'
+        ]
     ],
 ];

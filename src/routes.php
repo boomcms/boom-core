@@ -157,6 +157,11 @@ Route::group(['middleware' => [
                 Route::post('relations/{related}', 'Relations@store');
                 Route::delete('relations/{related}', 'Relations@destroy');
 
+                Route::get('related-language-pages', 'Relatedlangpages@getRelatedPages');
+                Route::get('relatedlangpages', 'Relatedlangpages@index');
+                Route::post('relatedlangpages', 'Relatedlangpages@store');
+                Route::delete('relatedlangpages', 'Relatedlangpages@destroy');
+
                 Route::get('acl', 'Acl@index');
                 Route::put('acl', 'Acl@update');
                 Route::post('acl/{group}', 'Acl@store');
