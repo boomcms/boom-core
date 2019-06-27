@@ -35,6 +35,15 @@ abstract class Manager
 
     public static function setLanguages()
     {
-        return Settings::get('site.languages');
+        $set_languages = (array)Settings::get('site.languages');
+
+        $languages = array();
+        if(count($set_languages)) {
+            foreach($set_languages as $language => $value) {
+                $languages[] = $language;
+            }
+        }
+        
+        return $languages;
     }
 }

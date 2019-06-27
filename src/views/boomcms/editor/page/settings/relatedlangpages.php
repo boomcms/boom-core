@@ -1,10 +1,10 @@
 
-<?php $languages = (array)BoomCMS\Settings\Manager::setLanguages(); ?>
+<?php $languages = BoomCMS\Settings\Manager::setLanguages(); ?>
 
 <section id="b-page-relatedlangpages">
     <h1><?= trans('boomcms::settings.relatedlangpages.heading') ?></h1>
 
-    <?php if(count($languages)>1 && isset($languages['en'])) { ?>
+    <?php if(count($languages)>1 && in_array('en', $languages)) { ?>
 
     <?= trans('boomcms::settings.relatedlangpages.intro') ?>
 
@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-        <?php foreach($languages as $language => $value) { ?>
+        <?php foreach($languages as $language) { ?>
 
             <tr id="<?= $language ?>">
                 <td><img src="/vendor/boomcms/boom-core/flags/<?= $language ?>.png" alt="<?= config('boomcms::settings.language.'.$language) ?>" title="<?= config('boomcms::settings.language.'.$language) ?>"> </td>
