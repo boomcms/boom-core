@@ -171,6 +171,30 @@
             return $.post(BoomCMS.urlRoot + 'page/' + this.getId() + '/settings/visibility', {
                 visible: visible
             });
-        }
+        },
+
+        addRelatedLangPage: function(pageId, lang, relatedPageId) {
+            return $.post(this.baseUrl + 'relatedlangpages', {
+                page_id: pageId,
+                lang: lang,
+                related_page_id: relatedPageId,
+            });
+        },
+
+        getRelatedLangPages: function() {
+            return $.get(this.baseUrl + 'related-language-pages');
+        },
+
+        removeRelatedLangPage: function(lang, relatedPageId) {
+            return $.ajax({
+                type: 'delete',
+                url: this.baseUrl + 'relatedlangpages',
+                data: {
+                    lang: lang,
+                    related_page_id: relatedPageId
+                }
+            });
+        },
+        
     });
 }(BoomCMS));

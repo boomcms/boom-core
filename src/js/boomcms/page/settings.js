@@ -35,12 +35,13 @@ $.widget('boom.pageSettings', {
 
     getUrl: function(section) {
         var prefix = '/boomcms/page/' + this.page.getId() + '/';
-
         switch (section) {
         case 'urls':
             return  prefix + 'urls';
         case 'relations':
             return prefix + 'relations';
+        case 'relatedlangpages':
+            return prefix + 'relatedlangpages';
         case 'tags':
             return prefix + 'tags';
         case 'template':

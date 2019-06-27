@@ -16,6 +16,7 @@ return [
         'visibility' => 'Visibility',
         'drafts'     => 'Draft status',
         'relations'  => 'Relationships',
+        'relatedlangpages'  => 'Related language pages',
         'info'       => 'Page information',
         'history'    => 'History',
     ],
@@ -129,6 +130,20 @@ return [
                     <p>This might be useful, for example, when your site contains blog templates and you need to define a relationship between blog posts and author pages.</p>
                     <p>In this case you would add author pages as related pages of the blog post page.</p>',
         'current' => 'Current page relationships:',
+    ],
+    'relatedlangpages' => [
+        'heading' => 'Related language pages',
+        'intro'   => '<p>You can add related language pages.</p>
+                    <p>This might be useful, for example, when your site contains page for multiple languages a relationship between pages need to define.</p>
+                    <p>In this case you would add pages with the related languages of the page.</p>',
+        'current' => 'Current page title: ',
+        'related-pages' => 'Related language pages',
+        'already-related' => 'Already related to other page',
+        'failed-to-add' => 'Failed to add related page',
+        'failed-to-remove' => 'Failed to remove related page',
+        'language' => 'Language',
+        'related-page' => 'Related page',
+        'settings-message' => 'Please set the languages you want to translate pages in '
     ],
     'search' => [
         'heading'     => 'Page search settings',
