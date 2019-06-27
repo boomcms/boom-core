@@ -72,6 +72,15 @@
                 </a>
             </li>
 
+            <?php if (Gate::allows('setPageLanguage', $page)): ?>
+            <li>
+                <a href="#" data-b-page-setting="relatedlangpages">
+                    <span class="fa fa-language"></span>
+                    <?= trans('boomcms::settings.menu.relatedlangpages') ?>
+                </a>
+            </li>
+            <?php endif ?>
+
             <?php if (Gate::allows('editChildrenBasic', $page)): ?>
                 <li>
                     <a href="#" data-b-page-setting="children">

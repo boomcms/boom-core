@@ -9,6 +9,7 @@ use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Foundation\Repository;
 use BoomCMS\Page\Finder;
 use Illuminate\Database\Eloquent\Collection;
+use DB;
 
 class Page extends Repository implements PageRepositoryInterface
 {
@@ -126,5 +127,54 @@ class Page extends Repository implements PageRepositoryInterface
         }
 
         $closure($page);
+    }
+
+    /**
+     * Returns related language pages of a specifed page 
+     * 
+     * @param int $pageId
+     * @return Array
+     */
+    public function getRelatedLangPages($pageId)
+    {
+        $page_id = $pageId;
+        $has_page = DB::table('page_related_languages')
+            ->where('page_id', $pageId)
+            ->whereNull('deleted_at')
+            ->count();
+
+        if($has_page <= 0) {
+
+            $related_page = DB::table('page_related_languages')
+                ->whereNull('deleted_at')
+                ->where('related_page_id', $pageId)
+                ->first();
+
+            $page_id = ($related_page)? $related_page->page_id : false;
+        }
+
+        $pages = array();
+
+        // related language page 
+        $lang_pages = DB::table('page_related_languages')
+            ->where('page_id', $page_id)
+            ->whereNull('deleted_at')
+            ->get();
+
+        if(count($lang_pages)) {
+             foreach($lang_pages as $item) {
+                $page = $this->find($item->related_page_id);
+                if($page) {
+                    $pages[] = array(
+                        'lang' => $item->language,
+                         'page_id' => $page->getId(),
+                         'title' => $page->getTitle(),
+                         'url' => $page->getUrlAttribute(),
+                    );
+                }
+            }
+        }
+
+        return $pages;
     }
 }

@@ -32,4 +32,9 @@ abstract class Manager
 
         return $options;
     }
+
+    public static function setLanguages()
+    {
+        return Settings::get('site.languages');
+    }
 }

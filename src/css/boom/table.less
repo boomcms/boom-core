@@ -38,6 +38,44 @@
 	tbody tr, tfoot tr {
 		td {
 			padding: 1.5rem 1rem;
+
+			&.lang {
+				padding-left: 0;
+			
+				.title {
+					font-weight: bold;
+				}
+			
+				.title, .uri {
+					display: block;
+					margin-left: 3rem;
+				}
+			
+				a {
+					color: @darkest-grey;
+					text-decoration: none;
+					float: left;
+					line-height: 21px;
+			
+					span {
+						position: absolute;
+						top: -1000%;
+					}
+			
+					&:hover, &:focus {
+						color: @red;
+					}
+				}
+			}
+
+			.language-option {
+				float: left; width: 75px;
+				input[type=checkbox] {
+					float: left; 
+					width: 20px !important;
+					line-height: 30px;
+				}
+			}
 		}
 	}
 
