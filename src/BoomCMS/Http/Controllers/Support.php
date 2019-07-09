@@ -34,5 +34,17 @@ class Support extends Controller
                 ->replyTo($person->getEmail())
                 ->subject($request->input('subject'));
         });
+
+
+        //auto respond
+        Mail::send('boomcms::email.support-auto-respond', [
+            'request' => $request,
+            'person'  => $person,
+        ], function (Message $message) use ($email, $person, $request) {
+            $message
+                ->to($person->getEmail())
+                ->from($email, SettingsFacade::get('site.name'))
+                ->subject('Re: '.$request->input('subject'));
+        });
     }
 }
