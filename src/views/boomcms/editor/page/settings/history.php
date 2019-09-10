@@ -35,7 +35,7 @@
                     <div class="main">
                         <div>
                             <a href="#" data-editor-time="<?= $version->getEditedTime()->getTimestamp() ?>">
-                                <time datetime="<?= $version->getEditedTime()->format('c') ?>">
+                                <time datetime="<?= $version->getEditedTime()->format('d M Y H:i GMT') ?>">
                                     <?= $version->getEditedTime()->format('d M Y h:i') ?>
                                 </time>
 
@@ -69,7 +69,7 @@
                     <div class="main">
                         <div>
                             <a href="#" data-timestamp="<?= $page->getVisibleFrom()->getTimestamp() ?>">
-                                <time datetime="<?= $page->getVisibleFrom()->format('c') ?>">
+                                <time datetime="<?= $page->getVisibleFrom()->format('d M Y H:i GMT') ?>">
                                     <?=$page->getVisibleFrom()->format('d M Y h:i') ?>
                                 </time>
                             </a>
@@ -105,7 +105,7 @@
             <div class="main">
                 <div>
                     <?php if ($page->getCreatedTime() && $page->getCreatedTime()->getTimestamp() > 0): ?>
-                        <time datetime="<?= $page->getCreatedTime()->format('c') ?>">
+                        <time datetime="<?= $page->getCreatedTime()->format('d M Y H:i GMT') ?>">
                             <?= $page->getCreatedTime()->format('d M Y h:i') ?>
                         </time>
                     <?php endif ?>

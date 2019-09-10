@@ -6,7 +6,7 @@
             <dt><?= trans('boomcms::settings.info.created-at') ?></dt>
 
             <dd>
-                <time datetime="<?= $page->getCreatedTime()->format('c') ?>">
+                <time datetime="<?= $page->getCreatedTime()->format('d M Y H:i GMT') ?>">
                     <?= $page->getCreatedTime()->format('d M Y h:i') ?>
                 </time>
             </dd>
@@ -19,7 +19,7 @@
 
         <dt><?= trans('boomcms::settings.info.last-modified') ?></dt>
         <dd>
-            <time datetime="<?= $page->getLastModified()->format('c') ?>">
+            <time datetime="<?= $page->getLastModified()->format('d M Y H:i GMT') ?>">
                 <?= $page->getLastModified()->format('d M Y h:i') ?>
             </time>
         </dd>
