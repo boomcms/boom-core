@@ -69,7 +69,7 @@
 
             $this.each(function() {
                 var $el = $(this),
-                    time = moment($el.attr('datetime')).tz(tz),
+                    time = moment($el.attr('datetime')+' GMT').tz(tz), //gmt added for RFC format
                     text = $el.hasClass('since') ? time.fromNow() : time.format('Do MMMM YYYY HH:mm');
 
                 $el.text(text);
