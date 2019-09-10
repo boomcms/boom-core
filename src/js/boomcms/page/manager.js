@@ -104,7 +104,7 @@ $.widget( 'boom.pageManager', {
     showVisibilityIcons: function($el) {
         var page = $el.data('page');
 
-        if (page.attributes.visible === 0) {
+        if (typeof page !== 'undefined' && page.attributes.visible === 0) {
             $el.find('.b-pages-visibility').removeClass('fa-eye').addClass('fa-eye-slash text-pink');
         }
     },
@@ -112,30 +112,32 @@ $.widget( 'boom.pageManager', {
     showStatusIcons: function($el) {
         var page = $el.data('page');
 
-        $.get('/boomcms/editor/toolbar?page_id='+page.attributes.id).done(function(response) {
-            var status = $(response).find('#b-page-version-status').data('status'),
-                icon = $el.find('.b-pages-version-status');
-
-            switch (status) {
-                case 'draft':
-                    icon.removeClass('fa-thumbs-o-up');
-                    icon.addClass('fa-thumbs-o-down');
-                    icon.addClass('text-pink');
-                    break;
-                case 'embargoed':
-                    icon.removeClass('fa-thumbs-o-up');
-                    icon.addClass('fa-clock-o');
-                    icon.addClass('text-pink');
-                    break;
-                case 'pending approval':
-                    icon.removeClass('fa-thumbs-o-up');
-                    icon.addClass('fa-product-hunt');
-                    icon.addClass('text-blue');
-                    break;
-                default:
-                    icon.addClass('fa-thumbs-o-up');
-            }
-        });
+        if(typeof page !== 'undefined') {
+            $.get('/boomcms/editor/toolbar?page_id='+page.attributes.id).done(function(response) {
+                var status = $(response).find('#b-page-version-status').data('status'),
+                    icon = $el.find('.b-pages-version-status');
+    
+                switch (status) {
+                    case 'draft':
+                        icon.removeClass('fa-thumbs-o-up');
+                        icon.addClass('fa-thumbs-o-down');
+                        icon.addClass('text-pink');
+                        break;
+                    case 'embargoed':
+                        icon.removeClass('fa-thumbs-o-up');
+                        icon.addClass('fa-clock-o');
+                        icon.addClass('text-pink');
+                        break;
+                    case 'pending approval':
+                        icon.removeClass('fa-thumbs-o-up');
+                        icon.addClass('fa-product-hunt');
+                        icon.addClass('text-blue');
+                        break;
+                    default:
+                        icon.addClass('fa-thumbs-o-up');
+                }
+            });
+        }
     },
 
     showVisibility: function($el) {
