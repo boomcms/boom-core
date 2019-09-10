@@ -32385,16 +32385,16 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
  * http://stackoverflow.com/q/4998908
  */
 
-/* global atob, Blob, define */
+/* global define, Uint8Array, ArrayBuffer, module */
 
-;(function (window) {
+;(function(window) {
   'use strict'
 
   var CanvasPrototype =
     window.HTMLCanvasElement && window.HTMLCanvasElement.prototype
   var hasBlobConstructor =
     window.Blob &&
-    (function () {
+    (function() {
       try {
         return Boolean(new Blob())
       } catch (e) {
@@ -32404,7 +32404,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
   var hasArrayBufferViewSupport =
     hasBlobConstructor &&
     window.Uint8Array &&
-    (function () {
+    (function() {
       try {
         return new Blob([new Uint8Array(100)]).size === 100
       } catch (e) {
@@ -32422,7 +32422,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
     window.atob &&
     window.ArrayBuffer &&
     window.Uint8Array &&
-    function (dataURI) {
+    function(dataURI) {
       var matches,
         mediaType,
         isBase64,
@@ -32468,9 +32468,9 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
     }
   if (window.HTMLCanvasElement && !CanvasPrototype.toBlob) {
     if (CanvasPrototype.mozGetAsFile) {
-      CanvasPrototype.toBlob = function (callback, type, quality) {
+      CanvasPrototype.toBlob = function(callback, type, quality) {
         var self = this
-        setTimeout(function () {
+        setTimeout(function() {
           if (quality && CanvasPrototype.toDataURL && dataURLtoBlob) {
             callback(dataURLtoBlob(self.toDataURL(type, quality)))
           } else {
@@ -32479,16 +32479,16 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
         })
       }
     } else if (CanvasPrototype.toDataURL && dataURLtoBlob) {
-      CanvasPrototype.toBlob = function (callback, type, quality) {
+      CanvasPrototype.toBlob = function(callback, type, quality) {
         var self = this
-        setTimeout(function () {
+        setTimeout(function() {
           callback(dataURLtoBlob(self.toDataURL(type, quality)))
         })
       }
     }
   }
   if (typeof define === 'function' && define.amd) {
-    define(function () {
+    define(function() {
       return dataURLtoBlob
     })
   } else if (typeof module === 'object' && module.exports) {
@@ -44122,7 +44122,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
             $this.each(function() {
                 var $el = $(this),
-                    time = moment($el.attr('datetime')).tz(tz),
+                    time = moment($el.attr('datetime')+' GMT').tz(tz), //gmt added for RFC format
                     text = $el.hasClass('since') ? time.fromNow() : time.format('Do MMMM YYYY HH:mm');
 
                 $el.text(text);
@@ -51631,7 +51631,7 @@ if (!console) {
     showVisibilityIcons: function($el) {
         var page = $el.data('page');
 
-        if (page.attributes.visible === 0) {
+        if (typeof page !== 'undefined' && page.attributes.visible === 0) {
             $el.find('.b-pages-visibility').removeClass('fa-eye').addClass('fa-eye-slash text-pink');
         }
     },
@@ -51639,30 +51639,32 @@ if (!console) {
     showStatusIcons: function($el) {
         var page = $el.data('page');
 
-        $.get('/boomcms/editor/toolbar?page_id='+page.attributes.id).done(function(response) {
-            var status = $(response).find('#b-page-version-status').data('status'),
-                icon = $el.find('.b-pages-version-status');
-
-            switch (status) {
-                case 'draft':
-                    icon.removeClass('fa-thumbs-o-up');
-                    icon.addClass('fa-thumbs-o-down');
-                    icon.addClass('text-pink');
-                    break;
-                case 'embargoed':
-                    icon.removeClass('fa-thumbs-o-up');
-                    icon.addClass('fa-clock-o');
-                    icon.addClass('text-pink');
-                    break;
-                case 'pending approval':
-                    icon.removeClass('fa-thumbs-o-up');
-                    icon.addClass('fa-product-hunt');
-                    icon.addClass('text-blue');
-                    break;
-                default:
-                    icon.addClass('fa-thumbs-o-up');
-            }
-        });
+        if(typeof page !== 'undefined') {
+            $.get('/boomcms/editor/toolbar?page_id='+page.attributes.id).done(function(response) {
+                var status = $(response).find('#b-page-version-status').data('status'),
+                    icon = $el.find('.b-pages-version-status');
+    
+                switch (status) {
+                    case 'draft':
+                        icon.removeClass('fa-thumbs-o-up');
+                        icon.addClass('fa-thumbs-o-down');
+                        icon.addClass('text-pink');
+                        break;
+                    case 'embargoed':
+                        icon.removeClass('fa-thumbs-o-up');
+                        icon.addClass('fa-clock-o');
+                        icon.addClass('text-pink');
+                        break;
+                    case 'pending approval':
+                        icon.removeClass('fa-thumbs-o-up');
+                        icon.addClass('fa-product-hunt');
+                        icon.addClass('text-blue');
+                        break;
+                    default:
+                        icon.addClass('fa-thumbs-o-up');
+                }
+            });
+        }
     },
 
     showVisibility: function($el) {
