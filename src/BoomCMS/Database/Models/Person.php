@@ -188,7 +188,7 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
 
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('c');
+        return $date->format('d M Y H:i GMT');
     }
 
     /**
