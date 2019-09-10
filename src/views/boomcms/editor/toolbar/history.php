@@ -59,7 +59,7 @@
             <dt><?= trans('boomcms::page.history.edited-at') ?></dt>
 
             <dd>
-                <time datetime="<?= $version->getEditedTime()->format('c') ?>">
+                <time datetime="<?= $version->getEditedTime()->format('d M Y H:i GMT') ?>">
                     <?= $version->getEditedTime()->format('d M Y h:i') ?>
                 </time>
             </dd>
