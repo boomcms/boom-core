@@ -51,7 +51,7 @@ class BaseController extends Controller
     {
         return [
             'Content-Type'        => $this->asset->getMimetype(),
-            'Content-Disposition' => "filename='{$this->asset->getOriginalFilename()}'",
+            'Content-Disposition' => "filename={$this->asset->getOriginalFilename()}",
         ];
     }
 
