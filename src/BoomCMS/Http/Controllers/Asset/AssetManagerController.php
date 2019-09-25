@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\View\View;
+use BoomCMS\Database\Models\Asset;
 
 class AssetManagerController extends Controller
 {
@@ -23,4 +24,5 @@ class AssetManagerController extends Controller
     {
         return view($this->viewPrefix.'index');
     }
+
 }

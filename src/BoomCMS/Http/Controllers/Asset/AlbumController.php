@@ -6,12 +6,14 @@ use BoomCMS\Database\Models\Album;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Album as AlbumFacade;
 use Illuminate\Http\Request;
+use BoomCMS\Support\Helpers;
 
 class AlbumController extends Controller
 {
     /**
      * @var string
      */
+    protected $viewPrefix = 'boomcms::assets.';
     protected $role = 'manageAlbums';
 
     public function destroy(Album $album)
@@ -47,5 +49,18 @@ class AlbumController extends Controller
         $album->fill($request->all($expected));
 
         return AlbumFacade::save($album);
+    }
+
+    /**
+     * Display the asset list
+     *
+     * @return View
+     */
+    public function list(Request $request)
+    {
+        $album = AlbumFacade::findBySlug($request->segment(4));
+        $params = ['album' => $album->getId()];
+
+        return view($this->viewPrefix.'album', ['album' => $album, 'assets' => Helpers::getAssets($params)]);
     }
 }

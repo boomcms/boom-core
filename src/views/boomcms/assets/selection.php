@@ -66,6 +66,18 @@
                         'class' => 'b-button-withtext',
                     ]) ?>
                 </form>
+
+
+
+
+                <p class="about2">
+                  
+                        <?= trans('boomcms::asset.selection.download.about.plural') ?>
+                   
+                </p>
+
+
+
             </div>
 
             <div id="b-selection-delete" data-section="delete"<% if (section === 'delete') { %> class="selected"<% } %>>

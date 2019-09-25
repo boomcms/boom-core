@@ -53,18 +53,26 @@ Route::group(['middleware' => [
                 Route::delete('', 'AssetSelectionController@destroy');
                 Route::post('{asset}/replace', 'AssetController@replace');
                 Route::post('{asset}/revert', 'AssetController@revert');
+                Route::get('{asset}/usage', 'AssetController@noOfUsage');
+                Route::get('{asset}/used-no-of-places', 'AssetController@usedNoOfPlaces');
             });
 
             Route::get('asset-picker', 'Asset\AssetPickerController@index');
+
+            Route::get('/asset-manager/albums/{album}/list', 'Asset\AlbumController@list');
 
             Route::get('asset-manager{path}', 'Asset\AssetManagerController@index')
                 ->where([
                     'path' => '(/.*)?',
                 ]);
 
-            Route::resource('asset', 'Asset\AssetController');
+            
+            Route::get('asset/{asset_id}/usage-history', 'Asset\AssetController@usageHistory');
+            Route::get('asset/{asset_id}/place-of-usage', 'Asset\AssetController@placeOfUsage');
+            
             Route::post('asset/create-from-blob', 'Asset\AssetController@createFromBlob');
-
+            Route::resource('asset', 'Asset\AssetController');
+            
             Route::resource('album', 'Asset\AlbumController');
             Route::resource('album/{album}/assets', 'Asset\AlbumAssetsController');
             Route::delete('album/{album}/assets', 'Asset\AlbumAssetsController@destroy');
@@ -178,6 +186,7 @@ Route::group([
     'middleware' => [
         'web',
         Middleware\RequireAssetVisible::class,
+        Middleware\LogAssetUsage::class,
     ],
 ], function () {
     Route::get('{asset}/download{extension?}', [
@@ -197,8 +206,10 @@ Route::group([
         'as'         => 'asset',
         'middleware' => [
             Middleware\CheckAssetETag::class,
+            Middleware\LogAssetUsage::class,
         ],
         'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
+
             App::instance(AssetContract::class, $asset);
 
             $has_asset = AssetHelper::controller($asset);
@@ -218,8 +229,10 @@ Route::group([
         'as'         => 'asset',
         'middleware' => [
             Middleware\CheckAssetETag::class,
+            Middleware\LogAssetUsage::class,
         ],
         'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
+
             App::instance(AssetContract::class, $asset);
 
             $has_asset = AssetHelper::controller($asset);

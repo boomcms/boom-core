@@ -10,9 +10,9 @@
             <a target='_top' href='/'><span class="fa fa-globe"></span><?= trans('boomcms::menu.view-site') ?></a>
         </li>
 
-        <?php $items = BoomCMS\Support\Menu::items() ?>
+        <?php $items = BoomCMS\Support\Menu::items(); ?>
         <?php foreach ($items as $i => $item): ?>
-            <li<?php if ($i === 0 || $items[$i - 1]['icon'] === 'upload'): ?> class="break"<?php endif ?>>
+            <li <?= (isset($item['break']) && $item['break'] == 1)? ' class="break"' : ''?>>
                 <a target='_top' href='<?= $item['url'] ?>'><?php if (isset($item['icon'])): ?><span class="fa fa-<?= $item['icon'] ?>"></span><?php endif ?><?= $item['title'] ?></a>
             </li>
         <?php endforeach ?>

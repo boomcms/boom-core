@@ -22,13 +22,13 @@ abstract class Menu
             $items[$key]['title'] = isset($item['title']) ? $item['title'] : Lang::get('boomcms::menu.'.$key);
         }
 
-        usort($items, function ($a, $b) {
-            if ($a['title'] === $b['title']) {
-                return 0;
-            }
+        // usort($items, function ($a, $b) {
+        //     if ($a['title'] === $b['title']) {
+        //         return 0;
+        //     }
 
-            return ($a['title'] < $b['title']) ? -1 : 1;
-        });
+        //     return ($a['title'] < $b['title']) ? -1 : 1;
+        // });
 
         return $items;
     }
