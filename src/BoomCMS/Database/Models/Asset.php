@@ -14,6 +14,8 @@ use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 
+use DB;
+
 class Asset extends Model implements AssetInterface, SingleSiteInterface
 {
     use SingleSite;
@@ -378,5 +380,90 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
         $attributes['edited_by'] = $version['created_by'];
 
         return array_merge($version, $attributes, $this->relationsToArray());
+    }
+
+    /**
+     * usages
+     */
+    public function getNoOfUsage()
+    {
+        return $this->join('asset_usages', 'assets.id', '=', 'asset_usages.asset_id')
+        ->where('asset_usages.asset_id', $this->getId())
+        ->count();
+    }
+
+    /**
+     * usages
+     */
+    public function usageHistory()
+    {
+        return $this->join('asset_usages', 'assets.id', '=', 'asset_usages.asset_id')
+        ->where('asset_usages.asset_id', $this->getId())
+        ->orderBy('created_at', 'desc')
+        ->get();
+    }
+
+
+    /**
+     * usages
+     */
+    public function getPlaceOfUsage()
+    {
+        
+        $places = array();
+
+        $chunk_assets = $this->join('chunk_assets', 'assets.id', '=', 'chunk_assets.asset_id')
+        ->join('pages', 'chunk_assets.page_id', '=', 'pages.id')
+        ->where('chunk_assets.asset_id', $this->getId())
+        ->whereNull('pages.deleted_at')
+        ->get(array('pages.id as page_id'));
+
+        if($chunk_assets->count() > 0) {
+            foreach($chunk_assets as $chunk_asset) {
+                $place = array(
+                    'page_id' => $chunk_asset->page_id,
+                    'type' => 'Asset'
+                );
+                $places[] = $place;
+            }
+        }
+        
+        
+        $linkset_links = $this->join('chunk_linkset_links', 'assets.id', '=', 'chunk_linkset_links.asset_id')
+        ->join('chunk_linksets', 'chunk_linkset_links.chunk_linkset_id', '=', 'chunk_linksets.id')
+        ->join('pages', 'chunk_linksets.page_id', '=', 'pages.id')
+        ->where('chunk_linkset_links.asset_id', $this->getId())
+        ->whereNull('pages.deleted_at')
+        ->get(array('pages.id as page_id'));
+
+        if($linkset_links->count() > 0) {
+            foreach($linkset_links as $linkset_link) {
+                $place = array(
+                    'page_id' => $linkset_link->page_id,
+                    'type' => 'Linkset'
+                );
+                $places[] = $place;
+            }
+        }
+
+
+        $slideshow_links = $this->join('chunk_slideshow_slides', 'assets.id', '=', 'chunk_slideshow_slides.asset_id')
+        ->join('chunk_slideshows', 'chunk_slideshow_slides.chunk_id', '=', 'chunk_slideshows.id')
+        ->join('pages', 'chunk_slideshows.page_id', '=', 'pages.id')
+        ->where('chunk_slideshow_slides.asset_id', $this->getId())
+        ->whereNull('pages.deleted_at')
+        ->get(array('pages.id as page_id'));
+
+        if($slideshow_links->count() > 0) {
+            foreach($slideshow_links as $slideshow_link) {
+                $place = array(
+                    'page_id' => $slideshow_link->page_id,
+                    'type' => 'Slideshow'
+                );
+                $places[] = $place;
+            }
+        }
+
+        return $places;
     }
 }
