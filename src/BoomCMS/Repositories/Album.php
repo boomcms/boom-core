@@ -74,6 +74,18 @@ class Album extends Repository implements AlbumRepositoryInterface
      *
      * @param string $name
      *
+     * @return null|AlbumInterface
+     */
+    public function findBySlug($slug)
+    {
+        return $this->model->where(Model::ATTR_SLUG, $slug)->first();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $name
+     *
      * @return AlbumInterface
      */
     public function findOrCreate($name): AlbumInterface

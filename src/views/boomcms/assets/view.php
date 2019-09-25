@@ -289,13 +289,17 @@
 
                     <dt><?= trans('boomcms::asset.uploaded-on') ?></dt>
                     <dd>
-                        <time datetime="<%= moment.unix(asset.getUploadedTime()).format() %>"></time>
+                        <time datetime="<%= moment.unix(asset.getUploadedTime()).format('LLL') %>"></time>
                     </dd>
 
                     <% if (!asset.isImage()) { %>
                         <dt><?= trans('boomcms::asset.downloads') ?></dt>
                         <dd><%= asset.getDownloads() %></dd>
                     <% } %>
+
+                    <dt><?= trans('boomcms::asset.no-of-times-used') ?></dt>
+                    <dd id="b-asset-usage" data-no="<%= asset.getNoOfUsage() %>">--</dd>
+
                 </dl>
             </div>
 

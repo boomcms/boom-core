@@ -19,6 +19,12 @@ class AssetController extends Controller
     use ValidatesAssetUpload;
 
     /**
+     * @var string
+     */
+    protected $viewPrefix = 'boomcms::assets.';
+    protected $role = 'manageAlbums';
+
+    /**
      * Controller for handling a single file upload from TinyMCE.
      *
      * @see https://www.tinymce.com/docs/configure/file-image-upload/#automatic_uploads
@@ -174,6 +180,7 @@ class AssetController extends Controller
      */
     public function show(Asset $asset, Site $site)
     {
+
         $this->authorize('manageAssets', $site);
 
         return $asset
@@ -202,5 +209,48 @@ class AssetController extends Controller
         AssetFacade::save($asset);
 
         return $this->show($asset, $site);
+    }
+
+    /**
+     * Usage  
+     */
+    public function noOfUsage(Asset $asset)
+    {
+        return $asset->getNoOfUsage();
+    }
+
+    /**
+     * No of places used 
+     */
+    public function usedNoOfPlaces(Asset $asset)
+    {
+        return count($asset->getPlaceOfUsage());
+    }
+
+
+    /**
+     * Usage history 
+     */
+    public function usageHistory(Site $site, $asset_id)
+    {
+        $this->authorize('manageAssets', $site);
+
+        $album = AlbumFacade::findBySlug('case-studies');
+        $params = ['album' => $album->getId()];
+
+        return view($this->viewPrefix.'usage-history', ['album' => $album, 'assets' => Helpers::getAssets($params)]);
+    }
+
+    /**
+     * Usage pages 
+     */
+    public function placeOfUsage(Site $site, $asset_id)
+    {
+        $this->authorize('manageAssets', $site);
+
+        $album = AlbumFacade::findBySlug('case-studies');
+        $params = ['album' => $album->getId()];
+
+        return view($this->viewPrefix.'usage-places', ['album' => $album, 'assets' => Helpers::getAssets($params)]);
     }
 }

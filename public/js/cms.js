@@ -43135,6 +43135,13 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
             return this.get('downloads');
         },
 
+        getNoOfUsage: function() {
+
+            return $.ajax({url: this.urlRoot + '/' + this.getId() + '/usage'}).done(function(data) {
+                $("#b-asset-usage").text(data);
+            });
+        },
+
         getEditedAt: function() {
             return this.get('edited_at');
         },
