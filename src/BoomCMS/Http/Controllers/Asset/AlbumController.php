@@ -14,7 +14,6 @@ class AlbumController extends Controller
      * @var string
      */
     protected $viewPrefix = 'boomcms::assets.';
-    protected $role = 'manageAlbums';
 
     public function destroy(Album $album)
     {

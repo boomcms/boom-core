@@ -7,7 +7,6 @@ use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
 use BoomCMS\Contracts\Repositories\AssetVersion as AssetVersionRepositoryInterface;
 use BoomCMS\Contracts\Repositories\Repository as RepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
-use BoomCMS\Database\Models\Asset\Usage as AssetUsage;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\FileInfo\Facade as FileInfo;
 use BoomCMS\Foundation\Repository;

@@ -22,7 +22,6 @@ class AssetController extends Controller
      * @var string
      */
     protected $viewPrefix = 'boomcms::assets.';
-    protected $role = 'manageAlbums';
 
     /**
      * Controller for handling a single file upload from TinyMCE.
@@ -233,8 +232,6 @@ class AssetController extends Controller
      */
     public function usageHistory(Site $site, $asset_id)
     {
-        $this->authorize('manageAssets', $site);
-
         $album = AlbumFacade::findBySlug('case-studies');
         $params = ['album' => $album->getId()];
 
@@ -246,8 +243,6 @@ class AssetController extends Controller
      */
     public function placeOfUsage(Site $site, $asset_id)
     {
-        $this->authorize('manageAssets', $site);
-
         $album = AlbumFacade::findBySlug('case-studies');
         $params = ['album' => $album->getId()];
 
