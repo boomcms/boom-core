@@ -90,6 +90,9 @@ class BaseController extends Controller
         return $this->addHeaders($this->response)->setContent($image);
     }
 
+    /**
+     * @return asset with dimension 
+     */
     public function view($width = null, $height = null)
     {
         return $this->fileResponse($this->asset);
