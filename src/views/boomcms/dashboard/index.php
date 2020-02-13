@@ -67,6 +67,7 @@
                                         <p><?= $p->url() ?></p>
                                         <p><?= Chunk::get('text', 'standfirst', $p)->text() ?></p>
                                     </a>
+                                    <!-- <img src="/asset/<?php // $p->getFeatureImageId() ?>"/> -->
                                 </li>
                             <?php endforeach ?>
                         </ol>
