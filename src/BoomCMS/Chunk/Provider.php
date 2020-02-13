@@ -191,7 +191,7 @@ class Provider
      */
     public function getClassName($type)
     {
-        return 'BoomCMS\Chunk\\'.ucfirst($type);
+        return "BoomCMS\Chunk\\".ucfirst($type);
     }
 
     /**
@@ -203,7 +203,7 @@ class Provider
      */
     public function getModelName($type)
     {
-        return 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
+        return "BoomCMS\Database\Models\Chunk\\".ucfirst($type);
     }
 
     /**
