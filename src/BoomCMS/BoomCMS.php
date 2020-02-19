@@ -11,6 +11,7 @@ class BoomCMS
      *
      * @var string
      */
+
     const VERSION = '8.0.26';
 
     /**
