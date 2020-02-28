@@ -50,7 +50,7 @@ class RssFeed
 
     public function getFeedItems()
     {
-        return Helpers::getPages(['parentId' => $this->page->getId()]);
+        return Helpers::getPages(['parentId' => $this->page->getId(), 'order' => 'date desc']);
     }
 
     public function render()
