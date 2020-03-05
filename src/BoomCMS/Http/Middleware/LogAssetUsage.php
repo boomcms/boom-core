@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class LogAssetUsage
 {
-
     /**
      * @var AuthManager
      */
@@ -32,17 +31,18 @@ class LogAssetUsage
     {
         $asset = $request->route()->parameter('asset');
 
-        if ($asset && !$this->auth->check()) {
+        if ($asset && !$this->auth->check() && $asset->getType() === 'doc') {
             $ip = ip2long($request->ip());
 
-            AssetUsage::create([
-                'asset_id' => $asset->getId(),
-                'ip_address'       => $ip,
-                'browser'     => $request->header('User-Agent'),
-                'created_at'     => date('Y-m-d H:i:s'),
-            ]);
+            if (!AssetUsage::recentlyViewed($asset->getId(), $ip)->count() > 0) {
+                AssetUsage::create([
+                    'asset_id' => $asset->getId(),
+                    'ip_address'       => $ip,
+                    'browser'     => $request->header('User-Agent'),
+                    'created_at'     => date('Y-m-d H:i:s'),
+                ]);
+            }
         }
-
         return $next($request);
     }
 }

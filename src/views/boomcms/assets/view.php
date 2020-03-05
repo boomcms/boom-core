@@ -298,7 +298,7 @@
                     <% } %>
 
                     <dt><?= trans('boomcms::asset.no-of-times-used') ?></dt>
-                    <dd id="b-asset-usage" data-no="<%= asset.getNoOfUsage() %>">--</dd>
+                    <dd id="b-asset-usage" data-no="<%= asset.getNoOfUsage() + asset.getDownloads() %>">--</dd>
 
                 </dl>
             </div>
