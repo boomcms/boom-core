@@ -206,7 +206,6 @@ Route::group([
         'as'         => 'asset',
         'middleware' => [
             Middleware\CheckAssetETag::class,
-            Middleware\LogAssetUsage::class,
         ],
         'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
 
@@ -229,7 +228,6 @@ Route::group([
         'as'         => 'asset',
         'middleware' => [
             Middleware\CheckAssetETag::class,
-            Middleware\LogAssetUsage::class,
         ],
         'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
 
