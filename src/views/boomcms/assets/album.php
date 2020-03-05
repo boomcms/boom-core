@@ -15,7 +15,7 @@
                 <th width="50%">Filename</th>
                 <th width="10%">Type</th>
                 <th width="15%">Size (bytes)</th>
-                <th width="15%">No of times used</th>
+                <th width="15%">No of view(s)</th>
             </tr>
         </thead>
         <tbody>
