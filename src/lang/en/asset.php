@@ -27,7 +27,7 @@ return [
     'dimensions'                   => 'Dimensions',
     'uploaded-by'                  => 'Uploaded by',
     'uploaded-on'                  => 'Uploaded on',
-    'no-of-times-used'             => 'No of times used',
+    'no-of-times-viewed'           => 'No of times viewed',
     'download'                     => 'Download',
     'downloads'                    => 'Downloads',
     'edited-by'                    => 'Edited by',

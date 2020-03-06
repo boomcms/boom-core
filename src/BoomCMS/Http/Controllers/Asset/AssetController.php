@@ -215,7 +215,7 @@ class AssetController extends Controller
      */
     public function noOfUsage(Asset $asset)
     {
-        return $asset->getNoOfUsage() + $asset->getDownloads();
+        return $asset->getNoOfUsage();
     }
 
     /**
