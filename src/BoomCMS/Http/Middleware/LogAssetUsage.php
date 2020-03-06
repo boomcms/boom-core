@@ -18,7 +18,6 @@ class LogAssetUsage
     {
         $this->auth = $auth;
     }
-    
     /**
      * Handle an incoming request.
      *
@@ -31,18 +30,19 @@ class LogAssetUsage
     {
         $asset = $request->route()->parameter('asset');
 
-        if ($asset && !$this->auth->check() && $asset->getType() === 'doc') {
+        if ($asset && !$this->auth->check() && $asset->getType() === 'doc' && ($request->segment(3) == '' || $request->segment(3) == 'view')) {
             $ip = ip2long($request->ip());
 
             if (!AssetUsage::recentlyViewed($asset->getId(), $ip)->count() > 0) {
                 AssetUsage::create([
                     'asset_id' => $asset->getId(),
-                    'ip_address'       => $ip,
-                    'browser'     => $request->header('User-Agent'),
-                    'created_at'     => date('Y-m-d H:i:s'),
+                    'ip_address' => $ip,
+                    'browser' => $request->header('User-Agent'),
+                    'created_at' => date('Y-m-d H:i:s'),
                 ]);
             }
         }
+
         return $next($request);
     }
 }
