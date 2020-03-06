@@ -295,10 +295,12 @@
                     <% if (!asset.isImage()) { %>
                         <dt><?= trans('boomcms::asset.downloads') ?></dt>
                         <dd><%= asset.getDownloads() %></dd>
+
+                        <dt><?= trans('boomcms::asset.no-of-times-viewed') ?></dt>
+                        <dd id="b-asset-usage" data-no="<%= asset.getNoOfUsage() %>">--</dd>
                     <% } %>
 
-                    <dt><?= trans('boomcms::asset.no-of-times-used') ?></dt>
-                    <dd id="b-asset-usage" data-no="<%= asset.getNoOfUsage() %>">--</dd>
+                    
 
                 </dl>
             </div>
