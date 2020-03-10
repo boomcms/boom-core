@@ -209,43 +209,4 @@ class AssetController extends Controller
 
         return $this->show($asset, $site);
     }
-
-    /**
-     * Usage  
-     */
-    public function noOfUsage(Asset $asset)
-    {
-        return $asset->getNoOfUsage();
-    }
-
-    /**
-     * No of places used 
-     */
-    public function usedNoOfPlaces(Asset $asset)
-    {
-        return count($asset->getPlaceOfUsage());
-    }
-
-
-    /**
-     * Usage history 
-     */
-    public function usageHistory(Site $site, $asset_id)
-    {
-        $album = AlbumFacade::findBySlug('case-studies');
-        $params = ['album' => $album->getId()];
-
-        return view($this->viewPrefix.'usage-history', ['album' => $album, 'assets' => Helpers::getAssets($params)]);
-    }
-
-    /**
-     * Usage pages 
-     */
-    public function placeOfUsage(Site $site, $asset_id)
-    {
-        $album = AlbumFacade::findBySlug('case-studies');
-        $params = ['album' => $album->getId()];
-
-        return view($this->viewPrefix.'usage-places', ['album' => $album, 'assets' => Helpers::getAssets($params)]);
-    }
 }
