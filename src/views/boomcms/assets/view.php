@@ -297,10 +297,8 @@
                         <dd><%= asset.getDownloads() %></dd>
 
                         <dt><?= trans('boomcms::asset.no-of-times-viewed') ?></dt>
-                        <dd id="b-asset-usage" data-no="<%= asset.getNoOfUsage() %>">--</dd>
+                        <dd><%= asset.getViews() %></dd>
                     <% } %>
-
-                    
 
                 </dl>
             </div>

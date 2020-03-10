@@ -84,7 +84,6 @@
                     </label>
 
                     <?= $button('trash', 'delete', ['class' => 'delete small dark']) ?>
-                 <!--   <a href="/boomcms/asset-manager/albums/<%= album.getSlug() %>/list" title="List view"><span class="fa fa-table"></span></a> -->
                 </div>
 
                 <?= view('boomcms::assets.thumbs') ?>
