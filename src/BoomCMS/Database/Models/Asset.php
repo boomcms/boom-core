@@ -28,6 +28,7 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     const ATTR_THUMBNAIL_ID = 'thumbnail_asset_id';
     const ATTR_CREDITS = 'credits';
     const ATTR_DOWNLOADS = 'downloads';
+    const ATTR_VIEWS = 'views';
     const ATTR_PUBLISHED_AT = 'published_at';
     const ATTR_PUBLIC = 'public';
 
@@ -95,6 +96,11 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function getDownloads(): int
     {
         return (int) $this->{self::ATTR_DOWNLOADS};
+    }
+
+    public function getViews(): int
+    {
+        return (int) $this->{self::ATTR_VIEWS};
     }
 
     public function getExtension(): string
@@ -217,6 +223,13 @@ class Asset extends Model implements AssetInterface, SingleSiteInterface
     public function incrementDownloads(): Asset
     {
         $this->increment(self::ATTR_DOWNLOADS);
+
+        return $this;
+    }
+
+    public function incrementViews(): Asset
+    {
+        $this->increment(self::ATTR_VIEWS);
 
         return $this;
     }

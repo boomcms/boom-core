@@ -53,8 +53,6 @@ Route::group(['middleware' => [
                 Route::delete('', 'AssetSelectionController@destroy');
                 Route::post('{asset}/replace', 'AssetController@replace');
                 Route::post('{asset}/revert', 'AssetController@revert');
-                Route::get('{asset}/usage', 'AssetController@noOfUsage');
-                Route::get('{asset}/used-no-of-places', 'AssetController@usedNoOfPlaces');
             });
 
             Route::get('asset-picker', 'Asset\AssetPickerController@index');
@@ -66,10 +64,6 @@ Route::group(['middleware' => [
                     'path' => '(/.*)?',
                 ]);
 
-            
-            Route::get('asset/{asset_id}/usage-history', 'Asset\AssetController@usageHistory');
-            Route::get('asset/{asset_id}/place-of-usage', 'Asset\AssetController@placeOfUsage');
-            
             Route::post('asset/create-from-blob', 'Asset\AssetController@createFromBlob');
             Route::resource('asset', 'Asset\AssetController');
             
