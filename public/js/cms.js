@@ -50274,7 +50274,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
                     timestamp = parseInt($this.attr('data-timestamp'));
 
                 if (timestamp) {
-                    $this.val(moment('2020-12-12', 'X').format('DD MMMM YYYY HH:mm'));
+                    $this.val(moment(timestamp, 'X').format('DD MMMM YYYY HH:mm'));
                 }
             })
             .datetimepicker({
@@ -50297,7 +50297,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
             $this.each(function() {
                 var $el = $(this),
-                    time = moment('2020-12-12').tz(tz), //gmt added for RFC format - $el.attr('datetime')+' GMT'
+                    time = moment($el.attr('datetime')+' GMT').tz(tz), //gmt added for RFC format
                     text = $el.hasClass('since') ? time.fromNow() : time.format('Do MMMM YYYY HH:mm');
 
                 $el.text(text);
