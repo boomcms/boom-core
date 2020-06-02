@@ -1,6 +1,6 @@
 {
   "name": "boom-core",
-  "version": "8.0.34",
+  "version": "8.0.35",
   "homepage": "https://github.com/boomcms/boom-core",
   "authors": [
     "Rob Taylor <rob@uxblondon.com>"
@@ -19,7 +19,6 @@
     "jquery-ui": "~1.12.0",
     "jquery-file-upload": "~9.9.3",
     "tablesorter": "*",
-    "leaflet": "~0.7.3",
     "caman": "~4.1.2",
     "jcrop": "2.0.0",
     "normalize.css": "~3.0.3",

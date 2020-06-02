@@ -15,7 +15,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         flatten: true,
-                        src: ['bower_components/leaflet/dist/images/*'],
+                        src: ['node_modules/leaflet/dist/images/*'],
                         dest: 'public/images/',
                         filter: 'isFile'
                     },
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
 					'bower_components/datetimepicker/jquery.datetimepicker.js',
 					'bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js',
 					'bower_components/jquery-file-upload/js/jquery.fileupload.js',
-					'bower_components/leaflet/dist/leaflet.js',
+                    'node_modules/leaflet/dist/leaflet.js',
 					'bower_components/pace/pace.js',
 					'node_modules/geodesy/dms.js',
 					'bower_components/chosen/chosen.jquery.js',
@@ -191,7 +191,7 @@ module.exports = function(grunt) {
                         'bower_components/jquery-ui/themes/base/datepicker.css',
                         'bower_components/datetimepicker/jquery.datetimepicker.css',
                         'bower_components/jquery-ui/themes/base/autocomplete.css',
-                        'bower_components/leaflet/dist/leaflet.css',
+                        'node_modules/leaflet/dist/leaflet.css',
                         'bower_components/jcrop/css/Jcrop.css',
                         'bower_components/pace/themes/red/pace-theme-flash.css',
                         'src/css/libraries/jqpagination.css',
