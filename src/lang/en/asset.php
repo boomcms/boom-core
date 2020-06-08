@@ -32,6 +32,14 @@ return [
     'edited-by'                    => 'Edited by',
     'edited-at'                    => 'Edited at',
     'edit-image'                   => 'Edit image',
+    'resize'                       => 'Resize',
+    'brightness'                   => 'Brightness',
+    'contrast'                     => 'Contrast',
+    'hue'                          => 'Hue',
+    'saturation'                   => 'Saturation',
+    'exposure'                     => 'Exposure',
+    'sepia'                        => 'Sepia',
+    'sharpen'                      => 'Sharpen',
     'unsupported'                  => 'File :filename is of an unsuported type: :mimetype',
     'selection'                    => [
         'download' => [
@@ -121,6 +129,11 @@ return [
         'failed'       => 'Upload failed, please try again later or contact your system administrator if the problem persists',
         'not-writable' => 'Unable to upload assets. Please ensure you asset storage location is writable',
         'select-files' => 'Select files',
+    ],
+    'copy' => [
+        'title'   => 'Copy',
+        'heading' => 'Copy asset',
+        'confirm' => 'Are you sure to make a copy the asset?',
     ],
     'loading' => 'Loading thumbnail',
     'failed'  => 'Unable to load thumbnail',

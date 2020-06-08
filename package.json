@@ -1,12 +1,13 @@
 {
     "name": "boom-core",
-    "version": "7.1.0",
+    "version": "7.1.23",
     "dependencies": {
-        "bower": "~1.4.1",
+        "bower": "^1.8.8",
         "geodesy": "~1.0.2",
-        "grunt": "~0.4.5",
-        "grunt-contrib-copy": "~0.8.0",
         "jstimezonedetect": "~1.0.6",
+        "leaflet": "^1.6.0",
+        "moment": "^2.26.0",
+        "natives": "^1.1.6",
         "tinymce": "^4.6.5"
     },
     "devDependencies": {

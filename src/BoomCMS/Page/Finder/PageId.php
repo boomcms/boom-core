@@ -26,7 +26,7 @@ class PageId extends Filter
     public function build(Builder $query)
     {
         if (is_array($this->pageId)) {
-            return $query->where('pages.id', 'in', $this->pageId);
+            return $query->whereIn('pages.id', $this->pageId);
         } else {
             return $query->where('pages.id', '=', $this->pageId);
         }

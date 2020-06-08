@@ -27,7 +27,7 @@ class Query
                 if (is_array($args)) {
                     $reflect = new ReflectionClass($class);
 
-                    if ($param === 'not' || $param === 'ignorepages') {
+                    if ($param === 'not' || $param === 'ignorepages' || $param == 'pageid') {
                         $pages[] = $args;
                         $filter = $reflect->newInstanceArgs($pages);
                     } else {
