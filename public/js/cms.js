@@ -32385,7 +32385,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
  * http://stackoverflow.com/q/4998908
  */
 
-/* global atob, Blob, define */
+/* global define, Uint8Array, ArrayBuffer, module */
 
 ;(function (window) {
   'use strict'
@@ -32479,11 +32479,28 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
         })
       }
     } else if (CanvasPrototype.toDataURL && dataURLtoBlob) {
-      CanvasPrototype.toBlob = function (callback, type, quality) {
-        var self = this
-        setTimeout(function () {
-          callback(dataURLtoBlob(self.toDataURL(type, quality)))
-        })
+      if (CanvasPrototype.msToBlob) {
+        CanvasPrototype.toBlob = function (callback, type, quality) {
+          var self = this
+          setTimeout(function () {
+            if (
+              ((type && type !== 'image/png') || quality) &&
+              CanvasPrototype.toDataURL &&
+              dataURLtoBlob
+            ) {
+              callback(dataURLtoBlob(self.toDataURL(type, quality)))
+            } else {
+              callback(self.msToBlob(type))
+            }
+          })
+        }
+      } else {
+        CanvasPrototype.toBlob = function (callback, type, quality) {
+          var self = this
+          setTimeout(function () {
+            callback(dataURLtoBlob(self.toDataURL(type, quality)))
+          })
+        }
       }
     }
   }
@@ -33964,15 +33981,11 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
     });
 
 }));
-;/*
- Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
- (c) 2010-2013, Vladimir Agafonkin
- (c) 2010-2011, CloudMade
-*/
-!function(t,e,i){var n=t.L,o={};o.version="0.7.7","object"==typeof module&&"object"==typeof module.exports?module.exports=o:"function"==typeof define&&define.amd&&define(o),o.noConflict=function(){return t.L=n,this},t.L=o,o.Util={extend:function(t){var e,i,n,o,s=Array.prototype.slice.call(arguments,1);for(i=0,n=s.length;n>i;i++){o=s[i]||{};for(e in o)o.hasOwnProperty(e)&&(t[e]=o[e])}return t},bind:function(t,e){var i=arguments.length>2?Array.prototype.slice.call(arguments,2):null;return function(){return t.apply(e,i||arguments)}},stamp:function(){var t=0,e="_leaflet_id";return function(i){return i[e]=i[e]||++t,i[e]}}(),invokeEach:function(t,e,i){var n,o;if("object"==typeof t){o=Array.prototype.slice.call(arguments,3);for(n in t)e.apply(i,[n,t[n]].concat(o));return!0}return!1},limitExecByInterval:function(t,e,i){var n,o;return function s(){var a=arguments;return n?void(o=!0):(n=!0,setTimeout(function(){n=!1,o&&(s.apply(i,a),o=!1)},e),void t.apply(i,a))}},falseFn:function(){return!1},formatNum:function(t,e){var i=Math.pow(10,e||5);return Math.round(t*i)/i},trim:function(t){return t.trim?t.trim():t.replace(/^\s+|\s+$/g,"")},splitWords:function(t){return o.Util.trim(t).split(/\s+/)},setOptions:function(t,e){return t.options=o.extend({},t.options,e),t.options},getParamString:function(t,e,i){var n=[];for(var o in t)n.push(encodeURIComponent(i?o.toUpperCase():o)+"="+encodeURIComponent(t[o]));return(e&&-1!==e.indexOf("?")?"&":"?")+n.join("&")},template:function(t,e){return t.replace(/\{ *([\w_]+) *\}/g,function(t,n){var o=e[n];if(o===i)throw new Error("No value provided for variable "+t);return"function"==typeof o&&(o=o(e)),o})},isArray:Array.isArray||function(t){return"[object Array]"===Object.prototype.toString.call(t)},emptyImageUrl:"data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="},function(){function e(e){var i,n,o=["webkit","moz","o","ms"];for(i=0;i<o.length&&!n;i++)n=t[o[i]+e];return n}function i(e){var i=+new Date,o=Math.max(0,16-(i-n));return n=i+o,t.setTimeout(e,o)}var n=0,s=t.requestAnimationFrame||e("RequestAnimationFrame")||i,a=t.cancelAnimationFrame||e("CancelAnimationFrame")||e("CancelRequestAnimationFrame")||function(e){t.clearTimeout(e)};o.Util.requestAnimFrame=function(e,n,a,r){return e=o.bind(e,n),a&&s===i?void e():s.call(t,e,r)},o.Util.cancelAnimFrame=function(e){e&&a.call(t,e)}}(),o.extend=o.Util.extend,o.bind=o.Util.bind,o.stamp=o.Util.stamp,o.setOptions=o.Util.setOptions,o.Class=function(){},o.Class.extend=function(t){var e=function(){this.initialize&&this.initialize.apply(this,arguments),this._initHooks&&this.callInitHooks()},i=function(){};i.prototype=this.prototype;var n=new i;n.constructor=e,e.prototype=n;for(var s in this)this.hasOwnProperty(s)&&"prototype"!==s&&(e[s]=this[s]);t.statics&&(o.extend(e,t.statics),delete t.statics),t.includes&&(o.Util.extend.apply(null,[n].concat(t.includes)),delete t.includes),t.options&&n.options&&(t.options=o.extend({},n.options,t.options)),o.extend(n,t),n._initHooks=[];var a=this;return e.__super__=a.prototype,n.callInitHooks=function(){if(!this._initHooksCalled){a.prototype.callInitHooks&&a.prototype.callInitHooks.call(this),this._initHooksCalled=!0;for(var t=0,e=n._initHooks.length;e>t;t++)n._initHooks[t].call(this)}},e},o.Class.include=function(t){o.extend(this.prototype,t)},o.Class.mergeOptions=function(t){o.extend(this.prototype.options,t)},o.Class.addInitHook=function(t){var e=Array.prototype.slice.call(arguments,1),i="function"==typeof t?t:function(){this[t].apply(this,e)};this.prototype._initHooks=this.prototype._initHooks||[],this.prototype._initHooks.push(i)};var s="_leaflet_events";o.Mixin={},o.Mixin.Events={addEventListener:function(t,e,i){if(o.Util.invokeEach(t,this.addEventListener,this,e,i))return this;var n,a,r,h,l,u,c,d=this[s]=this[s]||{},p=i&&i!==this&&o.stamp(i);for(t=o.Util.splitWords(t),n=0,a=t.length;a>n;n++)r={action:e,context:i||this},h=t[n],p?(l=h+"_idx",u=l+"_len",c=d[l]=d[l]||{},c[p]||(c[p]=[],d[u]=(d[u]||0)+1),c[p].push(r)):(d[h]=d[h]||[],d[h].push(r));return this},hasEventListeners:function(t){var e=this[s];return!!e&&(t in e&&e[t].length>0||t+"_idx"in e&&e[t+"_idx_len"]>0)},removeEventListener:function(t,e,i){if(!this[s])return this;if(!t)return this.clearAllEventListeners();if(o.Util.invokeEach(t,this.removeEventListener,this,e,i))return this;var n,a,r,h,l,u,c,d,p,_=this[s],m=i&&i!==this&&o.stamp(i);for(t=o.Util.splitWords(t),n=0,a=t.length;a>n;n++)if(r=t[n],u=r+"_idx",c=u+"_len",d=_[u],e){if(h=m&&d?d[m]:_[r]){for(l=h.length-1;l>=0;l--)h[l].action!==e||i&&h[l].context!==i||(p=h.splice(l,1),p[0].action=o.Util.falseFn);i&&d&&0===h.length&&(delete d[m],_[c]--)}}else delete _[r],delete _[u],delete _[c];return this},clearAllEventListeners:function(){return delete this[s],this},fireEvent:function(t,e){if(!this.hasEventListeners(t))return this;var i,n,a,r,h,l=o.Util.extend({},e,{type:t,target:this}),u=this[s];if(u[t])for(i=u[t].slice(),n=0,a=i.length;a>n;n++)i[n].action.call(i[n].context,l);r=u[t+"_idx"];for(h in r)if(i=r[h].slice())for(n=0,a=i.length;a>n;n++)i[n].action.call(i[n].context,l);return this},addOneTimeEventListener:function(t,e,i){if(o.Util.invokeEach(t,this.addOneTimeEventListener,this,e,i))return this;var n=o.bind(function(){this.removeEventListener(t,e,i).removeEventListener(t,n,i)},this);return this.addEventListener(t,e,i).addEventListener(t,n,i)}},o.Mixin.Events.on=o.Mixin.Events.addEventListener,o.Mixin.Events.off=o.Mixin.Events.removeEventListener,o.Mixin.Events.once=o.Mixin.Events.addOneTimeEventListener,o.Mixin.Events.fire=o.Mixin.Events.fireEvent,function(){var n="ActiveXObject"in t,s=n&&!e.addEventListener,a=navigator.userAgent.toLowerCase(),r=-1!==a.indexOf("webkit"),h=-1!==a.indexOf("chrome"),l=-1!==a.indexOf("phantom"),u=-1!==a.indexOf("android"),c=-1!==a.search("android [23]"),d=-1!==a.indexOf("gecko"),p=typeof orientation!=i+"",_=!t.PointerEvent&&t.MSPointerEvent,m=t.PointerEvent&&t.navigator.pointerEnabled||_,f="devicePixelRatio"in t&&t.devicePixelRatio>1||"matchMedia"in t&&t.matchMedia("(min-resolution:144dpi)")&&t.matchMedia("(min-resolution:144dpi)").matches,g=e.documentElement,v=n&&"transition"in g.style,y="WebKitCSSMatrix"in t&&"m11"in new t.WebKitCSSMatrix&&!c,P="MozPerspective"in g.style,L="OTransition"in g.style,x=!t.L_DISABLE_3D&&(v||y||P||L)&&!l,w=!t.L_NO_TOUCH&&!l&&(m||"ontouchstart"in t||t.DocumentTouch&&e instanceof t.DocumentTouch);o.Browser={ie:n,ielt9:s,webkit:r,gecko:d&&!r&&!t.opera&&!n,android:u,android23:c,chrome:h,ie3d:v,webkit3d:y,gecko3d:P,opera3d:L,any3d:x,mobile:p,mobileWebkit:p&&r,mobileWebkit3d:p&&y,mobileOpera:p&&t.opera,touch:w,msPointer:_,pointer:m,retina:f}}(),o.Point=function(t,e,i){this.x=i?Math.round(t):t,this.y=i?Math.round(e):e},o.Point.prototype={clone:function(){return new o.Point(this.x,this.y)},add:function(t){return this.clone()._add(o.point(t))},_add:function(t){return this.x+=t.x,this.y+=t.y,this},subtract:function(t){return this.clone()._subtract(o.point(t))},_subtract:function(t){return this.x-=t.x,this.y-=t.y,this},divideBy:function(t){return this.clone()._divideBy(t)},_divideBy:function(t){return this.x/=t,this.y/=t,this},multiplyBy:function(t){return this.clone()._multiplyBy(t)},_multiplyBy:function(t){return this.x*=t,this.y*=t,this},round:function(){return this.clone()._round()},_round:function(){return this.x=Math.round(this.x),this.y=Math.round(this.y),this},floor:function(){return this.clone()._floor()},_floor:function(){return this.x=Math.floor(this.x),this.y=Math.floor(this.y),this},distanceTo:function(t){t=o.point(t);var e=t.x-this.x,i=t.y-this.y;return Math.sqrt(e*e+i*i)},equals:function(t){return t=o.point(t),t.x===this.x&&t.y===this.y},contains:function(t){return t=o.point(t),Math.abs(t.x)<=Math.abs(this.x)&&Math.abs(t.y)<=Math.abs(this.y)},toString:function(){return"Point("+o.Util.formatNum(this.x)+", "+o.Util.formatNum(this.y)+")"}},o.point=function(t,e,n){return t instanceof o.Point?t:o.Util.isArray(t)?new o.Point(t[0],t[1]):t===i||null===t?t:new o.Point(t,e,n)},o.Bounds=function(t,e){if(t)for(var i=e?[t,e]:t,n=0,o=i.length;o>n;n++)this.extend(i[n])},o.Bounds.prototype={extend:function(t){return t=o.point(t),this.min||this.max?(this.min.x=Math.min(t.x,this.min.x),this.max.x=Math.max(t.x,this.max.x),this.min.y=Math.min(t.y,this.min.y),this.max.y=Math.max(t.y,this.max.y)):(this.min=t.clone(),this.max=t.clone()),this},getCenter:function(t){return new o.Point((this.min.x+this.max.x)/2,(this.min.y+this.max.y)/2,t)},getBottomLeft:function(){return new o.Point(this.min.x,this.max.y)},getTopRight:function(){return new o.Point(this.max.x,this.min.y)},getSize:function(){return this.max.subtract(this.min)},contains:function(t){var e,i;return t="number"==typeof t[0]||t instanceof o.Point?o.point(t):o.bounds(t),t instanceof o.Bounds?(e=t.min,i=t.max):e=i=t,e.x>=this.min.x&&i.x<=this.max.x&&e.y>=this.min.y&&i.y<=this.max.y},intersects:function(t){t=o.bounds(t);var e=this.min,i=this.max,n=t.min,s=t.max,a=s.x>=e.x&&n.x<=i.x,r=s.y>=e.y&&n.y<=i.y;return a&&r},isValid:function(){return!(!this.min||!this.max)}},o.bounds=function(t,e){return!t||t instanceof o.Bounds?t:new o.Bounds(t,e)},o.Transformation=function(t,e,i,n){this._a=t,this._b=e,this._c=i,this._d=n},o.Transformation.prototype={transform:function(t,e){return this._transform(t.clone(),e)},_transform:function(t,e){return e=e||1,t.x=e*(this._a*t.x+this._b),t.y=e*(this._c*t.y+this._d),t},untransform:function(t,e){return e=e||1,new o.Point((t.x/e-this._b)/this._a,(t.y/e-this._d)/this._c)}},o.DomUtil={get:function(t){return"string"==typeof t?e.getElementById(t):t},getStyle:function(t,i){var n=t.style[i];if(!n&&t.currentStyle&&(n=t.currentStyle[i]),(!n||"auto"===n)&&e.defaultView){var o=e.defaultView.getComputedStyle(t,null);n=o?o[i]:null}return"auto"===n?null:n},getViewportOffset:function(t){var i,n=0,s=0,a=t,r=e.body,h=e.documentElement;do{if(n+=a.offsetTop||0,s+=a.offsetLeft||0,n+=parseInt(o.DomUtil.getStyle(a,"borderTopWidth"),10)||0,s+=parseInt(o.DomUtil.getStyle(a,"borderLeftWidth"),10)||0,i=o.DomUtil.getStyle(a,"position"),a.offsetParent===r&&"absolute"===i)break;if("fixed"===i){n+=r.scrollTop||h.scrollTop||0,s+=r.scrollLeft||h.scrollLeft||0;break}if("relative"===i&&!a.offsetLeft){var l=o.DomUtil.getStyle(a,"width"),u=o.DomUtil.getStyle(a,"max-width"),c=a.getBoundingClientRect();("none"!==l||"none"!==u)&&(s+=c.left+a.clientLeft),n+=c.top+(r.scrollTop||h.scrollTop||0);break}a=a.offsetParent}while(a);a=t;do{if(a===r)break;n-=a.scrollTop||0,s-=a.scrollLeft||0,a=a.parentNode}while(a);return new o.Point(s,n)},documentIsLtr:function(){return o.DomUtil._docIsLtrCached||(o.DomUtil._docIsLtrCached=!0,o.DomUtil._docIsLtr="ltr"===o.DomUtil.getStyle(e.body,"direction")),o.DomUtil._docIsLtr},create:function(t,i,n){var o=e.createElement(t);return o.className=i,n&&n.appendChild(o),o},hasClass:function(t,e){if(t.classList!==i)return t.classList.contains(e);var n=o.DomUtil._getClass(t);return n.length>0&&new RegExp("(^|\\s)"+e+"(\\s|$)").test(n)},addClass:function(t,e){if(t.classList!==i)for(var n=o.Util.splitWords(e),s=0,a=n.length;a>s;s++)t.classList.add(n[s]);else if(!o.DomUtil.hasClass(t,e)){var r=o.DomUtil._getClass(t);o.DomUtil._setClass(t,(r?r+" ":"")+e)}},removeClass:function(t,e){t.classList!==i?t.classList.remove(e):o.DomUtil._setClass(t,o.Util.trim((" "+o.DomUtil._getClass(t)+" ").replace(" "+e+" "," ")))},_setClass:function(t,e){t.className.baseVal===i?t.className=e:t.className.baseVal=e},_getClass:function(t){return t.className.baseVal===i?t.className:t.className.baseVal},setOpacity:function(t,e){if("opacity"in t.style)t.style.opacity=e;else if("filter"in t.style){var i=!1,n="DXImageTransform.Microsoft.Alpha";try{i=t.filters.item(n)}catch(o){if(1===e)return}e=Math.round(100*e),i?(i.Enabled=100!==e,i.Opacity=e):t.style.filter+=" progid:"+n+"(opacity="+e+")"}},testProp:function(t){for(var i=e.documentElement.style,n=0;n<t.length;n++)if(t[n]in i)return t[n];return!1},getTranslateString:function(t){var e=o.Browser.webkit3d,i="translate"+(e?"3d":"")+"(",n=(e?",0":"")+")";return i+t.x+"px,"+t.y+"px"+n},getScaleString:function(t,e){var i=o.DomUtil.getTranslateString(e.add(e.multiplyBy(-1*t))),n=" scale("+t+") ";return i+n},setPosition:function(t,e,i){t._leaflet_pos=e,!i&&o.Browser.any3d?t.style[o.DomUtil.TRANSFORM]=o.DomUtil.getTranslateString(e):(t.style.left=e.x+"px",t.style.top=e.y+"px")},getPosition:function(t){return t._leaflet_pos}},o.DomUtil.TRANSFORM=o.DomUtil.testProp(["transform","WebkitTransform","OTransform","MozTransform","msTransform"]),o.DomUtil.TRANSITION=o.DomUtil.testProp(["webkitTransition","transition","OTransition","MozTransition","msTransition"]),o.DomUtil.TRANSITION_END="webkitTransition"===o.DomUtil.TRANSITION||"OTransition"===o.DomUtil.TRANSITION?o.DomUtil.TRANSITION+"End":"transitionend",function(){if("onselectstart"in e)o.extend(o.DomUtil,{disableTextSelection:function(){o.DomEvent.on(t,"selectstart",o.DomEvent.preventDefault)},enableTextSelection:function(){o.DomEvent.off(t,"selectstart",o.DomEvent.preventDefault)}});else{var i=o.DomUtil.testProp(["userSelect","WebkitUserSelect","OUserSelect","MozUserSelect","msUserSelect"]);o.extend(o.DomUtil,{disableTextSelection:function(){if(i){var t=e.documentElement.style;this._userSelect=t[i],t[i]="none"}},enableTextSelection:function(){i&&(e.documentElement.style[i]=this._userSelect,delete this._userSelect)}})}o.extend(o.DomUtil,{disableImageDrag:function(){o.DomEvent.on(t,"dragstart",o.DomEvent.preventDefault)},enableImageDrag:function(){o.DomEvent.off(t,"dragstart",o.DomEvent.preventDefault)}})}(),o.LatLng=function(t,e,n){if(t=parseFloat(t),e=parseFloat(e),isNaN(t)||isNaN(e))throw new Error("Invalid LatLng object: ("+t+", "+e+")");this.lat=t,this.lng=e,n!==i&&(this.alt=parseFloat(n))},o.extend(o.LatLng,{DEG_TO_RAD:Math.PI/180,RAD_TO_DEG:180/Math.PI,MAX_MARGIN:1e-9}),o.LatLng.prototype={equals:function(t){if(!t)return!1;t=o.latLng(t);var e=Math.max(Math.abs(this.lat-t.lat),Math.abs(this.lng-t.lng));return e<=o.LatLng.MAX_MARGIN},toString:function(t){return"LatLng("+o.Util.formatNum(this.lat,t)+", "+o.Util.formatNum(this.lng,t)+")"},distanceTo:function(t){t=o.latLng(t);var e=6378137,i=o.LatLng.DEG_TO_RAD,n=(t.lat-this.lat)*i,s=(t.lng-this.lng)*i,a=this.lat*i,r=t.lat*i,h=Math.sin(n/2),l=Math.sin(s/2),u=h*h+l*l*Math.cos(a)*Math.cos(r);return 2*e*Math.atan2(Math.sqrt(u),Math.sqrt(1-u))},wrap:function(t,e){var i=this.lng;return t=t||-180,e=e||180,i=(i+e)%(e-t)+(t>i||i===e?e:t),new o.LatLng(this.lat,i)}},o.latLng=function(t,e){return t instanceof o.LatLng?t:o.Util.isArray(t)?"number"==typeof t[0]||"string"==typeof t[0]?new o.LatLng(t[0],t[1],t[2]):null:t===i||null===t?t:"object"==typeof t&&"lat"in t?new o.LatLng(t.lat,"lng"in t?t.lng:t.lon):e===i?null:new o.LatLng(t,e)},o.LatLngBounds=function(t,e){if(t)for(var i=e?[t,e]:t,n=0,o=i.length;o>n;n++)this.extend(i[n])},o.LatLngBounds.prototype={extend:function(t){if(!t)return this;var e=o.latLng(t);return t=null!==e?e:o.latLngBounds(t),t instanceof o.LatLng?this._southWest||this._northEast?(this._southWest.lat=Math.min(t.lat,this._southWest.lat),this._southWest.lng=Math.min(t.lng,this._southWest.lng),this._northEast.lat=Math.max(t.lat,this._northEast.lat),this._northEast.lng=Math.max(t.lng,this._northEast.lng)):(this._southWest=new o.LatLng(t.lat,t.lng),this._northEast=new o.LatLng(t.lat,t.lng)):t instanceof o.LatLngBounds&&(this.extend(t._southWest),this.extend(t._northEast)),this},pad:function(t){var e=this._southWest,i=this._northEast,n=Math.abs(e.lat-i.lat)*t,s=Math.abs(e.lng-i.lng)*t;return new o.LatLngBounds(new o.LatLng(e.lat-n,e.lng-s),new o.LatLng(i.lat+n,i.lng+s))},getCenter:function(){return new o.LatLng((this._southWest.lat+this._northEast.lat)/2,(this._southWest.lng+this._northEast.lng)/2)},getSouthWest:function(){return this._southWest},getNorthEast:function(){return this._northEast},getNorthWest:function(){return new o.LatLng(this.getNorth(),this.getWest())},getSouthEast:function(){return new o.LatLng(this.getSouth(),this.getEast())},getWest:function(){return this._southWest.lng},getSouth:function(){return this._southWest.lat},getEast:function(){return this._northEast.lng},getNorth:function(){return this._northEast.lat},contains:function(t){t="number"==typeof t[0]||t instanceof o.LatLng?o.latLng(t):o.latLngBounds(t);var e,i,n=this._southWest,s=this._northEast;return t instanceof o.LatLngBounds?(e=t.getSouthWest(),i=t.getNorthEast()):e=i=t,e.lat>=n.lat&&i.lat<=s.lat&&e.lng>=n.lng&&i.lng<=s.lng},intersects:function(t){t=o.latLngBounds(t);var e=this._southWest,i=this._northEast,n=t.getSouthWest(),s=t.getNorthEast(),a=s.lat>=e.lat&&n.lat<=i.lat,r=s.lng>=e.lng&&n.lng<=i.lng;return a&&r},toBBoxString:function(){return[this.getWest(),this.getSouth(),this.getEast(),this.getNorth()].join(",")},equals:function(t){return t?(t=o.latLngBounds(t),this._southWest.equals(t.getSouthWest())&&this._northEast.equals(t.getNorthEast())):!1},isValid:function(){return!(!this._southWest||!this._northEast)}},o.latLngBounds=function(t,e){return!t||t instanceof o.LatLngBounds?t:new o.LatLngBounds(t,e)},o.Projection={},o.Projection.SphericalMercator={MAX_LATITUDE:85.0511287798,project:function(t){var e=o.LatLng.DEG_TO_RAD,i=this.MAX_LATITUDE,n=Math.max(Math.min(i,t.lat),-i),s=t.lng*e,a=n*e;return a=Math.log(Math.tan(Math.PI/4+a/2)),new o.Point(s,a)},unproject:function(t){var e=o.LatLng.RAD_TO_DEG,i=t.x*e,n=(2*Math.atan(Math.exp(t.y))-Math.PI/2)*e;return new o.LatLng(n,i)}},o.Projection.LonLat={project:function(t){return new o.Point(t.lng,t.lat)},unproject:function(t){return new o.LatLng(t.y,t.x)}},o.CRS={latLngToPoint:function(t,e){var i=this.projection.project(t),n=this.scale(e);return this.transformation._transform(i,n)},pointToLatLng:function(t,e){var i=this.scale(e),n=this.transformation.untransform(t,i);return this.projection.unproject(n)},project:function(t){return this.projection.project(t)},scale:function(t){return 256*Math.pow(2,t)},getSize:function(t){var e=this.scale(t);return o.point(e,e)}},o.CRS.Simple=o.extend({},o.CRS,{projection:o.Projection.LonLat,transformation:new o.Transformation(1,0,-1,0),scale:function(t){return Math.pow(2,t)}}),o.CRS.EPSG3857=o.extend({},o.CRS,{code:"EPSG:3857",projection:o.Projection.SphericalMercator,transformation:new o.Transformation(.5/Math.PI,.5,-.5/Math.PI,.5),project:function(t){var e=this.projection.project(t),i=6378137;return e.multiplyBy(i)}}),o.CRS.EPSG900913=o.extend({},o.CRS.EPSG3857,{code:"EPSG:900913"}),o.CRS.EPSG4326=o.extend({},o.CRS,{code:"EPSG:4326",projection:o.Projection.LonLat,transformation:new o.Transformation(1/360,.5,-1/360,.5)}),o.Map=o.Class.extend({includes:o.Mixin.Events,options:{crs:o.CRS.EPSG3857,fadeAnimation:o.DomUtil.TRANSITION&&!o.Browser.android23,trackResize:!0,markerZoomAnimation:o.DomUtil.TRANSITION&&o.Browser.any3d},initialize:function(t,e){e=o.setOptions(this,e),this._initContainer(t),this._initLayout(),this._onResize=o.bind(this._onResize,this),this._initEvents(),e.maxBounds&&this.setMaxBounds(e.maxBounds),e.center&&e.zoom!==i&&this.setView(o.latLng(e.center),e.zoom,{reset:!0}),this._handlers=[],this._layers={},this._zoomBoundLayers={},this._tileLayersNum=0,this.callInitHooks(),this._addLayers(e.layers)},setView:function(t,e){return e=e===i?this.getZoom():e,this._resetView(o.latLng(t),this._limitZoom(e)),this},setZoom:function(t,e){return this._loaded?this.setView(this.getCenter(),t,{zoom:e}):(this._zoom=this._limitZoom(t),this)},zoomIn:function(t,e){return this.setZoom(this._zoom+(t||1),e)},zoomOut:function(t,e){return this.setZoom(this._zoom-(t||1),e)},setZoomAround:function(t,e,i){var n=this.getZoomScale(e),s=this.getSize().divideBy(2),a=t instanceof o.Point?t:this.latLngToContainerPoint(t),r=a.subtract(s).multiplyBy(1-1/n),h=this.containerPointToLatLng(s.add(r));return this.setView(h,e,{zoom:i})},fitBounds:function(t,e){e=e||{},t=t.getBounds?t.getBounds():o.latLngBounds(t);var i=o.point(e.paddingTopLeft||e.padding||[0,0]),n=o.point(e.paddingBottomRight||e.padding||[0,0]),s=this.getBoundsZoom(t,!1,i.add(n));s=e.maxZoom?Math.min(e.maxZoom,s):s;var a=n.subtract(i).divideBy(2),r=this.project(t.getSouthWest(),s),h=this.project(t.getNorthEast(),s),l=this.unproject(r.add(h).divideBy(2).add(a),s);return this.setView(l,s,e)},fitWorld:function(t){return this.fitBounds([[-90,-180],[90,180]],t)},panTo:function(t,e){return this.setView(t,this._zoom,{pan:e})},panBy:function(t){return this.fire("movestart"),this._rawPanBy(o.point(t)),this.fire("move"),this.fire("moveend")},setMaxBounds:function(t){return t=o.latLngBounds(t),this.options.maxBounds=t,t?(this._loaded&&this._panInsideMaxBounds(),this.on("moveend",this._panInsideMaxBounds,this)):this.off("moveend",this._panInsideMaxBounds,this)},panInsideBounds:function(t,e){var i=this.getCenter(),n=this._limitCenter(i,this._zoom,t);return i.equals(n)?this:this.panTo(n,e)},addLayer:function(t){var e=o.stamp(t);return this._layers[e]?this:(this._layers[e]=t,!t.options||isNaN(t.options.maxZoom)&&isNaN(t.options.minZoom)||(this._zoomBoundLayers[e]=t,this._updateZoomLevels()),this.options.zoomAnimation&&o.TileLayer&&t instanceof o.TileLayer&&(this._tileLayersNum++,this._tileLayersToLoad++,t.on("load",this._onTileLayerLoad,this)),this._loaded&&this._layerAdd(t),this)},removeLayer:function(t){var e=o.stamp(t);return this._layers[e]?(this._loaded&&t.onRemove(this),delete this._layers[e],this._loaded&&this.fire("layerremove",{layer:t}),this._zoomBoundLayers[e]&&(delete this._zoomBoundLayers[e],this._updateZoomLevels()),this.options.zoomAnimation&&o.TileLayer&&t instanceof o.TileLayer&&(this._tileLayersNum--,this._tileLayersToLoad--,t.off("load",this._onTileLayerLoad,this)),this):this},hasLayer:function(t){return t?o.stamp(t)in this._layers:!1},eachLayer:function(t,e){for(var i in this._layers)t.call(e,this._layers[i]);return this},invalidateSize:function(t){if(!this._loaded)return this;t=o.extend({animate:!1,pan:!0},t===!0?{animate:!0}:t);var e=this.getSize();this._sizeChanged=!0,this._initialCenter=null;var i=this.getSize(),n=e.divideBy(2).round(),s=i.divideBy(2).round(),a=n.subtract(s);return a.x||a.y?(t.animate&&t.pan?this.panBy(a):(t.pan&&this._rawPanBy(a),this.fire("move"),t.debounceMoveend?(clearTimeout(this._sizeTimer),this._sizeTimer=setTimeout(o.bind(this.fire,this,"moveend"),200)):this.fire("moveend")),this.fire("resize",{oldSize:e,newSize:i})):this},addHandler:function(t,e){if(!e)return this;var i=this[t]=new e(this);return this._handlers.push(i),this.options[t]&&i.enable(),this},remove:function(){this._loaded&&this.fire("unload"),this._initEvents("off");try{delete this._container._leaflet}catch(t){this._container._leaflet=i}return this._clearPanes(),this._clearControlPos&&this._clearControlPos(),this._clearHandlers(),this},getCenter:function(){return this._checkIfLoaded(),this._initialCenter&&!this._moved()?this._initialCenter:this.layerPointToLatLng(this._getCenterLayerPoint())},getZoom:function(){return this._zoom},getBounds:function(){var t=this.getPixelBounds(),e=this.unproject(t.getBottomLeft()),i=this.unproject(t.getTopRight());return new o.LatLngBounds(e,i)},getMinZoom:function(){return this.options.minZoom===i?this._layersMinZoom===i?0:this._layersMinZoom:this.options.minZoom},getMaxZoom:function(){return this.options.maxZoom===i?this._layersMaxZoom===i?1/0:this._layersMaxZoom:this.options.maxZoom},getBoundsZoom:function(t,e,i){t=o.latLngBounds(t);var n,s=this.getMinZoom()-(e?1:0),a=this.getMaxZoom(),r=this.getSize(),h=t.getNorthWest(),l=t.getSouthEast(),u=!0;i=o.point(i||[0,0]);do s++,n=this.project(l,s).subtract(this.project(h,s)).add(i),u=e?n.x<r.x||n.y<r.y:r.contains(n);while(u&&a>=s);return u&&e?null:e?s:s-1},getSize:function(){return(!this._size||this._sizeChanged)&&(this._size=new o.Point(this._container.clientWidth,this._container.clientHeight),this._sizeChanged=!1),this._size.clone()},getPixelBounds:function(){var t=this._getTopLeftPoint();return new o.Bounds(t,t.add(this.getSize()))},getPixelOrigin:function(){return this._checkIfLoaded(),this._initialTopLeftPoint},getPanes:function(){return this._panes},getContainer:function(){return this._container},getZoomScale:function(t){var e=this.options.crs;return e.scale(t)/e.scale(this._zoom)},getScaleZoom:function(t){return this._zoom+Math.log(t)/Math.LN2},project:function(t,e){return e=e===i?this._zoom:e,this.options.crs.latLngToPoint(o.latLng(t),e)},unproject:function(t,e){return e=e===i?this._zoom:e,this.options.crs.pointToLatLng(o.point(t),e)},layerPointToLatLng:function(t){var e=o.point(t).add(this.getPixelOrigin());return this.unproject(e)},latLngToLayerPoint:function(t){var e=this.project(o.latLng(t))._round();return e._subtract(this.getPixelOrigin())},containerPointToLayerPoint:function(t){return o.point(t).subtract(this._getMapPanePos())},layerPointToContainerPoint:function(t){return o.point(t).add(this._getMapPanePos())},containerPointToLatLng:function(t){var e=this.containerPointToLayerPoint(o.point(t));return this.layerPointToLatLng(e)},latLngToContainerPoint:function(t){return this.layerPointToContainerPoint(this.latLngToLayerPoint(o.latLng(t)))},mouseEventToContainerPoint:function(t){return o.DomEvent.getMousePosition(t,this._container)},mouseEventToLayerPoint:function(t){return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(t))},mouseEventToLatLng:function(t){return this.layerPointToLatLng(this.mouseEventToLayerPoint(t))},_initContainer:function(t){var e=this._container=o.DomUtil.get(t);if(!e)throw new Error("Map container not found.");if(e._leaflet)throw new Error("Map container is already initialized.");e._leaflet=!0},_initLayout:function(){var t=this._container;o.DomUtil.addClass(t,"leaflet-container"+(o.Browser.touch?" leaflet-touch":"")+(o.Browser.retina?" leaflet-retina":"")+(o.Browser.ielt9?" leaflet-oldie":"")+(this.options.fadeAnimation?" leaflet-fade-anim":""));var e=o.DomUtil.getStyle(t,"position");"absolute"!==e&&"relative"!==e&&"fixed"!==e&&(t.style.position="relative"),this._initPanes(),this._initControlPos&&this._initControlPos()},_initPanes:function(){var t=this._panes={};this._mapPane=t.mapPane=this._createPane("leaflet-map-pane",this._container),this._tilePane=t.tilePane=this._createPane("leaflet-tile-pane",this._mapPane),t.objectsPane=this._createPane("leaflet-objects-pane",this._mapPane),t.shadowPane=this._createPane("leaflet-shadow-pane"),t.overlayPane=this._createPane("leaflet-overlay-pane"),t.markerPane=this._createPane("leaflet-marker-pane"),t.popupPane=this._createPane("leaflet-popup-pane");var e=" leaflet-zoom-hide";this.options.markerZoomAnimation||(o.DomUtil.addClass(t.markerPane,e),o.DomUtil.addClass(t.shadowPane,e),o.DomUtil.addClass(t.popupPane,e))},_createPane:function(t,e){return o.DomUtil.create("div",t,e||this._panes.objectsPane)},_clearPanes:function(){this._container.removeChild(this._mapPane)},_addLayers:function(t){t=t?o.Util.isArray(t)?t:[t]:[];for(var e=0,i=t.length;i>e;e++)this.addLayer(t[e])},_resetView:function(t,e,i,n){var s=this._zoom!==e;n||(this.fire("movestart"),s&&this.fire("zoomstart")),this._zoom=e,this._initialCenter=t,this._initialTopLeftPoint=this._getNewTopLeftPoint(t),i?this._initialTopLeftPoint._add(this._getMapPanePos()):o.DomUtil.setPosition(this._mapPane,new o.Point(0,0)),this._tileLayersToLoad=this._tileLayersNum;var a=!this._loaded;this._loaded=!0,this.fire("viewreset",{hard:!i}),a&&(this.fire("load"),this.eachLayer(this._layerAdd,this)),this.fire("move"),(s||n)&&this.fire("zoomend"),this.fire("moveend",{hard:!i})},_rawPanBy:function(t){o.DomUtil.setPosition(this._mapPane,this._getMapPanePos().subtract(t))},_getZoomSpan:function(){return this.getMaxZoom()-this.getMinZoom()},_updateZoomLevels:function(){var t,e=1/0,n=-(1/0),o=this._getZoomSpan();for(t in this._zoomBoundLayers){var s=this._zoomBoundLayers[t];isNaN(s.options.minZoom)||(e=Math.min(e,s.options.minZoom)),isNaN(s.options.maxZoom)||(n=Math.max(n,s.options.maxZoom))}t===i?this._layersMaxZoom=this._layersMinZoom=i:(this._layersMaxZoom=n,this._layersMinZoom=e),o!==this._getZoomSpan()&&this.fire("zoomlevelschange")},_panInsideMaxBounds:function(){this.panInsideBounds(this.options.maxBounds)},_checkIfLoaded:function(){if(!this._loaded)throw new Error("Set map center and zoom first.")},_initEvents:function(e){if(o.DomEvent){e=e||"on",o.DomEvent[e](this._container,"click",this._onMouseClick,this);var i,n,s=["dblclick","mousedown","mouseup","mouseenter","mouseleave","mousemove","contextmenu"];for(i=0,n=s.length;n>i;i++)o.DomEvent[e](this._container,s[i],this._fireMouseEvent,this);this.options.trackResize&&o.DomEvent[e](t,"resize",this._onResize,this)}},_onResize:function(){o.Util.cancelAnimFrame(this._resizeRequest),this._resizeRequest=o.Util.requestAnimFrame(function(){this.invalidateSize({debounceMoveend:!0})},this,!1,this._container)},_onMouseClick:function(t){!this._loaded||!t._simulated&&(this.dragging&&this.dragging.moved()||this.boxZoom&&this.boxZoom.moved())||o.DomEvent._skipped(t)||(this.fire("preclick"),this._fireMouseEvent(t))},_fireMouseEvent:function(t){if(this._loaded&&!o.DomEvent._skipped(t)){var e=t.type;if(e="mouseenter"===e?"mouseover":"mouseleave"===e?"mouseout":e,this.hasEventListeners(e)){"contextmenu"===e&&o.DomEvent.preventDefault(t);var i=this.mouseEventToContainerPoint(t),n=this.containerPointToLayerPoint(i),s=this.layerPointToLatLng(n);this.fire(e,{latlng:s,layerPoint:n,containerPoint:i,originalEvent:t})}}},_onTileLayerLoad:function(){this._tileLayersToLoad--,this._tileLayersNum&&!this._tileLayersToLoad&&this.fire("tilelayersload")},_clearHandlers:function(){for(var t=0,e=this._handlers.length;e>t;t++)this._handlers[t].disable()},whenReady:function(t,e){return this._loaded?t.call(e||this,this):this.on("load",t,e),this},_layerAdd:function(t){t.onAdd(this),this.fire("layeradd",{layer:t})},_getMapPanePos:function(){return o.DomUtil.getPosition(this._mapPane)},_moved:function(){var t=this._getMapPanePos();return t&&!t.equals([0,0])},_getTopLeftPoint:function(){return this.getPixelOrigin().subtract(this._getMapPanePos())},_getNewTopLeftPoint:function(t,e){var i=this.getSize()._divideBy(2);return this.project(t,e)._subtract(i)._round()},_latLngToNewLayerPoint:function(t,e,i){var n=this._getNewTopLeftPoint(i,e).add(this._getMapPanePos());return this.project(t,e)._subtract(n)},_getCenterLayerPoint:function(){return this.containerPointToLayerPoint(this.getSize()._divideBy(2))},_getCenterOffset:function(t){return this.latLngToLayerPoint(t).subtract(this._getCenterLayerPoint())},_limitCenter:function(t,e,i){if(!i)return t;var n=this.project(t,e),s=this.getSize().divideBy(2),a=new o.Bounds(n.subtract(s),n.add(s)),r=this._getBoundsOffset(a,i,e);return this.unproject(n.add(r),e)},_limitOffset:function(t,e){if(!e)return t;var i=this.getPixelBounds(),n=new o.Bounds(i.min.add(t),i.max.add(t));return t.add(this._getBoundsOffset(n,e))},_getBoundsOffset:function(t,e,i){var n=this.project(e.getNorthWest(),i).subtract(t.min),s=this.project(e.getSouthEast(),i).subtract(t.max),a=this._rebound(n.x,-s.x),r=this._rebound(n.y,-s.y);return new o.Point(a,r)},_rebound:function(t,e){return t+e>0?Math.round(t-e)/2:Math.max(0,Math.ceil(t))-Math.max(0,Math.floor(e))},_limitZoom:function(t){var e=this.getMinZoom(),i=this.getMaxZoom();return Math.max(e,Math.min(i,t))}}),o.map=function(t,e){return new o.Map(t,e)},o.Projection.Mercator={MAX_LATITUDE:85.0840591556,R_MINOR:6356752.314245179,R_MAJOR:6378137,project:function(t){var e=o.LatLng.DEG_TO_RAD,i=this.MAX_LATITUDE,n=Math.max(Math.min(i,t.lat),-i),s=this.R_MAJOR,a=this.R_MINOR,r=t.lng*e*s,h=n*e,l=a/s,u=Math.sqrt(1-l*l),c=u*Math.sin(h);c=Math.pow((1-c)/(1+c),.5*u);var d=Math.tan(.5*(.5*Math.PI-h))/c;return h=-s*Math.log(d),new o.Point(r,h)},unproject:function(t){for(var e,i=o.LatLng.RAD_TO_DEG,n=this.R_MAJOR,s=this.R_MINOR,a=t.x*i/n,r=s/n,h=Math.sqrt(1-r*r),l=Math.exp(-t.y/n),u=Math.PI/2-2*Math.atan(l),c=15,d=1e-7,p=c,_=.1;Math.abs(_)>d&&--p>0;)e=h*Math.sin(u),_=Math.PI/2-2*Math.atan(l*Math.pow((1-e)/(1+e),.5*h))-u,u+=_;return new o.LatLng(u*i,a)}},o.CRS.EPSG3395=o.extend({},o.CRS,{code:"EPSG:3395",projection:o.Projection.Mercator,
-transformation:function(){var t=o.Projection.Mercator,e=t.R_MAJOR,i=.5/(Math.PI*e);return new o.Transformation(i,.5,-i,.5)}()}),o.TileLayer=o.Class.extend({includes:o.Mixin.Events,options:{minZoom:0,maxZoom:18,tileSize:256,subdomains:"abc",errorTileUrl:"",attribution:"",zoomOffset:0,opacity:1,unloadInvisibleTiles:o.Browser.mobile,updateWhenIdle:o.Browser.mobile},initialize:function(t,e){e=o.setOptions(this,e),e.detectRetina&&o.Browser.retina&&e.maxZoom>0&&(e.tileSize=Math.floor(e.tileSize/2),e.zoomOffset++,e.minZoom>0&&e.minZoom--,this.options.maxZoom--),e.bounds&&(e.bounds=o.latLngBounds(e.bounds)),this._url=t;var i=this.options.subdomains;"string"==typeof i&&(this.options.subdomains=i.split(""))},onAdd:function(t){this._map=t,this._animated=t._zoomAnimated,this._initContainer(),t.on({viewreset:this._reset,moveend:this._update},this),this._animated&&t.on({zoomanim:this._animateZoom,zoomend:this._endZoomAnim},this),this.options.updateWhenIdle||(this._limitedUpdate=o.Util.limitExecByInterval(this._update,150,this),t.on("move",this._limitedUpdate,this)),this._reset(),this._update()},addTo:function(t){return t.addLayer(this),this},onRemove:function(t){this._container.parentNode.removeChild(this._container),t.off({viewreset:this._reset,moveend:this._update},this),this._animated&&t.off({zoomanim:this._animateZoom,zoomend:this._endZoomAnim},this),this.options.updateWhenIdle||t.off("move",this._limitedUpdate,this),this._container=null,this._map=null},bringToFront:function(){var t=this._map._panes.tilePane;return this._container&&(t.appendChild(this._container),this._setAutoZIndex(t,Math.max)),this},bringToBack:function(){var t=this._map._panes.tilePane;return this._container&&(t.insertBefore(this._container,t.firstChild),this._setAutoZIndex(t,Math.min)),this},getAttribution:function(){return this.options.attribution},getContainer:function(){return this._container},setOpacity:function(t){return this.options.opacity=t,this._map&&this._updateOpacity(),this},setZIndex:function(t){return this.options.zIndex=t,this._updateZIndex(),this},setUrl:function(t,e){return this._url=t,e||this.redraw(),this},redraw:function(){return this._map&&(this._reset({hard:!0}),this._update()),this},_updateZIndex:function(){this._container&&this.options.zIndex!==i&&(this._container.style.zIndex=this.options.zIndex)},_setAutoZIndex:function(t,e){var i,n,o,s=t.children,a=-e(1/0,-(1/0));for(n=0,o=s.length;o>n;n++)s[n]!==this._container&&(i=parseInt(s[n].style.zIndex,10),isNaN(i)||(a=e(a,i)));this.options.zIndex=this._container.style.zIndex=(isFinite(a)?a:0)+e(1,-1)},_updateOpacity:function(){var t,e=this._tiles;if(o.Browser.ielt9)for(t in e)o.DomUtil.setOpacity(e[t],this.options.opacity);else o.DomUtil.setOpacity(this._container,this.options.opacity)},_initContainer:function(){var t=this._map._panes.tilePane;if(!this._container){if(this._container=o.DomUtil.create("div","leaflet-layer"),this._updateZIndex(),this._animated){var e="leaflet-tile-container";this._bgBuffer=o.DomUtil.create("div",e,this._container),this._tileContainer=o.DomUtil.create("div",e,this._container)}else this._tileContainer=this._container;t.appendChild(this._container),this.options.opacity<1&&this._updateOpacity()}},_reset:function(t){for(var e in this._tiles)this.fire("tileunload",{tile:this._tiles[e]});this._tiles={},this._tilesToLoad=0,this.options.reuseTiles&&(this._unusedTiles=[]),this._tileContainer.innerHTML="",this._animated&&t&&t.hard&&this._clearBgBuffer(),this._initContainer()},_getTileSize:function(){var t=this._map,e=t.getZoom()+this.options.zoomOffset,i=this.options.maxNativeZoom,n=this.options.tileSize;return i&&e>i&&(n=Math.round(t.getZoomScale(e)/t.getZoomScale(i)*n)),n},_update:function(){if(this._map){var t=this._map,e=t.getPixelBounds(),i=t.getZoom(),n=this._getTileSize();if(!(i>this.options.maxZoom||i<this.options.minZoom)){var s=o.bounds(e.min.divideBy(n)._floor(),e.max.divideBy(n)._floor());this._addTilesFromCenterOut(s),(this.options.unloadInvisibleTiles||this.options.reuseTiles)&&this._removeOtherTiles(s)}}},_addTilesFromCenterOut:function(t){var i,n,s,a=[],r=t.getCenter();for(i=t.min.y;i<=t.max.y;i++)for(n=t.min.x;n<=t.max.x;n++)s=new o.Point(n,i),this._tileShouldBeLoaded(s)&&a.push(s);var h=a.length;if(0!==h){a.sort(function(t,e){return t.distanceTo(r)-e.distanceTo(r)});var l=e.createDocumentFragment();for(this._tilesToLoad||this.fire("loading"),this._tilesToLoad+=h,n=0;h>n;n++)this._addTile(a[n],l);this._tileContainer.appendChild(l)}},_tileShouldBeLoaded:function(t){if(t.x+":"+t.y in this._tiles)return!1;var e=this.options;if(!e.continuousWorld){var i=this._getWrapTileNum();if(e.noWrap&&(t.x<0||t.x>=i.x)||t.y<0||t.y>=i.y)return!1}if(e.bounds){var n=this._getTileSize(),o=t.multiplyBy(n),s=o.add([n,n]),a=this._map.unproject(o),r=this._map.unproject(s);if(e.continuousWorld||e.noWrap||(a=a.wrap(),r=r.wrap()),!e.bounds.intersects([a,r]))return!1}return!0},_removeOtherTiles:function(t){var e,i,n,o;for(o in this._tiles)e=o.split(":"),i=parseInt(e[0],10),n=parseInt(e[1],10),(i<t.min.x||i>t.max.x||n<t.min.y||n>t.max.y)&&this._removeTile(o)},_removeTile:function(t){var e=this._tiles[t];this.fire("tileunload",{tile:e,url:e.src}),this.options.reuseTiles?(o.DomUtil.removeClass(e,"leaflet-tile-loaded"),this._unusedTiles.push(e)):e.parentNode===this._tileContainer&&this._tileContainer.removeChild(e),o.Browser.android||(e.onload=null,e.src=o.Util.emptyImageUrl),delete this._tiles[t]},_addTile:function(t,e){var i=this._getTilePos(t),n=this._getTile();o.DomUtil.setPosition(n,i,o.Browser.chrome),this._tiles[t.x+":"+t.y]=n,this._loadTile(n,t),n.parentNode!==this._tileContainer&&e.appendChild(n)},_getZoomForUrl:function(){var t=this.options,e=this._map.getZoom();return t.zoomReverse&&(e=t.maxZoom-e),e+=t.zoomOffset,t.maxNativeZoom?Math.min(e,t.maxNativeZoom):e},_getTilePos:function(t){var e=this._map.getPixelOrigin(),i=this._getTileSize();return t.multiplyBy(i).subtract(e)},getTileUrl:function(t){return o.Util.template(this._url,o.extend({s:this._getSubdomain(t),z:t.z,x:t.x,y:t.y},this.options))},_getWrapTileNum:function(){var t=this._map.options.crs,e=t.getSize(this._map.getZoom());return e.divideBy(this._getTileSize())._floor()},_adjustTilePoint:function(t){var e=this._getWrapTileNum();this.options.continuousWorld||this.options.noWrap||(t.x=(t.x%e.x+e.x)%e.x),this.options.tms&&(t.y=e.y-t.y-1),t.z=this._getZoomForUrl()},_getSubdomain:function(t){var e=Math.abs(t.x+t.y)%this.options.subdomains.length;return this.options.subdomains[e]},_getTile:function(){if(this.options.reuseTiles&&this._unusedTiles.length>0){var t=this._unusedTiles.pop();return this._resetTile(t),t}return this._createTile()},_resetTile:function(){},_createTile:function(){var t=o.DomUtil.create("img","leaflet-tile");return t.style.width=t.style.height=this._getTileSize()+"px",t.galleryimg="no",t.onselectstart=t.onmousemove=o.Util.falseFn,o.Browser.ielt9&&this.options.opacity!==i&&o.DomUtil.setOpacity(t,this.options.opacity),o.Browser.mobileWebkit3d&&(t.style.WebkitBackfaceVisibility="hidden"),t},_loadTile:function(t,e){t._layer=this,t.onload=this._tileOnLoad,t.onerror=this._tileOnError,this._adjustTilePoint(e),t.src=this.getTileUrl(e),this.fire("tileloadstart",{tile:t,url:t.src})},_tileLoaded:function(){this._tilesToLoad--,this._animated&&o.DomUtil.addClass(this._tileContainer,"leaflet-zoom-animated"),this._tilesToLoad||(this.fire("load"),this._animated&&(clearTimeout(this._clearBgBufferTimer),this._clearBgBufferTimer=setTimeout(o.bind(this._clearBgBuffer,this),500)))},_tileOnLoad:function(){var t=this._layer;this.src!==o.Util.emptyImageUrl&&(o.DomUtil.addClass(this,"leaflet-tile-loaded"),t.fire("tileload",{tile:this,url:this.src})),t._tileLoaded()},_tileOnError:function(){var t=this._layer;t.fire("tileerror",{tile:this,url:this.src});var e=t.options.errorTileUrl;e&&(this.src=e),t._tileLoaded()}}),o.tileLayer=function(t,e){return new o.TileLayer(t,e)},o.TileLayer.WMS=o.TileLayer.extend({defaultWmsParams:{service:"WMS",request:"GetMap",version:"1.1.1",layers:"",styles:"",format:"image/jpeg",transparent:!1},initialize:function(t,e){this._url=t;var i=o.extend({},this.defaultWmsParams),n=e.tileSize||this.options.tileSize;e.detectRetina&&o.Browser.retina?i.width=i.height=2*n:i.width=i.height=n;for(var s in e)this.options.hasOwnProperty(s)||"crs"===s||(i[s]=e[s]);this.wmsParams=i,o.setOptions(this,e)},onAdd:function(t){this._crs=this.options.crs||t.options.crs,this._wmsVersion=parseFloat(this.wmsParams.version);var e=this._wmsVersion>=1.3?"crs":"srs";this.wmsParams[e]=this._crs.code,o.TileLayer.prototype.onAdd.call(this,t)},getTileUrl:function(t){var e=this._map,i=this.options.tileSize,n=t.multiplyBy(i),s=n.add([i,i]),a=this._crs.project(e.unproject(n,t.z)),r=this._crs.project(e.unproject(s,t.z)),h=this._wmsVersion>=1.3&&this._crs===o.CRS.EPSG4326?[r.y,a.x,a.y,r.x].join(","):[a.x,r.y,r.x,a.y].join(","),l=o.Util.template(this._url,{s:this._getSubdomain(t)});return l+o.Util.getParamString(this.wmsParams,l,!0)+"&BBOX="+h},setParams:function(t,e){return o.extend(this.wmsParams,t),e||this.redraw(),this}}),o.tileLayer.wms=function(t,e){return new o.TileLayer.WMS(t,e)},o.TileLayer.Canvas=o.TileLayer.extend({options:{async:!1},initialize:function(t){o.setOptions(this,t)},redraw:function(){this._map&&(this._reset({hard:!0}),this._update());for(var t in this._tiles)this._redrawTile(this._tiles[t]);return this},_redrawTile:function(t){this.drawTile(t,t._tilePoint,this._map._zoom)},_createTile:function(){var t=o.DomUtil.create("canvas","leaflet-tile");return t.width=t.height=this.options.tileSize,t.onselectstart=t.onmousemove=o.Util.falseFn,t},_loadTile:function(t,e){t._layer=this,t._tilePoint=e,this._redrawTile(t),this.options.async||this.tileDrawn(t)},drawTile:function(){},tileDrawn:function(t){this._tileOnLoad.call(t)}}),o.tileLayer.canvas=function(t){return new o.TileLayer.Canvas(t)},o.ImageOverlay=o.Class.extend({includes:o.Mixin.Events,options:{opacity:1},initialize:function(t,e,i){this._url=t,this._bounds=o.latLngBounds(e),o.setOptions(this,i)},onAdd:function(t){this._map=t,this._image||this._initImage(),t._panes.overlayPane.appendChild(this._image),t.on("viewreset",this._reset,this),t.options.zoomAnimation&&o.Browser.any3d&&t.on("zoomanim",this._animateZoom,this),this._reset()},onRemove:function(t){t.getPanes().overlayPane.removeChild(this._image),t.off("viewreset",this._reset,this),t.options.zoomAnimation&&t.off("zoomanim",this._animateZoom,this)},addTo:function(t){return t.addLayer(this),this},setOpacity:function(t){return this.options.opacity=t,this._updateOpacity(),this},bringToFront:function(){return this._image&&this._map._panes.overlayPane.appendChild(this._image),this},bringToBack:function(){var t=this._map._panes.overlayPane;return this._image&&t.insertBefore(this._image,t.firstChild),this},setUrl:function(t){this._url=t,this._image.src=this._url},getAttribution:function(){return this.options.attribution},_initImage:function(){this._image=o.DomUtil.create("img","leaflet-image-layer"),this._map.options.zoomAnimation&&o.Browser.any3d?o.DomUtil.addClass(this._image,"leaflet-zoom-animated"):o.DomUtil.addClass(this._image,"leaflet-zoom-hide"),this._updateOpacity(),o.extend(this._image,{galleryimg:"no",onselectstart:o.Util.falseFn,onmousemove:o.Util.falseFn,onload:o.bind(this._onImageLoad,this),src:this._url})},_animateZoom:function(t){var e=this._map,i=this._image,n=e.getZoomScale(t.zoom),s=this._bounds.getNorthWest(),a=this._bounds.getSouthEast(),r=e._latLngToNewLayerPoint(s,t.zoom,t.center),h=e._latLngToNewLayerPoint(a,t.zoom,t.center)._subtract(r),l=r._add(h._multiplyBy(.5*(1-1/n)));i.style[o.DomUtil.TRANSFORM]=o.DomUtil.getTranslateString(l)+" scale("+n+") "},_reset:function(){var t=this._image,e=this._map.latLngToLayerPoint(this._bounds.getNorthWest()),i=this._map.latLngToLayerPoint(this._bounds.getSouthEast())._subtract(e);o.DomUtil.setPosition(t,e),t.style.width=i.x+"px",t.style.height=i.y+"px"},_onImageLoad:function(){this.fire("load")},_updateOpacity:function(){o.DomUtil.setOpacity(this._image,this.options.opacity)}}),o.imageOverlay=function(t,e,i){return new o.ImageOverlay(t,e,i)},o.Icon=o.Class.extend({options:{className:""},initialize:function(t){o.setOptions(this,t)},createIcon:function(t){return this._createIcon("icon",t)},createShadow:function(t){return this._createIcon("shadow",t)},_createIcon:function(t,e){var i=this._getIconUrl(t);if(!i){if("icon"===t)throw new Error("iconUrl not set in Icon options (see the docs).");return null}var n;return n=e&&"IMG"===e.tagName?this._createImg(i,e):this._createImg(i),this._setIconStyles(n,t),n},_setIconStyles:function(t,e){var i,n=this.options,s=o.point(n[e+"Size"]);i="shadow"===e?o.point(n.shadowAnchor||n.iconAnchor):o.point(n.iconAnchor),!i&&s&&(i=s.divideBy(2,!0)),t.className="leaflet-marker-"+e+" "+n.className,i&&(t.style.marginLeft=-i.x+"px",t.style.marginTop=-i.y+"px"),s&&(t.style.width=s.x+"px",t.style.height=s.y+"px")},_createImg:function(t,i){return i=i||e.createElement("img"),i.src=t,i},_getIconUrl:function(t){return o.Browser.retina&&this.options[t+"RetinaUrl"]?this.options[t+"RetinaUrl"]:this.options[t+"Url"]}}),o.icon=function(t){return new o.Icon(t)},o.Icon.Default=o.Icon.extend({options:{iconSize:[25,41],iconAnchor:[12,41],popupAnchor:[1,-34],shadowSize:[41,41]},_getIconUrl:function(t){var e=t+"Url";if(this.options[e])return this.options[e];o.Browser.retina&&"icon"===t&&(t+="-2x");var i=o.Icon.Default.imagePath;if(!i)throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");return i+"/marker-"+t+".png"}}),o.Icon.Default.imagePath=function(){var t,i,n,o,s,a=e.getElementsByTagName("script"),r=/[\/^]leaflet[\-\._]?([\w\-\._]*)\.js\??/;for(t=0,i=a.length;i>t;t++)if(n=a[t].src,o=n.match(r))return s=n.split(r)[0],(s?s+"/":"")+"images"}(),o.Marker=o.Class.extend({includes:o.Mixin.Events,options:{icon:new o.Icon.Default,title:"",alt:"",clickable:!0,draggable:!1,keyboard:!0,zIndexOffset:0,opacity:1,riseOnHover:!1,riseOffset:250},initialize:function(t,e){o.setOptions(this,e),this._latlng=o.latLng(t)},onAdd:function(t){this._map=t,t.on("viewreset",this.update,this),this._initIcon(),this.update(),this.fire("add"),t.options.zoomAnimation&&t.options.markerZoomAnimation&&t.on("zoomanim",this._animateZoom,this)},addTo:function(t){return t.addLayer(this),this},onRemove:function(t){this.dragging&&this.dragging.disable(),this._removeIcon(),this._removeShadow(),this.fire("remove"),t.off({viewreset:this.update,zoomanim:this._animateZoom},this),this._map=null},getLatLng:function(){return this._latlng},setLatLng:function(t){return this._latlng=o.latLng(t),this.update(),this.fire("move",{latlng:this._latlng})},setZIndexOffset:function(t){return this.options.zIndexOffset=t,this.update(),this},setIcon:function(t){return this.options.icon=t,this._map&&(this._initIcon(),this.update()),this._popup&&this.bindPopup(this._popup),this},update:function(){return this._icon&&this._setPos(this._map.latLngToLayerPoint(this._latlng).round()),this},_initIcon:function(){var t=this.options,e=this._map,i=e.options.zoomAnimation&&e.options.markerZoomAnimation,n=i?"leaflet-zoom-animated":"leaflet-zoom-hide",s=t.icon.createIcon(this._icon),a=!1;s!==this._icon&&(this._icon&&this._removeIcon(),a=!0,t.title&&(s.title=t.title),t.alt&&(s.alt=t.alt)),o.DomUtil.addClass(s,n),t.keyboard&&(s.tabIndex="0"),this._icon=s,this._initInteraction(),t.riseOnHover&&o.DomEvent.on(s,"mouseover",this._bringToFront,this).on(s,"mouseout",this._resetZIndex,this);var r=t.icon.createShadow(this._shadow),h=!1;r!==this._shadow&&(this._removeShadow(),h=!0),r&&o.DomUtil.addClass(r,n),this._shadow=r,t.opacity<1&&this._updateOpacity();var l=this._map._panes;a&&l.markerPane.appendChild(this._icon),r&&h&&l.shadowPane.appendChild(this._shadow)},_removeIcon:function(){this.options.riseOnHover&&o.DomEvent.off(this._icon,"mouseover",this._bringToFront).off(this._icon,"mouseout",this._resetZIndex),this._map._panes.markerPane.removeChild(this._icon),this._icon=null},_removeShadow:function(){this._shadow&&this._map._panes.shadowPane.removeChild(this._shadow),this._shadow=null},_setPos:function(t){o.DomUtil.setPosition(this._icon,t),this._shadow&&o.DomUtil.setPosition(this._shadow,t),this._zIndex=t.y+this.options.zIndexOffset,this._resetZIndex()},_updateZIndex:function(t){this._icon.style.zIndex=this._zIndex+t},_animateZoom:function(t){var e=this._map._latLngToNewLayerPoint(this._latlng,t.zoom,t.center).round();this._setPos(e)},_initInteraction:function(){if(this.options.clickable){var t=this._icon,e=["dblclick","mousedown","mouseover","mouseout","contextmenu"];o.DomUtil.addClass(t,"leaflet-clickable"),o.DomEvent.on(t,"click",this._onMouseClick,this),o.DomEvent.on(t,"keypress",this._onKeyPress,this);for(var i=0;i<e.length;i++)o.DomEvent.on(t,e[i],this._fireMouseEvent,this);o.Handler.MarkerDrag&&(this.dragging=new o.Handler.MarkerDrag(this),this.options.draggable&&this.dragging.enable())}},_onMouseClick:function(t){var e=this.dragging&&this.dragging.moved();(this.hasEventListeners(t.type)||e)&&o.DomEvent.stopPropagation(t),e||(this.dragging&&this.dragging._enabled||!this._map.dragging||!this._map.dragging.moved())&&this.fire(t.type,{originalEvent:t,latlng:this._latlng})},_onKeyPress:function(t){13===t.keyCode&&this.fire("click",{originalEvent:t,latlng:this._latlng})},_fireMouseEvent:function(t){this.fire(t.type,{originalEvent:t,latlng:this._latlng}),"contextmenu"===t.type&&this.hasEventListeners(t.type)&&o.DomEvent.preventDefault(t),"mousedown"!==t.type?o.DomEvent.stopPropagation(t):o.DomEvent.preventDefault(t)},setOpacity:function(t){return this.options.opacity=t,this._map&&this._updateOpacity(),this},_updateOpacity:function(){o.DomUtil.setOpacity(this._icon,this.options.opacity),this._shadow&&o.DomUtil.setOpacity(this._shadow,this.options.opacity)},_bringToFront:function(){this._updateZIndex(this.options.riseOffset)},_resetZIndex:function(){this._updateZIndex(0)}}),o.marker=function(t,e){return new o.Marker(t,e)},o.DivIcon=o.Icon.extend({options:{iconSize:[12,12],className:"leaflet-div-icon",html:!1},createIcon:function(t){var i=t&&"DIV"===t.tagName?t:e.createElement("div"),n=this.options;return n.html!==!1?i.innerHTML=n.html:i.innerHTML="",n.bgPos&&(i.style.backgroundPosition=-n.bgPos.x+"px "+-n.bgPos.y+"px"),this._setIconStyles(i,"icon"),i},createShadow:function(){return null}}),o.divIcon=function(t){return new o.DivIcon(t)},o.Map.mergeOptions({closePopupOnClick:!0}),o.Popup=o.Class.extend({includes:o.Mixin.Events,options:{minWidth:50,maxWidth:300,autoPan:!0,closeButton:!0,offset:[0,7],autoPanPadding:[5,5],keepInView:!1,className:"",zoomAnimation:!0},initialize:function(t,e){o.setOptions(this,t),this._source=e,this._animated=o.Browser.any3d&&this.options.zoomAnimation,this._isOpen=!1},onAdd:function(t){this._map=t,this._container||this._initLayout();var e=t.options.fadeAnimation;e&&o.DomUtil.setOpacity(this._container,0),t._panes.popupPane.appendChild(this._container),t.on(this._getEvents(),this),this.update(),e&&o.DomUtil.setOpacity(this._container,1),this.fire("open"),t.fire("popupopen",{popup:this}),this._source&&this._source.fire("popupopen",{popup:this})},addTo:function(t){return t.addLayer(this),this},openOn:function(t){return t.openPopup(this),this},onRemove:function(t){t._panes.popupPane.removeChild(this._container),o.Util.falseFn(this._container.offsetWidth),t.off(this._getEvents(),this),t.options.fadeAnimation&&o.DomUtil.setOpacity(this._container,0),this._map=null,this.fire("close"),t.fire("popupclose",{popup:this}),this._source&&this._source.fire("popupclose",{popup:this})},getLatLng:function(){return this._latlng},setLatLng:function(t){return this._latlng=o.latLng(t),this._map&&(this._updatePosition(),this._adjustPan()),this},getContent:function(){return this._content},setContent:function(t){return this._content=t,this.update(),this},update:function(){this._map&&(this._container.style.visibility="hidden",this._updateContent(),this._updateLayout(),this._updatePosition(),this._container.style.visibility="",this._adjustPan())},_getEvents:function(){var t={viewreset:this._updatePosition};return this._animated&&(t.zoomanim=this._zoomAnimation),("closeOnClick"in this.options?this.options.closeOnClick:this._map.options.closePopupOnClick)&&(t.preclick=this._close),this.options.keepInView&&(t.moveend=this._adjustPan),t},_close:function(){this._map&&this._map.closePopup(this)},_initLayout:function(){var t,e="leaflet-popup",i=e+" "+this.options.className+" leaflet-zoom-"+(this._animated?"animated":"hide"),n=this._container=o.DomUtil.create("div",i);this.options.closeButton&&(t=this._closeButton=o.DomUtil.create("a",e+"-close-button",n),t.href="#close",t.innerHTML="&#215;",o.DomEvent.disableClickPropagation(t),o.DomEvent.on(t,"click",this._onCloseButtonClick,this));var s=this._wrapper=o.DomUtil.create("div",e+"-content-wrapper",n);o.DomEvent.disableClickPropagation(s),this._contentNode=o.DomUtil.create("div",e+"-content",s),o.DomEvent.disableScrollPropagation(this._contentNode),o.DomEvent.on(s,"contextmenu",o.DomEvent.stopPropagation),this._tipContainer=o.DomUtil.create("div",e+"-tip-container",n),this._tip=o.DomUtil.create("div",e+"-tip",this._tipContainer)},_updateContent:function(){if(this._content){if("string"==typeof this._content)this._contentNode.innerHTML=this._content;else{for(;this._contentNode.hasChildNodes();)this._contentNode.removeChild(this._contentNode.firstChild);this._contentNode.appendChild(this._content)}this.fire("contentupdate")}},_updateLayout:function(){var t=this._contentNode,e=t.style;e.width="",e.whiteSpace="nowrap";var i=t.offsetWidth;i=Math.min(i,this.options.maxWidth),i=Math.max(i,this.options.minWidth),e.width=i+1+"px",e.whiteSpace="",e.height="";var n=t.offsetHeight,s=this.options.maxHeight,a="leaflet-popup-scrolled";s&&n>s?(e.height=s+"px",o.DomUtil.addClass(t,a)):o.DomUtil.removeClass(t,a),this._containerWidth=this._container.offsetWidth},_updatePosition:function(){if(this._map){var t=this._map.latLngToLayerPoint(this._latlng),e=this._animated,i=o.point(this.options.offset);e&&o.DomUtil.setPosition(this._container,t),this._containerBottom=-i.y-(e?0:t.y),this._containerLeft=-Math.round(this._containerWidth/2)+i.x+(e?0:t.x),this._container.style.bottom=this._containerBottom+"px",this._container.style.left=this._containerLeft+"px"}},_zoomAnimation:function(t){var e=this._map._latLngToNewLayerPoint(this._latlng,t.zoom,t.center);o.DomUtil.setPosition(this._container,e)},_adjustPan:function(){if(this.options.autoPan){var t=this._map,e=this._container.offsetHeight,i=this._containerWidth,n=new o.Point(this._containerLeft,-e-this._containerBottom);this._animated&&n._add(o.DomUtil.getPosition(this._container));var s=t.layerPointToContainerPoint(n),a=o.point(this.options.autoPanPadding),r=o.point(this.options.autoPanPaddingTopLeft||a),h=o.point(this.options.autoPanPaddingBottomRight||a),l=t.getSize(),u=0,c=0;s.x+i+h.x>l.x&&(u=s.x+i-l.x+h.x),s.x-u-r.x<0&&(u=s.x-r.x),s.y+e+h.y>l.y&&(c=s.y+e-l.y+h.y),s.y-c-r.y<0&&(c=s.y-r.y),(u||c)&&t.fire("autopanstart").panBy([u,c])}},_onCloseButtonClick:function(t){this._close(),o.DomEvent.stop(t)}}),o.popup=function(t,e){return new o.Popup(t,e)},o.Map.include({openPopup:function(t,e,i){if(this.closePopup(),!(t instanceof o.Popup)){var n=t;t=new o.Popup(i).setLatLng(e).setContent(n)}return t._isOpen=!0,this._popup=t,this.addLayer(t)},closePopup:function(t){return t&&t!==this._popup||(t=this._popup,this._popup=null),t&&(this.removeLayer(t),t._isOpen=!1),this}}),o.Marker.include({openPopup:function(){return this._popup&&this._map&&!this._map.hasLayer(this._popup)&&(this._popup.setLatLng(this._latlng),this._map.openPopup(this._popup)),this},closePopup:function(){return this._popup&&this._popup._close(),this},togglePopup:function(){return this._popup&&(this._popup._isOpen?this.closePopup():this.openPopup()),this},bindPopup:function(t,e){var i=o.point(this.options.icon.options.popupAnchor||[0,0]);return i=i.add(o.Popup.prototype.options.offset),e&&e.offset&&(i=i.add(e.offset)),e=o.extend({offset:i},e),this._popupHandlersAdded||(this.on("click",this.togglePopup,this).on("remove",this.closePopup,this).on("move",this._movePopup,this),this._popupHandlersAdded=!0),t instanceof o.Popup?(o.setOptions(t,e),this._popup=t,t._source=this):this._popup=new o.Popup(e,this).setContent(t),this},setPopupContent:function(t){return this._popup&&this._popup.setContent(t),this},unbindPopup:function(){return this._popup&&(this._popup=null,this.off("click",this.togglePopup,this).off("remove",this.closePopup,this).off("move",this._movePopup,this),this._popupHandlersAdded=!1),this},getPopup:function(){return this._popup},_movePopup:function(t){this._popup.setLatLng(t.latlng)}}),o.LayerGroup=o.Class.extend({initialize:function(t){this._layers={};var e,i;if(t)for(e=0,i=t.length;i>e;e++)this.addLayer(t[e])},addLayer:function(t){var e=this.getLayerId(t);return this._layers[e]=t,this._map&&this._map.addLayer(t),this},removeLayer:function(t){var e=t in this._layers?t:this.getLayerId(t);return this._map&&this._layers[e]&&this._map.removeLayer(this._layers[e]),delete this._layers[e],this},hasLayer:function(t){return t?t in this._layers||this.getLayerId(t)in this._layers:!1},clearLayers:function(){return this.eachLayer(this.removeLayer,this),this},invoke:function(t){var e,i,n=Array.prototype.slice.call(arguments,1);for(e in this._layers)i=this._layers[e],i[t]&&i[t].apply(i,n);return this},onAdd:function(t){this._map=t,this.eachLayer(t.addLayer,t)},onRemove:function(t){this.eachLayer(t.removeLayer,t),this._map=null},addTo:function(t){return t.addLayer(this),this},eachLayer:function(t,e){for(var i in this._layers)t.call(e,this._layers[i]);return this},getLayer:function(t){return this._layers[t]},getLayers:function(){var t=[];for(var e in this._layers)t.push(this._layers[e]);return t},setZIndex:function(t){return this.invoke("setZIndex",t)},getLayerId:function(t){return o.stamp(t)}}),o.layerGroup=function(t){return new o.LayerGroup(t)},o.FeatureGroup=o.LayerGroup.extend({includes:o.Mixin.Events,statics:{EVENTS:"click dblclick mouseover mouseout mousemove contextmenu popupopen popupclose"},addLayer:function(t){return this.hasLayer(t)?this:("on"in t&&t.on(o.FeatureGroup.EVENTS,this._propagateEvent,this),o.LayerGroup.prototype.addLayer.call(this,t),this._popupContent&&t.bindPopup&&t.bindPopup(this._popupContent,this._popupOptions),this.fire("layeradd",{layer:t}))},removeLayer:function(t){return this.hasLayer(t)?(t in this._layers&&(t=this._layers[t]),"off"in t&&t.off(o.FeatureGroup.EVENTS,this._propagateEvent,this),o.LayerGroup.prototype.removeLayer.call(this,t),this._popupContent&&this.invoke("unbindPopup"),this.fire("layerremove",{layer:t})):this},bindPopup:function(t,e){return this._popupContent=t,this._popupOptions=e,this.invoke("bindPopup",t,e)},openPopup:function(t){for(var e in this._layers){this._layers[e].openPopup(t);break}return this},setStyle:function(t){return this.invoke("setStyle",t)},bringToFront:function(){return this.invoke("bringToFront")},bringToBack:function(){return this.invoke("bringToBack")},getBounds:function(){var t=new o.LatLngBounds;return this.eachLayer(function(e){t.extend(e instanceof o.Marker?e.getLatLng():e.getBounds())}),t},_propagateEvent:function(t){t=o.extend({layer:t.target,target:this},t),this.fire(t.type,t)}}),o.featureGroup=function(t){return new o.FeatureGroup(t)},o.Path=o.Class.extend({includes:[o.Mixin.Events],statics:{CLIP_PADDING:function(){var e=o.Browser.mobile?1280:2e3,i=(e/Math.max(t.outerWidth,t.outerHeight)-1)/2;return Math.max(0,Math.min(.5,i))}()},options:{stroke:!0,color:"#0033ff",dashArray:null,lineCap:null,lineJoin:null,weight:5,opacity:.5,fill:!1,fillColor:null,fillOpacity:.2,clickable:!0},initialize:function(t){o.setOptions(this,t)},onAdd:function(t){this._map=t,this._container||(this._initElements(),this._initEvents()),this.projectLatlngs(),this._updatePath(),this._container&&this._map._pathRoot.appendChild(this._container),this.fire("add"),t.on({viewreset:this.projectLatlngs,moveend:this._updatePath},this)},addTo:function(t){return t.addLayer(this),this},onRemove:function(t){t._pathRoot.removeChild(this._container),this.fire("remove"),this._map=null,o.Browser.vml&&(this._container=null,this._stroke=null,this._fill=null),t.off({viewreset:this.projectLatlngs,moveend:this._updatePath},this)},projectLatlngs:function(){},setStyle:function(t){return o.setOptions(this,t),this._container&&this._updateStyle(),this},redraw:function(){return this._map&&(this.projectLatlngs(),this._updatePath()),this}}),o.Map.include({_updatePathViewport:function(){var t=o.Path.CLIP_PADDING,e=this.getSize(),i=o.DomUtil.getPosition(this._mapPane),n=i.multiplyBy(-1)._subtract(e.multiplyBy(t)._round()),s=n.add(e.multiplyBy(1+2*t)._round());this._pathViewport=new o.Bounds(n,s)}}),o.Path.SVG_NS="http://www.w3.org/2000/svg",o.Browser.svg=!(!e.createElementNS||!e.createElementNS(o.Path.SVG_NS,"svg").createSVGRect),o.Path=o.Path.extend({statics:{SVG:o.Browser.svg},bringToFront:function(){var t=this._map._pathRoot,e=this._container;return e&&t.lastChild!==e&&t.appendChild(e),this},bringToBack:function(){var t=this._map._pathRoot,e=this._container,i=t.firstChild;return e&&i!==e&&t.insertBefore(e,i),this},getPathString:function(){},_createElement:function(t){return e.createElementNS(o.Path.SVG_NS,t)},_initElements:function(){this._map._initPathRoot(),this._initPath(),this._initStyle()},_initPath:function(){this._container=this._createElement("g"),this._path=this._createElement("path"),this.options.className&&o.DomUtil.addClass(this._path,this.options.className),this._container.appendChild(this._path)},_initStyle:function(){this.options.stroke&&(this._path.setAttribute("stroke-linejoin","round"),this._path.setAttribute("stroke-linecap","round")),this.options.fill&&this._path.setAttribute("fill-rule","evenodd"),this.options.pointerEvents&&this._path.setAttribute("pointer-events",this.options.pointerEvents),this.options.clickable||this.options.pointerEvents||this._path.setAttribute("pointer-events","none"),this._updateStyle()},_updateStyle:function(){this.options.stroke?(this._path.setAttribute("stroke",this.options.color),this._path.setAttribute("stroke-opacity",this.options.opacity),this._path.setAttribute("stroke-width",this.options.weight),this.options.dashArray?this._path.setAttribute("stroke-dasharray",this.options.dashArray):this._path.removeAttribute("stroke-dasharray"),this.options.lineCap&&this._path.setAttribute("stroke-linecap",this.options.lineCap),this.options.lineJoin&&this._path.setAttribute("stroke-linejoin",this.options.lineJoin)):this._path.setAttribute("stroke","none"),this.options.fill?(this._path.setAttribute("fill",this.options.fillColor||this.options.color),this._path.setAttribute("fill-opacity",this.options.fillOpacity)):this._path.setAttribute("fill","none")},_updatePath:function(){var t=this.getPathString();t||(t="M0 0"),this._path.setAttribute("d",t)},_initEvents:function(){if(this.options.clickable){(o.Browser.svg||!o.Browser.vml)&&o.DomUtil.addClass(this._path,"leaflet-clickable"),o.DomEvent.on(this._container,"click",this._onMouseClick,this);for(var t=["dblclick","mousedown","mouseover","mouseout","mousemove","contextmenu"],e=0;e<t.length;e++)o.DomEvent.on(this._container,t[e],this._fireMouseEvent,this)}},_onMouseClick:function(t){this._map.dragging&&this._map.dragging.moved()||this._fireMouseEvent(t)},_fireMouseEvent:function(t){if(this._map&&this.hasEventListeners(t.type)){var e=this._map,i=e.mouseEventToContainerPoint(t),n=e.containerPointToLayerPoint(i),s=e.layerPointToLatLng(n);this.fire(t.type,{latlng:s,layerPoint:n,containerPoint:i,originalEvent:t}),"contextmenu"===t.type&&o.DomEvent.preventDefault(t),"mousemove"!==t.type&&o.DomEvent.stopPropagation(t)}}}),o.Map.include({_initPathRoot:function(){this._pathRoot||(this._pathRoot=o.Path.prototype._createElement("svg"),this._panes.overlayPane.appendChild(this._pathRoot),this.options.zoomAnimation&&o.Browser.any3d?(o.DomUtil.addClass(this._pathRoot,"leaflet-zoom-animated"),
-this.on({zoomanim:this._animatePathZoom,zoomend:this._endPathZoom})):o.DomUtil.addClass(this._pathRoot,"leaflet-zoom-hide"),this.on("moveend",this._updateSvgViewport),this._updateSvgViewport())},_animatePathZoom:function(t){var e=this.getZoomScale(t.zoom),i=this._getCenterOffset(t.center)._multiplyBy(-e)._add(this._pathViewport.min);this._pathRoot.style[o.DomUtil.TRANSFORM]=o.DomUtil.getTranslateString(i)+" scale("+e+") ",this._pathZooming=!0},_endPathZoom:function(){this._pathZooming=!1},_updateSvgViewport:function(){if(!this._pathZooming){this._updatePathViewport();var t=this._pathViewport,e=t.min,i=t.max,n=i.x-e.x,s=i.y-e.y,a=this._pathRoot,r=this._panes.overlayPane;o.Browser.mobileWebkit&&r.removeChild(a),o.DomUtil.setPosition(a,e),a.setAttribute("width",n),a.setAttribute("height",s),a.setAttribute("viewBox",[e.x,e.y,n,s].join(" ")),o.Browser.mobileWebkit&&r.appendChild(a)}}}),o.Path.include({bindPopup:function(t,e){return t instanceof o.Popup?this._popup=t:((!this._popup||e)&&(this._popup=new o.Popup(e,this)),this._popup.setContent(t)),this._popupHandlersAdded||(this.on("click",this._openPopup,this).on("remove",this.closePopup,this),this._popupHandlersAdded=!0),this},unbindPopup:function(){return this._popup&&(this._popup=null,this.off("click",this._openPopup).off("remove",this.closePopup),this._popupHandlersAdded=!1),this},openPopup:function(t){return this._popup&&(t=t||this._latlng||this._latlngs[Math.floor(this._latlngs.length/2)],this._openPopup({latlng:t})),this},closePopup:function(){return this._popup&&this._popup._close(),this},_openPopup:function(t){this._popup.setLatLng(t.latlng),this._map.openPopup(this._popup)}}),o.Browser.vml=!o.Browser.svg&&function(){try{var t=e.createElement("div");t.innerHTML='<v:shape adj="1"/>';var i=t.firstChild;return i.style.behavior="url(#default#VML)",i&&"object"==typeof i.adj}catch(n){return!1}}(),o.Path=o.Browser.svg||!o.Browser.vml?o.Path:o.Path.extend({statics:{VML:!0,CLIP_PADDING:.02},_createElement:function(){try{return e.namespaces.add("lvml","urn:schemas-microsoft-com:vml"),function(t){return e.createElement("<lvml:"+t+' class="lvml">')}}catch(t){return function(t){return e.createElement("<"+t+' xmlns="urn:schemas-microsoft.com:vml" class="lvml">')}}}(),_initPath:function(){var t=this._container=this._createElement("shape");o.DomUtil.addClass(t,"leaflet-vml-shape"+(this.options.className?" "+this.options.className:"")),this.options.clickable&&o.DomUtil.addClass(t,"leaflet-clickable"),t.coordsize="1 1",this._path=this._createElement("path"),t.appendChild(this._path),this._map._pathRoot.appendChild(t)},_initStyle:function(){this._updateStyle()},_updateStyle:function(){var t=this._stroke,e=this._fill,i=this.options,n=this._container;n.stroked=i.stroke,n.filled=i.fill,i.stroke?(t||(t=this._stroke=this._createElement("stroke"),t.endcap="round",n.appendChild(t)),t.weight=i.weight+"px",t.color=i.color,t.opacity=i.opacity,i.dashArray?t.dashStyle=o.Util.isArray(i.dashArray)?i.dashArray.join(" "):i.dashArray.replace(/( *, *)/g," "):t.dashStyle="",i.lineCap&&(t.endcap=i.lineCap.replace("butt","flat")),i.lineJoin&&(t.joinstyle=i.lineJoin)):t&&(n.removeChild(t),this._stroke=null),i.fill?(e||(e=this._fill=this._createElement("fill"),n.appendChild(e)),e.color=i.fillColor||i.color,e.opacity=i.fillOpacity):e&&(n.removeChild(e),this._fill=null)},_updatePath:function(){var t=this._container.style;t.display="none",this._path.v=this.getPathString()+" ",t.display=""}}),o.Map.include(o.Browser.svg||!o.Browser.vml?{}:{_initPathRoot:function(){if(!this._pathRoot){var t=this._pathRoot=e.createElement("div");t.className="leaflet-vml-container",this._panes.overlayPane.appendChild(t),this.on("moveend",this._updatePathViewport),this._updatePathViewport()}}}),o.Browser.canvas=function(){return!!e.createElement("canvas").getContext}(),o.Path=o.Path.SVG&&!t.L_PREFER_CANVAS||!o.Browser.canvas?o.Path:o.Path.extend({statics:{CANVAS:!0,SVG:!1},redraw:function(){return this._map&&(this.projectLatlngs(),this._requestUpdate()),this},setStyle:function(t){return o.setOptions(this,t),this._map&&(this._updateStyle(),this._requestUpdate()),this},onRemove:function(t){t.off("viewreset",this.projectLatlngs,this).off("moveend",this._updatePath,this),this.options.clickable&&(this._map.off("click",this._onClick,this),this._map.off("mousemove",this._onMouseMove,this)),this._requestUpdate(),this.fire("remove"),this._map=null},_requestUpdate:function(){this._map&&!o.Path._updateRequest&&(o.Path._updateRequest=o.Util.requestAnimFrame(this._fireMapMoveEnd,this._map))},_fireMapMoveEnd:function(){o.Path._updateRequest=null,this.fire("moveend")},_initElements:function(){this._map._initPathRoot(),this._ctx=this._map._canvasCtx},_updateStyle:function(){var t=this.options;t.stroke&&(this._ctx.lineWidth=t.weight,this._ctx.strokeStyle=t.color),t.fill&&(this._ctx.fillStyle=t.fillColor||t.color),t.lineCap&&(this._ctx.lineCap=t.lineCap),t.lineJoin&&(this._ctx.lineJoin=t.lineJoin)},_drawPath:function(){var t,e,i,n,s,a;for(this._ctx.beginPath(),t=0,i=this._parts.length;i>t;t++){for(e=0,n=this._parts[t].length;n>e;e++)s=this._parts[t][e],a=(0===e?"move":"line")+"To",this._ctx[a](s.x,s.y);this instanceof o.Polygon&&this._ctx.closePath()}},_checkIfEmpty:function(){return!this._parts.length},_updatePath:function(){if(!this._checkIfEmpty()){var t=this._ctx,e=this.options;this._drawPath(),t.save(),this._updateStyle(),e.fill&&(t.globalAlpha=e.fillOpacity,t.fill(e.fillRule||"evenodd")),e.stroke&&(t.globalAlpha=e.opacity,t.stroke()),t.restore()}},_initEvents:function(){this.options.clickable&&(this._map.on("mousemove",this._onMouseMove,this),this._map.on("click dblclick contextmenu",this._fireMouseEvent,this))},_fireMouseEvent:function(t){this._containsPoint(t.layerPoint)&&this.fire(t.type,t)},_onMouseMove:function(t){this._map&&!this._map._animatingZoom&&(this._containsPoint(t.layerPoint)?(this._ctx.canvas.style.cursor="pointer",this._mouseInside=!0,this.fire("mouseover",t)):this._mouseInside&&(this._ctx.canvas.style.cursor="",this._mouseInside=!1,this.fire("mouseout",t)))}}),o.Map.include(o.Path.SVG&&!t.L_PREFER_CANVAS||!o.Browser.canvas?{}:{_initPathRoot:function(){var t,i=this._pathRoot;i||(i=this._pathRoot=e.createElement("canvas"),i.style.position="absolute",t=this._canvasCtx=i.getContext("2d"),t.lineCap="round",t.lineJoin="round",this._panes.overlayPane.appendChild(i),this.options.zoomAnimation&&(this._pathRoot.className="leaflet-zoom-animated",this.on("zoomanim",this._animatePathZoom),this.on("zoomend",this._endPathZoom)),this.on("moveend",this._updateCanvasViewport),this._updateCanvasViewport())},_updateCanvasViewport:function(){if(!this._pathZooming){this._updatePathViewport();var t=this._pathViewport,e=t.min,i=t.max.subtract(e),n=this._pathRoot;o.DomUtil.setPosition(n,e),n.width=i.x,n.height=i.y,n.getContext("2d").translate(-e.x,-e.y)}}}),o.LineUtil={simplify:function(t,e){if(!e||!t.length)return t.slice();var i=e*e;return t=this._reducePoints(t,i),t=this._simplifyDP(t,i)},pointToSegmentDistance:function(t,e,i){return Math.sqrt(this._sqClosestPointOnSegment(t,e,i,!0))},closestPointOnSegment:function(t,e,i){return this._sqClosestPointOnSegment(t,e,i)},_simplifyDP:function(t,e){var n=t.length,o=typeof Uint8Array!=i+""?Uint8Array:Array,s=new o(n);s[0]=s[n-1]=1,this._simplifyDPStep(t,s,e,0,n-1);var a,r=[];for(a=0;n>a;a++)s[a]&&r.push(t[a]);return r},_simplifyDPStep:function(t,e,i,n,o){var s,a,r,h=0;for(a=n+1;o-1>=a;a++)r=this._sqClosestPointOnSegment(t[a],t[n],t[o],!0),r>h&&(s=a,h=r);h>i&&(e[s]=1,this._simplifyDPStep(t,e,i,n,s),this._simplifyDPStep(t,e,i,s,o))},_reducePoints:function(t,e){for(var i=[t[0]],n=1,o=0,s=t.length;s>n;n++)this._sqDist(t[n],t[o])>e&&(i.push(t[n]),o=n);return s-1>o&&i.push(t[s-1]),i},clipSegment:function(t,e,i,n){var o,s,a,r=n?this._lastCode:this._getBitCode(t,i),h=this._getBitCode(e,i);for(this._lastCode=h;;){if(!(r|h))return[t,e];if(r&h)return!1;o=r||h,s=this._getEdgeIntersection(t,e,o,i),a=this._getBitCode(s,i),o===r?(t=s,r=a):(e=s,h=a)}},_getEdgeIntersection:function(t,e,i,n){var s=e.x-t.x,a=e.y-t.y,r=n.min,h=n.max;return 8&i?new o.Point(t.x+s*(h.y-t.y)/a,h.y):4&i?new o.Point(t.x+s*(r.y-t.y)/a,r.y):2&i?new o.Point(h.x,t.y+a*(h.x-t.x)/s):1&i?new o.Point(r.x,t.y+a*(r.x-t.x)/s):void 0},_getBitCode:function(t,e){var i=0;return t.x<e.min.x?i|=1:t.x>e.max.x&&(i|=2),t.y<e.min.y?i|=4:t.y>e.max.y&&(i|=8),i},_sqDist:function(t,e){var i=e.x-t.x,n=e.y-t.y;return i*i+n*n},_sqClosestPointOnSegment:function(t,e,i,n){var s,a=e.x,r=e.y,h=i.x-a,l=i.y-r,u=h*h+l*l;return u>0&&(s=((t.x-a)*h+(t.y-r)*l)/u,s>1?(a=i.x,r=i.y):s>0&&(a+=h*s,r+=l*s)),h=t.x-a,l=t.y-r,n?h*h+l*l:new o.Point(a,r)}},o.Polyline=o.Path.extend({initialize:function(t,e){o.Path.prototype.initialize.call(this,e),this._latlngs=this._convertLatLngs(t)},options:{smoothFactor:1,noClip:!1},projectLatlngs:function(){this._originalPoints=[];for(var t=0,e=this._latlngs.length;e>t;t++)this._originalPoints[t]=this._map.latLngToLayerPoint(this._latlngs[t])},getPathString:function(){for(var t=0,e=this._parts.length,i="";e>t;t++)i+=this._getPathPartStr(this._parts[t]);return i},getLatLngs:function(){return this._latlngs},setLatLngs:function(t){return this._latlngs=this._convertLatLngs(t),this.redraw()},addLatLng:function(t){return this._latlngs.push(o.latLng(t)),this.redraw()},spliceLatLngs:function(){var t=[].splice.apply(this._latlngs,arguments);return this._convertLatLngs(this._latlngs,!0),this.redraw(),t},closestLayerPoint:function(t){for(var e,i,n=1/0,s=this._parts,a=null,r=0,h=s.length;h>r;r++)for(var l=s[r],u=1,c=l.length;c>u;u++){e=l[u-1],i=l[u];var d=o.LineUtil._sqClosestPointOnSegment(t,e,i,!0);n>d&&(n=d,a=o.LineUtil._sqClosestPointOnSegment(t,e,i))}return a&&(a.distance=Math.sqrt(n)),a},getBounds:function(){return new o.LatLngBounds(this.getLatLngs())},_convertLatLngs:function(t,e){var i,n,s=e?t:[];for(i=0,n=t.length;n>i;i++){if(o.Util.isArray(t[i])&&"number"!=typeof t[i][0])return;s[i]=o.latLng(t[i])}return s},_initEvents:function(){o.Path.prototype._initEvents.call(this)},_getPathPartStr:function(t){for(var e,i=o.Path.VML,n=0,s=t.length,a="";s>n;n++)e=t[n],i&&e._round(),a+=(n?"L":"M")+e.x+" "+e.y;return a},_clipPoints:function(){var t,e,i,n=this._originalPoints,s=n.length;if(this.options.noClip)return void(this._parts=[n]);this._parts=[];var a=this._parts,r=this._map._pathViewport,h=o.LineUtil;for(t=0,e=0;s-1>t;t++)i=h.clipSegment(n[t],n[t+1],r,t),i&&(a[e]=a[e]||[],a[e].push(i[0]),(i[1]!==n[t+1]||t===s-2)&&(a[e].push(i[1]),e++))},_simplifyPoints:function(){for(var t=this._parts,e=o.LineUtil,i=0,n=t.length;n>i;i++)t[i]=e.simplify(t[i],this.options.smoothFactor)},_updatePath:function(){this._map&&(this._clipPoints(),this._simplifyPoints(),o.Path.prototype._updatePath.call(this))}}),o.polyline=function(t,e){return new o.Polyline(t,e)},o.PolyUtil={},o.PolyUtil.clipPolygon=function(t,e){var i,n,s,a,r,h,l,u,c,d=[1,4,2,8],p=o.LineUtil;for(n=0,l=t.length;l>n;n++)t[n]._code=p._getBitCode(t[n],e);for(a=0;4>a;a++){for(u=d[a],i=[],n=0,l=t.length,s=l-1;l>n;s=n++)r=t[n],h=t[s],r._code&u?h._code&u||(c=p._getEdgeIntersection(h,r,u,e),c._code=p._getBitCode(c,e),i.push(c)):(h._code&u&&(c=p._getEdgeIntersection(h,r,u,e),c._code=p._getBitCode(c,e),i.push(c)),i.push(r));t=i}return t},o.Polygon=o.Polyline.extend({options:{fill:!0},initialize:function(t,e){o.Polyline.prototype.initialize.call(this,t,e),this._initWithHoles(t)},_initWithHoles:function(t){var e,i,n;if(t&&o.Util.isArray(t[0])&&"number"!=typeof t[0][0])for(this._latlngs=this._convertLatLngs(t[0]),this._holes=t.slice(1),e=0,i=this._holes.length;i>e;e++)n=this._holes[e]=this._convertLatLngs(this._holes[e]),n[0].equals(n[n.length-1])&&n.pop();t=this._latlngs,t.length>=2&&t[0].equals(t[t.length-1])&&t.pop()},projectLatlngs:function(){if(o.Polyline.prototype.projectLatlngs.call(this),this._holePoints=[],this._holes){var t,e,i,n;for(t=0,i=this._holes.length;i>t;t++)for(this._holePoints[t]=[],e=0,n=this._holes[t].length;n>e;e++)this._holePoints[t][e]=this._map.latLngToLayerPoint(this._holes[t][e])}},setLatLngs:function(t){return t&&o.Util.isArray(t[0])&&"number"!=typeof t[0][0]?(this._initWithHoles(t),this.redraw()):o.Polyline.prototype.setLatLngs.call(this,t)},_clipPoints:function(){var t=this._originalPoints,e=[];if(this._parts=[t].concat(this._holePoints),!this.options.noClip){for(var i=0,n=this._parts.length;n>i;i++){var s=o.PolyUtil.clipPolygon(this._parts[i],this._map._pathViewport);s.length&&e.push(s)}this._parts=e}},_getPathPartStr:function(t){var e=o.Polyline.prototype._getPathPartStr.call(this,t);return e+(o.Browser.svg?"z":"x")}}),o.polygon=function(t,e){return new o.Polygon(t,e)},function(){function t(t){return o.FeatureGroup.extend({initialize:function(t,e){this._layers={},this._options=e,this.setLatLngs(t)},setLatLngs:function(e){var i=0,n=e.length;for(this.eachLayer(function(t){n>i?t.setLatLngs(e[i++]):this.removeLayer(t)},this);n>i;)this.addLayer(new t(e[i++],this._options));return this},getLatLngs:function(){var t=[];return this.eachLayer(function(e){t.push(e.getLatLngs())}),t}})}o.MultiPolyline=t(o.Polyline),o.MultiPolygon=t(o.Polygon),o.multiPolyline=function(t,e){return new o.MultiPolyline(t,e)},o.multiPolygon=function(t,e){return new o.MultiPolygon(t,e)}}(),o.Rectangle=o.Polygon.extend({initialize:function(t,e){o.Polygon.prototype.initialize.call(this,this._boundsToLatLngs(t),e)},setBounds:function(t){this.setLatLngs(this._boundsToLatLngs(t))},_boundsToLatLngs:function(t){return t=o.latLngBounds(t),[t.getSouthWest(),t.getNorthWest(),t.getNorthEast(),t.getSouthEast()]}}),o.rectangle=function(t,e){return new o.Rectangle(t,e)},o.Circle=o.Path.extend({initialize:function(t,e,i){o.Path.prototype.initialize.call(this,i),this._latlng=o.latLng(t),this._mRadius=e},options:{fill:!0},setLatLng:function(t){return this._latlng=o.latLng(t),this.redraw()},setRadius:function(t){return this._mRadius=t,this.redraw()},projectLatlngs:function(){var t=this._getLngRadius(),e=this._latlng,i=this._map.latLngToLayerPoint([e.lat,e.lng-t]);this._point=this._map.latLngToLayerPoint(e),this._radius=Math.max(this._point.x-i.x,1)},getBounds:function(){var t=this._getLngRadius(),e=this._mRadius/40075017*360,i=this._latlng;return new o.LatLngBounds([i.lat-e,i.lng-t],[i.lat+e,i.lng+t])},getLatLng:function(){return this._latlng},getPathString:function(){var t=this._point,e=this._radius;return this._checkIfEmpty()?"":o.Browser.svg?"M"+t.x+","+(t.y-e)+"A"+e+","+e+",0,1,1,"+(t.x-.1)+","+(t.y-e)+" z":(t._round(),e=Math.round(e),"AL "+t.x+","+t.y+" "+e+","+e+" 0,23592600")},getRadius:function(){return this._mRadius},_getLatRadius:function(){return this._mRadius/40075017*360},_getLngRadius:function(){return this._getLatRadius()/Math.cos(o.LatLng.DEG_TO_RAD*this._latlng.lat)},_checkIfEmpty:function(){if(!this._map)return!1;var t=this._map._pathViewport,e=this._radius,i=this._point;return i.x-e>t.max.x||i.y-e>t.max.y||i.x+e<t.min.x||i.y+e<t.min.y}}),o.circle=function(t,e,i){return new o.Circle(t,e,i)},o.CircleMarker=o.Circle.extend({options:{radius:10,weight:2},initialize:function(t,e){o.Circle.prototype.initialize.call(this,t,null,e),this._radius=this.options.radius},projectLatlngs:function(){this._point=this._map.latLngToLayerPoint(this._latlng)},_updateStyle:function(){o.Circle.prototype._updateStyle.call(this),this.setRadius(this.options.radius)},setLatLng:function(t){return o.Circle.prototype.setLatLng.call(this,t),this._popup&&this._popup._isOpen&&this._popup.setLatLng(t),this},setRadius:function(t){return this.options.radius=this._radius=t,this.redraw()},getRadius:function(){return this._radius}}),o.circleMarker=function(t,e){return new o.CircleMarker(t,e)},o.Polyline.include(o.Path.CANVAS?{_containsPoint:function(t,e){var i,n,s,a,r,h,l,u=this.options.weight/2;for(o.Browser.touch&&(u+=10),i=0,a=this._parts.length;a>i;i++)for(l=this._parts[i],n=0,r=l.length,s=r-1;r>n;s=n++)if((e||0!==n)&&(h=o.LineUtil.pointToSegmentDistance(t,l[s],l[n]),u>=h))return!0;return!1}}:{}),o.Polygon.include(o.Path.CANVAS?{_containsPoint:function(t){var e,i,n,s,a,r,h,l,u=!1;if(o.Polyline.prototype._containsPoint.call(this,t,!0))return!0;for(s=0,h=this._parts.length;h>s;s++)for(e=this._parts[s],a=0,l=e.length,r=l-1;l>a;r=a++)i=e[a],n=e[r],i.y>t.y!=n.y>t.y&&t.x<(n.x-i.x)*(t.y-i.y)/(n.y-i.y)+i.x&&(u=!u);return u}}:{}),o.Circle.include(o.Path.CANVAS?{_drawPath:function(){var t=this._point;this._ctx.beginPath(),this._ctx.arc(t.x,t.y,this._radius,0,2*Math.PI,!1)},_containsPoint:function(t){var e=this._point,i=this.options.stroke?this.options.weight/2:0;return t.distanceTo(e)<=this._radius+i}}:{}),o.CircleMarker.include(o.Path.CANVAS?{_updateStyle:function(){o.Path.prototype._updateStyle.call(this)}}:{}),o.GeoJSON=o.FeatureGroup.extend({initialize:function(t,e){o.setOptions(this,e),this._layers={},t&&this.addData(t)},addData:function(t){var e,i,n,s=o.Util.isArray(t)?t:t.features;if(s){for(e=0,i=s.length;i>e;e++)n=s[e],(n.geometries||n.geometry||n.features||n.coordinates)&&this.addData(s[e]);return this}var a=this.options;if(!a.filter||a.filter(t)){var r=o.GeoJSON.geometryToLayer(t,a.pointToLayer,a.coordsToLatLng,a);return r.feature=o.GeoJSON.asFeature(t),r.defaultOptions=r.options,this.resetStyle(r),a.onEachFeature&&a.onEachFeature(t,r),this.addLayer(r)}},resetStyle:function(t){var e=this.options.style;e&&(o.Util.extend(t.options,t.defaultOptions),this._setLayerStyle(t,e))},setStyle:function(t){this.eachLayer(function(e){this._setLayerStyle(e,t)},this)},_setLayerStyle:function(t,e){"function"==typeof e&&(e=e(t.feature)),t.setStyle&&t.setStyle(e)}}),o.extend(o.GeoJSON,{geometryToLayer:function(t,e,i,n){var s,a,r,h,l="Feature"===t.type?t.geometry:t,u=l.coordinates,c=[];switch(i=i||this.coordsToLatLng,l.type){case"Point":return s=i(u),e?e(t,s):new o.Marker(s);case"MultiPoint":for(r=0,h=u.length;h>r;r++)s=i(u[r]),c.push(e?e(t,s):new o.Marker(s));return new o.FeatureGroup(c);case"LineString":return a=this.coordsToLatLngs(u,0,i),new o.Polyline(a,n);case"Polygon":if(2===u.length&&!u[1].length)throw new Error("Invalid GeoJSON object.");return a=this.coordsToLatLngs(u,1,i),new o.Polygon(a,n);case"MultiLineString":return a=this.coordsToLatLngs(u,1,i),new o.MultiPolyline(a,n);case"MultiPolygon":return a=this.coordsToLatLngs(u,2,i),new o.MultiPolygon(a,n);case"GeometryCollection":for(r=0,h=l.geometries.length;h>r;r++)c.push(this.geometryToLayer({geometry:l.geometries[r],type:"Feature",properties:t.properties},e,i,n));return new o.FeatureGroup(c);default:throw new Error("Invalid GeoJSON object.")}},coordsToLatLng:function(t){return new o.LatLng(t[1],t[0],t[2])},coordsToLatLngs:function(t,e,i){var n,o,s,a=[];for(o=0,s=t.length;s>o;o++)n=e?this.coordsToLatLngs(t[o],e-1,i):(i||this.coordsToLatLng)(t[o]),a.push(n);return a},latLngToCoords:function(t){var e=[t.lng,t.lat];return t.alt!==i&&e.push(t.alt),e},latLngsToCoords:function(t){for(var e=[],i=0,n=t.length;n>i;i++)e.push(o.GeoJSON.latLngToCoords(t[i]));return e},getFeature:function(t,e){return t.feature?o.extend({},t.feature,{geometry:e}):o.GeoJSON.asFeature(e)},asFeature:function(t){return"Feature"===t.type?t:{type:"Feature",properties:{},geometry:t}}});var a={toGeoJSON:function(){return o.GeoJSON.getFeature(this,{type:"Point",coordinates:o.GeoJSON.latLngToCoords(this.getLatLng())})}};o.Marker.include(a),o.Circle.include(a),o.CircleMarker.include(a),o.Polyline.include({toGeoJSON:function(){return o.GeoJSON.getFeature(this,{type:"LineString",coordinates:o.GeoJSON.latLngsToCoords(this.getLatLngs())})}}),o.Polygon.include({toGeoJSON:function(){var t,e,i,n=[o.GeoJSON.latLngsToCoords(this.getLatLngs())];if(n[0].push(n[0][0]),this._holes)for(t=0,e=this._holes.length;e>t;t++)i=o.GeoJSON.latLngsToCoords(this._holes[t]),i.push(i[0]),n.push(i);return o.GeoJSON.getFeature(this,{type:"Polygon",coordinates:n})}}),function(){function t(t){return function(){var e=[];return this.eachLayer(function(t){e.push(t.toGeoJSON().geometry.coordinates)}),o.GeoJSON.getFeature(this,{type:t,coordinates:e})}}o.MultiPolyline.include({toGeoJSON:t("MultiLineString")}),o.MultiPolygon.include({toGeoJSON:t("MultiPolygon")}),o.LayerGroup.include({toGeoJSON:function(){var e,i=this.feature&&this.feature.geometry,n=[];if(i&&"MultiPoint"===i.type)return t("MultiPoint").call(this);var s=i&&"GeometryCollection"===i.type;return this.eachLayer(function(t){t.toGeoJSON&&(e=t.toGeoJSON(),n.push(s?e.geometry:o.GeoJSON.asFeature(e)))}),s?o.GeoJSON.getFeature(this,{geometries:n,type:"GeometryCollection"}):{type:"FeatureCollection",features:n}}})}(),o.geoJson=function(t,e){return new o.GeoJSON(t,e)},o.DomEvent={addListener:function(t,e,i,n){var s,a,r,h=o.stamp(i),l="_leaflet_"+e+h;return t[l]?this:(s=function(e){return i.call(n||t,e||o.DomEvent._getEvent())},o.Browser.pointer&&0===e.indexOf("touch")?this.addPointerListener(t,e,s,h):(o.Browser.touch&&"dblclick"===e&&this.addDoubleTapListener&&this.addDoubleTapListener(t,s,h),"addEventListener"in t?"mousewheel"===e?(t.addEventListener("DOMMouseScroll",s,!1),t.addEventListener(e,s,!1)):"mouseenter"===e||"mouseleave"===e?(a=s,r="mouseenter"===e?"mouseover":"mouseout",s=function(e){return o.DomEvent._checkMouse(t,e)?a(e):void 0},t.addEventListener(r,s,!1)):"click"===e&&o.Browser.android?(a=s,s=function(t){return o.DomEvent._filterClick(t,a)},t.addEventListener(e,s,!1)):t.addEventListener(e,s,!1):"attachEvent"in t&&t.attachEvent("on"+e,s),t[l]=s,this))},removeListener:function(t,e,i){var n=o.stamp(i),s="_leaflet_"+e+n,a=t[s];return a?(o.Browser.pointer&&0===e.indexOf("touch")?this.removePointerListener(t,e,n):o.Browser.touch&&"dblclick"===e&&this.removeDoubleTapListener?this.removeDoubleTapListener(t,n):"removeEventListener"in t?"mousewheel"===e?(t.removeEventListener("DOMMouseScroll",a,!1),t.removeEventListener(e,a,!1)):"mouseenter"===e||"mouseleave"===e?t.removeEventListener("mouseenter"===e?"mouseover":"mouseout",a,!1):t.removeEventListener(e,a,!1):"detachEvent"in t&&t.detachEvent("on"+e,a),t[s]=null,this):this},stopPropagation:function(t){return t.stopPropagation?t.stopPropagation():t.cancelBubble=!0,o.DomEvent._skipped(t),this},disableScrollPropagation:function(t){var e=o.DomEvent.stopPropagation;return o.DomEvent.on(t,"mousewheel",e).on(t,"MozMousePixelScroll",e)},disableClickPropagation:function(t){for(var e=o.DomEvent.stopPropagation,i=o.Draggable.START.length-1;i>=0;i--)o.DomEvent.on(t,o.Draggable.START[i],e);return o.DomEvent.on(t,"click",o.DomEvent._fakeStop).on(t,"dblclick",e)},preventDefault:function(t){return t.preventDefault?t.preventDefault():t.returnValue=!1,this},stop:function(t){return o.DomEvent.preventDefault(t).stopPropagation(t)},getMousePosition:function(t,e){if(!e)return new o.Point(t.clientX,t.clientY);var i=e.getBoundingClientRect();return new o.Point(t.clientX-i.left-e.clientLeft,t.clientY-i.top-e.clientTop)},getWheelDelta:function(t){var e=0;return t.wheelDelta&&(e=t.wheelDelta/120),t.detail&&(e=-t.detail/3),e},_skipEvents:{},_fakeStop:function(t){o.DomEvent._skipEvents[t.type]=!0},_skipped:function(t){var e=this._skipEvents[t.type];return this._skipEvents[t.type]=!1,e},_checkMouse:function(t,e){var i=e.relatedTarget;if(!i)return!0;try{for(;i&&i!==t;)i=i.parentNode}catch(n){return!1}return i!==t},_getEvent:function(){var e=t.event;if(!e)for(var i=arguments.callee.caller;i&&(e=i.arguments[0],!e||t.Event!==e.constructor);)i=i.caller;return e},_filterClick:function(t,e){var i=t.timeStamp||t.originalEvent.timeStamp,n=o.DomEvent._lastClick&&i-o.DomEvent._lastClick;return n&&n>100&&500>n||t.target._simulatedClick&&!t._simulated?void o.DomEvent.stop(t):(o.DomEvent._lastClick=i,e(t))}},o.DomEvent.on=o.DomEvent.addListener,o.DomEvent.off=o.DomEvent.removeListener,o.Draggable=o.Class.extend({includes:o.Mixin.Events,statics:{START:o.Browser.touch?["touchstart","mousedown"]:["mousedown"],END:{mousedown:"mouseup",touchstart:"touchend",pointerdown:"touchend",MSPointerDown:"touchend"},MOVE:{mousedown:"mousemove",touchstart:"touchmove",pointerdown:"touchmove",MSPointerDown:"touchmove"}},initialize:function(t,e){this._element=t,this._dragStartTarget=e||t},enable:function(){if(!this._enabled){for(var t=o.Draggable.START.length-1;t>=0;t--)o.DomEvent.on(this._dragStartTarget,o.Draggable.START[t],this._onDown,this);this._enabled=!0}},disable:function(){if(this._enabled){for(var t=o.Draggable.START.length-1;t>=0;t--)o.DomEvent.off(this._dragStartTarget,o.Draggable.START[t],this._onDown,this);this._enabled=!1,this._moved=!1}},_onDown:function(t){if(this._moved=!1,!t.shiftKey&&(1===t.which||1===t.button||t.touches)&&(o.DomEvent.stopPropagation(t),!o.Draggable._disabled&&(o.DomUtil.disableImageDrag(),o.DomUtil.disableTextSelection(),!this._moving))){var i=t.touches?t.touches[0]:t;this._startPoint=new o.Point(i.clientX,i.clientY),this._startPos=this._newPos=o.DomUtil.getPosition(this._element),o.DomEvent.on(e,o.Draggable.MOVE[t.type],this._onMove,this).on(e,o.Draggable.END[t.type],this._onUp,this)}},_onMove:function(t){if(t.touches&&t.touches.length>1)return void(this._moved=!0);var i=t.touches&&1===t.touches.length?t.touches[0]:t,n=new o.Point(i.clientX,i.clientY),s=n.subtract(this._startPoint);(s.x||s.y)&&(o.Browser.touch&&Math.abs(s.x)+Math.abs(s.y)<3||(o.DomEvent.preventDefault(t),this._moved||(this.fire("dragstart"),this._moved=!0,this._startPos=o.DomUtil.getPosition(this._element).subtract(s),o.DomUtil.addClass(e.body,"leaflet-dragging"),this._lastTarget=t.target||t.srcElement,o.DomUtil.addClass(this._lastTarget,"leaflet-drag-target")),this._newPos=this._startPos.add(s),this._moving=!0,o.Util.cancelAnimFrame(this._animRequest),this._animRequest=o.Util.requestAnimFrame(this._updatePosition,this,!0,this._dragStartTarget)))},_updatePosition:function(){this.fire("predrag"),o.DomUtil.setPosition(this._element,this._newPos),this.fire("drag")},_onUp:function(){o.DomUtil.removeClass(e.body,"leaflet-dragging"),this._lastTarget&&(o.DomUtil.removeClass(this._lastTarget,"leaflet-drag-target"),this._lastTarget=null);for(var t in o.Draggable.MOVE)o.DomEvent.off(e,o.Draggable.MOVE[t],this._onMove).off(e,o.Draggable.END[t],this._onUp);o.DomUtil.enableImageDrag(),o.DomUtil.enableTextSelection(),this._moved&&this._moving&&(o.Util.cancelAnimFrame(this._animRequest),this.fire("dragend",{distance:this._newPos.distanceTo(this._startPos)})),this._moving=!1}}),o.Handler=o.Class.extend({initialize:function(t){this._map=t},enable:function(){this._enabled||(this._enabled=!0,this.addHooks())},disable:function(){this._enabled&&(this._enabled=!1,this.removeHooks())},enabled:function(){return!!this._enabled}}),o.Map.mergeOptions({dragging:!0,inertia:!o.Browser.android23,inertiaDeceleration:3400,inertiaMaxSpeed:1/0,inertiaThreshold:o.Browser.touch?32:18,easeLinearity:.25,worldCopyJump:!1}),o.Map.Drag=o.Handler.extend({addHooks:function(){if(!this._draggable){var t=this._map;this._draggable=new o.Draggable(t._mapPane,t._container),this._draggable.on({dragstart:this._onDragStart,drag:this._onDrag,dragend:this._onDragEnd},this),t.options.worldCopyJump&&(this._draggable.on("predrag",this._onPreDrag,this),t.on("viewreset",this._onViewReset,this),t.whenReady(this._onViewReset,this))}this._draggable.enable()},removeHooks:function(){this._draggable.disable()},moved:function(){return this._draggable&&this._draggable._moved},_onDragStart:function(){var t=this._map;t._panAnim&&t._panAnim.stop(),t.fire("movestart").fire("dragstart"),t.options.inertia&&(this._positions=[],this._times=[])},_onDrag:function(){if(this._map.options.inertia){var t=this._lastTime=+new Date,e=this._lastPos=this._draggable._newPos;this._positions.push(e),this._times.push(t),t-this._times[0]>200&&(this._positions.shift(),this._times.shift())}this._map.fire("move").fire("drag")},_onViewReset:function(){var t=this._map.getSize()._divideBy(2),e=this._map.latLngToLayerPoint([0,0]);this._initialWorldOffset=e.subtract(t).x,this._worldWidth=this._map.project([0,180]).x},_onPreDrag:function(){var t=this._worldWidth,e=Math.round(t/2),i=this._initialWorldOffset,n=this._draggable._newPos.x,o=(n-e+i)%t+e-i,s=(n+e+i)%t-e-i,a=Math.abs(o+i)<Math.abs(s+i)?o:s;this._draggable._newPos.x=a},_onDragEnd:function(t){var e=this._map,i=e.options,n=+new Date-this._lastTime,s=!i.inertia||n>i.inertiaThreshold||!this._positions[0];if(e.fire("dragend",t),s)e.fire("moveend");else{var a=this._lastPos.subtract(this._positions[0]),r=(this._lastTime+n-this._times[0])/1e3,h=i.easeLinearity,l=a.multiplyBy(h/r),u=l.distanceTo([0,0]),c=Math.min(i.inertiaMaxSpeed,u),d=l.multiplyBy(c/u),p=c/(i.inertiaDeceleration*h),_=d.multiplyBy(-p/2).round();_.x&&_.y?(_=e._limitOffset(_,e.options.maxBounds),o.Util.requestAnimFrame(function(){e.panBy(_,{duration:p,easeLinearity:h,noMoveStart:!0})})):e.fire("moveend")}}}),o.Map.addInitHook("addHandler","dragging",o.Map.Drag),o.Map.mergeOptions({doubleClickZoom:!0}),o.Map.DoubleClickZoom=o.Handler.extend({addHooks:function(){this._map.on("dblclick",this._onDoubleClick,this)},removeHooks:function(){this._map.off("dblclick",this._onDoubleClick,this)},_onDoubleClick:function(t){var e=this._map,i=e.getZoom()+(t.originalEvent.shiftKey?-1:1);"center"===e.options.doubleClickZoom?e.setZoom(i):e.setZoomAround(t.containerPoint,i)}}),o.Map.addInitHook("addHandler","doubleClickZoom",o.Map.DoubleClickZoom),o.Map.mergeOptions({scrollWheelZoom:!0}),o.Map.ScrollWheelZoom=o.Handler.extend({addHooks:function(){o.DomEvent.on(this._map._container,"mousewheel",this._onWheelScroll,this),o.DomEvent.on(this._map._container,"MozMousePixelScroll",o.DomEvent.preventDefault),this._delta=0},removeHooks:function(){o.DomEvent.off(this._map._container,"mousewheel",this._onWheelScroll),o.DomEvent.off(this._map._container,"MozMousePixelScroll",o.DomEvent.preventDefault)},_onWheelScroll:function(t){var e=o.DomEvent.getWheelDelta(t);this._delta+=e,this._lastMousePos=this._map.mouseEventToContainerPoint(t),this._startTime||(this._startTime=+new Date);var i=Math.max(40-(+new Date-this._startTime),0);clearTimeout(this._timer),this._timer=setTimeout(o.bind(this._performZoom,this),i),o.DomEvent.preventDefault(t),o.DomEvent.stopPropagation(t)},_performZoom:function(){var t=this._map,e=this._delta,i=t.getZoom();e=e>0?Math.ceil(e):Math.floor(e),e=Math.max(Math.min(e,4),-4),e=t._limitZoom(i+e)-i,this._delta=0,this._startTime=null,e&&("center"===t.options.scrollWheelZoom?t.setZoom(i+e):t.setZoomAround(this._lastMousePos,i+e))}}),o.Map.addInitHook("addHandler","scrollWheelZoom",o.Map.ScrollWheelZoom),o.extend(o.DomEvent,{_touchstart:o.Browser.msPointer?"MSPointerDown":o.Browser.pointer?"pointerdown":"touchstart",_touchend:o.Browser.msPointer?"MSPointerUp":o.Browser.pointer?"pointerup":"touchend",addDoubleTapListener:function(t,i,n){function s(t){var e;if(o.Browser.pointer?(_.push(t.pointerId),e=_.length):e=t.touches.length,!(e>1)){var i=Date.now(),n=i-(r||i);h=t.touches?t.touches[0]:t,l=n>0&&u>=n,r=i}}function a(t){if(o.Browser.pointer){var e=_.indexOf(t.pointerId);if(-1===e)return;_.splice(e,1)}if(l){if(o.Browser.pointer){var n,s={};for(var a in h)n=h[a],"function"==typeof n?s[a]=n.bind(h):s[a]=n;h=s}h.type="dblclick",i(h),r=null}}var r,h,l=!1,u=250,c="_leaflet_",d=this._touchstart,p=this._touchend,_=[];t[c+d+n]=s,t[c+p+n]=a;var m=o.Browser.pointer?e.documentElement:t;return t.addEventListener(d,s,!1),m.addEventListener(p,a,!1),o.Browser.pointer&&m.addEventListener(o.DomEvent.POINTER_CANCEL,a,!1),this},removeDoubleTapListener:function(t,i){var n="_leaflet_";return t.removeEventListener(this._touchstart,t[n+this._touchstart+i],!1),(o.Browser.pointer?e.documentElement:t).removeEventListener(this._touchend,t[n+this._touchend+i],!1),o.Browser.pointer&&e.documentElement.removeEventListener(o.DomEvent.POINTER_CANCEL,t[n+this._touchend+i],!1),this}}),o.extend(o.DomEvent,{POINTER_DOWN:o.Browser.msPointer?"MSPointerDown":"pointerdown",POINTER_MOVE:o.Browser.msPointer?"MSPointerMove":"pointermove",POINTER_UP:o.Browser.msPointer?"MSPointerUp":"pointerup",POINTER_CANCEL:o.Browser.msPointer?"MSPointerCancel":"pointercancel",_pointers:[],_pointerDocumentListener:!1,addPointerListener:function(t,e,i,n){switch(e){case"touchstart":return this.addPointerListenerStart(t,e,i,n);
-case"touchend":return this.addPointerListenerEnd(t,e,i,n);case"touchmove":return this.addPointerListenerMove(t,e,i,n);default:throw"Unknown touch event type"}},addPointerListenerStart:function(t,i,n,s){var a="_leaflet_",r=this._pointers,h=function(t){"mouse"!==t.pointerType&&t.pointerType!==t.MSPOINTER_TYPE_MOUSE&&o.DomEvent.preventDefault(t);for(var e=!1,i=0;i<r.length;i++)if(r[i].pointerId===t.pointerId){e=!0;break}e||r.push(t),t.touches=r.slice(),t.changedTouches=[t],n(t)};if(t[a+"touchstart"+s]=h,t.addEventListener(this.POINTER_DOWN,h,!1),!this._pointerDocumentListener){var l=function(t){for(var e=0;e<r.length;e++)if(r[e].pointerId===t.pointerId){r.splice(e,1);break}};e.documentElement.addEventListener(this.POINTER_UP,l,!1),e.documentElement.addEventListener(this.POINTER_CANCEL,l,!1),this._pointerDocumentListener=!0}return this},addPointerListenerMove:function(t,e,i,n){function o(t){if(t.pointerType!==t.MSPOINTER_TYPE_MOUSE&&"mouse"!==t.pointerType||0!==t.buttons){for(var e=0;e<a.length;e++)if(a[e].pointerId===t.pointerId){a[e]=t;break}t.touches=a.slice(),t.changedTouches=[t],i(t)}}var s="_leaflet_",a=this._pointers;return t[s+"touchmove"+n]=o,t.addEventListener(this.POINTER_MOVE,o,!1),this},addPointerListenerEnd:function(t,e,i,n){var o="_leaflet_",s=this._pointers,a=function(t){for(var e=0;e<s.length;e++)if(s[e].pointerId===t.pointerId){s.splice(e,1);break}t.touches=s.slice(),t.changedTouches=[t],i(t)};return t[o+"touchend"+n]=a,t.addEventListener(this.POINTER_UP,a,!1),t.addEventListener(this.POINTER_CANCEL,a,!1),this},removePointerListener:function(t,e,i){var n="_leaflet_",o=t[n+e+i];switch(e){case"touchstart":t.removeEventListener(this.POINTER_DOWN,o,!1);break;case"touchmove":t.removeEventListener(this.POINTER_MOVE,o,!1);break;case"touchend":t.removeEventListener(this.POINTER_UP,o,!1),t.removeEventListener(this.POINTER_CANCEL,o,!1)}return this}}),o.Map.mergeOptions({touchZoom:o.Browser.touch&&!o.Browser.android23,bounceAtZoomLimits:!0}),o.Map.TouchZoom=o.Handler.extend({addHooks:function(){o.DomEvent.on(this._map._container,"touchstart",this._onTouchStart,this)},removeHooks:function(){o.DomEvent.off(this._map._container,"touchstart",this._onTouchStart,this)},_onTouchStart:function(t){var i=this._map;if(t.touches&&2===t.touches.length&&!i._animatingZoom&&!this._zooming){var n=i.mouseEventToLayerPoint(t.touches[0]),s=i.mouseEventToLayerPoint(t.touches[1]),a=i._getCenterLayerPoint();this._startCenter=n.add(s)._divideBy(2),this._startDist=n.distanceTo(s),this._moved=!1,this._zooming=!0,this._centerOffset=a.subtract(this._startCenter),i._panAnim&&i._panAnim.stop(),o.DomEvent.on(e,"touchmove",this._onTouchMove,this).on(e,"touchend",this._onTouchEnd,this),o.DomEvent.preventDefault(t)}},_onTouchMove:function(t){var e=this._map;if(t.touches&&2===t.touches.length&&this._zooming){var i=e.mouseEventToLayerPoint(t.touches[0]),n=e.mouseEventToLayerPoint(t.touches[1]);this._scale=i.distanceTo(n)/this._startDist,this._delta=i._add(n)._divideBy(2)._subtract(this._startCenter),1!==this._scale&&(e.options.bounceAtZoomLimits||!(e.getZoom()===e.getMinZoom()&&this._scale<1||e.getZoom()===e.getMaxZoom()&&this._scale>1))&&(this._moved||(o.DomUtil.addClass(e._mapPane,"leaflet-touching"),e.fire("movestart").fire("zoomstart"),this._moved=!0),o.Util.cancelAnimFrame(this._animRequest),this._animRequest=o.Util.requestAnimFrame(this._updateOnMove,this,!0,this._map._container),o.DomEvent.preventDefault(t))}},_updateOnMove:function(){var t=this._map,e=this._getScaleOrigin(),i=t.layerPointToLatLng(e),n=t.getScaleZoom(this._scale);t._animateZoom(i,n,this._startCenter,this._scale,this._delta,!1,!0)},_onTouchEnd:function(){if(!this._moved||!this._zooming)return void(this._zooming=!1);var t=this._map;this._zooming=!1,o.DomUtil.removeClass(t._mapPane,"leaflet-touching"),o.Util.cancelAnimFrame(this._animRequest),o.DomEvent.off(e,"touchmove",this._onTouchMove).off(e,"touchend",this._onTouchEnd);var i=this._getScaleOrigin(),n=t.layerPointToLatLng(i),s=t.getZoom(),a=t.getScaleZoom(this._scale)-s,r=a>0?Math.ceil(a):Math.floor(a),h=t._limitZoom(s+r),l=t.getZoomScale(h)/this._scale;t._animateZoom(n,h,i,l)},_getScaleOrigin:function(){var t=this._centerOffset.subtract(this._delta).divideBy(this._scale);return this._startCenter.add(t)}}),o.Map.addInitHook("addHandler","touchZoom",o.Map.TouchZoom),o.Map.mergeOptions({tap:!0,tapTolerance:15}),o.Map.Tap=o.Handler.extend({addHooks:function(){o.DomEvent.on(this._map._container,"touchstart",this._onDown,this)},removeHooks:function(){o.DomEvent.off(this._map._container,"touchstart",this._onDown,this)},_onDown:function(t){if(t.touches){if(o.DomEvent.preventDefault(t),this._fireClick=!0,t.touches.length>1)return this._fireClick=!1,void clearTimeout(this._holdTimeout);var i=t.touches[0],n=i.target;this._startPos=this._newPos=new o.Point(i.clientX,i.clientY),n.tagName&&"a"===n.tagName.toLowerCase()&&o.DomUtil.addClass(n,"leaflet-active"),this._holdTimeout=setTimeout(o.bind(function(){this._isTapValid()&&(this._fireClick=!1,this._onUp(),this._simulateEvent("contextmenu",i))},this),1e3),o.DomEvent.on(e,"touchmove",this._onMove,this).on(e,"touchend",this._onUp,this)}},_onUp:function(t){if(clearTimeout(this._holdTimeout),o.DomEvent.off(e,"touchmove",this._onMove,this).off(e,"touchend",this._onUp,this),this._fireClick&&t&&t.changedTouches){var i=t.changedTouches[0],n=i.target;n&&n.tagName&&"a"===n.tagName.toLowerCase()&&o.DomUtil.removeClass(n,"leaflet-active"),this._isTapValid()&&this._simulateEvent("click",i)}},_isTapValid:function(){return this._newPos.distanceTo(this._startPos)<=this._map.options.tapTolerance},_onMove:function(t){var e=t.touches[0];this._newPos=new o.Point(e.clientX,e.clientY)},_simulateEvent:function(i,n){var o=e.createEvent("MouseEvents");o._simulated=!0,n.target._simulatedClick=!0,o.initMouseEvent(i,!0,!0,t,1,n.screenX,n.screenY,n.clientX,n.clientY,!1,!1,!1,!1,0,null),n.target.dispatchEvent(o)}}),o.Browser.touch&&!o.Browser.pointer&&o.Map.addInitHook("addHandler","tap",o.Map.Tap),o.Map.mergeOptions({boxZoom:!0}),o.Map.BoxZoom=o.Handler.extend({initialize:function(t){this._map=t,this._container=t._container,this._pane=t._panes.overlayPane,this._moved=!1},addHooks:function(){o.DomEvent.on(this._container,"mousedown",this._onMouseDown,this)},removeHooks:function(){o.DomEvent.off(this._container,"mousedown",this._onMouseDown),this._moved=!1},moved:function(){return this._moved},_onMouseDown:function(t){return this._moved=!1,!t.shiftKey||1!==t.which&&1!==t.button?!1:(o.DomUtil.disableTextSelection(),o.DomUtil.disableImageDrag(),this._startLayerPoint=this._map.mouseEventToLayerPoint(t),void o.DomEvent.on(e,"mousemove",this._onMouseMove,this).on(e,"mouseup",this._onMouseUp,this).on(e,"keydown",this._onKeyDown,this))},_onMouseMove:function(t){this._moved||(this._box=o.DomUtil.create("div","leaflet-zoom-box",this._pane),o.DomUtil.setPosition(this._box,this._startLayerPoint),this._container.style.cursor="crosshair",this._map.fire("boxzoomstart"));var e=this._startLayerPoint,i=this._box,n=this._map.mouseEventToLayerPoint(t),s=n.subtract(e),a=new o.Point(Math.min(n.x,e.x),Math.min(n.y,e.y));o.DomUtil.setPosition(i,a),this._moved=!0,i.style.width=Math.max(0,Math.abs(s.x)-4)+"px",i.style.height=Math.max(0,Math.abs(s.y)-4)+"px"},_finish:function(){this._moved&&(this._pane.removeChild(this._box),this._container.style.cursor=""),o.DomUtil.enableTextSelection(),o.DomUtil.enableImageDrag(),o.DomEvent.off(e,"mousemove",this._onMouseMove).off(e,"mouseup",this._onMouseUp).off(e,"keydown",this._onKeyDown)},_onMouseUp:function(t){this._finish();var e=this._map,i=e.mouseEventToLayerPoint(t);if(!this._startLayerPoint.equals(i)){var n=new o.LatLngBounds(e.layerPointToLatLng(this._startLayerPoint),e.layerPointToLatLng(i));e.fitBounds(n),e.fire("boxzoomend",{boxZoomBounds:n})}},_onKeyDown:function(t){27===t.keyCode&&this._finish()}}),o.Map.addInitHook("addHandler","boxZoom",o.Map.BoxZoom),o.Map.mergeOptions({keyboard:!0,keyboardPanOffset:80,keyboardZoomOffset:1}),o.Map.Keyboard=o.Handler.extend({keyCodes:{left:[37],right:[39],down:[40],up:[38],zoomIn:[187,107,61,171],zoomOut:[189,109,173]},initialize:function(t){this._map=t,this._setPanOffset(t.options.keyboardPanOffset),this._setZoomOffset(t.options.keyboardZoomOffset)},addHooks:function(){var t=this._map._container;-1===t.tabIndex&&(t.tabIndex="0"),o.DomEvent.on(t,"focus",this._onFocus,this).on(t,"blur",this._onBlur,this).on(t,"mousedown",this._onMouseDown,this),this._map.on("focus",this._addHooks,this).on("blur",this._removeHooks,this)},removeHooks:function(){this._removeHooks();var t=this._map._container;o.DomEvent.off(t,"focus",this._onFocus,this).off(t,"blur",this._onBlur,this).off(t,"mousedown",this._onMouseDown,this),this._map.off("focus",this._addHooks,this).off("blur",this._removeHooks,this)},_onMouseDown:function(){if(!this._focused){var i=e.body,n=e.documentElement,o=i.scrollTop||n.scrollTop,s=i.scrollLeft||n.scrollLeft;this._map._container.focus(),t.scrollTo(s,o)}},_onFocus:function(){this._focused=!0,this._map.fire("focus")},_onBlur:function(){this._focused=!1,this._map.fire("blur")},_setPanOffset:function(t){var e,i,n=this._panKeys={},o=this.keyCodes;for(e=0,i=o.left.length;i>e;e++)n[o.left[e]]=[-1*t,0];for(e=0,i=o.right.length;i>e;e++)n[o.right[e]]=[t,0];for(e=0,i=o.down.length;i>e;e++)n[o.down[e]]=[0,t];for(e=0,i=o.up.length;i>e;e++)n[o.up[e]]=[0,-1*t]},_setZoomOffset:function(t){var e,i,n=this._zoomKeys={},o=this.keyCodes;for(e=0,i=o.zoomIn.length;i>e;e++)n[o.zoomIn[e]]=t;for(e=0,i=o.zoomOut.length;i>e;e++)n[o.zoomOut[e]]=-t},_addHooks:function(){o.DomEvent.on(e,"keydown",this._onKeyDown,this)},_removeHooks:function(){o.DomEvent.off(e,"keydown",this._onKeyDown,this)},_onKeyDown:function(t){var e=t.keyCode,i=this._map;if(e in this._panKeys){if(i._panAnim&&i._panAnim._inProgress)return;i.panBy(this._panKeys[e]),i.options.maxBounds&&i.panInsideBounds(i.options.maxBounds)}else{if(!(e in this._zoomKeys))return;i.setZoom(i.getZoom()+this._zoomKeys[e])}o.DomEvent.stop(t)}}),o.Map.addInitHook("addHandler","keyboard",o.Map.Keyboard),o.Handler.MarkerDrag=o.Handler.extend({initialize:function(t){this._marker=t},addHooks:function(){var t=this._marker._icon;this._draggable||(this._draggable=new o.Draggable(t,t)),this._draggable.on("dragstart",this._onDragStart,this).on("drag",this._onDrag,this).on("dragend",this._onDragEnd,this),this._draggable.enable(),o.DomUtil.addClass(this._marker._icon,"leaflet-marker-draggable")},removeHooks:function(){this._draggable.off("dragstart",this._onDragStart,this).off("drag",this._onDrag,this).off("dragend",this._onDragEnd,this),this._draggable.disable(),o.DomUtil.removeClass(this._marker._icon,"leaflet-marker-draggable")},moved:function(){return this._draggable&&this._draggable._moved},_onDragStart:function(){this._marker.closePopup().fire("movestart").fire("dragstart")},_onDrag:function(){var t=this._marker,e=t._shadow,i=o.DomUtil.getPosition(t._icon),n=t._map.layerPointToLatLng(i);e&&o.DomUtil.setPosition(e,i),t._latlng=n,t.fire("move",{latlng:n}).fire("drag")},_onDragEnd:function(t){this._marker.fire("moveend").fire("dragend",t)}}),o.Control=o.Class.extend({options:{position:"topright"},initialize:function(t){o.setOptions(this,t)},getPosition:function(){return this.options.position},setPosition:function(t){var e=this._map;return e&&e.removeControl(this),this.options.position=t,e&&e.addControl(this),this},getContainer:function(){return this._container},addTo:function(t){this._map=t;var e=this._container=this.onAdd(t),i=this.getPosition(),n=t._controlCorners[i];return o.DomUtil.addClass(e,"leaflet-control"),-1!==i.indexOf("bottom")?n.insertBefore(e,n.firstChild):n.appendChild(e),this},removeFrom:function(t){var e=this.getPosition(),i=t._controlCorners[e];return i.removeChild(this._container),this._map=null,this.onRemove&&this.onRemove(t),this},_refocusOnMap:function(){this._map&&this._map.getContainer().focus()}}),o.control=function(t){return new o.Control(t)},o.Map.include({addControl:function(t){return t.addTo(this),this},removeControl:function(t){return t.removeFrom(this),this},_initControlPos:function(){function t(t,s){var a=i+t+" "+i+s;e[t+s]=o.DomUtil.create("div",a,n)}var e=this._controlCorners={},i="leaflet-",n=this._controlContainer=o.DomUtil.create("div",i+"control-container",this._container);t("top","left"),t("top","right"),t("bottom","left"),t("bottom","right")},_clearControlPos:function(){this._container.removeChild(this._controlContainer)}}),o.Control.Zoom=o.Control.extend({options:{position:"topleft",zoomInText:"+",zoomInTitle:"Zoom in",zoomOutText:"-",zoomOutTitle:"Zoom out"},onAdd:function(t){var e="leaflet-control-zoom",i=o.DomUtil.create("div",e+" leaflet-bar");return this._map=t,this._zoomInButton=this._createButton(this.options.zoomInText,this.options.zoomInTitle,e+"-in",i,this._zoomIn,this),this._zoomOutButton=this._createButton(this.options.zoomOutText,this.options.zoomOutTitle,e+"-out",i,this._zoomOut,this),this._updateDisabled(),t.on("zoomend zoomlevelschange",this._updateDisabled,this),i},onRemove:function(t){t.off("zoomend zoomlevelschange",this._updateDisabled,this)},_zoomIn:function(t){this._map.zoomIn(t.shiftKey?3:1)},_zoomOut:function(t){this._map.zoomOut(t.shiftKey?3:1)},_createButton:function(t,e,i,n,s,a){var r=o.DomUtil.create("a",i,n);r.innerHTML=t,r.href="#",r.title=e;var h=o.DomEvent.stopPropagation;return o.DomEvent.on(r,"click",h).on(r,"mousedown",h).on(r,"dblclick",h).on(r,"click",o.DomEvent.preventDefault).on(r,"click",s,a).on(r,"click",this._refocusOnMap,a),r},_updateDisabled:function(){var t=this._map,e="leaflet-disabled";o.DomUtil.removeClass(this._zoomInButton,e),o.DomUtil.removeClass(this._zoomOutButton,e),t._zoom===t.getMinZoom()&&o.DomUtil.addClass(this._zoomOutButton,e),t._zoom===t.getMaxZoom()&&o.DomUtil.addClass(this._zoomInButton,e)}}),o.Map.mergeOptions({zoomControl:!0}),o.Map.addInitHook(function(){this.options.zoomControl&&(this.zoomControl=new o.Control.Zoom,this.addControl(this.zoomControl))}),o.control.zoom=function(t){return new o.Control.Zoom(t)},o.Control.Attribution=o.Control.extend({options:{position:"bottomright",prefix:'<a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'},initialize:function(t){o.setOptions(this,t),this._attributions={}},onAdd:function(t){this._container=o.DomUtil.create("div","leaflet-control-attribution"),o.DomEvent.disableClickPropagation(this._container);for(var e in t._layers)t._layers[e].getAttribution&&this.addAttribution(t._layers[e].getAttribution());return t.on("layeradd",this._onLayerAdd,this).on("layerremove",this._onLayerRemove,this),this._update(),this._container},onRemove:function(t){t.off("layeradd",this._onLayerAdd).off("layerremove",this._onLayerRemove)},setPrefix:function(t){return this.options.prefix=t,this._update(),this},addAttribution:function(t){return t?(this._attributions[t]||(this._attributions[t]=0),this._attributions[t]++,this._update(),this):void 0},removeAttribution:function(t){return t?(this._attributions[t]&&(this._attributions[t]--,this._update()),this):void 0},_update:function(){if(this._map){var t=[];for(var e in this._attributions)this._attributions[e]&&t.push(e);var i=[];this.options.prefix&&i.push(this.options.prefix),t.length&&i.push(t.join(", ")),this._container.innerHTML=i.join(" | ")}},_onLayerAdd:function(t){t.layer.getAttribution&&this.addAttribution(t.layer.getAttribution())},_onLayerRemove:function(t){t.layer.getAttribution&&this.removeAttribution(t.layer.getAttribution())}}),o.Map.mergeOptions({attributionControl:!0}),o.Map.addInitHook(function(){this.options.attributionControl&&(this.attributionControl=(new o.Control.Attribution).addTo(this))}),o.control.attribution=function(t){return new o.Control.Attribution(t)},o.Control.Scale=o.Control.extend({options:{position:"bottomleft",maxWidth:100,metric:!0,imperial:!0,updateWhenIdle:!1},onAdd:function(t){this._map=t;var e="leaflet-control-scale",i=o.DomUtil.create("div",e),n=this.options;return this._addScales(n,e,i),t.on(n.updateWhenIdle?"moveend":"move",this._update,this),t.whenReady(this._update,this),i},onRemove:function(t){t.off(this.options.updateWhenIdle?"moveend":"move",this._update,this)},_addScales:function(t,e,i){t.metric&&(this._mScale=o.DomUtil.create("div",e+"-line",i)),t.imperial&&(this._iScale=o.DomUtil.create("div",e+"-line",i))},_update:function(){var t=this._map.getBounds(),e=t.getCenter().lat,i=6378137*Math.PI*Math.cos(e*Math.PI/180),n=i*(t.getNorthEast().lng-t.getSouthWest().lng)/180,o=this._map.getSize(),s=this.options,a=0;o.x>0&&(a=n*(s.maxWidth/o.x)),this._updateScales(s,a)},_updateScales:function(t,e){t.metric&&e&&this._updateMetric(e),t.imperial&&e&&this._updateImperial(e)},_updateMetric:function(t){var e=this._getRoundNum(t);this._mScale.style.width=this._getScaleWidth(e/t)+"px",this._mScale.innerHTML=1e3>e?e+" m":e/1e3+" km"},_updateImperial:function(t){var e,i,n,o=3.2808399*t,s=this._iScale;o>5280?(e=o/5280,i=this._getRoundNum(e),s.style.width=this._getScaleWidth(i/e)+"px",s.innerHTML=i+" mi"):(n=this._getRoundNum(o),s.style.width=this._getScaleWidth(n/o)+"px",s.innerHTML=n+" ft")},_getScaleWidth:function(t){return Math.round(this.options.maxWidth*t)-10},_getRoundNum:function(t){var e=Math.pow(10,(Math.floor(t)+"").length-1),i=t/e;return i=i>=10?10:i>=5?5:i>=3?3:i>=2?2:1,e*i}}),o.control.scale=function(t){return new o.Control.Scale(t)},o.Control.Layers=o.Control.extend({options:{collapsed:!0,position:"topright",autoZIndex:!0},initialize:function(t,e,i){o.setOptions(this,i),this._layers={},this._lastZIndex=0,this._handlingClick=!1;for(var n in t)this._addLayer(t[n],n);for(n in e)this._addLayer(e[n],n,!0)},onAdd:function(t){return this._initLayout(),this._update(),t.on("layeradd",this._onLayerChange,this).on("layerremove",this._onLayerChange,this),this._container},onRemove:function(t){t.off("layeradd",this._onLayerChange,this).off("layerremove",this._onLayerChange,this)},addBaseLayer:function(t,e){return this._addLayer(t,e),this._update(),this},addOverlay:function(t,e){return this._addLayer(t,e,!0),this._update(),this},removeLayer:function(t){var e=o.stamp(t);return delete this._layers[e],this._update(),this},_initLayout:function(){var t="leaflet-control-layers",e=this._container=o.DomUtil.create("div",t);e.setAttribute("aria-haspopup",!0),o.Browser.touch?o.DomEvent.on(e,"click",o.DomEvent.stopPropagation):o.DomEvent.disableClickPropagation(e).disableScrollPropagation(e);var i=this._form=o.DomUtil.create("form",t+"-list");if(this.options.collapsed){o.Browser.android||o.DomEvent.on(e,"mouseover",this._expand,this).on(e,"mouseout",this._collapse,this);var n=this._layersLink=o.DomUtil.create("a",t+"-toggle",e);n.href="#",n.title="Layers",o.Browser.touch?o.DomEvent.on(n,"click",o.DomEvent.stop).on(n,"click",this._expand,this):o.DomEvent.on(n,"focus",this._expand,this),o.DomEvent.on(i,"click",function(){setTimeout(o.bind(this._onInputClick,this),0)},this),this._map.on("click",this._collapse,this)}else this._expand();this._baseLayersList=o.DomUtil.create("div",t+"-base",i),this._separator=o.DomUtil.create("div",t+"-separator",i),this._overlaysList=o.DomUtil.create("div",t+"-overlays",i),e.appendChild(i)},_addLayer:function(t,e,i){var n=o.stamp(t);this._layers[n]={layer:t,name:e,overlay:i},this.options.autoZIndex&&t.setZIndex&&(this._lastZIndex++,t.setZIndex(this._lastZIndex))},_update:function(){if(this._container){this._baseLayersList.innerHTML="",this._overlaysList.innerHTML="";var t,e,i=!1,n=!1;for(t in this._layers)e=this._layers[t],this._addItem(e),n=n||e.overlay,i=i||!e.overlay;this._separator.style.display=n&&i?"":"none"}},_onLayerChange:function(t){var e=this._layers[o.stamp(t.layer)];if(e){this._handlingClick||this._update();var i=e.overlay?"layeradd"===t.type?"overlayadd":"overlayremove":"layeradd"===t.type?"baselayerchange":null;i&&this._map.fire(i,e)}},_createRadioElement:function(t,i){var n='<input type="radio" class="leaflet-control-layers-selector" name="'+t+'"';i&&(n+=' checked="checked"'),n+="/>";var o=e.createElement("div");return o.innerHTML=n,o.firstChild},_addItem:function(t){var i,n=e.createElement("label"),s=this._map.hasLayer(t.layer);t.overlay?(i=e.createElement("input"),i.type="checkbox",i.className="leaflet-control-layers-selector",i.defaultChecked=s):i=this._createRadioElement("leaflet-base-layers",s),i.layerId=o.stamp(t.layer),o.DomEvent.on(i,"click",this._onInputClick,this);var a=e.createElement("span");a.innerHTML=" "+t.name,n.appendChild(i),n.appendChild(a);var r=t.overlay?this._overlaysList:this._baseLayersList;return r.appendChild(n),n},_onInputClick:function(){var t,e,i,n=this._form.getElementsByTagName("input"),o=n.length;for(this._handlingClick=!0,t=0;o>t;t++)e=n[t],i=this._layers[e.layerId],e.checked&&!this._map.hasLayer(i.layer)?this._map.addLayer(i.layer):!e.checked&&this._map.hasLayer(i.layer)&&this._map.removeLayer(i.layer);this._handlingClick=!1,this._refocusOnMap()},_expand:function(){o.DomUtil.addClass(this._container,"leaflet-control-layers-expanded")},_collapse:function(){this._container.className=this._container.className.replace(" leaflet-control-layers-expanded","")}}),o.control.layers=function(t,e,i){return new o.Control.Layers(t,e,i)},o.PosAnimation=o.Class.extend({includes:o.Mixin.Events,run:function(t,e,i,n){this.stop(),this._el=t,this._inProgress=!0,this._newPos=e,this.fire("start"),t.style[o.DomUtil.TRANSITION]="all "+(i||.25)+"s cubic-bezier(0,0,"+(n||.5)+",1)",o.DomEvent.on(t,o.DomUtil.TRANSITION_END,this._onTransitionEnd,this),o.DomUtil.setPosition(t,e),o.Util.falseFn(t.offsetWidth),this._stepTimer=setInterval(o.bind(this._onStep,this),50)},stop:function(){this._inProgress&&(o.DomUtil.setPosition(this._el,this._getPos()),this._onTransitionEnd(),o.Util.falseFn(this._el.offsetWidth))},_onStep:function(){var t=this._getPos();return t?(this._el._leaflet_pos=t,void this.fire("step")):void this._onTransitionEnd()},_transformRe:/([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/,_getPos:function(){var e,i,n,s=this._el,a=t.getComputedStyle(s);if(o.Browser.any3d){if(n=a[o.DomUtil.TRANSFORM].match(this._transformRe),!n)return;e=parseFloat(n[1]),i=parseFloat(n[2])}else e=parseFloat(a.left),i=parseFloat(a.top);return new o.Point(e,i,!0)},_onTransitionEnd:function(){o.DomEvent.off(this._el,o.DomUtil.TRANSITION_END,this._onTransitionEnd,this),this._inProgress&&(this._inProgress=!1,this._el.style[o.DomUtil.TRANSITION]="",this._el._leaflet_pos=this._newPos,clearInterval(this._stepTimer),this.fire("step").fire("end"))}}),o.Map.include({setView:function(t,e,n){if(e=e===i?this._zoom:this._limitZoom(e),t=this._limitCenter(o.latLng(t),e,this.options.maxBounds),n=n||{},this._panAnim&&this._panAnim.stop(),this._loaded&&!n.reset&&n!==!0){n.animate!==i&&(n.zoom=o.extend({animate:n.animate},n.zoom),n.pan=o.extend({animate:n.animate},n.pan));var s=this._zoom!==e?this._tryAnimatedZoom&&this._tryAnimatedZoom(t,e,n.zoom):this._tryAnimatedPan(t,n.pan);if(s)return clearTimeout(this._sizeTimer),this}return this._resetView(t,e),this},panBy:function(t,e){if(t=o.point(t).round(),e=e||{},!t.x&&!t.y)return this;if(this._panAnim||(this._panAnim=new o.PosAnimation,this._panAnim.on({step:this._onPanTransitionStep,end:this._onPanTransitionEnd},this)),e.noMoveStart||this.fire("movestart"),e.animate!==!1){o.DomUtil.addClass(this._mapPane,"leaflet-pan-anim");var i=this._getMapPanePos().subtract(t);this._panAnim.run(this._mapPane,i,e.duration||.25,e.easeLinearity)}else this._rawPanBy(t),this.fire("move").fire("moveend");return this},_onPanTransitionStep:function(){this.fire("move")},_onPanTransitionEnd:function(){o.DomUtil.removeClass(this._mapPane,"leaflet-pan-anim"),this.fire("moveend")},_tryAnimatedPan:function(t,e){var i=this._getCenterOffset(t)._floor();return(e&&e.animate)===!0||this.getSize().contains(i)?(this.panBy(i,e),!0):!1}}),o.PosAnimation=o.DomUtil.TRANSITION?o.PosAnimation:o.PosAnimation.extend({run:function(t,e,i,n){this.stop(),this._el=t,this._inProgress=!0,this._duration=i||.25,this._easeOutPower=1/Math.max(n||.5,.2),this._startPos=o.DomUtil.getPosition(t),this._offset=e.subtract(this._startPos),this._startTime=+new Date,this.fire("start"),this._animate()},stop:function(){this._inProgress&&(this._step(),this._complete())},_animate:function(){this._animId=o.Util.requestAnimFrame(this._animate,this),this._step()},_step:function(){var t=+new Date-this._startTime,e=1e3*this._duration;e>t?this._runFrame(this._easeOut(t/e)):(this._runFrame(1),this._complete())},_runFrame:function(t){var e=this._startPos.add(this._offset.multiplyBy(t));o.DomUtil.setPosition(this._el,e),this.fire("step")},_complete:function(){o.Util.cancelAnimFrame(this._animId),this._inProgress=!1,this.fire("end")},_easeOut:function(t){return 1-Math.pow(1-t,this._easeOutPower)}}),o.Map.mergeOptions({zoomAnimation:!0,zoomAnimationThreshold:4}),o.DomUtil.TRANSITION&&o.Map.addInitHook(function(){this._zoomAnimated=this.options.zoomAnimation&&o.DomUtil.TRANSITION&&o.Browser.any3d&&!o.Browser.android23&&!o.Browser.mobileOpera,this._zoomAnimated&&o.DomEvent.on(this._mapPane,o.DomUtil.TRANSITION_END,this._catchTransitionEnd,this)}),o.Map.include(o.DomUtil.TRANSITION?{_catchTransitionEnd:function(t){this._animatingZoom&&t.propertyName.indexOf("transform")>=0&&this._onZoomTransitionEnd()},_nothingToAnimate:function(){return!this._container.getElementsByClassName("leaflet-zoom-animated").length},_tryAnimatedZoom:function(t,e,i){if(this._animatingZoom)return!0;if(i=i||{},!this._zoomAnimated||i.animate===!1||this._nothingToAnimate()||Math.abs(e-this._zoom)>this.options.zoomAnimationThreshold)return!1;var n=this.getZoomScale(e),o=this._getCenterOffset(t)._divideBy(1-1/n),s=this._getCenterLayerPoint()._add(o);return i.animate===!0||this.getSize().contains(o)?(this.fire("movestart").fire("zoomstart"),this._animateZoom(t,e,s,n,null,!0),!0):!1},_animateZoom:function(t,e,i,n,s,a,r){r||(this._animatingZoom=!0),o.DomUtil.addClass(this._mapPane,"leaflet-zoom-anim"),this._animateToCenter=t,this._animateToZoom=e,o.Draggable&&(o.Draggable._disabled=!0),o.Util.requestAnimFrame(function(){this.fire("zoomanim",{center:t,zoom:e,origin:i,scale:n,delta:s,backwards:a}),setTimeout(o.bind(this._onZoomTransitionEnd,this),250)},this)},_onZoomTransitionEnd:function(){this._animatingZoom&&(this._animatingZoom=!1,o.DomUtil.removeClass(this._mapPane,"leaflet-zoom-anim"),o.Util.requestAnimFrame(function(){this._resetView(this._animateToCenter,this._animateToZoom,!0,!0),o.Draggable&&(o.Draggable._disabled=!1)},this))}}:{}),o.TileLayer.include({_animateZoom:function(t){this._animating||(this._animating=!0,this._prepareBgBuffer());var e=this._bgBuffer,i=o.DomUtil.TRANSFORM,n=t.delta?o.DomUtil.getTranslateString(t.delta):e.style[i],s=o.DomUtil.getScaleString(t.scale,t.origin);e.style[i]=t.backwards?s+" "+n:n+" "+s},_endZoomAnim:function(){var t=this._tileContainer,e=this._bgBuffer;t.style.visibility="",t.parentNode.appendChild(t),o.Util.falseFn(e.offsetWidth);var i=this._map.getZoom();(i>this.options.maxZoom||i<this.options.minZoom)&&this._clearBgBuffer(),this._animating=!1},_clearBgBuffer:function(){var t=this._map;!t||t._animatingZoom||t.touchZoom._zooming||(this._bgBuffer.innerHTML="",this._bgBuffer.style[o.DomUtil.TRANSFORM]="")},_prepareBgBuffer:function(){var t=this._tileContainer,e=this._bgBuffer,i=this._getLoadedTilesPercentage(e),n=this._getLoadedTilesPercentage(t);return e&&i>.5&&.5>n?(t.style.visibility="hidden",void this._stopLoadingImages(t)):(e.style.visibility="hidden",e.style[o.DomUtil.TRANSFORM]="",this._tileContainer=e,e=this._bgBuffer=t,this._stopLoadingImages(e),void clearTimeout(this._clearBgBufferTimer))},_getLoadedTilesPercentage:function(t){var e,i,n=t.getElementsByTagName("img"),o=0;for(e=0,i=n.length;i>e;e++)n[e].complete&&o++;return o/i},_stopLoadingImages:function(t){var e,i,n,s=Array.prototype.slice.call(t.getElementsByTagName("img"));for(e=0,i=s.length;i>e;e++)n=s[e],n.complete||(n.onload=o.Util.falseFn,n.onerror=o.Util.falseFn,n.src=o.Util.emptyImageUrl,n.parentNode.removeChild(n))}}),o.Map.include({_defaultLocateOptions:{watch:!1,setView:!1,maxZoom:1/0,timeout:1e4,maximumAge:0,enableHighAccuracy:!1},locate:function(t){if(t=this._locateOptions=o.extend(this._defaultLocateOptions,t),!navigator.geolocation)return this._handleGeolocationError({code:0,message:"Geolocation not supported."}),this;var e=o.bind(this._handleGeolocationResponse,this),i=o.bind(this._handleGeolocationError,this);return t.watch?this._locationWatchId=navigator.geolocation.watchPosition(e,i,t):navigator.geolocation.getCurrentPosition(e,i,t),this},stopLocate:function(){return navigator.geolocation&&navigator.geolocation.clearWatch(this._locationWatchId),this._locateOptions&&(this._locateOptions.setView=!1),this},_handleGeolocationError:function(t){var e=t.code,i=t.message||(1===e?"permission denied":2===e?"position unavailable":"timeout");this._locateOptions.setView&&!this._loaded&&this.fitWorld(),this.fire("locationerror",{code:e,message:"Geolocation error: "+i+"."})},_handleGeolocationResponse:function(t){var e=t.coords.latitude,i=t.coords.longitude,n=new o.LatLng(e,i),s=180*t.coords.accuracy/40075017,a=s/Math.cos(o.LatLng.DEG_TO_RAD*e),r=o.latLngBounds([e-s,i-a],[e+s,i+a]),h=this._locateOptions;if(h.setView){var l=Math.min(this.getBoundsZoom(r),h.maxZoom);this.setView(n,l)}var u={latlng:n,bounds:r,timestamp:t.timestamp};for(var c in t.coords)"number"==typeof t.coords[c]&&(u[c]=t.coords[c]);this.fire("locationfound",u)}})}(window,document);;(function() {
+;/* @preserve
+ * Leaflet 1.6.0, a JS library for interactive maps. http://leafletjs.com
+ * (c) 2010-2019 Vladimir Agafonkin, (c) 2010-2011 CloudMade
+ */
+!function(t,i){"object"==typeof exports&&"undefined"!=typeof module?i(exports):"function"==typeof define&&define.amd?define(["exports"],i):i(t.L={})}(this,function(t){"use strict";var i=Object.freeze;function h(t){var i,e,n,o;for(e=1,n=arguments.length;e<n;e++)for(i in o=arguments[e])t[i]=o[i];return t}Object.freeze=function(t){return t};var s=Object.create||function(t){return e.prototype=t,new e};function e(){}function a(t,i){var e=Array.prototype.slice;if(t.bind)return t.bind.apply(t,e.call(arguments,1));var n=e.call(arguments,2);return function(){return t.apply(i,n.length?n.concat(e.call(arguments)):arguments)}}var n=0;function u(t){return t._leaflet_id=t._leaflet_id||++n,t._leaflet_id}function o(t,i,e){var n,o,s,r;return r=function(){n=!1,o&&(s.apply(e,o),o=!1)},s=function(){n?o=arguments:(t.apply(e,arguments),setTimeout(r,i),n=!0)}}function r(t,i,e){var n=i[1],o=i[0],s=n-o;return t===n&&e?t:((t-o)%s+s)%s+o}function l(){return!1}function c(t,i){var e=Math.pow(10,void 0===i?6:i);return Math.round(t*e)/e}function _(t){return t.trim?t.trim():t.replace(/^\s+|\s+$/g,"")}function d(t){return _(t).split(/\s+/)}function p(t,i){for(var e in t.hasOwnProperty("options")||(t.options=t.options?s(t.options):{}),i)t.options[e]=i[e];return t.options}function m(t,i,e){var n=[];for(var o in t)n.push(encodeURIComponent(e?o.toUpperCase():o)+"="+encodeURIComponent(t[o]));return(i&&-1!==i.indexOf("?")?"&":"?")+n.join("&")}var f=/\{ *([\w_-]+) *\}/g;function g(t,n){return t.replace(f,function(t,i){var e=n[i];if(void 0===e)throw new Error("No value provided for variable "+t);return"function"==typeof e&&(e=e(n)),e})}var v=Array.isArray||function(t){return"[object Array]"===Object.prototype.toString.call(t)};function y(t,i){for(var e=0;e<t.length;e++)if(t[e]===i)return e;return-1}var x="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";function w(t){return window["webkit"+t]||window["moz"+t]||window["ms"+t]}var P=0;function b(t){var i=+new Date,e=Math.max(0,16-(i-P));return P=i+e,window.setTimeout(t,e)}var T=window.requestAnimationFrame||w("RequestAnimationFrame")||b,z=window.cancelAnimationFrame||w("CancelAnimationFrame")||w("CancelRequestAnimationFrame")||function(t){window.clearTimeout(t)};function M(t,i,e){if(!e||T!==b)return T.call(window,a(t,i));t.call(i)}function C(t){t&&z.call(window,t)}var S=(Object.freeze||Object)({freeze:i,extend:h,create:s,bind:a,lastId:n,stamp:u,throttle:o,wrapNum:r,falseFn:l,formatNum:c,trim:_,splitWords:d,setOptions:p,getParamString:m,template:g,isArray:v,indexOf:y,emptyImageUrl:x,requestFn:T,cancelFn:z,requestAnimFrame:M,cancelAnimFrame:C});function E(){}E.extend=function(t){function i(){this.initialize&&this.initialize.apply(this,arguments),this.callInitHooks()}var e=i.__super__=this.prototype,n=s(e);for(var o in(n.constructor=i).prototype=n,this)this.hasOwnProperty(o)&&"prototype"!==o&&"__super__"!==o&&(i[o]=this[o]);return t.statics&&(h(i,t.statics),delete t.statics),t.includes&&(function(t){if("undefined"==typeof L||!L||!L.Mixin)return;t=v(t)?t:[t];for(var i=0;i<t.length;i++)t[i]===L.Mixin.Events&&console.warn("Deprecated include of L.Mixin.Events: this property will be removed in future releases, please inherit from L.Evented instead.",(new Error).stack)}(t.includes),h.apply(null,[n].concat(t.includes)),delete t.includes),n.options&&(t.options=h(s(n.options),t.options)),h(n,t),n._initHooks=[],n.callInitHooks=function(){if(!this._initHooksCalled){e.callInitHooks&&e.callInitHooks.call(this),this._initHooksCalled=!0;for(var t=0,i=n._initHooks.length;t<i;t++)n._initHooks[t].call(this)}},i},E.include=function(t){return h(this.prototype,t),this},E.mergeOptions=function(t){return h(this.prototype.options,t),this},E.addInitHook=function(t){var i=Array.prototype.slice.call(arguments,1),e="function"==typeof t?t:function(){this[t].apply(this,i)};return this.prototype._initHooks=this.prototype._initHooks||[],this.prototype._initHooks.push(e),this};var Z={on:function(t,i,e){if("object"==typeof t)for(var n in t)this._on(n,t[n],i);else for(var o=0,s=(t=d(t)).length;o<s;o++)this._on(t[o],i,e);return this},off:function(t,i,e){if(t)if("object"==typeof t)for(var n in t)this._off(n,t[n],i);else for(var o=0,s=(t=d(t)).length;o<s;o++)this._off(t[o],i,e);else delete this._events;return this},_on:function(t,i,e){this._events=this._events||{};var n=this._events[t];n||(n=[],this._events[t]=n),e===this&&(e=void 0);for(var o={fn:i,ctx:e},s=n,r=0,a=s.length;r<a;r++)if(s[r].fn===i&&s[r].ctx===e)return;s.push(o)},_off:function(t,i,e){var n,o,s;if(this._events&&(n=this._events[t]))if(i){if(e===this&&(e=void 0),n)for(o=0,s=n.length;o<s;o++){var r=n[o];if(r.ctx===e&&r.fn===i)return r.fn=l,this._firingCount&&(this._events[t]=n=n.slice()),void n.splice(o,1)}}else{for(o=0,s=n.length;o<s;o++)n[o].fn=l;delete this._events[t]}},fire:function(t,i,e){if(!this.listens(t,e))return this;var n=h({},i,{type:t,target:this,sourceTarget:i&&i.sourceTarget||this});if(this._events){var o=this._events[t];if(o){this._firingCount=this._firingCount+1||1;for(var s=0,r=o.length;s<r;s++){var a=o[s];a.fn.call(a.ctx||this,n)}this._firingCount--}}return e&&this._propagateEvent(n),this},listens:function(t,i){var e=this._events&&this._events[t];if(e&&e.length)return!0;if(i)for(var n in this._eventParents)if(this._eventParents[n].listens(t,i))return!0;return!1},once:function(t,i,e){if("object"==typeof t){for(var n in t)this.once(n,t[n],i);return this}var o=a(function(){this.off(t,i,e).off(t,o,e)},this);return this.on(t,i,e).on(t,o,e)},addEventParent:function(t){return this._eventParents=this._eventParents||{},this._eventParents[u(t)]=t,this},removeEventParent:function(t){return this._eventParents&&delete this._eventParents[u(t)],this},_propagateEvent:function(t){for(var i in this._eventParents)this._eventParents[i].fire(t.type,h({layer:t.target,propagatedFrom:t.target},t),!0)}};Z.addEventListener=Z.on,Z.removeEventListener=Z.clearAllEventListeners=Z.off,Z.addOneTimeEventListener=Z.once,Z.fireEvent=Z.fire,Z.hasEventListeners=Z.listens;var k=E.extend(Z);function B(t,i,e){this.x=e?Math.round(t):t,this.y=e?Math.round(i):i}var A=Math.trunc||function(t){return 0<t?Math.floor(t):Math.ceil(t)};function I(t,i,e){return t instanceof B?t:v(t)?new B(t[0],t[1]):null==t?t:"object"==typeof t&&"x"in t&&"y"in t?new B(t.x,t.y):new B(t,i,e)}function O(t,i){if(t)for(var e=i?[t,i]:t,n=0,o=e.length;n<o;n++)this.extend(e[n])}function R(t,i){return!t||t instanceof O?t:new O(t,i)}function N(t,i){if(t)for(var e=i?[t,i]:t,n=0,o=e.length;n<o;n++)this.extend(e[n])}function D(t,i){return t instanceof N?t:new N(t,i)}function j(t,i,e){if(isNaN(t)||isNaN(i))throw new Error("Invalid LatLng object: ("+t+", "+i+")");this.lat=+t,this.lng=+i,void 0!==e&&(this.alt=+e)}function W(t,i,e){return t instanceof j?t:v(t)&&"object"!=typeof t[0]?3===t.length?new j(t[0],t[1],t[2]):2===t.length?new j(t[0],t[1]):null:null==t?t:"object"==typeof t&&"lat"in t?new j(t.lat,"lng"in t?t.lng:t.lon,t.alt):void 0===i?null:new j(t,i,e)}B.prototype={clone:function(){return new B(this.x,this.y)},add:function(t){return this.clone()._add(I(t))},_add:function(t){return this.x+=t.x,this.y+=t.y,this},subtract:function(t){return this.clone()._subtract(I(t))},_subtract:function(t){return this.x-=t.x,this.y-=t.y,this},divideBy:function(t){return this.clone()._divideBy(t)},_divideBy:function(t){return this.x/=t,this.y/=t,this},multiplyBy:function(t){return this.clone()._multiplyBy(t)},_multiplyBy:function(t){return this.x*=t,this.y*=t,this},scaleBy:function(t){return new B(this.x*t.x,this.y*t.y)},unscaleBy:function(t){return new B(this.x/t.x,this.y/t.y)},round:function(){return this.clone()._round()},_round:function(){return this.x=Math.round(this.x),this.y=Math.round(this.y),this},floor:function(){return this.clone()._floor()},_floor:function(){return this.x=Math.floor(this.x),this.y=Math.floor(this.y),this},ceil:function(){return this.clone()._ceil()},_ceil:function(){return this.x=Math.ceil(this.x),this.y=Math.ceil(this.y),this},trunc:function(){return this.clone()._trunc()},_trunc:function(){return this.x=A(this.x),this.y=A(this.y),this},distanceTo:function(t){var i=(t=I(t)).x-this.x,e=t.y-this.y;return Math.sqrt(i*i+e*e)},equals:function(t){return(t=I(t)).x===this.x&&t.y===this.y},contains:function(t){return t=I(t),Math.abs(t.x)<=Math.abs(this.x)&&Math.abs(t.y)<=Math.abs(this.y)},toString:function(){return"Point("+c(this.x)+", "+c(this.y)+")"}},O.prototype={extend:function(t){return t=I(t),this.min||this.max?(this.min.x=Math.min(t.x,this.min.x),this.max.x=Math.max(t.x,this.max.x),this.min.y=Math.min(t.y,this.min.y),this.max.y=Math.max(t.y,this.max.y)):(this.min=t.clone(),this.max=t.clone()),this},getCenter:function(t){return new B((this.min.x+this.max.x)/2,(this.min.y+this.max.y)/2,t)},getBottomLeft:function(){return new B(this.min.x,this.max.y)},getTopRight:function(){return new B(this.max.x,this.min.y)},getTopLeft:function(){return this.min},getBottomRight:function(){return this.max},getSize:function(){return this.max.subtract(this.min)},contains:function(t){var i,e;return(t="number"==typeof t[0]||t instanceof B?I(t):R(t))instanceof O?(i=t.min,e=t.max):i=e=t,i.x>=this.min.x&&e.x<=this.max.x&&i.y>=this.min.y&&e.y<=this.max.y},intersects:function(t){t=R(t);var i=this.min,e=this.max,n=t.min,o=t.max,s=o.x>=i.x&&n.x<=e.x,r=o.y>=i.y&&n.y<=e.y;return s&&r},overlaps:function(t){t=R(t);var i=this.min,e=this.max,n=t.min,o=t.max,s=o.x>i.x&&n.x<e.x,r=o.y>i.y&&n.y<e.y;return s&&r},isValid:function(){return!(!this.min||!this.max)}},N.prototype={extend:function(t){var i,e,n=this._southWest,o=this._northEast;if(t instanceof j)e=i=t;else{if(!(t instanceof N))return t?this.extend(W(t)||D(t)):this;if(i=t._southWest,e=t._northEast,!i||!e)return this}return n||o?(n.lat=Math.min(i.lat,n.lat),n.lng=Math.min(i.lng,n.lng),o.lat=Math.max(e.lat,o.lat),o.lng=Math.max(e.lng,o.lng)):(this._southWest=new j(i.lat,i.lng),this._northEast=new j(e.lat,e.lng)),this},pad:function(t){var i=this._southWest,e=this._northEast,n=Math.abs(i.lat-e.lat)*t,o=Math.abs(i.lng-e.lng)*t;return new N(new j(i.lat-n,i.lng-o),new j(e.lat+n,e.lng+o))},getCenter:function(){return new j((this._southWest.lat+this._northEast.lat)/2,(this._southWest.lng+this._northEast.lng)/2)},getSouthWest:function(){return this._southWest},getNorthEast:function(){return this._northEast},getNorthWest:function(){return new j(this.getNorth(),this.getWest())},getSouthEast:function(){return new j(this.getSouth(),this.getEast())},getWest:function(){return this._southWest.lng},getSouth:function(){return this._southWest.lat},getEast:function(){return this._northEast.lng},getNorth:function(){return this._northEast.lat},contains:function(t){t="number"==typeof t[0]||t instanceof j||"lat"in t?W(t):D(t);var i,e,n=this._southWest,o=this._northEast;return t instanceof N?(i=t.getSouthWest(),e=t.getNorthEast()):i=e=t,i.lat>=n.lat&&e.lat<=o.lat&&i.lng>=n.lng&&e.lng<=o.lng},intersects:function(t){t=D(t);var i=this._southWest,e=this._northEast,n=t.getSouthWest(),o=t.getNorthEast(),s=o.lat>=i.lat&&n.lat<=e.lat,r=o.lng>=i.lng&&n.lng<=e.lng;return s&&r},overlaps:function(t){t=D(t);var i=this._southWest,e=this._northEast,n=t.getSouthWest(),o=t.getNorthEast(),s=o.lat>i.lat&&n.lat<e.lat,r=o.lng>i.lng&&n.lng<e.lng;return s&&r},toBBoxString:function(){return[this.getWest(),this.getSouth(),this.getEast(),this.getNorth()].join(",")},equals:function(t,i){return!!t&&(t=D(t),this._southWest.equals(t.getSouthWest(),i)&&this._northEast.equals(t.getNorthEast(),i))},isValid:function(){return!(!this._southWest||!this._northEast)}};var H,F={latLngToPoint:function(t,i){var e=this.projection.project(t),n=this.scale(i);return this.transformation._transform(e,n)},pointToLatLng:function(t,i){var e=this.scale(i),n=this.transformation.untransform(t,e);return this.projection.unproject(n)},project:function(t){return this.projection.project(t)},unproject:function(t){return this.projection.unproject(t)},scale:function(t){return 256*Math.pow(2,t)},zoom:function(t){return Math.log(t/256)/Math.LN2},getProjectedBounds:function(t){if(this.infinite)return null;var i=this.projection.bounds,e=this.scale(t);return new O(this.transformation.transform(i.min,e),this.transformation.transform(i.max,e))},infinite:!(j.prototype={equals:function(t,i){return!!t&&(t=W(t),Math.max(Math.abs(this.lat-t.lat),Math.abs(this.lng-t.lng))<=(void 0===i?1e-9:i))},toString:function(t){return"LatLng("+c(this.lat,t)+", "+c(this.lng,t)+")"},distanceTo:function(t){return U.distance(this,W(t))},wrap:function(){return U.wrapLatLng(this)},toBounds:function(t){var i=180*t/40075017,e=i/Math.cos(Math.PI/180*this.lat);return D([this.lat-i,this.lng-e],[this.lat+i,this.lng+e])},clone:function(){return new j(this.lat,this.lng,this.alt)}}),wrapLatLng:function(t){var i=this.wrapLng?r(t.lng,this.wrapLng,!0):t.lng;return new j(this.wrapLat?r(t.lat,this.wrapLat,!0):t.lat,i,t.alt)},wrapLatLngBounds:function(t){var i=t.getCenter(),e=this.wrapLatLng(i),n=i.lat-e.lat,o=i.lng-e.lng;if(0==n&&0==o)return t;var s=t.getSouthWest(),r=t.getNorthEast();return new N(new j(s.lat-n,s.lng-o),new j(r.lat-n,r.lng-o))}},U=h({},F,{wrapLng:[-180,180],R:6371e3,distance:function(t,i){var e=Math.PI/180,n=t.lat*e,o=i.lat*e,s=Math.sin((i.lat-t.lat)*e/2),r=Math.sin((i.lng-t.lng)*e/2),a=s*s+Math.cos(n)*Math.cos(o)*r*r,h=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));return this.R*h}}),V=6378137,q={R:V,MAX_LATITUDE:85.0511287798,project:function(t){var i=Math.PI/180,e=this.MAX_LATITUDE,n=Math.max(Math.min(e,t.lat),-e),o=Math.sin(n*i);return new B(this.R*t.lng*i,this.R*Math.log((1+o)/(1-o))/2)},unproject:function(t){var i=180/Math.PI;return new j((2*Math.atan(Math.exp(t.y/this.R))-Math.PI/2)*i,t.x*i/this.R)},bounds:(H=V*Math.PI,new O([-H,-H],[H,H]))};function G(t,i,e,n){if(v(t))return this._a=t[0],this._b=t[1],this._c=t[2],void(this._d=t[3]);this._a=t,this._b=i,this._c=e,this._d=n}function K(t,i,e,n){return new G(t,i,e,n)}G.prototype={transform:function(t,i){return this._transform(t.clone(),i)},_transform:function(t,i){return i=i||1,t.x=i*(this._a*t.x+this._b),t.y=i*(this._c*t.y+this._d),t},untransform:function(t,i){return i=i||1,new B((t.x/i-this._b)/this._a,(t.y/i-this._d)/this._c)}};var Y,X=h({},U,{code:"EPSG:3857",projection:q,transformation:(Y=.5/(Math.PI*q.R),K(Y,.5,-Y,.5))}),J=h({},X,{code:"EPSG:900913"});function $(t){return document.createElementNS("http://www.w3.org/2000/svg",t)}function Q(t,i){var e,n,o,s,r,a,h="";for(e=0,o=t.length;e<o;e++){for(n=0,s=(r=t[e]).length;n<s;n++)h+=(n?"L":"M")+(a=r[n]).x+" "+a.y;h+=i?Zt?"z":"x":""}return h||"M0 0"}var tt=document.documentElement.style,it="ActiveXObject"in window,et=it&&!document.addEventListener,nt="msLaunchUri"in navigator&&!("documentMode"in document),ot=Bt("webkit"),st=Bt("android"),rt=Bt("android 2")||Bt("android 3"),at=parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1],10),ht=st&&Bt("Google")&&at<537&&!("AudioNode"in window),ut=!!window.opera,lt=Bt("chrome"),ct=Bt("gecko")&&!ot&&!ut&&!it,_t=!lt&&Bt("safari"),dt=Bt("phantom"),pt="OTransition"in tt,mt=0===navigator.platform.indexOf("Win"),ft=it&&"transition"in tt,gt="WebKitCSSMatrix"in window&&"m11"in new window.WebKitCSSMatrix&&!rt,vt="MozPerspective"in tt,yt=!window.L_DISABLE_3D&&(ft||gt||vt)&&!pt&&!dt,xt="undefined"!=typeof orientation||Bt("mobile"),wt=xt&&ot,Pt=xt&&gt,Lt=!window.PointerEvent&&window.MSPointerEvent,bt=!(ot||!window.PointerEvent&&!Lt),Tt=!window.L_NO_TOUCH&&(bt||"ontouchstart"in window||window.DocumentTouch&&document instanceof window.DocumentTouch),zt=xt&&ut,Mt=xt&&ct,Ct=1<(window.devicePixelRatio||window.screen.deviceXDPI/window.screen.logicalXDPI),St=function(){var t=!1;try{var i=Object.defineProperty({},"passive",{get:function(){t=!0}});window.addEventListener("testPassiveEventSupport",l,i),window.removeEventListener("testPassiveEventSupport",l,i)}catch(t){}return t},Et=!!document.createElement("canvas").getContext,Zt=!(!document.createElementNS||!$("svg").createSVGRect),kt=!Zt&&function(){try{var t=document.createElement("div");t.innerHTML='<v:shape adj="1"/>';var i=t.firstChild;return i.style.behavior="url(#default#VML)",i&&"object"==typeof i.adj}catch(t){return!1}}();function Bt(t){return 0<=navigator.userAgent.toLowerCase().indexOf(t)}var At=(Object.freeze||Object)({ie:it,ielt9:et,edge:nt,webkit:ot,android:st,android23:rt,androidStock:ht,opera:ut,chrome:lt,gecko:ct,safari:_t,phantom:dt,opera12:pt,win:mt,ie3d:ft,webkit3d:gt,gecko3d:vt,any3d:yt,mobile:xt,mobileWebkit:wt,mobileWebkit3d:Pt,msPointer:Lt,pointer:bt,touch:Tt,mobileOpera:zt,mobileGecko:Mt,retina:Ct,passiveEvents:St,canvas:Et,svg:Zt,vml:kt}),It=Lt?"MSPointerDown":"pointerdown",Ot=Lt?"MSPointerMove":"pointermove",Rt=Lt?"MSPointerUp":"pointerup",Nt=Lt?"MSPointerCancel":"pointercancel",Dt=["INPUT","SELECT","OPTION"],jt={},Wt=!1,Ht=0;function Ft(t,i,e,n){return"touchstart"===i?function(t,i,e){var n=a(function(t){if("mouse"!==t.pointerType&&t.MSPOINTER_TYPE_MOUSE&&t.pointerType!==t.MSPOINTER_TYPE_MOUSE){if(!(Dt.indexOf(t.target.tagName)<0))return;ji(t)}Gt(t,i)});t["_leaflet_touchstart"+e]=n,t.addEventListener(It,n,!1),Wt||(document.documentElement.addEventListener(It,Ut,!0),document.documentElement.addEventListener(Ot,Vt,!0),document.documentElement.addEventListener(Rt,qt,!0),document.documentElement.addEventListener(Nt,qt,!0),Wt=!0)}(t,e,n):"touchmove"===i?function(t,i,e){function n(t){(t.pointerType!==t.MSPOINTER_TYPE_MOUSE&&"mouse"!==t.pointerType||0!==t.buttons)&&Gt(t,i)}t["_leaflet_touchmove"+e]=n,t.addEventListener(Ot,n,!1)}(t,e,n):"touchend"===i&&function(t,i,e){function n(t){Gt(t,i)}t["_leaflet_touchend"+e]=n,t.addEventListener(Rt,n,!1),t.addEventListener(Nt,n,!1)}(t,e,n),this}function Ut(t){jt[t.pointerId]=t,Ht++}function Vt(t){jt[t.pointerId]&&(jt[t.pointerId]=t)}function qt(t){delete jt[t.pointerId],Ht--}function Gt(t,i){for(var e in t.touches=[],jt)t.touches.push(jt[e]);t.changedTouches=[t],i(t)}var Kt=Lt?"MSPointerDown":bt?"pointerdown":"touchstart",Yt=Lt?"MSPointerUp":bt?"pointerup":"touchend",Xt="_leaflet_";function Jt(t,o,i){var s,r,a=!1;function e(t){var i;if(bt){if(!nt||"mouse"===t.pointerType)return;i=Ht}else i=t.touches.length;if(!(1<i)){var e=Date.now(),n=e-(s||e);r=t.touches?t.touches[0]:t,a=0<n&&n<=250,s=e}}function n(t){if(a&&!r.cancelBubble){if(bt){if(!nt||"mouse"===t.pointerType)return;var i,e,n={};for(e in r)i=r[e],n[e]=i&&i.bind?i.bind(r):i;r=n}r.type="dblclick",r.button=0,o(r),s=null}}return t[Xt+Kt+i]=e,t[Xt+Yt+i]=n,t[Xt+"dblclick"+i]=o,t.addEventListener(Kt,e,!!St&&{passive:!1}),t.addEventListener(Yt,n,!!St&&{passive:!1}),t.addEventListener("dblclick",o,!1),this}function $t(t,i){var e=t[Xt+Kt+i],n=t[Xt+Yt+i],o=t[Xt+"dblclick"+i];return t.removeEventListener(Kt,e,!!St&&{passive:!1}),t.removeEventListener(Yt,n,!!St&&{passive:!1}),nt||t.removeEventListener("dblclick",o,!1),this}var Qt,ti,ii,ei,ni,oi=xi(["transform","webkitTransform","OTransform","MozTransform","msTransform"]),si=xi(["webkitTransition","transition","OTransition","MozTransition","msTransition"]),ri="webkitTransition"===si||"OTransition"===si?si+"End":"transitionend";function ai(t){return"string"==typeof t?document.getElementById(t):t}function hi(t,i){var e=t.style[i]||t.currentStyle&&t.currentStyle[i];if((!e||"auto"===e)&&document.defaultView){var n=document.defaultView.getComputedStyle(t,null);e=n?n[i]:null}return"auto"===e?null:e}function ui(t,i,e){var n=document.createElement(t);return n.className=i||"",e&&e.appendChild(n),n}function li(t){var i=t.parentNode;i&&i.removeChild(t)}function ci(t){for(;t.firstChild;)t.removeChild(t.firstChild)}function _i(t){var i=t.parentNode;i&&i.lastChild!==t&&i.appendChild(t)}function di(t){var i=t.parentNode;i&&i.firstChild!==t&&i.insertBefore(t,i.firstChild)}function pi(t,i){if(void 0!==t.classList)return t.classList.contains(i);var e=vi(t);return 0<e.length&&new RegExp("(^|\\s)"+i+"(\\s|$)").test(e)}function mi(t,i){if(void 0!==t.classList)for(var e=d(i),n=0,o=e.length;n<o;n++)t.classList.add(e[n]);else if(!pi(t,i)){var s=vi(t);gi(t,(s?s+" ":"")+i)}}function fi(t,i){void 0!==t.classList?t.classList.remove(i):gi(t,_((" "+vi(t)+" ").replace(" "+i+" "," ")))}function gi(t,i){void 0===t.className.baseVal?t.className=i:t.className.baseVal=i}function vi(t){return t.correspondingElement&&(t=t.correspondingElement),void 0===t.className.baseVal?t.className:t.className.baseVal}function yi(t,i){"opacity"in t.style?t.style.opacity=i:"filter"in t.style&&function(t,i){var e=!1,n="DXImageTransform.Microsoft.Alpha";try{e=t.filters.item(n)}catch(t){if(1===i)return}i=Math.round(100*i),e?(e.Enabled=100!==i,e.Opacity=i):t.style.filter+=" progid:"+n+"(opacity="+i+")"}(t,i)}function xi(t){for(var i=document.documentElement.style,e=0;e<t.length;e++)if(t[e]in i)return t[e];return!1}function wi(t,i,e){var n=i||new B(0,0);t.style[oi]=(ft?"translate("+n.x+"px,"+n.y+"px)":"translate3d("+n.x+"px,"+n.y+"px,0)")+(e?" scale("+e+")":"")}function Pi(t,i){t._leaflet_pos=i,yt?wi(t,i):(t.style.left=i.x+"px",t.style.top=i.y+"px")}function Li(t){return t._leaflet_pos||new B(0,0)}if("onselectstart"in document)Qt=function(){ki(window,"selectstart",ji)},ti=function(){Ai(window,"selectstart",ji)};else{var bi=xi(["userSelect","WebkitUserSelect","OUserSelect","MozUserSelect","msUserSelect"]);Qt=function(){if(bi){var t=document.documentElement.style;ii=t[bi],t[bi]="none"}},ti=function(){bi&&(document.documentElement.style[bi]=ii,ii=void 0)}}function Ti(){ki(window,"dragstart",ji)}function zi(){Ai(window,"dragstart",ji)}function Mi(t){for(;-1===t.tabIndex;)t=t.parentNode;t.style&&(Ci(),ni=(ei=t).style.outline,t.style.outline="none",ki(window,"keydown",Ci))}function Ci(){ei&&(ei.style.outline=ni,ni=ei=void 0,Ai(window,"keydown",Ci))}function Si(t){for(;!((t=t.parentNode).offsetWidth&&t.offsetHeight||t===document.body););return t}function Ei(t){var i=t.getBoundingClientRect();return{x:i.width/t.offsetWidth||1,y:i.height/t.offsetHeight||1,boundingClientRect:i}}var Zi=(Object.freeze||Object)({TRANSFORM:oi,TRANSITION:si,TRANSITION_END:ri,get:ai,getStyle:hi,create:ui,remove:li,empty:ci,toFront:_i,toBack:di,hasClass:pi,addClass:mi,removeClass:fi,setClass:gi,getClass:vi,setOpacity:yi,testProp:xi,setTransform:wi,setPosition:Pi,getPosition:Li,disableTextSelection:Qt,enableTextSelection:ti,disableImageDrag:Ti,enableImageDrag:zi,preventOutline:Mi,restoreOutline:Ci,getSizedParentNode:Si,getScale:Ei});function ki(t,i,e,n){if("object"==typeof i)for(var o in i)Ii(t,o,i[o],e);else for(var s=0,r=(i=d(i)).length;s<r;s++)Ii(t,i[s],e,n);return this}var Bi="_leaflet_events";function Ai(t,i,e,n){if("object"==typeof i)for(var o in i)Oi(t,o,i[o],e);else if(i)for(var s=0,r=(i=d(i)).length;s<r;s++)Oi(t,i[s],e,n);else{for(var a in t[Bi])Oi(t,a,t[Bi][a]);delete t[Bi]}return this}function Ii(i,t,e,n){var o=t+u(e)+(n?"_"+u(n):"");if(i[Bi]&&i[Bi][o])return this;var s=function(t){return e.call(n||i,t||window.event)},r=s;bt&&0===t.indexOf("touch")?Ft(i,t,s,o):!Tt||"dblclick"!==t||bt&&lt?"addEventListener"in i?"mousewheel"===t?i.addEventListener("onwheel"in i?"wheel":"mousewheel",s,!!St&&{passive:!1}):"mouseenter"===t||"mouseleave"===t?(s=function(t){t=t||window.event,Yi(i,t)&&r(t)},i.addEventListener("mouseenter"===t?"mouseover":"mouseout",s,!1)):("click"===t&&st&&(s=function(t){!function(t,i){var e=t.timeStamp||t.originalEvent&&t.originalEvent.timeStamp,n=Vi&&e-Vi;if(n&&100<n&&n<500||t.target._simulatedClick&&!t._simulated)return Wi(t);Vi=e,i(t)}(t,r)}),i.addEventListener(t,s,!1)):"attachEvent"in i&&i.attachEvent("on"+t,s):Jt(i,s,o),i[Bi]=i[Bi]||{},i[Bi][o]=s}function Oi(t,i,e,n){var o=i+u(e)+(n?"_"+u(n):""),s=t[Bi]&&t[Bi][o];if(!s)return this;bt&&0===i.indexOf("touch")?function(t,i,e){var n=t["_leaflet_"+i+e];"touchstart"===i?t.removeEventListener(It,n,!1):"touchmove"===i?t.removeEventListener(Ot,n,!1):"touchend"===i&&(t.removeEventListener(Rt,n,!1),t.removeEventListener(Nt,n,!1))}(t,i,o):!Tt||"dblclick"!==i||bt&&lt?"removeEventListener"in t?"mousewheel"===i?t.removeEventListener("onwheel"in t?"wheel":"mousewheel",s,!!St&&{passive:!1}):t.removeEventListener("mouseenter"===i?"mouseover":"mouseleave"===i?"mouseout":i,s,!1):"detachEvent"in t&&t.detachEvent("on"+i,s):$t(t,o),t[Bi][o]=null}function Ri(t){return t.stopPropagation?t.stopPropagation():t.originalEvent?t.originalEvent._stopped=!0:t.cancelBubble=!0,Ki(t),this}function Ni(t){return Ii(t,"mousewheel",Ri),this}function Di(t){return ki(t,"mousedown touchstart dblclick",Ri),Ii(t,"click",Gi),this}function ji(t){return t.preventDefault?t.preventDefault():t.returnValue=!1,this}function Wi(t){return ji(t),Ri(t),this}function Hi(t,i){if(!i)return new B(t.clientX,t.clientY);var e=Ei(i),n=e.boundingClientRect;return new B((t.clientX-n.left)/e.x-i.clientLeft,(t.clientY-n.top)/e.y-i.clientTop)}var Fi=mt&&lt?2*window.devicePixelRatio:ct?window.devicePixelRatio:1;function Ui(t){return nt?t.wheelDeltaY/2:t.deltaY&&0===t.deltaMode?-t.deltaY/Fi:t.deltaY&&1===t.deltaMode?20*-t.deltaY:t.deltaY&&2===t.deltaMode?60*-t.deltaY:t.deltaX||t.deltaZ?0:t.wheelDelta?(t.wheelDeltaY||t.wheelDelta)/2:t.detail&&Math.abs(t.detail)<32765?20*-t.detail:t.detail?t.detail/-32765*60:0}var Vi,qi={};function Gi(t){qi[t.type]=!0}function Ki(t){var i=qi[t.type];return qi[t.type]=!1,i}function Yi(t,i){var e=i.relatedTarget;if(!e)return!0;try{for(;e&&e!==t;)e=e.parentNode}catch(t){return!1}return e!==t}var Xi=(Object.freeze||Object)({on:ki,off:Ai,stopPropagation:Ri,disableScrollPropagation:Ni,disableClickPropagation:Di,preventDefault:ji,stop:Wi,getMousePosition:Hi,getWheelDelta:Ui,fakeStop:Gi,skipped:Ki,isExternalTarget:Yi,addListener:ki,removeListener:Ai}),Ji=k.extend({run:function(t,i,e,n){this.stop(),this._el=t,this._inProgress=!0,this._duration=e||.25,this._easeOutPower=1/Math.max(n||.5,.2),this._startPos=Li(t),this._offset=i.subtract(this._startPos),this._startTime=+new Date,this.fire("start"),this._animate()},stop:function(){this._inProgress&&(this._step(!0),this._complete())},_animate:function(){this._animId=M(this._animate,this),this._step()},_step:function(t){var i=+new Date-this._startTime,e=1e3*this._duration;i<e?this._runFrame(this._easeOut(i/e),t):(this._runFrame(1),this._complete())},_runFrame:function(t,i){var e=this._startPos.add(this._offset.multiplyBy(t));i&&e._round(),Pi(this._el,e),this.fire("step")},_complete:function(){C(this._animId),this._inProgress=!1,this.fire("end")},_easeOut:function(t){return 1-Math.pow(1-t,this._easeOutPower)}}),$i=k.extend({options:{crs:X,center:void 0,zoom:void 0,minZoom:void 0,maxZoom:void 0,layers:[],maxBounds:void 0,renderer:void 0,zoomAnimation:!0,zoomAnimationThreshold:4,fadeAnimation:!0,markerZoomAnimation:!0,transform3DLimit:8388608,zoomSnap:1,zoomDelta:1,trackResize:!0},initialize:function(t,i){i=p(this,i),this._handlers=[],this._layers={},this._zoomBoundLayers={},this._sizeChanged=!0,this._initContainer(t),this._initLayout(),this._onResize=a(this._onResize,this),this._initEvents(),i.maxBounds&&this.setMaxBounds(i.maxBounds),void 0!==i.zoom&&(this._zoom=this._limitZoom(i.zoom)),i.center&&void 0!==i.zoom&&this.setView(W(i.center),i.zoom,{reset:!0}),this.callInitHooks(),this._zoomAnimated=si&&yt&&!zt&&this.options.zoomAnimation,this._zoomAnimated&&(this._createAnimProxy(),ki(this._proxy,ri,this._catchTransitionEnd,this)),this._addLayers(this.options.layers)},setView:function(t,i,e){if((i=void 0===i?this._zoom:this._limitZoom(i),t=this._limitCenter(W(t),i,this.options.maxBounds),e=e||{},this._stop(),this._loaded&&!e.reset&&!0!==e)&&(void 0!==e.animate&&(e.zoom=h({animate:e.animate},e.zoom),e.pan=h({animate:e.animate,duration:e.duration},e.pan)),this._zoom!==i?this._tryAnimatedZoom&&this._tryAnimatedZoom(t,i,e.zoom):this._tryAnimatedPan(t,e.pan)))return clearTimeout(this._sizeTimer),this;return this._resetView(t,i),this},setZoom:function(t,i){return this._loaded?this.setView(this.getCenter(),t,{zoom:i}):(this._zoom=t,this)},zoomIn:function(t,i){return t=t||(yt?this.options.zoomDelta:1),this.setZoom(this._zoom+t,i)},zoomOut:function(t,i){return t=t||(yt?this.options.zoomDelta:1),this.setZoom(this._zoom-t,i)},setZoomAround:function(t,i,e){var n=this.getZoomScale(i),o=this.getSize().divideBy(2),s=(t instanceof B?t:this.latLngToContainerPoint(t)).subtract(o).multiplyBy(1-1/n),r=this.containerPointToLatLng(o.add(s));return this.setView(r,i,{zoom:e})},_getBoundsCenterZoom:function(t,i){i=i||{},t=t.getBounds?t.getBounds():D(t);var e=I(i.paddingTopLeft||i.padding||[0,0]),n=I(i.paddingBottomRight||i.padding||[0,0]),o=this.getBoundsZoom(t,!1,e.add(n));if((o="number"==typeof i.maxZoom?Math.min(i.maxZoom,o):o)===1/0)return{center:t.getCenter(),zoom:o};var s=n.subtract(e).divideBy(2),r=this.project(t.getSouthWest(),o),a=this.project(t.getNorthEast(),o);return{center:this.unproject(r.add(a).divideBy(2).add(s),o),zoom:o}},fitBounds:function(t,i){if(!(t=D(t)).isValid())throw new Error("Bounds are not valid.");var e=this._getBoundsCenterZoom(t,i);return this.setView(e.center,e.zoom,i)},fitWorld:function(t){return this.fitBounds([[-90,-180],[90,180]],t)},panTo:function(t,i){return this.setView(t,this._zoom,{pan:i})},panBy:function(t,i){if(i=i||{},!(t=I(t).round()).x&&!t.y)return this.fire("moveend");if(!0!==i.animate&&!this.getSize().contains(t))return this._resetView(this.unproject(this.project(this.getCenter()).add(t)),this.getZoom()),this;if(this._panAnim||(this._panAnim=new Ji,this._panAnim.on({step:this._onPanTransitionStep,end:this._onPanTransitionEnd},this)),i.noMoveStart||this.fire("movestart"),!1!==i.animate){mi(this._mapPane,"leaflet-pan-anim");var e=this._getMapPanePos().subtract(t).round();this._panAnim.run(this._mapPane,e,i.duration||.25,i.easeLinearity)}else this._rawPanBy(t),this.fire("move").fire("moveend");return this},flyTo:function(n,o,t){if(!1===(t=t||{}).animate||!yt)return this.setView(n,o,t);this._stop();var s=this.project(this.getCenter()),r=this.project(n),i=this.getSize(),a=this._zoom;n=W(n),o=void 0===o?a:o;var h=Math.max(i.x,i.y),u=h*this.getZoomScale(a,o),l=r.distanceTo(s)||1,c=1.42,_=c*c;function e(t){var i=(u*u-h*h+(t?-1:1)*_*_*l*l)/(2*(t?u:h)*_*l),e=Math.sqrt(i*i+1)-i;return e<1e-9?-18:Math.log(e)}function d(t){return(Math.exp(t)-Math.exp(-t))/2}function p(t){return(Math.exp(t)+Math.exp(-t))/2}var m=e(0);function f(t){return h*(p(m)*function(t){return d(t)/p(t)}(m+c*t)-d(m))/_}var g=Date.now(),v=(e(1)-m)/c,y=t.duration?1e3*t.duration:1e3*v*.8;return this._moveStart(!0,t.noMoveStart),function t(){var i=(Date.now()-g)/y,e=function(t){return 1-Math.pow(1-t,1.5)}(i)*v;i<=1?(this._flyToFrame=M(t,this),this._move(this.unproject(s.add(r.subtract(s).multiplyBy(f(e)/l)),a),this.getScaleZoom(h/function(t){return h*(p(m)/p(m+c*t))}(e),a),{flyTo:!0})):this._move(n,o)._moveEnd(!0)}.call(this),this},flyToBounds:function(t,i){var e=this._getBoundsCenterZoom(t,i);return this.flyTo(e.center,e.zoom,i)},setMaxBounds:function(t){return(t=D(t)).isValid()?(this.options.maxBounds&&this.off("moveend",this._panInsideMaxBounds),this.options.maxBounds=t,this._loaded&&this._panInsideMaxBounds(),this.on("moveend",this._panInsideMaxBounds)):(this.options.maxBounds=null,this.off("moveend",this._panInsideMaxBounds))},setMinZoom:function(t){var i=this.options.minZoom;return this.options.minZoom=t,this._loaded&&i!==t&&(this.fire("zoomlevelschange"),this.getZoom()<this.options.minZoom)?this.setZoom(t):this},setMaxZoom:function(t){var i=this.options.maxZoom;return this.options.maxZoom=t,this._loaded&&i!==t&&(this.fire("zoomlevelschange"),this.getZoom()>this.options.maxZoom)?this.setZoom(t):this},panInsideBounds:function(t,i){this._enforcingBounds=!0;var e=this.getCenter(),n=this._limitCenter(e,this._zoom,D(t));return e.equals(n)||this.panTo(n,i),this._enforcingBounds=!1,this},panInside:function(t,i){var e=I((i=i||{}).paddingTopLeft||i.padding||[0,0]),n=I(i.paddingBottomRight||i.padding||[0,0]),o=this.getCenter(),s=this.project(o),r=this.project(t),a=this.getPixelBounds(),h=a.getSize().divideBy(2),u=R([a.min.add(e),a.max.subtract(n)]);if(!u.contains(r)){this._enforcingBounds=!0;var l=s.subtract(r),c=I(r.x+l.x,r.y+l.y);(r.x<u.min.x||r.x>u.max.x)&&(c.x=s.x-l.x,0<l.x?c.x+=h.x-e.x:c.x-=h.x-n.x),(r.y<u.min.y||r.y>u.max.y)&&(c.y=s.y-l.y,0<l.y?c.y+=h.y-e.y:c.y-=h.y-n.y),this.panTo(this.unproject(c),i),this._enforcingBounds=!1}return this},invalidateSize:function(t){if(!this._loaded)return this;t=h({animate:!1,pan:!0},!0===t?{animate:!0}:t);var i=this.getSize();this._sizeChanged=!0,this._lastCenter=null;var e=this.getSize(),n=i.divideBy(2).round(),o=e.divideBy(2).round(),s=n.subtract(o);return s.x||s.y?(t.animate&&t.pan?this.panBy(s):(t.pan&&this._rawPanBy(s),this.fire("move"),t.debounceMoveend?(clearTimeout(this._sizeTimer),this._sizeTimer=setTimeout(a(this.fire,this,"moveend"),200)):this.fire("moveend")),this.fire("resize",{oldSize:i,newSize:e})):this},stop:function(){return this.setZoom(this._limitZoom(this._zoom)),this.options.zoomSnap||this.fire("viewreset"),this._stop()},locate:function(t){if(t=this._locateOptions=h({timeout:1e4,watch:!1},t),!("geolocation"in navigator))return this._handleGeolocationError({code:0,message:"Geolocation not supported."}),this;var i=a(this._handleGeolocationResponse,this),e=a(this._handleGeolocationError,this);return t.watch?this._locationWatchId=navigator.geolocation.watchPosition(i,e,t):navigator.geolocation.getCurrentPosition(i,e,t),this},stopLocate:function(){return navigator.geolocation&&navigator.geolocation.clearWatch&&navigator.geolocation.clearWatch(this._locationWatchId),this._locateOptions&&(this._locateOptions.setView=!1),this},_handleGeolocationError:function(t){var i=t.code,e=t.message||(1===i?"permission denied":2===i?"position unavailable":"timeout");this._locateOptions.setView&&!this._loaded&&this.fitWorld(),this.fire("locationerror",{code:i,message:"Geolocation error: "+e+"."})},_handleGeolocationResponse:function(t){var i=new j(t.coords.latitude,t.coords.longitude),e=i.toBounds(2*t.coords.accuracy),n=this._locateOptions;if(n.setView){var o=this.getBoundsZoom(e);this.setView(i,n.maxZoom?Math.min(o,n.maxZoom):o)}var s={latlng:i,bounds:e,timestamp:t.timestamp};for(var r in t.coords)"number"==typeof t.coords[r]&&(s[r]=t.coords[r]);this.fire("locationfound",s)},addHandler:function(t,i){if(!i)return this;var e=this[t]=new i(this);return this._handlers.push(e),this.options[t]&&e.enable(),this},remove:function(){if(this._initEvents(!0),this._containerId!==this._container._leaflet_id)throw new Error("Map container is being reused by another instance");try{delete this._container._leaflet_id,delete this._containerId}catch(t){this._container._leaflet_id=void 0,this._containerId=void 0}var t;for(t in void 0!==this._locationWatchId&&this.stopLocate(),this._stop(),li(this._mapPane),this._clearControlPos&&this._clearControlPos(),this._resizeRequest&&(C(this._resizeRequest),this._resizeRequest=null),this._clearHandlers(),this._loaded&&this.fire("unload"),this._layers)this._layers[t].remove();for(t in this._panes)li(this._panes[t]);return this._layers=[],this._panes=[],delete this._mapPane,delete this._renderer,this},createPane:function(t,i){var e=ui("div","leaflet-pane"+(t?" leaflet-"+t.replace("Pane","")+"-pane":""),i||this._mapPane);return t&&(this._panes[t]=e),e},getCenter:function(){return this._checkIfLoaded(),this._lastCenter&&!this._moved()?this._lastCenter:this.layerPointToLatLng(this._getCenterLayerPoint())},getZoom:function(){return this._zoom},getBounds:function(){var t=this.getPixelBounds();return new N(this.unproject(t.getBottomLeft()),this.unproject(t.getTopRight()))},getMinZoom:function(){return void 0===this.options.minZoom?this._layersMinZoom||0:this.options.minZoom},getMaxZoom:function(){return void 0===this.options.maxZoom?void 0===this._layersMaxZoom?1/0:this._layersMaxZoom:this.options.maxZoom},getBoundsZoom:function(t,i,e){t=D(t),e=I(e||[0,0]);var n=this.getZoom()||0,o=this.getMinZoom(),s=this.getMaxZoom(),r=t.getNorthWest(),a=t.getSouthEast(),h=this.getSize().subtract(e),u=R(this.project(a,n),this.project(r,n)).getSize(),l=yt?this.options.zoomSnap:1,c=h.x/u.x,_=h.y/u.y,d=i?Math.max(c,_):Math.min(c,_);return n=this.getScaleZoom(d,n),l&&(n=Math.round(n/(l/100))*(l/100),n=i?Math.ceil(n/l)*l:Math.floor(n/l)*l),Math.max(o,Math.min(s,n))},getSize:function(){return this._size&&!this._sizeChanged||(this._size=new B(this._container.clientWidth||0,this._container.clientHeight||0),this._sizeChanged=!1),this._size.clone()},getPixelBounds:function(t,i){var e=this._getTopLeftPoint(t,i);return new O(e,e.add(this.getSize()))},getPixelOrigin:function(){return this._checkIfLoaded(),this._pixelOrigin},getPixelWorldBounds:function(t){return this.options.crs.getProjectedBounds(void 0===t?this.getZoom():t)},getPane:function(t){return"string"==typeof t?this._panes[t]:t},getPanes:function(){return this._panes},getContainer:function(){return this._container},getZoomScale:function(t,i){var e=this.options.crs;return i=void 0===i?this._zoom:i,e.scale(t)/e.scale(i)},getScaleZoom:function(t,i){var e=this.options.crs;i=void 0===i?this._zoom:i;var n=e.zoom(t*e.scale(i));return isNaN(n)?1/0:n},project:function(t,i){return i=void 0===i?this._zoom:i,this.options.crs.latLngToPoint(W(t),i)},unproject:function(t,i){return i=void 0===i?this._zoom:i,this.options.crs.pointToLatLng(I(t),i)},layerPointToLatLng:function(t){var i=I(t).add(this.getPixelOrigin());return this.unproject(i)},latLngToLayerPoint:function(t){return this.project(W(t))._round()._subtract(this.getPixelOrigin())},wrapLatLng:function(t){return this.options.crs.wrapLatLng(W(t))},wrapLatLngBounds:function(t){return this.options.crs.wrapLatLngBounds(D(t))},distance:function(t,i){return this.options.crs.distance(W(t),W(i))},containerPointToLayerPoint:function(t){return I(t).subtract(this._getMapPanePos())},layerPointToContainerPoint:function(t){return I(t).add(this._getMapPanePos())},containerPointToLatLng:function(t){var i=this.containerPointToLayerPoint(I(t));return this.layerPointToLatLng(i)},latLngToContainerPoint:function(t){return this.layerPointToContainerPoint(this.latLngToLayerPoint(W(t)))},mouseEventToContainerPoint:function(t){return Hi(t,this._container)},mouseEventToLayerPoint:function(t){return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(t))},mouseEventToLatLng:function(t){return this.layerPointToLatLng(this.mouseEventToLayerPoint(t))},_initContainer:function(t){var i=this._container=ai(t);if(!i)throw new Error("Map container not found.");if(i._leaflet_id)throw new Error("Map container is already initialized.");ki(i,"scroll",this._onScroll,this),this._containerId=u(i)},_initLayout:function(){var t=this._container;this._fadeAnimated=this.options.fadeAnimation&&yt,mi(t,"leaflet-container"+(Tt?" leaflet-touch":"")+(Ct?" leaflet-retina":"")+(et?" leaflet-oldie":"")+(_t?" leaflet-safari":"")+(this._fadeAnimated?" leaflet-fade-anim":""));var i=hi(t,"position");"absolute"!==i&&"relative"!==i&&"fixed"!==i&&(t.style.position="relative"),this._initPanes(),this._initControlPos&&this._initControlPos()},_initPanes:function(){var t=this._panes={};this._paneRenderers={},this._mapPane=this.createPane("mapPane",this._container),Pi(this._mapPane,new B(0,0)),this.createPane("tilePane"),this.createPane("shadowPane"),this.createPane("overlayPane"),this.createPane("markerPane"),this.createPane("tooltipPane"),this.createPane("popupPane"),this.options.markerZoomAnimation||(mi(t.markerPane,"leaflet-zoom-hide"),mi(t.shadowPane,"leaflet-zoom-hide"))},_resetView:function(t,i){Pi(this._mapPane,new B(0,0));var e=!this._loaded;this._loaded=!0,i=this._limitZoom(i),this.fire("viewprereset");var n=this._zoom!==i;this._moveStart(n,!1)._move(t,i)._moveEnd(n),this.fire("viewreset"),e&&this.fire("load")},_moveStart:function(t,i){return t&&this.fire("zoomstart"),i||this.fire("movestart"),this},_move:function(t,i,e){void 0===i&&(i=this._zoom);var n=this._zoom!==i;return this._zoom=i,this._lastCenter=t,this._pixelOrigin=this._getNewPixelOrigin(t),(n||e&&e.pinch)&&this.fire("zoom",e),this.fire("move",e)},_moveEnd:function(t){return t&&this.fire("zoomend"),this.fire("moveend")},_stop:function(){return C(this._flyToFrame),this._panAnim&&this._panAnim.stop(),this},_rawPanBy:function(t){Pi(this._mapPane,this._getMapPanePos().subtract(t))},_getZoomSpan:function(){return this.getMaxZoom()-this.getMinZoom()},_panInsideMaxBounds:function(){this._enforcingBounds||this.panInsideBounds(this.options.maxBounds)},_checkIfLoaded:function(){if(!this._loaded)throw new Error("Set map center and zoom first.")},_initEvents:function(t){this._targets={};var i=t?Ai:ki;i((this._targets[u(this._container)]=this)._container,"click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu keypress keydown keyup",this._handleDOMEvent,this),this.options.trackResize&&i(window,"resize",this._onResize,this),yt&&this.options.transform3DLimit&&(t?this.off:this.on).call(this,"moveend",this._onMoveEnd)},_onResize:function(){C(this._resizeRequest),this._resizeRequest=M(function(){this.invalidateSize({debounceMoveend:!0})},this)},_onScroll:function(){this._container.scrollTop=0,this._container.scrollLeft=0},_onMoveEnd:function(){var t=this._getMapPanePos();Math.max(Math.abs(t.x),Math.abs(t.y))>=this.options.transform3DLimit&&this._resetView(this.getCenter(),this.getZoom())},_findEventTargets:function(t,i){for(var e,n=[],o="mouseout"===i||"mouseover"===i,s=t.target||t.srcElement,r=!1;s;){if((e=this._targets[u(s)])&&("click"===i||"preclick"===i)&&!t._simulated&&this._draggableMoved(e)){r=!0;break}if(e&&e.listens(i,!0)){if(o&&!Yi(s,t))break;if(n.push(e),o)break}if(s===this._container)break;s=s.parentNode}return n.length||r||o||!Yi(s,t)||(n=[this]),n},_handleDOMEvent:function(t){if(this._loaded&&!Ki(t)){var i=t.type;"mousedown"!==i&&"keypress"!==i&&"keyup"!==i&&"keydown"!==i||Mi(t.target||t.srcElement),this._fireDOMEvent(t,i)}},_mouseEvents:["click","dblclick","mouseover","mouseout","contextmenu"],_fireDOMEvent:function(t,i,e){if("click"===t.type){var n=h({},t);n.type="preclick",this._fireDOMEvent(n,n.type,e)}if(!t._stopped&&(e=(e||[]).concat(this._findEventTargets(t,i))).length){var o=e[0];"contextmenu"===i&&o.listens(i,!0)&&ji(t);var s={originalEvent:t};if("keypress"!==t.type&&"keydown"!==t.type&&"keyup"!==t.type){var r=o.getLatLng&&(!o._radius||o._radius<=10);s.containerPoint=r?this.latLngToContainerPoint(o.getLatLng()):this.mouseEventToContainerPoint(t),s.layerPoint=this.containerPointToLayerPoint(s.containerPoint),s.latlng=r?o.getLatLng():this.layerPointToLatLng(s.layerPoint)}for(var a=0;a<e.length;a++)if(e[a].fire(i,s,!0),s.originalEvent._stopped||!1===e[a].options.bubblingMouseEvents&&-1!==y(this._mouseEvents,i))return}},_draggableMoved:function(t){return(t=t.dragging&&t.dragging.enabled()?t:this).dragging&&t.dragging.moved()||this.boxZoom&&this.boxZoom.moved()},_clearHandlers:function(){for(var t=0,i=this._handlers.length;t<i;t++)this._handlers[t].disable()},whenReady:function(t,i){return this._loaded?t.call(i||this,{target:this}):this.on("load",t,i),this},_getMapPanePos:function(){return Li(this._mapPane)||new B(0,0)},_moved:function(){var t=this._getMapPanePos();return t&&!t.equals([0,0])},_getTopLeftPoint:function(t,i){return(t&&void 0!==i?this._getNewPixelOrigin(t,i):this.getPixelOrigin()).subtract(this._getMapPanePos())},_getNewPixelOrigin:function(t,i){var e=this.getSize()._divideBy(2);return this.project(t,i)._subtract(e)._add(this._getMapPanePos())._round()},_latLngToNewLayerPoint:function(t,i,e){var n=this._getNewPixelOrigin(e,i);return this.project(t,i)._subtract(n)},_latLngBoundsToNewLayerBounds:function(t,i,e){var n=this._getNewPixelOrigin(e,i);return R([this.project(t.getSouthWest(),i)._subtract(n),this.project(t.getNorthWest(),i)._subtract(n),this.project(t.getSouthEast(),i)._subtract(n),this.project(t.getNorthEast(),i)._subtract(n)])},_getCenterLayerPoint:function(){return this.containerPointToLayerPoint(this.getSize()._divideBy(2))},_getCenterOffset:function(t){return this.latLngToLayerPoint(t).subtract(this._getCenterLayerPoint())},_limitCenter:function(t,i,e){if(!e)return t;var n=this.project(t,i),o=this.getSize().divideBy(2),s=new O(n.subtract(o),n.add(o)),r=this._getBoundsOffset(s,e,i);return r.round().equals([0,0])?t:this.unproject(n.add(r),i)},_limitOffset:function(t,i){if(!i)return t;var e=this.getPixelBounds(),n=new O(e.min.add(t),e.max.add(t));return t.add(this._getBoundsOffset(n,i))},_getBoundsOffset:function(t,i,e){var n=R(this.project(i.getNorthEast(),e),this.project(i.getSouthWest(),e)),o=n.min.subtract(t.min),s=n.max.subtract(t.max);return new B(this._rebound(o.x,-s.x),this._rebound(o.y,-s.y))},_rebound:function(t,i){return 0<t+i?Math.round(t-i)/2:Math.max(0,Math.ceil(t))-Math.max(0,Math.floor(i))},_limitZoom:function(t){var i=this.getMinZoom(),e=this.getMaxZoom(),n=yt?this.options.zoomSnap:1;return n&&(t=Math.round(t/n)*n),Math.max(i,Math.min(e,t))},_onPanTransitionStep:function(){this.fire("move")},_onPanTransitionEnd:function(){fi(this._mapPane,"leaflet-pan-anim"),this.fire("moveend")},_tryAnimatedPan:function(t,i){var e=this._getCenterOffset(t)._trunc();return!(!0!==(i&&i.animate)&&!this.getSize().contains(e))&&(this.panBy(e,i),!0)},_createAnimProxy:function(){var t=this._proxy=ui("div","leaflet-proxy leaflet-zoom-animated");this._panes.mapPane.appendChild(t),this.on("zoomanim",function(t){var i=oi,e=this._proxy.style[i];wi(this._proxy,this.project(t.center,t.zoom),this.getZoomScale(t.zoom,1)),e===this._proxy.style[i]&&this._animatingZoom&&this._onZoomTransitionEnd()},this),this.on("load moveend",this._animMoveEnd,this),this._on("unload",this._destroyAnimProxy,this)},_destroyAnimProxy:function(){li(this._proxy),this.off("load moveend",this._animMoveEnd,this),delete this._proxy},_animMoveEnd:function(){var t=this.getCenter(),i=this.getZoom();wi(this._proxy,this.project(t,i),this.getZoomScale(i,1))},_catchTransitionEnd:function(t){this._animatingZoom&&0<=t.propertyName.indexOf("transform")&&this._onZoomTransitionEnd()},_nothingToAnimate:function(){return!this._container.getElementsByClassName("leaflet-zoom-animated").length},_tryAnimatedZoom:function(t,i,e){if(this._animatingZoom)return!0;if(e=e||{},!this._zoomAnimated||!1===e.animate||this._nothingToAnimate()||Math.abs(i-this._zoom)>this.options.zoomAnimationThreshold)return!1;var n=this.getZoomScale(i),o=this._getCenterOffset(t)._divideBy(1-1/n);return!(!0!==e.animate&&!this.getSize().contains(o))&&(M(function(){this._moveStart(!0,!1)._animateZoom(t,i,!0)},this),!0)},_animateZoom:function(t,i,e,n){this._mapPane&&(e&&(this._animatingZoom=!0,this._animateToCenter=t,this._animateToZoom=i,mi(this._mapPane,"leaflet-zoom-anim")),this.fire("zoomanim",{center:t,zoom:i,noUpdate:n}),setTimeout(a(this._onZoomTransitionEnd,this),250))},_onZoomTransitionEnd:function(){this._animatingZoom&&(this._mapPane&&fi(this._mapPane,"leaflet-zoom-anim"),this._animatingZoom=!1,this._move(this._animateToCenter,this._animateToZoom),M(function(){this._moveEnd(!0)},this))}});function Qi(t){return new te(t)}var te=E.extend({options:{position:"topright"},initialize:function(t){p(this,t)},getPosition:function(){return this.options.position},setPosition:function(t){var i=this._map;return i&&i.removeControl(this),this.options.position=t,i&&i.addControl(this),this},getContainer:function(){return this._container},addTo:function(t){this.remove(),this._map=t;var i=this._container=this.onAdd(t),e=this.getPosition(),n=t._controlCorners[e];return mi(i,"leaflet-control"),-1!==e.indexOf("bottom")?n.insertBefore(i,n.firstChild):n.appendChild(i),this._map.on("unload",this.remove,this),this},remove:function(){return this._map&&(li(this._container),this.onRemove&&this.onRemove(this._map),this._map.off("unload",this.remove,this),this._map=null),this},_refocusOnMap:function(t){this._map&&t&&0<t.screenX&&0<t.screenY&&this._map.getContainer().focus()}});$i.include({addControl:function(t){return t.addTo(this),this},removeControl:function(t){return t.remove(),this},_initControlPos:function(){var n=this._controlCorners={},o="leaflet-",s=this._controlContainer=ui("div",o+"control-container",this._container);function t(t,i){var e=o+t+" "+o+i;n[t+i]=ui("div",e,s)}t("top","left"),t("top","right"),t("bottom","left"),t("bottom","right")},_clearControlPos:function(){for(var t in this._controlCorners)li(this._controlCorners[t]);li(this._controlContainer),delete this._controlCorners,delete this._controlContainer}});var ie=te.extend({options:{collapsed:!0,position:"topright",autoZIndex:!0,hideSingleBase:!1,sortLayers:!1,sortFunction:function(t,i,e,n){return e<n?-1:n<e?1:0}},initialize:function(t,i,e){for(var n in p(this,e),this._layerControlInputs=[],this._layers=[],this._lastZIndex=0,this._handlingClick=!1,t)this._addLayer(t[n],n);for(n in i)this._addLayer(i[n],n,!0)},onAdd:function(t){this._initLayout(),this._update(),(this._map=t).on("zoomend",this._checkDisabledLayers,this);for(var i=0;i<this._layers.length;i++)this._layers[i].layer.on("add remove",this._onLayerChange,this);return this._container},addTo:function(t){return te.prototype.addTo.call(this,t),this._expandIfNotCollapsed()},onRemove:function(){this._map.off("zoomend",this._checkDisabledLayers,this);for(var t=0;t<this._layers.length;t++)this._layers[t].layer.off("add remove",this._onLayerChange,this)},addBaseLayer:function(t,i){return this._addLayer(t,i),this._map?this._update():this},addOverlay:function(t,i){return this._addLayer(t,i,!0),this._map?this._update():this},removeLayer:function(t){t.off("add remove",this._onLayerChange,this);var i=this._getLayer(u(t));return i&&this._layers.splice(this._layers.indexOf(i),1),this._map?this._update():this},expand:function(){mi(this._container,"leaflet-control-layers-expanded"),this._section.style.height=null;var t=this._map.getSize().y-(this._container.offsetTop+50);return t<this._section.clientHeight?(mi(this._section,"leaflet-control-layers-scrollbar"),this._section.style.height=t+"px"):fi(this._section,"leaflet-control-layers-scrollbar"),this._checkDisabledLayers(),this},collapse:function(){return fi(this._container,"leaflet-control-layers-expanded"),this},_initLayout:function(){var t="leaflet-control-layers",i=this._container=ui("div",t),e=this.options.collapsed;i.setAttribute("aria-haspopup",!0),Di(i),Ni(i);var n=this._section=ui("section",t+"-list");e&&(this._map.on("click",this.collapse,this),st||ki(i,{mouseenter:this.expand,mouseleave:this.collapse},this));var o=this._layersLink=ui("a",t+"-toggle",i);o.href="#",o.title="Layers",Tt?(ki(o,"click",Wi),ki(o,"click",this.expand,this)):ki(o,"focus",this.expand,this),e||this.expand(),this._baseLayersList=ui("div",t+"-base",n),this._separator=ui("div",t+"-separator",n),this._overlaysList=ui("div",t+"-overlays",n),i.appendChild(n)},_getLayer:function(t){for(var i=0;i<this._layers.length;i++)if(this._layers[i]&&u(this._layers[i].layer)===t)return this._layers[i]},_addLayer:function(t,i,e){this._map&&t.on("add remove",this._onLayerChange,this),this._layers.push({layer:t,name:i,overlay:e}),this.options.sortLayers&&this._layers.sort(a(function(t,i){return this.options.sortFunction(t.layer,i.layer,t.name,i.name)},this)),this.options.autoZIndex&&t.setZIndex&&(this._lastZIndex++,t.setZIndex(this._lastZIndex)),this._expandIfNotCollapsed()},_update:function(){if(!this._container)return this;ci(this._baseLayersList),ci(this._overlaysList),this._layerControlInputs=[];var t,i,e,n,o=0;for(e=0;e<this._layers.length;e++)n=this._layers[e],this._addItem(n),i=i||n.overlay,t=t||!n.overlay,o+=n.overlay?0:1;return this.options.hideSingleBase&&(t=t&&1<o,this._baseLayersList.style.display=t?"":"none"),this._separator.style.display=i&&t?"":"none",this},_onLayerChange:function(t){this._handlingClick||this._update();var i=this._getLayer(u(t.target)),e=i.overlay?"add"===t.type?"overlayadd":"overlayremove":"add"===t.type?"baselayerchange":null;e&&this._map.fire(e,i)},_createRadioElement:function(t,i){var e='<input type="radio" class="leaflet-control-layers-selector" name="'+t+'"'+(i?' checked="checked"':"")+"/>",n=document.createElement("div");return n.innerHTML=e,n.firstChild},_addItem:function(t){var i,e=document.createElement("label"),n=this._map.hasLayer(t.layer);t.overlay?((i=document.createElement("input")).type="checkbox",i.className="leaflet-control-layers-selector",i.defaultChecked=n):i=this._createRadioElement("leaflet-base-layers_"+u(this),n),this._layerControlInputs.push(i),i.layerId=u(t.layer),ki(i,"click",this._onInputClick,this);var o=document.createElement("span");o.innerHTML=" "+t.name;var s=document.createElement("div");return e.appendChild(s),s.appendChild(i),s.appendChild(o),(t.overlay?this._overlaysList:this._baseLayersList).appendChild(e),this._checkDisabledLayers(),e},_onInputClick:function(){var t,i,e=this._layerControlInputs,n=[],o=[];this._handlingClick=!0;for(var s=e.length-1;0<=s;s--)t=e[s],i=this._getLayer(t.layerId).layer,t.checked?n.push(i):t.checked||o.push(i);for(s=0;s<o.length;s++)this._map.hasLayer(o[s])&&this._map.removeLayer(o[s]);for(s=0;s<n.length;s++)this._map.hasLayer(n[s])||this._map.addLayer(n[s]);this._handlingClick=!1,this._refocusOnMap()},_checkDisabledLayers:function(){for(var t,i,e=this._layerControlInputs,n=this._map.getZoom(),o=e.length-1;0<=o;o--)t=e[o],i=this._getLayer(t.layerId).layer,t.disabled=void 0!==i.options.minZoom&&n<i.options.minZoom||void 0!==i.options.maxZoom&&n>i.options.maxZoom},_expandIfNotCollapsed:function(){return this._map&&!this.options.collapsed&&this.expand(),this},_expand:function(){return this.expand()},_collapse:function(){return this.collapse()}}),ee=te.extend({options:{position:"topleft",zoomInText:"+",zoomInTitle:"Zoom in",zoomOutText:"&#x2212;",zoomOutTitle:"Zoom out"},onAdd:function(t){var i="leaflet-control-zoom",e=ui("div",i+" leaflet-bar"),n=this.options;return this._zoomInButton=this._createButton(n.zoomInText,n.zoomInTitle,i+"-in",e,this._zoomIn),this._zoomOutButton=this._createButton(n.zoomOutText,n.zoomOutTitle,i+"-out",e,this._zoomOut),this._updateDisabled(),t.on("zoomend zoomlevelschange",this._updateDisabled,this),e},onRemove:function(t){t.off("zoomend zoomlevelschange",this._updateDisabled,this)},disable:function(){return this._disabled=!0,this._updateDisabled(),this},enable:function(){return this._disabled=!1,this._updateDisabled(),this},_zoomIn:function(t){!this._disabled&&this._map._zoom<this._map.getMaxZoom()&&this._map.zoomIn(this._map.options.zoomDelta*(t.shiftKey?3:1))},_zoomOut:function(t){!this._disabled&&this._map._zoom>this._map.getMinZoom()&&this._map.zoomOut(this._map.options.zoomDelta*(t.shiftKey?3:1))},_createButton:function(t,i,e,n,o){var s=ui("a",e,n);return s.innerHTML=t,s.href="#",s.title=i,s.setAttribute("role","button"),s.setAttribute("aria-label",i),Di(s),ki(s,"click",Wi),ki(s,"click",o,this),ki(s,"click",this._refocusOnMap,this),s},_updateDisabled:function(){var t=this._map,i="leaflet-disabled";fi(this._zoomInButton,i),fi(this._zoomOutButton,i),!this._disabled&&t._zoom!==t.getMinZoom()||mi(this._zoomOutButton,i),!this._disabled&&t._zoom!==t.getMaxZoom()||mi(this._zoomInButton,i)}});$i.mergeOptions({zoomControl:!0}),$i.addInitHook(function(){this.options.zoomControl&&(this.zoomControl=new ee,this.addControl(this.zoomControl))});var ne=te.extend({options:{position:"bottomleft",maxWidth:100,metric:!0,imperial:!0},onAdd:function(t){var i="leaflet-control-scale",e=ui("div",i),n=this.options;return this._addScales(n,i+"-line",e),t.on(n.updateWhenIdle?"moveend":"move",this._update,this),t.whenReady(this._update,this),e},onRemove:function(t){t.off(this.options.updateWhenIdle?"moveend":"move",this._update,this)},_addScales:function(t,i,e){t.metric&&(this._mScale=ui("div",i,e)),t.imperial&&(this._iScale=ui("div",i,e))},_update:function(){var t=this._map,i=t.getSize().y/2,e=t.distance(t.containerPointToLatLng([0,i]),t.containerPointToLatLng([this.options.maxWidth,i]));this._updateScales(e)},_updateScales:function(t){this.options.metric&&t&&this._updateMetric(t),this.options.imperial&&t&&this._updateImperial(t)},_updateMetric:function(t){var i=this._getRoundNum(t),e=i<1e3?i+" m":i/1e3+" km";this._updateScale(this._mScale,e,i/t)},_updateImperial:function(t){var i,e,n,o=3.2808399*t;5280<o?(i=o/5280,e=this._getRoundNum(i),this._updateScale(this._iScale,e+" mi",e/i)):(n=this._getRoundNum(o),this._updateScale(this._iScale,n+" ft",n/o))},_updateScale:function(t,i,e){t.style.width=Math.round(this.options.maxWidth*e)+"px",t.innerHTML=i},_getRoundNum:function(t){var i=Math.pow(10,(Math.floor(t)+"").length-1),e=t/i;return i*(e=10<=e?10:5<=e?5:3<=e?3:2<=e?2:1)}}),oe=te.extend({options:{position:"bottomright",prefix:'<a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'},initialize:function(t){p(this,t),this._attributions={}},onAdd:function(t){for(var i in(t.attributionControl=this)._container=ui("div","leaflet-control-attribution"),Di(this._container),t._layers)t._layers[i].getAttribution&&this.addAttribution(t._layers[i].getAttribution());return this._update(),this._container},setPrefix:function(t){return this.options.prefix=t,this._update(),this},addAttribution:function(t){return t&&(this._attributions[t]||(this._attributions[t]=0),this._attributions[t]++,this._update()),this},removeAttribution:function(t){return t&&this._attributions[t]&&(this._attributions[t]--,this._update()),this},_update:function(){if(this._map){var t=[];for(var i in this._attributions)this._attributions[i]&&t.push(i);var e=[];this.options.prefix&&e.push(this.options.prefix),t.length&&e.push(t.join(", ")),this._container.innerHTML=e.join(" | ")}}});$i.mergeOptions({attributionControl:!0}),$i.addInitHook(function(){this.options.attributionControl&&(new oe).addTo(this)});te.Layers=ie,te.Zoom=ee,te.Scale=ne,te.Attribution=oe,Qi.layers=function(t,i,e){return new ie(t,i,e)},Qi.zoom=function(t){return new ee(t)},Qi.scale=function(t){return new ne(t)},Qi.attribution=function(t){return new oe(t)};var se=E.extend({initialize:function(t){this._map=t},enable:function(){return this._enabled||(this._enabled=!0,this.addHooks()),this},disable:function(){return this._enabled&&(this._enabled=!1,this.removeHooks()),this},enabled:function(){return!!this._enabled}});se.addTo=function(t,i){return t.addHandler(i,this),this};var re,ae={Events:Z},he=Tt?"touchstart mousedown":"mousedown",ue={mousedown:"mouseup",touchstart:"touchend",pointerdown:"touchend",MSPointerDown:"touchend"},le={mousedown:"mousemove",touchstart:"touchmove",pointerdown:"touchmove",MSPointerDown:"touchmove"},ce=k.extend({options:{clickTolerance:3},initialize:function(t,i,e,n){p(this,n),this._element=t,this._dragStartTarget=i||t,this._preventOutline=e},enable:function(){this._enabled||(ki(this._dragStartTarget,he,this._onDown,this),this._enabled=!0)},disable:function(){this._enabled&&(ce._dragging===this&&this.finishDrag(),Ai(this._dragStartTarget,he,this._onDown,this),this._enabled=!1,this._moved=!1)},_onDown:function(t){if(!t._simulated&&this._enabled&&(this._moved=!1,!pi(this._element,"leaflet-zoom-anim")&&!(ce._dragging||t.shiftKey||1!==t.which&&1!==t.button&&!t.touches||((ce._dragging=this)._preventOutline&&Mi(this._element),Ti(),Qt(),this._moving)))){this.fire("down");var i=t.touches?t.touches[0]:t,e=Si(this._element);this._startPoint=new B(i.clientX,i.clientY),this._parentScale=Ei(e),ki(document,le[t.type],this._onMove,this),ki(document,ue[t.type],this._onUp,this)}},_onMove:function(t){if(!t._simulated&&this._enabled)if(t.touches&&1<t.touches.length)this._moved=!0;else{var i=t.touches&&1===t.touches.length?t.touches[0]:t,e=new B(i.clientX,i.clientY)._subtract(this._startPoint);(e.x||e.y)&&(Math.abs(e.x)+Math.abs(e.y)<this.options.clickTolerance||(e.x/=this._parentScale.x,e.y/=this._parentScale.y,ji(t),this._moved||(this.fire("dragstart"),this._moved=!0,this._startPos=Li(this._element).subtract(e),mi(document.body,"leaflet-dragging"),this._lastTarget=t.target||t.srcElement,window.SVGElementInstance&&this._lastTarget instanceof SVGElementInstance&&(this._lastTarget=this._lastTarget.correspondingUseElement),mi(this._lastTarget,"leaflet-drag-target")),this._newPos=this._startPos.add(e),this._moving=!0,C(this._animRequest),this._lastEvent=t,this._animRequest=M(this._updatePosition,this,!0)))}},_updatePosition:function(){var t={originalEvent:this._lastEvent};this.fire("predrag",t),Pi(this._element,this._newPos),this.fire("drag",t)},_onUp:function(t){!t._simulated&&this._enabled&&this.finishDrag()},finishDrag:function(){for(var t in fi(document.body,"leaflet-dragging"),this._lastTarget&&(fi(this._lastTarget,"leaflet-drag-target"),this._lastTarget=null),le)Ai(document,le[t],this._onMove,this),Ai(document,ue[t],this._onUp,this);zi(),ti(),this._moved&&this._moving&&(C(this._animRequest),this.fire("dragend",{distance:this._newPos.distanceTo(this._startPos)})),this._moving=!1,ce._dragging=!1}});function _e(t,i){if(!i||!t.length)return t.slice();var e=i*i;return t=function(t,i){var e=t.length,n=new(typeof Uint8Array!=void 0+""?Uint8Array:Array)(e);n[0]=n[e-1]=1,function t(i,e,n,o,s){var r,a,h,u=0;for(a=o+1;a<=s-1;a++)h=ge(i[a],i[o],i[s],!0),u<h&&(r=a,u=h);n<u&&(e[r]=1,t(i,e,n,o,r),t(i,e,n,r,s))}(t,n,i,0,e-1);var o,s=[];for(o=0;o<e;o++)n[o]&&s.push(t[o]);return s}(t=function(t,i){for(var e=[t[0]],n=1,o=0,s=t.length;n<s;n++)r=t[n],a=t[o],void 0,h=a.x-r.x,u=a.y-r.y,i<h*h+u*u&&(e.push(t[n]),o=n);var r,a,h,u;o<s-1&&e.push(t[s-1]);return e}(t,e),e)}function de(t,i,e){return Math.sqrt(ge(t,i,e,!0))}function pe(t,i,e,n,o){var s,r,a,h=n?re:fe(t,e),u=fe(i,e);for(re=u;;){if(!(h|u))return[t,i];if(h&u)return!1;a=fe(r=me(t,i,s=h||u,e,o),e),s===h?(t=r,h=a):(i=r,u=a)}}function me(t,i,e,n,o){var s,r,a=i.x-t.x,h=i.y-t.y,u=n.min,l=n.max;return 8&e?(s=t.x+a*(l.y-t.y)/h,r=l.y):4&e?(s=t.x+a*(u.y-t.y)/h,r=u.y):2&e?(s=l.x,r=t.y+h*(l.x-t.x)/a):1&e&&(s=u.x,r=t.y+h*(u.x-t.x)/a),new B(s,r,o)}function fe(t,i){var e=0;return t.x<i.min.x?e|=1:t.x>i.max.x&&(e|=2),t.y<i.min.y?e|=4:t.y>i.max.y&&(e|=8),e}function ge(t,i,e,n){var o,s=i.x,r=i.y,a=e.x-s,h=e.y-r,u=a*a+h*h;return 0<u&&(1<(o=((t.x-s)*a+(t.y-r)*h)/u)?(s=e.x,r=e.y):0<o&&(s+=a*o,r+=h*o)),a=t.x-s,h=t.y-r,n?a*a+h*h:new B(s,r)}function ve(t){return!v(t[0])||"object"!=typeof t[0][0]&&void 0!==t[0][0]}function ye(t){return console.warn("Deprecated use of _flat, please use L.LineUtil.isFlat instead."),ve(t)}var xe=(Object.freeze||Object)({simplify:_e,pointToSegmentDistance:de,closestPointOnSegment:function(t,i,e){return ge(t,i,e)},clipSegment:pe,_getEdgeIntersection:me,_getBitCode:fe,_sqClosestPointOnSegment:ge,isFlat:ve,_flat:ye});function we(t,i,e){var n,o,s,r,a,h,u,l,c,_=[1,4,2,8];for(o=0,u=t.length;o<u;o++)t[o]._code=fe(t[o],i);for(r=0;r<4;r++){for(l=_[r],n=[],o=0,s=(u=t.length)-1;o<u;s=o++)a=t[o],h=t[s],a._code&l?h._code&l||((c=me(h,a,l,i,e))._code=fe(c,i),n.push(c)):(h._code&l&&((c=me(h,a,l,i,e))._code=fe(c,i),n.push(c)),n.push(a));t=n}return t}var Pe,Le=(Object.freeze||Object)({clipPolygon:we}),be={project:function(t){return new B(t.lng,t.lat)},unproject:function(t){return new j(t.y,t.x)},bounds:new O([-180,-90],[180,90])},Te={R:6378137,R_MINOR:6356752.314245179,bounds:new O([-20037508.34279,-15496570.73972],[20037508.34279,18764656.23138]),project:function(t){var i=Math.PI/180,e=this.R,n=t.lat*i,o=this.R_MINOR/e,s=Math.sqrt(1-o*o),r=s*Math.sin(n),a=Math.tan(Math.PI/4-n/2)/Math.pow((1-r)/(1+r),s/2);return n=-e*Math.log(Math.max(a,1e-10)),new B(t.lng*i*e,n)},unproject:function(t){for(var i,e=180/Math.PI,n=this.R,o=this.R_MINOR/n,s=Math.sqrt(1-o*o),r=Math.exp(-t.y/n),a=Math.PI/2-2*Math.atan(r),h=0,u=.1;h<15&&1e-7<Math.abs(u);h++)i=s*Math.sin(a),i=Math.pow((1-i)/(1+i),s/2),a+=u=Math.PI/2-2*Math.atan(r*i)-a;return new j(a*e,t.x*e/n)}},ze=(Object.freeze||Object)({LonLat:be,Mercator:Te,SphericalMercator:q}),Me=h({},U,{code:"EPSG:3395",projection:Te,transformation:(Pe=.5/(Math.PI*Te.R),K(Pe,.5,-Pe,.5))}),Ce=h({},U,{code:"EPSG:4326",projection:be,transformation:K(1/180,1,-1/180,.5)}),Se=h({},F,{projection:be,transformation:K(1,0,-1,0),scale:function(t){return Math.pow(2,t)},zoom:function(t){return Math.log(t)/Math.LN2},distance:function(t,i){var e=i.lng-t.lng,n=i.lat-t.lat;return Math.sqrt(e*e+n*n)},infinite:!0});F.Earth=U,F.EPSG3395=Me,F.EPSG3857=X,F.EPSG900913=J,F.EPSG4326=Ce,F.Simple=Se;var Ee=k.extend({options:{pane:"overlayPane",attribution:null,bubblingMouseEvents:!0},addTo:function(t){return t.addLayer(this),this},remove:function(){return this.removeFrom(this._map||this._mapToAdd)},removeFrom:function(t){return t&&t.removeLayer(this),this},getPane:function(t){return this._map.getPane(t?this.options[t]||t:this.options.pane)},addInteractiveTarget:function(t){return this._map._targets[u(t)]=this},removeInteractiveTarget:function(t){return delete this._map._targets[u(t)],this},getAttribution:function(){return this.options.attribution},_layerAdd:function(t){var i=t.target;if(i.hasLayer(this)){if(this._map=i,this._zoomAnimated=i._zoomAnimated,this.getEvents){var e=this.getEvents();i.on(e,this),this.once("remove",function(){i.off(e,this)},this)}this.onAdd(i),this.getAttribution&&i.attributionControl&&i.attributionControl.addAttribution(this.getAttribution()),this.fire("add"),i.fire("layeradd",{layer:this})}}});$i.include({addLayer:function(t){if(!t._layerAdd)throw new Error("The provided object is not a Layer.");var i=u(t);return this._layers[i]||((this._layers[i]=t)._mapToAdd=this,t.beforeAdd&&t.beforeAdd(this),this.whenReady(t._layerAdd,t)),this},removeLayer:function(t){var i=u(t);return this._layers[i]&&(this._loaded&&t.onRemove(this),t.getAttribution&&this.attributionControl&&this.attributionControl.removeAttribution(t.getAttribution()),delete this._layers[i],this._loaded&&(this.fire("layerremove",{layer:t}),t.fire("remove")),t._map=t._mapToAdd=null),this},hasLayer:function(t){return!!t&&u(t)in this._layers},eachLayer:function(t,i){for(var e in this._layers)t.call(i,this._layers[e]);return this},_addLayers:function(t){for(var i=0,e=(t=t?v(t)?t:[t]:[]).length;i<e;i++)this.addLayer(t[i])},_addZoomLimit:function(t){!isNaN(t.options.maxZoom)&&isNaN(t.options.minZoom)||(this._zoomBoundLayers[u(t)]=t,this._updateZoomLevels())},_removeZoomLimit:function(t){var i=u(t);this._zoomBoundLayers[i]&&(delete this._zoomBoundLayers[i],this._updateZoomLevels())},_updateZoomLevels:function(){var t=1/0,i=-1/0,e=this._getZoomSpan();for(var n in this._zoomBoundLayers){var o=this._zoomBoundLayers[n].options;t=void 0===o.minZoom?t:Math.min(t,o.minZoom),i=void 0===o.maxZoom?i:Math.max(i,o.maxZoom)}this._layersMaxZoom=i===-1/0?void 0:i,this._layersMinZoom=t===1/0?void 0:t,e!==this._getZoomSpan()&&this.fire("zoomlevelschange"),void 0===this.options.maxZoom&&this._layersMaxZoom&&this.getZoom()>this._layersMaxZoom&&this.setZoom(this._layersMaxZoom),void 0===this.options.minZoom&&this._layersMinZoom&&this.getZoom()<this._layersMinZoom&&this.setZoom(this._layersMinZoom)}});var Ze=Ee.extend({initialize:function(t,i){var e,n;if(p(this,i),this._layers={},t)for(e=0,n=t.length;e<n;e++)this.addLayer(t[e])},addLayer:function(t){var i=this.getLayerId(t);return this._layers[i]=t,this._map&&this._map.addLayer(t),this},removeLayer:function(t){var i=t in this._layers?t:this.getLayerId(t);return this._map&&this._layers[i]&&this._map.removeLayer(this._layers[i]),delete this._layers[i],this},hasLayer:function(t){return!!t&&(t in this._layers||this.getLayerId(t)in this._layers)},clearLayers:function(){return this.eachLayer(this.removeLayer,this)},invoke:function(t){var i,e,n=Array.prototype.slice.call(arguments,1);for(i in this._layers)(e=this._layers[i])[t]&&e[t].apply(e,n);return this},onAdd:function(t){this.eachLayer(t.addLayer,t)},onRemove:function(t){this.eachLayer(t.removeLayer,t)},eachLayer:function(t,i){for(var e in this._layers)t.call(i,this._layers[e]);return this},getLayer:function(t){return this._layers[t]},getLayers:function(){var t=[];return this.eachLayer(t.push,t),t},setZIndex:function(t){return this.invoke("setZIndex",t)},getLayerId:function(t){return u(t)}}),ke=Ze.extend({addLayer:function(t){return this.hasLayer(t)?this:(t.addEventParent(this),Ze.prototype.addLayer.call(this,t),this.fire("layeradd",{layer:t}))},removeLayer:function(t){return this.hasLayer(t)?(t in this._layers&&(t=this._layers[t]),t.removeEventParent(this),Ze.prototype.removeLayer.call(this,t),this.fire("layerremove",{layer:t})):this},setStyle:function(t){return this.invoke("setStyle",t)},bringToFront:function(){return this.invoke("bringToFront")},bringToBack:function(){return this.invoke("bringToBack")},getBounds:function(){var t=new N;for(var i in this._layers){var e=this._layers[i];t.extend(e.getBounds?e.getBounds():e.getLatLng())}return t}}),Be=E.extend({options:{popupAnchor:[0,0],tooltipAnchor:[0,0]},initialize:function(t){p(this,t)},createIcon:function(t){return this._createIcon("icon",t)},createShadow:function(t){return this._createIcon("shadow",t)},_createIcon:function(t,i){var e=this._getIconUrl(t);if(!e){if("icon"===t)throw new Error("iconUrl not set in Icon options (see the docs).");return null}var n=this._createImg(e,i&&"IMG"===i.tagName?i:null);return this._setIconStyles(n,t),n},_setIconStyles:function(t,i){var e=this.options,n=e[i+"Size"];"number"==typeof n&&(n=[n,n]);var o=I(n),s=I("shadow"===i&&e.shadowAnchor||e.iconAnchor||o&&o.divideBy(2,!0));t.className="leaflet-marker-"+i+" "+(e.className||""),s&&(t.style.marginLeft=-s.x+"px",t.style.marginTop=-s.y+"px"),o&&(t.style.width=o.x+"px",t.style.height=o.y+"px")},_createImg:function(t,i){return(i=i||document.createElement("img")).src=t,i},_getIconUrl:function(t){return Ct&&this.options[t+"RetinaUrl"]||this.options[t+"Url"]}});var Ae=Be.extend({options:{iconUrl:"marker-icon.png",iconRetinaUrl:"marker-icon-2x.png",shadowUrl:"marker-shadow.png",iconSize:[25,41],iconAnchor:[12,41],popupAnchor:[1,-34],tooltipAnchor:[16,-28],shadowSize:[41,41]},_getIconUrl:function(t){return Ae.imagePath||(Ae.imagePath=this._detectIconPath()),(this.options.imagePath||Ae.imagePath)+Be.prototype._getIconUrl.call(this,t)},_detectIconPath:function(){var t=ui("div","leaflet-default-icon-path",document.body),i=hi(t,"background-image")||hi(t,"backgroundImage");return document.body.removeChild(t),i=null===i||0!==i.indexOf("url")?"":i.replace(/^url\(["']?/,"").replace(/marker-icon\.png["']?\)$/,"")}}),Ie=se.extend({initialize:function(t){this._marker=t},addHooks:function(){var t=this._marker._icon;this._draggable||(this._draggable=new ce(t,t,!0)),this._draggable.on({dragstart:this._onDragStart,predrag:this._onPreDrag,drag:this._onDrag,dragend:this._onDragEnd},this).enable(),mi(t,"leaflet-marker-draggable")},removeHooks:function(){this._draggable.off({dragstart:this._onDragStart,predrag:this._onPreDrag,drag:this._onDrag,dragend:this._onDragEnd},this).disable(),this._marker._icon&&fi(this._marker._icon,"leaflet-marker-draggable")},moved:function(){return this._draggable&&this._draggable._moved},_adjustPan:function(t){var i=this._marker,e=i._map,n=this._marker.options.autoPanSpeed,o=this._marker.options.autoPanPadding,s=Li(i._icon),r=e.getPixelBounds(),a=e.getPixelOrigin(),h=R(r.min._subtract(a).add(o),r.max._subtract(a).subtract(o));if(!h.contains(s)){var u=I((Math.max(h.max.x,s.x)-h.max.x)/(r.max.x-h.max.x)-(Math.min(h.min.x,s.x)-h.min.x)/(r.min.x-h.min.x),(Math.max(h.max.y,s.y)-h.max.y)/(r.max.y-h.max.y)-(Math.min(h.min.y,s.y)-h.min.y)/(r.min.y-h.min.y)).multiplyBy(n);e.panBy(u,{animate:!1}),this._draggable._newPos._add(u),this._draggable._startPos._add(u),Pi(i._icon,this._draggable._newPos),this._onDrag(t),this._panRequest=M(this._adjustPan.bind(this,t))}},_onDragStart:function(){this._oldLatLng=this._marker.getLatLng(),this._marker.closePopup().fire("movestart").fire("dragstart")},_onPreDrag:function(t){this._marker.options.autoPan&&(C(this._panRequest),this._panRequest=M(this._adjustPan.bind(this,t)))},_onDrag:function(t){var i=this._marker,e=i._shadow,n=Li(i._icon),o=i._map.layerPointToLatLng(n);e&&Pi(e,n),i._latlng=o,t.latlng=o,t.oldLatLng=this._oldLatLng,i.fire("move",t).fire("drag",t)},_onDragEnd:function(t){C(this._panRequest),delete this._oldLatLng,this._marker.fire("moveend").fire("dragend",t)}}),Oe=Ee.extend({options:{icon:new Ae,interactive:!0,keyboard:!0,title:"",alt:"",zIndexOffset:0,opacity:1,riseOnHover:!1,riseOffset:250,pane:"markerPane",shadowPane:"shadowPane",bubblingMouseEvents:!1,draggable:!1,autoPan:!1,autoPanPadding:[50,50],autoPanSpeed:10},initialize:function(t,i){p(this,i),this._latlng=W(t)},onAdd:function(t){this._zoomAnimated=this._zoomAnimated&&t.options.markerZoomAnimation,this._zoomAnimated&&t.on("zoomanim",this._animateZoom,this),this._initIcon(),this.update()},onRemove:function(t){this.dragging&&this.dragging.enabled()&&(this.options.draggable=!0,this.dragging.removeHooks()),delete this.dragging,this._zoomAnimated&&t.off("zoomanim",this._animateZoom,this),this._removeIcon(),this._removeShadow()},getEvents:function(){return{zoom:this.update,viewreset:this.update}},getLatLng:function(){return this._latlng},setLatLng:function(t){var i=this._latlng;return this._latlng=W(t),this.update(),this.fire("move",{oldLatLng:i,latlng:this._latlng})},setZIndexOffset:function(t){return this.options.zIndexOffset=t,this.update()},getIcon:function(){return this.options.icon},setIcon:function(t){return this.options.icon=t,this._map&&(this._initIcon(),this.update()),this._popup&&this.bindPopup(this._popup,this._popup.options),this},getElement:function(){return this._icon},update:function(){if(this._icon&&this._map){var t=this._map.latLngToLayerPoint(this._latlng).round();this._setPos(t)}return this},_initIcon:function(){var t=this.options,i="leaflet-zoom-"+(this._zoomAnimated?"animated":"hide"),e=t.icon.createIcon(this._icon),n=!1;e!==this._icon&&(this._icon&&this._removeIcon(),n=!0,t.title&&(e.title=t.title),"IMG"===e.tagName&&(e.alt=t.alt||"")),mi(e,i),t.keyboard&&(e.tabIndex="0"),this._icon=e,t.riseOnHover&&this.on({mouseover:this._bringToFront,mouseout:this._resetZIndex});var o=t.icon.createShadow(this._shadow),s=!1;o!==this._shadow&&(this._removeShadow(),s=!0),o&&(mi(o,i),o.alt=""),this._shadow=o,t.opacity<1&&this._updateOpacity(),n&&this.getPane().appendChild(this._icon),this._initInteraction(),o&&s&&this.getPane(t.shadowPane).appendChild(this._shadow)},_removeIcon:function(){this.options.riseOnHover&&this.off({mouseover:this._bringToFront,mouseout:this._resetZIndex}),li(this._icon),this.removeInteractiveTarget(this._icon),this._icon=null},_removeShadow:function(){this._shadow&&li(this._shadow),this._shadow=null},_setPos:function(t){this._icon&&Pi(this._icon,t),this._shadow&&Pi(this._shadow,t),this._zIndex=t.y+this.options.zIndexOffset,this._resetZIndex()},_updateZIndex:function(t){this._icon&&(this._icon.style.zIndex=this._zIndex+t)},_animateZoom:function(t){var i=this._map._latLngToNewLayerPoint(this._latlng,t.zoom,t.center).round();this._setPos(i)},_initInteraction:function(){if(this.options.interactive&&(mi(this._icon,"leaflet-interactive"),this.addInteractiveTarget(this._icon),Ie)){var t=this.options.draggable;this.dragging&&(t=this.dragging.enabled(),this.dragging.disable()),this.dragging=new Ie(this),t&&this.dragging.enable()}},setOpacity:function(t){return this.options.opacity=t,this._map&&this._updateOpacity(),this},_updateOpacity:function(){var t=this.options.opacity;this._icon&&yi(this._icon,t),this._shadow&&yi(this._shadow,t)},_bringToFront:function(){this._updateZIndex(this.options.riseOffset)},_resetZIndex:function(){this._updateZIndex(0)},_getPopupAnchor:function(){return this.options.icon.options.popupAnchor},_getTooltipAnchor:function(){return this.options.icon.options.tooltipAnchor}});var Re=Ee.extend({options:{stroke:!0,color:"#3388ff",weight:3,opacity:1,lineCap:"round",lineJoin:"round",dashArray:null,dashOffset:null,fill:!1,fillColor:null,fillOpacity:.2,fillRule:"evenodd",interactive:!0,bubblingMouseEvents:!0},beforeAdd:function(t){this._renderer=t.getRenderer(this)},onAdd:function(){this._renderer._initPath(this),this._reset(),this._renderer._addPath(this)},onRemove:function(){this._renderer._removePath(this)},redraw:function(){return this._map&&this._renderer._updatePath(this),this},setStyle:function(t){return p(this,t),this._renderer&&(this._renderer._updateStyle(this),this.options.stroke&&t&&t.hasOwnProperty("weight")&&this._updateBounds()),this},bringToFront:function(){return this._renderer&&this._renderer._bringToFront(this),this},bringToBack:function(){return this._renderer&&this._renderer._bringToBack(this),this},getElement:function(){return this._path},_reset:function(){this._project(),this._update()},_clickTolerance:function(){return(this.options.stroke?this.options.weight/2:0)+this._renderer.options.tolerance}}),Ne=Re.extend({options:{fill:!0,radius:10},initialize:function(t,i){p(this,i),this._latlng=W(t),this._radius=this.options.radius},setLatLng:function(t){var i=this._latlng;return this._latlng=W(t),this.redraw(),this.fire("move",{oldLatLng:i,latlng:this._latlng})},getLatLng:function(){return this._latlng},setRadius:function(t){return this.options.radius=this._radius=t,this.redraw()},getRadius:function(){return this._radius},setStyle:function(t){var i=t&&t.radius||this._radius;return Re.prototype.setStyle.call(this,t),this.setRadius(i),this},_project:function(){this._point=this._map.latLngToLayerPoint(this._latlng),this._updateBounds()},_updateBounds:function(){var t=this._radius,i=this._radiusY||t,e=this._clickTolerance(),n=[t+e,i+e];this._pxBounds=new O(this._point.subtract(n),this._point.add(n))},_update:function(){this._map&&this._updatePath()},_updatePath:function(){this._renderer._updateCircle(this)},_empty:function(){return this._radius&&!this._renderer._bounds.intersects(this._pxBounds)},_containsPoint:function(t){return t.distanceTo(this._point)<=this._radius+this._clickTolerance()}});var De=Ne.extend({initialize:function(t,i,e){if("number"==typeof i&&(i=h({},e,{radius:i})),p(this,i),this._latlng=W(t),isNaN(this.options.radius))throw new Error("Circle radius cannot be NaN");this._mRadius=this.options.radius},setRadius:function(t){return this._mRadius=t,this.redraw()},getRadius:function(){return this._mRadius},getBounds:function(){var t=[this._radius,this._radiusY||this._radius];return new N(this._map.layerPointToLatLng(this._point.subtract(t)),this._map.layerPointToLatLng(this._point.add(t)))},setStyle:Re.prototype.setStyle,_project:function(){var t=this._latlng.lng,i=this._latlng.lat,e=this._map,n=e.options.crs;if(n.distance===U.distance){var o=Math.PI/180,s=this._mRadius/U.R/o,r=e.project([i+s,t]),a=e.project([i-s,t]),h=r.add(a).divideBy(2),u=e.unproject(h).lat,l=Math.acos((Math.cos(s*o)-Math.sin(i*o)*Math.sin(u*o))/(Math.cos(i*o)*Math.cos(u*o)))/o;!isNaN(l)&&0!==l||(l=s/Math.cos(Math.PI/180*i)),this._point=h.subtract(e.getPixelOrigin()),this._radius=isNaN(l)?0:h.x-e.project([u,t-l]).x,this._radiusY=h.y-r.y}else{var c=n.unproject(n.project(this._latlng).subtract([this._mRadius,0]));this._point=e.latLngToLayerPoint(this._latlng),this._radius=this._point.x-e.latLngToLayerPoint(c).x}this._updateBounds()}});var je=Re.extend({options:{smoothFactor:1,noClip:!1},initialize:function(t,i){p(this,i),this._setLatLngs(t)},getLatLngs:function(){return this._latlngs},setLatLngs:function(t){return this._setLatLngs(t),this.redraw()},isEmpty:function(){return!this._latlngs.length},closestLayerPoint:function(t){for(var i,e,n=1/0,o=null,s=ge,r=0,a=this._parts.length;r<a;r++)for(var h=this._parts[r],u=1,l=h.length;u<l;u++){var c=s(t,i=h[u-1],e=h[u],!0);c<n&&(n=c,o=s(t,i,e))}return o&&(o.distance=Math.sqrt(n)),o},getCenter:function(){if(!this._map)throw new Error("Must add layer to map before using getCenter()");var t,i,e,n,o,s,r,a=this._rings[0],h=a.length;if(!h)return null;for(i=t=0;t<h-1;t++)i+=a[t].distanceTo(a[t+1])/2;if(0===i)return this._map.layerPointToLatLng(a[0]);for(n=t=0;t<h-1;t++)if(o=a[t],s=a[t+1],i<(n+=e=o.distanceTo(s)))return r=(n-i)/e,this._map.layerPointToLatLng([s.x-r*(s.x-o.x),s.y-r*(s.y-o.y)])},getBounds:function(){return this._bounds},addLatLng:function(t,i){return i=i||this._defaultShape(),t=W(t),i.push(t),this._bounds.extend(t),this.redraw()},_setLatLngs:function(t){this._bounds=new N,this._latlngs=this._convertLatLngs(t)},_defaultShape:function(){return ve(this._latlngs)?this._latlngs:this._latlngs[0]},_convertLatLngs:function(t){for(var i=[],e=ve(t),n=0,o=t.length;n<o;n++)e?(i[n]=W(t[n]),this._bounds.extend(i[n])):i[n]=this._convertLatLngs(t[n]);return i},_project:function(){var t=new O;this._rings=[],this._projectLatlngs(this._latlngs,this._rings,t),this._bounds.isValid()&&t.isValid()&&(this._rawPxBounds=t,this._updateBounds())},_updateBounds:function(){var t=this._clickTolerance(),i=new B(t,t);this._pxBounds=new O([this._rawPxBounds.min.subtract(i),this._rawPxBounds.max.add(i)])},_projectLatlngs:function(t,i,e){var n,o,s=t[0]instanceof j,r=t.length;if(s){for(o=[],n=0;n<r;n++)o[n]=this._map.latLngToLayerPoint(t[n]),e.extend(o[n]);i.push(o)}else for(n=0;n<r;n++)this._projectLatlngs(t[n],i,e)},_clipPoints:function(){var t=this._renderer._bounds;if(this._parts=[],this._pxBounds&&this._pxBounds.intersects(t))if(this.options.noClip)this._parts=this._rings;else{var i,e,n,o,s,r,a,h=this._parts;for(n=i=0,o=this._rings.length;i<o;i++)for(e=0,s=(a=this._rings[i]).length;e<s-1;e++)(r=pe(a[e],a[e+1],t,e,!0))&&(h[n]=h[n]||[],h[n].push(r[0]),r[1]===a[e+1]&&e!==s-2||(h[n].push(r[1]),n++))}},_simplifyPoints:function(){for(var t=this._parts,i=this.options.smoothFactor,e=0,n=t.length;e<n;e++)t[e]=_e(t[e],i)},_update:function(){this._map&&(this._clipPoints(),this._simplifyPoints(),this._updatePath())},_updatePath:function(){this._renderer._updatePoly(this)},_containsPoint:function(t,i){var e,n,o,s,r,a,h=this._clickTolerance();if(!this._pxBounds||!this._pxBounds.contains(t))return!1;for(e=0,s=this._parts.length;e<s;e++)for(n=0,o=(r=(a=this._parts[e]).length)-1;n<r;o=n++)if((i||0!==n)&&de(t,a[o],a[n])<=h)return!0;return!1}});je._flat=ye;var We=je.extend({options:{fill:!0},isEmpty:function(){return!this._latlngs.length||!this._latlngs[0].length},getCenter:function(){if(!this._map)throw new Error("Must add layer to map before using getCenter()");var t,i,e,n,o,s,r,a,h,u=this._rings[0],l=u.length;if(!l)return null;for(s=r=a=0,t=0,i=l-1;t<l;i=t++)e=u[t],n=u[i],o=e.y*n.x-n.y*e.x,r+=(e.x+n.x)*o,a+=(e.y+n.y)*o,s+=3*o;return h=0===s?u[0]:[r/s,a/s],this._map.layerPointToLatLng(h)},_convertLatLngs:function(t){var i=je.prototype._convertLatLngs.call(this,t),e=i.length;return 2<=e&&i[0]instanceof j&&i[0].equals(i[e-1])&&i.pop(),i},_setLatLngs:function(t){je.prototype._setLatLngs.call(this,t),ve(this._latlngs)&&(this._latlngs=[this._latlngs])},_defaultShape:function(){return ve(this._latlngs[0])?this._latlngs[0]:this._latlngs[0][0]},_clipPoints:function(){var t=this._renderer._bounds,i=this.options.weight,e=new B(i,i);if(t=new O(t.min.subtract(e),t.max.add(e)),this._parts=[],this._pxBounds&&this._pxBounds.intersects(t))if(this.options.noClip)this._parts=this._rings;else for(var n,o=0,s=this._rings.length;o<s;o++)(n=we(this._rings[o],t,!0)).length&&this._parts.push(n)},_updatePath:function(){this._renderer._updatePoly(this,!0)},_containsPoint:function(t){var i,e,n,o,s,r,a,h,u=!1;if(!this._pxBounds||!this._pxBounds.contains(t))return!1;for(o=0,a=this._parts.length;o<a;o++)for(s=0,r=(h=(i=this._parts[o]).length)-1;s<h;r=s++)e=i[s],n=i[r],e.y>t.y!=n.y>t.y&&t.x<(n.x-e.x)*(t.y-e.y)/(n.y-e.y)+e.x&&(u=!u);return u||je.prototype._containsPoint.call(this,t,!0)}});var He=ke.extend({initialize:function(t,i){p(this,i),this._layers={},t&&this.addData(t)},addData:function(t){var i,e,n,o=v(t)?t:t.features;if(o){for(i=0,e=o.length;i<e;i++)((n=o[i]).geometries||n.geometry||n.features||n.coordinates)&&this.addData(n);return this}var s=this.options;if(s.filter&&!s.filter(t))return this;var r=Fe(t,s);return r?(r.feature=Xe(t),r.defaultOptions=r.options,this.resetStyle(r),s.onEachFeature&&s.onEachFeature(t,r),this.addLayer(r)):this},resetStyle:function(t){return void 0===t?this.eachLayer(this.resetStyle,this):(t.options=h({},t.defaultOptions),this._setLayerStyle(t,this.options.style),this)},setStyle:function(i){return this.eachLayer(function(t){this._setLayerStyle(t,i)},this)},_setLayerStyle:function(t,i){t.setStyle&&("function"==typeof i&&(i=i(t.feature)),t.setStyle(i))}});function Fe(t,i){var e,n,o,s,r="Feature"===t.type?t.geometry:t,a=r?r.coordinates:null,h=[],u=i&&i.pointToLayer,l=i&&i.coordsToLatLng||Ve;if(!a&&!r)return null;switch(r.type){case"Point":return Ue(u,t,e=l(a),i);case"MultiPoint":for(o=0,s=a.length;o<s;o++)e=l(a[o]),h.push(Ue(u,t,e,i));return new ke(h);case"LineString":case"MultiLineString":return n=qe(a,"LineString"===r.type?0:1,l),new je(n,i);case"Polygon":case"MultiPolygon":return n=qe(a,"Polygon"===r.type?1:2,l),new We(n,i);case"GeometryCollection":for(o=0,s=r.geometries.length;o<s;o++){var c=Fe({geometry:r.geometries[o],type:"Feature",properties:t.properties},i);c&&h.push(c)}return new ke(h);default:throw new Error("Invalid GeoJSON object.")}}function Ue(t,i,e,n){return t?t(i,e):new Oe(e,n&&n.markersInheritOptions&&n)}function Ve(t){return new j(t[1],t[0],t[2])}function qe(t,i,e){for(var n,o=[],s=0,r=t.length;s<r;s++)n=i?qe(t[s],i-1,e):(e||Ve)(t[s]),o.push(n);return o}function Ge(t,i){return i="number"==typeof i?i:6,void 0!==t.alt?[c(t.lng,i),c(t.lat,i),c(t.alt,i)]:[c(t.lng,i),c(t.lat,i)]}function Ke(t,i,e,n){for(var o=[],s=0,r=t.length;s<r;s++)o.push(i?Ke(t[s],i-1,e,n):Ge(t[s],n));return!i&&e&&o.push(o[0]),o}function Ye(t,i){return t.feature?h({},t.feature,{geometry:i}):Xe(i)}function Xe(t){return"Feature"===t.type||"FeatureCollection"===t.type?t:{type:"Feature",properties:{},geometry:t}}var Je={toGeoJSON:function(t){return Ye(this,{type:"Point",coordinates:Ge(this.getLatLng(),t)})}};function $e(t,i){return new He(t,i)}Oe.include(Je),De.include(Je),Ne.include(Je),je.include({toGeoJSON:function(t){var i=!ve(this._latlngs);return Ye(this,{type:(i?"Multi":"")+"LineString",coordinates:Ke(this._latlngs,i?1:0,!1,t)})}}),We.include({toGeoJSON:function(t){var i=!ve(this._latlngs),e=i&&!ve(this._latlngs[0]),n=Ke(this._latlngs,e?2:i?1:0,!0,t);return i||(n=[n]),Ye(this,{type:(e?"Multi":"")+"Polygon",coordinates:n})}}),Ze.include({toMultiPoint:function(i){var e=[];return this.eachLayer(function(t){e.push(t.toGeoJSON(i).geometry.coordinates)}),Ye(this,{type:"MultiPoint",coordinates:e})},toGeoJSON:function(n){var t=this.feature&&this.feature.geometry&&this.feature.geometry.type;if("MultiPoint"===t)return this.toMultiPoint(n);var o="GeometryCollection"===t,s=[];return this.eachLayer(function(t){if(t.toGeoJSON){var i=t.toGeoJSON(n);if(o)s.push(i.geometry);else{var e=Xe(i);"FeatureCollection"===e.type?s.push.apply(s,e.features):s.push(e)}}}),o?Ye(this,{geometries:s,type:"GeometryCollection"}):{type:"FeatureCollection",features:s}}});var Qe=$e,tn=Ee.extend({options:{opacity:1,alt:"",interactive:!1,crossOrigin:!1,errorOverlayUrl:"",zIndex:1,className:""},initialize:function(t,i,e){this._url=t,this._bounds=D(i),p(this,e)},onAdd:function(){this._image||(this._initImage(),this.options.opacity<1&&this._updateOpacity()),this.options.interactive&&(mi(this._image,"leaflet-interactive"),this.addInteractiveTarget(this._image)),this.getPane().appendChild(this._image),this._reset()},onRemove:function(){li(this._image),this.options.interactive&&this.removeInteractiveTarget(this._image)},setOpacity:function(t){return this.options.opacity=t,this._image&&this._updateOpacity(),this},setStyle:function(t){return t.opacity&&this.setOpacity(t.opacity),this},bringToFront:function(){return this._map&&_i(this._image),this},bringToBack:function(){return this._map&&di(this._image),this},setUrl:function(t){return this._url=t,this._image&&(this._image.src=t),this},setBounds:function(t){return this._bounds=D(t),this._map&&this._reset(),this},getEvents:function(){var t={zoom:this._reset,viewreset:this._reset};return this._zoomAnimated&&(t.zoomanim=this._animateZoom),t},setZIndex:function(t){return this.options.zIndex=t,this._updateZIndex(),this},getBounds:function(){return this._bounds},getElement:function(){return this._image},_initImage:function(){var t="IMG"===this._url.tagName,i=this._image=t?this._url:ui("img");mi(i,"leaflet-image-layer"),this._zoomAnimated&&mi(i,"leaflet-zoom-animated"),this.options.className&&mi(i,this.options.className),i.onselectstart=l,i.onmousemove=l,i.onload=a(this.fire,this,"load"),i.onerror=a(this._overlayOnError,this,"error"),!this.options.crossOrigin&&""!==this.options.crossOrigin||(i.crossOrigin=!0===this.options.crossOrigin?"":this.options.crossOrigin),this.options.zIndex&&this._updateZIndex(),t?this._url=i.src:(i.src=this._url,i.alt=this.options.alt)},_animateZoom:function(t){var i=this._map.getZoomScale(t.zoom),e=this._map._latLngBoundsToNewLayerBounds(this._bounds,t.zoom,t.center).min;wi(this._image,e,i)},_reset:function(){var t=this._image,i=new O(this._map.latLngToLayerPoint(this._bounds.getNorthWest()),this._map.latLngToLayerPoint(this._bounds.getSouthEast())),e=i.getSize();Pi(t,i.min),t.style.width=e.x+"px",t.style.height=e.y+"px"},_updateOpacity:function(){yi(this._image,this.options.opacity)},_updateZIndex:function(){this._image&&void 0!==this.options.zIndex&&null!==this.options.zIndex&&(this._image.style.zIndex=this.options.zIndex)},_overlayOnError:function(){this.fire("error");var t=this.options.errorOverlayUrl;t&&this._url!==t&&(this._url=t,this._image.src=t)}}),en=tn.extend({options:{autoplay:!0,loop:!0,keepAspectRatio:!0},_initImage:function(){var t="VIDEO"===this._url.tagName,i=this._image=t?this._url:ui("video");if(mi(i,"leaflet-image-layer"),this._zoomAnimated&&mi(i,"leaflet-zoom-animated"),this.options.className&&mi(i,this.options.className),i.onselectstart=l,i.onmousemove=l,i.onloadeddata=a(this.fire,this,"load"),t){for(var e=i.getElementsByTagName("source"),n=[],o=0;o<e.length;o++)n.push(e[o].src);this._url=0<e.length?n:[i.src]}else{v(this._url)||(this._url=[this._url]),!this.options.keepAspectRatio&&i.style.hasOwnProperty("objectFit")&&(i.style.objectFit="fill"),i.autoplay=!!this.options.autoplay,i.loop=!!this.options.loop;for(var s=0;s<this._url.length;s++){var r=ui("source");r.src=this._url[s],i.appendChild(r)}}}});var nn=tn.extend({_initImage:function(){var t=this._image=this._url;mi(t,"leaflet-image-layer"),this._zoomAnimated&&mi(t,"leaflet-zoom-animated"),this.options.className&&mi(t,this.options.className),t.onselectstart=l,t.onmousemove=l}});var on=Ee.extend({options:{offset:[0,7],className:"",pane:"popupPane"},initialize:function(t,i){p(this,t),this._source=i},onAdd:function(t){this._zoomAnimated=t._zoomAnimated,this._container||this._initLayout(),t._fadeAnimated&&yi(this._container,0),clearTimeout(this._removeTimeout),this.getPane().appendChild(this._container),this.update(),t._fadeAnimated&&yi(this._container,1),this.bringToFront()},onRemove:function(t){t._fadeAnimated?(yi(this._container,0),this._removeTimeout=setTimeout(a(li,void 0,this._container),200)):li(this._container)},getLatLng:function(){return this._latlng},setLatLng:function(t){return this._latlng=W(t),this._map&&(this._updatePosition(),this._adjustPan()),this},getContent:function(){return this._content},setContent:function(t){return this._content=t,this.update(),this},getElement:function(){return this._container},update:function(){this._map&&(this._container.style.visibility="hidden",this._updateContent(),this._updateLayout(),this._updatePosition(),this._container.style.visibility="",this._adjustPan())},getEvents:function(){var t={zoom:this._updatePosition,viewreset:this._updatePosition};return this._zoomAnimated&&(t.zoomanim=this._animateZoom),t},isOpen:function(){return!!this._map&&this._map.hasLayer(this)},bringToFront:function(){return this._map&&_i(this._container),this},bringToBack:function(){return this._map&&di(this._container),this},_prepareOpen:function(t,i,e){if(i instanceof Ee||(e=i,i=t),i instanceof ke)for(var n in t._layers){i=t._layers[n];break}if(!e)if(i.getCenter)e=i.getCenter();else{if(!i.getLatLng)throw new Error("Unable to get source layer LatLng.");e=i.getLatLng()}return this._source=i,this.update(),e},_updateContent:function(){if(this._content){var t=this._contentNode,i="function"==typeof this._content?this._content(this._source||this):this._content;if("string"==typeof i)t.innerHTML=i;else{for(;t.hasChildNodes();)t.removeChild(t.firstChild);t.appendChild(i)}this.fire("contentupdate")}},_updatePosition:function(){if(this._map){var t=this._map.latLngToLayerPoint(this._latlng),i=I(this.options.offset),e=this._getAnchor();this._zoomAnimated?Pi(this._container,t.add(e)):i=i.add(t).add(e);var n=this._containerBottom=-i.y,o=this._containerLeft=-Math.round(this._containerWidth/2)+i.x;this._container.style.bottom=n+"px",this._container.style.left=o+"px"}},_getAnchor:function(){return[0,0]}}),sn=on.extend({options:{maxWidth:300,minWidth:50,maxHeight:null,autoPan:!0,autoPanPaddingTopLeft:null,autoPanPaddingBottomRight:null,autoPanPadding:[5,5],keepInView:!1,closeButton:!0,autoClose:!0,closeOnEscapeKey:!0,className:""},openOn:function(t){return t.openPopup(this),this},onAdd:function(t){on.prototype.onAdd.call(this,t),t.fire("popupopen",{popup:this}),this._source&&(this._source.fire("popupopen",{popup:this},!0),this._source instanceof Re||this._source.on("preclick",Ri))},onRemove:function(t){on.prototype.onRemove.call(this,t),t.fire("popupclose",{popup:this}),this._source&&(this._source.fire("popupclose",{popup:this},!0),this._source instanceof Re||this._source.off("preclick",Ri))},getEvents:function(){var t=on.prototype.getEvents.call(this);return(void 0!==this.options.closeOnClick?this.options.closeOnClick:this._map.options.closePopupOnClick)&&(t.preclick=this._close),this.options.keepInView&&(t.moveend=this._adjustPan),t},_close:function(){this._map&&this._map.closePopup(this)},_initLayout:function(){var t="leaflet-popup",i=this._container=ui("div",t+" "+(this.options.className||"")+" leaflet-zoom-animated"),e=this._wrapper=ui("div",t+"-content-wrapper",i);if(this._contentNode=ui("div",t+"-content",e),Di(e),Ni(this._contentNode),ki(e,"contextmenu",Ri),this._tipContainer=ui("div",t+"-tip-container",i),this._tip=ui("div",t+"-tip",this._tipContainer),this.options.closeButton){var n=this._closeButton=ui("a",t+"-close-button",i);n.href="#close",n.innerHTML="&#215;",ki(n,"click",this._onCloseButtonClick,this)}},_updateLayout:function(){var t=this._contentNode,i=t.style;i.width="",i.whiteSpace="nowrap";var e=t.offsetWidth;e=Math.min(e,this.options.maxWidth),e=Math.max(e,this.options.minWidth),i.width=e+1+"px",i.whiteSpace="",i.height="";var n=t.offsetHeight,o=this.options.maxHeight,s="leaflet-popup-scrolled";o&&o<n?(i.height=o+"px",mi(t,s)):fi(t,s),this._containerWidth=this._container.offsetWidth},_animateZoom:function(t){var i=this._map._latLngToNewLayerPoint(this._latlng,t.zoom,t.center),e=this._getAnchor();Pi(this._container,i.add(e))},_adjustPan:function(){if(this.options.autoPan){this._map._panAnim&&this._map._panAnim.stop();var t=this._map,i=parseInt(hi(this._container,"marginBottom"),10)||0,e=this._container.offsetHeight+i,n=this._containerWidth,o=new B(this._containerLeft,-e-this._containerBottom);o._add(Li(this._container));var s=t.layerPointToContainerPoint(o),r=I(this.options.autoPanPadding),a=I(this.options.autoPanPaddingTopLeft||r),h=I(this.options.autoPanPaddingBottomRight||r),u=t.getSize(),l=0,c=0;s.x+n+h.x>u.x&&(l=s.x+n-u.x+h.x),s.x-l-a.x<0&&(l=s.x-a.x),s.y+e+h.y>u.y&&(c=s.y+e-u.y+h.y),s.y-c-a.y<0&&(c=s.y-a.y),(l||c)&&t.fire("autopanstart").panBy([l,c])}},_onCloseButtonClick:function(t){this._close(),Wi(t)},_getAnchor:function(){return I(this._source&&this._source._getPopupAnchor?this._source._getPopupAnchor():[0,0])}});$i.mergeOptions({closePopupOnClick:!0}),$i.include({openPopup:function(t,i,e){return t instanceof sn||(t=new sn(e).setContent(t)),i&&t.setLatLng(i),this.hasLayer(t)?this:(this._popup&&this._popup.options.autoClose&&this.closePopup(),this._popup=t,this.addLayer(t))},closePopup:function(t){return t&&t!==this._popup||(t=this._popup,this._popup=null),t&&this.removeLayer(t),this}}),Ee.include({bindPopup:function(t,i){return t instanceof sn?(p(t,i),(this._popup=t)._source=this):(this._popup&&!i||(this._popup=new sn(i,this)),this._popup.setContent(t)),this._popupHandlersAdded||(this.on({click:this._openPopup,keypress:this._onKeyPress,remove:this.closePopup,move:this._movePopup}),this._popupHandlersAdded=!0),this},unbindPopup:function(){return this._popup&&(this.off({click:this._openPopup,keypress:this._onKeyPress,remove:this.closePopup,move:this._movePopup}),this._popupHandlersAdded=!1,this._popup=null),this},openPopup:function(t,i){return this._popup&&this._map&&(i=this._popup._prepareOpen(this,t,i),this._map.openPopup(this._popup,i)),this},closePopup:function(){return this._popup&&this._popup._close(),this},togglePopup:function(t){return this._popup&&(this._popup._map?this.closePopup():this.openPopup(t)),this},isPopupOpen:function(){return!!this._popup&&this._popup.isOpen()},setPopupContent:function(t){return this._popup&&this._popup.setContent(t),this},getPopup:function(){return this._popup},_openPopup:function(t){var i=t.layer||t.target;this._popup&&this._map&&(Wi(t),i instanceof Re?this.openPopup(t.layer||t.target,t.latlng):this._map.hasLayer(this._popup)&&this._popup._source===i?this.closePopup():this.openPopup(i,t.latlng))},_movePopup:function(t){this._popup.setLatLng(t.latlng)},_onKeyPress:function(t){13===t.originalEvent.keyCode&&this._openPopup(t)}});var rn=on.extend({options:{pane:"tooltipPane",offset:[0,0],direction:"auto",permanent:!1,sticky:!1,interactive:!1,opacity:.9},onAdd:function(t){on.prototype.onAdd.call(this,t),this.setOpacity(this.options.opacity),t.fire("tooltipopen",{tooltip:this}),this._source&&this._source.fire("tooltipopen",{tooltip:this},!0)},onRemove:function(t){on.prototype.onRemove.call(this,t),t.fire("tooltipclose",{tooltip:this}),this._source&&this._source.fire("tooltipclose",{tooltip:this},!0)},getEvents:function(){var t=on.prototype.getEvents.call(this);return Tt&&!this.options.permanent&&(t.preclick=this._close),t},_close:function(){this._map&&this._map.closeTooltip(this)},_initLayout:function(){var t="leaflet-tooltip "+(this.options.className||"")+" leaflet-zoom-"+(this._zoomAnimated?"animated":"hide");this._contentNode=this._container=ui("div",t)},_updateLayout:function(){},_adjustPan:function(){},_setPosition:function(t){var i=this._map,e=this._container,n=i.latLngToContainerPoint(i.getCenter()),o=i.layerPointToContainerPoint(t),s=this.options.direction,r=e.offsetWidth,a=e.offsetHeight,h=I(this.options.offset),u=this._getAnchor();t="top"===s?t.add(I(-r/2+h.x,-a+h.y+u.y,!0)):"bottom"===s?t.subtract(I(r/2-h.x,-h.y,!0)):"center"===s?t.subtract(I(r/2+h.x,a/2-u.y+h.y,!0)):"right"===s||"auto"===s&&o.x<n.x?(s="right",t.add(I(h.x+u.x,u.y-a/2+h.y,!0))):(s="left",t.subtract(I(r+u.x-h.x,a/2-u.y-h.y,!0))),fi(e,"leaflet-tooltip-right"),fi(e,"leaflet-tooltip-left"),fi(e,"leaflet-tooltip-top"),fi(e,"leaflet-tooltip-bottom"),mi(e,"leaflet-tooltip-"+s),Pi(e,t)},_updatePosition:function(){var t=this._map.latLngToLayerPoint(this._latlng);this._setPosition(t)},setOpacity:function(t){this.options.opacity=t,this._container&&yi(this._container,t)},_animateZoom:function(t){var i=this._map._latLngToNewLayerPoint(this._latlng,t.zoom,t.center);this._setPosition(i)},_getAnchor:function(){return I(this._source&&this._source._getTooltipAnchor&&!this.options.sticky?this._source._getTooltipAnchor():[0,0])}});$i.include({openTooltip:function(t,i,e){return t instanceof rn||(t=new rn(e).setContent(t)),i&&t.setLatLng(i),this.hasLayer(t)?this:this.addLayer(t)},closeTooltip:function(t){return t&&this.removeLayer(t),this}}),Ee.include({bindTooltip:function(t,i){return t instanceof rn?(p(t,i),(this._tooltip=t)._source=this):(this._tooltip&&!i||(this._tooltip=new rn(i,this)),this._tooltip.setContent(t)),this._initTooltipInteractions(),this._tooltip.options.permanent&&this._map&&this._map.hasLayer(this)&&this.openTooltip(),this},unbindTooltip:function(){return this._tooltip&&(this._initTooltipInteractions(!0),this.closeTooltip(),this._tooltip=null),this},_initTooltipInteractions:function(t){if(t||!this._tooltipHandlersAdded){var i=t?"off":"on",e={remove:this.closeTooltip,move:this._moveTooltip};this._tooltip.options.permanent?e.add=this._openTooltip:(e.mouseover=this._openTooltip,e.mouseout=this.closeTooltip,this._tooltip.options.sticky&&(e.mousemove=this._moveTooltip),Tt&&(e.click=this._openTooltip)),this[i](e),this._tooltipHandlersAdded=!t}},openTooltip:function(t,i){return this._tooltip&&this._map&&(i=this._tooltip._prepareOpen(this,t,i),this._map.openTooltip(this._tooltip,i),this._tooltip.options.interactive&&this._tooltip._container&&(mi(this._tooltip._container,"leaflet-clickable"),this.addInteractiveTarget(this._tooltip._container))),this},closeTooltip:function(){return this._tooltip&&(this._tooltip._close(),this._tooltip.options.interactive&&this._tooltip._container&&(fi(this._tooltip._container,"leaflet-clickable"),this.removeInteractiveTarget(this._tooltip._container))),this},toggleTooltip:function(t){return this._tooltip&&(this._tooltip._map?this.closeTooltip():this.openTooltip(t)),this},isTooltipOpen:function(){return this._tooltip.isOpen()},setTooltipContent:function(t){return this._tooltip&&this._tooltip.setContent(t),this},getTooltip:function(){return this._tooltip},_openTooltip:function(t){var i=t.layer||t.target;this._tooltip&&this._map&&this.openTooltip(i,this._tooltip.options.sticky?t.latlng:void 0)},_moveTooltip:function(t){var i,e,n=t.latlng;this._tooltip.options.sticky&&t.originalEvent&&(i=this._map.mouseEventToContainerPoint(t.originalEvent),e=this._map.containerPointToLayerPoint(i),n=this._map.layerPointToLatLng(e)),this._tooltip.setLatLng(n)}});var an=Be.extend({options:{iconSize:[12,12],html:!1,bgPos:null,className:"leaflet-div-icon"},createIcon:function(t){var i=t&&"DIV"===t.tagName?t:document.createElement("div"),e=this.options;if(e.html instanceof Element?(ci(i),i.appendChild(e.html)):i.innerHTML=!1!==e.html?e.html:"",e.bgPos){var n=I(e.bgPos);i.style.backgroundPosition=-n.x+"px "+-n.y+"px"}return this._setIconStyles(i,"icon"),i},createShadow:function(){return null}});Be.Default=Ae;var hn=Ee.extend({options:{tileSize:256,opacity:1,updateWhenIdle:xt,updateWhenZooming:!0,updateInterval:200,zIndex:1,bounds:null,minZoom:0,maxZoom:void 0,maxNativeZoom:void 0,minNativeZoom:void 0,noWrap:!1,pane:"tilePane",className:"",keepBuffer:2},initialize:function(t){p(this,t)},onAdd:function(){this._initContainer(),this._levels={},this._tiles={},this._resetView(),this._update()},beforeAdd:function(t){t._addZoomLimit(this)},onRemove:function(t){this._removeAllTiles(),li(this._container),t._removeZoomLimit(this),this._container=null,this._tileZoom=void 0},bringToFront:function(){return this._map&&(_i(this._container),this._setAutoZIndex(Math.max)),this},bringToBack:function(){return this._map&&(di(this._container),this._setAutoZIndex(Math.min)),this},getContainer:function(){return this._container},setOpacity:function(t){return this.options.opacity=t,this._updateOpacity(),this},setZIndex:function(t){return this.options.zIndex=t,this._updateZIndex(),this},isLoading:function(){return this._loading},redraw:function(){return this._map&&(this._removeAllTiles(),this._update()),this},getEvents:function(){var t={viewprereset:this._invalidateAll,viewreset:this._resetView,zoom:this._resetView,moveend:this._onMoveEnd};return this.options.updateWhenIdle||(this._onMove||(this._onMove=o(this._onMoveEnd,this.options.updateInterval,this)),t.move=this._onMove),this._zoomAnimated&&(t.zoomanim=this._animateZoom),t},createTile:function(){return document.createElement("div")},getTileSize:function(){var t=this.options.tileSize;return t instanceof B?t:new B(t,t)},_updateZIndex:function(){this._container&&void 0!==this.options.zIndex&&null!==this.options.zIndex&&(this._container.style.zIndex=this.options.zIndex)},_setAutoZIndex:function(t){for(var i,e=this.getPane().children,n=-t(-1/0,1/0),o=0,s=e.length;o<s;o++)i=e[o].style.zIndex,e[o]!==this._container&&i&&(n=t(n,+i));isFinite(n)&&(this.options.zIndex=n+t(-1,1),this._updateZIndex())},_updateOpacity:function(){if(this._map&&!et){yi(this._container,this.options.opacity);var t=+new Date,i=!1,e=!1;for(var n in this._tiles){var o=this._tiles[n];if(o.current&&o.loaded){var s=Math.min(1,(t-o.loaded)/200);yi(o.el,s),s<1?i=!0:(o.active?e=!0:this._onOpaqueTile(o),o.active=!0)}}e&&!this._noPrune&&this._pruneTiles(),i&&(C(this._fadeFrame),this._fadeFrame=M(this._updateOpacity,this))}},_onOpaqueTile:l,_initContainer:function(){this._container||(this._container=ui("div","leaflet-layer "+(this.options.className||"")),this._updateZIndex(),this.options.opacity<1&&this._updateOpacity(),this.getPane().appendChild(this._container))},_updateLevels:function(){var t=this._tileZoom,i=this.options.maxZoom;if(void 0!==t){for(var e in this._levels)this._levels[e].el.children.length||e===t?(this._levels[e].el.style.zIndex=i-Math.abs(t-e),this._onUpdateLevel(e)):(li(this._levels[e].el),this._removeTilesAtZoom(e),this._onRemoveLevel(e),delete this._levels[e]);var n=this._levels[t],o=this._map;return n||((n=this._levels[t]={}).el=ui("div","leaflet-tile-container leaflet-zoom-animated",this._container),n.el.style.zIndex=i,n.origin=o.project(o.unproject(o.getPixelOrigin()),t).round(),n.zoom=t,this._setZoomTransform(n,o.getCenter(),o.getZoom()),n.el.offsetWidth,this._onCreateLevel(n)),this._level=n}},_onUpdateLevel:l,_onRemoveLevel:l,_onCreateLevel:l,_pruneTiles:function(){if(this._map){var t,i,e=this._map.getZoom();if(e>this.options.maxZoom||e<this.options.minZoom)this._removeAllTiles();else{for(t in this._tiles)(i=this._tiles[t]).retain=i.current;for(t in this._tiles)if((i=this._tiles[t]).current&&!i.active){var n=i.coords;this._retainParent(n.x,n.y,n.z,n.z-5)||this._retainChildren(n.x,n.y,n.z,n.z+2)}for(t in this._tiles)this._tiles[t].retain||this._removeTile(t)}}},_removeTilesAtZoom:function(t){for(var i in this._tiles)this._tiles[i].coords.z===t&&this._removeTile(i)},_removeAllTiles:function(){for(var t in this._tiles)this._removeTile(t)},_invalidateAll:function(){for(var t in this._levels)li(this._levels[t].el),this._onRemoveLevel(t),delete this._levels[t];this._removeAllTiles(),this._tileZoom=void 0},_retainParent:function(t,i,e,n){var o=Math.floor(t/2),s=Math.floor(i/2),r=e-1,a=new B(+o,+s);a.z=+r;var h=this._tileCoordsToKey(a),u=this._tiles[h];return u&&u.active?u.retain=!0:(u&&u.loaded&&(u.retain=!0),n<r&&this._retainParent(o,s,r,n))},_retainChildren:function(t,i,e,n){for(var o=2*t;o<2*t+2;o++)for(var s=2*i;s<2*i+2;s++){var r=new B(o,s);r.z=e+1;var a=this._tileCoordsToKey(r),h=this._tiles[a];h&&h.active?h.retain=!0:(h&&h.loaded&&(h.retain=!0),e+1<n&&this._retainChildren(o,s,e+1,n))}},_resetView:function(t){var i=t&&(t.pinch||t.flyTo);this._setView(this._map.getCenter(),this._map.getZoom(),i,i)},_animateZoom:function(t){this._setView(t.center,t.zoom,!0,t.noUpdate)},_clampZoom:function(t){var i=this.options;return void 0!==i.minNativeZoom&&t<i.minNativeZoom?i.minNativeZoom:void 0!==i.maxNativeZoom&&i.maxNativeZoom<t?i.maxNativeZoom:t},_setView:function(t,i,e,n){var o=this._clampZoom(Math.round(i));(void 0!==this.options.maxZoom&&o>this.options.maxZoom||void 0!==this.options.minZoom&&o<this.options.minZoom)&&(o=void 0);var s=this.options.updateWhenZooming&&o!==this._tileZoom;n&&!s||(this._tileZoom=o,this._abortLoading&&this._abortLoading(),this._updateLevels(),this._resetGrid(),void 0!==o&&this._update(t),e||this._pruneTiles(),this._noPrune=!!e),this._setZoomTransforms(t,i)},_setZoomTransforms:function(t,i){for(var e in this._levels)this._setZoomTransform(this._levels[e],t,i)},_setZoomTransform:function(t,i,e){var n=this._map.getZoomScale(e,t.zoom),o=t.origin.multiplyBy(n).subtract(this._map._getNewPixelOrigin(i,e)).round();yt?wi(t.el,o,n):Pi(t.el,o)},_resetGrid:function(){var t=this._map,i=t.options.crs,e=this._tileSize=this.getTileSize(),n=this._tileZoom,o=this._map.getPixelWorldBounds(this._tileZoom);o&&(this._globalTileRange=this._pxBoundsToTileRange(o)),this._wrapX=i.wrapLng&&!this.options.noWrap&&[Math.floor(t.project([0,i.wrapLng[0]],n).x/e.x),Math.ceil(t.project([0,i.wrapLng[1]],n).x/e.y)],this._wrapY=i.wrapLat&&!this.options.noWrap&&[Math.floor(t.project([i.wrapLat[0],0],n).y/e.x),Math.ceil(t.project([i.wrapLat[1],0],n).y/e.y)]},_onMoveEnd:function(){this._map&&!this._map._animatingZoom&&this._update()},_getTiledPixelBounds:function(t){var i=this._map,e=i._animatingZoom?Math.max(i._animateToZoom,i.getZoom()):i.getZoom(),n=i.getZoomScale(e,this._tileZoom),o=i.project(t,this._tileZoom).floor(),s=i.getSize().divideBy(2*n);return new O(o.subtract(s),o.add(s))},_update:function(t){var i=this._map;if(i){var e=this._clampZoom(i.getZoom());if(void 0===t&&(t=i.getCenter()),void 0!==this._tileZoom){var n=this._getTiledPixelBounds(t),o=this._pxBoundsToTileRange(n),s=o.getCenter(),r=[],a=this.options.keepBuffer,h=new O(o.getBottomLeft().subtract([a,-a]),o.getTopRight().add([a,-a]));if(!(isFinite(o.min.x)&&isFinite(o.min.y)&&isFinite(o.max.x)&&isFinite(o.max.y)))throw new Error("Attempted to load an infinite number of tiles");for(var u in this._tiles){var l=this._tiles[u].coords;l.z===this._tileZoom&&h.contains(new B(l.x,l.y))||(this._tiles[u].current=!1)}if(1<Math.abs(e-this._tileZoom))this._setView(t,e);else{for(var c=o.min.y;c<=o.max.y;c++)for(var _=o.min.x;_<=o.max.x;_++){var d=new B(_,c);if(d.z=this._tileZoom,this._isValidTile(d)){var p=this._tiles[this._tileCoordsToKey(d)];p?p.current=!0:r.push(d)}}if(r.sort(function(t,i){return t.distanceTo(s)-i.distanceTo(s)}),0!==r.length){this._loading||(this._loading=!0,this.fire("loading"));var m=document.createDocumentFragment();for(_=0;_<r.length;_++)this._addTile(r[_],m);this._level.el.appendChild(m)}}}}},_isValidTile:function(t){var i=this._map.options.crs;if(!i.infinite){var e=this._globalTileRange;if(!i.wrapLng&&(t.x<e.min.x||t.x>e.max.x)||!i.wrapLat&&(t.y<e.min.y||t.y>e.max.y))return!1}if(!this.options.bounds)return!0;var n=this._tileCoordsToBounds(t);return D(this.options.bounds).overlaps(n)},_keyToBounds:function(t){return this._tileCoordsToBounds(this._keyToTileCoords(t))},_tileCoordsToNwSe:function(t){var i=this._map,e=this.getTileSize(),n=t.scaleBy(e),o=n.add(e);return[i.unproject(n,t.z),i.unproject(o,t.z)]},_tileCoordsToBounds:function(t){var i=this._tileCoordsToNwSe(t),e=new N(i[0],i[1]);return this.options.noWrap||(e=this._map.wrapLatLngBounds(e)),e},_tileCoordsToKey:function(t){return t.x+":"+t.y+":"+t.z},_keyToTileCoords:function(t){var i=t.split(":"),e=new B(+i[0],+i[1]);return e.z=+i[2],e},_removeTile:function(t){var i=this._tiles[t];i&&(li(i.el),delete this._tiles[t],this.fire("tileunload",{tile:i.el,coords:this._keyToTileCoords(t)}))},_initTile:function(t){mi(t,"leaflet-tile");var i=this.getTileSize();t.style.width=i.x+"px",t.style.height=i.y+"px",t.onselectstart=l,t.onmousemove=l,et&&this.options.opacity<1&&yi(t,this.options.opacity),st&&!rt&&(t.style.WebkitBackfaceVisibility="hidden")},_addTile:function(t,i){var e=this._getTilePos(t),n=this._tileCoordsToKey(t),o=this.createTile(this._wrapCoords(t),a(this._tileReady,this,t));this._initTile(o),this.createTile.length<2&&M(a(this._tileReady,this,t,null,o)),Pi(o,e),this._tiles[n]={el:o,coords:t,current:!0},i.appendChild(o),this.fire("tileloadstart",{tile:o,coords:t})},_tileReady:function(t,i,e){i&&this.fire("tileerror",{error:i,tile:e,coords:t});var n=this._tileCoordsToKey(t);(e=this._tiles[n])&&(e.loaded=+new Date,this._map._fadeAnimated?(yi(e.el,0),C(this._fadeFrame),this._fadeFrame=M(this._updateOpacity,this)):(e.active=!0,this._pruneTiles()),i||(mi(e.el,"leaflet-tile-loaded"),this.fire("tileload",{tile:e.el,coords:t})),this._noTilesToLoad()&&(this._loading=!1,this.fire("load"),et||!this._map._fadeAnimated?M(this._pruneTiles,this):setTimeout(a(this._pruneTiles,this),250)))},_getTilePos:function(t){return t.scaleBy(this.getTileSize()).subtract(this._level.origin)},_wrapCoords:function(t){var i=new B(this._wrapX?r(t.x,this._wrapX):t.x,this._wrapY?r(t.y,this._wrapY):t.y);return i.z=t.z,i},_pxBoundsToTileRange:function(t){var i=this.getTileSize();return new O(t.min.unscaleBy(i).floor(),t.max.unscaleBy(i).ceil().subtract([1,1]))},_noTilesToLoad:function(){for(var t in this._tiles)if(!this._tiles[t].loaded)return!1;return!0}});var un=hn.extend({options:{minZoom:0,maxZoom:18,subdomains:"abc",errorTileUrl:"",zoomOffset:0,tms:!1,zoomReverse:!1,detectRetina:!1,crossOrigin:!1},initialize:function(t,i){this._url=t,(i=p(this,i)).detectRetina&&Ct&&0<i.maxZoom&&(i.tileSize=Math.floor(i.tileSize/2),i.zoomReverse?(i.zoomOffset--,i.minZoom++):(i.zoomOffset++,i.maxZoom--),i.minZoom=Math.max(0,i.minZoom)),"string"==typeof i.subdomains&&(i.subdomains=i.subdomains.split("")),st||this.on("tileunload",this._onTileRemove)},setUrl:function(t,i){return this._url===t&&void 0===i&&(i=!0),this._url=t,i||this.redraw(),this},createTile:function(t,i){var e=document.createElement("img");return ki(e,"load",a(this._tileOnLoad,this,i,e)),ki(e,"error",a(this._tileOnError,this,i,e)),!this.options.crossOrigin&&""!==this.options.crossOrigin||(e.crossOrigin=!0===this.options.crossOrigin?"":this.options.crossOrigin),e.alt="",e.setAttribute("role","presentation"),e.src=this.getTileUrl(t),e},getTileUrl:function(t){var i={r:Ct?"@2x":"",s:this._getSubdomain(t),x:t.x,y:t.y,z:this._getZoomForUrl()};if(this._map&&!this._map.options.crs.infinite){var e=this._globalTileRange.max.y-t.y;this.options.tms&&(i.y=e),i["-y"]=e}return g(this._url,h(i,this.options))},_tileOnLoad:function(t,i){et?setTimeout(a(t,this,null,i),0):t(null,i)},_tileOnError:function(t,i,e){var n=this.options.errorTileUrl;n&&i.getAttribute("src")!==n&&(i.src=n),t(e,i)},_onTileRemove:function(t){t.tile.onload=null},_getZoomForUrl:function(){var t=this._tileZoom,i=this.options.maxZoom;return this.options.zoomReverse&&(t=i-t),t+this.options.zoomOffset},_getSubdomain:function(t){var i=Math.abs(t.x+t.y)%this.options.subdomains.length;return this.options.subdomains[i]},_abortLoading:function(){var t,i;for(t in this._tiles)this._tiles[t].coords.z!==this._tileZoom&&((i=this._tiles[t].el).onload=l,i.onerror=l,i.complete||(i.src=x,li(i),delete this._tiles[t]))},_removeTile:function(t){var i=this._tiles[t];if(i)return ht||i.el.setAttribute("src",x),hn.prototype._removeTile.call(this,t)},_tileReady:function(t,i,e){if(this._map&&(!e||e.getAttribute("src")!==x))return hn.prototype._tileReady.call(this,t,i,e)}});function ln(t,i){return new un(t,i)}var cn=un.extend({defaultWmsParams:{service:"WMS",request:"GetMap",layers:"",styles:"",format:"image/jpeg",transparent:!1,version:"1.1.1"},options:{crs:null,uppercase:!1},initialize:function(t,i){this._url=t;var e=h({},this.defaultWmsParams);for(var n in i)n in this.options||(e[n]=i[n]);var o=(i=p(this,i)).detectRetina&&Ct?2:1,s=this.getTileSize();e.width=s.x*o,e.height=s.y*o,this.wmsParams=e},onAdd:function(t){this._crs=this.options.crs||t.options.crs,this._wmsVersion=parseFloat(this.wmsParams.version);var i=1.3<=this._wmsVersion?"crs":"srs";this.wmsParams[i]=this._crs.code,un.prototype.onAdd.call(this,t)},getTileUrl:function(t){var i=this._tileCoordsToNwSe(t),e=this._crs,n=R(e.project(i[0]),e.project(i[1])),o=n.min,s=n.max,r=(1.3<=this._wmsVersion&&this._crs===Ce?[o.y,o.x,s.y,s.x]:[o.x,o.y,s.x,s.y]).join(","),a=un.prototype.getTileUrl.call(this,t);return a+m(this.wmsParams,a,this.options.uppercase)+(this.options.uppercase?"&BBOX=":"&bbox=")+r},setParams:function(t,i){return h(this.wmsParams,t),i||this.redraw(),this}});un.WMS=cn,ln.wms=function(t,i){return new cn(t,i)};var _n=Ee.extend({options:{padding:.1,tolerance:0},initialize:function(t){p(this,t),u(this),this._layers=this._layers||{}},onAdd:function(){this._container||(this._initContainer(),this._zoomAnimated&&mi(this._container,"leaflet-zoom-animated")),this.getPane().appendChild(this._container),this._update(),this.on("update",this._updatePaths,this)},onRemove:function(){this.off("update",this._updatePaths,this),this._destroyContainer()},getEvents:function(){var t={viewreset:this._reset,zoom:this._onZoom,moveend:this._update,zoomend:this._onZoomEnd};return this._zoomAnimated&&(t.zoomanim=this._onAnimZoom),t},_onAnimZoom:function(t){this._updateTransform(t.center,t.zoom)},_onZoom:function(){this._updateTransform(this._map.getCenter(),this._map.getZoom())},_updateTransform:function(t,i){var e=this._map.getZoomScale(i,this._zoom),n=Li(this._container),o=this._map.getSize().multiplyBy(.5+this.options.padding),s=this._map.project(this._center,i),r=this._map.project(t,i).subtract(s),a=o.multiplyBy(-e).add(n).add(o).subtract(r);yt?wi(this._container,a,e):Pi(this._container,a)},_reset:function(){for(var t in this._update(),this._updateTransform(this._center,this._zoom),this._layers)this._layers[t]._reset()},_onZoomEnd:function(){for(var t in this._layers)this._layers[t]._project()},_updatePaths:function(){for(var t in this._layers)this._layers[t]._update()},_update:function(){var t=this.options.padding,i=this._map.getSize(),e=this._map.containerPointToLayerPoint(i.multiplyBy(-t)).round();this._bounds=new O(e,e.add(i.multiplyBy(1+2*t)).round()),this._center=this._map.getCenter(),this._zoom=this._map.getZoom()}}),dn=_n.extend({getEvents:function(){var t=_n.prototype.getEvents.call(this);return t.viewprereset=this._onViewPreReset,t},_onViewPreReset:function(){this._postponeUpdatePaths=!0},onAdd:function(){_n.prototype.onAdd.call(this),this._draw()},_initContainer:function(){var t=this._container=document.createElement("canvas");ki(t,"mousemove",this._onMouseMove,this),ki(t,"click dblclick mousedown mouseup contextmenu",this._onClick,this),ki(t,"mouseout",this._handleMouseOut,this),this._ctx=t.getContext("2d")},_destroyContainer:function(){C(this._redrawRequest),delete this._ctx,li(this._container),Ai(this._container),delete this._container},_updatePaths:function(){if(!this._postponeUpdatePaths){for(var t in this._redrawBounds=null,this._layers)this._layers[t]._update();this._redraw()}},_update:function(){if(!this._map._animatingZoom||!this._bounds){_n.prototype._update.call(this);var t=this._bounds,i=this._container,e=t.getSize(),n=Ct?2:1;Pi(i,t.min),i.width=n*e.x,i.height=n*e.y,i.style.width=e.x+"px",i.style.height=e.y+"px",Ct&&this._ctx.scale(2,2),this._ctx.translate(-t.min.x,-t.min.y),this.fire("update")}},_reset:function(){_n.prototype._reset.call(this),this._postponeUpdatePaths&&(this._postponeUpdatePaths=!1,this._updatePaths())},_initPath:function(t){this._updateDashArray(t);var i=(this._layers[u(t)]=t)._order={layer:t,prev:this._drawLast,next:null};this._drawLast&&(this._drawLast.next=i),this._drawLast=i,this._drawFirst=this._drawFirst||this._drawLast},_addPath:function(t){this._requestRedraw(t)},_removePath:function(t){var i=t._order,e=i.next,n=i.prev;e?e.prev=n:this._drawLast=n,n?n.next=e:this._drawFirst=e,delete t._order,delete this._layers[u(t)],this._requestRedraw(t)},_updatePath:function(t){this._extendRedrawBounds(t),t._project(),t._update(),this._requestRedraw(t)},_updateStyle:function(t){this._updateDashArray(t),this._requestRedraw(t)},_updateDashArray:function(t){if("string"==typeof t.options.dashArray){var i,e,n=t.options.dashArray.split(/[, ]+/),o=[];for(e=0;e<n.length;e++){if(i=Number(n[e]),isNaN(i))return;o.push(i)}t.options._dashArray=o}else t.options._dashArray=t.options.dashArray},_requestRedraw:function(t){this._map&&(this._extendRedrawBounds(t),this._redrawRequest=this._redrawRequest||M(this._redraw,this))},_extendRedrawBounds:function(t){if(t._pxBounds){var i=(t.options.weight||0)+1;this._redrawBounds=this._redrawBounds||new O,this._redrawBounds.extend(t._pxBounds.min.subtract([i,i])),this._redrawBounds.extend(t._pxBounds.max.add([i,i]))}},_redraw:function(){this._redrawRequest=null,this._redrawBounds&&(this._redrawBounds.min._floor(),this._redrawBounds.max._ceil()),this._clear(),this._draw(),this._redrawBounds=null},_clear:function(){var t=this._redrawBounds;if(t){var i=t.getSize();this._ctx.clearRect(t.min.x,t.min.y,i.x,i.y)}else this._ctx.clearRect(0,0,this._container.width,this._container.height)},_draw:function(){var t,i=this._redrawBounds;if(this._ctx.save(),i){var e=i.getSize();this._ctx.beginPath(),this._ctx.rect(i.min.x,i.min.y,e.x,e.y),this._ctx.clip()}this._drawing=!0;for(var n=this._drawFirst;n;n=n.next)t=n.layer,(!i||t._pxBounds&&t._pxBounds.intersects(i))&&t._updatePath();this._drawing=!1,this._ctx.restore()},_updatePoly:function(t,i){if(this._drawing){var e,n,o,s,r=t._parts,a=r.length,h=this._ctx;if(a){for(h.beginPath(),e=0;e<a;e++){for(n=0,o=r[e].length;n<o;n++)s=r[e][n],h[n?"lineTo":"moveTo"](s.x,s.y);i&&h.closePath()}this._fillStroke(h,t)}}},_updateCircle:function(t){if(this._drawing&&!t._empty()){var i=t._point,e=this._ctx,n=Math.max(Math.round(t._radius),1),o=(Math.max(Math.round(t._radiusY),1)||n)/n;1!=o&&(e.save(),e.scale(1,o)),e.beginPath(),e.arc(i.x,i.y/o,n,0,2*Math.PI,!1),1!=o&&e.restore(),this._fillStroke(e,t)}},_fillStroke:function(t,i){var e=i.options;e.fill&&(t.globalAlpha=e.fillOpacity,t.fillStyle=e.fillColor||e.color,t.fill(e.fillRule||"evenodd")),e.stroke&&0!==e.weight&&(t.setLineDash&&t.setLineDash(i.options&&i.options._dashArray||[]),t.globalAlpha=e.opacity,t.lineWidth=e.weight,t.strokeStyle=e.color,t.lineCap=e.lineCap,t.lineJoin=e.lineJoin,t.stroke())},_onClick:function(t){for(var i,e,n=this._map.mouseEventToLayerPoint(t),o=this._drawFirst;o;o=o.next)(i=o.layer).options.interactive&&i._containsPoint(n)&&!this._map._draggableMoved(i)&&(e=i);e&&(Gi(t),this._fireEvent([e],t))},_onMouseMove:function(t){if(this._map&&!this._map.dragging.moving()&&!this._map._animatingZoom){var i=this._map.mouseEventToLayerPoint(t);this._handleMouseHover(t,i)}},_handleMouseOut:function(t){var i=this._hoveredLayer;i&&(fi(this._container,"leaflet-interactive"),this._fireEvent([i],t,"mouseout"),this._hoveredLayer=null,this._mouseHoverThrottled=!1)},_handleMouseHover:function(t,i){if(!this._mouseHoverThrottled){for(var e,n,o=this._drawFirst;o;o=o.next)(e=o.layer).options.interactive&&e._containsPoint(i)&&(n=e);n!==this._hoveredLayer&&(this._handleMouseOut(t),n&&(mi(this._container,"leaflet-interactive"),this._fireEvent([n],t,"mouseover"),this._hoveredLayer=n)),this._hoveredLayer&&this._fireEvent([this._hoveredLayer],t),this._mouseHoverThrottled=!0,setTimeout(L.bind(function(){this._mouseHoverThrottled=!1},this),32)}},_fireEvent:function(t,i,e){this._map._fireDOMEvent(i,e||i.type,t)},_bringToFront:function(t){var i=t._order;if(i){var e=i.next,n=i.prev;e&&((e.prev=n)?n.next=e:e&&(this._drawFirst=e),i.prev=this._drawLast,(this._drawLast.next=i).next=null,this._drawLast=i,this._requestRedraw(t))}},_bringToBack:function(t){var i=t._order;if(i){var e=i.next,n=i.prev;n&&((n.next=e)?e.prev=n:n&&(this._drawLast=n),i.prev=null,i.next=this._drawFirst,this._drawFirst.prev=i,this._drawFirst=i,this._requestRedraw(t))}}});function pn(t){return Et?new dn(t):null}var mn=function(){try{return document.namespaces.add("lvml","urn:schemas-microsoft-com:vml"),function(t){return document.createElement("<lvml:"+t+' class="lvml">')}}catch(t){return function(t){return document.createElement("<"+t+' xmlns="urn:schemas-microsoft.com:vml" class="lvml">')}}}(),fn={_initContainer:function(){this._container=ui("div","leaflet-vml-container")},_update:function(){this._map._animatingZoom||(_n.prototype._update.call(this),this.fire("update"))},_initPath:function(t){var i=t._container=mn("shape");mi(i,"leaflet-vml-shape "+(this.options.className||"")),i.coordsize="1 1",t._path=mn("path"),i.appendChild(t._path),this._updateStyle(t),this._layers[u(t)]=t},_addPath:function(t){var i=t._container;this._container.appendChild(i),t.options.interactive&&t.addInteractiveTarget(i)},_removePath:function(t){var i=t._container;li(i),t.removeInteractiveTarget(i),delete this._layers[u(t)]},_updateStyle:function(t){var i=t._stroke,e=t._fill,n=t.options,o=t._container;o.stroked=!!n.stroke,o.filled=!!n.fill,n.stroke?(i||(i=t._stroke=mn("stroke")),o.appendChild(i),i.weight=n.weight+"px",i.color=n.color,i.opacity=n.opacity,n.dashArray?i.dashStyle=v(n.dashArray)?n.dashArray.join(" "):n.dashArray.replace(/( *, *)/g," "):i.dashStyle="",i.endcap=n.lineCap.replace("butt","flat"),i.joinstyle=n.lineJoin):i&&(o.removeChild(i),t._stroke=null),n.fill?(e||(e=t._fill=mn("fill")),o.appendChild(e),e.color=n.fillColor||n.color,e.opacity=n.fillOpacity):e&&(o.removeChild(e),t._fill=null)},_updateCircle:function(t){var i=t._point.round(),e=Math.round(t._radius),n=Math.round(t._radiusY||e);this._setPath(t,t._empty()?"M0 0":"AL "+i.x+","+i.y+" "+e+","+n+" 0,23592600")},_setPath:function(t,i){t._path.v=i},_bringToFront:function(t){_i(t._container)},_bringToBack:function(t){di(t._container)}},gn=kt?mn:$,vn=_n.extend({getEvents:function(){var t=_n.prototype.getEvents.call(this);return t.zoomstart=this._onZoomStart,t},_initContainer:function(){this._container=gn("svg"),this._container.setAttribute("pointer-events","none"),this._rootGroup=gn("g"),this._container.appendChild(this._rootGroup)},_destroyContainer:function(){li(this._container),Ai(this._container),delete this._container,delete this._rootGroup,delete this._svgSize},_onZoomStart:function(){this._update()},_update:function(){if(!this._map._animatingZoom||!this._bounds){_n.prototype._update.call(this);var t=this._bounds,i=t.getSize(),e=this._container;this._svgSize&&this._svgSize.equals(i)||(this._svgSize=i,e.setAttribute("width",i.x),e.setAttribute("height",i.y)),Pi(e,t.min),e.setAttribute("viewBox",[t.min.x,t.min.y,i.x,i.y].join(" ")),this.fire("update")}},_initPath:function(t){var i=t._path=gn("path");t.options.className&&mi(i,t.options.className),t.options.interactive&&mi(i,"leaflet-interactive"),this._updateStyle(t),this._layers[u(t)]=t},_addPath:function(t){this._rootGroup||this._initContainer(),this._rootGroup.appendChild(t._path),t.addInteractiveTarget(t._path)},_removePath:function(t){li(t._path),t.removeInteractiveTarget(t._path),delete this._layers[u(t)]},_updatePath:function(t){t._project(),t._update()},_updateStyle:function(t){var i=t._path,e=t.options;i&&(e.stroke?(i.setAttribute("stroke",e.color),i.setAttribute("stroke-opacity",e.opacity),i.setAttribute("stroke-width",e.weight),i.setAttribute("stroke-linecap",e.lineCap),i.setAttribute("stroke-linejoin",e.lineJoin),e.dashArray?i.setAttribute("stroke-dasharray",e.dashArray):i.removeAttribute("stroke-dasharray"),e.dashOffset?i.setAttribute("stroke-dashoffset",e.dashOffset):i.removeAttribute("stroke-dashoffset")):i.setAttribute("stroke","none"),e.fill?(i.setAttribute("fill",e.fillColor||e.color),i.setAttribute("fill-opacity",e.fillOpacity),i.setAttribute("fill-rule",e.fillRule||"evenodd")):i.setAttribute("fill","none"))},_updatePoly:function(t,i){this._setPath(t,Q(t._parts,i))},_updateCircle:function(t){var i=t._point,e=Math.max(Math.round(t._radius),1),n="a"+e+","+(Math.max(Math.round(t._radiusY),1)||e)+" 0 1,0 ",o=t._empty()?"M0 0":"M"+(i.x-e)+","+i.y+n+2*e+",0 "+n+2*-e+",0 ";this._setPath(t,o)},_setPath:function(t,i){t._path.setAttribute("d",i)},_bringToFront:function(t){_i(t._path)},_bringToBack:function(t){di(t._path)}});function yn(t){return Zt||kt?new vn(t):null}kt&&vn.include(fn),$i.include({getRenderer:function(t){var i=t.options.renderer||this._getPaneRenderer(t.options.pane)||this.options.renderer||this._renderer;return i||(i=this._renderer=this._createRenderer()),this.hasLayer(i)||this.addLayer(i),i},_getPaneRenderer:function(t){if("overlayPane"===t||void 0===t)return!1;var i=this._paneRenderers[t];return void 0===i&&(i=this._createRenderer({pane:t}),this._paneRenderers[t]=i),i},_createRenderer:function(t){return this.options.preferCanvas&&pn(t)||yn(t)}});var xn=We.extend({initialize:function(t,i){We.prototype.initialize.call(this,this._boundsToLatLngs(t),i)},setBounds:function(t){return this.setLatLngs(this._boundsToLatLngs(t))},_boundsToLatLngs:function(t){return[(t=D(t)).getSouthWest(),t.getNorthWest(),t.getNorthEast(),t.getSouthEast()]}});vn.create=gn,vn.pointsToPath=Q,He.geometryToLayer=Fe,He.coordsToLatLng=Ve,He.coordsToLatLngs=qe,He.latLngToCoords=Ge,He.latLngsToCoords=Ke,He.getFeature=Ye,He.asFeature=Xe,$i.mergeOptions({boxZoom:!0});var wn=se.extend({initialize:function(t){this._map=t,this._container=t._container,this._pane=t._panes.overlayPane,this._resetStateTimeout=0,t.on("unload",this._destroy,this)},addHooks:function(){ki(this._container,"mousedown",this._onMouseDown,this)},removeHooks:function(){Ai(this._container,"mousedown",this._onMouseDown,this)},moved:function(){return this._moved},_destroy:function(){li(this._pane),delete this._pane},_resetState:function(){this._resetStateTimeout=0,this._moved=!1},_clearDeferredResetState:function(){0!==this._resetStateTimeout&&(clearTimeout(this._resetStateTimeout),this._resetStateTimeout=0)},_onMouseDown:function(t){if(!t.shiftKey||1!==t.which&&1!==t.button)return!1;this._clearDeferredResetState(),this._resetState(),Qt(),Ti(),this._startPoint=this._map.mouseEventToContainerPoint(t),ki(document,{contextmenu:Wi,mousemove:this._onMouseMove,mouseup:this._onMouseUp,keydown:this._onKeyDown},this)},_onMouseMove:function(t){this._moved||(this._moved=!0,this._box=ui("div","leaflet-zoom-box",this._container),mi(this._container,"leaflet-crosshair"),this._map.fire("boxzoomstart")),this._point=this._map.mouseEventToContainerPoint(t);var i=new O(this._point,this._startPoint),e=i.getSize();Pi(this._box,i.min),this._box.style.width=e.x+"px",this._box.style.height=e.y+"px"},_finish:function(){this._moved&&(li(this._box),fi(this._container,"leaflet-crosshair")),ti(),zi(),Ai(document,{contextmenu:Wi,mousemove:this._onMouseMove,mouseup:this._onMouseUp,keydown:this._onKeyDown},this)},_onMouseUp:function(t){if((1===t.which||1===t.button)&&(this._finish(),this._moved)){this._clearDeferredResetState(),this._resetStateTimeout=setTimeout(a(this._resetState,this),0);var i=new N(this._map.containerPointToLatLng(this._startPoint),this._map.containerPointToLatLng(this._point));this._map.fitBounds(i).fire("boxzoomend",{boxZoomBounds:i})}},_onKeyDown:function(t){27===t.keyCode&&this._finish()}});$i.addInitHook("addHandler","boxZoom",wn),$i.mergeOptions({doubleClickZoom:!0});var Pn=se.extend({addHooks:function(){this._map.on("dblclick",this._onDoubleClick,this)},removeHooks:function(){this._map.off("dblclick",this._onDoubleClick,this)},_onDoubleClick:function(t){var i=this._map,e=i.getZoom(),n=i.options.zoomDelta,o=t.originalEvent.shiftKey?e-n:e+n;"center"===i.options.doubleClickZoom?i.setZoom(o):i.setZoomAround(t.containerPoint,o)}});$i.addInitHook("addHandler","doubleClickZoom",Pn),$i.mergeOptions({dragging:!0,inertia:!rt,inertiaDeceleration:3400,inertiaMaxSpeed:1/0,easeLinearity:.2,worldCopyJump:!1,maxBoundsViscosity:0});var Ln=se.extend({addHooks:function(){if(!this._draggable){var t=this._map;this._draggable=new ce(t._mapPane,t._container),this._draggable.on({dragstart:this._onDragStart,drag:this._onDrag,dragend:this._onDragEnd},this),this._draggable.on("predrag",this._onPreDragLimit,this),t.options.worldCopyJump&&(this._draggable.on("predrag",this._onPreDragWrap,this),t.on("zoomend",this._onZoomEnd,this),t.whenReady(this._onZoomEnd,this))}mi(this._map._container,"leaflet-grab leaflet-touch-drag"),this._draggable.enable(),this._positions=[],this._times=[]},removeHooks:function(){fi(this._map._container,"leaflet-grab"),fi(this._map._container,"leaflet-touch-drag"),this._draggable.disable()},moved:function(){return this._draggable&&this._draggable._moved},moving:function(){return this._draggable&&this._draggable._moving},_onDragStart:function(){var t=this._map;if(t._stop(),this._map.options.maxBounds&&this._map.options.maxBoundsViscosity){var i=D(this._map.options.maxBounds);this._offsetLimit=R(this._map.latLngToContainerPoint(i.getNorthWest()).multiplyBy(-1),this._map.latLngToContainerPoint(i.getSouthEast()).multiplyBy(-1).add(this._map.getSize())),this._viscosity=Math.min(1,Math.max(0,this._map.options.maxBoundsViscosity))}else this._offsetLimit=null;t.fire("movestart").fire("dragstart"),t.options.inertia&&(this._positions=[],this._times=[])},_onDrag:function(t){if(this._map.options.inertia){var i=this._lastTime=+new Date,e=this._lastPos=this._draggable._absPos||this._draggable._newPos;this._positions.push(e),this._times.push(i),this._prunePositions(i)}this._map.fire("move",t).fire("drag",t)},_prunePositions:function(t){for(;1<this._positions.length&&50<t-this._times[0];)this._positions.shift(),this._times.shift()},_onZoomEnd:function(){var t=this._map.getSize().divideBy(2),i=this._map.latLngToLayerPoint([0,0]);this._initialWorldOffset=i.subtract(t).x,this._worldWidth=this._map.getPixelWorldBounds().getSize().x},_viscousLimit:function(t,i){return t-(t-i)*this._viscosity},_onPreDragLimit:function(){if(this._viscosity&&this._offsetLimit){var t=this._draggable._newPos.subtract(this._draggable._startPos),i=this._offsetLimit;t.x<i.min.x&&(t.x=this._viscousLimit(t.x,i.min.x)),t.y<i.min.y&&(t.y=this._viscousLimit(t.y,i.min.y)),t.x>i.max.x&&(t.x=this._viscousLimit(t.x,i.max.x)),t.y>i.max.y&&(t.y=this._viscousLimit(t.y,i.max.y)),this._draggable._newPos=this._draggable._startPos.add(t)}},_onPreDragWrap:function(){var t=this._worldWidth,i=Math.round(t/2),e=this._initialWorldOffset,n=this._draggable._newPos.x,o=(n-i+e)%t+i-e,s=(n+i+e)%t-i-e,r=Math.abs(o+e)<Math.abs(s+e)?o:s;this._draggable._absPos=this._draggable._newPos.clone(),this._draggable._newPos.x=r},_onDragEnd:function(t){var i=this._map,e=i.options,n=!e.inertia||this._times.length<2;if(i.fire("dragend",t),n)i.fire("moveend");else{this._prunePositions(+new Date);var o=this._lastPos.subtract(this._positions[0]),s=(this._lastTime-this._times[0])/1e3,r=e.easeLinearity,a=o.multiplyBy(r/s),h=a.distanceTo([0,0]),u=Math.min(e.inertiaMaxSpeed,h),l=a.multiplyBy(u/h),c=u/(e.inertiaDeceleration*r),_=l.multiplyBy(-c/2).round();_.x||_.y?(_=i._limitOffset(_,i.options.maxBounds),M(function(){i.panBy(_,{duration:c,easeLinearity:r,noMoveStart:!0,animate:!0})})):i.fire("moveend")}}});$i.addInitHook("addHandler","dragging",Ln),$i.mergeOptions({keyboard:!0,keyboardPanDelta:80});var bn=se.extend({keyCodes:{left:[37],right:[39],down:[40],up:[38],zoomIn:[187,107,61,171],zoomOut:[189,109,54,173]},initialize:function(t){this._map=t,this._setPanDelta(t.options.keyboardPanDelta),this._setZoomDelta(t.options.zoomDelta)},addHooks:function(){var t=this._map._container;t.tabIndex<=0&&(t.tabIndex="0"),ki(t,{focus:this._onFocus,blur:this._onBlur,mousedown:this._onMouseDown},this),this._map.on({focus:this._addHooks,blur:this._removeHooks},this)},removeHooks:function(){this._removeHooks(),Ai(this._map._container,{focus:this._onFocus,blur:this._onBlur,mousedown:this._onMouseDown},this),this._map.off({focus:this._addHooks,blur:this._removeHooks},this)},_onMouseDown:function(){if(!this._focused){var t=document.body,i=document.documentElement,e=t.scrollTop||i.scrollTop,n=t.scrollLeft||i.scrollLeft;this._map._container.focus(),window.scrollTo(n,e)}},_onFocus:function(){this._focused=!0,this._map.fire("focus")},_onBlur:function(){this._focused=!1,this._map.fire("blur")},_setPanDelta:function(t){var i,e,n=this._panKeys={},o=this.keyCodes;for(i=0,e=o.left.length;i<e;i++)n[o.left[i]]=[-1*t,0];for(i=0,e=o.right.length;i<e;i++)n[o.right[i]]=[t,0];for(i=0,e=o.down.length;i<e;i++)n[o.down[i]]=[0,t];for(i=0,e=o.up.length;i<e;i++)n[o.up[i]]=[0,-1*t]},_setZoomDelta:function(t){var i,e,n=this._zoomKeys={},o=this.keyCodes;for(i=0,e=o.zoomIn.length;i<e;i++)n[o.zoomIn[i]]=t;for(i=0,e=o.zoomOut.length;i<e;i++)n[o.zoomOut[i]]=-t},_addHooks:function(){ki(document,"keydown",this._onKeyDown,this)},_removeHooks:function(){Ai(document,"keydown",this._onKeyDown,this)},_onKeyDown:function(t){if(!(t.altKey||t.ctrlKey||t.metaKey)){var i,e=t.keyCode,n=this._map;if(e in this._panKeys)n._panAnim&&n._panAnim._inProgress||(i=this._panKeys[e],t.shiftKey&&(i=I(i).multiplyBy(3)),n.panBy(i),n.options.maxBounds&&n.panInsideBounds(n.options.maxBounds));else if(e in this._zoomKeys)n.setZoom(n.getZoom()+(t.shiftKey?3:1)*this._zoomKeys[e]);else{if(27!==e||!n._popup||!n._popup.options.closeOnEscapeKey)return;n.closePopup()}Wi(t)}}});$i.addInitHook("addHandler","keyboard",bn),$i.mergeOptions({scrollWheelZoom:!0,wheelDebounceTime:40,wheelPxPerZoomLevel:60});var Tn=se.extend({addHooks:function(){ki(this._map._container,"mousewheel",this._onWheelScroll,this),this._delta=0},removeHooks:function(){Ai(this._map._container,"mousewheel",this._onWheelScroll,this)},_onWheelScroll:function(t){var i=Ui(t),e=this._map.options.wheelDebounceTime;this._delta+=i,this._lastMousePos=this._map.mouseEventToContainerPoint(t),this._startTime||(this._startTime=+new Date);var n=Math.max(e-(+new Date-this._startTime),0);clearTimeout(this._timer),this._timer=setTimeout(a(this._performZoom,this),n),Wi(t)},_performZoom:function(){var t=this._map,i=t.getZoom(),e=this._map.options.zoomSnap||0;t._stop();var n=this._delta/(4*this._map.options.wheelPxPerZoomLevel),o=4*Math.log(2/(1+Math.exp(-Math.abs(n))))/Math.LN2,s=e?Math.ceil(o/e)*e:o,r=t._limitZoom(i+(0<this._delta?s:-s))-i;this._delta=0,this._startTime=null,r&&("center"===t.options.scrollWheelZoom?t.setZoom(i+r):t.setZoomAround(this._lastMousePos,i+r))}});$i.addInitHook("addHandler","scrollWheelZoom",Tn),$i.mergeOptions({tap:!0,tapTolerance:15});var zn=se.extend({addHooks:function(){ki(this._map._container,"touchstart",this._onDown,this)},removeHooks:function(){Ai(this._map._container,"touchstart",this._onDown,this)},_onDown:function(t){if(t.touches){if(ji(t),this._fireClick=!0,1<t.touches.length)return this._fireClick=!1,void clearTimeout(this._holdTimeout);var i=t.touches[0],e=i.target;this._startPos=this._newPos=new B(i.clientX,i.clientY),e.tagName&&"a"===e.tagName.toLowerCase()&&mi(e,"leaflet-active"),this._holdTimeout=setTimeout(a(function(){this._isTapValid()&&(this._fireClick=!1,this._onUp(),this._simulateEvent("contextmenu",i))},this),1e3),this._simulateEvent("mousedown",i),ki(document,{touchmove:this._onMove,touchend:this._onUp},this)}},_onUp:function(t){if(clearTimeout(this._holdTimeout),Ai(document,{touchmove:this._onMove,touchend:this._onUp},this),this._fireClick&&t&&t.changedTouches){var i=t.changedTouches[0],e=i.target;e&&e.tagName&&"a"===e.tagName.toLowerCase()&&fi(e,"leaflet-active"),this._simulateEvent("mouseup",i),this._isTapValid()&&this._simulateEvent("click",i)}},_isTapValid:function(){return this._newPos.distanceTo(this._startPos)<=this._map.options.tapTolerance},_onMove:function(t){var i=t.touches[0];this._newPos=new B(i.clientX,i.clientY),this._simulateEvent("mousemove",i)},_simulateEvent:function(t,i){var e=document.createEvent("MouseEvents");e._simulated=!0,i.target._simulatedClick=!0,e.initMouseEvent(t,!0,!0,window,1,i.screenX,i.screenY,i.clientX,i.clientY,!1,!1,!1,!1,0,null),i.target.dispatchEvent(e)}});Tt&&!bt&&$i.addInitHook("addHandler","tap",zn),$i.mergeOptions({touchZoom:Tt&&!rt,bounceAtZoomLimits:!0});var Mn=se.extend({addHooks:function(){mi(this._map._container,"leaflet-touch-zoom"),ki(this._map._container,"touchstart",this._onTouchStart,this)},removeHooks:function(){fi(this._map._container,"leaflet-touch-zoom"),Ai(this._map._container,"touchstart",this._onTouchStart,this)},_onTouchStart:function(t){var i=this._map;if(t.touches&&2===t.touches.length&&!i._animatingZoom&&!this._zooming){var e=i.mouseEventToContainerPoint(t.touches[0]),n=i.mouseEventToContainerPoint(t.touches[1]);this._centerPoint=i.getSize()._divideBy(2),this._startLatLng=i.containerPointToLatLng(this._centerPoint),"center"!==i.options.touchZoom&&(this._pinchStartLatLng=i.containerPointToLatLng(e.add(n)._divideBy(2))),this._startDist=e.distanceTo(n),this._startZoom=i.getZoom(),this._moved=!1,this._zooming=!0,i._stop(),ki(document,"touchmove",this._onTouchMove,this),ki(document,"touchend",this._onTouchEnd,this),ji(t)}},_onTouchMove:function(t){if(t.touches&&2===t.touches.length&&this._zooming){var i=this._map,e=i.mouseEventToContainerPoint(t.touches[0]),n=i.mouseEventToContainerPoint(t.touches[1]),o=e.distanceTo(n)/this._startDist;if(this._zoom=i.getScaleZoom(o,this._startZoom),!i.options.bounceAtZoomLimits&&(this._zoom<i.getMinZoom()&&o<1||this._zoom>i.getMaxZoom()&&1<o)&&(this._zoom=i._limitZoom(this._zoom)),"center"===i.options.touchZoom){if(this._center=this._startLatLng,1==o)return}else{var s=e._add(n)._divideBy(2)._subtract(this._centerPoint);if(1==o&&0===s.x&&0===s.y)return;this._center=i.unproject(i.project(this._pinchStartLatLng,this._zoom).subtract(s),this._zoom)}this._moved||(i._moveStart(!0,!1),this._moved=!0),C(this._animRequest);var r=a(i._move,i,this._center,this._zoom,{pinch:!0,round:!1});this._animRequest=M(r,this,!0),ji(t)}},_onTouchEnd:function(){this._moved&&this._zooming?(this._zooming=!1,C(this._animRequest),Ai(document,"touchmove",this._onTouchMove),Ai(document,"touchend",this._onTouchEnd),this._map.options.zoomAnimation?this._map._animateZoom(this._center,this._map._limitZoom(this._zoom),!0,this._map.options.zoomSnap):this._map._resetView(this._center,this._map._limitZoom(this._zoom))):this._zooming=!1}});$i.addInitHook("addHandler","touchZoom",Mn),$i.BoxZoom=wn,$i.DoubleClickZoom=Pn,$i.Drag=Ln,$i.Keyboard=bn,$i.ScrollWheelZoom=Tn,$i.Tap=zn,$i.TouchZoom=Mn,Object.freeze=i,t.version="1.6.0",t.Control=te,t.control=Qi,t.Browser=At,t.Evented=k,t.Mixin=ae,t.Util=S,t.Class=E,t.Handler=se,t.extend=h,t.bind=a,t.stamp=u,t.setOptions=p,t.DomEvent=Xi,t.DomUtil=Zi,t.PosAnimation=Ji,t.Draggable=ce,t.LineUtil=xe,t.PolyUtil=Le,t.Point=B,t.point=I,t.Bounds=O,t.bounds=R,t.Transformation=G,t.transformation=K,t.Projection=ze,t.LatLng=j,t.latLng=W,t.LatLngBounds=N,t.latLngBounds=D,t.CRS=F,t.GeoJSON=He,t.geoJSON=$e,t.geoJson=Qe,t.Layer=Ee,t.LayerGroup=Ze,t.layerGroup=function(t,i){return new Ze(t,i)},t.FeatureGroup=ke,t.featureGroup=function(t){return new ke(t)},t.ImageOverlay=tn,t.imageOverlay=function(t,i,e){return new tn(t,i,e)},t.VideoOverlay=en,t.videoOverlay=function(t,i,e){return new en(t,i,e)},t.SVGOverlay=nn,t.svgOverlay=function(t,i,e){return new nn(t,i,e)},t.DivOverlay=on,t.Popup=sn,t.popup=function(t,i){return new sn(t,i)},t.Tooltip=rn,t.tooltip=function(t,i){return new rn(t,i)},t.Icon=Be,t.icon=function(t){return new Be(t)},t.DivIcon=an,t.divIcon=function(t){return new an(t)},t.Marker=Oe,t.marker=function(t,i){return new Oe(t,i)},t.TileLayer=un,t.tileLayer=ln,t.GridLayer=hn,t.gridLayer=function(t){return new hn(t)},t.SVG=vn,t.svg=yn,t.Renderer=_n,t.Canvas=dn,t.canvas=pn,t.Path=Re,t.CircleMarker=Ne,t.circleMarker=function(t,i){return new Ne(t,i)},t.Circle=De,t.circle=function(t,i,e){return new De(t,i,e)},t.Polyline=je,t.polyline=function(t,i){return new je(t,i)},t.Polygon=We,t.polygon=function(t,i){return new We(t,i)},t.Rectangle=xn,t.rectangle=function(t,i){return new xn(t,i)},t.Map=$i,t.map=function(t,i){return new $i(t,i)};var Cn=window.L;t.noConflict=function(){return window.L=Cn,this},window.L=t});;(function() {
   var AjaxMonitor, Bar, DocumentMonitor, ElementMonitor, ElementTracker, EventLagMonitor, Evented, Events, NoTargetError, Pace, RequestIntercept, SOURCE_KEYS, Scaler, SocketRequestTracker, XHRRequestTracker, animation, avgAmplitude, bar, cancelAnimation, cancelAnimationFrame, defaultOptions, extend, extendNative, getFromDOM, getIntercept, handlePushState, ignoreStack, init, now, options, requestAnimationFrame, result, runAnimation, scalers, shouldIgnoreURL, shouldTrack, source, sources, uniScaler, _WebSocket, _XDomainRequest, _XMLHttpRequest, _i, _intercept, _len, _pushState, _ref, _ref1, _replaceState,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
@@ -36436,12 +36449,21 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   })(AbstractChosen);
 
 }).call(this);
-;//     Underscore.js 1.9.1
-//     http://underscorejs.org
-//     (c) 2009-2018 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-//     Underscore may be freely distributed under the MIT license.
+;(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define('underscore', factory) :
+  (function() {
+  	var current = global._;
+  	var exports = factory();
+  	global._ = exports;
+  	exports.noConflict = function() { global._ = current; return exports; };
+  })();
+}(this, (function () {
 
-(function() {
+  //     Underscore.js 1.10.2
+  //     https://underscorejs.org
+  //     (c) 2009-2020 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+  //     Underscore may be freely distributed under the MIT license.
 
   // Baseline setup
   // --------------
@@ -36451,11 +36473,8 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // instead of `window` for `WebWorker` support.
   var root = typeof self == 'object' && self.self === self && self ||
             typeof global == 'object' && global.global === global && global ||
-            this ||
+            Function('return this')() ||
             {};
-
-  // Save the previous value of the `_` variable.
-  var previousUnderscore = root._;
 
   // Save bytes in the minified (but not gzipped) version:
   var ArrayProto = Array.prototype, ObjProto = Object.prototype;
@@ -36473,37 +36492,28 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       nativeKeys = Object.keys,
       nativeCreate = Object.create;
 
+  // Create references to these builtin functions because we override them.
+  var _isNaN = root.isNaN,
+      _isFinite = root.isFinite;
+
   // Naked function reference for surrogate-prototype-swapping.
   var Ctor = function(){};
 
-  // Create a safe reference to the Underscore object for use below.
-  var _ = function(obj) {
+  // The Underscore object. All exported functions below are added to it in the
+  // modules/index-all.js using the mixin function.
+  function _(obj) {
     if (obj instanceof _) return obj;
     if (!(this instanceof _)) return new _(obj);
     this._wrapped = obj;
-  };
-
-  // Export the Underscore object for **Node.js**, with
-  // backwards-compatibility for their old module API. If we're in
-  // the browser, add `_` as a global object.
-  // (`nodeType` is checked to ensure that `module`
-  // and `exports` are not HTML elements.)
-  if (typeof exports != 'undefined' && !exports.nodeType) {
-    if (typeof module != 'undefined' && !module.nodeType && module.exports) {
-      exports = module.exports = _;
-    }
-    exports._ = _;
-  } else {
-    root._ = _;
   }
 
   // Current version.
-  _.VERSION = '1.9.1';
+  var VERSION = _.VERSION = '1.10.2';
 
   // Internal function that returns an efficient (for current engines) version
   // of the passed-in callback, to be repeatedly applied in other Underscore
   // functions.
-  var optimizeCb = function(func, context, argCount) {
+  function optimizeCb(func, context, argCount) {
     if (context === void 0) return func;
     switch (argCount == null ? 3 : argCount) {
       case 1: return function(value) {
@@ -36520,34 +36530,39 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     return function() {
       return func.apply(context, arguments);
     };
-  };
-
-  var builtinIteratee;
+  }
 
   // An internal function to generate callbacks that can be applied to each
   // element in a collection, returning the desired result — either `identity`,
   // an arbitrary callback, a property matcher, or a property accessor.
-  var cb = function(value, context, argCount) {
-    if (_.iteratee !== builtinIteratee) return _.iteratee(value, context);
-    if (value == null) return _.identity;
-    if (_.isFunction(value)) return optimizeCb(value, context, argCount);
-    if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
-    return _.property(value);
-  };
+  function baseIteratee(value, context, argCount) {
+    if (value == null) return identity;
+    if (isFunction(value)) return optimizeCb(value, context, argCount);
+    if (isObject(value) && !isArray(value)) return matcher(value);
+    return property(value);
+  }
 
   // External wrapper for our callback generator. Users may customize
   // `_.iteratee` if they want additional predicate/iteratee shorthand styles.
   // This abstraction hides the internal-only argCount argument.
-  _.iteratee = builtinIteratee = function(value, context) {
-    return cb(value, context, Infinity);
-  };
+  _.iteratee = iteratee;
+  function iteratee(value, context) {
+    return baseIteratee(value, context, Infinity);
+  }
+
+  // The function we actually call internally. It invokes _.iteratee if
+  // overridden, otherwise baseIteratee.
+  function cb(value, context, argCount) {
+    if (_.iteratee !== iteratee) return _.iteratee(value, context);
+    return baseIteratee(value, context, argCount);
+  }
 
   // Some functions take a variable number of arguments, or a few expected
   // arguments at the beginning and then a variable number of values to operate
   // on. This helper accumulates all remaining arguments past the function’s
   // argument length (or an explicit `startIndex`), into an array that becomes
   // the last argument. Similar to ES6’s "rest parameter".
-  var restArguments = function(func, startIndex) {
+  function restArguments(func, startIndex) {
     startIndex = startIndex == null ? func.length - 1 : +startIndex;
     return function() {
       var length = Math.max(arguments.length - startIndex, 0),
@@ -36568,47 +36583,47 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       args[startIndex] = rest;
       return func.apply(this, args);
     };
-  };
+  }
 
   // An internal function for creating a new object that inherits from another.
-  var baseCreate = function(prototype) {
-    if (!_.isObject(prototype)) return {};
+  function baseCreate(prototype) {
+    if (!isObject(prototype)) return {};
     if (nativeCreate) return nativeCreate(prototype);
     Ctor.prototype = prototype;
     var result = new Ctor;
     Ctor.prototype = null;
     return result;
-  };
+  }
 
-  var shallowProperty = function(key) {
+  function shallowProperty(key) {
     return function(obj) {
       return obj == null ? void 0 : obj[key];
     };
-  };
+  }
 
-  var has = function(obj, path) {
+  function _has(obj, path) {
     return obj != null && hasOwnProperty.call(obj, path);
   }
 
-  var deepGet = function(obj, path) {
+  function deepGet(obj, path) {
     var length = path.length;
     for (var i = 0; i < length; i++) {
       if (obj == null) return void 0;
       obj = obj[path[i]];
     }
     return length ? obj : void 0;
-  };
+  }
 
   // Helper for collection methods to determine whether a collection
   // should be iterated as an array or as an object.
-  // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
+  // Related: https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
   // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
   var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
   var getLength = shallowProperty('length');
-  var isArrayLike = function(collection) {
+  function isArrayLike(collection) {
     var length = getLength(collection);
     return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
-  };
+  }
 
   // Collection Functions
   // --------------------
@@ -36616,7 +36631,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // The cornerstone, an `each` implementation, aka `forEach`.
   // Handles raw objects in addition to array-likes. Treats all
   // sparse array-likes as if they were dense.
-  _.each = _.forEach = function(obj, iteratee, context) {
+  function each(obj, iteratee, context) {
     iteratee = optimizeCb(iteratee, context);
     var i, length;
     if (isArrayLike(obj)) {
@@ -36624,41 +36639,41 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
         iteratee(obj[i], i, obj);
       }
     } else {
-      var keys = _.keys(obj);
-      for (i = 0, length = keys.length; i < length; i++) {
-        iteratee(obj[keys[i]], keys[i], obj);
+      var _keys = keys(obj);
+      for (i = 0, length = _keys.length; i < length; i++) {
+        iteratee(obj[_keys[i]], _keys[i], obj);
       }
     }
     return obj;
-  };
+  }
 
   // Return the results of applying the iteratee to each element.
-  _.map = _.collect = function(obj, iteratee, context) {
+  function map(obj, iteratee, context) {
     iteratee = cb(iteratee, context);
-    var keys = !isArrayLike(obj) && _.keys(obj),
-        length = (keys || obj).length,
+    var _keys = !isArrayLike(obj) && keys(obj),
+        length = (_keys || obj).length,
         results = Array(length);
     for (var index = 0; index < length; index++) {
-      var currentKey = keys ? keys[index] : index;
+      var currentKey = _keys ? _keys[index] : index;
       results[index] = iteratee(obj[currentKey], currentKey, obj);
     }
     return results;
-  };
+  }
 
   // Create a reducing function iterating left or right.
-  var createReduce = function(dir) {
+  function createReduce(dir) {
     // Wrap code that reassigns argument variables in a separate function than
     // the one that accesses `arguments.length` to avoid a perf hit. (#1991)
     var reducer = function(obj, iteratee, memo, initial) {
-      var keys = !isArrayLike(obj) && _.keys(obj),
-          length = (keys || obj).length,
+      var _keys = !isArrayLike(obj) && keys(obj),
+          length = (_keys || obj).length,
           index = dir > 0 ? 0 : length - 1;
       if (!initial) {
-        memo = obj[keys ? keys[index] : index];
+        memo = obj[_keys ? _keys[index] : index];
         index += dir;
       }
       for (; index >= 0 && index < length; index += dir) {
-        var currentKey = keys ? keys[index] : index;
+        var currentKey = _keys ? _keys[index] : index;
         memo = iteratee(memo, obj[currentKey], currentKey, obj);
       }
       return memo;
@@ -36668,82 +36683,78 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       var initial = arguments.length >= 3;
       return reducer(obj, optimizeCb(iteratee, context, 4), memo, initial);
     };
-  };
+  }
 
   // **Reduce** builds up a single result from a list of values, aka `inject`,
   // or `foldl`.
-  _.reduce = _.foldl = _.inject = createReduce(1);
+  var reduce = createReduce(1);
 
   // The right-associative version of reduce, also known as `foldr`.
-  _.reduceRight = _.foldr = createReduce(-1);
+  var reduceRight = createReduce(-1);
 
-  // Return the first value which passes a truth test. Aliased as `detect`.
-  _.find = _.detect = function(obj, predicate, context) {
-    var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
+  // Return the first value which passes a truth test.
+  function find(obj, predicate, context) {
+    var keyFinder = isArrayLike(obj) ? findIndex : findKey;
     var key = keyFinder(obj, predicate, context);
     if (key !== void 0 && key !== -1) return obj[key];
-  };
+  }
 
   // Return all the elements that pass a truth test.
-  // Aliased as `select`.
-  _.filter = _.select = function(obj, predicate, context) {
+  function filter(obj, predicate, context) {
     var results = [];
     predicate = cb(predicate, context);
-    _.each(obj, function(value, index, list) {
+    each(obj, function(value, index, list) {
       if (predicate(value, index, list)) results.push(value);
     });
     return results;
-  };
+  }
 
   // Return all the elements for which a truth test fails.
-  _.reject = function(obj, predicate, context) {
-    return _.filter(obj, _.negate(cb(predicate)), context);
-  };
+  function reject(obj, predicate, context) {
+    return filter(obj, negate(cb(predicate)), context);
+  }
 
   // Determine whether all of the elements match a truth test.
-  // Aliased as `all`.
-  _.every = _.all = function(obj, predicate, context) {
+  function every(obj, predicate, context) {
     predicate = cb(predicate, context);
-    var keys = !isArrayLike(obj) && _.keys(obj),
-        length = (keys || obj).length;
+    var _keys = !isArrayLike(obj) && keys(obj),
+        length = (_keys || obj).length;
     for (var index = 0; index < length; index++) {
-      var currentKey = keys ? keys[index] : index;
+      var currentKey = _keys ? _keys[index] : index;
       if (!predicate(obj[currentKey], currentKey, obj)) return false;
     }
     return true;
-  };
+  }
 
   // Determine if at least one element in the object matches a truth test.
-  // Aliased as `any`.
-  _.some = _.any = function(obj, predicate, context) {
+  function some(obj, predicate, context) {
     predicate = cb(predicate, context);
-    var keys = !isArrayLike(obj) && _.keys(obj),
-        length = (keys || obj).length;
+    var _keys = !isArrayLike(obj) && keys(obj),
+        length = (_keys || obj).length;
     for (var index = 0; index < length; index++) {
-      var currentKey = keys ? keys[index] : index;
+      var currentKey = _keys ? _keys[index] : index;
       if (predicate(obj[currentKey], currentKey, obj)) return true;
     }
     return false;
-  };
+  }
 
   // Determine if the array or object contains a given item (using `===`).
-  // Aliased as `includes` and `include`.
-  _.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
-    if (!isArrayLike(obj)) obj = _.values(obj);
+  function contains(obj, item, fromIndex, guard) {
+    if (!isArrayLike(obj)) obj = values(obj);
     if (typeof fromIndex != 'number' || guard) fromIndex = 0;
-    return _.indexOf(obj, item, fromIndex) >= 0;
-  };
+    return indexOf(obj, item, fromIndex) >= 0;
+  }
 
   // Invoke a method (with arguments) on every item in a collection.
-  _.invoke = restArguments(function(obj, path, args) {
+  var invoke = restArguments(function(obj, path, args) {
     var contextPath, func;
-    if (_.isFunction(path)) {
+    if (isFunction(path)) {
       func = path;
-    } else if (_.isArray(path)) {
+    } else if (isArray(path)) {
       contextPath = path.slice(0, -1);
       path = path[path.length - 1];
     }
-    return _.map(obj, function(context) {
+    return map(obj, function(context) {
       var method = func;
       if (!method) {
         if (contextPath && contextPath.length) {
@@ -36757,28 +36768,28 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   });
 
   // Convenience version of a common use case of `map`: fetching a property.
-  _.pluck = function(obj, key) {
-    return _.map(obj, _.property(key));
-  };
+  function pluck(obj, key) {
+    return map(obj, property(key));
+  }
 
   // Convenience version of a common use case of `filter`: selecting only objects
   // containing specific `key:value` pairs.
-  _.where = function(obj, attrs) {
-    return _.filter(obj, _.matcher(attrs));
-  };
+  function where(obj, attrs) {
+    return filter(obj, matcher(attrs));
+  }
 
   // Convenience version of a common use case of `find`: getting the first object
   // containing specific `key:value` pairs.
-  _.findWhere = function(obj, attrs) {
-    return _.find(obj, _.matcher(attrs));
-  };
+  function findWhere(obj, attrs) {
+    return find(obj, matcher(attrs));
+  }
 
   // Return the maximum element (or element-based computation).
-  _.max = function(obj, iteratee, context) {
+  function max(obj, iteratee, context) {
     var result = -Infinity, lastComputed = -Infinity,
         value, computed;
     if (iteratee == null || typeof iteratee == 'number' && typeof obj[0] != 'object' && obj != null) {
-      obj = isArrayLike(obj) ? obj : _.values(obj);
+      obj = isArrayLike(obj) ? obj : values(obj);
       for (var i = 0, length = obj.length; i < length; i++) {
         value = obj[i];
         if (value != null && value > result) {
@@ -36787,7 +36798,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       }
     } else {
       iteratee = cb(iteratee, context);
-      _.each(obj, function(v, index, list) {
+      each(obj, function(v, index, list) {
         computed = iteratee(v, index, list);
         if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
           result = v;
@@ -36796,14 +36807,14 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       });
     }
     return result;
-  };
+  }
 
   // Return the minimum element (or element-based computation).
-  _.min = function(obj, iteratee, context) {
+  function min(obj, iteratee, context) {
     var result = Infinity, lastComputed = Infinity,
         value, computed;
     if (iteratee == null || typeof iteratee == 'number' && typeof obj[0] != 'object' && obj != null) {
-      obj = isArrayLike(obj) ? obj : _.values(obj);
+      obj = isArrayLike(obj) ? obj : values(obj);
       for (var i = 0, length = obj.length; i < length; i++) {
         value = obj[i];
         if (value != null && value < result) {
@@ -36812,7 +36823,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       }
     } else {
       iteratee = cb(iteratee, context);
-      _.each(obj, function(v, index, list) {
+      each(obj, function(v, index, list) {
         computed = iteratee(v, index, list);
         if (computed < lastComputed || computed === Infinity && result === Infinity) {
           result = v;
@@ -36821,40 +36832,40 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       });
     }
     return result;
-  };
+  }
 
   // Shuffle a collection.
-  _.shuffle = function(obj) {
-    return _.sample(obj, Infinity);
-  };
+  function shuffle(obj) {
+    return sample(obj, Infinity);
+  }
 
   // Sample **n** random values from a collection using the modern version of the
-  // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
+  // [Fisher-Yates shuffle](https://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
   // If **n** is not specified, returns a single random element.
   // The internal `guard` argument allows it to work with `map`.
-  _.sample = function(obj, n, guard) {
+  function sample(obj, n, guard) {
     if (n == null || guard) {
-      if (!isArrayLike(obj)) obj = _.values(obj);
-      return obj[_.random(obj.length - 1)];
+      if (!isArrayLike(obj)) obj = values(obj);
+      return obj[random(obj.length - 1)];
     }
-    var sample = isArrayLike(obj) ? _.clone(obj) : _.values(obj);
+    var sample = isArrayLike(obj) ? clone(obj) : values(obj);
     var length = getLength(sample);
     n = Math.max(Math.min(n, length), 0);
     var last = length - 1;
     for (var index = 0; index < n; index++) {
-      var rand = _.random(index, last);
+      var rand = random(index, last);
       var temp = sample[index];
       sample[index] = sample[rand];
       sample[rand] = temp;
     }
     return sample.slice(0, n);
-  };
+  }
 
   // Sort the object's values by a criterion produced by an iteratee.
-  _.sortBy = function(obj, iteratee, context) {
+  function sortBy(obj, iteratee, context) {
     var index = 0;
     iteratee = cb(iteratee, context);
-    return _.pluck(_.map(obj, function(value, key, list) {
+    return pluck(map(obj, function(value, key, list) {
       return {
         value: value,
         index: index++,
@@ -36869,62 +36880,62 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       }
       return left.index - right.index;
     }), 'value');
-  };
+  }
 
   // An internal function used for aggregate "group by" operations.
-  var group = function(behavior, partition) {
+  function group(behavior, partition) {
     return function(obj, iteratee, context) {
       var result = partition ? [[], []] : {};
       iteratee = cb(iteratee, context);
-      _.each(obj, function(value, index) {
+      each(obj, function(value, index) {
         var key = iteratee(value, index, obj);
         behavior(result, value, key);
       });
       return result;
     };
-  };
+  }
 
   // Groups the object's values by a criterion. Pass either a string attribute
   // to group by, or a function that returns the criterion.
-  _.groupBy = group(function(result, value, key) {
-    if (has(result, key)) result[key].push(value); else result[key] = [value];
+  var groupBy = group(function(result, value, key) {
+    if (_has(result, key)) result[key].push(value); else result[key] = [value];
   });
 
   // Indexes the object's values by a criterion, similar to `groupBy`, but for
   // when you know that your index values will be unique.
-  _.indexBy = group(function(result, value, key) {
+  var indexBy = group(function(result, value, key) {
     result[key] = value;
   });
 
   // Counts instances of an object that group by a certain criterion. Pass
   // either a string attribute to count by, or a function that returns the
   // criterion.
-  _.countBy = group(function(result, value, key) {
-    if (has(result, key)) result[key]++; else result[key] = 1;
+  var countBy = group(function(result, value, key) {
+    if (_has(result, key)) result[key]++; else result[key] = 1;
   });
 
   var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
   // Safely create a real, live array from anything iterable.
-  _.toArray = function(obj) {
+  function toArray(obj) {
     if (!obj) return [];
-    if (_.isArray(obj)) return slice.call(obj);
-    if (_.isString(obj)) {
+    if (isArray(obj)) return slice.call(obj);
+    if (isString(obj)) {
       // Keep surrogate pair characters together
       return obj.match(reStrSymbol);
     }
-    if (isArrayLike(obj)) return _.map(obj, _.identity);
-    return _.values(obj);
-  };
+    if (isArrayLike(obj)) return map(obj, identity);
+    return values(obj);
+  }
 
   // Return the number of elements in an object.
-  _.size = function(obj) {
+  function size(obj) {
     if (obj == null) return 0;
-    return isArrayLike(obj) ? obj.length : _.keys(obj).length;
-  };
+    return isArrayLike(obj) ? obj.length : keys(obj).length;
+  }
 
   // Split a collection into two arrays: one whose elements all satisfy the given
   // predicate, and one whose elements all do not satisfy the predicate.
-  _.partition = group(function(result, value, pass) {
+  var partition = group(function(result, value, pass) {
     result[pass ? 0 : 1].push(value);
   }, true);
 
@@ -36932,54 +36943,53 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // ---------------
 
   // Get the first element of an array. Passing **n** will return the first N
-  // values in the array. Aliased as `head` and `take`. The **guard** check
-  // allows it to work with `_.map`.
-  _.first = _.head = _.take = function(array, n, guard) {
+  // values in the array. The **guard** check allows it to work with `map`.
+  function first(array, n, guard) {
     if (array == null || array.length < 1) return n == null ? void 0 : [];
     if (n == null || guard) return array[0];
-    return _.initial(array, array.length - n);
-  };
+    return initial(array, array.length - n);
+  }
 
   // Returns everything but the last entry of the array. Especially useful on
   // the arguments object. Passing **n** will return all the values in
   // the array, excluding the last N.
-  _.initial = function(array, n, guard) {
+  function initial(array, n, guard) {
     return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)));
-  };
+  }
 
   // Get the last element of an array. Passing **n** will return the last N
   // values in the array.
-  _.last = function(array, n, guard) {
+  function last(array, n, guard) {
     if (array == null || array.length < 1) return n == null ? void 0 : [];
     if (n == null || guard) return array[array.length - 1];
-    return _.rest(array, Math.max(0, array.length - n));
-  };
+    return rest(array, Math.max(0, array.length - n));
+  }
 
-  // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
-  // Especially useful on the arguments object. Passing an **n** will return
-  // the rest N values in the array.
-  _.rest = _.tail = _.drop = function(array, n, guard) {
+  // Returns everything but the first entry of the array. Especially useful on
+  // the arguments object. Passing an **n** will return the rest N values in the
+  // array.
+  function rest(array, n, guard) {
     return slice.call(array, n == null || guard ? 1 : n);
-  };
+  }
 
   // Trim out all falsy values from an array.
-  _.compact = function(array) {
-    return _.filter(array, Boolean);
-  };
+  function compact(array) {
+    return filter(array, Boolean);
+  }
 
   // Internal implementation of a recursive `flatten` function.
-  var flatten = function(input, shallow, strict, output) {
+  function _flatten(input, shallow, strict, output) {
     output = output || [];
     var idx = output.length;
     for (var i = 0, length = getLength(input); i < length; i++) {
       var value = input[i];
-      if (isArrayLike(value) && (_.isArray(value) || _.isArguments(value))) {
+      if (isArrayLike(value) && (isArray(value) || isArguments(value))) {
         // Flatten current level of array or arguments object.
         if (shallow) {
           var j = 0, len = value.length;
           while (j < len) output[idx++] = value[j++];
         } else {
-          flatten(value, shallow, strict, output);
+          _flatten(value, shallow, strict, output);
           idx = output.length;
         }
       } else if (!strict) {
@@ -36987,16 +36997,16 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       }
     }
     return output;
-  };
+  }
 
   // Flatten out an array, either recursively (by default), or just one level.
-  _.flatten = function(array, shallow) {
-    return flatten(array, shallow, false);
-  };
+  function flatten(array, shallow) {
+    return _flatten(array, shallow, false);
+  }
 
   // Return a version of the array that does not contain the specified value(s).
-  _.without = restArguments(function(array, otherArrays) {
-    return _.difference(array, otherArrays);
+  var without = restArguments(function(array, otherArrays) {
+    return difference(array, otherArrays);
   });
 
   // Produce a duplicate-free version of the array. If the array has already
@@ -37004,9 +37014,8 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // The faster algorithm will not work with an iteratee if the iteratee
   // is not a one-to-one function, so providing an iteratee will disable
   // the faster algorithm.
-  // Aliased as `unique`.
-  _.uniq = _.unique = function(array, isSorted, iteratee, context) {
-    if (!_.isBoolean(isSorted)) {
+  function uniq(array, isSorted, iteratee, context) {
+    if (!isBoolean(isSorted)) {
       context = iteratee;
       iteratee = isSorted;
       isSorted = false;
@@ -37021,69 +37030,69 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
         if (!i || seen !== computed) result.push(value);
         seen = computed;
       } else if (iteratee) {
-        if (!_.contains(seen, computed)) {
+        if (!contains(seen, computed)) {
           seen.push(computed);
           result.push(value);
         }
-      } else if (!_.contains(result, value)) {
+      } else if (!contains(result, value)) {
         result.push(value);
       }
     }
     return result;
-  };
+  }
 
   // Produce an array that contains the union: each distinct element from all of
   // the passed-in arrays.
-  _.union = restArguments(function(arrays) {
-    return _.uniq(flatten(arrays, true, true));
+  var union = restArguments(function(arrays) {
+    return uniq(_flatten(arrays, true, true));
   });
 
   // Produce an array that contains every item shared between all the
   // passed-in arrays.
-  _.intersection = function(array) {
+  function intersection(array) {
     var result = [];
     var argsLength = arguments.length;
     for (var i = 0, length = getLength(array); i < length; i++) {
       var item = array[i];
-      if (_.contains(result, item)) continue;
+      if (contains(result, item)) continue;
       var j;
       for (j = 1; j < argsLength; j++) {
-        if (!_.contains(arguments[j], item)) break;
+        if (!contains(arguments[j], item)) break;
       }
       if (j === argsLength) result.push(item);
     }
     return result;
-  };
+  }
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
-  _.difference = restArguments(function(array, rest) {
-    rest = flatten(rest, true, true);
-    return _.filter(array, function(value){
-      return !_.contains(rest, value);
+  var difference = restArguments(function(array, rest) {
+    rest = _flatten(rest, true, true);
+    return filter(array, function(value){
+      return !contains(rest, value);
     });
   });
 
-  // Complement of _.zip. Unzip accepts an array of arrays and groups
+  // Complement of zip. Unzip accepts an array of arrays and groups
   // each array's elements on shared indices.
-  _.unzip = function(array) {
-    var length = array && _.max(array, getLength).length || 0;
+  function unzip(array) {
+    var length = array && max(array, getLength).length || 0;
     var result = Array(length);
 
     for (var index = 0; index < length; index++) {
-      result[index] = _.pluck(array, index);
+      result[index] = pluck(array, index);
     }
     return result;
-  };
+  }
 
   // Zip together multiple lists into a single array -- elements that share
   // an index go together.
-  _.zip = restArguments(_.unzip);
+  var zip = restArguments(unzip);
 
   // Converts lists into objects. Pass either a single array of `[key, value]`
   // pairs, or two parallel arrays of the same length -- one of keys, and one of
-  // the corresponding values. Passing by pairs is the reverse of _.pairs.
-  _.object = function(list, values) {
+  // the corresponding values. Passing by pairs is the reverse of pairs.
+  function object(list, values) {
     var result = {};
     for (var i = 0, length = getLength(list); i < length; i++) {
       if (values) {
@@ -37093,10 +37102,10 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       }
     }
     return result;
-  };
+  }
 
   // Generator function to create the findIndex and findLastIndex functions.
-  var createPredicateIndexFinder = function(dir) {
+  function createPredicateIndexFinder(dir) {
     return function(array, predicate, context) {
       predicate = cb(predicate, context);
       var length = getLength(array);
@@ -37106,15 +37115,15 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       }
       return -1;
     };
-  };
+  }
 
   // Returns the first index on an array-like that passes a predicate test.
-  _.findIndex = createPredicateIndexFinder(1);
-  _.findLastIndex = createPredicateIndexFinder(-1);
+  var findIndex = createPredicateIndexFinder(1);
+  var findLastIndex = createPredicateIndexFinder(-1);
 
   // Use a comparator function to figure out the smallest index at which
   // an object should be inserted so as to maintain order. Uses binary search.
-  _.sortedIndex = function(array, obj, iteratee, context) {
+  function sortedIndex(array, obj, iteratee, context) {
     iteratee = cb(iteratee, context, 1);
     var value = iteratee(obj);
     var low = 0, high = getLength(array);
@@ -37123,10 +37132,10 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       if (iteratee(array[mid]) < value) low = mid + 1; else high = mid;
     }
     return low;
-  };
+  }
 
   // Generator function to create the indexOf and lastIndexOf functions.
-  var createIndexFinder = function(dir, predicateFind, sortedIndex) {
+  function createIndexFinder(dir, predicateFind, sortedIndex) {
     return function(array, item, idx) {
       var i = 0, length = getLength(array);
       if (typeof idx == 'number') {
@@ -37140,7 +37149,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
         return array[idx] === item ? idx : -1;
       }
       if (item !== item) {
-        idx = predicateFind(slice.call(array, i, length), _.isNaN);
+        idx = predicateFind(slice.call(array, i, length), isNaN);
         return idx >= 0 ? idx + i : -1;
       }
       for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
@@ -37148,19 +37157,19 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       }
       return -1;
     };
-  };
+  }
 
   // Return the position of the first occurrence of an item in an array,
   // or -1 if the item is not included in the array.
   // If the array is large and already in sort order, pass `true`
   // for **isSorted** to use binary search.
-  _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
-  _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
+  var indexOf = createIndexFinder(1, findIndex, sortedIndex);
+  var lastIndexOf = createIndexFinder(-1, findLastIndex);
 
   // Generate an integer Array containing an arithmetic progression. A port of
   // the native Python `range()` function. See
-  // [the Python documentation](http://docs.python.org/library/functions.html#range).
-  _.range = function(start, stop, step) {
+  // [the Python documentation](https://docs.python.org/library/functions.html#range).
+  function range(start, stop, step) {
     if (stop == null) {
       stop = start || 0;
       start = 0;
@@ -37177,11 +37186,11 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     }
 
     return range;
-  };
+  }
 
   // Chunk a single array into multiple arrays, each containing `count` or fewer
   // items.
-  _.chunk = function(array, count) {
+  function chunk(array, count) {
     if (count == null || count < 1) return [];
     var result = [];
     var i = 0, length = array.length;
@@ -37189,26 +37198,26 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       result.push(slice.call(array, i, i += count));
     }
     return result;
-  };
+  }
 
   // Function (ahem) Functions
   // ------------------
 
   // Determines whether to execute a function as a constructor
   // or a normal function with the provided arguments.
-  var executeBound = function(sourceFunc, boundFunc, context, callingContext, args) {
+  function executeBound(sourceFunc, boundFunc, context, callingContext, args) {
     if (!(callingContext instanceof boundFunc)) return sourceFunc.apply(context, args);
     var self = baseCreate(sourceFunc.prototype);
     var result = sourceFunc.apply(self, args);
-    if (_.isObject(result)) return result;
+    if (isObject(result)) return result;
     return self;
-  };
+  }
 
   // Create a function bound to a given object (assigning `this`, and arguments,
   // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
   // available.
-  _.bind = restArguments(function(func, context, args) {
-    if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
+  var bind = restArguments(function(func, context, args) {
+    if (!isFunction(func)) throw new TypeError('Bind must be called on a function');
     var bound = restArguments(function(callArgs) {
       return executeBound(func, bound, context, this, args.concat(callArgs));
     });
@@ -37218,9 +37227,9 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // Partially apply a function by creating a version that has had some of its
   // arguments pre-filled, without changing its dynamic `this` context. _ acts
   // as a placeholder by default, allowing any combination of arguments to be
-  // pre-filled. Set `_.partial.placeholder` for a custom placeholder argument.
-  _.partial = restArguments(function(func, boundArgs) {
-    var placeholder = _.partial.placeholder;
+  // pre-filled. Set `partial.placeholder` for a custom placeholder argument.
+  var partial = restArguments(function(func, boundArgs) {
+    var placeholder = partial.placeholder;
     var bound = function() {
       var position = 0, length = boundArgs.length;
       var args = Array(length);
@@ -37233,36 +37242,36 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     return bound;
   });
 
-  _.partial.placeholder = _;
+  partial.placeholder = _;
 
   // Bind a number of an object's methods to that object. Remaining arguments
   // are the method names to be bound. Useful for ensuring that all callbacks
   // defined on an object belong to it.
-  _.bindAll = restArguments(function(obj, keys) {
-    keys = flatten(keys, false, false);
-    var index = keys.length;
+  var bindAll = restArguments(function(obj, _keys) {
+    _keys = _flatten(_keys, false, false);
+    var index = _keys.length;
     if (index < 1) throw new Error('bindAll must be passed function names');
     while (index--) {
-      var key = keys[index];
-      obj[key] = _.bind(obj[key], obj);
+      var key = _keys[index];
+      obj[key] = bind(obj[key], obj);
     }
   });
 
   // Memoize an expensive function by storing its results.
-  _.memoize = function(func, hasher) {
+  function memoize(func, hasher) {
     var memoize = function(key) {
       var cache = memoize.cache;
       var address = '' + (hasher ? hasher.apply(this, arguments) : key);
-      if (!has(cache, address)) cache[address] = func.apply(this, arguments);
+      if (!_has(cache, address)) cache[address] = func.apply(this, arguments);
       return cache[address];
     };
     memoize.cache = {};
     return memoize;
-  };
+  }
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
-  _.delay = restArguments(function(func, wait, args) {
+  var delay = restArguments(function(func, wait, args) {
     return setTimeout(function() {
       return func.apply(null, args);
     }, wait);
@@ -37270,29 +37279,29 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
   // Defers a function, scheduling it to run after the current call stack has
   // cleared.
-  _.defer = _.partial(_.delay, _, 1);
+  var defer = partial(delay, _, 1);
 
   // Returns a function, that, when invoked, will only be triggered at most once
   // during a given window of time. Normally, the throttled function will run
   // as much as it can, without ever going more than once per `wait` duration;
   // but if you'd like to disable the execution on the leading edge, pass
   // `{leading: false}`. To disable execution on the trailing edge, ditto.
-  _.throttle = function(func, wait, options) {
+  function throttle(func, wait, options) {
     var timeout, context, args, result;
     var previous = 0;
     if (!options) options = {};
 
     var later = function() {
-      previous = options.leading === false ? 0 : _.now();
+      previous = options.leading === false ? 0 : now();
       timeout = null;
       result = func.apply(context, args);
       if (!timeout) context = args = null;
     };
 
     var throttled = function() {
-      var now = _.now();
-      if (!previous && options.leading === false) previous = now;
-      var remaining = wait - (now - previous);
+      var _now = now();
+      if (!previous && options.leading === false) previous = _now;
+      var remaining = wait - (_now - previous);
       context = this;
       args = arguments;
       if (remaining <= 0 || remaining > wait) {
@@ -37300,7 +37309,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
           clearTimeout(timeout);
           timeout = null;
         }
-        previous = now;
+        previous = _now;
         result = func.apply(context, args);
         if (!timeout) context = args = null;
       } else if (!timeout && options.trailing !== false) {
@@ -37316,13 +37325,13 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     };
 
     return throttled;
-  };
+  }
 
   // Returns a function, that, as long as it continues to be invoked, will not
   // be triggered. The function will be called after it stops being called for
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
-  _.debounce = function(func, wait, immediate) {
+  function debounce(func, wait, immediate) {
     var timeout, result;
 
     var later = function(context, args) {
@@ -37337,7 +37346,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
         timeout = setTimeout(later, wait);
         if (callNow) result = func.apply(this, args);
       } else {
-        timeout = _.delay(later, wait, this, args);
+        timeout = delay(later, wait, this, args);
       }
 
       return result;
@@ -37349,25 +37358,25 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     };
 
     return debounced;
-  };
+  }
 
   // Returns the first function passed as an argument to the second,
   // allowing you to adjust arguments, run code before and after, and
   // conditionally execute the original function.
-  _.wrap = function(func, wrapper) {
-    return _.partial(wrapper, func);
-  };
+  function wrap(func, wrapper) {
+    return partial(wrapper, func);
+  }
 
   // Returns a negated version of the passed-in predicate.
-  _.negate = function(predicate) {
+  function negate(predicate) {
     return function() {
       return !predicate.apply(this, arguments);
     };
-  };
+  }
 
   // Returns a function that is the composition of a list of functions, each
   // consuming the return value of the function that follows.
-  _.compose = function() {
+  function compose() {
     var args = arguments;
     var start = args.length - 1;
     return function() {
@@ -37376,19 +37385,19 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       while (i--) result = args[i].call(this, result);
       return result;
     };
-  };
+  }
 
   // Returns a function that will only be executed on and after the Nth call.
-  _.after = function(times, func) {
+  function after(times, func) {
     return function() {
       if (--times < 1) {
         return func.apply(this, arguments);
       }
     };
-  };
+  }
 
   // Returns a function that will only be executed up to (but not including) the Nth call.
-  _.before = function(times, func) {
+  function before(times, func) {
     var memo;
     return function() {
       if (--times > 0) {
@@ -37397,13 +37406,11 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       if (times <= 1) func = null;
       return memo;
     };
-  };
+  }
 
   // Returns a function that will be executed at most one time, no matter how
   // often you call it. Useful for lazy initialization.
-  _.once = _.partial(_.before, 2);
-
-  _.restArguments = restArguments;
+  var once = partial(before, 2);
 
   // Object Functions
   // ----------------
@@ -37413,157 +37420,156 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
     'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
 
-  var collectNonEnumProps = function(obj, keys) {
+  function collectNonEnumProps(obj, _keys) {
     var nonEnumIdx = nonEnumerableProps.length;
     var constructor = obj.constructor;
-    var proto = _.isFunction(constructor) && constructor.prototype || ObjProto;
+    var proto = isFunction(constructor) && constructor.prototype || ObjProto;
 
     // Constructor is a special case.
     var prop = 'constructor';
-    if (has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
+    if (_has(obj, prop) && !contains(_keys, prop)) _keys.push(prop);
 
     while (nonEnumIdx--) {
       prop = nonEnumerableProps[nonEnumIdx];
-      if (prop in obj && obj[prop] !== proto[prop] && !_.contains(keys, prop)) {
-        keys.push(prop);
+      if (prop in obj && obj[prop] !== proto[prop] && !contains(_keys, prop)) {
+        _keys.push(prop);
       }
     }
-  };
+  }
 
   // Retrieve the names of an object's own properties.
   // Delegates to **ECMAScript 5**'s native `Object.keys`.
-  _.keys = function(obj) {
-    if (!_.isObject(obj)) return [];
+  function keys(obj) {
+    if (!isObject(obj)) return [];
     if (nativeKeys) return nativeKeys(obj);
-    var keys = [];
-    for (var key in obj) if (has(obj, key)) keys.push(key);
+    var _keys = [];
+    for (var key in obj) if (_has(obj, key)) _keys.push(key);
     // Ahem, IE < 9.
-    if (hasEnumBug) collectNonEnumProps(obj, keys);
-    return keys;
-  };
+    if (hasEnumBug) collectNonEnumProps(obj, _keys);
+    return _keys;
+  }
 
   // Retrieve all the property names of an object.
-  _.allKeys = function(obj) {
-    if (!_.isObject(obj)) return [];
-    var keys = [];
-    for (var key in obj) keys.push(key);
+  function allKeys(obj) {
+    if (!isObject(obj)) return [];
+    var _keys = [];
+    for (var key in obj) _keys.push(key);
     // Ahem, IE < 9.
-    if (hasEnumBug) collectNonEnumProps(obj, keys);
-    return keys;
-  };
+    if (hasEnumBug) collectNonEnumProps(obj, _keys);
+    return _keys;
+  }
 
   // Retrieve the values of an object's properties.
-  _.values = function(obj) {
-    var keys = _.keys(obj);
-    var length = keys.length;
+  function values(obj) {
+    var _keys = keys(obj);
+    var length = _keys.length;
     var values = Array(length);
     for (var i = 0; i < length; i++) {
-      values[i] = obj[keys[i]];
+      values[i] = obj[_keys[i]];
     }
     return values;
-  };
+  }
 
   // Returns the results of applying the iteratee to each element of the object.
-  // In contrast to _.map it returns an object.
-  _.mapObject = function(obj, iteratee, context) {
+  // In contrast to map it returns an object.
+  function mapObject(obj, iteratee, context) {
     iteratee = cb(iteratee, context);
-    var keys = _.keys(obj),
-        length = keys.length,
+    var _keys = keys(obj),
+        length = _keys.length,
         results = {};
     for (var index = 0; index < length; index++) {
-      var currentKey = keys[index];
+      var currentKey = _keys[index];
       results[currentKey] = iteratee(obj[currentKey], currentKey, obj);
     }
     return results;
-  };
+  }
 
   // Convert an object into a list of `[key, value]` pairs.
-  // The opposite of _.object.
-  _.pairs = function(obj) {
-    var keys = _.keys(obj);
-    var length = keys.length;
+  // The opposite of object.
+  function pairs(obj) {
+    var _keys = keys(obj);
+    var length = _keys.length;
     var pairs = Array(length);
     for (var i = 0; i < length; i++) {
-      pairs[i] = [keys[i], obj[keys[i]]];
+      pairs[i] = [_keys[i], obj[_keys[i]]];
     }
     return pairs;
-  };
+  }
 
   // Invert the keys and values of an object. The values must be serializable.
-  _.invert = function(obj) {
+  function invert(obj) {
     var result = {};
-    var keys = _.keys(obj);
-    for (var i = 0, length = keys.length; i < length; i++) {
-      result[obj[keys[i]]] = keys[i];
+    var _keys = keys(obj);
+    for (var i = 0, length = _keys.length; i < length; i++) {
+      result[obj[_keys[i]]] = _keys[i];
     }
     return result;
-  };
+  }
 
   // Return a sorted list of the function names available on the object.
-  // Aliased as `methods`.
-  _.functions = _.methods = function(obj) {
+  function functions(obj) {
     var names = [];
     for (var key in obj) {
-      if (_.isFunction(obj[key])) names.push(key);
+      if (isFunction(obj[key])) names.push(key);
     }
     return names.sort();
-  };
+  }
 
   // An internal function for creating assigner functions.
-  var createAssigner = function(keysFunc, defaults) {
+  function createAssigner(keysFunc, defaults) {
     return function(obj) {
       var length = arguments.length;
       if (defaults) obj = Object(obj);
       if (length < 2 || obj == null) return obj;
       for (var index = 1; index < length; index++) {
         var source = arguments[index],
-            keys = keysFunc(source),
-            l = keys.length;
+            _keys = keysFunc(source),
+            l = _keys.length;
         for (var i = 0; i < l; i++) {
-          var key = keys[i];
+          var key = _keys[i];
           if (!defaults || obj[key] === void 0) obj[key] = source[key];
         }
       }
       return obj;
     };
-  };
+  }
 
   // Extend a given object with all the properties in passed-in object(s).
-  _.extend = createAssigner(_.allKeys);
+  var extend = createAssigner(allKeys);
 
   // Assigns a given object with all the own properties in the passed-in object(s).
   // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
-  _.extendOwn = _.assign = createAssigner(_.keys);
+  var extendOwn = createAssigner(keys);
 
   // Returns the first key on an object that passes a predicate test.
-  _.findKey = function(obj, predicate, context) {
+  function findKey(obj, predicate, context) {
     predicate = cb(predicate, context);
-    var keys = _.keys(obj), key;
-    for (var i = 0, length = keys.length; i < length; i++) {
-      key = keys[i];
+    var _keys = keys(obj), key;
+    for (var i = 0, length = _keys.length; i < length; i++) {
+      key = _keys[i];
       if (predicate(obj[key], key, obj)) return key;
     }
-  };
+  }
 
   // Internal pick helper function to determine if `obj` has key `key`.
-  var keyInObj = function(value, key, obj) {
+  function keyInObj(value, key, obj) {
     return key in obj;
-  };
+  }
 
   // Return a copy of the object only containing the whitelisted properties.
-  _.pick = restArguments(function(obj, keys) {
-    var result = {}, iteratee = keys[0];
+  var pick = restArguments(function(obj, _keys) {
+    var result = {}, iteratee = _keys[0];
     if (obj == null) return result;
-    if (_.isFunction(iteratee)) {
-      if (keys.length > 1) iteratee = optimizeCb(iteratee, keys[1]);
-      keys = _.allKeys(obj);
+    if (isFunction(iteratee)) {
+      if (_keys.length > 1) iteratee = optimizeCb(iteratee, _keys[1]);
+      _keys = allKeys(obj);
     } else {
       iteratee = keyInObj;
-      keys = flatten(keys, false, false);
+      _keys = _flatten(_keys, false, false);
       obj = Object(obj);
     }
-    for (var i = 0, length = keys.length; i < length; i++) {
-      var key = keys[i];
+    for (var i = 0, length = _keys.length; i < length; i++) {
+      var key = _keys[i];
       var value = obj[key];
       if (iteratee(value, key, obj)) result[key] = value;
     }
@@ -37571,64 +37577,63 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   });
 
   // Return a copy of the object without the blacklisted properties.
-  _.omit = restArguments(function(obj, keys) {
-    var iteratee = keys[0], context;
-    if (_.isFunction(iteratee)) {
-      iteratee = _.negate(iteratee);
-      if (keys.length > 1) context = keys[1];
+  var omit = restArguments(function(obj, _keys) {
+    var iteratee = _keys[0], context;
+    if (isFunction(iteratee)) {
+      iteratee = negate(iteratee);
+      if (_keys.length > 1) context = _keys[1];
     } else {
-      keys = _.map(flatten(keys, false, false), String);
+      _keys = map(_flatten(_keys, false, false), String);
       iteratee = function(value, key) {
-        return !_.contains(keys, key);
+        return !contains(_keys, key);
       };
     }
-    return _.pick(obj, iteratee, context);
+    return pick(obj, iteratee, context);
   });
 
   // Fill in a given object with default properties.
-  _.defaults = createAssigner(_.allKeys, true);
+  var defaults = createAssigner(allKeys, true);
 
   // Creates an object that inherits from the given prototype object.
   // If additional properties are provided then they will be added to the
   // created object.
-  _.create = function(prototype, props) {
+  function create(prototype, props) {
     var result = baseCreate(prototype);
-    if (props) _.extendOwn(result, props);
+    if (props) extendOwn(result, props);
     return result;
-  };
+  }
 
   // Create a (shallow-cloned) duplicate of an object.
-  _.clone = function(obj) {
-    if (!_.isObject(obj)) return obj;
-    return _.isArray(obj) ? obj.slice() : _.extend({}, obj);
-  };
+  function clone(obj) {
+    if (!isObject(obj)) return obj;
+    return isArray(obj) ? obj.slice() : extend({}, obj);
+  }
 
   // Invokes interceptor with the obj, and then returns obj.
   // The primary purpose of this method is to "tap into" a method chain, in
   // order to perform operations on intermediate results within the chain.
-  _.tap = function(obj, interceptor) {
+  function tap(obj, interceptor) {
     interceptor(obj);
     return obj;
-  };
+  }
 
   // Returns whether an object has a given set of `key:value` pairs.
-  _.isMatch = function(object, attrs) {
-    var keys = _.keys(attrs), length = keys.length;
+  function isMatch(object, attrs) {
+    var _keys = keys(attrs), length = _keys.length;
     if (object == null) return !length;
     var obj = Object(object);
     for (var i = 0; i < length; i++) {
-      var key = keys[i];
+      var key = _keys[i];
       if (attrs[key] !== obj[key] || !(key in obj)) return false;
     }
     return true;
-  };
+  }
 
 
   // Internal recursive comparison function for `isEqual`.
-  var eq, deepEq;
-  eq = function(a, b, aStack, bStack) {
+  function eq(a, b, aStack, bStack) {
     // Identical objects are equal. `0 === -0`, but they aren't identical.
-    // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
+    // See the [Harmony `egal` proposal](https://wiki.ecmascript.org/doku.php?id=harmony:egal).
     if (a === b) return a !== 0 || 1 / a === 1 / b;
     // `null` or `undefined` only equal to itself (strict comparison).
     if (a == null || b == null) return false;
@@ -37638,10 +37643,10 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     var type = typeof a;
     if (type !== 'function' && type !== 'object' && typeof b != 'object') return false;
     return deepEq(a, b, aStack, bStack);
-  };
+  }
 
   // Internal recursive comparison function for `isEqual`.
-  deepEq = function(a, b, aStack, bStack) {
+  function deepEq(a, b, aStack, bStack) {
     // Unwrap any wrapped objects.
     if (a instanceof _) a = a._wrapped;
     if (b instanceof _) b = b._wrapped;
@@ -37679,8 +37684,8 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       // Objects with different constructors are not equivalent, but `Object`s or `Array`s
       // from different frames are.
       var aCtor = a.constructor, bCtor = b.constructor;
-      if (aCtor !== bCtor && !(_.isFunction(aCtor) && aCtor instanceof aCtor &&
-                               _.isFunction(bCtor) && bCtor instanceof bCtor)
+      if (aCtor !== bCtor && !(isFunction(aCtor) && aCtor instanceof aCtor &&
+                               isFunction(bCtor) && bCtor instanceof bCtor)
                           && ('constructor' in a && 'constructor' in b)) {
         return false;
       }
@@ -37714,106 +37719,120 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       }
     } else {
       // Deep compare objects.
-      var keys = _.keys(a), key;
-      length = keys.length;
+      var _keys = keys(a), key;
+      length = _keys.length;
       // Ensure that both objects contain the same number of properties before comparing deep equality.
-      if (_.keys(b).length !== length) return false;
+      if (keys(b).length !== length) return false;
       while (length--) {
         // Deep compare each member
-        key = keys[length];
-        if (!(has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
+        key = _keys[length];
+        if (!(_has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
       }
     }
     // Remove the first object from the stack of traversed objects.
     aStack.pop();
     bStack.pop();
     return true;
-  };
+  }
 
   // Perform a deep comparison to check if two objects are equal.
-  _.isEqual = function(a, b) {
+  function isEqual(a, b) {
     return eq(a, b);
-  };
+  }
 
   // Is a given array, string, or object empty?
   // An "empty" object has no enumerable own-properties.
-  _.isEmpty = function(obj) {
+  function isEmpty(obj) {
     if (obj == null) return true;
-    if (isArrayLike(obj) && (_.isArray(obj) || _.isString(obj) || _.isArguments(obj))) return obj.length === 0;
-    return _.keys(obj).length === 0;
-  };
+    if (isArrayLike(obj) && (isArray(obj) || isString(obj) || isArguments(obj))) return obj.length === 0;
+    return keys(obj).length === 0;
+  }
 
   // Is a given value a DOM element?
-  _.isElement = function(obj) {
+  function isElement(obj) {
     return !!(obj && obj.nodeType === 1);
-  };
+  }
+
+  // Internal function for creating a toString-based type tester.
+  function tagTester(name) {
+    return function(obj) {
+      return toString.call(obj) === '[object ' + name + ']';
+    };
+  }
 
   // Is a given value an array?
   // Delegates to ECMA5's native Array.isArray
-  _.isArray = nativeIsArray || function(obj) {
-    return toString.call(obj) === '[object Array]';
-  };
+  var isArray = nativeIsArray || tagTester('Array');
 
   // Is a given variable an object?
-  _.isObject = function(obj) {
+  function isObject(obj) {
     var type = typeof obj;
     return type === 'function' || type === 'object' && !!obj;
-  };
+  }
 
   // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError, isMap, isWeakMap, isSet, isWeakSet.
-  _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error', 'Symbol', 'Map', 'WeakMap', 'Set', 'WeakSet'], function(name) {
-    _['is' + name] = function(obj) {
-      return toString.call(obj) === '[object ' + name + ']';
-    };
-  });
+  var isArguments = tagTester('Arguments');
+  var isFunction = tagTester('Function');
+  var isString = tagTester('String');
+  var isNumber = tagTester('Number');
+  var isDate = tagTester('Date');
+  var isRegExp = tagTester('RegExp');
+  var isError = tagTester('Error');
+  var isSymbol = tagTester('Symbol');
+  var isMap = tagTester('Map');
+  var isWeakMap = tagTester('WeakMap');
+  var isSet = tagTester('Set');
+  var isWeakSet = tagTester('WeakSet');
 
   // Define a fallback version of the method in browsers (ahem, IE < 9), where
   // there isn't any inspectable "Arguments" type.
-  if (!_.isArguments(arguments)) {
-    _.isArguments = function(obj) {
-      return has(obj, 'callee');
-    };
-  }
+  (function() {
+    if (!isArguments(arguments)) {
+      isArguments = function(obj) {
+        return _has(obj, 'callee');
+      };
+    }
+  }());
 
   // Optimize `isFunction` if appropriate. Work around some typeof bugs in old v8,
   // IE 11 (#1621), Safari 8 (#1929), and PhantomJS (#2236).
   var nodelist = root.document && root.document.childNodes;
   if (typeof /./ != 'function' && typeof Int8Array != 'object' && typeof nodelist != 'function') {
-    _.isFunction = function(obj) {
+    isFunction = function(obj) {
       return typeof obj == 'function' || false;
     };
   }
 
   // Is a given object a finite number?
-  _.isFinite = function(obj) {
-    return !_.isSymbol(obj) && isFinite(obj) && !isNaN(parseFloat(obj));
-  };
+  function isFinite(obj) {
+    return !isSymbol(obj) && _isFinite(obj) && !_isNaN(parseFloat(obj));
+  }
 
   // Is the given value `NaN`?
-  _.isNaN = function(obj) {
-    return _.isNumber(obj) && isNaN(obj);
-  };
+  function isNaN(obj) {
+    return isNumber(obj) && _isNaN(obj);
+  }
 
   // Is a given value a boolean?
-  _.isBoolean = function(obj) {
+  function isBoolean(obj) {
     return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
-  };
+  }
 
   // Is a given value equal to null?
-  _.isNull = function(obj) {
+  function isNull(obj) {
     return obj === null;
-  };
+  }
 
   // Is a given variable undefined?
-  _.isUndefined = function(obj) {
+  function isUndefined(obj) {
     return obj === void 0;
-  };
+  }
 
   // Shortcut function for checking if an object has a given property directly
   // on itself (in other words, not on a prototype).
-  _.has = function(obj, path) {
-    if (!_.isArray(path)) {
-      return has(obj, path);
+  function has(obj, path) {
+    if (!isArray(path)) {
+      return _has(obj, path);
     }
     var length = path.length;
     for (var i = 0; i < length; i++) {
@@ -37824,81 +37843,74 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       obj = obj[key];
     }
     return !!length;
-  };
+  }
 
   // Utility Functions
   // -----------------
 
-  // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
-  // previous owner. Returns a reference to the Underscore object.
-  _.noConflict = function() {
-    root._ = previousUnderscore;
-    return this;
-  };
-
   // Keep the identity function around for default iteratees.
-  _.identity = function(value) {
+  function identity(value) {
     return value;
-  };
+  }
 
   // Predicate-generating functions. Often useful outside of Underscore.
-  _.constant = function(value) {
+  function constant(value) {
     return function() {
       return value;
     };
-  };
+  }
 
-  _.noop = function(){};
+  function noop(){}
 
   // Creates a function that, when passed an object, will traverse that object’s
   // properties down the given `path`, specified as an array of keys or indexes.
-  _.property = function(path) {
-    if (!_.isArray(path)) {
+  function property(path) {
+    if (!isArray(path)) {
       return shallowProperty(path);
     }
     return function(obj) {
       return deepGet(obj, path);
     };
-  };
+  }
 
   // Generates a function for a given object that returns a given property.
-  _.propertyOf = function(obj) {
+  function propertyOf(obj) {
     if (obj == null) {
       return function(){};
     }
     return function(path) {
-      return !_.isArray(path) ? obj[path] : deepGet(obj, path);
+      return !isArray(path) ? obj[path] : deepGet(obj, path);
     };
-  };
+  }
 
   // Returns a predicate for checking whether an object has a given set of
   // `key:value` pairs.
-  _.matcher = _.matches = function(attrs) {
-    attrs = _.extendOwn({}, attrs);
+  function matcher(attrs) {
+    attrs = extendOwn({}, attrs);
     return function(obj) {
-      return _.isMatch(obj, attrs);
+      return isMatch(obj, attrs);
     };
-  };
+  }
 
   // Run a function **n** times.
-  _.times = function(n, iteratee, context) {
+  function times(n, iteratee, context) {
     var accum = Array(Math.max(0, n));
     iteratee = optimizeCb(iteratee, context, 1);
     for (var i = 0; i < n; i++) accum[i] = iteratee(i);
     return accum;
-  };
+  }
 
   // Return a random integer between min and max (inclusive).
-  _.random = function(min, max) {
+  function random(min, max) {
     if (max == null) {
       max = min;
       min = 0;
     }
     return min + Math.floor(Math.random() * (max - min + 1));
-  };
+  }
 
   // A (possibly faster) way to get the current timestamp as an integer.
-  _.now = Date.now || function() {
+  var now = Date.now || function() {
     return new Date().getTime();
   };
 
@@ -37911,33 +37923,33 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     "'": '&#x27;',
     '`': '&#x60;'
   };
-  var unescapeMap = _.invert(escapeMap);
+  var unescapeMap = invert(escapeMap);
 
   // Functions for escaping and unescaping strings to/from HTML interpolation.
-  var createEscaper = function(map) {
+  function createEscaper(map) {
     var escaper = function(match) {
       return map[match];
     };
     // Regexes for identifying a key that needs to be escaped.
-    var source = '(?:' + _.keys(map).join('|') + ')';
+    var source = '(?:' + keys(map).join('|') + ')';
     var testRegexp = RegExp(source);
     var replaceRegexp = RegExp(source, 'g');
     return function(string) {
       string = string == null ? '' : '' + string;
       return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
     };
-  };
-  _.escape = createEscaper(escapeMap);
-  _.unescape = createEscaper(unescapeMap);
+  }
+  var escape = createEscaper(escapeMap);
+  var unescape = createEscaper(unescapeMap);
 
   // Traverses the children of `obj` along `path`. If a child is a function, it
   // is invoked with its parent as context. Returns the value of the final
   // child, or `fallback` if any child is undefined.
-  _.result = function(obj, path, fallback) {
-    if (!_.isArray(path)) path = [path];
+  function result(obj, path, fallback) {
+    if (!isArray(path)) path = [path];
     var length = path.length;
     if (!length) {
-      return _.isFunction(fallback) ? fallback.call(obj) : fallback;
+      return isFunction(fallback) ? fallback.call(obj) : fallback;
     }
     for (var i = 0; i < length; i++) {
       var prop = obj == null ? void 0 : obj[path[i]];
@@ -37945,22 +37957,22 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
         prop = fallback;
         i = length; // Ensure we don't continue iterating.
       }
-      obj = _.isFunction(prop) ? prop.call(obj) : prop;
+      obj = isFunction(prop) ? prop.call(obj) : prop;
     }
     return obj;
-  };
+  }
 
   // Generate a unique integer id (unique within the entire client session).
   // Useful for temporary DOM ids.
   var idCounter = 0;
-  _.uniqueId = function(prefix) {
+  function uniqueId(prefix) {
     var id = ++idCounter + '';
     return prefix ? prefix + id : id;
-  };
+  }
 
   // By default, Underscore uses ERB-style template delimiters, change the
   // following template settings to use alternative delimiters.
-  _.templateSettings = {
+  var templateSettings = _.templateSettings = {
     evaluate: /<%([\s\S]+?)%>/g,
     interpolate: /<%=([\s\S]+?)%>/g,
     escape: /<%-([\s\S]+?)%>/g
@@ -37992,9 +38004,9 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // Underscore templating handles arbitrary delimiters, preserves whitespace,
   // and correctly escapes quotes within interpolated code.
   // NB: `oldSettings` only exists for backwards compatibility.
-  _.template = function(text, settings, oldSettings) {
+  function template(text, settings, oldSettings) {
     if (!settings && oldSettings) settings = oldSettings;
-    settings = _.defaults({}, settings, _.templateSettings);
+    settings = defaults({}, settings, _.templateSettings);
 
     // Combine delimiters into one regular expression via alternation.
     var matcher = RegExp([
@@ -38047,14 +38059,14 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     template.source = 'function(' + argument + '){\n' + source + '}';
 
     return template;
-  };
+  }
 
   // Add a "chain" function. Start chaining a wrapped Underscore object.
-  _.chain = function(obj) {
+  function chain(obj) {
     var instance = _(obj);
     instance._chain = true;
     return instance;
-  };
+  }
 
   // OOP
   // ---------------
@@ -38063,13 +38075,13 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // underscore functions. Wrapped objects may be chained.
 
   // Helper function to continue chaining intermediate results.
-  var chainResult = function(instance, obj) {
+  function chainResult(instance, obj) {
     return instance._chain ? _(obj).chain() : obj;
-  };
+  }
 
   // Add your own custom functions to the Underscore object.
-  _.mixin = function(obj) {
-    _.each(_.functions(obj), function(name) {
+  function mixin(obj) {
+    each(functions(obj), function(name) {
       var func = _[name] = obj[name];
       _.prototype[name] = function() {
         var args = [this._wrapped];
@@ -38078,13 +38090,10 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       };
     });
     return _;
-  };
-
-  // Add all of the Underscore functions to the wrapper object.
-  _.mixin(_);
+  }
 
   // Add all mutator Array functions to the wrapper.
-  _.each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function(name) {
+  each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function(name) {
     var method = ArrayProto[name];
     _.prototype[name] = function() {
       var obj = this._wrapped;
@@ -38095,7 +38104,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   });
 
   // Add all accessor Array functions to the wrapper.
-  _.each(['concat', 'join', 'slice'], function(name) {
+  each(['concat', 'join', 'slice'], function(name) {
     var method = ArrayProto[name];
     _.prototype[name] = function() {
       return chainResult(this, method.apply(this._wrapped, arguments));
@@ -38115,22 +38124,161 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     return String(this._wrapped);
   };
 
-  // AMD registration happens at the end for compatibility with AMD loaders
-  // that may not enforce next-turn semantics on modules. Even though general
-  // practice for AMD registration is to be anonymous, underscore registers
-  // as a named module because, like jQuery, it is a base library that is
-  // popular enough to be bundled in a third party lib, but not be part of
-  // an AMD load request. Those cases could generate an error when an
-  // anonymous define() is called outside of a loader request.
-  if (typeof define == 'function' && define.amd) {
-    define('underscore', [], function() {
-      return _;
-    });
-  }
-}());
-;//     Backbone.js 1.3.3
+  var allExports = ({
+    'default': _,
+    VERSION: VERSION,
+    iteratee: iteratee,
+    restArguments: restArguments,
+    each: each,
+    forEach: each,
+    map: map,
+    collect: map,
+    reduce: reduce,
+    foldl: reduce,
+    inject: reduce,
+    reduceRight: reduceRight,
+    foldr: reduceRight,
+    find: find,
+    detect: find,
+    filter: filter,
+    select: filter,
+    reject: reject,
+    every: every,
+    all: every,
+    some: some,
+    any: some,
+    contains: contains,
+    includes: contains,
+    include: contains,
+    invoke: invoke,
+    pluck: pluck,
+    where: where,
+    findWhere: findWhere,
+    max: max,
+    min: min,
+    shuffle: shuffle,
+    sample: sample,
+    sortBy: sortBy,
+    groupBy: groupBy,
+    indexBy: indexBy,
+    countBy: countBy,
+    toArray: toArray,
+    size: size,
+    partition: partition,
+    first: first,
+    head: first,
+    take: first,
+    initial: initial,
+    last: last,
+    rest: rest,
+    tail: rest,
+    drop: rest,
+    compact: compact,
+    flatten: flatten,
+    without: without,
+    uniq: uniq,
+    unique: uniq,
+    union: union,
+    intersection: intersection,
+    difference: difference,
+    unzip: unzip,
+    zip: zip,
+    object: object,
+    findIndex: findIndex,
+    findLastIndex: findLastIndex,
+    sortedIndex: sortedIndex,
+    indexOf: indexOf,
+    lastIndexOf: lastIndexOf,
+    range: range,
+    chunk: chunk,
+    bind: bind,
+    partial: partial,
+    bindAll: bindAll,
+    memoize: memoize,
+    delay: delay,
+    defer: defer,
+    throttle: throttle,
+    debounce: debounce,
+    wrap: wrap,
+    negate: negate,
+    compose: compose,
+    after: after,
+    before: before,
+    once: once,
+    keys: keys,
+    allKeys: allKeys,
+    values: values,
+    mapObject: mapObject,
+    pairs: pairs,
+    invert: invert,
+    functions: functions,
+    methods: functions,
+    extend: extend,
+    extendOwn: extendOwn,
+    assign: extendOwn,
+    findKey: findKey,
+    pick: pick,
+    omit: omit,
+    defaults: defaults,
+    create: create,
+    clone: clone,
+    tap: tap,
+    isMatch: isMatch,
+    isEqual: isEqual,
+    isEmpty: isEmpty,
+    isElement: isElement,
+    isArray: isArray,
+    isObject: isObject,
+    isArguments: isArguments,
+    isFunction: isFunction,
+    isString: isString,
+    isNumber: isNumber,
+    isDate: isDate,
+    isRegExp: isRegExp,
+    isError: isError,
+    isSymbol: isSymbol,
+    isMap: isMap,
+    isWeakMap: isWeakMap,
+    isSet: isSet,
+    isWeakSet: isWeakSet,
+    isFinite: isFinite,
+    isNaN: isNaN,
+    isBoolean: isBoolean,
+    isNull: isNull,
+    isUndefined: isUndefined,
+    has: has,
+    identity: identity,
+    constant: constant,
+    noop: noop,
+    property: property,
+    propertyOf: propertyOf,
+    matcher: matcher,
+    matches: matcher,
+    times: times,
+    random: random,
+    now: now,
+    escape: escape,
+    unescape: unescape,
+    result: result,
+    uniqueId: uniqueId,
+    templateSettings: templateSettings,
+    template: template,
+    chain: chain,
+    mixin: mixin
+  });
 
-//     (c) 2010-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+  // Add all of the Underscore functions to the wrapper object.
+  var _$1 = mixin(allExports);
+  // Legacy Node.js API
+  _$1._ = _$1;
+
+  return _$1;
+
+})));
+//# sourceMappingURL=underscore.js.map
+;//     Backbone.js 1.4.0
+
+//     (c) 2010-2019 Jeremy Ashkenas and DocumentCloud
 //     Backbone may be freely distributed under the MIT license.
 //     For all details and documentation:
 //     http://backbonejs.org
@@ -38139,8 +38287,8 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
   // Establish the root object, `window` (`self`) in the browser, or `global` on the server.
   // We use `self` instead of `window` for `WebWorker` support.
-  var root = (typeof self == 'object' && self.self === self && self) ||
-            (typeof global == 'object' && global.global === global && global);
+  var root = typeof self == 'object' && self.self === self && self ||
+            typeof global == 'object' && global.global === global && global;
 
   // Set up Backbone appropriately for the environment. Start with AMD.
   if (typeof define === 'function' && define.amd) {
@@ -38158,7 +38306,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
   // Finally, as a browser global.
   } else {
-    root.Backbone = factory(root, {}, root._, (root.jQuery || root.Zepto || root.ender || root.$));
+    root.Backbone = factory(root, {}, root._, root.jQuery || root.Zepto || root.ender || root.$);
   }
 
 })(function(root, Backbone, _, $) {
@@ -38174,7 +38322,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   var slice = Array.prototype.slice;
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '1.3.3';
+  Backbone.VERSION = '1.4.0';
 
   // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
   // the `$` variable.
@@ -38198,54 +38346,6 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // form param named `model`.
   Backbone.emulateJSON = false;
 
-  // Proxy Backbone class methods to Underscore functions, wrapping the model's
-  // `attributes` object or collection's `models` array behind the scenes.
-  //
-  // collection.filter(function(model) { return model.get('age') > 10 });
-  // collection.each(this.addView);
-  //
-  // `Function#apply` can be slow so we use the method's arg count, if we know it.
-  var addMethod = function(length, method, attribute) {
-    switch (length) {
-      case 1: return function() {
-        return _[method](this[attribute]);
-      };
-      case 2: return function(value) {
-        return _[method](this[attribute], value);
-      };
-      case 3: return function(iteratee, context) {
-        return _[method](this[attribute], cb(iteratee, this), context);
-      };
-      case 4: return function(iteratee, defaultVal, context) {
-        return _[method](this[attribute], cb(iteratee, this), defaultVal, context);
-      };
-      default: return function() {
-        var args = slice.call(arguments);
-        args.unshift(this[attribute]);
-        return _[method].apply(_, args);
-      };
-    }
-  };
-  var addUnderscoreMethods = function(Class, methods, attribute) {
-    _.each(methods, function(length, method) {
-      if (_[method]) Class.prototype[method] = addMethod(length, method, attribute);
-    });
-  };
-
-  // Support `collection.sortBy('attr')` and `collection.findWhere({id: 1})`.
-  var cb = function(iteratee, instance) {
-    if (_.isFunction(iteratee)) return iteratee;
-    if (_.isObject(iteratee) && !instance._isModel(iteratee)) return modelMatcher(iteratee);
-    if (_.isString(iteratee)) return function(model) { return model.get(iteratee); };
-    return iteratee;
-  };
-  var modelMatcher = function(attrs) {
-    var matcher = _.matches(attrs);
-    return function(model) {
-      return matcher(model.attributes);
-    };
-  };
-
   // Backbone.Events
   // ---------------
 
@@ -38263,6 +38363,9 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
   // Regular expression used to split event strings.
   var eventSplitter = /\s+/;
+
+  // A private global variable to share between listeners and listenees.
+  var _listening;
 
   // Iterates over the standard `event, callback` (as well as the fancy multiple
   // space-separated events `"change blur", callback` and jQuery-style event
@@ -38290,23 +38393,21 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // Bind an event to a `callback` function. Passing `"all"` will bind
   // the callback to all events fired.
   Events.on = function(name, callback, context) {
-    return internalOn(this, name, callback, context);
-  };
-
-  // Guard the `listening` argument from the public API.
-  var internalOn = function(obj, name, callback, context, listening) {
-    obj._events = eventsApi(onApi, obj._events || {}, name, callback, {
+    this._events = eventsApi(onApi, this._events || {}, name, callback, {
       context: context,
-      ctx: obj,
-      listening: listening
+      ctx: this,
+      listening: _listening
     });
 
-    if (listening) {
-      var listeners = obj._listeners || (obj._listeners = {});
-      listeners[listening.id] = listening;
+    if (_listening) {
+      var listeners = this._listeners || (this._listeners = {});
+      listeners[_listening.id] = _listening;
+      // Allow the listening to use a counter, instead of tracking
+      // callbacks for library interop
+      _listening.interop = false;
     }
 
-    return obj;
+    return this;
   };
 
   // Inversion-of-control versions of `on`. Tell *this* object to listen to
@@ -38316,17 +38417,23 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     if (!obj) return this;
     var id = obj._listenId || (obj._listenId = _.uniqueId('l'));
     var listeningTo = this._listeningTo || (this._listeningTo = {});
-    var listening = listeningTo[id];
+    var listening = _listening = listeningTo[id];
 
     // This object is not listening to any other events on `obj` yet.
     // Setup the necessary references to track the listening callbacks.
     if (!listening) {
-      var thisId = this._listenId || (this._listenId = _.uniqueId('l'));
-      listening = listeningTo[id] = {obj: obj, objId: id, id: thisId, listeningTo: listeningTo, count: 0};
+      this._listenId || (this._listenId = _.uniqueId('l'));
+      listening = _listening = listeningTo[id] = new Listening(this, obj);
     }
 
-    // Bind callbacks on obj, and keep track of them on listening.
-    internalOn(obj, name, callback, this, listening);
+    // Bind callbacks on obj.
+    var error = tryCatchOn(obj, name, callback, this);
+    _listening = void 0;
+
+    if (error) throw error;
+    // If the target obj is not Backbone.Events, track events manually.
+    if (listening.interop) listening.on(name, callback);
+
     return this;
   };
 
@@ -38342,6 +38449,16 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     return events;
   };
 
+  // An try-catch guarded #on function, to prevent poisoning the global
+  // `_listening` variable.
+  var tryCatchOn = function(obj, name, callback, context) {
+    try {
+      obj.on(name, callback, context);
+    } catch (e) {
+      return e;
+    }
+  };
+
   // Remove one or many callbacks. If `context` is null, removes all
   // callbacks with that function. If `callback` is null, removes all
   // callbacks for the event. If `name` is null, removes all bound
@@ -38352,6 +38469,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       context: context,
       listeners: this._listeners
     });
+
     return this;
   };
 
@@ -38362,7 +38480,6 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     if (!listeningTo) return this;
 
     var ids = obj ? [obj._listenId] : _.keys(listeningTo);
-
     for (var i = 0; i < ids.length; i++) {
       var listening = listeningTo[ids[i]];
 
@@ -38371,7 +38488,9 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       if (!listening) break;
 
       listening.obj.off(name, callback, this);
+      if (listening.interop) listening.off(name, callback);
     }
+    if (_.isEmpty(listeningTo)) this._listeningTo = void 0;
 
     return this;
   };
@@ -38380,21 +38499,18 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   var offApi = function(events, name, callback, options) {
     if (!events) return;
 
-    var i = 0, listening;
     var context = options.context, listeners = options.listeners;
+    var i = 0, names;
 
-    // Delete all events listeners and "drop" events.
-    if (!name && !callback && !context) {
-      var ids = _.keys(listeners);
-      for (; i < ids.length; i++) {
-        listening = listeners[ids[i]];
-        delete listeners[listening.id];
-        delete listening.listeningTo[listening.objId];
+    // Delete all event listeners and "drop" events.
+    if (!name && !context && !callback) {
+      for (names = _.keys(listeners); i < names.length; i++) {
+        listeners[names[i]].cleanup();
       }
       return;
     }
 
-    var names = name ? [name] : _.keys(events);
+    names = name ? [name] : _.keys(events);
     for (; i < names.length; i++) {
       name = names[i];
       var handlers = events[name];
@@ -38402,7 +38518,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       // Bail out if there are no events stored.
       if (!handlers) break;
 
-      // Replace events if there are any remaining.  Otherwise, clean up.
+      // Find any remaining events.
       var remaining = [];
       for (var j = 0; j < handlers.length; j++) {
         var handler = handlers[j];
@@ -38413,21 +38529,19 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
         ) {
           remaining.push(handler);
         } else {
-          listening = handler.listening;
-          if (listening && --listening.count === 0) {
-            delete listeners[listening.id];
-            delete listening.listeningTo[listening.objId];
-          }
+          var listening = handler.listening;
+          if (listening) listening.off(name, callback);
         }
       }
 
-      // Update tail event if the list has any events.  Otherwise, clean up.
+      // Replace events if there are any remaining.  Otherwise, clean up.
       if (remaining.length) {
         events[name] = remaining;
       } else {
         delete events[name];
       }
     }
+
     return events;
   };
 
@@ -38437,7 +38551,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // once for each event, not once for a combination of all events.
   Events.once = function(name, callback, context) {
     // Map the event into a `{event: once}` object.
-    var events = eventsApi(onceMap, {}, name, callback, _.bind(this.off, this));
+    var events = eventsApi(onceMap, {}, name, callback, this.off.bind(this));
     if (typeof name === 'string' && context == null) callback = void 0;
     return this.on(events, callback, context);
   };
@@ -38445,7 +38559,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // Inversion-of-control versions of `once`.
   Events.listenToOnce = function(obj, name, callback) {
     // Map the event into a `{event: once}` object.
-    var events = eventsApi(onceMap, {}, name, callback, _.bind(this.stopListening, this, obj));
+    var events = eventsApi(onceMap, {}, name, callback, this.stopListening.bind(this, obj));
     return this.listenTo(obj, events);
   };
 
@@ -38503,6 +38617,44 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     }
   };
 
+  // A listening class that tracks and cleans up memory bindings
+  // when all callbacks have been offed.
+  var Listening = function(listener, obj) {
+    this.id = listener._listenId;
+    this.listener = listener;
+    this.obj = obj;
+    this.interop = true;
+    this.count = 0;
+    this._events = void 0;
+  };
+
+  Listening.prototype.on = Events.on;
+
+  // Offs a callback (or several).
+  // Uses an optimized counter if the listenee uses Backbone.Events.
+  // Otherwise, falls back to manual tracking to support events
+  // library interop.
+  Listening.prototype.off = function(name, callback) {
+    var cleanup;
+    if (this.interop) {
+      this._events = eventsApi(offApi, this._events, name, callback, {
+        context: void 0,
+        listeners: void 0
+      });
+      cleanup = !this._events;
+    } else {
+      this.count--;
+      cleanup = this.count === 0;
+    }
+    if (cleanup) this.cleanup();
+  };
+
+  // Cleans up memory bindings between the listener and the listenee.
+  Listening.prototype.cleanup = function() {
+    delete this.listener._listeningTo[this.obj._listenId];
+    if (!this.interop) delete this.obj._listeners[this.id];
+  };
+
   // Aliases for backwards compatibility.
   Events.bind   = Events.on;
   Events.unbind = Events.off;
@@ -38524,6 +38676,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   var Model = Backbone.Model = function(attributes, options) {
     var attrs = attributes || {};
     options || (options = {});
+    this.preinitialize.apply(this, arguments);
     this.cid = _.uniqueId(this.cidPrefix);
     this.attributes = {};
     if (options.collection) this.collection = options.collection;
@@ -38551,6 +38704,10 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     // The prefix is used to create the client id which is used to identify models locally.
     // You may want to override this if you're experiencing name clashes with model ids.
     cidPrefix: 'c',
+
+    // preinitialize is an empty function by default. You can override it with a function
+    // or object.  preinitialize will run before any instantiation logic is run in the Model.
+    preinitialize: function(){},
 
     // Initialize is an empty function by default. Override it with your own
     // initialization logic.
@@ -38692,12 +38849,14 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       if (!diff) return this.hasChanged() ? _.clone(this.changed) : false;
       var old = this._changing ? this._previousAttributes : this.attributes;
       var changed = {};
+      var hasChanged;
       for (var attr in diff) {
         var val = diff[attr];
         if (_.isEqual(old[attr], val)) continue;
         changed[attr] = val;
+        hasChanged = true;
       }
-      return _.size(changed) ? changed : false;
+      return hasChanged ? changed : false;
     },
 
     // Get the previous value of an attribute, recorded at the time the last
@@ -38773,7 +38932,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       // Set temporary attributes if `{wait: true}` to properly find new ids.
       if (attrs && wait) this.attributes = _.extend({}, attributes, attrs);
 
-      var method = this.isNew() ? 'create' : (options.patch ? 'patch' : 'update');
+      var method = this.isNew() ? 'create' : options.patch ? 'patch' : 'update';
       if (method === 'patch' && !options.attrs) options.attrs = attrs;
       var xhr = this.sync(method, this, options);
 
@@ -38861,14 +39020,6 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
   });
 
-  // Underscore methods that we want to implement on the Model, mapped to the
-  // number of arguments they take.
-  var modelMethods = {keys: 1, values: 1, pairs: 1, invert: 1, pick: 0,
-      omit: 0, chain: 1, isEmpty: 1};
-
-  // Mix in each Underscore method as a proxy to `Model#attributes`.
-  addUnderscoreMethods(Model, modelMethods, 'attributes');
-
   // Backbone.Collection
   // -------------------
 
@@ -38884,6 +39035,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // its models in sort order, as they're added and removed.
   var Collection = Backbone.Collection = function(models, options) {
     options || (options = {});
+    this.preinitialize.apply(this, arguments);
     if (options.model) this.model = options.model;
     if (options.comparator !== void 0) this.comparator = options.comparator;
     this._reset();
@@ -38912,6 +39064,11 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     // The default model for a collection is just a **Backbone.Model**.
     // This should be overridden in most cases.
     model: Model,
+
+
+    // preinitialize is an empty function by default. You can override it with a function
+    // or object.  preinitialize will run before any instantiation logic is run in the Collection.
+    preinitialize: function(){},
 
     // Initialize is an empty function by default. Override it with your own
     // initialization logic.
@@ -39115,7 +39272,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     get: function(obj) {
       if (obj == null) return void 0;
       return this._byId[obj] ||
-        this._byId[this.modelId(obj.attributes || obj)] ||
+        this._byId[this.modelId(this._isModel(obj) ? obj.attributes : obj)] ||
         obj.cid && this._byId[obj.cid];
     },
 
@@ -39151,7 +39308,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       options || (options = {});
 
       var length = comparator.length;
-      if (_.isFunction(comparator)) comparator = _.bind(comparator, this);
+      if (_.isFunction(comparator)) comparator = comparator.bind(this);
 
       // Run sort based on type of `comparator`.
       if (length === 1 || _.isString(comparator)) {
@@ -39221,6 +39378,21 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     // Define how to uniquely identify models in the collection.
     modelId: function(attrs) {
       return attrs[this.model.prototype.idAttribute || 'id'];
+    },
+
+    // Get an iterator of all models in this collection.
+    values: function() {
+      return new CollectionIterator(this, ITERATOR_VALUES);
+    },
+
+    // Get an iterator of all model IDs in this collection.
+    keys: function() {
+      return new CollectionIterator(this, ITERATOR_KEYS);
+    },
+
+    // Get an iterator of all [ID, model] tuples in this collection.
+    entries: function() {
+      return new CollectionIterator(this, ITERATOR_KEYSVALUES);
     },
 
     // Private method to reset all internal state. Called when the collection
@@ -39319,20 +39491,71 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
   });
 
-  // Underscore methods that we want to implement on the Collection.
-  // 90% of the core usefulness of Backbone Collections is actually implemented
-  // right here:
-  var collectionMethods = {forEach: 3, each: 3, map: 3, collect: 3, reduce: 0,
-      foldl: 0, inject: 0, reduceRight: 0, foldr: 0, find: 3, detect: 3, filter: 3,
-      select: 3, reject: 3, every: 3, all: 3, some: 3, any: 3, include: 3, includes: 3,
-      contains: 3, invoke: 0, max: 3, min: 3, toArray: 1, size: 1, first: 3,
-      head: 3, take: 3, initial: 3, rest: 3, tail: 3, drop: 3, last: 3,
-      without: 0, difference: 0, indexOf: 3, shuffle: 1, lastIndexOf: 3,
-      isEmpty: 1, chain: 1, sample: 3, partition: 3, groupBy: 3, countBy: 3,
-      sortBy: 3, indexBy: 3, findIndex: 3, findLastIndex: 3};
+  // Defining an @@iterator method implements JavaScript's Iterable protocol.
+  // In modern ES2015 browsers, this value is found at Symbol.iterator.
+  /* global Symbol */
+  var $$iterator = typeof Symbol === 'function' && Symbol.iterator;
+  if ($$iterator) {
+    Collection.prototype[$$iterator] = Collection.prototype.values;
+  }
 
-  // Mix in each Underscore method as a proxy to `Collection#models`.
-  addUnderscoreMethods(Collection, collectionMethods, 'models');
+  // CollectionIterator
+  // ------------------
+
+  // A CollectionIterator implements JavaScript's Iterator protocol, allowing the
+  // use of `for of` loops in modern browsers and interoperation between
+  // Backbone.Collection and other JavaScript functions and third-party libraries
+  // which can operate on Iterables.
+  var CollectionIterator = function(collection, kind) {
+    this._collection = collection;
+    this._kind = kind;
+    this._index = 0;
+  };
+
+  // This "enum" defines the three possible kinds of values which can be emitted
+  // by a CollectionIterator that correspond to the values(), keys() and entries()
+  // methods on Collection, respectively.
+  var ITERATOR_VALUES = 1;
+  var ITERATOR_KEYS = 2;
+  var ITERATOR_KEYSVALUES = 3;
+
+  // All Iterators should themselves be Iterable.
+  if ($$iterator) {
+    CollectionIterator.prototype[$$iterator] = function() {
+      return this;
+    };
+  }
+
+  CollectionIterator.prototype.next = function() {
+    if (this._collection) {
+
+      // Only continue iterating if the iterated collection is long enough.
+      if (this._index < this._collection.length) {
+        var model = this._collection.at(this._index);
+        this._index++;
+
+        // Construct a value depending on what kind of values should be iterated.
+        var value;
+        if (this._kind === ITERATOR_VALUES) {
+          value = model;
+        } else {
+          var id = this._collection.modelId(model.attributes);
+          if (this._kind === ITERATOR_KEYS) {
+            value = id;
+          } else { // ITERATOR_KEYSVALUES
+            value = [id, model];
+          }
+        }
+        return {value: value, done: false};
+      }
+
+      // Once exhausted, remove the reference to the collection so future
+      // calls to the next method always return done.
+      this._collection = void 0;
+    }
+
+    return {value: void 0, done: true};
+  };
 
   // Backbone.View
   // -------------
@@ -39349,6 +39572,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // if an existing element is not provided...
   var View = Backbone.View = function(options) {
     this.cid = _.uniqueId('view');
+    this.preinitialize.apply(this, arguments);
     _.extend(this, _.pick(options, viewOptions));
     this._ensureElement();
     this.initialize.apply(this, arguments);
@@ -39371,6 +39595,10 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     $: function(selector) {
       return this.$el.find(selector);
     },
+
+    // preinitialize is an empty function by default. You can override it with a function
+    // or object.  preinitialize will run before any instantiation logic is run in the View
+    preinitialize: function(){},
 
     // Initialize is an empty function by default. Override it with your own
     // initialization logic.
@@ -39439,7 +39667,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
         if (!_.isFunction(method)) method = this[method];
         if (!method) continue;
         var match = key.match(delegateEventSplitter);
-        this.delegate(match[1], match[2], _.bind(method, this));
+        this.delegate(match[1], match[2], method.bind(this));
       }
       return this;
     },
@@ -39495,6 +39723,94 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       this.$el.attr(attributes);
     }
 
+  });
+
+  // Proxy Backbone class methods to Underscore functions, wrapping the model's
+  // `attributes` object or collection's `models` array behind the scenes.
+  //
+  // collection.filter(function(model) { return model.get('age') > 10 });
+  // collection.each(this.addView);
+  //
+  // `Function#apply` can be slow so we use the method's arg count, if we know it.
+  var addMethod = function(base, length, method, attribute) {
+    switch (length) {
+      case 1: return function() {
+        return base[method](this[attribute]);
+      };
+      case 2: return function(value) {
+        return base[method](this[attribute], value);
+      };
+      case 3: return function(iteratee, context) {
+        return base[method](this[attribute], cb(iteratee, this), context);
+      };
+      case 4: return function(iteratee, defaultVal, context) {
+        return base[method](this[attribute], cb(iteratee, this), defaultVal, context);
+      };
+      default: return function() {
+        var args = slice.call(arguments);
+        args.unshift(this[attribute]);
+        return base[method].apply(base, args);
+      };
+    }
+  };
+
+  var addUnderscoreMethods = function(Class, base, methods, attribute) {
+    _.each(methods, function(length, method) {
+      if (base[method]) Class.prototype[method] = addMethod(base, length, method, attribute);
+    });
+  };
+
+  // Support `collection.sortBy('attr')` and `collection.findWhere({id: 1})`.
+  var cb = function(iteratee, instance) {
+    if (_.isFunction(iteratee)) return iteratee;
+    if (_.isObject(iteratee) && !instance._isModel(iteratee)) return modelMatcher(iteratee);
+    if (_.isString(iteratee)) return function(model) { return model.get(iteratee); };
+    return iteratee;
+  };
+  var modelMatcher = function(attrs) {
+    var matcher = _.matches(attrs);
+    return function(model) {
+      return matcher(model.attributes);
+    };
+  };
+
+  // Underscore methods that we want to implement on the Collection.
+  // 90% of the core usefulness of Backbone Collections is actually implemented
+  // right here:
+  var collectionMethods = {forEach: 3, each: 3, map: 3, collect: 3, reduce: 0,
+    foldl: 0, inject: 0, reduceRight: 0, foldr: 0, find: 3, detect: 3, filter: 3,
+    select: 3, reject: 3, every: 3, all: 3, some: 3, any: 3, include: 3, includes: 3,
+    contains: 3, invoke: 0, max: 3, min: 3, toArray: 1, size: 1, first: 3,
+    head: 3, take: 3, initial: 3, rest: 3, tail: 3, drop: 3, last: 3,
+    without: 0, difference: 0, indexOf: 3, shuffle: 1, lastIndexOf: 3,
+    isEmpty: 1, chain: 1, sample: 3, partition: 3, groupBy: 3, countBy: 3,
+    sortBy: 3, indexBy: 3, findIndex: 3, findLastIndex: 3};
+
+
+  // Underscore methods that we want to implement on the Model, mapped to the
+  // number of arguments they take.
+  var modelMethods = {keys: 1, values: 1, pairs: 1, invert: 1, pick: 0,
+    omit: 0, chain: 1, isEmpty: 1};
+
+  // Mix in each Underscore method as a proxy to `Collection#models`.
+
+  _.each([
+    [Collection, collectionMethods, 'models'],
+    [Model, modelMethods, 'attributes']
+  ], function(config) {
+    var Base = config[0],
+        methods = config[1],
+        attribute = config[2];
+
+    Base.mixin = function(obj) {
+      var mappings = _.reduce(_.functions(obj), function(memo, name) {
+        memo[name] = 0;
+        return memo;
+      }, {});
+      addUnderscoreMethods(Base, obj, mappings, attribute);
+    };
+
+    addUnderscoreMethods(Base, _, methods, attribute);
   });
 
   // Backbone.sync
@@ -39577,11 +39893,11 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
   // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
   var methodMap = {
-    'create': 'POST',
-    'update': 'PUT',
-    'patch': 'PATCH',
-    'delete': 'DELETE',
-    'read': 'GET'
+    create: 'POST',
+    update: 'PUT',
+    patch: 'PATCH',
+    delete: 'DELETE',
+    read: 'GET'
   };
 
   // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
@@ -39597,6 +39913,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // matched. Creating a new one sets its `routes` hash, if not set statically.
   var Router = Backbone.Router = function(options) {
     options || (options = {});
+    this.preinitialize.apply(this, arguments);
     if (options.routes) this.routes = options.routes;
     this._bindRoutes();
     this.initialize.apply(this, arguments);
@@ -39611,6 +39928,10 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
   // Set up all inheritable **Backbone.Router** properties and methods.
   _.extend(Router.prototype, Events, {
+
+    // preinitialize is an empty function by default. You can override it with a function
+    // or object.  preinitialize will run before any instantiation logic is run in the Router.
+    preinitialize: function(){},
 
     // Initialize is an empty function by default. Override it with your own
     // initialization logic.
@@ -39669,11 +39990,11 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
     // against the current location hash.
     _routeToRegExp: function(route) {
       route = route.replace(escapeRegExp, '\\$&')
-                   .replace(optionalParam, '(?:$1)?')
-                   .replace(namedParam, function(match, optional) {
-                     return optional ? match : '([^/?]+)';
-                   })
-                   .replace(splatParam, '([^?]*?)');
+        .replace(optionalParam, '(?:$1)?')
+        .replace(namedParam, function(match, optional) {
+          return optional ? match : '([^/?]+)';
+        })
+        .replace(splatParam, '([^?]*?)');
       return new RegExp('^' + route + '(?:\\?([\\s\\S]*))?$');
     },
 
@@ -39701,7 +40022,7 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
   // falls back to polling.
   var History = Backbone.History = function() {
     this.handlers = [];
-    this.checkUrl = _.bind(this.checkUrl, this);
+    this.checkUrl = this.checkUrl.bind(this);
 
     // Ensure that `History` can be used outside of the browser.
     if (typeof window !== 'undefined') {
@@ -39942,11 +40263,14 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
       }
       var url = rootPath + fragment;
 
-      // Strip the hash and decode for matching.
-      fragment = this.decodeFragment(fragment.replace(pathStripper, ''));
+      // Strip the fragment of the query and hash for matching.
+      fragment = fragment.replace(pathStripper, '');
 
-      if (this.fragment === fragment) return;
-      this.fragment = fragment;
+      // Decode for matching.
+      var decodedFragment = this.decodeFragment(fragment);
+
+      if (this.fragment === decodedFragment) return;
+      this.fragment = decodedFragment;
 
       // If pushState is available, we use it to set the fragment as a real URL.
       if (this._usePushState) {
@@ -40048,7 +40372,5675 @@ if (typeof define == 'function' && define.amd) define([], function() { return Dm
 
   return Backbone;
 });
-;!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):e.moment=t()}(this,function(){"use strict";var e,i;function c(){return e.apply(null,arguments)}function o(e){return e instanceof Array||"[object Array]"===Object.prototype.toString.call(e)}function u(e){return null!=e&&"[object Object]"===Object.prototype.toString.call(e)}function l(e){return void 0===e}function d(e){return"number"==typeof e||"[object Number]"===Object.prototype.toString.call(e)}function h(e){return e instanceof Date||"[object Date]"===Object.prototype.toString.call(e)}function f(e,t){var n,s=[];for(n=0;n<e.length;++n)s.push(t(e[n],n));return s}function m(e,t){return Object.prototype.hasOwnProperty.call(e,t)}function _(e,t){for(var n in t)m(t,n)&&(e[n]=t[n]);return m(t,"toString")&&(e.toString=t.toString),m(t,"valueOf")&&(e.valueOf=t.valueOf),e}function y(e,t,n,s){return Ot(e,t,n,s,!0).utc()}function g(e){return null==e._pf&&(e._pf={empty:!1,unusedTokens:[],unusedInput:[],overflow:-2,charsLeftOver:0,nullInput:!1,invalidMonth:null,invalidFormat:!1,userInvalidated:!1,iso:!1,parsedDateParts:[],meridiem:null,rfc2822:!1,weekdayMismatch:!1}),e._pf}function p(e){if(null==e._isValid){var t=g(e),n=i.call(t.parsedDateParts,function(e){return null!=e}),s=!isNaN(e._d.getTime())&&t.overflow<0&&!t.empty&&!t.invalidMonth&&!t.invalidWeekday&&!t.weekdayMismatch&&!t.nullInput&&!t.invalidFormat&&!t.userInvalidated&&(!t.meridiem||t.meridiem&&n);if(e._strict&&(s=s&&0===t.charsLeftOver&&0===t.unusedTokens.length&&void 0===t.bigHour),null!=Object.isFrozen&&Object.isFrozen(e))return s;e._isValid=s}return e._isValid}function v(e){var t=y(NaN);return null!=e?_(g(t),e):g(t).userInvalidated=!0,t}i=Array.prototype.some?Array.prototype.some:function(e){for(var t=Object(this),n=t.length>>>0,s=0;s<n;s++)if(s in t&&e.call(this,t[s],s,t))return!0;return!1};var r=c.momentProperties=[];function w(e,t){var n,s,i;if(l(t._isAMomentObject)||(e._isAMomentObject=t._isAMomentObject),l(t._i)||(e._i=t._i),l(t._f)||(e._f=t._f),l(t._l)||(e._l=t._l),l(t._strict)||(e._strict=t._strict),l(t._tzm)||(e._tzm=t._tzm),l(t._isUTC)||(e._isUTC=t._isUTC),l(t._offset)||(e._offset=t._offset),l(t._pf)||(e._pf=g(t)),l(t._locale)||(e._locale=t._locale),0<r.length)for(n=0;n<r.length;n++)l(i=t[s=r[n]])||(e[s]=i);return e}var t=!1;function M(e){w(this,e),this._d=new Date(null!=e._d?e._d.getTime():NaN),this.isValid()||(this._d=new Date(NaN)),!1===t&&(t=!0,c.updateOffset(this),t=!1)}function S(e){return e instanceof M||null!=e&&null!=e._isAMomentObject}function D(e){return e<0?Math.ceil(e)||0:Math.floor(e)}function k(e){var t=+e,n=0;return 0!==t&&isFinite(t)&&(n=D(t)),n}function a(e,t,n){var s,i=Math.min(e.length,t.length),r=Math.abs(e.length-t.length),a=0;for(s=0;s<i;s++)(n&&e[s]!==t[s]||!n&&k(e[s])!==k(t[s]))&&a++;return a+r}function Y(e){!1===c.suppressDeprecationWarnings&&"undefined"!=typeof console&&console.warn&&console.warn("Deprecation warning: "+e)}function n(i,r){var a=!0;return _(function(){if(null!=c.deprecationHandler&&c.deprecationHandler(null,i),a){for(var e,t=[],n=0;n<arguments.length;n++){if(e="","object"==typeof arguments[n]){for(var s in e+="\n["+n+"] ",arguments[0])e+=s+": "+arguments[0][s]+", ";e=e.slice(0,-2)}else e=arguments[n];t.push(e)}Y(i+"\nArguments: "+Array.prototype.slice.call(t).join("")+"\n"+(new Error).stack),a=!1}return r.apply(this,arguments)},r)}var s,O={};function T(e,t){null!=c.deprecationHandler&&c.deprecationHandler(e,t),O[e]||(Y(t),O[e]=!0)}function x(e){return e instanceof Function||"[object Function]"===Object.prototype.toString.call(e)}function b(e,t){var n,s=_({},e);for(n in t)m(t,n)&&(u(e[n])&&u(t[n])?(s[n]={},_(s[n],e[n]),_(s[n],t[n])):null!=t[n]?s[n]=t[n]:delete s[n]);for(n in e)m(e,n)&&!m(t,n)&&u(e[n])&&(s[n]=_({},s[n]));return s}function P(e){null!=e&&this.set(e)}c.suppressDeprecationWarnings=!1,c.deprecationHandler=null,s=Object.keys?Object.keys:function(e){var t,n=[];for(t in e)m(e,t)&&n.push(t);return n};var W={};function H(e,t){var n=e.toLowerCase();W[n]=W[n+"s"]=W[t]=e}function R(e){return"string"==typeof e?W[e]||W[e.toLowerCase()]:void 0}function C(e){var t,n,s={};for(n in e)m(e,n)&&(t=R(n))&&(s[t]=e[n]);return s}var F={};function L(e,t){F[e]=t}function U(e,t,n){var s=""+Math.abs(e),i=t-s.length;return(0<=e?n?"+":"":"-")+Math.pow(10,Math.max(0,i)).toString().substr(1)+s}var N=/(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g,G=/(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g,V={},E={};function I(e,t,n,s){var i=s;"string"==typeof s&&(i=function(){return this[s]()}),e&&(E[e]=i),t&&(E[t[0]]=function(){return U(i.apply(this,arguments),t[1],t[2])}),n&&(E[n]=function(){return this.localeData().ordinal(i.apply(this,arguments),e)})}function A(e,t){return e.isValid()?(t=j(t,e.localeData()),V[t]=V[t]||function(s){var e,i,t,r=s.match(N);for(e=0,i=r.length;e<i;e++)E[r[e]]?r[e]=E[r[e]]:r[e]=(t=r[e]).match(/\[[\s\S]/)?t.replace(/^\[|\]$/g,""):t.replace(/\\/g,"");return function(e){var t,n="";for(t=0;t<i;t++)n+=x(r[t])?r[t].call(e,s):r[t];return n}}(t),V[t](e)):e.localeData().invalidDate()}function j(e,t){var n=5;function s(e){return t.longDateFormat(e)||e}for(G.lastIndex=0;0<=n&&G.test(e);)e=e.replace(G,s),G.lastIndex=0,n-=1;return e}var Z=/\d/,z=/\d\d/,$=/\d{3}/,q=/\d{4}/,J=/[+-]?\d{6}/,B=/\d\d?/,Q=/\d\d\d\d?/,X=/\d\d\d\d\d\d?/,K=/\d{1,3}/,ee=/\d{1,4}/,te=/[+-]?\d{1,6}/,ne=/\d+/,se=/[+-]?\d+/,ie=/Z|[+-]\d\d:?\d\d/gi,re=/Z|[+-]\d\d(?::?\d\d)?/gi,ae=/[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i,oe={};function ue(e,n,s){oe[e]=x(n)?n:function(e,t){return e&&s?s:n}}function le(e,t){return m(oe,e)?oe[e](t._strict,t._locale):new RegExp(de(e.replace("\\","").replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g,function(e,t,n,s,i){return t||n||s||i})))}function de(e){return e.replace(/[-\/\\^$*+?.()|[\]{}]/g,"\\$&")}var he={};function ce(e,n){var t,s=n;for("string"==typeof e&&(e=[e]),d(n)&&(s=function(e,t){t[n]=k(e)}),t=0;t<e.length;t++)he[e[t]]=s}function fe(e,i){ce(e,function(e,t,n,s){n._w=n._w||{},i(e,n._w,n,s)})}var me=0,_e=1,ye=2,ge=3,pe=4,ve=5,we=6,Me=7,Se=8;function De(e){return ke(e)?366:365}function ke(e){return e%4==0&&e%100!=0||e%400==0}I("Y",0,0,function(){var e=this.year();return e<=9999?""+e:"+"+e}),I(0,["YY",2],0,function(){return this.year()%100}),I(0,["YYYY",4],0,"year"),I(0,["YYYYY",5],0,"year"),I(0,["YYYYYY",6,!0],0,"year"),H("year","y"),L("year",1),ue("Y",se),ue("YY",B,z),ue("YYYY",ee,q),ue("YYYYY",te,J),ue("YYYYYY",te,J),ce(["YYYYY","YYYYYY"],me),ce("YYYY",function(e,t){t[me]=2===e.length?c.parseTwoDigitYear(e):k(e)}),ce("YY",function(e,t){t[me]=c.parseTwoDigitYear(e)}),ce("Y",function(e,t){t[me]=parseInt(e,10)}),c.parseTwoDigitYear=function(e){return k(e)+(68<k(e)?1900:2e3)};var Ye,Oe=Te("FullYear",!0);function Te(t,n){return function(e){return null!=e?(be(this,t,e),c.updateOffset(this,n),this):xe(this,t)}}function xe(e,t){return e.isValid()?e._d["get"+(e._isUTC?"UTC":"")+t]():NaN}function be(e,t,n){e.isValid()&&!isNaN(n)&&("FullYear"===t&&ke(e.year())&&1===e.month()&&29===e.date()?e._d["set"+(e._isUTC?"UTC":"")+t](n,e.month(),Pe(n,e.month())):e._d["set"+(e._isUTC?"UTC":"")+t](n))}function Pe(e,t){if(isNaN(e)||isNaN(t))return NaN;var n,s=(t%(n=12)+n)%n;return e+=(t-s)/12,1===s?ke(e)?29:28:31-s%7%2}Ye=Array.prototype.indexOf?Array.prototype.indexOf:function(e){var t;for(t=0;t<this.length;++t)if(this[t]===e)return t;return-1},I("M",["MM",2],"Mo",function(){return this.month()+1}),I("MMM",0,0,function(e){return this.localeData().monthsShort(this,e)}),I("MMMM",0,0,function(e){return this.localeData().months(this,e)}),H("month","M"),L("month",8),ue("M",B),ue("MM",B,z),ue("MMM",function(e,t){return t.monthsShortRegex(e)}),ue("MMMM",function(e,t){return t.monthsRegex(e)}),ce(["M","MM"],function(e,t){t[_e]=k(e)-1}),ce(["MMM","MMMM"],function(e,t,n,s){var i=n._locale.monthsParse(e,s,n._strict);null!=i?t[_e]=i:g(n).invalidMonth=e});var We=/D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/,He="January_February_March_April_May_June_July_August_September_October_November_December".split("_");var Re="Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_");function Ce(e,t){var n;if(!e.isValid())return e;if("string"==typeof t)if(/^\d+$/.test(t))t=k(t);else if(!d(t=e.localeData().monthsParse(t)))return e;return n=Math.min(e.date(),Pe(e.year(),t)),e._d["set"+(e._isUTC?"UTC":"")+"Month"](t,n),e}function Fe(e){return null!=e?(Ce(this,e),c.updateOffset(this,!0),this):xe(this,"Month")}var Le=ae;var Ue=ae;function Ne(){function e(e,t){return t.length-e.length}var t,n,s=[],i=[],r=[];for(t=0;t<12;t++)n=y([2e3,t]),s.push(this.monthsShort(n,"")),i.push(this.months(n,"")),r.push(this.months(n,"")),r.push(this.monthsShort(n,""));for(s.sort(e),i.sort(e),r.sort(e),t=0;t<12;t++)s[t]=de(s[t]),i[t]=de(i[t]);for(t=0;t<24;t++)r[t]=de(r[t]);this._monthsRegex=new RegExp("^("+r.join("|")+")","i"),this._monthsShortRegex=this._monthsRegex,this._monthsStrictRegex=new RegExp("^("+i.join("|")+")","i"),this._monthsShortStrictRegex=new RegExp("^("+s.join("|")+")","i")}function Ge(e){var t=new Date(Date.UTC.apply(null,arguments));return e<100&&0<=e&&isFinite(t.getUTCFullYear())&&t.setUTCFullYear(e),t}function Ve(e,t,n){var s=7+t-n;return-((7+Ge(e,0,s).getUTCDay()-t)%7)+s-1}function Ee(e,t,n,s,i){var r,a,o=1+7*(t-1)+(7+n-s)%7+Ve(e,s,i);return o<=0?a=De(r=e-1)+o:o>De(e)?(r=e+1,a=o-De(e)):(r=e,a=o),{year:r,dayOfYear:a}}function Ie(e,t,n){var s,i,r=Ve(e.year(),t,n),a=Math.floor((e.dayOfYear()-r-1)/7)+1;return a<1?s=a+Ae(i=e.year()-1,t,n):a>Ae(e.year(),t,n)?(s=a-Ae(e.year(),t,n),i=e.year()+1):(i=e.year(),s=a),{week:s,year:i}}function Ae(e,t,n){var s=Ve(e,t,n),i=Ve(e+1,t,n);return(De(e)-s+i)/7}I("w",["ww",2],"wo","week"),I("W",["WW",2],"Wo","isoWeek"),H("week","w"),H("isoWeek","W"),L("week",5),L("isoWeek",5),ue("w",B),ue("ww",B,z),ue("W",B),ue("WW",B,z),fe(["w","ww","W","WW"],function(e,t,n,s){t[s.substr(0,1)]=k(e)});I("d",0,"do","day"),I("dd",0,0,function(e){return this.localeData().weekdaysMin(this,e)}),I("ddd",0,0,function(e){return this.localeData().weekdaysShort(this,e)}),I("dddd",0,0,function(e){return this.localeData().weekdays(this,e)}),I("e",0,0,"weekday"),I("E",0,0,"isoWeekday"),H("day","d"),H("weekday","e"),H("isoWeekday","E"),L("day",11),L("weekday",11),L("isoWeekday",11),ue("d",B),ue("e",B),ue("E",B),ue("dd",function(e,t){return t.weekdaysMinRegex(e)}),ue("ddd",function(e,t){return t.weekdaysShortRegex(e)}),ue("dddd",function(e,t){return t.weekdaysRegex(e)}),fe(["dd","ddd","dddd"],function(e,t,n,s){var i=n._locale.weekdaysParse(e,s,n._strict);null!=i?t.d=i:g(n).invalidWeekday=e}),fe(["d","e","E"],function(e,t,n,s){t[s]=k(e)});var je="Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_");var Ze="Sun_Mon_Tue_Wed_Thu_Fri_Sat".split("_");var ze="Su_Mo_Tu_We_Th_Fr_Sa".split("_");var $e=ae;var qe=ae;var Je=ae;function Be(){function e(e,t){return t.length-e.length}var t,n,s,i,r,a=[],o=[],u=[],l=[];for(t=0;t<7;t++)n=y([2e3,1]).day(t),s=this.weekdaysMin(n,""),i=this.weekdaysShort(n,""),r=this.weekdays(n,""),a.push(s),o.push(i),u.push(r),l.push(s),l.push(i),l.push(r);for(a.sort(e),o.sort(e),u.sort(e),l.sort(e),t=0;t<7;t++)o[t]=de(o[t]),u[t]=de(u[t]),l[t]=de(l[t]);this._weekdaysRegex=new RegExp("^("+l.join("|")+")","i"),this._weekdaysShortRegex=this._weekdaysRegex,this._weekdaysMinRegex=this._weekdaysRegex,this._weekdaysStrictRegex=new RegExp("^("+u.join("|")+")","i"),this._weekdaysShortStrictRegex=new RegExp("^("+o.join("|")+")","i"),this._weekdaysMinStrictRegex=new RegExp("^("+a.join("|")+")","i")}function Qe(){return this.hours()%12||12}function Xe(e,t){I(e,0,0,function(){return this.localeData().meridiem(this.hours(),this.minutes(),t)})}function Ke(e,t){return t._meridiemParse}I("H",["HH",2],0,"hour"),I("h",["hh",2],0,Qe),I("k",["kk",2],0,function(){return this.hours()||24}),I("hmm",0,0,function(){return""+Qe.apply(this)+U(this.minutes(),2)}),I("hmmss",0,0,function(){return""+Qe.apply(this)+U(this.minutes(),2)+U(this.seconds(),2)}),I("Hmm",0,0,function(){return""+this.hours()+U(this.minutes(),2)}),I("Hmmss",0,0,function(){return""+this.hours()+U(this.minutes(),2)+U(this.seconds(),2)}),Xe("a",!0),Xe("A",!1),H("hour","h"),L("hour",13),ue("a",Ke),ue("A",Ke),ue("H",B),ue("h",B),ue("k",B),ue("HH",B,z),ue("hh",B,z),ue("kk",B,z),ue("hmm",Q),ue("hmmss",X),ue("Hmm",Q),ue("Hmmss",X),ce(["H","HH"],ge),ce(["k","kk"],function(e,t,n){var s=k(e);t[ge]=24===s?0:s}),ce(["a","A"],function(e,t,n){n._isPm=n._locale.isPM(e),n._meridiem=e}),ce(["h","hh"],function(e,t,n){t[ge]=k(e),g(n).bigHour=!0}),ce("hmm",function(e,t,n){var s=e.length-2;t[ge]=k(e.substr(0,s)),t[pe]=k(e.substr(s)),g(n).bigHour=!0}),ce("hmmss",function(e,t,n){var s=e.length-4,i=e.length-2;t[ge]=k(e.substr(0,s)),t[pe]=k(e.substr(s,2)),t[ve]=k(e.substr(i)),g(n).bigHour=!0}),ce("Hmm",function(e,t,n){var s=e.length-2;t[ge]=k(e.substr(0,s)),t[pe]=k(e.substr(s))}),ce("Hmmss",function(e,t,n){var s=e.length-4,i=e.length-2;t[ge]=k(e.substr(0,s)),t[pe]=k(e.substr(s,2)),t[ve]=k(e.substr(i))});var et,tt=Te("Hours",!0),nt={calendar:{sameDay:"[Today at] LT",nextDay:"[Tomorrow at] LT",nextWeek:"dddd [at] LT",lastDay:"[Yesterday at] LT",lastWeek:"[Last] dddd [at] LT",sameElse:"L"},longDateFormat:{LTS:"h:mm:ss A",LT:"h:mm A",L:"MM/DD/YYYY",LL:"MMMM D, YYYY",LLL:"MMMM D, YYYY h:mm A",LLLL:"dddd, MMMM D, YYYY h:mm A"},invalidDate:"Invalid date",ordinal:"%d",dayOfMonthOrdinalParse:/\d{1,2}/,relativeTime:{future:"in %s",past:"%s ago",s:"a few seconds",ss:"%d seconds",m:"a minute",mm:"%d minutes",h:"an hour",hh:"%d hours",d:"a day",dd:"%d days",M:"a month",MM:"%d months",y:"a year",yy:"%d years"},months:He,monthsShort:Re,week:{dow:0,doy:6},weekdays:je,weekdaysMin:ze,weekdaysShort:Ze,meridiemParse:/[ap]\.?m?\.?/i},st={},it={};function rt(e){return e?e.toLowerCase().replace("_","-"):e}function at(e){var t=null;if(!st[e]&&"undefined"!=typeof module&&module&&module.exports)try{t=et._abbr,require("./locale/"+e),ot(t)}catch(e){}return st[e]}function ot(e,t){var n;return e&&((n=l(t)?lt(e):ut(e,t))?et=n:"undefined"!=typeof console&&console.warn&&console.warn("Locale "+e+" not found. Did you forget to load it?")),et._abbr}function ut(e,t){if(null!==t){var n,s=nt;if(t.abbr=e,null!=st[e])T("defineLocaleOverride","use moment.updateLocale(localeName, config) to change an existing locale. moment.defineLocale(localeName, config) should only be used for creating a new locale See http://momentjs.com/guides/#/warnings/define-locale/ for more info."),s=st[e]._config;else if(null!=t.parentLocale)if(null!=st[t.parentLocale])s=st[t.parentLocale]._config;else{if(null==(n=at(t.parentLocale)))return it[t.parentLocale]||(it[t.parentLocale]=[]),it[t.parentLocale].push({name:e,config:t}),null;s=n._config}return st[e]=new P(b(s,t)),it[e]&&it[e].forEach(function(e){ut(e.name,e.config)}),ot(e),st[e]}return delete st[e],null}function lt(e){var t;if(e&&e._locale&&e._locale._abbr&&(e=e._locale._abbr),!e)return et;if(!o(e)){if(t=at(e))return t;e=[e]}return function(e){for(var t,n,s,i,r=0;r<e.length;){for(t=(i=rt(e[r]).split("-")).length,n=(n=rt(e[r+1]))?n.split("-"):null;0<t;){if(s=at(i.slice(0,t).join("-")))return s;if(n&&n.length>=t&&a(i,n,!0)>=t-1)break;t--}r++}return et}(e)}function dt(e){var t,n=e._a;return n&&-2===g(e).overflow&&(t=n[_e]<0||11<n[_e]?_e:n[ye]<1||n[ye]>Pe(n[me],n[_e])?ye:n[ge]<0||24<n[ge]||24===n[ge]&&(0!==n[pe]||0!==n[ve]||0!==n[we])?ge:n[pe]<0||59<n[pe]?pe:n[ve]<0||59<n[ve]?ve:n[we]<0||999<n[we]?we:-1,g(e)._overflowDayOfYear&&(t<me||ye<t)&&(t=ye),g(e)._overflowWeeks&&-1===t&&(t=Me),g(e)._overflowWeekday&&-1===t&&(t=Se),g(e).overflow=t),e}function ht(e,t,n){return null!=e?e:null!=t?t:n}function ct(e){var t,n,s,i,r,a=[];if(!e._d){var o,u;for(o=e,u=new Date(c.now()),s=o._useUTC?[u.getUTCFullYear(),u.getUTCMonth(),u.getUTCDate()]:[u.getFullYear(),u.getMonth(),u.getDate()],e._w&&null==e._a[ye]&&null==e._a[_e]&&function(e){var t,n,s,i,r,a,o,u;if(null!=(t=e._w).GG||null!=t.W||null!=t.E)r=1,a=4,n=ht(t.GG,e._a[me],Ie(Tt(),1,4).year),s=ht(t.W,1),((i=ht(t.E,1))<1||7<i)&&(u=!0);else{r=e._locale._week.dow,a=e._locale._week.doy;var l=Ie(Tt(),r,a);n=ht(t.gg,e._a[me],l.year),s=ht(t.w,l.week),null!=t.d?((i=t.d)<0||6<i)&&(u=!0):null!=t.e?(i=t.e+r,(t.e<0||6<t.e)&&(u=!0)):i=r}s<1||s>Ae(n,r,a)?g(e)._overflowWeeks=!0:null!=u?g(e)._overflowWeekday=!0:(o=Ee(n,s,i,r,a),e._a[me]=o.year,e._dayOfYear=o.dayOfYear)}(e),null!=e._dayOfYear&&(r=ht(e._a[me],s[me]),(e._dayOfYear>De(r)||0===e._dayOfYear)&&(g(e)._overflowDayOfYear=!0),n=Ge(r,0,e._dayOfYear),e._a[_e]=n.getUTCMonth(),e._a[ye]=n.getUTCDate()),t=0;t<3&&null==e._a[t];++t)e._a[t]=a[t]=s[t];for(;t<7;t++)e._a[t]=a[t]=null==e._a[t]?2===t?1:0:e._a[t];24===e._a[ge]&&0===e._a[pe]&&0===e._a[ve]&&0===e._a[we]&&(e._nextDay=!0,e._a[ge]=0),e._d=(e._useUTC?Ge:function(e,t,n,s,i,r,a){var o=new Date(e,t,n,s,i,r,a);return e<100&&0<=e&&isFinite(o.getFullYear())&&o.setFullYear(e),o}).apply(null,a),i=e._useUTC?e._d.getUTCDay():e._d.getDay(),null!=e._tzm&&e._d.setUTCMinutes(e._d.getUTCMinutes()-e._tzm),e._nextDay&&(e._a[ge]=24),e._w&&void 0!==e._w.d&&e._w.d!==i&&(g(e).weekdayMismatch=!0)}}var ft=/^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/,mt=/^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/,_t=/Z|[+-]\d\d(?::?\d\d)?/,yt=[["YYYYYY-MM-DD",/[+-]\d{6}-\d\d-\d\d/],["YYYY-MM-DD",/\d{4}-\d\d-\d\d/],["GGGG-[W]WW-E",/\d{4}-W\d\d-\d/],["GGGG-[W]WW",/\d{4}-W\d\d/,!1],["YYYY-DDD",/\d{4}-\d{3}/],["YYYY-MM",/\d{4}-\d\d/,!1],["YYYYYYMMDD",/[+-]\d{10}/],["YYYYMMDD",/\d{8}/],["GGGG[W]WWE",/\d{4}W\d{3}/],["GGGG[W]WW",/\d{4}W\d{2}/,!1],["YYYYDDD",/\d{7}/]],gt=[["HH:mm:ss.SSSS",/\d\d:\d\d:\d\d\.\d+/],["HH:mm:ss,SSSS",/\d\d:\d\d:\d\d,\d+/],["HH:mm:ss",/\d\d:\d\d:\d\d/],["HH:mm",/\d\d:\d\d/],["HHmmss.SSSS",/\d\d\d\d\d\d\.\d+/],["HHmmss,SSSS",/\d\d\d\d\d\d,\d+/],["HHmmss",/\d\d\d\d\d\d/],["HHmm",/\d\d\d\d/],["HH",/\d\d/]],pt=/^\/?Date\((\-?\d+)/i;function vt(e){var t,n,s,i,r,a,o=e._i,u=ft.exec(o)||mt.exec(o);if(u){for(g(e).iso=!0,t=0,n=yt.length;t<n;t++)if(yt[t][1].exec(u[1])){i=yt[t][0],s=!1!==yt[t][2];break}if(null==i)return void(e._isValid=!1);if(u[3]){for(t=0,n=gt.length;t<n;t++)if(gt[t][1].exec(u[3])){r=(u[2]||" ")+gt[t][0];break}if(null==r)return void(e._isValid=!1)}if(!s&&null!=r)return void(e._isValid=!1);if(u[4]){if(!_t.exec(u[4]))return void(e._isValid=!1);a="Z"}e._f=i+(r||"")+(a||""),kt(e)}else e._isValid=!1}var wt=/^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;function Mt(e,t,n,s,i,r){var a=[function(e){var t=parseInt(e,10);{if(t<=49)return 2e3+t;if(t<=999)return 1900+t}return t}(e),Re.indexOf(t),parseInt(n,10),parseInt(s,10),parseInt(i,10)];return r&&a.push(parseInt(r,10)),a}var St={UT:0,GMT:0,EDT:-240,EST:-300,CDT:-300,CST:-360,MDT:-360,MST:-420,PDT:-420,PST:-480};function Dt(e){var t,n,s,i=wt.exec(e._i.replace(/\([^)]*\)|[\n\t]/g," ").replace(/(\s\s+)/g," ").replace(/^\s\s*/,"").replace(/\s\s*$/,""));if(i){var r=Mt(i[4],i[3],i[2],i[5],i[6],i[7]);if(t=i[1],n=r,s=e,t&&Ze.indexOf(t)!==new Date(n[0],n[1],n[2]).getDay()&&(g(s).weekdayMismatch=!0,!(s._isValid=!1)))return;e._a=r,e._tzm=function(e,t,n){if(e)return St[e];if(t)return 0;var s=parseInt(n,10),i=s%100;return(s-i)/100*60+i}(i[8],i[9],i[10]),e._d=Ge.apply(null,e._a),e._d.setUTCMinutes(e._d.getUTCMinutes()-e._tzm),g(e).rfc2822=!0}else e._isValid=!1}function kt(e){if(e._f!==c.ISO_8601)if(e._f!==c.RFC_2822){e._a=[],g(e).empty=!0;var t,n,s,i,r,a,o,u,l=""+e._i,d=l.length,h=0;for(s=j(e._f,e._locale).match(N)||[],t=0;t<s.length;t++)i=s[t],(n=(l.match(le(i,e))||[])[0])&&(0<(r=l.substr(0,l.indexOf(n))).length&&g(e).unusedInput.push(r),l=l.slice(l.indexOf(n)+n.length),h+=n.length),E[i]?(n?g(e).empty=!1:g(e).unusedTokens.push(i),a=i,u=e,null!=(o=n)&&m(he,a)&&he[a](o,u._a,u,a)):e._strict&&!n&&g(e).unusedTokens.push(i);g(e).charsLeftOver=d-h,0<l.length&&g(e).unusedInput.push(l),e._a[ge]<=12&&!0===g(e).bigHour&&0<e._a[ge]&&(g(e).bigHour=void 0),g(e).parsedDateParts=e._a.slice(0),g(e).meridiem=e._meridiem,e._a[ge]=function(e,t,n){var s;if(null==n)return t;return null!=e.meridiemHour?e.meridiemHour(t,n):(null!=e.isPM&&((s=e.isPM(n))&&t<12&&(t+=12),s||12!==t||(t=0)),t)}(e._locale,e._a[ge],e._meridiem),ct(e),dt(e)}else Dt(e);else vt(e)}function Yt(e){var t,n,s,i,r=e._i,a=e._f;return e._locale=e._locale||lt(e._l),null===r||void 0===a&&""===r?v({nullInput:!0}):("string"==typeof r&&(e._i=r=e._locale.preparse(r)),S(r)?new M(dt(r)):(h(r)?e._d=r:o(a)?function(e){var t,n,s,i,r;if(0===e._f.length)return g(e).invalidFormat=!0,e._d=new Date(NaN);for(i=0;i<e._f.length;i++)r=0,t=w({},e),null!=e._useUTC&&(t._useUTC=e._useUTC),t._f=e._f[i],kt(t),p(t)&&(r+=g(t).charsLeftOver,r+=10*g(t).unusedTokens.length,g(t).score=r,(null==s||r<s)&&(s=r,n=t));_(e,n||t)}(e):a?kt(e):l(n=(t=e)._i)?t._d=new Date(c.now()):h(n)?t._d=new Date(n.valueOf()):"string"==typeof n?(s=t,null===(i=pt.exec(s._i))?(vt(s),!1===s._isValid&&(delete s._isValid,Dt(s),!1===s._isValid&&(delete s._isValid,c.createFromInputFallback(s)))):s._d=new Date(+i[1])):o(n)?(t._a=f(n.slice(0),function(e){return parseInt(e,10)}),ct(t)):u(n)?function(e){if(!e._d){var t=C(e._i);e._a=f([t.year,t.month,t.day||t.date,t.hour,t.minute,t.second,t.millisecond],function(e){return e&&parseInt(e,10)}),ct(e)}}(t):d(n)?t._d=new Date(n):c.createFromInputFallback(t),p(e)||(e._d=null),e))}function Ot(e,t,n,s,i){var r,a={};return!0!==n&&!1!==n||(s=n,n=void 0),(u(e)&&function(e){if(Object.getOwnPropertyNames)return 0===Object.getOwnPropertyNames(e).length;var t;for(t in e)if(e.hasOwnProperty(t))return!1;return!0}(e)||o(e)&&0===e.length)&&(e=void 0),a._isAMomentObject=!0,a._useUTC=a._isUTC=i,a._l=n,a._i=e,a._f=t,a._strict=s,(r=new M(dt(Yt(a))))._nextDay&&(r.add(1,"d"),r._nextDay=void 0),r}function Tt(e,t,n,s){return Ot(e,t,n,s,!1)}c.createFromInputFallback=n("value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are discouraged and will be removed in an upcoming major release. Please refer to http://momentjs.com/guides/#/warnings/js-date/ for more info.",function(e){e._d=new Date(e._i+(e._useUTC?" UTC":""))}),c.ISO_8601=function(){},c.RFC_2822=function(){};var xt=n("moment().min is deprecated, use moment.max instead. http://momentjs.com/guides/#/warnings/min-max/",function(){var e=Tt.apply(null,arguments);return this.isValid()&&e.isValid()?e<this?this:e:v()}),bt=n("moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/",function(){var e=Tt.apply(null,arguments);return this.isValid()&&e.isValid()?this<e?this:e:v()});function Pt(e,t){var n,s;if(1===t.length&&o(t[0])&&(t=t[0]),!t.length)return Tt();for(n=t[0],s=1;s<t.length;++s)t[s].isValid()&&!t[s][e](n)||(n=t[s]);return n}var Wt=["year","quarter","month","week","day","hour","minute","second","millisecond"];function Ht(e){var t=C(e),n=t.year||0,s=t.quarter||0,i=t.month||0,r=t.week||0,a=t.day||0,o=t.hour||0,u=t.minute||0,l=t.second||0,d=t.millisecond||0;this._isValid=function(e){for(var t in e)if(-1===Ye.call(Wt,t)||null!=e[t]&&isNaN(e[t]))return!1;for(var n=!1,s=0;s<Wt.length;++s)if(e[Wt[s]]){if(n)return!1;parseFloat(e[Wt[s]])!==k(e[Wt[s]])&&(n=!0)}return!0}(t),this._milliseconds=+d+1e3*l+6e4*u+1e3*o*60*60,this._days=+a+7*r,this._months=+i+3*s+12*n,this._data={},this._locale=lt(),this._bubble()}function Rt(e){return e instanceof Ht}function Ct(e){return e<0?-1*Math.round(-1*e):Math.round(e)}function Ft(e,n){I(e,0,0,function(){var e=this.utcOffset(),t="+";return e<0&&(e=-e,t="-"),t+U(~~(e/60),2)+n+U(~~e%60,2)})}Ft("Z",":"),Ft("ZZ",""),ue("Z",re),ue("ZZ",re),ce(["Z","ZZ"],function(e,t,n){n._useUTC=!0,n._tzm=Ut(re,e)});var Lt=/([\+\-]|\d\d)/gi;function Ut(e,t){var n=(t||"").match(e);if(null===n)return null;var s=((n[n.length-1]||[])+"").match(Lt)||["-",0,0],i=60*s[1]+k(s[2]);return 0===i?0:"+"===s[0]?i:-i}function Nt(e,t){var n,s;return t._isUTC?(n=t.clone(),s=(S(e)||h(e)?e.valueOf():Tt(e).valueOf())-n.valueOf(),n._d.setTime(n._d.valueOf()+s),c.updateOffset(n,!1),n):Tt(e).local()}function Gt(e){return 15*-Math.round(e._d.getTimezoneOffset()/15)}function Vt(){return!!this.isValid()&&(this._isUTC&&0===this._offset)}c.updateOffset=function(){};var Et=/^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/,It=/^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;function At(e,t){var n,s,i,r=e,a=null;return Rt(e)?r={ms:e._milliseconds,d:e._days,M:e._months}:d(e)?(r={},t?r[t]=e:r.milliseconds=e):(a=Et.exec(e))?(n="-"===a[1]?-1:1,r={y:0,d:k(a[ye])*n,h:k(a[ge])*n,m:k(a[pe])*n,s:k(a[ve])*n,ms:k(Ct(1e3*a[we]))*n}):(a=It.exec(e))?(n="-"===a[1]?-1:(a[1],1),r={y:jt(a[2],n),M:jt(a[3],n),w:jt(a[4],n),d:jt(a[5],n),h:jt(a[6],n),m:jt(a[7],n),s:jt(a[8],n)}):null==r?r={}:"object"==typeof r&&("from"in r||"to"in r)&&(i=function(e,t){var n;if(!e.isValid()||!t.isValid())return{milliseconds:0,months:0};t=Nt(t,e),e.isBefore(t)?n=Zt(e,t):((n=Zt(t,e)).milliseconds=-n.milliseconds,n.months=-n.months);return n}(Tt(r.from),Tt(r.to)),(r={}).ms=i.milliseconds,r.M=i.months),s=new Ht(r),Rt(e)&&m(e,"_locale")&&(s._locale=e._locale),s}function jt(e,t){var n=e&&parseFloat(e.replace(",","."));return(isNaN(n)?0:n)*t}function Zt(e,t){var n={milliseconds:0,months:0};return n.months=t.month()-e.month()+12*(t.year()-e.year()),e.clone().add(n.months,"M").isAfter(t)&&--n.months,n.milliseconds=+t-+e.clone().add(n.months,"M"),n}function zt(s,i){return function(e,t){var n;return null===t||isNaN(+t)||(T(i,"moment()."+i+"(period, number) is deprecated. Please use moment()."+i+"(number, period). See http://momentjs.com/guides/#/warnings/add-inverted-param/ for more info."),n=e,e=t,t=n),$t(this,At(e="string"==typeof e?+e:e,t),s),this}}function $t(e,t,n,s){var i=t._milliseconds,r=Ct(t._days),a=Ct(t._months);e.isValid()&&(s=null==s||s,a&&Ce(e,xe(e,"Month")+a*n),r&&be(e,"Date",xe(e,"Date")+r*n),i&&e._d.setTime(e._d.valueOf()+i*n),s&&c.updateOffset(e,r||a))}At.fn=Ht.prototype,At.invalid=function(){return At(NaN)};var qt=zt(1,"add"),Jt=zt(-1,"subtract");function Bt(e,t){var n=12*(t.year()-e.year())+(t.month()-e.month()),s=e.clone().add(n,"months");return-(n+(t-s<0?(t-s)/(s-e.clone().add(n-1,"months")):(t-s)/(e.clone().add(n+1,"months")-s)))||0}function Qt(e){var t;return void 0===e?this._locale._abbr:(null!=(t=lt(e))&&(this._locale=t),this)}c.defaultFormat="YYYY-MM-DDTHH:mm:ssZ",c.defaultFormatUtc="YYYY-MM-DDTHH:mm:ss[Z]";var Xt=n("moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.",function(e){return void 0===e?this.localeData():this.locale(e)});function Kt(){return this._locale}function en(e,t){I(0,[e,e.length],0,t)}function tn(e,t,n,s,i){var r;return null==e?Ie(this,s,i).year:((r=Ae(e,s,i))<t&&(t=r),function(e,t,n,s,i){var r=Ee(e,t,n,s,i),a=Ge(r.year,0,r.dayOfYear);return this.year(a.getUTCFullYear()),this.month(a.getUTCMonth()),this.date(a.getUTCDate()),this}.call(this,e,t,n,s,i))}I(0,["gg",2],0,function(){return this.weekYear()%100}),I(0,["GG",2],0,function(){return this.isoWeekYear()%100}),en("gggg","weekYear"),en("ggggg","weekYear"),en("GGGG","isoWeekYear"),en("GGGGG","isoWeekYear"),H("weekYear","gg"),H("isoWeekYear","GG"),L("weekYear",1),L("isoWeekYear",1),ue("G",se),ue("g",se),ue("GG",B,z),ue("gg",B,z),ue("GGGG",ee,q),ue("gggg",ee,q),ue("GGGGG",te,J),ue("ggggg",te,J),fe(["gggg","ggggg","GGGG","GGGGG"],function(e,t,n,s){t[s.substr(0,2)]=k(e)}),fe(["gg","GG"],function(e,t,n,s){t[s]=c.parseTwoDigitYear(e)}),I("Q",0,"Qo","quarter"),H("quarter","Q"),L("quarter",7),ue("Q",Z),ce("Q",function(e,t){t[_e]=3*(k(e)-1)}),I("D",["DD",2],"Do","date"),H("date","D"),L("date",9),ue("D",B),ue("DD",B,z),ue("Do",function(e,t){return e?t._dayOfMonthOrdinalParse||t._ordinalParse:t._dayOfMonthOrdinalParseLenient}),ce(["D","DD"],ye),ce("Do",function(e,t){t[ye]=k(e.match(B)[0])});var nn=Te("Date",!0);I("DDD",["DDDD",3],"DDDo","dayOfYear"),H("dayOfYear","DDD"),L("dayOfYear",4),ue("DDD",K),ue("DDDD",$),ce(["DDD","DDDD"],function(e,t,n){n._dayOfYear=k(e)}),I("m",["mm",2],0,"minute"),H("minute","m"),L("minute",14),ue("m",B),ue("mm",B,z),ce(["m","mm"],pe);var sn=Te("Minutes",!1);I("s",["ss",2],0,"second"),H("second","s"),L("second",15),ue("s",B),ue("ss",B,z),ce(["s","ss"],ve);var rn,an=Te("Seconds",!1);for(I("S",0,0,function(){return~~(this.millisecond()/100)}),I(0,["SS",2],0,function(){return~~(this.millisecond()/10)}),I(0,["SSS",3],0,"millisecond"),I(0,["SSSS",4],0,function(){return 10*this.millisecond()}),I(0,["SSSSS",5],0,function(){return 100*this.millisecond()}),I(0,["SSSSSS",6],0,function(){return 1e3*this.millisecond()}),I(0,["SSSSSSS",7],0,function(){return 1e4*this.millisecond()}),I(0,["SSSSSSSS",8],0,function(){return 1e5*this.millisecond()}),I(0,["SSSSSSSSS",9],0,function(){return 1e6*this.millisecond()}),H("millisecond","ms"),L("millisecond",16),ue("S",K,Z),ue("SS",K,z),ue("SSS",K,$),rn="SSSS";rn.length<=9;rn+="S")ue(rn,ne);function on(e,t){t[we]=k(1e3*("0."+e))}for(rn="S";rn.length<=9;rn+="S")ce(rn,on);var un=Te("Milliseconds",!1);I("z",0,0,"zoneAbbr"),I("zz",0,0,"zoneName");var ln=M.prototype;function dn(e){return e}ln.add=qt,ln.calendar=function(e,t){var n=e||Tt(),s=Nt(n,this).startOf("day"),i=c.calendarFormat(this,s)||"sameElse",r=t&&(x(t[i])?t[i].call(this,n):t[i]);return this.format(r||this.localeData().calendar(i,this,Tt(n)))},ln.clone=function(){return new M(this)},ln.diff=function(e,t,n){var s,i,r;if(!this.isValid())return NaN;if(!(s=Nt(e,this)).isValid())return NaN;switch(i=6e4*(s.utcOffset()-this.utcOffset()),t=R(t)){case"year":r=Bt(this,s)/12;break;case"month":r=Bt(this,s);break;case"quarter":r=Bt(this,s)/3;break;case"second":r=(this-s)/1e3;break;case"minute":r=(this-s)/6e4;break;case"hour":r=(this-s)/36e5;break;case"day":r=(this-s-i)/864e5;break;case"week":r=(this-s-i)/6048e5;break;default:r=this-s}return n?r:D(r)},ln.endOf=function(e){return void 0===(e=R(e))||"millisecond"===e?this:("date"===e&&(e="day"),this.startOf(e).add(1,"isoWeek"===e?"week":e).subtract(1,"ms"))},ln.format=function(e){e||(e=this.isUtc()?c.defaultFormatUtc:c.defaultFormat);var t=A(this,e);return this.localeData().postformat(t)},ln.from=function(e,t){return this.isValid()&&(S(e)&&e.isValid()||Tt(e).isValid())?At({to:this,from:e}).locale(this.locale()).humanize(!t):this.localeData().invalidDate()},ln.fromNow=function(e){return this.from(Tt(),e)},ln.to=function(e,t){return this.isValid()&&(S(e)&&e.isValid()||Tt(e).isValid())?At({from:this,to:e}).locale(this.locale()).humanize(!t):this.localeData().invalidDate()},ln.toNow=function(e){return this.to(Tt(),e)},ln.get=function(e){return x(this[e=R(e)])?this[e]():this},ln.invalidAt=function(){return g(this).overflow},ln.isAfter=function(e,t){var n=S(e)?e:Tt(e);return!(!this.isValid()||!n.isValid())&&("millisecond"===(t=R(l(t)?"millisecond":t))?this.valueOf()>n.valueOf():n.valueOf()<this.clone().startOf(t).valueOf())},ln.isBefore=function(e,t){var n=S(e)?e:Tt(e);return!(!this.isValid()||!n.isValid())&&("millisecond"===(t=R(l(t)?"millisecond":t))?this.valueOf()<n.valueOf():this.clone().endOf(t).valueOf()<n.valueOf())},ln.isBetween=function(e,t,n,s){return("("===(s=s||"()")[0]?this.isAfter(e,n):!this.isBefore(e,n))&&(")"===s[1]?this.isBefore(t,n):!this.isAfter(t,n))},ln.isSame=function(e,t){var n,s=S(e)?e:Tt(e);return!(!this.isValid()||!s.isValid())&&("millisecond"===(t=R(t||"millisecond"))?this.valueOf()===s.valueOf():(n=s.valueOf(),this.clone().startOf(t).valueOf()<=n&&n<=this.clone().endOf(t).valueOf()))},ln.isSameOrAfter=function(e,t){return this.isSame(e,t)||this.isAfter(e,t)},ln.isSameOrBefore=function(e,t){return this.isSame(e,t)||this.isBefore(e,t)},ln.isValid=function(){return p(this)},ln.lang=Xt,ln.locale=Qt,ln.localeData=Kt,ln.max=bt,ln.min=xt,ln.parsingFlags=function(){return _({},g(this))},ln.set=function(e,t){if("object"==typeof e)for(var n=function(e){var t=[];for(var n in e)t.push({unit:n,priority:F[n]});return t.sort(function(e,t){return e.priority-t.priority}),t}(e=C(e)),s=0;s<n.length;s++)this[n[s].unit](e[n[s].unit]);else if(x(this[e=R(e)]))return this[e](t);return this},ln.startOf=function(e){switch(e=R(e)){case"year":this.month(0);case"quarter":case"month":this.date(1);case"week":case"isoWeek":case"day":case"date":this.hours(0);case"hour":this.minutes(0);case"minute":this.seconds(0);case"second":this.milliseconds(0)}return"week"===e&&this.weekday(0),"isoWeek"===e&&this.isoWeekday(1),"quarter"===e&&this.month(3*Math.floor(this.month()/3)),this},ln.subtract=Jt,ln.toArray=function(){var e=this;return[e.year(),e.month(),e.date(),e.hour(),e.minute(),e.second(),e.millisecond()]},ln.toObject=function(){var e=this;return{years:e.year(),months:e.month(),date:e.date(),hours:e.hours(),minutes:e.minutes(),seconds:e.seconds(),milliseconds:e.milliseconds()}},ln.toDate=function(){return new Date(this.valueOf())},ln.toISOString=function(e){if(!this.isValid())return null;var t=!0!==e,n=t?this.clone().utc():this;return n.year()<0||9999<n.year()?A(n,t?"YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]":"YYYYYY-MM-DD[T]HH:mm:ss.SSSZ"):x(Date.prototype.toISOString)?t?this.toDate().toISOString():new Date(this.valueOf()+60*this.utcOffset()*1e3).toISOString().replace("Z",A(n,"Z")):A(n,t?"YYYY-MM-DD[T]HH:mm:ss.SSS[Z]":"YYYY-MM-DD[T]HH:mm:ss.SSSZ")},ln.inspect=function(){if(!this.isValid())return"moment.invalid(/* "+this._i+" */)";var e="moment",t="";this.isLocal()||(e=0===this.utcOffset()?"moment.utc":"moment.parseZone",t="Z");var n="["+e+'("]',s=0<=this.year()&&this.year()<=9999?"YYYY":"YYYYYY",i=t+'[")]';return this.format(n+s+"-MM-DD[T]HH:mm:ss.SSS"+i)},ln.toJSON=function(){return this.isValid()?this.toISOString():null},ln.toString=function(){return this.clone().locale("en").format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ")},ln.unix=function(){return Math.floor(this.valueOf()/1e3)},ln.valueOf=function(){return this._d.valueOf()-6e4*(this._offset||0)},ln.creationData=function(){return{input:this._i,format:this._f,locale:this._locale,isUTC:this._isUTC,strict:this._strict}},ln.year=Oe,ln.isLeapYear=function(){return ke(this.year())},ln.weekYear=function(e){return tn.call(this,e,this.week(),this.weekday(),this.localeData()._week.dow,this.localeData()._week.doy)},ln.isoWeekYear=function(e){return tn.call(this,e,this.isoWeek(),this.isoWeekday(),1,4)},ln.quarter=ln.quarters=function(e){return null==e?Math.ceil((this.month()+1)/3):this.month(3*(e-1)+this.month()%3)},ln.month=Fe,ln.daysInMonth=function(){return Pe(this.year(),this.month())},ln.week=ln.weeks=function(e){var t=this.localeData().week(this);return null==e?t:this.add(7*(e-t),"d")},ln.isoWeek=ln.isoWeeks=function(e){var t=Ie(this,1,4).week;return null==e?t:this.add(7*(e-t),"d")},ln.weeksInYear=function(){var e=this.localeData()._week;return Ae(this.year(),e.dow,e.doy)},ln.isoWeeksInYear=function(){return Ae(this.year(),1,4)},ln.date=nn,ln.day=ln.days=function(e){if(!this.isValid())return null!=e?this:NaN;var t,n,s=this._isUTC?this._d.getUTCDay():this._d.getDay();return null!=e?(t=e,n=this.localeData(),e="string"!=typeof t?t:isNaN(t)?"number"==typeof(t=n.weekdaysParse(t))?t:null:parseInt(t,10),this.add(e-s,"d")):s},ln.weekday=function(e){if(!this.isValid())return null!=e?this:NaN;var t=(this.day()+7-this.localeData()._week.dow)%7;return null==e?t:this.add(e-t,"d")},ln.isoWeekday=function(e){if(!this.isValid())return null!=e?this:NaN;if(null!=e){var t=(n=e,s=this.localeData(),"string"==typeof n?s.weekdaysParse(n)%7||7:isNaN(n)?null:n);return this.day(this.day()%7?t:t-7)}return this.day()||7;var n,s},ln.dayOfYear=function(e){var t=Math.round((this.clone().startOf("day")-this.clone().startOf("year"))/864e5)+1;return null==e?t:this.add(e-t,"d")},ln.hour=ln.hours=tt,ln.minute=ln.minutes=sn,ln.second=ln.seconds=an,ln.millisecond=ln.milliseconds=un,ln.utcOffset=function(e,t,n){var s,i=this._offset||0;if(!this.isValid())return null!=e?this:NaN;if(null!=e){if("string"==typeof e){if(null===(e=Ut(re,e)))return this}else Math.abs(e)<16&&!n&&(e*=60);return!this._isUTC&&t&&(s=Gt(this)),this._offset=e,this._isUTC=!0,null!=s&&this.add(s,"m"),i!==e&&(!t||this._changeInProgress?$t(this,At(e-i,"m"),1,!1):this._changeInProgress||(this._changeInProgress=!0,c.updateOffset(this,!0),this._changeInProgress=null)),this}return this._isUTC?i:Gt(this)},ln.utc=function(e){return this.utcOffset(0,e)},ln.local=function(e){return this._isUTC&&(this.utcOffset(0,e),this._isUTC=!1,e&&this.subtract(Gt(this),"m")),this},ln.parseZone=function(){if(null!=this._tzm)this.utcOffset(this._tzm,!1,!0);else if("string"==typeof this._i){var e=Ut(ie,this._i);null!=e?this.utcOffset(e):this.utcOffset(0,!0)}return this},ln.hasAlignedHourOffset=function(e){return!!this.isValid()&&(e=e?Tt(e).utcOffset():0,(this.utcOffset()-e)%60==0)},ln.isDST=function(){return this.utcOffset()>this.clone().month(0).utcOffset()||this.utcOffset()>this.clone().month(5).utcOffset()},ln.isLocal=function(){return!!this.isValid()&&!this._isUTC},ln.isUtcOffset=function(){return!!this.isValid()&&this._isUTC},ln.isUtc=Vt,ln.isUTC=Vt,ln.zoneAbbr=function(){return this._isUTC?"UTC":""},ln.zoneName=function(){return this._isUTC?"Coordinated Universal Time":""},ln.dates=n("dates accessor is deprecated. Use date instead.",nn),ln.months=n("months accessor is deprecated. Use month instead",Fe),ln.years=n("years accessor is deprecated. Use year instead",Oe),ln.zone=n("moment().zone is deprecated, use moment().utcOffset instead. http://momentjs.com/guides/#/warnings/zone/",function(e,t){return null!=e?("string"!=typeof e&&(e=-e),this.utcOffset(e,t),this):-this.utcOffset()}),ln.isDSTShifted=n("isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information",function(){if(!l(this._isDSTShifted))return this._isDSTShifted;var e={};if(w(e,this),(e=Yt(e))._a){var t=e._isUTC?y(e._a):Tt(e._a);this._isDSTShifted=this.isValid()&&0<a(e._a,t.toArray())}else this._isDSTShifted=!1;return this._isDSTShifted});var hn=P.prototype;function cn(e,t,n,s){var i=lt(),r=y().set(s,t);return i[n](r,e)}function fn(e,t,n){if(d(e)&&(t=e,e=void 0),e=e||"",null!=t)return cn(e,t,n,"month");var s,i=[];for(s=0;s<12;s++)i[s]=cn(e,s,n,"month");return i}function mn(e,t,n,s){"boolean"==typeof e?d(t)&&(n=t,t=void 0):(t=e,e=!1,d(n=t)&&(n=t,t=void 0)),t=t||"";var i,r=lt(),a=e?r._week.dow:0;if(null!=n)return cn(t,(n+a)%7,s,"day");var o=[];for(i=0;i<7;i++)o[i]=cn(t,(i+a)%7,s,"day");return o}hn.calendar=function(e,t,n){var s=this._calendar[e]||this._calendar.sameElse;return x(s)?s.call(t,n):s},hn.longDateFormat=function(e){var t=this._longDateFormat[e],n=this._longDateFormat[e.toUpperCase()];return t||!n?t:(this._longDateFormat[e]=n.replace(/MMMM|MM|DD|dddd/g,function(e){return e.slice(1)}),this._longDateFormat[e])},hn.invalidDate=function(){return this._invalidDate},hn.ordinal=function(e){return this._ordinal.replace("%d",e)},hn.preparse=dn,hn.postformat=dn,hn.relativeTime=function(e,t,n,s){var i=this._relativeTime[n];return x(i)?i(e,t,n,s):i.replace(/%d/i,e)},hn.pastFuture=function(e,t){var n=this._relativeTime[0<e?"future":"past"];return x(n)?n(t):n.replace(/%s/i,t)},hn.set=function(e){var t,n;for(n in e)x(t=e[n])?this[n]=t:this["_"+n]=t;this._config=e,this._dayOfMonthOrdinalParseLenient=new RegExp((this._dayOfMonthOrdinalParse.source||this._ordinalParse.source)+"|"+/\d{1,2}/.source)},hn.months=function(e,t){return e?o(this._months)?this._months[e.month()]:this._months[(this._months.isFormat||We).test(t)?"format":"standalone"][e.month()]:o(this._months)?this._months:this._months.standalone},hn.monthsShort=function(e,t){return e?o(this._monthsShort)?this._monthsShort[e.month()]:this._monthsShort[We.test(t)?"format":"standalone"][e.month()]:o(this._monthsShort)?this._monthsShort:this._monthsShort.standalone},hn.monthsParse=function(e,t,n){var s,i,r;if(this._monthsParseExact)return function(e,t,n){var s,i,r,a=e.toLocaleLowerCase();if(!this._monthsParse)for(this._monthsParse=[],this._longMonthsParse=[],this._shortMonthsParse=[],s=0;s<12;++s)r=y([2e3,s]),this._shortMonthsParse[s]=this.monthsShort(r,"").toLocaleLowerCase(),this._longMonthsParse[s]=this.months(r,"").toLocaleLowerCase();return n?"MMM"===t?-1!==(i=Ye.call(this._shortMonthsParse,a))?i:null:-1!==(i=Ye.call(this._longMonthsParse,a))?i:null:"MMM"===t?-1!==(i=Ye.call(this._shortMonthsParse,a))?i:-1!==(i=Ye.call(this._longMonthsParse,a))?i:null:-1!==(i=Ye.call(this._longMonthsParse,a))?i:-1!==(i=Ye.call(this._shortMonthsParse,a))?i:null}.call(this,e,t,n);for(this._monthsParse||(this._monthsParse=[],this._longMonthsParse=[],this._shortMonthsParse=[]),s=0;s<12;s++){if(i=y([2e3,s]),n&&!this._longMonthsParse[s]&&(this._longMonthsParse[s]=new RegExp("^"+this.months(i,"").replace(".","")+"$","i"),this._shortMonthsParse[s]=new RegExp("^"+this.monthsShort(i,"").replace(".","")+"$","i")),n||this._monthsParse[s]||(r="^"+this.months(i,"")+"|^"+this.monthsShort(i,""),this._monthsParse[s]=new RegExp(r.replace(".",""),"i")),n&&"MMMM"===t&&this._longMonthsParse[s].test(e))return s;if(n&&"MMM"===t&&this._shortMonthsParse[s].test(e))return s;if(!n&&this._monthsParse[s].test(e))return s}},hn.monthsRegex=function(e){return this._monthsParseExact?(m(this,"_monthsRegex")||Ne.call(this),e?this._monthsStrictRegex:this._monthsRegex):(m(this,"_monthsRegex")||(this._monthsRegex=Ue),this._monthsStrictRegex&&e?this._monthsStrictRegex:this._monthsRegex)},hn.monthsShortRegex=function(e){return this._monthsParseExact?(m(this,"_monthsRegex")||Ne.call(this),e?this._monthsShortStrictRegex:this._monthsShortRegex):(m(this,"_monthsShortRegex")||(this._monthsShortRegex=Le),this._monthsShortStrictRegex&&e?this._monthsShortStrictRegex:this._monthsShortRegex)},hn.week=function(e){return Ie(e,this._week.dow,this._week.doy).week},hn.firstDayOfYear=function(){return this._week.doy},hn.firstDayOfWeek=function(){return this._week.dow},hn.weekdays=function(e,t){return e?o(this._weekdays)?this._weekdays[e.day()]:this._weekdays[this._weekdays.isFormat.test(t)?"format":"standalone"][e.day()]:o(this._weekdays)?this._weekdays:this._weekdays.standalone},hn.weekdaysMin=function(e){return e?this._weekdaysMin[e.day()]:this._weekdaysMin},hn.weekdaysShort=function(e){return e?this._weekdaysShort[e.day()]:this._weekdaysShort},hn.weekdaysParse=function(e,t,n){var s,i,r;if(this._weekdaysParseExact)return function(e,t,n){var s,i,r,a=e.toLocaleLowerCase();if(!this._weekdaysParse)for(this._weekdaysParse=[],this._shortWeekdaysParse=[],this._minWeekdaysParse=[],s=0;s<7;++s)r=y([2e3,1]).day(s),this._minWeekdaysParse[s]=this.weekdaysMin(r,"").toLocaleLowerCase(),this._shortWeekdaysParse[s]=this.weekdaysShort(r,"").toLocaleLowerCase(),this._weekdaysParse[s]=this.weekdays(r,"").toLocaleLowerCase();return n?"dddd"===t?-1!==(i=Ye.call(this._weekdaysParse,a))?i:null:"ddd"===t?-1!==(i=Ye.call(this._shortWeekdaysParse,a))?i:null:-1!==(i=Ye.call(this._minWeekdaysParse,a))?i:null:"dddd"===t?-1!==(i=Ye.call(this._weekdaysParse,a))?i:-1!==(i=Ye.call(this._shortWeekdaysParse,a))?i:-1!==(i=Ye.call(this._minWeekdaysParse,a))?i:null:"ddd"===t?-1!==(i=Ye.call(this._shortWeekdaysParse,a))?i:-1!==(i=Ye.call(this._weekdaysParse,a))?i:-1!==(i=Ye.call(this._minWeekdaysParse,a))?i:null:-1!==(i=Ye.call(this._minWeekdaysParse,a))?i:-1!==(i=Ye.call(this._weekdaysParse,a))?i:-1!==(i=Ye.call(this._shortWeekdaysParse,a))?i:null}.call(this,e,t,n);for(this._weekdaysParse||(this._weekdaysParse=[],this._minWeekdaysParse=[],this._shortWeekdaysParse=[],this._fullWeekdaysParse=[]),s=0;s<7;s++){if(i=y([2e3,1]).day(s),n&&!this._fullWeekdaysParse[s]&&(this._fullWeekdaysParse[s]=new RegExp("^"+this.weekdays(i,"").replace(".","\\.?")+"$","i"),this._shortWeekdaysParse[s]=new RegExp("^"+this.weekdaysShort(i,"").replace(".","\\.?")+"$","i"),this._minWeekdaysParse[s]=new RegExp("^"+this.weekdaysMin(i,"").replace(".","\\.?")+"$","i")),this._weekdaysParse[s]||(r="^"+this.weekdays(i,"")+"|^"+this.weekdaysShort(i,"")+"|^"+this.weekdaysMin(i,""),this._weekdaysParse[s]=new RegExp(r.replace(".",""),"i")),n&&"dddd"===t&&this._fullWeekdaysParse[s].test(e))return s;if(n&&"ddd"===t&&this._shortWeekdaysParse[s].test(e))return s;if(n&&"dd"===t&&this._minWeekdaysParse[s].test(e))return s;if(!n&&this._weekdaysParse[s].test(e))return s}},hn.weekdaysRegex=function(e){return this._weekdaysParseExact?(m(this,"_weekdaysRegex")||Be.call(this),e?this._weekdaysStrictRegex:this._weekdaysRegex):(m(this,"_weekdaysRegex")||(this._weekdaysRegex=$e),this._weekdaysStrictRegex&&e?this._weekdaysStrictRegex:this._weekdaysRegex)},hn.weekdaysShortRegex=function(e){return this._weekdaysParseExact?(m(this,"_weekdaysRegex")||Be.call(this),e?this._weekdaysShortStrictRegex:this._weekdaysShortRegex):(m(this,"_weekdaysShortRegex")||(this._weekdaysShortRegex=qe),this._weekdaysShortStrictRegex&&e?this._weekdaysShortStrictRegex:this._weekdaysShortRegex)},hn.weekdaysMinRegex=function(e){return this._weekdaysParseExact?(m(this,"_weekdaysRegex")||Be.call(this),e?this._weekdaysMinStrictRegex:this._weekdaysMinRegex):(m(this,"_weekdaysMinRegex")||(this._weekdaysMinRegex=Je),this._weekdaysMinStrictRegex&&e?this._weekdaysMinStrictRegex:this._weekdaysMinRegex)},hn.isPM=function(e){return"p"===(e+"").toLowerCase().charAt(0)},hn.meridiem=function(e,t,n){return 11<e?n?"pm":"PM":n?"am":"AM"},ot("en",{dayOfMonthOrdinalParse:/\d{1,2}(th|st|nd|rd)/,ordinal:function(e){var t=e%10;return e+(1===k(e%100/10)?"th":1===t?"st":2===t?"nd":3===t?"rd":"th")}}),c.lang=n("moment.lang is deprecated. Use moment.locale instead.",ot),c.langData=n("moment.langData is deprecated. Use moment.localeData instead.",lt);var _n=Math.abs;function yn(e,t,n,s){var i=At(t,n);return e._milliseconds+=s*i._milliseconds,e._days+=s*i._days,e._months+=s*i._months,e._bubble()}function gn(e){return e<0?Math.floor(e):Math.ceil(e)}function pn(e){return 4800*e/146097}function vn(e){return 146097*e/4800}function wn(e){return function(){return this.as(e)}}var Mn=wn("ms"),Sn=wn("s"),Dn=wn("m"),kn=wn("h"),Yn=wn("d"),On=wn("w"),Tn=wn("M"),xn=wn("y");function bn(e){return function(){return this.isValid()?this._data[e]:NaN}}var Pn=bn("milliseconds"),Wn=bn("seconds"),Hn=bn("minutes"),Rn=bn("hours"),Cn=bn("days"),Fn=bn("months"),Ln=bn("years");var Un=Math.round,Nn={ss:44,s:45,m:45,h:22,d:26,M:11};var Gn=Math.abs;function Vn(e){return(0<e)-(e<0)||+e}function En(){if(!this.isValid())return this.localeData().invalidDate();var e,t,n=Gn(this._milliseconds)/1e3,s=Gn(this._days),i=Gn(this._months);t=D((e=D(n/60))/60),n%=60,e%=60;var r=D(i/12),a=i%=12,o=s,u=t,l=e,d=n?n.toFixed(3).replace(/\.?0+$/,""):"",h=this.asSeconds();if(!h)return"P0D";var c=h<0?"-":"",f=Vn(this._months)!==Vn(h)?"-":"",m=Vn(this._days)!==Vn(h)?"-":"",_=Vn(this._milliseconds)!==Vn(h)?"-":"";return c+"P"+(r?f+r+"Y":"")+(a?f+a+"M":"")+(o?m+o+"D":"")+(u||l||d?"T":"")+(u?_+u+"H":"")+(l?_+l+"M":"")+(d?_+d+"S":"")}var In=Ht.prototype;return In.isValid=function(){return this._isValid},In.abs=function(){var e=this._data;return this._milliseconds=_n(this._milliseconds),this._days=_n(this._days),this._months=_n(this._months),e.milliseconds=_n(e.milliseconds),e.seconds=_n(e.seconds),e.minutes=_n(e.minutes),e.hours=_n(e.hours),e.months=_n(e.months),e.years=_n(e.years),this},In.add=function(e,t){return yn(this,e,t,1)},In.subtract=function(e,t){return yn(this,e,t,-1)},In.as=function(e){if(!this.isValid())return NaN;var t,n,s=this._milliseconds;if("month"===(e=R(e))||"year"===e)return t=this._days+s/864e5,n=this._months+pn(t),"month"===e?n:n/12;switch(t=this._days+Math.round(vn(this._months)),e){case"week":return t/7+s/6048e5;case"day":return t+s/864e5;case"hour":return 24*t+s/36e5;case"minute":return 1440*t+s/6e4;case"second":return 86400*t+s/1e3;case"millisecond":return Math.floor(864e5*t)+s;default:throw new Error("Unknown unit "+e)}},In.asMilliseconds=Mn,In.asSeconds=Sn,In.asMinutes=Dn,In.asHours=kn,In.asDays=Yn,In.asWeeks=On,In.asMonths=Tn,In.asYears=xn,In.valueOf=function(){return this.isValid()?this._milliseconds+864e5*this._days+this._months%12*2592e6+31536e6*k(this._months/12):NaN},In._bubble=function(){var e,t,n,s,i,r=this._milliseconds,a=this._days,o=this._months,u=this._data;return 0<=r&&0<=a&&0<=o||r<=0&&a<=0&&o<=0||(r+=864e5*gn(vn(o)+a),o=a=0),u.milliseconds=r%1e3,e=D(r/1e3),u.seconds=e%60,t=D(e/60),u.minutes=t%60,n=D(t/60),u.hours=n%24,o+=i=D(pn(a+=D(n/24))),a-=gn(vn(i)),s=D(o/12),o%=12,u.days=a,u.months=o,u.years=s,this},In.clone=function(){return At(this)},In.get=function(e){return e=R(e),this.isValid()?this[e+"s"]():NaN},In.milliseconds=Pn,In.seconds=Wn,In.minutes=Hn,In.hours=Rn,In.days=Cn,In.weeks=function(){return D(this.days()/7)},In.months=Fn,In.years=Ln,In.humanize=function(e){if(!this.isValid())return this.localeData().invalidDate();var t,n,s,i,r,a,o,u,l,d,h,c=this.localeData(),f=(n=!e,s=c,i=At(t=this).abs(),r=Un(i.as("s")),a=Un(i.as("m")),o=Un(i.as("h")),u=Un(i.as("d")),l=Un(i.as("M")),d=Un(i.as("y")),(h=r<=Nn.ss&&["s",r]||r<Nn.s&&["ss",r]||a<=1&&["m"]||a<Nn.m&&["mm",a]||o<=1&&["h"]||o<Nn.h&&["hh",o]||u<=1&&["d"]||u<Nn.d&&["dd",u]||l<=1&&["M"]||l<Nn.M&&["MM",l]||d<=1&&["y"]||["yy",d])[2]=n,h[3]=0<+t,h[4]=s,function(e,t,n,s,i){return i.relativeTime(t||1,!!n,e,s)}.apply(null,h));return e&&(f=c.pastFuture(+this,f)),c.postformat(f)},In.toISOString=En,In.toString=En,In.toJSON=En,In.locale=Qt,In.localeData=Kt,In.toIsoString=n("toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)",En),In.lang=Xt,I("X",0,0,"unix"),I("x",0,0,"valueOf"),ue("x",se),ue("X",/[+-]?\d+(\.\d{1,3})?/),ce("X",function(e,t,n){n._d=new Date(1e3*parseFloat(e,10))}),ce("x",function(e,t,n){n._d=new Date(k(e))}),c.version="2.22.2",e=Tt,c.fn=ln,c.min=function(){return Pt("isBefore",[].slice.call(arguments,0))},c.max=function(){return Pt("isAfter",[].slice.call(arguments,0))},c.now=function(){return Date.now?Date.now():+new Date},c.utc=y,c.unix=function(e){return Tt(1e3*e)},c.months=function(e,t){return fn(e,t,"months")},c.isDate=h,c.locale=ot,c.invalid=v,c.duration=At,c.isMoment=S,c.weekdays=function(e,t,n){return mn(e,t,n,"weekdays")},c.parseZone=function(){return Tt.apply(null,arguments).parseZone()},c.localeData=lt,c.isDuration=Rt,c.monthsShort=function(e,t){return fn(e,t,"monthsShort")},c.weekdaysMin=function(e,t,n){return mn(e,t,n,"weekdaysMin")},c.defineLocale=ut,c.updateLocale=function(e,t){if(null!=t){var n,s,i=nt;null!=(s=at(e))&&(i=s._config),(n=new P(t=b(i,t))).parentLocale=st[e],st[e]=n,ot(e)}else null!=st[e]&&(null!=st[e].parentLocale?st[e]=st[e].parentLocale:null!=st[e]&&delete st[e]);return st[e]},c.locales=function(){return s(st)},c.weekdaysShort=function(e,t,n){return mn(e,t,n,"weekdaysShort")},c.normalizeUnits=R,c.relativeTimeRounding=function(e){return void 0===e?Un:"function"==typeof e&&(Un=e,!0)},c.relativeTimeThreshold=function(e,t){return void 0!==Nn[e]&&(void 0===t?Nn[e]:(Nn[e]=t,"s"===e&&(Nn.ss=t-1),!0))},c.calendarFormat=function(e,t){var n=e.diff(t,"days",!0);return n<-6?"sameElse":n<-1?"lastWeek":n<0?"lastDay":n<1?"sameDay":n<2?"nextDay":n<7?"nextWeek":"sameElse"},c.prototype=ln,c.HTML5_FMT={DATETIME_LOCAL:"YYYY-MM-DDTHH:mm",DATETIME_LOCAL_SECONDS:"YYYY-MM-DDTHH:mm:ss",DATETIME_LOCAL_MS:"YYYY-MM-DDTHH:mm:ss.SSS",DATE:"YYYY-MM-DD",TIME:"HH:mm",TIME_SECONDS:"HH:mm:ss",TIME_MS:"HH:mm:ss.SSS",WEEK:"YYYY-[W]WW",MONTH:"YYYY-MM"},c});;(function ($) {
+;//! moment.js
+//! version : 2.26.0
+//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
+//! license : MIT
+//! momentjs.com
+
+;(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    global.moment = factory()
+}(this, (function () { 'use strict';
+
+    var hookCallback;
+
+    function hooks() {
+        return hookCallback.apply(null, arguments);
+    }
+
+    // This is done to register the method called with moment()
+    // without creating circular dependencies.
+    function setHookCallback(callback) {
+        hookCallback = callback;
+    }
+
+    function isArray(input) {
+        return (
+            input instanceof Array ||
+            Object.prototype.toString.call(input) === '[object Array]'
+        );
+    }
+
+    function isObject(input) {
+        // IE8 will treat undefined and null as object if it wasn't for
+        // input != null
+        return (
+            input != null &&
+            Object.prototype.toString.call(input) === '[object Object]'
+        );
+    }
+
+    function hasOwnProp(a, b) {
+        return Object.prototype.hasOwnProperty.call(a, b);
+    }
+
+    function isObjectEmpty(obj) {
+        if (Object.getOwnPropertyNames) {
+            return Object.getOwnPropertyNames(obj).length === 0;
+        } else {
+            var k;
+            for (k in obj) {
+                if (hasOwnProp(obj, k)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    function isUndefined(input) {
+        return input === void 0;
+    }
+
+    function isNumber(input) {
+        return (
+            typeof input === 'number' ||
+            Object.prototype.toString.call(input) === '[object Number]'
+        );
+    }
+
+    function isDate(input) {
+        return (
+            input instanceof Date ||
+            Object.prototype.toString.call(input) === '[object Date]'
+        );
+    }
+
+    function map(arr, fn) {
+        var res = [],
+            i;
+        for (i = 0; i < arr.length; ++i) {
+            res.push(fn(arr[i], i));
+        }
+        return res;
+    }
+
+    function extend(a, b) {
+        for (var i in b) {
+            if (hasOwnProp(b, i)) {
+                a[i] = b[i];
+            }
+        }
+
+        if (hasOwnProp(b, 'toString')) {
+            a.toString = b.toString;
+        }
+
+        if (hasOwnProp(b, 'valueOf')) {
+            a.valueOf = b.valueOf;
+        }
+
+        return a;
+    }
+
+    function createUTC(input, format, locale, strict) {
+        return createLocalOrUTC(input, format, locale, strict, true).utc();
+    }
+
+    function defaultParsingFlags() {
+        // We need to deep clone this object.
+        return {
+            empty: false,
+            unusedTokens: [],
+            unusedInput: [],
+            overflow: -2,
+            charsLeftOver: 0,
+            nullInput: false,
+            invalidEra: null,
+            invalidMonth: null,
+            invalidFormat: false,
+            userInvalidated: false,
+            iso: false,
+            parsedDateParts: [],
+            era: null,
+            meridiem: null,
+            rfc2822: false,
+            weekdayMismatch: false,
+        };
+    }
+
+    function getParsingFlags(m) {
+        if (m._pf == null) {
+            m._pf = defaultParsingFlags();
+        }
+        return m._pf;
+    }
+
+    var some;
+    if (Array.prototype.some) {
+        some = Array.prototype.some;
+    } else {
+        some = function (fun) {
+            var t = Object(this),
+                len = t.length >>> 0,
+                i;
+
+            for (i = 0; i < len; i++) {
+                if (i in t && fun.call(this, t[i], i, t)) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+    }
+
+    function isValid(m) {
+        if (m._isValid == null) {
+            var flags = getParsingFlags(m),
+                parsedParts = some.call(flags.parsedDateParts, function (i) {
+                    return i != null;
+                }),
+                isNowValid =
+                    !isNaN(m._d.getTime()) &&
+                    flags.overflow < 0 &&
+                    !flags.empty &&
+                    !flags.invalidEra &&
+                    !flags.invalidMonth &&
+                    !flags.invalidWeekday &&
+                    !flags.weekdayMismatch &&
+                    !flags.nullInput &&
+                    !flags.invalidFormat &&
+                    !flags.userInvalidated &&
+                    (!flags.meridiem || (flags.meridiem && parsedParts));
+
+            if (m._strict) {
+                isNowValid =
+                    isNowValid &&
+                    flags.charsLeftOver === 0 &&
+                    flags.unusedTokens.length === 0 &&
+                    flags.bigHour === undefined;
+            }
+
+            if (Object.isFrozen == null || !Object.isFrozen(m)) {
+                m._isValid = isNowValid;
+            } else {
+                return isNowValid;
+            }
+        }
+        return m._isValid;
+    }
+
+    function createInvalid(flags) {
+        var m = createUTC(NaN);
+        if (flags != null) {
+            extend(getParsingFlags(m), flags);
+        } else {
+            getParsingFlags(m).userInvalidated = true;
+        }
+
+        return m;
+    }
+
+    // Plugins that add properties should also add the key here (null value),
+    // so we can properly clone ourselves.
+    var momentProperties = (hooks.momentProperties = []),
+        updateInProgress = false;
+
+    function copyConfig(to, from) {
+        var i, prop, val;
+
+        if (!isUndefined(from._isAMomentObject)) {
+            to._isAMomentObject = from._isAMomentObject;
+        }
+        if (!isUndefined(from._i)) {
+            to._i = from._i;
+        }
+        if (!isUndefined(from._f)) {
+            to._f = from._f;
+        }
+        if (!isUndefined(from._l)) {
+            to._l = from._l;
+        }
+        if (!isUndefined(from._strict)) {
+            to._strict = from._strict;
+        }
+        if (!isUndefined(from._tzm)) {
+            to._tzm = from._tzm;
+        }
+        if (!isUndefined(from._isUTC)) {
+            to._isUTC = from._isUTC;
+        }
+        if (!isUndefined(from._offset)) {
+            to._offset = from._offset;
+        }
+        if (!isUndefined(from._pf)) {
+            to._pf = getParsingFlags(from);
+        }
+        if (!isUndefined(from._locale)) {
+            to._locale = from._locale;
+        }
+
+        if (momentProperties.length > 0) {
+            for (i = 0; i < momentProperties.length; i++) {
+                prop = momentProperties[i];
+                val = from[prop];
+                if (!isUndefined(val)) {
+                    to[prop] = val;
+                }
+            }
+        }
+
+        return to;
+    }
+
+    // Moment prototype object
+    function Moment(config) {
+        copyConfig(this, config);
+        this._d = new Date(config._d != null ? config._d.getTime() : NaN);
+        if (!this.isValid()) {
+            this._d = new Date(NaN);
+        }
+        // Prevent infinite loop in case updateOffset creates new moment
+        // objects.
+        if (updateInProgress === false) {
+            updateInProgress = true;
+            hooks.updateOffset(this);
+            updateInProgress = false;
+        }
+    }
+
+    function isMoment(obj) {
+        return (
+            obj instanceof Moment || (obj != null && obj._isAMomentObject != null)
+        );
+    }
+
+    function warn(msg) {
+        if (
+            hooks.suppressDeprecationWarnings === false &&
+            typeof console !== 'undefined' &&
+            console.warn
+        ) {
+            console.warn('Deprecation warning: ' + msg);
+        }
+    }
+
+    function deprecate(msg, fn) {
+        var firstTime = true;
+
+        return extend(function () {
+            if (hooks.deprecationHandler != null) {
+                hooks.deprecationHandler(null, msg);
+            }
+            if (firstTime) {
+                var args = [],
+                    arg,
+                    i,
+                    key;
+                for (i = 0; i < arguments.length; i++) {
+                    arg = '';
+                    if (typeof arguments[i] === 'object') {
+                        arg += '\n[' + i + '] ';
+                        for (key in arguments[0]) {
+                            if (hasOwnProp(arguments[0], key)) {
+                                arg += key + ': ' + arguments[0][key] + ', ';
+                            }
+                        }
+                        arg = arg.slice(0, -2); // Remove trailing comma and space
+                    } else {
+                        arg = arguments[i];
+                    }
+                    args.push(arg);
+                }
+                warn(
+                    msg +
+                        '\nArguments: ' +
+                        Array.prototype.slice.call(args).join('') +
+                        '\n' +
+                        new Error().stack
+                );
+                firstTime = false;
+            }
+            return fn.apply(this, arguments);
+        }, fn);
+    }
+
+    var deprecations = {};
+
+    function deprecateSimple(name, msg) {
+        if (hooks.deprecationHandler != null) {
+            hooks.deprecationHandler(name, msg);
+        }
+        if (!deprecations[name]) {
+            warn(msg);
+            deprecations[name] = true;
+        }
+    }
+
+    hooks.suppressDeprecationWarnings = false;
+    hooks.deprecationHandler = null;
+
+    function isFunction(input) {
+        return (
+            (typeof Function !== 'undefined' && input instanceof Function) ||
+            Object.prototype.toString.call(input) === '[object Function]'
+        );
+    }
+
+    function set(config) {
+        var prop, i;
+        for (i in config) {
+            if (hasOwnProp(config, i)) {
+                prop = config[i];
+                if (isFunction(prop)) {
+                    this[i] = prop;
+                } else {
+                    this['_' + i] = prop;
+                }
+            }
+        }
+        this._config = config;
+        // Lenient ordinal parsing accepts just a number in addition to
+        // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
+        // TODO: Remove "ordinalParse" fallback in next major release.
+        this._dayOfMonthOrdinalParseLenient = new RegExp(
+            (this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) +
+                '|' +
+                /\d{1,2}/.source
+        );
+    }
+
+    function mergeConfigs(parentConfig, childConfig) {
+        var res = extend({}, parentConfig),
+            prop;
+        for (prop in childConfig) {
+            if (hasOwnProp(childConfig, prop)) {
+                if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+                    res[prop] = {};
+                    extend(res[prop], parentConfig[prop]);
+                    extend(res[prop], childConfig[prop]);
+                } else if (childConfig[prop] != null) {
+                    res[prop] = childConfig[prop];
+                } else {
+                    delete res[prop];
+                }
+            }
+        }
+        for (prop in parentConfig) {
+            if (
+                hasOwnProp(parentConfig, prop) &&
+                !hasOwnProp(childConfig, prop) &&
+                isObject(parentConfig[prop])
+            ) {
+                // make sure changes to properties don't modify parent config
+                res[prop] = extend({}, res[prop]);
+            }
+        }
+        return res;
+    }
+
+    function Locale(config) {
+        if (config != null) {
+            this.set(config);
+        }
+    }
+
+    var keys;
+
+    if (Object.keys) {
+        keys = Object.keys;
+    } else {
+        keys = function (obj) {
+            var i,
+                res = [];
+            for (i in obj) {
+                if (hasOwnProp(obj, i)) {
+                    res.push(i);
+                }
+            }
+            return res;
+        };
+    }
+
+    var defaultCalendar = {
+        sameDay: '[Today at] LT',
+        nextDay: '[Tomorrow at] LT',
+        nextWeek: 'dddd [at] LT',
+        lastDay: '[Yesterday at] LT',
+        lastWeek: '[Last] dddd [at] LT',
+        sameElse: 'L',
+    };
+
+    function calendar(key, mom, now) {
+        var output = this._calendar[key] || this._calendar['sameElse'];
+        return isFunction(output) ? output.call(mom, now) : output;
+    }
+
+    function zeroFill(number, targetLength, forceSign) {
+        var absNumber = '' + Math.abs(number),
+            zerosToFill = targetLength - absNumber.length,
+            sign = number >= 0;
+        return (
+            (sign ? (forceSign ? '+' : '') : '-') +
+            Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) +
+            absNumber
+        );
+    }
+
+    var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|N{1,5}|YYYYYY|YYYYY|YYYY|YY|y{2,4}|yo?|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g,
+        localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g,
+        formatFunctions = {},
+        formatTokenFunctions = {};
+
+    // token:    'M'
+    // padded:   ['MM', 2]
+    // ordinal:  'Mo'
+    // callback: function () { this.month() + 1 }
+    function addFormatToken(token, padded, ordinal, callback) {
+        var func = callback;
+        if (typeof callback === 'string') {
+            func = function () {
+                return this[callback]();
+            };
+        }
+        if (token) {
+            formatTokenFunctions[token] = func;
+        }
+        if (padded) {
+            formatTokenFunctions[padded[0]] = function () {
+                return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
+            };
+        }
+        if (ordinal) {
+            formatTokenFunctions[ordinal] = function () {
+                return this.localeData().ordinal(
+                    func.apply(this, arguments),
+                    token
+                );
+            };
+        }
+    }
+
+    function removeFormattingTokens(input) {
+        if (input.match(/\[[\s\S]/)) {
+            return input.replace(/^\[|\]$/g, '');
+        }
+        return input.replace(/\\/g, '');
+    }
+
+    function makeFormatFunction(format) {
+        var array = format.match(formattingTokens),
+            i,
+            length;
+
+        for (i = 0, length = array.length; i < length; i++) {
+            if (formatTokenFunctions[array[i]]) {
+                array[i] = formatTokenFunctions[array[i]];
+            } else {
+                array[i] = removeFormattingTokens(array[i]);
+            }
+        }
+
+        return function (mom) {
+            var output = '',
+                i;
+            for (i = 0; i < length; i++) {
+                output += isFunction(array[i])
+                    ? array[i].call(mom, format)
+                    : array[i];
+            }
+            return output;
+        };
+    }
+
+    // format date using native date object
+    function formatMoment(m, format) {
+        if (!m.isValid()) {
+            return m.localeData().invalidDate();
+        }
+
+        format = expandFormat(format, m.localeData());
+        formatFunctions[format] =
+            formatFunctions[format] || makeFormatFunction(format);
+
+        return formatFunctions[format](m);
+    }
+
+    function expandFormat(format, locale) {
+        var i = 5;
+
+        function replaceLongDateFormatTokens(input) {
+            return locale.longDateFormat(input) || input;
+        }
+
+        localFormattingTokens.lastIndex = 0;
+        while (i >= 0 && localFormattingTokens.test(format)) {
+            format = format.replace(
+                localFormattingTokens,
+                replaceLongDateFormatTokens
+            );
+            localFormattingTokens.lastIndex = 0;
+            i -= 1;
+        }
+
+        return format;
+    }
+
+    var defaultLongDateFormat = {
+        LTS: 'h:mm:ss A',
+        LT: 'h:mm A',
+        L: 'MM/DD/YYYY',
+        LL: 'MMMM D, YYYY',
+        LLL: 'MMMM D, YYYY h:mm A',
+        LLLL: 'dddd, MMMM D, YYYY h:mm A',
+    };
+
+    function longDateFormat(key) {
+        var format = this._longDateFormat[key],
+            formatUpper = this._longDateFormat[key.toUpperCase()];
+
+        if (format || !formatUpper) {
+            return format;
+        }
+
+        this._longDateFormat[key] = formatUpper
+            .match(formattingTokens)
+            .map(function (tok) {
+                if (
+                    tok === 'MMMM' ||
+                    tok === 'MM' ||
+                    tok === 'DD' ||
+                    tok === 'dddd'
+                ) {
+                    return tok.slice(1);
+                }
+                return tok;
+            })
+            .join('');
+
+        return this._longDateFormat[key];
+    }
+
+    var defaultInvalidDate = 'Invalid date';
+
+    function invalidDate() {
+        return this._invalidDate;
+    }
+
+    var defaultOrdinal = '%d',
+        defaultDayOfMonthOrdinalParse = /\d{1,2}/;
+
+    function ordinal(number) {
+        return this._ordinal.replace('%d', number);
+    }
+
+    var defaultRelativeTime = {
+        future: 'in %s',
+        past: '%s ago',
+        s: 'a few seconds',
+        ss: '%d seconds',
+        m: 'a minute',
+        mm: '%d minutes',
+        h: 'an hour',
+        hh: '%d hours',
+        d: 'a day',
+        dd: '%d days',
+        w: 'a week',
+        ww: '%d weeks',
+        M: 'a month',
+        MM: '%d months',
+        y: 'a year',
+        yy: '%d years',
+    };
+
+    function relativeTime(number, withoutSuffix, string, isFuture) {
+        var output = this._relativeTime[string];
+        return isFunction(output)
+            ? output(number, withoutSuffix, string, isFuture)
+            : output.replace(/%d/i, number);
+    }
+
+    function pastFuture(diff, output) {
+        var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+        return isFunction(format) ? format(output) : format.replace(/%s/i, output);
+    }
+
+    var aliases = {};
+
+    function addUnitAlias(unit, shorthand) {
+        var lowerCase = unit.toLowerCase();
+        aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
+    }
+
+    function normalizeUnits(units) {
+        return typeof units === 'string'
+            ? aliases[units] || aliases[units.toLowerCase()]
+            : undefined;
+    }
+
+    function normalizeObjectUnits(inputObject) {
+        var normalizedInput = {},
+            normalizedProp,
+            prop;
+
+        for (prop in inputObject) {
+            if (hasOwnProp(inputObject, prop)) {
+                normalizedProp = normalizeUnits(prop);
+                if (normalizedProp) {
+                    normalizedInput[normalizedProp] = inputObject[prop];
+                }
+            }
+        }
+
+        return normalizedInput;
+    }
+
+    var priorities = {};
+
+    function addUnitPriority(unit, priority) {
+        priorities[unit] = priority;
+    }
+
+    function getPrioritizedUnits(unitsObj) {
+        var units = [],
+            u;
+        for (u in unitsObj) {
+            if (hasOwnProp(unitsObj, u)) {
+                units.push({ unit: u, priority: priorities[u] });
+            }
+        }
+        units.sort(function (a, b) {
+            return a.priority - b.priority;
+        });
+        return units;
+    }
+
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    }
+
+    function absFloor(number) {
+        if (number < 0) {
+            // -0 -> 0
+            return Math.ceil(number) || 0;
+        } else {
+            return Math.floor(number);
+        }
+    }
+
+    function toInt(argumentForCoercion) {
+        var coercedNumber = +argumentForCoercion,
+            value = 0;
+
+        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+            value = absFloor(coercedNumber);
+        }
+
+        return value;
+    }
+
+    function makeGetSet(unit, keepTime) {
+        return function (value) {
+            if (value != null) {
+                set$1(this, unit, value);
+                hooks.updateOffset(this, keepTime);
+                return this;
+            } else {
+                return get(this, unit);
+            }
+        };
+    }
+
+    function get(mom, unit) {
+        return mom.isValid()
+            ? mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]()
+            : NaN;
+    }
+
+    function set$1(mom, unit, value) {
+        if (mom.isValid() && !isNaN(value)) {
+            if (
+                unit === 'FullYear' &&
+                isLeapYear(mom.year()) &&
+                mom.month() === 1 &&
+                mom.date() === 29
+            ) {
+                value = toInt(value);
+                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](
+                    value,
+                    mom.month(),
+                    daysInMonth(value, mom.month())
+                );
+            } else {
+                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function stringGet(units) {
+        units = normalizeUnits(units);
+        if (isFunction(this[units])) {
+            return this[units]();
+        }
+        return this;
+    }
+
+    function stringSet(units, value) {
+        if (typeof units === 'object') {
+            units = normalizeObjectUnits(units);
+            var prioritized = getPrioritizedUnits(units),
+                i;
+            for (i = 0; i < prioritized.length; i++) {
+                this[prioritized[i].unit](units[prioritized[i].unit]);
+            }
+        } else {
+            units = normalizeUnits(units);
+            if (isFunction(this[units])) {
+                return this[units](value);
+            }
+        }
+        return this;
+    }
+
+    var match1 = /\d/, //       0 - 9
+        match2 = /\d\d/, //      00 - 99
+        match3 = /\d{3}/, //     000 - 999
+        match4 = /\d{4}/, //    0000 - 9999
+        match6 = /[+-]?\d{6}/, // -999999 - 999999
+        match1to2 = /\d\d?/, //       0 - 99
+        match3to4 = /\d\d\d\d?/, //     999 - 9999
+        match5to6 = /\d\d\d\d\d\d?/, //   99999 - 999999
+        match1to3 = /\d{1,3}/, //       0 - 999
+        match1to4 = /\d{1,4}/, //       0 - 9999
+        match1to6 = /[+-]?\d{1,6}/, // -999999 - 999999
+        matchUnsigned = /\d+/, //       0 - inf
+        matchSigned = /[+-]?\d+/, //    -inf - inf
+        matchOffset = /Z|[+-]\d\d:?\d\d/gi, // +00:00 -00:00 +0000 -0000 or Z
+        matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi, // +00 -00 +00:00 -00:00 +0000 -0000 or Z
+        matchTimestamp = /[+-]?\d+(\.\d{1,3})?/, // 123456789 123456789.123
+        // any word (or two) characters or numbers including two/three word month in arabic.
+        // includes scottish gaelic two word and hyphenated months
+        matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i,
+        regexes;
+
+    regexes = {};
+
+    function addRegexToken(token, regex, strictRegex) {
+        regexes[token] = isFunction(regex)
+            ? regex
+            : function (isStrict, localeData) {
+                  return isStrict && strictRegex ? strictRegex : regex;
+              };
+    }
+
+    function getParseRegexForToken(token, config) {
+        if (!hasOwnProp(regexes, token)) {
+            return new RegExp(unescapeFormat(token));
+        }
+
+        return regexes[token](config._strict, config._locale);
+    }
+
+    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+    function unescapeFormat(s) {
+        return regexEscape(
+            s
+                .replace('\\', '')
+                .replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (
+                    matched,
+                    p1,
+                    p2,
+                    p3,
+                    p4
+                ) {
+                    return p1 || p2 || p3 || p4;
+                })
+        );
+    }
+
+    function regexEscape(s) {
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    var tokens = {};
+
+    function addParseToken(token, callback) {
+        var i,
+            func = callback;
+        if (typeof token === 'string') {
+            token = [token];
+        }
+        if (isNumber(callback)) {
+            func = function (input, array) {
+                array[callback] = toInt(input);
+            };
+        }
+        for (i = 0; i < token.length; i++) {
+            tokens[token[i]] = func;
+        }
+    }
+
+    function addWeekParseToken(token, callback) {
+        addParseToken(token, function (input, array, config, token) {
+            config._w = config._w || {};
+            callback(input, config._w, config, token);
+        });
+    }
+
+    function addTimeToArrayFromToken(token, input, config) {
+        if (input != null && hasOwnProp(tokens, token)) {
+            tokens[token](input, config._a, config, token);
+        }
+    }
+
+    var YEAR = 0,
+        MONTH = 1,
+        DATE = 2,
+        HOUR = 3,
+        MINUTE = 4,
+        SECOND = 5,
+        MILLISECOND = 6,
+        WEEK = 7,
+        WEEKDAY = 8;
+
+    function mod(n, x) {
+        return ((n % x) + x) % x;
+    }
+
+    var indexOf;
+
+    if (Array.prototype.indexOf) {
+        indexOf = Array.prototype.indexOf;
+    } else {
+        indexOf = function (o) {
+            // I know
+            var i;
+            for (i = 0; i < this.length; ++i) {
+                if (this[i] === o) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
+
+    function daysInMonth(year, month) {
+        if (isNaN(year) || isNaN(month)) {
+            return NaN;
+        }
+        var modMonth = mod(month, 12);
+        year += (month - modMonth) / 12;
+        return modMonth === 1
+            ? isLeapYear(year)
+                ? 29
+                : 28
+            : 31 - ((modMonth % 7) % 2);
+    }
+
+    // FORMATTING
+
+    addFormatToken('M', ['MM', 2], 'Mo', function () {
+        return this.month() + 1;
+    });
+
+    addFormatToken('MMM', 0, 0, function (format) {
+        return this.localeData().monthsShort(this, format);
+    });
+
+    addFormatToken('MMMM', 0, 0, function (format) {
+        return this.localeData().months(this, format);
+    });
+
+    // ALIASES
+
+    addUnitAlias('month', 'M');
+
+    // PRIORITY
+
+    addUnitPriority('month', 8);
+
+    // PARSING
+
+    addRegexToken('M', match1to2);
+    addRegexToken('MM', match1to2, match2);
+    addRegexToken('MMM', function (isStrict, locale) {
+        return locale.monthsShortRegex(isStrict);
+    });
+    addRegexToken('MMMM', function (isStrict, locale) {
+        return locale.monthsRegex(isStrict);
+    });
+
+    addParseToken(['M', 'MM'], function (input, array) {
+        array[MONTH] = toInt(input) - 1;
+    });
+
+    addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
+        var month = config._locale.monthsParse(input, token, config._strict);
+        // if we didn't find a month name, mark the date as invalid.
+        if (month != null) {
+            array[MONTH] = month;
+        } else {
+            getParsingFlags(config).invalidMonth = input;
+        }
+    });
+
+    // LOCALES
+
+    var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split(
+            '_'
+        ),
+        defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split(
+            '_'
+        ),
+        MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/,
+        defaultMonthsShortRegex = matchWord,
+        defaultMonthsRegex = matchWord;
+
+    function localeMonths(m, format) {
+        if (!m) {
+            return isArray(this._months)
+                ? this._months
+                : this._months['standalone'];
+        }
+        return isArray(this._months)
+            ? this._months[m.month()]
+            : this._months[
+                  (this._months.isFormat || MONTHS_IN_FORMAT).test(format)
+                      ? 'format'
+                      : 'standalone'
+              ][m.month()];
+    }
+
+    function localeMonthsShort(m, format) {
+        if (!m) {
+            return isArray(this._monthsShort)
+                ? this._monthsShort
+                : this._monthsShort['standalone'];
+        }
+        return isArray(this._monthsShort)
+            ? this._monthsShort[m.month()]
+            : this._monthsShort[
+                  MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'
+              ][m.month()];
+    }
+
+    function handleStrictParse(monthName, format, strict) {
+        var i,
+            ii,
+            mom,
+            llc = monthName.toLocaleLowerCase();
+        if (!this._monthsParse) {
+            // this is not used
+            this._monthsParse = [];
+            this._longMonthsParse = [];
+            this._shortMonthsParse = [];
+            for (i = 0; i < 12; ++i) {
+                mom = createUTC([2000, i]);
+                this._shortMonthsParse[i] = this.monthsShort(
+                    mom,
+                    ''
+                ).toLocaleLowerCase();
+                this._longMonthsParse[i] = this.months(mom, '').toLocaleLowerCase();
+            }
+        }
+
+        if (strict) {
+            if (format === 'MMM') {
+                ii = indexOf.call(this._shortMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._longMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        } else {
+            if (format === 'MMM') {
+                ii = indexOf.call(this._shortMonthsParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._longMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._longMonthsParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._shortMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        }
+    }
+
+    function localeMonthsParse(monthName, format, strict) {
+        var i, mom, regex;
+
+        if (this._monthsParseExact) {
+            return handleStrictParse.call(this, monthName, format, strict);
+        }
+
+        if (!this._monthsParse) {
+            this._monthsParse = [];
+            this._longMonthsParse = [];
+            this._shortMonthsParse = [];
+        }
+
+        // TODO: add sorting
+        // Sorting makes sure if one month (or abbr) is a prefix of another
+        // see sorting in computeMonthsParse
+        for (i = 0; i < 12; i++) {
+            // make the regex if we don't have it already
+            mom = createUTC([2000, i]);
+            if (strict && !this._longMonthsParse[i]) {
+                this._longMonthsParse[i] = new RegExp(
+                    '^' + this.months(mom, '').replace('.', '') + '$',
+                    'i'
+                );
+                this._shortMonthsParse[i] = new RegExp(
+                    '^' + this.monthsShort(mom, '').replace('.', '') + '$',
+                    'i'
+                );
+            }
+            if (!strict && !this._monthsParse[i]) {
+                regex =
+                    '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
+                this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
+            }
+            // test the regex
+            if (
+                strict &&
+                format === 'MMMM' &&
+                this._longMonthsParse[i].test(monthName)
+            ) {
+                return i;
+            } else if (
+                strict &&
+                format === 'MMM' &&
+                this._shortMonthsParse[i].test(monthName)
+            ) {
+                return i;
+            } else if (!strict && this._monthsParse[i].test(monthName)) {
+                return i;
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function setMonth(mom, value) {
+        var dayOfMonth;
+
+        if (!mom.isValid()) {
+            // No op
+            return mom;
+        }
+
+        if (typeof value === 'string') {
+            if (/^\d+$/.test(value)) {
+                value = toInt(value);
+            } else {
+                value = mom.localeData().monthsParse(value);
+                // TODO: Another silent failure?
+                if (!isNumber(value)) {
+                    return mom;
+                }
+            }
+        }
+
+        dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
+        return mom;
+    }
+
+    function getSetMonth(value) {
+        if (value != null) {
+            setMonth(this, value);
+            hooks.updateOffset(this, true);
+            return this;
+        } else {
+            return get(this, 'Month');
+        }
+    }
+
+    function getDaysInMonth() {
+        return daysInMonth(this.year(), this.month());
+    }
+
+    function monthsShortRegex(isStrict) {
+        if (this._monthsParseExact) {
+            if (!hasOwnProp(this, '_monthsRegex')) {
+                computeMonthsParse.call(this);
+            }
+            if (isStrict) {
+                return this._monthsShortStrictRegex;
+            } else {
+                return this._monthsShortRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_monthsShortRegex')) {
+                this._monthsShortRegex = defaultMonthsShortRegex;
+            }
+            return this._monthsShortStrictRegex && isStrict
+                ? this._monthsShortStrictRegex
+                : this._monthsShortRegex;
+        }
+    }
+
+    function monthsRegex(isStrict) {
+        if (this._monthsParseExact) {
+            if (!hasOwnProp(this, '_monthsRegex')) {
+                computeMonthsParse.call(this);
+            }
+            if (isStrict) {
+                return this._monthsStrictRegex;
+            } else {
+                return this._monthsRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_monthsRegex')) {
+                this._monthsRegex = defaultMonthsRegex;
+            }
+            return this._monthsStrictRegex && isStrict
+                ? this._monthsStrictRegex
+                : this._monthsRegex;
+        }
+    }
+
+    function computeMonthsParse() {
+        function cmpLenRev(a, b) {
+            return b.length - a.length;
+        }
+
+        var shortPieces = [],
+            longPieces = [],
+            mixedPieces = [],
+            i,
+            mom;
+        for (i = 0; i < 12; i++) {
+            // make the regex if we don't have it already
+            mom = createUTC([2000, i]);
+            shortPieces.push(this.monthsShort(mom, ''));
+            longPieces.push(this.months(mom, ''));
+            mixedPieces.push(this.months(mom, ''));
+            mixedPieces.push(this.monthsShort(mom, ''));
+        }
+        // Sorting makes sure if one month (or abbr) is a prefix of another it
+        // will match the longer piece.
+        shortPieces.sort(cmpLenRev);
+        longPieces.sort(cmpLenRev);
+        mixedPieces.sort(cmpLenRev);
+        for (i = 0; i < 12; i++) {
+            shortPieces[i] = regexEscape(shortPieces[i]);
+            longPieces[i] = regexEscape(longPieces[i]);
+        }
+        for (i = 0; i < 24; i++) {
+            mixedPieces[i] = regexEscape(mixedPieces[i]);
+        }
+
+        this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+        this._monthsShortRegex = this._monthsRegex;
+        this._monthsStrictRegex = new RegExp(
+            '^(' + longPieces.join('|') + ')',
+            'i'
+        );
+        this._monthsShortStrictRegex = new RegExp(
+            '^(' + shortPieces.join('|') + ')',
+            'i'
+        );
+    }
+
+    // FORMATTING
+
+    addFormatToken('Y', 0, 0, function () {
+        var y = this.year();
+        return y <= 9999 ? zeroFill(y, 4) : '+' + y;
+    });
+
+    addFormatToken(0, ['YY', 2], 0, function () {
+        return this.year() % 100;
+    });
+
+    addFormatToken(0, ['YYYY', 4], 0, 'year');
+    addFormatToken(0, ['YYYYY', 5], 0, 'year');
+    addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+    // ALIASES
+
+    addUnitAlias('year', 'y');
+
+    // PRIORITIES
+
+    addUnitPriority('year', 1);
+
+    // PARSING
+
+    addRegexToken('Y', matchSigned);
+    addRegexToken('YY', match1to2, match2);
+    addRegexToken('YYYY', match1to4, match4);
+    addRegexToken('YYYYY', match1to6, match6);
+    addRegexToken('YYYYYY', match1to6, match6);
+
+    addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+    addParseToken('YYYY', function (input, array) {
+        array[YEAR] =
+            input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+    });
+    addParseToken('YY', function (input, array) {
+        array[YEAR] = hooks.parseTwoDigitYear(input);
+    });
+    addParseToken('Y', function (input, array) {
+        array[YEAR] = parseInt(input, 10);
+    });
+
+    // HELPERS
+
+    function daysInYear(year) {
+        return isLeapYear(year) ? 366 : 365;
+    }
+
+    // HOOKS
+
+    hooks.parseTwoDigitYear = function (input) {
+        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+    };
+
+    // MOMENTS
+
+    var getSetYear = makeGetSet('FullYear', true);
+
+    function getIsLeapYear() {
+        return isLeapYear(this.year());
+    }
+
+    function createDate(y, m, d, h, M, s, ms) {
+        // can't just apply() to create a date:
+        // https://stackoverflow.com/q/181348
+        var date;
+        // the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            date = new Date(y + 400, m, d, h, M, s, ms);
+            if (isFinite(date.getFullYear())) {
+                date.setFullYear(y);
+            }
+        } else {
+            date = new Date(y, m, d, h, M, s, ms);
+        }
+
+        return date;
+    }
+
+    function createUTCDate(y) {
+        var date, args;
+        // the Date.UTC function remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            args = Array.prototype.slice.call(arguments);
+            // preserve leap years using a full 400 year cycle, then reset
+            args[0] = y + 400;
+            date = new Date(Date.UTC.apply(null, args));
+            if (isFinite(date.getUTCFullYear())) {
+                date.setUTCFullYear(y);
+            }
+        } else {
+            date = new Date(Date.UTC.apply(null, arguments));
+        }
+
+        return date;
+    }
+
+    // start-of-first-week - start-of-year
+    function firstWeekOffset(year, dow, doy) {
+        var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+            fwd = 7 + dow - doy,
+            // first-week day local weekday -- which local weekday is fwd
+            fwdlw = (7 + createUTCDate(year, 0, fwd).getUTCDay() - dow) % 7;
+
+        return -fwdlw + fwd - 1;
+    }
+
+    // https://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+    function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
+        var localWeekday = (7 + weekday - dow) % 7,
+            weekOffset = firstWeekOffset(year, dow, doy),
+            dayOfYear = 1 + 7 * (week - 1) + localWeekday + weekOffset,
+            resYear,
+            resDayOfYear;
+
+        if (dayOfYear <= 0) {
+            resYear = year - 1;
+            resDayOfYear = daysInYear(resYear) + dayOfYear;
+        } else if (dayOfYear > daysInYear(year)) {
+            resYear = year + 1;
+            resDayOfYear = dayOfYear - daysInYear(year);
+        } else {
+            resYear = year;
+            resDayOfYear = dayOfYear;
+        }
+
+        return {
+            year: resYear,
+            dayOfYear: resDayOfYear,
+        };
+    }
+
+    function weekOfYear(mom, dow, doy) {
+        var weekOffset = firstWeekOffset(mom.year(), dow, doy),
+            week = Math.floor((mom.dayOfYear() - weekOffset - 1) / 7) + 1,
+            resWeek,
+            resYear;
+
+        if (week < 1) {
+            resYear = mom.year() - 1;
+            resWeek = week + weeksInYear(resYear, dow, doy);
+        } else if (week > weeksInYear(mom.year(), dow, doy)) {
+            resWeek = week - weeksInYear(mom.year(), dow, doy);
+            resYear = mom.year() + 1;
+        } else {
+            resYear = mom.year();
+            resWeek = week;
+        }
+
+        return {
+            week: resWeek,
+            year: resYear,
+        };
+    }
+
+    function weeksInYear(year, dow, doy) {
+        var weekOffset = firstWeekOffset(year, dow, doy),
+            weekOffsetNext = firstWeekOffset(year + 1, dow, doy);
+        return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
+    }
+
+    // FORMATTING
+
+    addFormatToken('w', ['ww', 2], 'wo', 'week');
+    addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
+
+    // ALIASES
+
+    addUnitAlias('week', 'w');
+    addUnitAlias('isoWeek', 'W');
+
+    // PRIORITIES
+
+    addUnitPriority('week', 5);
+    addUnitPriority('isoWeek', 5);
+
+    // PARSING
+
+    addRegexToken('w', match1to2);
+    addRegexToken('ww', match1to2, match2);
+    addRegexToken('W', match1to2);
+    addRegexToken('WW', match1to2, match2);
+
+    addWeekParseToken(['w', 'ww', 'W', 'WW'], function (
+        input,
+        week,
+        config,
+        token
+    ) {
+        week[token.substr(0, 1)] = toInt(input);
+    });
+
+    // HELPERS
+
+    // LOCALES
+
+    function localeWeek(mom) {
+        return weekOfYear(mom, this._week.dow, this._week.doy).week;
+    }
+
+    var defaultLocaleWeek = {
+        dow: 0, // Sunday is the first day of the week.
+        doy: 6, // The week that contains Jan 6th is the first week of the year.
+    };
+
+    function localeFirstDayOfWeek() {
+        return this._week.dow;
+    }
+
+    function localeFirstDayOfYear() {
+        return this._week.doy;
+    }
+
+    // MOMENTS
+
+    function getSetWeek(input) {
+        var week = this.localeData().week(this);
+        return input == null ? week : this.add((input - week) * 7, 'd');
+    }
+
+    function getSetISOWeek(input) {
+        var week = weekOfYear(this, 1, 4).week;
+        return input == null ? week : this.add((input - week) * 7, 'd');
+    }
+
+    // FORMATTING
+
+    addFormatToken('d', 0, 'do', 'day');
+
+    addFormatToken('dd', 0, 0, function (format) {
+        return this.localeData().weekdaysMin(this, format);
+    });
+
+    addFormatToken('ddd', 0, 0, function (format) {
+        return this.localeData().weekdaysShort(this, format);
+    });
+
+    addFormatToken('dddd', 0, 0, function (format) {
+        return this.localeData().weekdays(this, format);
+    });
+
+    addFormatToken('e', 0, 0, 'weekday');
+    addFormatToken('E', 0, 0, 'isoWeekday');
+
+    // ALIASES
+
+    addUnitAlias('day', 'd');
+    addUnitAlias('weekday', 'e');
+    addUnitAlias('isoWeekday', 'E');
+
+    // PRIORITY
+    addUnitPriority('day', 11);
+    addUnitPriority('weekday', 11);
+    addUnitPriority('isoWeekday', 11);
+
+    // PARSING
+
+    addRegexToken('d', match1to2);
+    addRegexToken('e', match1to2);
+    addRegexToken('E', match1to2);
+    addRegexToken('dd', function (isStrict, locale) {
+        return locale.weekdaysMinRegex(isStrict);
+    });
+    addRegexToken('ddd', function (isStrict, locale) {
+        return locale.weekdaysShortRegex(isStrict);
+    });
+    addRegexToken('dddd', function (isStrict, locale) {
+        return locale.weekdaysRegex(isStrict);
+    });
+
+    addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config, token) {
+        var weekday = config._locale.weekdaysParse(input, token, config._strict);
+        // if we didn't get a weekday name, mark the date as invalid
+        if (weekday != null) {
+            week.d = weekday;
+        } else {
+            getParsingFlags(config).invalidWeekday = input;
+        }
+    });
+
+    addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
+        week[token] = toInt(input);
+    });
+
+    // HELPERS
+
+    function parseWeekday(input, locale) {
+        if (typeof input !== 'string') {
+            return input;
+        }
+
+        if (!isNaN(input)) {
+            return parseInt(input, 10);
+        }
+
+        input = locale.weekdaysParse(input);
+        if (typeof input === 'number') {
+            return input;
+        }
+
+        return null;
+    }
+
+    function parseIsoWeekday(input, locale) {
+        if (typeof input === 'string') {
+            return locale.weekdaysParse(input) % 7 || 7;
+        }
+        return isNaN(input) ? null : input;
+    }
+
+    // LOCALES
+    function shiftWeekdays(ws, n) {
+        return ws.slice(n, 7).concat(ws.slice(0, n));
+    }
+
+    var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split(
+            '_'
+        ),
+        defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
+        defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
+        defaultWeekdaysRegex = matchWord,
+        defaultWeekdaysShortRegex = matchWord,
+        defaultWeekdaysMinRegex = matchWord;
+
+    function localeWeekdays(m, format) {
+        var weekdays = isArray(this._weekdays)
+            ? this._weekdays
+            : this._weekdays[
+                  m && m !== true && this._weekdays.isFormat.test(format)
+                      ? 'format'
+                      : 'standalone'
+              ];
+        return m === true
+            ? shiftWeekdays(weekdays, this._week.dow)
+            : m
+            ? weekdays[m.day()]
+            : weekdays;
+    }
+
+    function localeWeekdaysShort(m) {
+        return m === true
+            ? shiftWeekdays(this._weekdaysShort, this._week.dow)
+            : m
+            ? this._weekdaysShort[m.day()]
+            : this._weekdaysShort;
+    }
+
+    function localeWeekdaysMin(m) {
+        return m === true
+            ? shiftWeekdays(this._weekdaysMin, this._week.dow)
+            : m
+            ? this._weekdaysMin[m.day()]
+            : this._weekdaysMin;
+    }
+
+    function handleStrictParse$1(weekdayName, format, strict) {
+        var i,
+            ii,
+            mom,
+            llc = weekdayName.toLocaleLowerCase();
+        if (!this._weekdaysParse) {
+            this._weekdaysParse = [];
+            this._shortWeekdaysParse = [];
+            this._minWeekdaysParse = [];
+
+            for (i = 0; i < 7; ++i) {
+                mom = createUTC([2000, 1]).day(i);
+                this._minWeekdaysParse[i] = this.weekdaysMin(
+                    mom,
+                    ''
+                ).toLocaleLowerCase();
+                this._shortWeekdaysParse[i] = this.weekdaysShort(
+                    mom,
+                    ''
+                ).toLocaleLowerCase();
+                this._weekdaysParse[i] = this.weekdays(mom, '').toLocaleLowerCase();
+            }
+        }
+
+        if (strict) {
+            if (format === 'dddd') {
+                ii = indexOf.call(this._weekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else if (format === 'ddd') {
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        } else {
+            if (format === 'dddd') {
+                ii = indexOf.call(this._weekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else if (format === 'ddd') {
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._weekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._weekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        }
+    }
+
+    function localeWeekdaysParse(weekdayName, format, strict) {
+        var i, mom, regex;
+
+        if (this._weekdaysParseExact) {
+            return handleStrictParse$1.call(this, weekdayName, format, strict);
+        }
+
+        if (!this._weekdaysParse) {
+            this._weekdaysParse = [];
+            this._minWeekdaysParse = [];
+            this._shortWeekdaysParse = [];
+            this._fullWeekdaysParse = [];
+        }
+
+        for (i = 0; i < 7; i++) {
+            // make the regex if we don't have it already
+
+            mom = createUTC([2000, 1]).day(i);
+            if (strict && !this._fullWeekdaysParse[i]) {
+                this._fullWeekdaysParse[i] = new RegExp(
+                    '^' + this.weekdays(mom, '').replace('.', '\\.?') + '$',
+                    'i'
+                );
+                this._shortWeekdaysParse[i] = new RegExp(
+                    '^' + this.weekdaysShort(mom, '').replace('.', '\\.?') + '$',
+                    'i'
+                );
+                this._minWeekdaysParse[i] = new RegExp(
+                    '^' + this.weekdaysMin(mom, '').replace('.', '\\.?') + '$',
+                    'i'
+                );
+            }
+            if (!this._weekdaysParse[i]) {
+                regex =
+                    '^' +
+                    this.weekdays(mom, '') +
+                    '|^' +
+                    this.weekdaysShort(mom, '') +
+                    '|^' +
+                    this.weekdaysMin(mom, '');
+                this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
+            }
+            // test the regex
+            if (
+                strict &&
+                format === 'dddd' &&
+                this._fullWeekdaysParse[i].test(weekdayName)
+            ) {
+                return i;
+            } else if (
+                strict &&
+                format === 'ddd' &&
+                this._shortWeekdaysParse[i].test(weekdayName)
+            ) {
+                return i;
+            } else if (
+                strict &&
+                format === 'dd' &&
+                this._minWeekdaysParse[i].test(weekdayName)
+            ) {
+                return i;
+            } else if (!strict && this._weekdaysParse[i].test(weekdayName)) {
+                return i;
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function getSetDayOfWeek(input) {
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+        if (input != null) {
+            input = parseWeekday(input, this.localeData());
+            return this.add(input - day, 'd');
+        } else {
+            return day;
+        }
+    }
+
+    function getSetLocaleDayOfWeek(input) {
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
+        return input == null ? weekday : this.add(input - weekday, 'd');
+    }
+
+    function getSetISODayOfWeek(input) {
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+
+        // behaves the same as moment#day except
+        // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
+        // as a setter, sunday should belong to the previous week.
+
+        if (input != null) {
+            var weekday = parseIsoWeekday(input, this.localeData());
+            return this.day(this.day() % 7 ? weekday : weekday - 7);
+        } else {
+            return this.day() || 7;
+        }
+    }
+
+    function weekdaysRegex(isStrict) {
+        if (this._weekdaysParseExact) {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                computeWeekdaysParse.call(this);
+            }
+            if (isStrict) {
+                return this._weekdaysStrictRegex;
+            } else {
+                return this._weekdaysRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                this._weekdaysRegex = defaultWeekdaysRegex;
+            }
+            return this._weekdaysStrictRegex && isStrict
+                ? this._weekdaysStrictRegex
+                : this._weekdaysRegex;
+        }
+    }
+
+    function weekdaysShortRegex(isStrict) {
+        if (this._weekdaysParseExact) {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                computeWeekdaysParse.call(this);
+            }
+            if (isStrict) {
+                return this._weekdaysShortStrictRegex;
+            } else {
+                return this._weekdaysShortRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_weekdaysShortRegex')) {
+                this._weekdaysShortRegex = defaultWeekdaysShortRegex;
+            }
+            return this._weekdaysShortStrictRegex && isStrict
+                ? this._weekdaysShortStrictRegex
+                : this._weekdaysShortRegex;
+        }
+    }
+
+    function weekdaysMinRegex(isStrict) {
+        if (this._weekdaysParseExact) {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                computeWeekdaysParse.call(this);
+            }
+            if (isStrict) {
+                return this._weekdaysMinStrictRegex;
+            } else {
+                return this._weekdaysMinRegex;
+            }
+        } else {
+            if (!hasOwnProp(this, '_weekdaysMinRegex')) {
+                this._weekdaysMinRegex = defaultWeekdaysMinRegex;
+            }
+            return this._weekdaysMinStrictRegex && isStrict
+                ? this._weekdaysMinStrictRegex
+                : this._weekdaysMinRegex;
+        }
+    }
+
+    function computeWeekdaysParse() {
+        function cmpLenRev(a, b) {
+            return b.length - a.length;
+        }
+
+        var minPieces = [],
+            shortPieces = [],
+            longPieces = [],
+            mixedPieces = [],
+            i,
+            mom,
+            minp,
+            shortp,
+            longp;
+        for (i = 0; i < 7; i++) {
+            // make the regex if we don't have it already
+            mom = createUTC([2000, 1]).day(i);
+            minp = regexEscape(this.weekdaysMin(mom, ''));
+            shortp = regexEscape(this.weekdaysShort(mom, ''));
+            longp = regexEscape(this.weekdays(mom, ''));
+            minPieces.push(minp);
+            shortPieces.push(shortp);
+            longPieces.push(longp);
+            mixedPieces.push(minp);
+            mixedPieces.push(shortp);
+            mixedPieces.push(longp);
+        }
+        // Sorting makes sure if one weekday (or abbr) is a prefix of another it
+        // will match the longer piece.
+        minPieces.sort(cmpLenRev);
+        shortPieces.sort(cmpLenRev);
+        longPieces.sort(cmpLenRev);
+        mixedPieces.sort(cmpLenRev);
+
+        this._weekdaysRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+        this._weekdaysShortRegex = this._weekdaysRegex;
+        this._weekdaysMinRegex = this._weekdaysRegex;
+
+        this._weekdaysStrictRegex = new RegExp(
+            '^(' + longPieces.join('|') + ')',
+            'i'
+        );
+        this._weekdaysShortStrictRegex = new RegExp(
+            '^(' + shortPieces.join('|') + ')',
+            'i'
+        );
+        this._weekdaysMinStrictRegex = new RegExp(
+            '^(' + minPieces.join('|') + ')',
+            'i'
+        );
+    }
+
+    // FORMATTING
+
+    function hFormat() {
+        return this.hours() % 12 || 12;
+    }
+
+    function kFormat() {
+        return this.hours() || 24;
+    }
+
+    addFormatToken('H', ['HH', 2], 0, 'hour');
+    addFormatToken('h', ['hh', 2], 0, hFormat);
+    addFormatToken('k', ['kk', 2], 0, kFormat);
+
+    addFormatToken('hmm', 0, 0, function () {
+        return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2);
+    });
+
+    addFormatToken('hmmss', 0, 0, function () {
+        return (
+            '' +
+            hFormat.apply(this) +
+            zeroFill(this.minutes(), 2) +
+            zeroFill(this.seconds(), 2)
+        );
+    });
+
+    addFormatToken('Hmm', 0, 0, function () {
+        return '' + this.hours() + zeroFill(this.minutes(), 2);
+    });
+
+    addFormatToken('Hmmss', 0, 0, function () {
+        return (
+            '' +
+            this.hours() +
+            zeroFill(this.minutes(), 2) +
+            zeroFill(this.seconds(), 2)
+        );
+    });
+
+    function meridiem(token, lowercase) {
+        addFormatToken(token, 0, 0, function () {
+            return this.localeData().meridiem(
+                this.hours(),
+                this.minutes(),
+                lowercase
+            );
+        });
+    }
+
+    meridiem('a', true);
+    meridiem('A', false);
+
+    // ALIASES
+
+    addUnitAlias('hour', 'h');
+
+    // PRIORITY
+    addUnitPriority('hour', 13);
+
+    // PARSING
+
+    function matchMeridiem(isStrict, locale) {
+        return locale._meridiemParse;
+    }
+
+    addRegexToken('a', matchMeridiem);
+    addRegexToken('A', matchMeridiem);
+    addRegexToken('H', match1to2);
+    addRegexToken('h', match1to2);
+    addRegexToken('k', match1to2);
+    addRegexToken('HH', match1to2, match2);
+    addRegexToken('hh', match1to2, match2);
+    addRegexToken('kk', match1to2, match2);
+
+    addRegexToken('hmm', match3to4);
+    addRegexToken('hmmss', match5to6);
+    addRegexToken('Hmm', match3to4);
+    addRegexToken('Hmmss', match5to6);
+
+    addParseToken(['H', 'HH'], HOUR);
+    addParseToken(['k', 'kk'], function (input, array, config) {
+        var kInput = toInt(input);
+        array[HOUR] = kInput === 24 ? 0 : kInput;
+    });
+    addParseToken(['a', 'A'], function (input, array, config) {
+        config._isPm = config._locale.isPM(input);
+        config._meridiem = input;
+    });
+    addParseToken(['h', 'hh'], function (input, array, config) {
+        array[HOUR] = toInt(input);
+        getParsingFlags(config).bigHour = true;
+    });
+    addParseToken('hmm', function (input, array, config) {
+        var pos = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos));
+        array[MINUTE] = toInt(input.substr(pos));
+        getParsingFlags(config).bigHour = true;
+    });
+    addParseToken('hmmss', function (input, array, config) {
+        var pos1 = input.length - 4,
+            pos2 = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos1));
+        array[MINUTE] = toInt(input.substr(pos1, 2));
+        array[SECOND] = toInt(input.substr(pos2));
+        getParsingFlags(config).bigHour = true;
+    });
+    addParseToken('Hmm', function (input, array, config) {
+        var pos = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos));
+        array[MINUTE] = toInt(input.substr(pos));
+    });
+    addParseToken('Hmmss', function (input, array, config) {
+        var pos1 = input.length - 4,
+            pos2 = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos1));
+        array[MINUTE] = toInt(input.substr(pos1, 2));
+        array[SECOND] = toInt(input.substr(pos2));
+    });
+
+    // LOCALES
+
+    function localeIsPM(input) {
+        // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+        // Using charAt should be more compatible.
+        return (input + '').toLowerCase().charAt(0) === 'p';
+    }
+
+    var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i,
+        // Setting the hour should keep the time, because the user explicitly
+        // specified which hour they want. So trying to maintain the same hour (in
+        // a new timezone) makes sense. Adding/subtracting hours does not follow
+        // this rule.
+        getSetHour = makeGetSet('Hours', true);
+
+    function localeMeridiem(hours, minutes, isLower) {
+        if (hours > 11) {
+            return isLower ? 'pm' : 'PM';
+        } else {
+            return isLower ? 'am' : 'AM';
+        }
+    }
+
+    var baseConfig = {
+        calendar: defaultCalendar,
+        longDateFormat: defaultLongDateFormat,
+        invalidDate: defaultInvalidDate,
+        ordinal: defaultOrdinal,
+        dayOfMonthOrdinalParse: defaultDayOfMonthOrdinalParse,
+        relativeTime: defaultRelativeTime,
+
+        months: defaultLocaleMonths,
+        monthsShort: defaultLocaleMonthsShort,
+
+        week: defaultLocaleWeek,
+
+        weekdays: defaultLocaleWeekdays,
+        weekdaysMin: defaultLocaleWeekdaysMin,
+        weekdaysShort: defaultLocaleWeekdaysShort,
+
+        meridiemParse: defaultLocaleMeridiemParse,
+    };
+
+    // internal storage for locale config files
+    var locales = {},
+        localeFamilies = {},
+        globalLocale;
+
+    function commonPrefix(arr1, arr2) {
+        var i,
+            minl = Math.min(arr1.length, arr2.length);
+        for (i = 0; i < minl; i += 1) {
+            if (arr1[i] !== arr2[i]) {
+                return i;
+            }
+        }
+        return minl;
+    }
+
+    function normalizeLocale(key) {
+        return key ? key.toLowerCase().replace('_', '-') : key;
+    }
+
+    // pick the locale from the array
+    // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+    // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
+    function chooseLocale(names) {
+        var i = 0,
+            j,
+            next,
+            locale,
+            split;
+
+        while (i < names.length) {
+            split = normalizeLocale(names[i]).split('-');
+            j = split.length;
+            next = normalizeLocale(names[i + 1]);
+            next = next ? next.split('-') : null;
+            while (j > 0) {
+                locale = loadLocale(split.slice(0, j).join('-'));
+                if (locale) {
+                    return locale;
+                }
+                if (
+                    next &&
+                    next.length >= j &&
+                    commonPrefix(split, next) >= j - 1
+                ) {
+                    //the next array item is better than a shallower substring of this one
+                    break;
+                }
+                j--;
+            }
+            i++;
+        }
+        return globalLocale;
+    }
+
+    function loadLocale(name) {
+        var oldLocale = null,
+            aliasedRequire;
+        // TODO: Find a better way to register and load all the locales in Node
+        if (
+            locales[name] === undefined &&
+            typeof module !== 'undefined' &&
+            module &&
+            module.exports
+        ) {
+            try {
+                oldLocale = globalLocale._abbr;
+                aliasedRequire = require;
+                aliasedRequire('./locale/' + name);
+                getSetGlobalLocale(oldLocale);
+            } catch (e) {
+                // mark as not found to avoid repeating expensive file require call causing high CPU
+                // when trying to find en-US, en_US, en-us for every format call
+                locales[name] = null; // null means not found
+            }
+        }
+        return locales[name];
+    }
+
+    // This function will load locale and then set the global locale.  If
+    // no arguments are passed in, it will simply return the current global
+    // locale key.
+    function getSetGlobalLocale(key, values) {
+        var data;
+        if (key) {
+            if (isUndefined(values)) {
+                data = getLocale(key);
+            } else {
+                data = defineLocale(key, values);
+            }
+
+            if (data) {
+                // moment.duration._locale = moment._locale = data;
+                globalLocale = data;
+            } else {
+                if (typeof console !== 'undefined' && console.warn) {
+                    //warn user if arguments are passed but the locale could not be set
+                    console.warn(
+                        'Locale ' + key + ' not found. Did you forget to load it?'
+                    );
+                }
+            }
+        }
+
+        return globalLocale._abbr;
+    }
+
+    function defineLocale(name, config) {
+        if (config !== null) {
+            var locale,
+                parentConfig = baseConfig;
+            config.abbr = name;
+            if (locales[name] != null) {
+                deprecateSimple(
+                    'defineLocaleOverride',
+                    'use moment.updateLocale(localeName, config) to change ' +
+                        'an existing locale. moment.defineLocale(localeName, ' +
+                        'config) should only be used for creating a new locale ' +
+                        'See http://momentjs.com/guides/#/warnings/define-locale/ for more info.'
+                );
+                parentConfig = locales[name]._config;
+            } else if (config.parentLocale != null) {
+                if (locales[config.parentLocale] != null) {
+                    parentConfig = locales[config.parentLocale]._config;
+                } else {
+                    locale = loadLocale(config.parentLocale);
+                    if (locale != null) {
+                        parentConfig = locale._config;
+                    } else {
+                        if (!localeFamilies[config.parentLocale]) {
+                            localeFamilies[config.parentLocale] = [];
+                        }
+                        localeFamilies[config.parentLocale].push({
+                            name: name,
+                            config: config,
+                        });
+                        return null;
+                    }
+                }
+            }
+            locales[name] = new Locale(mergeConfigs(parentConfig, config));
+
+            if (localeFamilies[name]) {
+                localeFamilies[name].forEach(function (x) {
+                    defineLocale(x.name, x.config);
+                });
+            }
+
+            // backwards compat for now: also set the locale
+            // make sure we set the locale AFTER all child locales have been
+            // created, so we won't end up with the child locale set.
+            getSetGlobalLocale(name);
+
+            return locales[name];
+        } else {
+            // useful for testing
+            delete locales[name];
+            return null;
+        }
+    }
+
+    function updateLocale(name, config) {
+        if (config != null) {
+            var locale,
+                tmpLocale,
+                parentConfig = baseConfig;
+
+            if (locales[name] != null && locales[name].parentLocale != null) {
+                // Update existing child locale in-place to avoid memory-leaks
+                locales[name].set(mergeConfigs(locales[name]._config, config));
+            } else {
+                // MERGE
+                tmpLocale = loadLocale(name);
+                if (tmpLocale != null) {
+                    parentConfig = tmpLocale._config;
+                }
+                config = mergeConfigs(parentConfig, config);
+                if (tmpLocale == null) {
+                    // updateLocale is called for creating a new locale
+                    // Set abbr so it will have a name (getters return
+                    // undefined otherwise).
+                    config.abbr = name;
+                }
+                locale = new Locale(config);
+                locale.parentLocale = locales[name];
+                locales[name] = locale;
+            }
+
+            // backwards compat for now: also set the locale
+            getSetGlobalLocale(name);
+        } else {
+            // pass null for config to unupdate, useful for tests
+            if (locales[name] != null) {
+                if (locales[name].parentLocale != null) {
+                    locales[name] = locales[name].parentLocale;
+                    if (name === getSetGlobalLocale()) {
+                        getSetGlobalLocale(name);
+                    }
+                } else if (locales[name] != null) {
+                    delete locales[name];
+                }
+            }
+        }
+        return locales[name];
+    }
+
+    // returns locale data
+    function getLocale(key) {
+        var locale;
+
+        if (key && key._locale && key._locale._abbr) {
+            key = key._locale._abbr;
+        }
+
+        if (!key) {
+            return globalLocale;
+        }
+
+        if (!isArray(key)) {
+            //short-circuit everything else
+            locale = loadLocale(key);
+            if (locale) {
+                return locale;
+            }
+            key = [key];
+        }
+
+        return chooseLocale(key);
+    }
+
+    function listLocales() {
+        return keys(locales);
+    }
+
+    function checkOverflow(m) {
+        var overflow,
+            a = m._a;
+
+        if (a && getParsingFlags(m).overflow === -2) {
+            overflow =
+                a[MONTH] < 0 || a[MONTH] > 11
+                    ? MONTH
+                    : a[DATE] < 1 || a[DATE] > daysInMonth(a[YEAR], a[MONTH])
+                    ? DATE
+                    : a[HOUR] < 0 ||
+                      a[HOUR] > 24 ||
+                      (a[HOUR] === 24 &&
+                          (a[MINUTE] !== 0 ||
+                              a[SECOND] !== 0 ||
+                              a[MILLISECOND] !== 0))
+                    ? HOUR
+                    : a[MINUTE] < 0 || a[MINUTE] > 59
+                    ? MINUTE
+                    : a[SECOND] < 0 || a[SECOND] > 59
+                    ? SECOND
+                    : a[MILLISECOND] < 0 || a[MILLISECOND] > 999
+                    ? MILLISECOND
+                    : -1;
+
+            if (
+                getParsingFlags(m)._overflowDayOfYear &&
+                (overflow < YEAR || overflow > DATE)
+            ) {
+                overflow = DATE;
+            }
+            if (getParsingFlags(m)._overflowWeeks && overflow === -1) {
+                overflow = WEEK;
+            }
+            if (getParsingFlags(m)._overflowWeekday && overflow === -1) {
+                overflow = WEEKDAY;
+            }
+
+            getParsingFlags(m).overflow = overflow;
+        }
+
+        return m;
+    }
+
+    // iso 8601 regex
+    // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
+    var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([+-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
+        basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d|))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([+-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
+        tzRegex = /Z|[+-]\d\d(?::?\d\d)?/,
+        isoDates = [
+            ['YYYYYY-MM-DD', /[+-]\d{6}-\d\d-\d\d/],
+            ['YYYY-MM-DD', /\d{4}-\d\d-\d\d/],
+            ['GGGG-[W]WW-E', /\d{4}-W\d\d-\d/],
+            ['GGGG-[W]WW', /\d{4}-W\d\d/, false],
+            ['YYYY-DDD', /\d{4}-\d{3}/],
+            ['YYYY-MM', /\d{4}-\d\d/, false],
+            ['YYYYYYMMDD', /[+-]\d{10}/],
+            ['YYYYMMDD', /\d{8}/],
+            ['GGGG[W]WWE', /\d{4}W\d{3}/],
+            ['GGGG[W]WW', /\d{4}W\d{2}/, false],
+            ['YYYYDDD', /\d{7}/],
+            ['YYYYMM', /\d{6}/, false],
+            ['YYYY', /\d{4}/, false],
+        ],
+        // iso time formats and regexes
+        isoTimes = [
+            ['HH:mm:ss.SSSS', /\d\d:\d\d:\d\d\.\d+/],
+            ['HH:mm:ss,SSSS', /\d\d:\d\d:\d\d,\d+/],
+            ['HH:mm:ss', /\d\d:\d\d:\d\d/],
+            ['HH:mm', /\d\d:\d\d/],
+            ['HHmmss.SSSS', /\d\d\d\d\d\d\.\d+/],
+            ['HHmmss,SSSS', /\d\d\d\d\d\d,\d+/],
+            ['HHmmss', /\d\d\d\d\d\d/],
+            ['HHmm', /\d\d\d\d/],
+            ['HH', /\d\d/],
+        ],
+        aspNetJsonRegex = /^\/?Date\((-?\d+)/i,
+        // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
+        rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/,
+        obsOffsets = {
+            UT: 0,
+            GMT: 0,
+            EDT: -4 * 60,
+            EST: -5 * 60,
+            CDT: -5 * 60,
+            CST: -6 * 60,
+            MDT: -6 * 60,
+            MST: -7 * 60,
+            PDT: -7 * 60,
+            PST: -8 * 60,
+        };
+
+    // date from iso format
+    function configFromISO(config) {
+        var i,
+            l,
+            string = config._i,
+            match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
+            allowTime,
+            dateFormat,
+            timeFormat,
+            tzFormat;
+
+        if (match) {
+            getParsingFlags(config).iso = true;
+
+            for (i = 0, l = isoDates.length; i < l; i++) {
+                if (isoDates[i][1].exec(match[1])) {
+                    dateFormat = isoDates[i][0];
+                    allowTime = isoDates[i][2] !== false;
+                    break;
+                }
+            }
+            if (dateFormat == null) {
+                config._isValid = false;
+                return;
+            }
+            if (match[3]) {
+                for (i = 0, l = isoTimes.length; i < l; i++) {
+                    if (isoTimes[i][1].exec(match[3])) {
+                        // match[2] should be 'T' or space
+                        timeFormat = (match[2] || ' ') + isoTimes[i][0];
+                        break;
+                    }
+                }
+                if (timeFormat == null) {
+                    config._isValid = false;
+                    return;
+                }
+            }
+            if (!allowTime && timeFormat != null) {
+                config._isValid = false;
+                return;
+            }
+            if (match[4]) {
+                if (tzRegex.exec(match[4])) {
+                    tzFormat = 'Z';
+                } else {
+                    config._isValid = false;
+                    return;
+                }
+            }
+            config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
+            configFromStringAndFormat(config);
+        } else {
+            config._isValid = false;
+        }
+    }
+
+    function extractFromRFC2822Strings(
+        yearStr,
+        monthStr,
+        dayStr,
+        hourStr,
+        minuteStr,
+        secondStr
+    ) {
+        var result = [
+            untruncateYear(yearStr),
+            defaultLocaleMonthsShort.indexOf(monthStr),
+            parseInt(dayStr, 10),
+            parseInt(hourStr, 10),
+            parseInt(minuteStr, 10),
+        ];
+
+        if (secondStr) {
+            result.push(parseInt(secondStr, 10));
+        }
+
+        return result;
+    }
+
+    function untruncateYear(yearStr) {
+        var year = parseInt(yearStr, 10);
+        if (year <= 49) {
+            return 2000 + year;
+        } else if (year <= 999) {
+            return 1900 + year;
+        }
+        return year;
+    }
+
+    function preprocessRFC2822(s) {
+        // Remove comments and folding whitespace and replace multiple-spaces with a single space
+        return s
+            .replace(/\([^)]*\)|[\n\t]/g, ' ')
+            .replace(/(\s\s+)/g, ' ')
+            .replace(/^\s\s*/, '')
+            .replace(/\s\s*$/, '');
+    }
+
+    function checkWeekday(weekdayStr, parsedInput, config) {
+        if (weekdayStr) {
+            // TODO: Replace the vanilla JS Date object with an independent day-of-week check.
+            var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+                weekdayActual = new Date(
+                    parsedInput[0],
+                    parsedInput[1],
+                    parsedInput[2]
+                ).getDay();
+            if (weekdayProvided !== weekdayActual) {
+                getParsingFlags(config).weekdayMismatch = true;
+                config._isValid = false;
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function calculateOffset(obsOffset, militaryOffset, numOffset) {
+        if (obsOffset) {
+            return obsOffsets[obsOffset];
+        } else if (militaryOffset) {
+            // the only allowed military tz is Z
+            return 0;
+        } else {
+            var hm = parseInt(numOffset, 10),
+                m = hm % 100,
+                h = (hm - m) / 100;
+            return h * 60 + m;
+        }
+    }
+
+    // date and time from ref 2822 format
+    function configFromRFC2822(config) {
+        var match = rfc2822.exec(preprocessRFC2822(config._i)),
+            parsedArray;
+        if (match) {
+            parsedArray = extractFromRFC2822Strings(
+                match[4],
+                match[3],
+                match[2],
+                match[5],
+                match[6],
+                match[7]
+            );
+            if (!checkWeekday(match[1], parsedArray, config)) {
+                return;
+            }
+
+            config._a = parsedArray;
+            config._tzm = calculateOffset(match[8], match[9], match[10]);
+
+            config._d = createUTCDate.apply(null, config._a);
+            config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
+            getParsingFlags(config).rfc2822 = true;
+        } else {
+            config._isValid = false;
+        }
+    }
+
+    // date from 1) ASP.NET, 2) ISO, 3) RFC 2822 formats, or 4) optional fallback if parsing isn't strict
+    function configFromString(config) {
+        var matched = aspNetJsonRegex.exec(config._i);
+        if (matched !== null) {
+            config._d = new Date(+matched[1]);
+            return;
+        }
+
+        configFromISO(config);
+        if (config._isValid === false) {
+            delete config._isValid;
+        } else {
+            return;
+        }
+
+        configFromRFC2822(config);
+        if (config._isValid === false) {
+            delete config._isValid;
+        } else {
+            return;
+        }
+
+        if (config._strict) {
+            config._isValid = false;
+        } else {
+            // Final attempt, use Input Fallback
+            hooks.createFromInputFallback(config);
+        }
+    }
+
+    hooks.createFromInputFallback = deprecate(
+        'value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' +
+            'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' +
+            'discouraged and will be removed in an upcoming major release. Please refer to ' +
+            'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
+        function (config) {
+            config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+        }
+    );
+
+    // Pick the first defined of two or three arguments.
+    function defaults(a, b, c) {
+        if (a != null) {
+            return a;
+        }
+        if (b != null) {
+            return b;
+        }
+        return c;
+    }
+
+    function currentDateArray(config) {
+        // hooks is actually the exported moment object
+        var nowValue = new Date(hooks.now());
+        if (config._useUTC) {
+            return [
+                nowValue.getUTCFullYear(),
+                nowValue.getUTCMonth(),
+                nowValue.getUTCDate(),
+            ];
+        }
+        return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+    }
+
+    // convert an array to a date.
+    // the array should mirror the parameters below
+    // note: all values past the year are optional and will default to the lowest possible value.
+    // [year, month, day , hour, minute, second, millisecond]
+    function configFromArray(config) {
+        var i,
+            date,
+            input = [],
+            currentDate,
+            expectedWeekday,
+            yearToUse;
+
+        if (config._d) {
+            return;
+        }
+
+        currentDate = currentDateArray(config);
+
+        //compute day of the year from weeks and weekdays
+        if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+            dayOfYearFromWeekInfo(config);
+        }
+
+        //if the day of the year is set, figure out what it is
+        if (config._dayOfYear != null) {
+            yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+            if (
+                config._dayOfYear > daysInYear(yearToUse) ||
+                config._dayOfYear === 0
+            ) {
+                getParsingFlags(config)._overflowDayOfYear = true;
+            }
+
+            date = createUTCDate(yearToUse, 0, config._dayOfYear);
+            config._a[MONTH] = date.getUTCMonth();
+            config._a[DATE] = date.getUTCDate();
+        }
+
+        // Default to current date.
+        // * if no year, month, day of month are given, default to today
+        // * if day of month is given, default month and year
+        // * if month is given, default only year
+        // * if year is given, don't default anything
+        for (i = 0; i < 3 && config._a[i] == null; ++i) {
+            config._a[i] = input[i] = currentDate[i];
+        }
+
+        // Zero out whatever was not defaulted, including time
+        for (; i < 7; i++) {
+            config._a[i] = input[i] =
+                config._a[i] == null ? (i === 2 ? 1 : 0) : config._a[i];
+        }
+
+        // Check for 24:00:00.000
+        if (
+            config._a[HOUR] === 24 &&
+            config._a[MINUTE] === 0 &&
+            config._a[SECOND] === 0 &&
+            config._a[MILLISECOND] === 0
+        ) {
+            config._nextDay = true;
+            config._a[HOUR] = 0;
+        }
+
+        config._d = (config._useUTC ? createUTCDate : createDate).apply(
+            null,
+            input
+        );
+        expectedWeekday = config._useUTC
+            ? config._d.getUTCDay()
+            : config._d.getDay();
+
+        // Apply timezone offset from input. The actual utcOffset can be changed
+        // with parseZone.
+        if (config._tzm != null) {
+            config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+        }
+
+        if (config._nextDay) {
+            config._a[HOUR] = 24;
+        }
+
+        // check for mismatching day of week
+        if (
+            config._w &&
+            typeof config._w.d !== 'undefined' &&
+            config._w.d !== expectedWeekday
+        ) {
+            getParsingFlags(config).weekdayMismatch = true;
+        }
+    }
+
+    function dayOfYearFromWeekInfo(config) {
+        var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow, curWeek;
+
+        w = config._w;
+        if (w.GG != null || w.W != null || w.E != null) {
+            dow = 1;
+            doy = 4;
+
+            // TODO: We need to take the current isoWeekYear, but that depends on
+            // how we interpret now (local, utc, fixed offset). So create
+            // a now version of current config (take local/utc/offset flags, and
+            // create now).
+            weekYear = defaults(
+                w.GG,
+                config._a[YEAR],
+                weekOfYear(createLocal(), 1, 4).year
+            );
+            week = defaults(w.W, 1);
+            weekday = defaults(w.E, 1);
+            if (weekday < 1 || weekday > 7) {
+                weekdayOverflow = true;
+            }
+        } else {
+            dow = config._locale._week.dow;
+            doy = config._locale._week.doy;
+
+            curWeek = weekOfYear(createLocal(), dow, doy);
+
+            weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
+
+            // Default to current week.
+            week = defaults(w.w, curWeek.week);
+
+            if (w.d != null) {
+                // weekday -- low day numbers are considered next week
+                weekday = w.d;
+                if (weekday < 0 || weekday > 6) {
+                    weekdayOverflow = true;
+                }
+            } else if (w.e != null) {
+                // local weekday -- counting starts from beginning of week
+                weekday = w.e + dow;
+                if (w.e < 0 || w.e > 6) {
+                    weekdayOverflow = true;
+                }
+            } else {
+                // default to beginning of week
+                weekday = dow;
+            }
+        }
+        if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+            getParsingFlags(config)._overflowWeeks = true;
+        } else if (weekdayOverflow != null) {
+            getParsingFlags(config)._overflowWeekday = true;
+        } else {
+            temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+            config._a[YEAR] = temp.year;
+            config._dayOfYear = temp.dayOfYear;
+        }
+    }
+
+    // constant that refers to the ISO standard
+    hooks.ISO_8601 = function () {};
+
+    // constant that refers to the RFC 2822 form
+    hooks.RFC_2822 = function () {};
+
+    // date from string and format string
+    function configFromStringAndFormat(config) {
+        // TODO: Move this to another part of the creation flow to prevent circular deps
+        if (config._f === hooks.ISO_8601) {
+            configFromISO(config);
+            return;
+        }
+        if (config._f === hooks.RFC_2822) {
+            configFromRFC2822(config);
+            return;
+        }
+        config._a = [];
+        getParsingFlags(config).empty = true;
+
+        // This array is used to make a Date, either with `new Date` or `Date.UTC`
+        var string = '' + config._i,
+            i,
+            parsedInput,
+            tokens,
+            token,
+            skipped,
+            stringLength = string.length,
+            totalParsedInputLength = 0,
+            era;
+
+        tokens =
+            expandFormat(config._f, config._locale).match(formattingTokens) || [];
+
+        for (i = 0; i < tokens.length; i++) {
+            token = tokens[i];
+            parsedInput = (string.match(getParseRegexForToken(token, config)) ||
+                [])[0];
+            if (parsedInput) {
+                skipped = string.substr(0, string.indexOf(parsedInput));
+                if (skipped.length > 0) {
+                    getParsingFlags(config).unusedInput.push(skipped);
+                }
+                string = string.slice(
+                    string.indexOf(parsedInput) + parsedInput.length
+                );
+                totalParsedInputLength += parsedInput.length;
+            }
+            // don't parse if it's not a known token
+            if (formatTokenFunctions[token]) {
+                if (parsedInput) {
+                    getParsingFlags(config).empty = false;
+                } else {
+                    getParsingFlags(config).unusedTokens.push(token);
+                }
+                addTimeToArrayFromToken(token, parsedInput, config);
+            } else if (config._strict && !parsedInput) {
+                getParsingFlags(config).unusedTokens.push(token);
+            }
+        }
+
+        // add remaining unparsed input length to the string
+        getParsingFlags(config).charsLeftOver =
+            stringLength - totalParsedInputLength;
+        if (string.length > 0) {
+            getParsingFlags(config).unusedInput.push(string);
+        }
+
+        // clear _12h flag if hour is <= 12
+        if (
+            config._a[HOUR] <= 12 &&
+            getParsingFlags(config).bigHour === true &&
+            config._a[HOUR] > 0
+        ) {
+            getParsingFlags(config).bigHour = undefined;
+        }
+
+        getParsingFlags(config).parsedDateParts = config._a.slice(0);
+        getParsingFlags(config).meridiem = config._meridiem;
+        // handle meridiem
+        config._a[HOUR] = meridiemFixWrap(
+            config._locale,
+            config._a[HOUR],
+            config._meridiem
+        );
+
+        // handle era
+        era = getParsingFlags(config).era;
+        if (era !== null) {
+            config._a[YEAR] = config._locale.erasConvertYear(era, config._a[YEAR]);
+        }
+
+        configFromArray(config);
+        checkOverflow(config);
+    }
+
+    function meridiemFixWrap(locale, hour, meridiem) {
+        var isPm;
+
+        if (meridiem == null) {
+            // nothing to do
+            return hour;
+        }
+        if (locale.meridiemHour != null) {
+            return locale.meridiemHour(hour, meridiem);
+        } else if (locale.isPM != null) {
+            // Fallback
+            isPm = locale.isPM(meridiem);
+            if (isPm && hour < 12) {
+                hour += 12;
+            }
+            if (!isPm && hour === 12) {
+                hour = 0;
+            }
+            return hour;
+        } else {
+            // this is not supposed to happen
+            return hour;
+        }
+    }
+
+    // date from string and array of format strings
+    function configFromStringAndArray(config) {
+        var tempConfig,
+            bestMoment,
+            scoreToBeat,
+            i,
+            currentScore,
+            validFormatFound,
+            bestFormatIsValid = false;
+
+        if (config._f.length === 0) {
+            getParsingFlags(config).invalidFormat = true;
+            config._d = new Date(NaN);
+            return;
+        }
+
+        for (i = 0; i < config._f.length; i++) {
+            currentScore = 0;
+            validFormatFound = false;
+            tempConfig = copyConfig({}, config);
+            if (config._useUTC != null) {
+                tempConfig._useUTC = config._useUTC;
+            }
+            tempConfig._f = config._f[i];
+            configFromStringAndFormat(tempConfig);
+
+            if (isValid(tempConfig)) {
+                validFormatFound = true;
+            }
+
+            // if there is any input that was not parsed add a penalty for that format
+            currentScore += getParsingFlags(tempConfig).charsLeftOver;
+
+            //or tokens
+            currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
+
+            getParsingFlags(tempConfig).score = currentScore;
+
+            if (!bestFormatIsValid) {
+                if (
+                    scoreToBeat == null ||
+                    currentScore < scoreToBeat ||
+                    validFormatFound
+                ) {
+                    scoreToBeat = currentScore;
+                    bestMoment = tempConfig;
+                    if (validFormatFound) {
+                        bestFormatIsValid = true;
+                    }
+                }
+            } else {
+                if (currentScore < scoreToBeat) {
+                    scoreToBeat = currentScore;
+                    bestMoment = tempConfig;
+                }
+            }
+        }
+
+        extend(config, bestMoment || tempConfig);
+    }
+
+    function configFromObject(config) {
+        if (config._d) {
+            return;
+        }
+
+        var i = normalizeObjectUnits(config._i),
+            dayOrDate = i.day === undefined ? i.date : i.day;
+        config._a = map(
+            [i.year, i.month, dayOrDate, i.hour, i.minute, i.second, i.millisecond],
+            function (obj) {
+                return obj && parseInt(obj, 10);
+            }
+        );
+
+        configFromArray(config);
+    }
+
+    function createFromConfig(config) {
+        var res = new Moment(checkOverflow(prepareConfig(config)));
+        if (res._nextDay) {
+            // Adding is smart enough around DST
+            res.add(1, 'd');
+            res._nextDay = undefined;
+        }
+
+        return res;
+    }
+
+    function prepareConfig(config) {
+        var input = config._i,
+            format = config._f;
+
+        config._locale = config._locale || getLocale(config._l);
+
+        if (input === null || (format === undefined && input === '')) {
+            return createInvalid({ nullInput: true });
+        }
+
+        if (typeof input === 'string') {
+            config._i = input = config._locale.preparse(input);
+        }
+
+        if (isMoment(input)) {
+            return new Moment(checkOverflow(input));
+        } else if (isDate(input)) {
+            config._d = input;
+        } else if (isArray(format)) {
+            configFromStringAndArray(config);
+        } else if (format) {
+            configFromStringAndFormat(config);
+        } else {
+            configFromInput(config);
+        }
+
+        if (!isValid(config)) {
+            config._d = null;
+        }
+
+        return config;
+    }
+
+    function configFromInput(config) {
+        var input = config._i;
+        if (isUndefined(input)) {
+            config._d = new Date(hooks.now());
+        } else if (isDate(input)) {
+            config._d = new Date(input.valueOf());
+        } else if (typeof input === 'string') {
+            configFromString(config);
+        } else if (isArray(input)) {
+            config._a = map(input.slice(0), function (obj) {
+                return parseInt(obj, 10);
+            });
+            configFromArray(config);
+        } else if (isObject(input)) {
+            configFromObject(config);
+        } else if (isNumber(input)) {
+            // from milliseconds
+            config._d = new Date(input);
+        } else {
+            hooks.createFromInputFallback(config);
+        }
+    }
+
+    function createLocalOrUTC(input, format, locale, strict, isUTC) {
+        var c = {};
+
+        if (format === true || format === false) {
+            strict = format;
+            format = undefined;
+        }
+
+        if (locale === true || locale === false) {
+            strict = locale;
+            locale = undefined;
+        }
+
+        if (
+            (isObject(input) && isObjectEmpty(input)) ||
+            (isArray(input) && input.length === 0)
+        ) {
+            input = undefined;
+        }
+        // object construction must be done this way.
+        // https://github.com/moment/moment/issues/1423
+        c._isAMomentObject = true;
+        c._useUTC = c._isUTC = isUTC;
+        c._l = locale;
+        c._i = input;
+        c._f = format;
+        c._strict = strict;
+
+        return createFromConfig(c);
+    }
+
+    function createLocal(input, format, locale, strict) {
+        return createLocalOrUTC(input, format, locale, strict, false);
+    }
+
+    var prototypeMin = deprecate(
+            'moment().min is deprecated, use moment.max instead. http://momentjs.com/guides/#/warnings/min-max/',
+            function () {
+                var other = createLocal.apply(null, arguments);
+                if (this.isValid() && other.isValid()) {
+                    return other < this ? this : other;
+                } else {
+                    return createInvalid();
+                }
+            }
+        ),
+        prototypeMax = deprecate(
+            'moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/',
+            function () {
+                var other = createLocal.apply(null, arguments);
+                if (this.isValid() && other.isValid()) {
+                    return other > this ? this : other;
+                } else {
+                    return createInvalid();
+                }
+            }
+        );
+
+    // Pick a moment m from moments so that m[fn](other) is true for all
+    // other. This relies on the function fn to be transitive.
+    //
+    // moments should either be an array of moment objects or an array, whose
+    // first element is an array of moment objects.
+    function pickBy(fn, moments) {
+        var res, i;
+        if (moments.length === 1 && isArray(moments[0])) {
+            moments = moments[0];
+        }
+        if (!moments.length) {
+            return createLocal();
+        }
+        res = moments[0];
+        for (i = 1; i < moments.length; ++i) {
+            if (!moments[i].isValid() || moments[i][fn](res)) {
+                res = moments[i];
+            }
+        }
+        return res;
+    }
+
+    // TODO: Use [].sort instead?
+    function min() {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isBefore', args);
+    }
+
+    function max() {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isAfter', args);
+    }
+
+    var now = function () {
+        return Date.now ? Date.now() : +new Date();
+    };
+
+    var ordering = [
+        'year',
+        'quarter',
+        'month',
+        'week',
+        'day',
+        'hour',
+        'minute',
+        'second',
+        'millisecond',
+    ];
+
+    function isDurationValid(m) {
+        var key,
+            unitHasDecimal = false,
+            i;
+        for (key in m) {
+            if (
+                hasOwnProp(m, key) &&
+                !(
+                    indexOf.call(ordering, key) !== -1 &&
+                    (m[key] == null || !isNaN(m[key]))
+                )
+            ) {
+                return false;
+            }
+        }
+
+        for (i = 0; i < ordering.length; ++i) {
+            if (m[ordering[i]]) {
+                if (unitHasDecimal) {
+                    return false; // only allow non-integers for smallest unit
+                }
+                if (parseFloat(m[ordering[i]]) !== toInt(m[ordering[i]])) {
+                    unitHasDecimal = true;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    function isValid$1() {
+        return this._isValid;
+    }
+
+    function createInvalid$1() {
+        return createDuration(NaN);
+    }
+
+    function Duration(duration) {
+        var normalizedInput = normalizeObjectUnits(duration),
+            years = normalizedInput.year || 0,
+            quarters = normalizedInput.quarter || 0,
+            months = normalizedInput.month || 0,
+            weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
+            days = normalizedInput.day || 0,
+            hours = normalizedInput.hour || 0,
+            minutes = normalizedInput.minute || 0,
+            seconds = normalizedInput.second || 0,
+            milliseconds = normalizedInput.millisecond || 0;
+
+        this._isValid = isDurationValid(normalizedInput);
+
+        // representation for dateAddRemove
+        this._milliseconds =
+            +milliseconds +
+            seconds * 1e3 + // 1000
+            minutes * 6e4 + // 1000 * 60
+            hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding errors https://github.com/moment/moment/issues/2978
+        // Because of dateAddRemove treats 24 hours as different from a
+        // day when working around DST, we need to store them separately
+        this._days = +days + weeks * 7;
+        // It is impossible to translate months into days without knowing
+        // which months you are are talking about, so we have to store
+        // it separately.
+        this._months = +months + quarters * 3 + years * 12;
+
+        this._data = {};
+
+        this._locale = getLocale();
+
+        this._bubble();
+    }
+
+    function isDuration(obj) {
+        return obj instanceof Duration;
+    }
+
+    function absRound(number) {
+        if (number < 0) {
+            return Math.round(-1 * number) * -1;
+        } else {
+            return Math.round(number);
+        }
+    }
+
+    // compare two arrays, return the number of differences
+    function compareArrays(array1, array2, dontConvert) {
+        var len = Math.min(array1.length, array2.length),
+            lengthDiff = Math.abs(array1.length - array2.length),
+            diffs = 0,
+            i;
+        for (i = 0; i < len; i++) {
+            if (
+                (dontConvert && array1[i] !== array2[i]) ||
+                (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))
+            ) {
+                diffs++;
+            }
+        }
+        return diffs + lengthDiff;
+    }
+
+    // FORMATTING
+
+    function offset(token, separator) {
+        addFormatToken(token, 0, 0, function () {
+            var offset = this.utcOffset(),
+                sign = '+';
+            if (offset < 0) {
+                offset = -offset;
+                sign = '-';
+            }
+            return (
+                sign +
+                zeroFill(~~(offset / 60), 2) +
+                separator +
+                zeroFill(~~offset % 60, 2)
+            );
+        });
+    }
+
+    offset('Z', ':');
+    offset('ZZ', '');
+
+    // PARSING
+
+    addRegexToken('Z', matchShortOffset);
+    addRegexToken('ZZ', matchShortOffset);
+    addParseToken(['Z', 'ZZ'], function (input, array, config) {
+        config._useUTC = true;
+        config._tzm = offsetFromString(matchShortOffset, input);
+    });
+
+    // HELPERS
+
+    // timezone chunker
+    // '+10:00' > ['10',  '00']
+    // '-1530'  > ['-15', '30']
+    var chunkOffset = /([\+\-]|\d\d)/gi;
+
+    function offsetFromString(matcher, string) {
+        var matches = (string || '').match(matcher),
+            chunk,
+            parts,
+            minutes;
+
+        if (matches === null) {
+            return null;
+        }
+
+        chunk = matches[matches.length - 1] || [];
+        parts = (chunk + '').match(chunkOffset) || ['-', 0, 0];
+        minutes = +(parts[1] * 60) + toInt(parts[2]);
+
+        return minutes === 0 ? 0 : parts[0] === '+' ? minutes : -minutes;
+    }
+
+    // Return a moment from input, that is local/utc/zone equivalent to model.
+    function cloneWithOffset(input, model) {
+        var res, diff;
+        if (model._isUTC) {
+            res = model.clone();
+            diff =
+                (isMoment(input) || isDate(input)
+                    ? input.valueOf()
+                    : createLocal(input).valueOf()) - res.valueOf();
+            // Use low-level api, because this fn is low-level api.
+            res._d.setTime(res._d.valueOf() + diff);
+            hooks.updateOffset(res, false);
+            return res;
+        } else {
+            return createLocal(input).local();
+        }
+    }
+
+    function getDateOffset(m) {
+        // On Firefox.24 Date#getTimezoneOffset returns a floating point.
+        // https://github.com/moment/moment/pull/1871
+        return -Math.round(m._d.getTimezoneOffset());
+    }
+
+    // HOOKS
+
+    // This function will be called whenever a moment is mutated.
+    // It is intended to keep the offset in sync with the timezone.
+    hooks.updateOffset = function () {};
+
+    // MOMENTS
+
+    // keepLocalTime = true means only change the timezone, without
+    // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
+    // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
+    // +0200, so we adjust the time as needed, to be valid.
+    //
+    // Keeping the time actually adds/subtracts (one hour)
+    // from the actual represented time. That is why we call updateOffset
+    // a second time. In case it wants us to change the offset again
+    // _changeInProgress == true case, then we have to adjust, because
+    // there is no such time in the given timezone.
+    function getSetOffset(input, keepLocalTime, keepMinutes) {
+        var offset = this._offset || 0,
+            localAdjust;
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        if (input != null) {
+            if (typeof input === 'string') {
+                input = offsetFromString(matchShortOffset, input);
+                if (input === null) {
+                    return this;
+                }
+            } else if (Math.abs(input) < 16 && !keepMinutes) {
+                input = input * 60;
+            }
+            if (!this._isUTC && keepLocalTime) {
+                localAdjust = getDateOffset(this);
+            }
+            this._offset = input;
+            this._isUTC = true;
+            if (localAdjust != null) {
+                this.add(localAdjust, 'm');
+            }
+            if (offset !== input) {
+                if (!keepLocalTime || this._changeInProgress) {
+                    addSubtract(
+                        this,
+                        createDuration(input - offset, 'm'),
+                        1,
+                        false
+                    );
+                } else if (!this._changeInProgress) {
+                    this._changeInProgress = true;
+                    hooks.updateOffset(this, true);
+                    this._changeInProgress = null;
+                }
+            }
+            return this;
+        } else {
+            return this._isUTC ? offset : getDateOffset(this);
+        }
+    }
+
+    function getSetZone(input, keepLocalTime) {
+        if (input != null) {
+            if (typeof input !== 'string') {
+                input = -input;
+            }
+
+            this.utcOffset(input, keepLocalTime);
+
+            return this;
+        } else {
+            return -this.utcOffset();
+        }
+    }
+
+    function setOffsetToUTC(keepLocalTime) {
+        return this.utcOffset(0, keepLocalTime);
+    }
+
+    function setOffsetToLocal(keepLocalTime) {
+        if (this._isUTC) {
+            this.utcOffset(0, keepLocalTime);
+            this._isUTC = false;
+
+            if (keepLocalTime) {
+                this.subtract(getDateOffset(this), 'm');
+            }
+        }
+        return this;
+    }
+
+    function setOffsetToParsedOffset() {
+        if (this._tzm != null) {
+            this.utcOffset(this._tzm, false, true);
+        } else if (typeof this._i === 'string') {
+            var tZone = offsetFromString(matchOffset, this._i);
+            if (tZone != null) {
+                this.utcOffset(tZone);
+            } else {
+                this.utcOffset(0, true);
+            }
+        }
+        return this;
+    }
+
+    function hasAlignedHourOffset(input) {
+        if (!this.isValid()) {
+            return false;
+        }
+        input = input ? createLocal(input).utcOffset() : 0;
+
+        return (this.utcOffset() - input) % 60 === 0;
+    }
+
+    function isDaylightSavingTime() {
+        return (
+            this.utcOffset() > this.clone().month(0).utcOffset() ||
+            this.utcOffset() > this.clone().month(5).utcOffset()
+        );
+    }
+
+    function isDaylightSavingTimeShifted() {
+        if (!isUndefined(this._isDSTShifted)) {
+            return this._isDSTShifted;
+        }
+
+        var c = {},
+            other;
+
+        copyConfig(c, this);
+        c = prepareConfig(c);
+
+        if (c._a) {
+            other = c._isUTC ? createUTC(c._a) : createLocal(c._a);
+            this._isDSTShifted =
+                this.isValid() && compareArrays(c._a, other.toArray()) > 0;
+        } else {
+            this._isDSTShifted = false;
+        }
+
+        return this._isDSTShifted;
+    }
+
+    function isLocal() {
+        return this.isValid() ? !this._isUTC : false;
+    }
+
+    function isUtcOffset() {
+        return this.isValid() ? this._isUTC : false;
+    }
+
+    function isUtc() {
+        return this.isValid() ? this._isUTC && this._offset === 0 : false;
+    }
+
+    // ASP.NET json date format regex
+    var aspNetRegex = /^(-|\+)?(?:(\d*)[. ])?(\d+):(\d+)(?::(\d+)(\.\d*)?)?$/,
+        // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+        // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
+        // and further modified to allow for strings containing both week and day
+        isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
+
+    function createDuration(input, key) {
+        var duration = input,
+            // matching against regexp is expensive, do it on demand
+            match = null,
+            sign,
+            ret,
+            diffRes;
+
+        if (isDuration(input)) {
+            duration = {
+                ms: input._milliseconds,
+                d: input._days,
+                M: input._months,
+            };
+        } else if (isNumber(input) || !isNaN(+input)) {
+            duration = {};
+            if (key) {
+                duration[key] = +input;
+            } else {
+                duration.milliseconds = +input;
+            }
+        } else if ((match = aspNetRegex.exec(input))) {
+            sign = match[1] === '-' ? -1 : 1;
+            duration = {
+                y: 0,
+                d: toInt(match[DATE]) * sign,
+                h: toInt(match[HOUR]) * sign,
+                m: toInt(match[MINUTE]) * sign,
+                s: toInt(match[SECOND]) * sign,
+                ms: toInt(absRound(match[MILLISECOND] * 1000)) * sign, // the millisecond decimal point is included in the match
+            };
+        } else if ((match = isoRegex.exec(input))) {
+            sign = match[1] === '-' ? -1 : 1;
+            duration = {
+                y: parseIso(match[2], sign),
+                M: parseIso(match[3], sign),
+                w: parseIso(match[4], sign),
+                d: parseIso(match[5], sign),
+                h: parseIso(match[6], sign),
+                m: parseIso(match[7], sign),
+                s: parseIso(match[8], sign),
+            };
+        } else if (duration == null) {
+            // checks for null or undefined
+            duration = {};
+        } else if (
+            typeof duration === 'object' &&
+            ('from' in duration || 'to' in duration)
+        ) {
+            diffRes = momentsDifference(
+                createLocal(duration.from),
+                createLocal(duration.to)
+            );
+
+            duration = {};
+            duration.ms = diffRes.milliseconds;
+            duration.M = diffRes.months;
+        }
+
+        ret = new Duration(duration);
+
+        if (isDuration(input) && hasOwnProp(input, '_locale')) {
+            ret._locale = input._locale;
+        }
+
+        if (isDuration(input) && hasOwnProp(input, '_isValid')) {
+            ret._isValid = input._isValid;
+        }
+
+        return ret;
+    }
+
+    createDuration.fn = Duration.prototype;
+    createDuration.invalid = createInvalid$1;
+
+    function parseIso(inp, sign) {
+        // We'd normally use ~~inp for this, but unfortunately it also
+        // converts floats to ints.
+        // inp may be undefined, so careful calling replace on it.
+        var res = inp && parseFloat(inp.replace(',', '.'));
+        // apply sign while we're at it
+        return (isNaN(res) ? 0 : res) * sign;
+    }
+
+    function positiveMomentsDifference(base, other) {
+        var res = {};
+
+        res.months =
+            other.month() - base.month() + (other.year() - base.year()) * 12;
+        if (base.clone().add(res.months, 'M').isAfter(other)) {
+            --res.months;
+        }
+
+        res.milliseconds = +other - +base.clone().add(res.months, 'M');
+
+        return res;
+    }
+
+    function momentsDifference(base, other) {
+        var res;
+        if (!(base.isValid() && other.isValid())) {
+            return { milliseconds: 0, months: 0 };
+        }
+
+        other = cloneWithOffset(other, base);
+        if (base.isBefore(other)) {
+            res = positiveMomentsDifference(base, other);
+        } else {
+            res = positiveMomentsDifference(other, base);
+            res.milliseconds = -res.milliseconds;
+            res.months = -res.months;
+        }
+
+        return res;
+    }
+
+    // TODO: remove 'name' arg after deprecation is removed
+    function createAdder(direction, name) {
+        return function (val, period) {
+            var dur, tmp;
+            //invert the arguments, but complain about it
+            if (period !== null && !isNaN(+period)) {
+                deprecateSimple(
+                    name,
+                    'moment().' +
+                        name +
+                        '(period, number) is deprecated. Please use moment().' +
+                        name +
+                        '(number, period). ' +
+                        'See http://momentjs.com/guides/#/warnings/add-inverted-param/ for more info.'
+                );
+                tmp = val;
+                val = period;
+                period = tmp;
+            }
+
+            dur = createDuration(val, period);
+            addSubtract(this, dur, direction);
+            return this;
+        };
+    }
+
+    function addSubtract(mom, duration, isAdding, updateOffset) {
+        var milliseconds = duration._milliseconds,
+            days = absRound(duration._days),
+            months = absRound(duration._months);
+
+        if (!mom.isValid()) {
+            // No op
+            return;
+        }
+
+        updateOffset = updateOffset == null ? true : updateOffset;
+
+        if (months) {
+            setMonth(mom, get(mom, 'Month') + months * isAdding);
+        }
+        if (days) {
+            set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
+        }
+        if (milliseconds) {
+            mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
+        }
+        if (updateOffset) {
+            hooks.updateOffset(mom, days || months);
+        }
+    }
+
+    var add = createAdder(1, 'add'),
+        subtract = createAdder(-1, 'subtract');
+
+    function isString(input) {
+        return typeof input === 'string' || input instanceof String;
+    }
+
+    // type MomentInput = Moment | Date | string | number | (number | string)[] | MomentInputObject | void; // null | undefined
+    function isMomentInput(input) {
+        return (
+            isMoment(input) ||
+            isDate(input) ||
+            isString(input) ||
+            isNumber(input) ||
+            isNumberOrStringArray(input) ||
+            isMomentInputObject(input) ||
+            input === null ||
+            input === undefined
+        );
+    }
+
+    function isMomentInputObject(input) {
+        var objectTest = isObject(input) && !isObjectEmpty(input),
+            propertyTest = false,
+            properties = [
+                'years',
+                'year',
+                'y',
+                'months',
+                'month',
+                'M',
+                'days',
+                'day',
+                'd',
+                'dates',
+                'date',
+                'D',
+                'hours',
+                'hour',
+                'h',
+                'minutes',
+                'minute',
+                'm',
+                'seconds',
+                'second',
+                's',
+                'milliseconds',
+                'millisecond',
+                'ms',
+            ],
+            i,
+            property;
+
+        for (i = 0; i < properties.length; i += 1) {
+            property = properties[i];
+            propertyTest = propertyTest || hasOwnProp(input, property);
+        }
+
+        return objectTest && propertyTest;
+    }
+
+    function isNumberOrStringArray(input) {
+        var arrayTest = isArray(input),
+            dataTypeTest = false;
+        if (arrayTest) {
+            dataTypeTest =
+                input.filter(function (item) {
+                    return !isNumber(item) && isString(input);
+                }).length === 0;
+        }
+        return arrayTest && dataTypeTest;
+    }
+
+    function isCalendarSpec(input) {
+        var objectTest = isObject(input) && !isObjectEmpty(input),
+            propertyTest = false,
+            properties = [
+                'sameDay',
+                'nextDay',
+                'lastDay',
+                'nextWeek',
+                'lastWeek',
+                'sameElse',
+            ],
+            i,
+            property;
+
+        for (i = 0; i < properties.length; i += 1) {
+            property = properties[i];
+            propertyTest = propertyTest || hasOwnProp(input, property);
+        }
+
+        return objectTest && propertyTest;
+    }
+
+    function getCalendarFormat(myMoment, now) {
+        var diff = myMoment.diff(now, 'days', true);
+        return diff < -6
+            ? 'sameElse'
+            : diff < -1
+            ? 'lastWeek'
+            : diff < 0
+            ? 'lastDay'
+            : diff < 1
+            ? 'sameDay'
+            : diff < 2
+            ? 'nextDay'
+            : diff < 7
+            ? 'nextWeek'
+            : 'sameElse';
+    }
+
+    function calendar$1(time, formats) {
+        // Support for single parameter, formats only overload to the calendar function
+        if (arguments.length === 1) {
+            if (isMomentInput(arguments[0])) {
+                time = arguments[0];
+                formats = undefined;
+            } else if (isCalendarSpec(arguments[0])) {
+                formats = arguments[0];
+                time = undefined;
+            }
+        }
+        // We want to compare the start of today, vs this.
+        // Getting start-of-today depends on whether we're local/utc/offset or not.
+        var now = time || createLocal(),
+            sod = cloneWithOffset(now, this).startOf('day'),
+            format = hooks.calendarFormat(this, sod) || 'sameElse',
+            output =
+                formats &&
+                (isFunction(formats[format])
+                    ? formats[format].call(this, now)
+                    : formats[format]);
+
+        return this.format(
+            output || this.localeData().calendar(format, this, createLocal(now))
+        );
+    }
+
+    function clone() {
+        return new Moment(this);
+    }
+
+    function isAfter(input, units) {
+        var localInput = isMoment(input) ? input : createLocal(input);
+        if (!(this.isValid() && localInput.isValid())) {
+            return false;
+        }
+        units = normalizeUnits(units) || 'millisecond';
+        if (units === 'millisecond') {
+            return this.valueOf() > localInput.valueOf();
+        } else {
+            return localInput.valueOf() < this.clone().startOf(units).valueOf();
+        }
+    }
+
+    function isBefore(input, units) {
+        var localInput = isMoment(input) ? input : createLocal(input);
+        if (!(this.isValid() && localInput.isValid())) {
+            return false;
+        }
+        units = normalizeUnits(units) || 'millisecond';
+        if (units === 'millisecond') {
+            return this.valueOf() < localInput.valueOf();
+        } else {
+            return this.clone().endOf(units).valueOf() < localInput.valueOf();
+        }
+    }
+
+    function isBetween(from, to, units, inclusivity) {
+        var localFrom = isMoment(from) ? from : createLocal(from),
+            localTo = isMoment(to) ? to : createLocal(to);
+        if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+            return false;
+        }
+        inclusivity = inclusivity || '()';
+        return (
+            (inclusivity[0] === '('
+                ? this.isAfter(localFrom, units)
+                : !this.isBefore(localFrom, units)) &&
+            (inclusivity[1] === ')'
+                ? this.isBefore(localTo, units)
+                : !this.isAfter(localTo, units))
+        );
+    }
+
+    function isSame(input, units) {
+        var localInput = isMoment(input) ? input : createLocal(input),
+            inputMs;
+        if (!(this.isValid() && localInput.isValid())) {
+            return false;
+        }
+        units = normalizeUnits(units) || 'millisecond';
+        if (units === 'millisecond') {
+            return this.valueOf() === localInput.valueOf();
+        } else {
+            inputMs = localInput.valueOf();
+            return (
+                this.clone().startOf(units).valueOf() <= inputMs &&
+                inputMs <= this.clone().endOf(units).valueOf()
+            );
+        }
+    }
+
+    function isSameOrAfter(input, units) {
+        return this.isSame(input, units) || this.isAfter(input, units);
+    }
+
+    function isSameOrBefore(input, units) {
+        return this.isSame(input, units) || this.isBefore(input, units);
+    }
+
+    function diff(input, units, asFloat) {
+        var that, zoneDelta, output;
+
+        if (!this.isValid()) {
+            return NaN;
+        }
+
+        that = cloneWithOffset(input, this);
+
+        if (!that.isValid()) {
+            return NaN;
+        }
+
+        zoneDelta = (that.utcOffset() - this.utcOffset()) * 6e4;
+
+        units = normalizeUnits(units);
+
+        switch (units) {
+            case 'year':
+                output = monthDiff(this, that) / 12;
+                break;
+            case 'month':
+                output = monthDiff(this, that);
+                break;
+            case 'quarter':
+                output = monthDiff(this, that) / 3;
+                break;
+            case 'second':
+                output = (this - that) / 1e3;
+                break; // 1000
+            case 'minute':
+                output = (this - that) / 6e4;
+                break; // 1000 * 60
+            case 'hour':
+                output = (this - that) / 36e5;
+                break; // 1000 * 60 * 60
+            case 'day':
+                output = (this - that - zoneDelta) / 864e5;
+                break; // 1000 * 60 * 60 * 24, negate dst
+            case 'week':
+                output = (this - that - zoneDelta) / 6048e5;
+                break; // 1000 * 60 * 60 * 24 * 7, negate dst
+            default:
+                output = this - that;
+        }
+
+        return asFloat ? output : absFloor(output);
+    }
+
+    function monthDiff(a, b) {
+        if (a.date() < b.date()) {
+            // end-of-month calculations work correct when the start month has more
+            // days than the end month.
+            return -monthDiff(b, a);
+        }
+        // difference in months
+        var wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month()),
+            // b is in (anchor - 1 month, anchor + 1 month)
+            anchor = a.clone().add(wholeMonthDiff, 'months'),
+            anchor2,
+            adjust;
+
+        if (b - anchor < 0) {
+            anchor2 = a.clone().add(wholeMonthDiff - 1, 'months');
+            // linear across the month
+            adjust = (b - anchor) / (anchor - anchor2);
+        } else {
+            anchor2 = a.clone().add(wholeMonthDiff + 1, 'months');
+            // linear across the month
+            adjust = (b - anchor) / (anchor2 - anchor);
+        }
+
+        //check for negative zero, return zero if negative zero
+        return -(wholeMonthDiff + adjust) || 0;
+    }
+
+    hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+    hooks.defaultFormatUtc = 'YYYY-MM-DDTHH:mm:ss[Z]';
+
+    function toString() {
+        return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
+    }
+
+    function toISOString(keepOffset) {
+        if (!this.isValid()) {
+            return null;
+        }
+        var utc = keepOffset !== true,
+            m = utc ? this.clone().utc() : this;
+        if (m.year() < 0 || m.year() > 9999) {
+            return formatMoment(
+                m,
+                utc
+                    ? 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]'
+                    : 'YYYYYY-MM-DD[T]HH:mm:ss.SSSZ'
+            );
+        }
+        if (isFunction(Date.prototype.toISOString)) {
+            // native implementation is ~50x faster, use it when we can
+            if (utc) {
+                return this.toDate().toISOString();
+            } else {
+                return new Date(this.valueOf() + this.utcOffset() * 60 * 1000)
+                    .toISOString()
+                    .replace('Z', formatMoment(m, 'Z'));
+            }
+        }
+        return formatMoment(
+            m,
+            utc ? 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYY-MM-DD[T]HH:mm:ss.SSSZ'
+        );
+    }
+
+    /**
+     * Return a human readable representation of a moment that can
+     * also be evaluated to get a new moment which is the same
+     *
+     * @link https://nodejs.org/dist/latest/docs/api/util.html#util_custom_inspect_function_on_objects
+     */
+    function inspect() {
+        if (!this.isValid()) {
+            return 'moment.invalid(/* ' + this._i + ' */)';
+        }
+        var func = 'moment',
+            zone = '',
+            prefix,
+            year,
+            datetime,
+            suffix;
+        if (!this.isLocal()) {
+            func = this.utcOffset() === 0 ? 'moment.utc' : 'moment.parseZone';
+            zone = 'Z';
+        }
+        prefix = '[' + func + '("]';
+        year = 0 <= this.year() && this.year() <= 9999 ? 'YYYY' : 'YYYYYY';
+        datetime = '-MM-DD[T]HH:mm:ss.SSS';
+        suffix = zone + '[")]';
+
+        return this.format(prefix + year + datetime + suffix);
+    }
+
+    function format(inputString) {
+        if (!inputString) {
+            inputString = this.isUtc()
+                ? hooks.defaultFormatUtc
+                : hooks.defaultFormat;
+        }
+        var output = formatMoment(this, inputString);
+        return this.localeData().postformat(output);
+    }
+
+    function from(time, withoutSuffix) {
+        if (
+            this.isValid() &&
+            ((isMoment(time) && time.isValid()) || createLocal(time).isValid())
+        ) {
+            return createDuration({ to: this, from: time })
+                .locale(this.locale())
+                .humanize(!withoutSuffix);
+        } else {
+            return this.localeData().invalidDate();
+        }
+    }
+
+    function fromNow(withoutSuffix) {
+        return this.from(createLocal(), withoutSuffix);
+    }
+
+    function to(time, withoutSuffix) {
+        if (
+            this.isValid() &&
+            ((isMoment(time) && time.isValid()) || createLocal(time).isValid())
+        ) {
+            return createDuration({ from: this, to: time })
+                .locale(this.locale())
+                .humanize(!withoutSuffix);
+        } else {
+            return this.localeData().invalidDate();
+        }
+    }
+
+    function toNow(withoutSuffix) {
+        return this.to(createLocal(), withoutSuffix);
+    }
+
+    // If passed a locale key, it will set the locale for this
+    // instance.  Otherwise, it will return the locale configuration
+    // variables for this instance.
+    function locale(key) {
+        var newLocaleData;
+
+        if (key === undefined) {
+            return this._locale._abbr;
+        } else {
+            newLocaleData = getLocale(key);
+            if (newLocaleData != null) {
+                this._locale = newLocaleData;
+            }
+            return this;
+        }
+    }
+
+    var lang = deprecate(
+        'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
+        function (key) {
+            if (key === undefined) {
+                return this.localeData();
+            } else {
+                return this.locale(key);
+            }
+        }
+    );
+
+    function localeData() {
+        return this._locale;
+    }
+
+    var MS_PER_SECOND = 1000,
+        MS_PER_MINUTE = 60 * MS_PER_SECOND,
+        MS_PER_HOUR = 60 * MS_PER_MINUTE,
+        MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
+
+    // actual modulo - handles negative numbers (for dates before 1970):
+    function mod$1(dividend, divisor) {
+        return ((dividend % divisor) + divisor) % divisor;
+    }
+
+    function localStartOfDate(y, m, d) {
+        // the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return new Date(y, m, d).valueOf();
+        }
+    }
+
+    function utcStartOfDate(y, m, d) {
+        // Date.UTC remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return Date.UTC(y, m, d);
+        }
+    }
+
+    function startOf(units) {
+        var time, startOfDate;
+        units = normalizeUnits(units);
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
+            return this;
+        }
+
+        startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+        switch (units) {
+            case 'year':
+                time = startOfDate(this.year(), 0, 1);
+                break;
+            case 'quarter':
+                time = startOfDate(
+                    this.year(),
+                    this.month() - (this.month() % 3),
+                    1
+                );
+                break;
+            case 'month':
+                time = startOfDate(this.year(), this.month(), 1);
+                break;
+            case 'week':
+                time = startOfDate(
+                    this.year(),
+                    this.month(),
+                    this.date() - this.weekday()
+                );
+                break;
+            case 'isoWeek':
+                time = startOfDate(
+                    this.year(),
+                    this.month(),
+                    this.date() - (this.isoWeekday() - 1)
+                );
+                break;
+            case 'day':
+            case 'date':
+                time = startOfDate(this.year(), this.month(), this.date());
+                break;
+            case 'hour':
+                time = this._d.valueOf();
+                time -= mod$1(
+                    time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE),
+                    MS_PER_HOUR
+                );
+                break;
+            case 'minute':
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_MINUTE);
+                break;
+            case 'second':
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_SECOND);
+                break;
+        }
+
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
+        return this;
+    }
+
+    function endOf(units) {
+        var time, startOfDate;
+        units = normalizeUnits(units);
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
+            return this;
+        }
+
+        startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+        switch (units) {
+            case 'year':
+                time = startOfDate(this.year() + 1, 0, 1) - 1;
+                break;
+            case 'quarter':
+                time =
+                    startOfDate(
+                        this.year(),
+                        this.month() - (this.month() % 3) + 3,
+                        1
+                    ) - 1;
+                break;
+            case 'month':
+                time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+                break;
+            case 'week':
+                time =
+                    startOfDate(
+                        this.year(),
+                        this.month(),
+                        this.date() - this.weekday() + 7
+                    ) - 1;
+                break;
+            case 'isoWeek':
+                time =
+                    startOfDate(
+                        this.year(),
+                        this.month(),
+                        this.date() - (this.isoWeekday() - 1) + 7
+                    ) - 1;
+                break;
+            case 'day':
+            case 'date':
+                time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+                break;
+            case 'hour':
+                time = this._d.valueOf();
+                time +=
+                    MS_PER_HOUR -
+                    mod$1(
+                        time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE),
+                        MS_PER_HOUR
+                    ) -
+                    1;
+                break;
+            case 'minute':
+                time = this._d.valueOf();
+                time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+                break;
+            case 'second':
+                time = this._d.valueOf();
+                time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+                break;
+        }
+
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
+        return this;
+    }
+
+    function valueOf() {
+        return this._d.valueOf() - (this._offset || 0) * 60000;
+    }
+
+    function unix() {
+        return Math.floor(this.valueOf() / 1000);
+    }
+
+    function toDate() {
+        return new Date(this.valueOf());
+    }
+
+    function toArray() {
+        var m = this;
+        return [
+            m.year(),
+            m.month(),
+            m.date(),
+            m.hour(),
+            m.minute(),
+            m.second(),
+            m.millisecond(),
+        ];
+    }
+
+    function toObject() {
+        var m = this;
+        return {
+            years: m.year(),
+            months: m.month(),
+            date: m.date(),
+            hours: m.hours(),
+            minutes: m.minutes(),
+            seconds: m.seconds(),
+            milliseconds: m.milliseconds(),
+        };
+    }
+
+    function toJSON() {
+        // new Date(NaN).toJSON() === null
+        return this.isValid() ? this.toISOString() : null;
+    }
+
+    function isValid$2() {
+        return isValid(this);
+    }
+
+    function parsingFlags() {
+        return extend({}, getParsingFlags(this));
+    }
+
+    function invalidAt() {
+        return getParsingFlags(this).overflow;
+    }
+
+    function creationData() {
+        return {
+            input: this._i,
+            format: this._f,
+            locale: this._locale,
+            isUTC: this._isUTC,
+            strict: this._strict,
+        };
+    }
+
+    addFormatToken('N', 0, 0, 'eraAbbr');
+    addFormatToken('NN', 0, 0, 'eraAbbr');
+    addFormatToken('NNN', 0, 0, 'eraAbbr');
+    addFormatToken('NNNN', 0, 0, 'eraName');
+    addFormatToken('NNNNN', 0, 0, 'eraNarrow');
+
+    addFormatToken('y', ['y', 1], 'yo', 'eraYear');
+    addFormatToken('y', ['yy', 2], 0, 'eraYear');
+    addFormatToken('y', ['yyy', 3], 0, 'eraYear');
+    addFormatToken('y', ['yyyy', 4], 0, 'eraYear');
+
+    addRegexToken('N', matchEraAbbr);
+    addRegexToken('NN', matchEraAbbr);
+    addRegexToken('NNN', matchEraAbbr);
+    addRegexToken('NNNN', matchEraName);
+    addRegexToken('NNNNN', matchEraNarrow);
+
+    addParseToken(['N', 'NN', 'NNN', 'NNNN', 'NNNNN'], function (
+        input,
+        array,
+        config,
+        token
+    ) {
+        var era = config._locale.erasParse(input, token, config._strict);
+        if (era) {
+            getParsingFlags(config).era = era;
+        } else {
+            getParsingFlags(config).invalidEra = input;
+        }
+    });
+
+    addRegexToken('y', matchUnsigned);
+    addRegexToken('yy', matchUnsigned);
+    addRegexToken('yyy', matchUnsigned);
+    addRegexToken('yyyy', matchUnsigned);
+    addRegexToken('yo', matchEraYearOrdinal);
+
+    addParseToken(['y', 'yy', 'yyy', 'yyyy'], YEAR);
+    addParseToken(['yo'], function (input, array, config, token) {
+        var match;
+        if (config._locale._eraYearOrdinalRegex) {
+            match = input.match(config._locale._eraYearOrdinalRegex);
+        }
+
+        if (config._locale.eraYearOrdinalParse) {
+            array[YEAR] = config._locale.eraYearOrdinalParse(input, match);
+        } else {
+            array[YEAR] = parseInt(input, 10);
+        }
+    });
+
+    function localeEras(m, format) {
+        var i,
+            l,
+            date,
+            eras = this._eras || getLocale('en')._eras;
+        for (i = 0, l = eras.length; i < l; ++i) {
+            switch (typeof eras[i].since) {
+                case 'string':
+                    // truncate time
+                    date = hooks(eras[i].since).startOf('day');
+                    eras[i].since = date.valueOf();
+                    break;
+            }
+
+            switch (typeof eras[i].until) {
+                case 'undefined':
+                    eras[i].until = +Infinity;
+                    break;
+                case 'string':
+                    // truncate time
+                    date = hooks(eras[i].until).startOf('day').valueOf();
+                    eras[i].until = date.valueOf();
+                    break;
+            }
+        }
+        return eras;
+    }
+
+    function localeErasParse(eraName, format, strict) {
+        var i,
+            l,
+            eras = this.eras(),
+            name,
+            abbr,
+            narrow;
+        eraName = eraName.toUpperCase();
+
+        for (i = 0, l = eras.length; i < l; ++i) {
+            name = eras[i].name.toUpperCase();
+            abbr = eras[i].abbr.toUpperCase();
+            narrow = eras[i].narrow.toUpperCase();
+
+            if (strict) {
+                switch (format) {
+                    case 'N':
+                    case 'NN':
+                    case 'NNN':
+                        if (abbr === eraName) {
+                            return eras[i];
+                        }
+                        break;
+
+                    case 'NNNN':
+                        if (name === eraName) {
+                            return eras[i];
+                        }
+                        break;
+
+                    case 'NNNNN':
+                        if (narrow === eraName) {
+                            return eras[i];
+                        }
+                        break;
+                }
+            } else if ([name, abbr, narrow].indexOf(eraName) >= 0) {
+                return eras[i];
+            }
+        }
+    }
+
+    function localeErasConvertYear(era, year) {
+        var dir = era.since <= era.until ? +1 : -1;
+        if (year === undefined) {
+            return hooks(era.since).year();
+        } else {
+            return hooks(era.since).year() + (year - era.offset) * dir;
+        }
+    }
+
+    function getEraName() {
+        var i,
+            l,
+            val,
+            eras = this.localeData().eras();
+        for (i = 0, l = eras.length; i < l; ++i) {
+            // truncate time
+            val = this.startOf('day').valueOf();
+
+            if (eras[i].since <= val && val <= eras[i].until) {
+                return eras[i].name;
+            }
+            if (eras[i].until <= val && val <= eras[i].since) {
+                return eras[i].name;
+            }
+        }
+
+        return '';
+    }
+
+    function getEraNarrow() {
+        var i,
+            l,
+            val,
+            eras = this.localeData().eras();
+        for (i = 0, l = eras.length; i < l; ++i) {
+            // truncate time
+            val = this.startOf('day').valueOf();
+
+            if (eras[i].since <= val && val <= eras[i].until) {
+                return eras[i].narrow;
+            }
+            if (eras[i].until <= val && val <= eras[i].since) {
+                return eras[i].narrow;
+            }
+        }
+
+        return '';
+    }
+
+    function getEraAbbr() {
+        var i,
+            l,
+            val,
+            eras = this.localeData().eras();
+        for (i = 0, l = eras.length; i < l; ++i) {
+            // truncate time
+            val = this.startOf('day').valueOf();
+
+            if (eras[i].since <= val && val <= eras[i].until) {
+                return eras[i].abbr;
+            }
+            if (eras[i].until <= val && val <= eras[i].since) {
+                return eras[i].abbr;
+            }
+        }
+
+        return '';
+    }
+
+    function getEraYear() {
+        var i,
+            l,
+            dir,
+            val,
+            eras = this.localeData().eras();
+        for (i = 0, l = eras.length; i < l; ++i) {
+            dir = eras[i].since <= eras[i].until ? +1 : -1;
+
+            // truncate time
+            val = this.startOf('day').valueOf();
+
+            if (
+                (eras[i].since <= val && val <= eras[i].until) ||
+                (eras[i].until <= val && val <= eras[i].since)
+            ) {
+                return (
+                    (this.year() - hooks(eras[i].since).year()) * dir +
+                    eras[i].offset
+                );
+            }
+        }
+
+        return this.year();
+    }
+
+    function erasNameRegex(isStrict) {
+        if (!hasOwnProp(this, '_erasNameRegex')) {
+            computeErasParse.call(this);
+        }
+        return isStrict ? this._erasNameRegex : this._erasRegex;
+    }
+
+    function erasAbbrRegex(isStrict) {
+        if (!hasOwnProp(this, '_erasAbbrRegex')) {
+            computeErasParse.call(this);
+        }
+        return isStrict ? this._erasAbbrRegex : this._erasRegex;
+    }
+
+    function erasNarrowRegex(isStrict) {
+        if (!hasOwnProp(this, '_erasNarrowRegex')) {
+            computeErasParse.call(this);
+        }
+        return isStrict ? this._erasNarrowRegex : this._erasRegex;
+    }
+
+    function matchEraAbbr(isStrict, locale) {
+        return locale.erasAbbrRegex(isStrict);
+    }
+
+    function matchEraName(isStrict, locale) {
+        return locale.erasNameRegex(isStrict);
+    }
+
+    function matchEraNarrow(isStrict, locale) {
+        return locale.erasNarrowRegex(isStrict);
+    }
+
+    function matchEraYearOrdinal(isStrict, locale) {
+        return locale._eraYearOrdinalRegex || matchUnsigned;
+    }
+
+    function computeErasParse() {
+        var abbrPieces = [],
+            namePieces = [],
+            narrowPieces = [],
+            mixedPieces = [],
+            i,
+            l,
+            eras = this.eras();
+
+        for (i = 0, l = eras.length; i < l; ++i) {
+            namePieces.push(regexEscape(eras[i].name));
+            abbrPieces.push(regexEscape(eras[i].abbr));
+            narrowPieces.push(regexEscape(eras[i].narrow));
+
+            mixedPieces.push(regexEscape(eras[i].name));
+            mixedPieces.push(regexEscape(eras[i].abbr));
+            mixedPieces.push(regexEscape(eras[i].narrow));
+        }
+
+        this._erasRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+        this._erasNameRegex = new RegExp('^(' + namePieces.join('|') + ')', 'i');
+        this._erasAbbrRegex = new RegExp('^(' + abbrPieces.join('|') + ')', 'i');
+        this._erasNarrowRegex = new RegExp(
+            '^(' + narrowPieces.join('|') + ')',
+            'i'
+        );
+    }
+
+    // FORMATTING
+
+    addFormatToken(0, ['gg', 2], 0, function () {
+        return this.weekYear() % 100;
+    });
+
+    addFormatToken(0, ['GG', 2], 0, function () {
+        return this.isoWeekYear() % 100;
+    });
+
+    function addWeekYearFormatToken(token, getter) {
+        addFormatToken(0, [token, token.length], 0, getter);
+    }
+
+    addWeekYearFormatToken('gggg', 'weekYear');
+    addWeekYearFormatToken('ggggg', 'weekYear');
+    addWeekYearFormatToken('GGGG', 'isoWeekYear');
+    addWeekYearFormatToken('GGGGG', 'isoWeekYear');
+
+    // ALIASES
+
+    addUnitAlias('weekYear', 'gg');
+    addUnitAlias('isoWeekYear', 'GG');
+
+    // PRIORITY
+
+    addUnitPriority('weekYear', 1);
+    addUnitPriority('isoWeekYear', 1);
+
+    // PARSING
+
+    addRegexToken('G', matchSigned);
+    addRegexToken('g', matchSigned);
+    addRegexToken('GG', match1to2, match2);
+    addRegexToken('gg', match1to2, match2);
+    addRegexToken('GGGG', match1to4, match4);
+    addRegexToken('gggg', match1to4, match4);
+    addRegexToken('GGGGG', match1to6, match6);
+    addRegexToken('ggggg', match1to6, match6);
+
+    addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (
+        input,
+        week,
+        config,
+        token
+    ) {
+        week[token.substr(0, 2)] = toInt(input);
+    });
+
+    addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
+        week[token] = hooks.parseTwoDigitYear(input);
+    });
+
+    // MOMENTS
+
+    function getSetWeekYear(input) {
+        return getSetWeekYearHelper.call(
+            this,
+            input,
+            this.week(),
+            this.weekday(),
+            this.localeData()._week.dow,
+            this.localeData()._week.doy
+        );
+    }
+
+    function getSetISOWeekYear(input) {
+        return getSetWeekYearHelper.call(
+            this,
+            input,
+            this.isoWeek(),
+            this.isoWeekday(),
+            1,
+            4
+        );
+    }
+
+    function getISOWeeksInYear() {
+        return weeksInYear(this.year(), 1, 4);
+    }
+
+    function getISOWeeksInISOWeekYear() {
+        return weeksInYear(this.isoWeekYear(), 1, 4);
+    }
+
+    function getWeeksInYear() {
+        var weekInfo = this.localeData()._week;
+        return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
+    }
+
+    function getWeeksInWeekYear() {
+        var weekInfo = this.localeData()._week;
+        return weeksInYear(this.weekYear(), weekInfo.dow, weekInfo.doy);
+    }
+
+    function getSetWeekYearHelper(input, week, weekday, dow, doy) {
+        var weeksTarget;
+        if (input == null) {
+            return weekOfYear(this, dow, doy).year;
+        } else {
+            weeksTarget = weeksInYear(input, dow, doy);
+            if (week > weeksTarget) {
+                week = weeksTarget;
+            }
+            return setWeekAll.call(this, input, week, weekday, dow, doy);
+        }
+    }
+
+    function setWeekAll(weekYear, week, weekday, dow, doy) {
+        var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
+            date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
+
+        this.year(date.getUTCFullYear());
+        this.month(date.getUTCMonth());
+        this.date(date.getUTCDate());
+        return this;
+    }
+
+    // FORMATTING
+
+    addFormatToken('Q', 0, 'Qo', 'quarter');
+
+    // ALIASES
+
+    addUnitAlias('quarter', 'Q');
+
+    // PRIORITY
+
+    addUnitPriority('quarter', 7);
+
+    // PARSING
+
+    addRegexToken('Q', match1);
+    addParseToken('Q', function (input, array) {
+        array[MONTH] = (toInt(input) - 1) * 3;
+    });
+
+    // MOMENTS
+
+    function getSetQuarter(input) {
+        return input == null
+            ? Math.ceil((this.month() + 1) / 3)
+            : this.month((input - 1) * 3 + (this.month() % 3));
+    }
+
+    // FORMATTING
+
+    addFormatToken('D', ['DD', 2], 'Do', 'date');
+
+    // ALIASES
+
+    addUnitAlias('date', 'D');
+
+    // PRIORITY
+    addUnitPriority('date', 9);
+
+    // PARSING
+
+    addRegexToken('D', match1to2);
+    addRegexToken('DD', match1to2, match2);
+    addRegexToken('Do', function (isStrict, locale) {
+        // TODO: Remove "ordinalParse" fallback in next major release.
+        return isStrict
+            ? locale._dayOfMonthOrdinalParse || locale._ordinalParse
+            : locale._dayOfMonthOrdinalParseLenient;
+    });
+
+    addParseToken(['D', 'DD'], DATE);
+    addParseToken('Do', function (input, array) {
+        array[DATE] = toInt(input.match(match1to2)[0]);
+    });
+
+    // MOMENTS
+
+    var getSetDayOfMonth = makeGetSet('Date', true);
+
+    // FORMATTING
+
+    addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
+
+    // ALIASES
+
+    addUnitAlias('dayOfYear', 'DDD');
+
+    // PRIORITY
+    addUnitPriority('dayOfYear', 4);
+
+    // PARSING
+
+    addRegexToken('DDD', match1to3);
+    addRegexToken('DDDD', match3);
+    addParseToken(['DDD', 'DDDD'], function (input, array, config) {
+        config._dayOfYear = toInt(input);
+    });
+
+    // HELPERS
+
+    // MOMENTS
+
+    function getSetDayOfYear(input) {
+        var dayOfYear =
+            Math.round(
+                (this.clone().startOf('day') - this.clone().startOf('year')) / 864e5
+            ) + 1;
+        return input == null ? dayOfYear : this.add(input - dayOfYear, 'd');
+    }
+
+    // FORMATTING
+
+    addFormatToken('m', ['mm', 2], 0, 'minute');
+
+    // ALIASES
+
+    addUnitAlias('minute', 'm');
+
+    // PRIORITY
+
+    addUnitPriority('minute', 14);
+
+    // PARSING
+
+    addRegexToken('m', match1to2);
+    addRegexToken('mm', match1to2, match2);
+    addParseToken(['m', 'mm'], MINUTE);
+
+    // MOMENTS
+
+    var getSetMinute = makeGetSet('Minutes', false);
+
+    // FORMATTING
+
+    addFormatToken('s', ['ss', 2], 0, 'second');
+
+    // ALIASES
+
+    addUnitAlias('second', 's');
+
+    // PRIORITY
+
+    addUnitPriority('second', 15);
+
+    // PARSING
+
+    addRegexToken('s', match1to2);
+    addRegexToken('ss', match1to2, match2);
+    addParseToken(['s', 'ss'], SECOND);
+
+    // MOMENTS
+
+    var getSetSecond = makeGetSet('Seconds', false);
+
+    // FORMATTING
+
+    addFormatToken('S', 0, 0, function () {
+        return ~~(this.millisecond() / 100);
+    });
+
+    addFormatToken(0, ['SS', 2], 0, function () {
+        return ~~(this.millisecond() / 10);
+    });
+
+    addFormatToken(0, ['SSS', 3], 0, 'millisecond');
+    addFormatToken(0, ['SSSS', 4], 0, function () {
+        return this.millisecond() * 10;
+    });
+    addFormatToken(0, ['SSSSS', 5], 0, function () {
+        return this.millisecond() * 100;
+    });
+    addFormatToken(0, ['SSSSSS', 6], 0, function () {
+        return this.millisecond() * 1000;
+    });
+    addFormatToken(0, ['SSSSSSS', 7], 0, function () {
+        return this.millisecond() * 10000;
+    });
+    addFormatToken(0, ['SSSSSSSS', 8], 0, function () {
+        return this.millisecond() * 100000;
+    });
+    addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
+        return this.millisecond() * 1000000;
+    });
+
+    // ALIASES
+
+    addUnitAlias('millisecond', 'ms');
+
+    // PRIORITY
+
+    addUnitPriority('millisecond', 16);
+
+    // PARSING
+
+    addRegexToken('S', match1to3, match1);
+    addRegexToken('SS', match1to3, match2);
+    addRegexToken('SSS', match1to3, match3);
+
+    var token, getSetMillisecond;
+    for (token = 'SSSS'; token.length <= 9; token += 'S') {
+        addRegexToken(token, matchUnsigned);
+    }
+
+    function parseMs(input, array) {
+        array[MILLISECOND] = toInt(('0.' + input) * 1000);
+    }
+
+    for (token = 'S'; token.length <= 9; token += 'S') {
+        addParseToken(token, parseMs);
+    }
+
+    getSetMillisecond = makeGetSet('Milliseconds', false);
+
+    // FORMATTING
+
+    addFormatToken('z', 0, 0, 'zoneAbbr');
+    addFormatToken('zz', 0, 0, 'zoneName');
+
+    // MOMENTS
+
+    function getZoneAbbr() {
+        return this._isUTC ? 'UTC' : '';
+    }
+
+    function getZoneName() {
+        return this._isUTC ? 'Coordinated Universal Time' : '';
+    }
+
+    var proto = Moment.prototype;
+
+    proto.add = add;
+    proto.calendar = calendar$1;
+    proto.clone = clone;
+    proto.diff = diff;
+    proto.endOf = endOf;
+    proto.format = format;
+    proto.from = from;
+    proto.fromNow = fromNow;
+    proto.to = to;
+    proto.toNow = toNow;
+    proto.get = stringGet;
+    proto.invalidAt = invalidAt;
+    proto.isAfter = isAfter;
+    proto.isBefore = isBefore;
+    proto.isBetween = isBetween;
+    proto.isSame = isSame;
+    proto.isSameOrAfter = isSameOrAfter;
+    proto.isSameOrBefore = isSameOrBefore;
+    proto.isValid = isValid$2;
+    proto.lang = lang;
+    proto.locale = locale;
+    proto.localeData = localeData;
+    proto.max = prototypeMax;
+    proto.min = prototypeMin;
+    proto.parsingFlags = parsingFlags;
+    proto.set = stringSet;
+    proto.startOf = startOf;
+    proto.subtract = subtract;
+    proto.toArray = toArray;
+    proto.toObject = toObject;
+    proto.toDate = toDate;
+    proto.toISOString = toISOString;
+    proto.inspect = inspect;
+    if (typeof Symbol !== 'undefined' && Symbol.for != null) {
+        proto[Symbol.for('nodejs.util.inspect.custom')] = function () {
+            return 'Moment<' + this.format() + '>';
+        };
+    }
+    proto.toJSON = toJSON;
+    proto.toString = toString;
+    proto.unix = unix;
+    proto.valueOf = valueOf;
+    proto.creationData = creationData;
+    proto.eraName = getEraName;
+    proto.eraNarrow = getEraNarrow;
+    proto.eraAbbr = getEraAbbr;
+    proto.eraYear = getEraYear;
+    proto.year = getSetYear;
+    proto.isLeapYear = getIsLeapYear;
+    proto.weekYear = getSetWeekYear;
+    proto.isoWeekYear = getSetISOWeekYear;
+    proto.quarter = proto.quarters = getSetQuarter;
+    proto.month = getSetMonth;
+    proto.daysInMonth = getDaysInMonth;
+    proto.week = proto.weeks = getSetWeek;
+    proto.isoWeek = proto.isoWeeks = getSetISOWeek;
+    proto.weeksInYear = getWeeksInYear;
+    proto.weeksInWeekYear = getWeeksInWeekYear;
+    proto.isoWeeksInYear = getISOWeeksInYear;
+    proto.isoWeeksInISOWeekYear = getISOWeeksInISOWeekYear;
+    proto.date = getSetDayOfMonth;
+    proto.day = proto.days = getSetDayOfWeek;
+    proto.weekday = getSetLocaleDayOfWeek;
+    proto.isoWeekday = getSetISODayOfWeek;
+    proto.dayOfYear = getSetDayOfYear;
+    proto.hour = proto.hours = getSetHour;
+    proto.minute = proto.minutes = getSetMinute;
+    proto.second = proto.seconds = getSetSecond;
+    proto.millisecond = proto.milliseconds = getSetMillisecond;
+    proto.utcOffset = getSetOffset;
+    proto.utc = setOffsetToUTC;
+    proto.local = setOffsetToLocal;
+    proto.parseZone = setOffsetToParsedOffset;
+    proto.hasAlignedHourOffset = hasAlignedHourOffset;
+    proto.isDST = isDaylightSavingTime;
+    proto.isLocal = isLocal;
+    proto.isUtcOffset = isUtcOffset;
+    proto.isUtc = isUtc;
+    proto.isUTC = isUtc;
+    proto.zoneAbbr = getZoneAbbr;
+    proto.zoneName = getZoneName;
+    proto.dates = deprecate(
+        'dates accessor is deprecated. Use date instead.',
+        getSetDayOfMonth
+    );
+    proto.months = deprecate(
+        'months accessor is deprecated. Use month instead',
+        getSetMonth
+    );
+    proto.years = deprecate(
+        'years accessor is deprecated. Use year instead',
+        getSetYear
+    );
+    proto.zone = deprecate(
+        'moment().zone is deprecated, use moment().utcOffset instead. http://momentjs.com/guides/#/warnings/zone/',
+        getSetZone
+    );
+    proto.isDSTShifted = deprecate(
+        'isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information',
+        isDaylightSavingTimeShifted
+    );
+
+    function createUnix(input) {
+        return createLocal(input * 1000);
+    }
+
+    function createInZone() {
+        return createLocal.apply(null, arguments).parseZone();
+    }
+
+    function preParsePostFormat(string) {
+        return string;
+    }
+
+    var proto$1 = Locale.prototype;
+
+    proto$1.calendar = calendar;
+    proto$1.longDateFormat = longDateFormat;
+    proto$1.invalidDate = invalidDate;
+    proto$1.ordinal = ordinal;
+    proto$1.preparse = preParsePostFormat;
+    proto$1.postformat = preParsePostFormat;
+    proto$1.relativeTime = relativeTime;
+    proto$1.pastFuture = pastFuture;
+    proto$1.set = set;
+    proto$1.eras = localeEras;
+    proto$1.erasParse = localeErasParse;
+    proto$1.erasConvertYear = localeErasConvertYear;
+    proto$1.erasAbbrRegex = erasAbbrRegex;
+    proto$1.erasNameRegex = erasNameRegex;
+    proto$1.erasNarrowRegex = erasNarrowRegex;
+
+    proto$1.months = localeMonths;
+    proto$1.monthsShort = localeMonthsShort;
+    proto$1.monthsParse = localeMonthsParse;
+    proto$1.monthsRegex = monthsRegex;
+    proto$1.monthsShortRegex = monthsShortRegex;
+    proto$1.week = localeWeek;
+    proto$1.firstDayOfYear = localeFirstDayOfYear;
+    proto$1.firstDayOfWeek = localeFirstDayOfWeek;
+
+    proto$1.weekdays = localeWeekdays;
+    proto$1.weekdaysMin = localeWeekdaysMin;
+    proto$1.weekdaysShort = localeWeekdaysShort;
+    proto$1.weekdaysParse = localeWeekdaysParse;
+
+    proto$1.weekdaysRegex = weekdaysRegex;
+    proto$1.weekdaysShortRegex = weekdaysShortRegex;
+    proto$1.weekdaysMinRegex = weekdaysMinRegex;
+
+    proto$1.isPM = localeIsPM;
+    proto$1.meridiem = localeMeridiem;
+
+    function get$1(format, index, field, setter) {
+        var locale = getLocale(),
+            utc = createUTC().set(setter, index);
+        return locale[field](utc, format);
+    }
+
+    function listMonthsImpl(format, index, field) {
+        if (isNumber(format)) {
+            index = format;
+            format = undefined;
+        }
+
+        format = format || '';
+
+        if (index != null) {
+            return get$1(format, index, field, 'month');
+        }
+
+        var i,
+            out = [];
+        for (i = 0; i < 12; i++) {
+            out[i] = get$1(format, i, field, 'month');
+        }
+        return out;
+    }
+
+    // ()
+    // (5)
+    // (fmt, 5)
+    // (fmt)
+    // (true)
+    // (true, 5)
+    // (true, fmt, 5)
+    // (true, fmt)
+    function listWeekdaysImpl(localeSorted, format, index, field) {
+        if (typeof localeSorted === 'boolean') {
+            if (isNumber(format)) {
+                index = format;
+                format = undefined;
+            }
+
+            format = format || '';
+        } else {
+            format = localeSorted;
+            index = format;
+            localeSorted = false;
+
+            if (isNumber(format)) {
+                index = format;
+                format = undefined;
+            }
+
+            format = format || '';
+        }
+
+        var locale = getLocale(),
+            shift = localeSorted ? locale._week.dow : 0,
+            i,
+            out = [];
+
+        if (index != null) {
+            return get$1(format, (index + shift) % 7, field, 'day');
+        }
+
+        for (i = 0; i < 7; i++) {
+            out[i] = get$1(format, (i + shift) % 7, field, 'day');
+        }
+        return out;
+    }
+
+    function listMonths(format, index) {
+        return listMonthsImpl(format, index, 'months');
+    }
+
+    function listMonthsShort(format, index) {
+        return listMonthsImpl(format, index, 'monthsShort');
+    }
+
+    function listWeekdays(localeSorted, format, index) {
+        return listWeekdaysImpl(localeSorted, format, index, 'weekdays');
+    }
+
+    function listWeekdaysShort(localeSorted, format, index) {
+        return listWeekdaysImpl(localeSorted, format, index, 'weekdaysShort');
+    }
+
+    function listWeekdaysMin(localeSorted, format, index) {
+        return listWeekdaysImpl(localeSorted, format, index, 'weekdaysMin');
+    }
+
+    getSetGlobalLocale('en', {
+        eras: [
+            {
+                since: '0001-01-01',
+                until: +Infinity,
+                offset: 1,
+                name: 'Anno Domini',
+                narrow: 'AD',
+                abbr: 'AD',
+            },
+            {
+                since: '0000-12-31',
+                until: -Infinity,
+                offset: 1,
+                name: 'Before Christ',
+                narrow: 'BC',
+                abbr: 'BC',
+            },
+        ],
+        dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
+        ordinal: function (number) {
+            var b = number % 10,
+                output =
+                    toInt((number % 100) / 10) === 1
+                        ? 'th'
+                        : b === 1
+                        ? 'st'
+                        : b === 2
+                        ? 'nd'
+                        : b === 3
+                        ? 'rd'
+                        : 'th';
+            return number + output;
+        },
+    });
+
+    // Side effect imports
+
+    hooks.lang = deprecate(
+        'moment.lang is deprecated. Use moment.locale instead.',
+        getSetGlobalLocale
+    );
+    hooks.langData = deprecate(
+        'moment.langData is deprecated. Use moment.localeData instead.',
+        getLocale
+    );
+
+    var mathAbs = Math.abs;
+
+    function abs() {
+        var data = this._data;
+
+        this._milliseconds = mathAbs(this._milliseconds);
+        this._days = mathAbs(this._days);
+        this._months = mathAbs(this._months);
+
+        data.milliseconds = mathAbs(data.milliseconds);
+        data.seconds = mathAbs(data.seconds);
+        data.minutes = mathAbs(data.minutes);
+        data.hours = mathAbs(data.hours);
+        data.months = mathAbs(data.months);
+        data.years = mathAbs(data.years);
+
+        return this;
+    }
+
+    function addSubtract$1(duration, input, value, direction) {
+        var other = createDuration(input, value);
+
+        duration._milliseconds += direction * other._milliseconds;
+        duration._days += direction * other._days;
+        duration._months += direction * other._months;
+
+        return duration._bubble();
+    }
+
+    // supports only 2.0-style add(1, 's') or add(duration)
+    function add$1(input, value) {
+        return addSubtract$1(this, input, value, 1);
+    }
+
+    // supports only 2.0-style subtract(1, 's') or subtract(duration)
+    function subtract$1(input, value) {
+        return addSubtract$1(this, input, value, -1);
+    }
+
+    function absCeil(number) {
+        if (number < 0) {
+            return Math.floor(number);
+        } else {
+            return Math.ceil(number);
+        }
+    }
+
+    function bubble() {
+        var milliseconds = this._milliseconds,
+            days = this._days,
+            months = this._months,
+            data = this._data,
+            seconds,
+            minutes,
+            hours,
+            years,
+            monthsFromDays;
+
+        // if we have a mix of positive and negative values, bubble down first
+        // check: https://github.com/moment/moment/issues/2166
+        if (
+            !(
+                (milliseconds >= 0 && days >= 0 && months >= 0) ||
+                (milliseconds <= 0 && days <= 0 && months <= 0)
+            )
+        ) {
+            milliseconds += absCeil(monthsToDays(months) + days) * 864e5;
+            days = 0;
+            months = 0;
+        }
+
+        // The following code bubbles up values, see the tests for
+        // examples of what that means.
+        data.milliseconds = milliseconds % 1000;
+
+        seconds = absFloor(milliseconds / 1000);
+        data.seconds = seconds % 60;
+
+        minutes = absFloor(seconds / 60);
+        data.minutes = minutes % 60;
+
+        hours = absFloor(minutes / 60);
+        data.hours = hours % 24;
+
+        days += absFloor(hours / 24);
+
+        // convert days to months
+        monthsFromDays = absFloor(daysToMonths(days));
+        months += monthsFromDays;
+        days -= absCeil(monthsToDays(monthsFromDays));
+
+        // 12 months -> 1 year
+        years = absFloor(months / 12);
+        months %= 12;
+
+        data.days = days;
+        data.months = months;
+        data.years = years;
+
+        return this;
+    }
+
+    function daysToMonths(days) {
+        // 400 years have 146097 days (taking into account leap year rules)
+        // 400 years have 12 months === 4800
+        return (days * 4800) / 146097;
+    }
+
+    function monthsToDays(months) {
+        // the reverse of daysToMonths
+        return (months * 146097) / 4800;
+    }
+
+    function as(units) {
+        if (!this.isValid()) {
+            return NaN;
+        }
+        var days,
+            months,
+            milliseconds = this._milliseconds;
+
+        units = normalizeUnits(units);
+
+        if (units === 'month' || units === 'quarter' || units === 'year') {
+            days = this._days + milliseconds / 864e5;
+            months = this._months + daysToMonths(days);
+            switch (units) {
+                case 'month':
+                    return months;
+                case 'quarter':
+                    return months / 3;
+                case 'year':
+                    return months / 12;
+            }
+        } else {
+            // handle milliseconds separately because of floating point math errors (issue #1867)
+            days = this._days + Math.round(monthsToDays(this._months));
+            switch (units) {
+                case 'week':
+                    return days / 7 + milliseconds / 6048e5;
+                case 'day':
+                    return days + milliseconds / 864e5;
+                case 'hour':
+                    return days * 24 + milliseconds / 36e5;
+                case 'minute':
+                    return days * 1440 + milliseconds / 6e4;
+                case 'second':
+                    return days * 86400 + milliseconds / 1000;
+                // Math.floor prevents floating point math errors here
+                case 'millisecond':
+                    return Math.floor(days * 864e5) + milliseconds;
+                default:
+                    throw new Error('Unknown unit ' + units);
+            }
+        }
+    }
+
+    // TODO: Use this.as('ms')?
+    function valueOf$1() {
+        if (!this.isValid()) {
+            return NaN;
+        }
+        return (
+            this._milliseconds +
+            this._days * 864e5 +
+            (this._months % 12) * 2592e6 +
+            toInt(this._months / 12) * 31536e6
+        );
+    }
+
+    function makeAs(alias) {
+        return function () {
+            return this.as(alias);
+        };
+    }
+
+    var asMilliseconds = makeAs('ms'),
+        asSeconds = makeAs('s'),
+        asMinutes = makeAs('m'),
+        asHours = makeAs('h'),
+        asDays = makeAs('d'),
+        asWeeks = makeAs('w'),
+        asMonths = makeAs('M'),
+        asQuarters = makeAs('Q'),
+        asYears = makeAs('y');
+
+    function clone$1() {
+        return createDuration(this);
+    }
+
+    function get$2(units) {
+        units = normalizeUnits(units);
+        return this.isValid() ? this[units + 's']() : NaN;
+    }
+
+    function makeGetter(name) {
+        return function () {
+            return this.isValid() ? this._data[name] : NaN;
+        };
+    }
+
+    var milliseconds = makeGetter('milliseconds'),
+        seconds = makeGetter('seconds'),
+        minutes = makeGetter('minutes'),
+        hours = makeGetter('hours'),
+        days = makeGetter('days'),
+        months = makeGetter('months'),
+        years = makeGetter('years');
+
+    function weeks() {
+        return absFloor(this.days() / 7);
+    }
+
+    var round = Math.round,
+        thresholds = {
+            ss: 44, // a few seconds to seconds
+            s: 45, // seconds to minute
+            m: 45, // minutes to hour
+            h: 22, // hours to day
+            d: 26, // days to month/week
+            w: null, // weeks to month
+            M: 11, // months to year
+        };
+
+    // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
+    function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
+        return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+    }
+
+    function relativeTime$1(posNegDuration, withoutSuffix, thresholds, locale) {
+        var duration = createDuration(posNegDuration).abs(),
+            seconds = round(duration.as('s')),
+            minutes = round(duration.as('m')),
+            hours = round(duration.as('h')),
+            days = round(duration.as('d')),
+            months = round(duration.as('M')),
+            weeks = round(duration.as('w')),
+            years = round(duration.as('y')),
+            a =
+                (seconds <= thresholds.ss && ['s', seconds]) ||
+                (seconds < thresholds.s && ['ss', seconds]) ||
+                (minutes <= 1 && ['m']) ||
+                (minutes < thresholds.m && ['mm', minutes]) ||
+                (hours <= 1 && ['h']) ||
+                (hours < thresholds.h && ['hh', hours]) ||
+                (days <= 1 && ['d']) ||
+                (days < thresholds.d && ['dd', days]);
+
+        if (thresholds.w != null) {
+            a =
+                a ||
+                (weeks <= 1 && ['w']) ||
+                (weeks < thresholds.w && ['ww', weeks]);
+        }
+        a = a ||
+            (months <= 1 && ['M']) ||
+            (months < thresholds.M && ['MM', months]) ||
+            (years <= 1 && ['y']) || ['yy', years];
+
+        a[2] = withoutSuffix;
+        a[3] = +posNegDuration > 0;
+        a[4] = locale;
+        return substituteTimeAgo.apply(null, a);
+    }
+
+    // This function allows you to set the rounding function for relative time strings
+    function getSetRelativeTimeRounding(roundingFunction) {
+        if (roundingFunction === undefined) {
+            return round;
+        }
+        if (typeof roundingFunction === 'function') {
+            round = roundingFunction;
+            return true;
+        }
+        return false;
+    }
+
+    // This function allows you to set a threshold for relative time strings
+    function getSetRelativeTimeThreshold(threshold, limit) {
+        if (thresholds[threshold] === undefined) {
+            return false;
+        }
+        if (limit === undefined) {
+            return thresholds[threshold];
+        }
+        thresholds[threshold] = limit;
+        if (threshold === 's') {
+            thresholds.ss = limit - 1;
+        }
+        return true;
+    }
+
+    function humanize(argWithSuffix, argThresholds) {
+        if (!this.isValid()) {
+            return this.localeData().invalidDate();
+        }
+
+        var withSuffix = false,
+            th = thresholds,
+            locale,
+            output;
+
+        if (typeof argWithSuffix === 'object') {
+            argThresholds = argWithSuffix;
+            argWithSuffix = false;
+        }
+        if (typeof argWithSuffix === 'boolean') {
+            withSuffix = argWithSuffix;
+        }
+        if (typeof argThresholds === 'object') {
+            th = Object.assign({}, thresholds, argThresholds);
+            if (argThresholds.s != null && argThresholds.ss == null) {
+                th.ss = argThresholds.s - 1;
+            }
+        }
+
+        locale = this.localeData();
+        output = relativeTime$1(this, !withSuffix, th, locale);
+
+        if (withSuffix) {
+            output = locale.pastFuture(+this, output);
+        }
+
+        return locale.postformat(output);
+    }
+
+    var abs$1 = Math.abs;
+
+    function sign(x) {
+        return (x > 0) - (x < 0) || +x;
+    }
+
+    function toISOString$1() {
+        // for ISO strings we do not use the normal bubbling rules:
+        //  * milliseconds bubble up until they become hours
+        //  * days do not bubble at all
+        //  * months bubble up until they become years
+        // This is because there is no context-free conversion between hours and days
+        // (think of clock changes)
+        // and also not between days and months (28-31 days per month)
+        if (!this.isValid()) {
+            return this.localeData().invalidDate();
+        }
+
+        var seconds = abs$1(this._milliseconds) / 1000,
+            days = abs$1(this._days),
+            months = abs$1(this._months),
+            minutes,
+            hours,
+            years,
+            s,
+            total = this.asSeconds(),
+            totalSign,
+            ymSign,
+            daysSign,
+            hmsSign;
+
+        if (!total) {
+            // this is the same as C#'s (Noda) and python (isodate)...
+            // but not other JS (goog.date)
+            return 'P0D';
+        }
+
+        // 3600 seconds -> 60 minutes -> 1 hour
+        minutes = absFloor(seconds / 60);
+        hours = absFloor(minutes / 60);
+        seconds %= 60;
+        minutes %= 60;
+
+        // 12 months -> 1 year
+        years = absFloor(months / 12);
+        months %= 12;
+
+        // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+        s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
+
+        totalSign = total < 0 ? '-' : '';
+        ymSign = sign(this._months) !== sign(total) ? '-' : '';
+        daysSign = sign(this._days) !== sign(total) ? '-' : '';
+        hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
+
+        return (
+            totalSign +
+            'P' +
+            (years ? ymSign + years + 'Y' : '') +
+            (months ? ymSign + months + 'M' : '') +
+            (days ? daysSign + days + 'D' : '') +
+            (hours || minutes || seconds ? 'T' : '') +
+            (hours ? hmsSign + hours + 'H' : '') +
+            (minutes ? hmsSign + minutes + 'M' : '') +
+            (seconds ? hmsSign + s + 'S' : '')
+        );
+    }
+
+    var proto$2 = Duration.prototype;
+
+    proto$2.isValid = isValid$1;
+    proto$2.abs = abs;
+    proto$2.add = add$1;
+    proto$2.subtract = subtract$1;
+    proto$2.as = as;
+    proto$2.asMilliseconds = asMilliseconds;
+    proto$2.asSeconds = asSeconds;
+    proto$2.asMinutes = asMinutes;
+    proto$2.asHours = asHours;
+    proto$2.asDays = asDays;
+    proto$2.asWeeks = asWeeks;
+    proto$2.asMonths = asMonths;
+    proto$2.asQuarters = asQuarters;
+    proto$2.asYears = asYears;
+    proto$2.valueOf = valueOf$1;
+    proto$2._bubble = bubble;
+    proto$2.clone = clone$1;
+    proto$2.get = get$2;
+    proto$2.milliseconds = milliseconds;
+    proto$2.seconds = seconds;
+    proto$2.minutes = minutes;
+    proto$2.hours = hours;
+    proto$2.days = days;
+    proto$2.weeks = weeks;
+    proto$2.months = months;
+    proto$2.years = years;
+    proto$2.humanize = humanize;
+    proto$2.toISOString = toISOString$1;
+    proto$2.toString = toISOString$1;
+    proto$2.toJSON = toISOString$1;
+    proto$2.locale = locale;
+    proto$2.localeData = localeData;
+
+    proto$2.toIsoString = deprecate(
+        'toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)',
+        toISOString$1
+    );
+    proto$2.lang = lang;
+
+    // FORMATTING
+
+    addFormatToken('X', 0, 0, 'unix');
+    addFormatToken('x', 0, 0, 'valueOf');
+
+    // PARSING
+
+    addRegexToken('x', matchSigned);
+    addRegexToken('X', matchTimestamp);
+    addParseToken('X', function (input, array, config) {
+        config._d = new Date(parseFloat(input) * 1000);
+    });
+    addParseToken('x', function (input, array, config) {
+        config._d = new Date(toInt(input));
+    });
+
+    //! moment.js
+
+    hooks.version = '2.26.0';
+
+    setHookCallback(createLocal);
+
+    hooks.fn = proto;
+    hooks.min = min;
+    hooks.max = max;
+    hooks.now = now;
+    hooks.utc = createUTC;
+    hooks.unix = createUnix;
+    hooks.months = listMonths;
+    hooks.isDate = isDate;
+    hooks.locale = getSetGlobalLocale;
+    hooks.invalid = createInvalid;
+    hooks.duration = createDuration;
+    hooks.isMoment = isMoment;
+    hooks.weekdays = listWeekdays;
+    hooks.parseZone = createInZone;
+    hooks.localeData = getLocale;
+    hooks.isDuration = isDuration;
+    hooks.monthsShort = listMonthsShort;
+    hooks.weekdaysMin = listWeekdaysMin;
+    hooks.defineLocale = defineLocale;
+    hooks.updateLocale = updateLocale;
+    hooks.locales = listLocales;
+    hooks.weekdaysShort = listWeekdaysShort;
+    hooks.normalizeUnits = normalizeUnits;
+    hooks.relativeTimeRounding = getSetRelativeTimeRounding;
+    hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
+    hooks.calendarFormat = getCalendarFormat;
+    hooks.prototype = proto;
+
+    // currently HTML5 input type only supports 24-hour formats
+    hooks.HTML5_FMT = {
+        DATETIME_LOCAL: 'YYYY-MM-DDTHH:mm', // <input type="datetime-local" />
+        DATETIME_LOCAL_SECONDS: 'YYYY-MM-DDTHH:mm:ss', // <input type="datetime-local" step="1" />
+        DATETIME_LOCAL_MS: 'YYYY-MM-DDTHH:mm:ss.SSS', // <input type="datetime-local" step="0.001" />
+        DATE: 'YYYY-MM-DD', // <input type="date" />
+        TIME: 'HH:mm', // <input type="time" />
+        TIME_SECONDS: 'HH:mm:ss', // <input type="time" step="1" />
+        TIME_MS: 'HH:mm:ss.SSS', // <input type="time" step="0.001" />
+        WEEK: 'GGGG-[W]WW', // <input type="week" />
+        MONTH: 'YYYY-MM', // <input type="month" />
+    };
+
+    return hooks;
+
+})));
+;(function ($) {
   $.fn.equalHeights = function () {
     var $items = $(this);
     function equalize() {
@@ -41500,7 +47492,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 }
 }());
 ;//! moment-timezone.js
-//! version : 0.5.17
+//! version : 0.5.31
 //! Copyright (c) JS Foundation and other contributors
 //! license : MIT
 //! github.com/moment/moment-timezone
@@ -41509,15 +47501,20 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	"use strict";
 
 	/*global define*/
-	if (typeof define === 'function' && define.amd) {
-		define(['moment'], factory);                 // AMD
-	} else if (typeof module === 'object' && module.exports) {
+	if (typeof module === 'object' && module.exports) {
 		module.exports = factory(require('moment')); // Node
+	} else if (typeof define === 'function' && define.amd) {
+		define(['moment'], factory);                 // AMD
 	} else {
 		factory(root.moment);                        // Browser
 	}
 }(this, function (moment) {
 	"use strict";
+
+	// Resolves es6 module loading issue
+	if (moment.version === undefined && moment.default) {
+		moment = moment.default;
+	}
 
 	// Do not load moment-timezone a second time.
 	// if (moment.tz !== undefined) {
@@ -41525,14 +47522,19 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	// 	return moment;
 	// }
 
-	var VERSION = "0.5.17",
+	var VERSION = "0.5.31",
 		zones = {},
 		links = {},
+		countries = {},
 		names = {},
 		guesses = {},
-		cachedGuess,
+		cachedGuess;
 
-		momentVersion = moment.version.split('.'),
+	if (!moment || typeof moment.version !== 'string') {
+		logError('Moment Timezone requires Moment.js. See https://momentjs.com/timezone/docs/#/use-it/browser/');
+	}
+
+	var momentVersion = moment.version.split('.'),
 		major = +momentVersion[0],
 		minor = +momentVersion[1];
 
@@ -41662,6 +47664,13 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			}
 		},
 
+		countries : function () {
+			var zone_name = this.name;
+			return Object.keys(countries).filter(function (country_code) {
+				return countries[country_code].zones.indexOf(zone_name) !== -1;
+			});
+		},
+
 		parse : function (timestamp) {
 			var target  = +timestamp,
 				offsets = this.offsets,
@@ -41701,6 +47710,15 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			return this.offsets[this._index(mom)];
 		}
 	};
+
+	/************************************
+		Country object
+	************************************/
+
+	function Country (country_name, zone_names) {
+		this.name = country_name;
+		this.zones = zone_names;
+	}
 
 	/************************************
 		Current Timezone
@@ -41789,7 +47807,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		if (a.abbrScore !== b.abbrScore) {
 			return a.abbrScore - b.abbrScore;
 		}
-		return b.zone.population - a.zone.population;
+		if (a.zone.population !== b.zone.population) {
+			return b.zone.population - a.zone.population;
+		}
+		return b.zone.name.localeCompare(a.zone.name);
 	}
 
 	function addToGuesses (name, offsets) {
@@ -41894,6 +47915,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	}
 
 	function getZone (name, caller) {
+
 		name = normalizeName(name);
 
 		var zone = zones[name];
@@ -41932,6 +47954,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		return out.sort();
 	}
 
+	function getCountryNames () {
+		return Object.keys(countries);
+	}
+
 	function addLink (aliases) {
 		var i, alias, normal0, normal1;
 
@@ -41953,9 +47979,49 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		}
 	}
 
+	function addCountries (data) {
+		var i, country_code, country_zones, split;
+		if (!data || !data.length) return;
+		for (i = 0; i < data.length; i++) {
+			split = data[i].split('|');
+			country_code = split[0].toUpperCase();
+			country_zones = split[1].split(' ');
+			countries[country_code] = new Country(
+				country_code,
+				country_zones
+			);
+		}
+	}
+
+	function getCountry (name) {
+		name = name.toUpperCase();
+		return countries[name] || null;
+	}
+
+	function zonesForCountry(country, with_offset) {
+		country = getCountry(country);
+
+		if (!country) return null;
+
+		var zones = country.zones.sort();
+
+		if (with_offset) {
+			return zones.map(function (zone_name) {
+				var zone = getZone(zone_name);
+				return {
+					name: zone_name,
+					offset: zone.utcOffset(new Date())
+				};
+			});
+		}
+
+		return zones;
+	}
+
 	function loadData (data) {
 		addZone(data.zones);
 		addLink(data.links);
+		addCountries(data.countries);
 		tz.dataVersion = data.version;
 	}
 
@@ -42002,6 +48068,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	tz._zones       = zones;
 	tz._links       = links;
 	tz._names       = names;
+	tz._countries	= countries;
 	tz.add          = addZone;
 	tz.link         = addLink;
 	tz.load         = loadData;
@@ -42015,6 +48082,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	tz.needsOffset  = needsOffset;
 	tz.moveInvalidForward   = true;
 	tz.moveAmbiguousForward = false;
+	tz.countries    = getCountryNames;
+	tz.zonesForCountry = zonesForCountry;
 
 	/************************************
 		Interface with Moment.js
@@ -42043,7 +48112,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 				offset = offset / 60;
 			}
 			if (mom.utcOffset !== undefined) {
+				var z = mom._z;
 				mom.utcOffset(-offset, keepTime);
+				mom._z = z;
 			} else {
 				mom.zone(offset, keepTime);
 			}
@@ -42052,6 +48123,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 
 	fn.tz = function (name, keepTime) {
 		if (name) {
+			if (typeof name !== 'string') {
+				throw new Error('Time zone name must be a string, got ' + name + ' [' + typeof name + ']');
+			}
 			this._z = getZone(name);
 			if (this._z) {
 				moment.updateOffset(this, keepTime);
@@ -42077,9 +48151,18 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 		};
 	}
 
-	fn.zoneName = abbrWrap(fn.zoneName);
-	fn.zoneAbbr = abbrWrap(fn.zoneAbbr);
-	fn.utc      = resetZoneWrap(fn.utc);
+	function resetZoneWrap2 (old) {
+		return function () {
+			if (arguments.length > 0) this._z = null;
+			return old.apply(this, arguments);
+		};
+	}
+
+	fn.zoneName  = abbrWrap(fn.zoneName);
+	fn.zoneAbbr  = abbrWrap(fn.zoneAbbr);
+	fn.utc       = resetZoneWrap(fn.utc);
+	fn.local     = resetZoneWrap(fn.local);
+	fn.utcOffset = resetZoneWrap2(fn.utcOffset);
 
 	moment.tz.setDefault = function(name) {
 		if (major < 2 || (major === 2 && minor < 9)) {
@@ -42101,7 +48184,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	}
 
 	loadData({
-		"version": "2018e",
+		"version": "2020a",
 		"zones": [
 			"Africa/Abidjan|LMT GMT|g.8 0|01|-2ldXH.Q|48e5",
 			"Africa/Accra|LMT GMT +0020|.Q 0 -k|012121212121212121212121212121212121212121212121|-26BbX.8 6tzX.8 MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE|41e5",
@@ -42111,15 +48194,15 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Africa/Bissau|LMT -01 GMT|12.k 10 0|012|-2ldX0 2xoo0|39e4",
 			"Africa/Maputo|LMT CAT|-2a.k -20|01|-2GJea.k|26e5",
 			"Africa/Cairo|EET EEST|-20 -30|0101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-1bIO0 vb0 1ip0 11z0 1iN0 1nz0 12p0 1pz0 10N0 1pz0 16p0 1jz0 s3d0 Vz0 1oN0 11b0 1oO0 10N0 1pz0 10N0 1pb0 10N0 1pb0 10N0 1pb0 10N0 1pz0 10N0 1pb0 10N0 1pb0 11d0 1oL0 11d0 1pb0 11d0 1oL0 11d0 1oL0 11d0 1oL0 11d0 1pb0 11d0 1oL0 11d0 1oL0 11d0 1oL0 11d0 1pb0 11d0 1oL0 11d0 1oL0 11d0 1oL0 11d0 1pb0 11d0 1oL0 11d0 1WL0 rd0 1Rz0 wp0 1pb0 11d0 1oL0 11d0 1oL0 11d0 1oL0 11d0 1pb0 11d0 1qL0 Xd0 1oL0 11d0 1oL0 11d0 1pb0 11d0 1oL0 11d0 1oL0 11d0 1ny0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 WL0 1qN0 Rb0 1wp0 On0 1zd0 Lz0 1EN0 Fb0 c10 8n0 8Nd0 gL0 e10 mn0|15e6",
-			"Africa/Casablanca|LMT WET WEST CET|u.k 0 -10 -10|0121212121212121213121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2gMnt.E 130Lt.E rb0 Dd0 dVb0 b6p0 TX0 EoB0 LL0 gnd0 rz0 43d0 AL0 1Nd0 XX0 1Cp0 pz0 dEp0 4mn0 SyN0 AL0 1Nd0 wn0 1FB0 Db0 1zd0 Lz0 1Nf0 wM0 co0 go0 1o00 s00 dA0 vc0 11A0 A00 e00 y00 11A0 uM0 e00 Dc0 11A0 s00 e00 IM0 WM0 mo0 gM0 LA0 WM0 jA0 e00 Rc0 11A0 e00 e00 U00 11A0 8o0 e00 11A0 11A0 5A0 e00 17c0 1fA0 1a00 1a00 1fA0 17c0 1io0 14o0 1lc0 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1lc0 14o0 1fA0|32e5",
+			"Africa/Casablanca|LMT +00 +01|u.k 0 -10|01212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212|-2gMnt.E 130Lt.E rb0 Dd0 dVb0 b6p0 TX0 EoB0 LL0 gnd0 rz0 43d0 AL0 1Nd0 XX0 1Cp0 pz0 dEp0 4mn0 SyN0 AL0 1Nd0 wn0 1FB0 Db0 1zd0 Lz0 1Nf0 wM0 co0 go0 1o00 s00 dA0 vc0 11A0 A00 e00 y00 11A0 uM0 e00 Dc0 11A0 s00 e00 IM0 WM0 mo0 gM0 LA0 WM0 jA0 e00 28M0 e00 2600 gM0 2600 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 2600 gM0 2600 gM0 2600 e00 2600 gM0|32e5",
 			"Africa/Ceuta|WET WEST CET CEST|0 -10 -10 -20|010101010101010101010232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-25KN0 11z0 drd0 18p0 3HX0 17d0 1fz0 1a10 1io0 1a00 1y7o0 LL0 gnd0 rz0 43d0 AL0 1Nd0 XX0 1Cp0 pz0 dEp0 4VB0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|85e3",
-			"Africa/El_Aaiun|LMT -01 WET WEST|Q.M 10 0 -10|01232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-1rDz7.c 1GVA7.c 6L0 AL0 1Nd0 XX0 1Cp0 pz0 1cBB0 AL0 1Nd0 wn0 1FB0 Db0 1zd0 Lz0 1Nf0 wM0 co0 go0 1o00 s00 dA0 vc0 11A0 A00 e00 y00 11A0 uM0 e00 Dc0 11A0 s00 e00 IM0 WM0 mo0 gM0 LA0 WM0 jA0 e00 Rc0 11A0 e00 e00 U00 11A0 8o0 e00 11A0 11A0 5A0 e00 17c0 1fA0 1a00 1a00 1fA0 17c0 1io0 14o0 1lc0 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1lc0 14o0 1fA0|20e4",
+			"Africa/El_Aaiun|LMT -01 +00 +01|Q.M 10 0 -10|012323232323232323232323232323232323232323232323232323232323232323232323232323232323|-1rDz7.c 1GVA7.c 6L0 AL0 1Nd0 XX0 1Cp0 pz0 1cBB0 AL0 1Nd0 wn0 1FB0 Db0 1zd0 Lz0 1Nf0 wM0 co0 go0 1o00 s00 dA0 vc0 11A0 A00 e00 y00 11A0 uM0 e00 Dc0 11A0 s00 e00 IM0 WM0 mo0 gM0 LA0 WM0 jA0 e00 28M0 e00 2600 gM0 2600 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 2600 gM0 2600 gM0 2600 e00 2600 gM0|20e4",
 			"Africa/Johannesburg|SAST SAST SAST|-1u -20 -30|012121|-2GJdu 1Ajdu 1cL0 1cN0 1cL0|84e5",
-			"Africa/Juba|LMT CAT CAST EAT|-26.s -20 -30 -30|01212121212121212121212121212121213|-1yW26.s 1zK06.s 16L0 1iN0 17b0 1jd0 17b0 1ip0 17z0 1i10 17X0 1hB0 18n0 1hd0 19b0 1gp0 19z0 1iN0 17b0 1ip0 17z0 1i10 18n0 1hd0 18L0 1gN0 19b0 1gp0 19z0 1iN0 17z0 1i10 17X0 yGd0",
+			"Africa/Juba|LMT CAT CAST EAT|-26.s -20 -30 -30|01212121212121212121212121212121213|-1yW26.s 1zK06.s 16L0 1iN0 17b0 1jd0 17b0 1ip0 17z0 1i10 17X0 1hB0 18n0 1hd0 19b0 1gp0 19z0 1iN0 17b0 1ip0 17z0 1i10 18n0 1hd0 18L0 1gN0 19b0 1gp0 19z0 1iN0 17z0 1i10 17X0 yGd0|",
 			"Africa/Khartoum|LMT CAT CAST EAT|-2a.8 -20 -30 -30|012121212121212121212121212121212131|-1yW2a.8 1zK0a.8 16L0 1iN0 17b0 1jd0 17b0 1ip0 17z0 1i10 17X0 1hB0 18n0 1hd0 19b0 1gp0 19z0 1iN0 17b0 1ip0 17z0 1i10 18n0 1hd0 18L0 1gN0 19b0 1gp0 19z0 1iN0 17z0 1i10 17X0 yGd0 HjL0|51e5",
 			"Africa/Monrovia|MMT MMT GMT|H.8 I.u 0|012|-23Lzg.Q 28G01.m|11e5",
 			"Africa/Ndjamena|LMT WAT WAST|-10.c -10 -20|0121|-2le10.c 2J3c0.c Wn0|13e5",
-			"Africa/Sao_Tome|LMT GMT WAT|A.J 0 -10|012|-2le00 4i6N0",
+			"Africa/Sao_Tome|LMT GMT WAT|A.J 0 -10|0121|-2le00 4i6N0 2q00|",
 			"Africa/Tripoli|LMT CET CEST EET|-Q.I -10 -20 -20|012121213121212121212121213123123|-21JcQ.I 1hnBQ.I vx0 4iP0 xx0 4eN0 Bb0 7ip0 U0n0 A10 1db0 1cN0 1db0 1dd0 1db0 1eN0 1bb0 1e10 1cL0 1c10 1db0 1dd0 1db0 1cN0 1db0 1q10 fAn0 1ep0 1db0 AKq0 TA0 1o00|11e5",
 			"Africa/Tunis|PMT CET CEST|-9.l -10 -20|0121212121212121212121212121212121|-2nco9.l 18pa9.l 1qM0 DA0 3Tc0 11B0 1ze0 WM0 7z0 3d0 14L0 1cN0 1f90 1ar0 16J0 1gXB0 WM0 1rA0 11c0 nwo0 Ko0 1cM0 1cM0 1rA0 10M0 zuM0 10N0 1aN0 1qM0 WM0 1qM0 11A0 1o00|20e5",
 			"Africa/Windhoek|+0130 SAST SAST CAT WAT|-1u -20 -30 -20 -10|01213434343434343434343434343434343434343434343434343|-2GJdu 1Ajdu 1cL0 1SqL0 9Io0 16P0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0|32e4",
@@ -42127,18 +48210,18 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"America/Anchorage|AST AWT APT AHST AHDT YST AKST AKDT|a0 90 90 a0 90 90 90 80|012034343434343434343434343434343456767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676|-17T00 8wX0 iA0 Qlb0 52O0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 cm0 10q0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|30e4",
 			"America/Port_of_Spain|LMT AST|46.4 40|01|-2kNvR.U|43e3",
 			"America/Araguaina|LMT -03 -02|3c.M 30 20|0121212121212121212121212121212121212121212121212121|-2glwL.c HdKL.c 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 dMN0 Lz0 1zd0 Rb0 1wN0 Wn0 1tB0 Rb0 1tB0 WL0 1tB0 Rb0 1zd0 On0 1HB0 FX0 ny10 Lz0|14e4",
-			"America/Argentina/Buenos_Aires|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323232323232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wp0 Rb0 1wp0 TX0 A4p0 uL0 1qN0 WL0",
-			"America/Argentina/Catamarca|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323132321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wq0 Ra0 1wp0 TX0 rlB0 7B0 8zb0 uL0",
-			"America/Argentina/Cordoba|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323132323232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wq0 Ra0 1wp0 TX0 A4p0 uL0 1qN0 WL0",
-			"America/Argentina/Jujuy|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323121323232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1ze0 TX0 1ld0 WK0 1wp0 TX0 A4p0 uL0",
-			"America/Argentina/La_Rioja|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323231232321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Qn0 qO0 16n0 Rb0 1wp0 TX0 rlB0 7B0 8zb0 uL0",
-			"America/Argentina/Mendoza|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232312121321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1u20 SL0 1vd0 Tb0 1wp0 TW0 ri10 Op0 7TX0 uL0",
-			"America/Argentina/Rio_Gallegos|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323232321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wp0 Rb0 1wp0 TX0 rlB0 7B0 8zb0 uL0",
-			"America/Argentina/Salta|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323231323232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wq0 Ra0 1wp0 TX0 A4p0 uL0",
-			"America/Argentina/San_Juan|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323231232321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Qn0 qO0 16n0 Rb0 1wp0 TX0 rld0 m10 8lb0 uL0",
-			"America/Argentina/San_Luis|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323121212321212|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 XX0 1q20 SL0 AN0 vDb0 m10 8lb0 8L0 jd0 1qN0 WL0 1qN0",
-			"America/Argentina/Tucuman|CMT -04 -03 -02|4g.M 40 30 20|0121212121212121212121212121212121212121212323232313232123232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wq0 Ra0 1wp0 TX0 rlB0 4N0 8BX0 uL0 1qN0 WL0",
-			"America/Argentina/Ushuaia|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323232321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wp0 Rb0 1wp0 TX0 rkN0 8p0 8zb0 uL0",
+			"America/Argentina/Buenos_Aires|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323232323232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wp0 Rb0 1wp0 TX0 A4p0 uL0 1qN0 WL0|",
+			"America/Argentina/Catamarca|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323132321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wq0 Ra0 1wp0 TX0 rlB0 7B0 8zb0 uL0|",
+			"America/Argentina/Cordoba|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323132323232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wq0 Ra0 1wp0 TX0 A4p0 uL0 1qN0 WL0|",
+			"America/Argentina/Jujuy|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323121323232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1ze0 TX0 1ld0 WK0 1wp0 TX0 A4p0 uL0|",
+			"America/Argentina/La_Rioja|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323231232321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Qn0 qO0 16n0 Rb0 1wp0 TX0 rlB0 7B0 8zb0 uL0|",
+			"America/Argentina/Mendoza|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232312121321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1u20 SL0 1vd0 Tb0 1wp0 TW0 ri10 Op0 7TX0 uL0|",
+			"America/Argentina/Rio_Gallegos|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323232321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wp0 Rb0 1wp0 TX0 rlB0 7B0 8zb0 uL0|",
+			"America/Argentina/Salta|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323231323232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wq0 Ra0 1wp0 TX0 A4p0 uL0|",
+			"America/Argentina/San_Juan|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323231232321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Qn0 qO0 16n0 Rb0 1wp0 TX0 rld0 m10 8lb0 uL0|",
+			"America/Argentina/San_Luis|CMT -04 -03 -02|4g.M 40 30 20|012121212121212121212121212121212121212121232323121212321212|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 XX0 1q20 SL0 AN0 vDb0 m10 8lb0 8L0 jd0 1qN0 WL0 1qN0|",
+			"America/Argentina/Tucuman|CMT -04 -03 -02|4g.M 40 30 20|0121212121212121212121212121212121212121212323232313232123232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wq0 Ra0 1wp0 TX0 rlB0 4N0 8BX0 uL0 1qN0 WL0|",
+			"America/Argentina/Ushuaia|CMT -04 -03 -02|4g.M 40 30 20|01212121212121212121212121212121212121212123232323232321232|-20UHH.c pKnH.c Mn0 1iN0 Tb0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 1C10 LX0 1C10 LX0 1C10 LX0 1C10 Mn0 MN0 2jz0 MN0 4lX0 u10 5Lb0 1pB0 Fnz0 u10 uL0 1vd0 SL0 1vd0 SL0 1vd0 17z0 1cN0 1fz0 1cN0 1cL0 1cN0 asn0 Db0 zvd0 Bz0 1tB0 TX0 1wp0 Rb0 1wp0 Rb0 1wp0 TX0 rkN0 8p0 8zb0 uL0|",
 			"America/Curacao|LMT -0430 AST|4z.L 4u 40|012|-2kV7o.d 28KLS.d|15e4",
 			"America/Asuncion|AMT -04 -03|3O.E 40 30|012121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212|-1x589.k 1DKM9.k 3CL0 3Dd0 10L0 1pB0 10n0 1pB0 10n0 1pB0 1cL0 1dd0 1db0 1dd0 1cL0 1dd0 1cL0 1dd0 1cL0 1dd0 1db0 1dd0 1cL0 1dd0 1cL0 1dd0 1cL0 1dd0 1db0 1dd0 1cL0 1lB0 14n0 1dd0 1cL0 1fd0 WL0 1rd0 1aL0 1dB0 Xz0 1qp0 Xb0 1qN0 10L0 1rB0 TX0 1tB0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 1cL0 WN0 1qL0 11B0 1nX0 1ip0 WL0 1qN0 WL0 1qN0 WL0 1tB0 TX0 1tB0 TX0 1tB0 19X0 1a10 1fz0 1a10 1fz0 1cN0 17b0 1ip0 17b0 1ip0 17b0 1ip0 19X0 1fB0 19X0 1fB0 19X0 1ip0 17b0 1ip0 17b0 1ip0 19X0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1ip0 17b0 1ip0 17b0 1ip0 19X0 1fB0 19X0 1fB0 19X0 1ip0 17b0 1ip0 17b0 1ip0 19X0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1ip0 17b0 1ip0 17b0 1ip0|28e5",
 			"America/Atikokan|CST CDT CWT CPT EST|60 50 50 50 50|0101234|-25TQ0 1in0 Rnb0 3je0 8x30 iw0|28e2",
@@ -42152,7 +48235,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"America/Bogota|BMT -05 -04|4U.g 50 40|0121|-2eb73.I 38yo3.I 2en0|90e5",
 			"America/Boise|PST PDT MST MWT MPT MDT|80 70 70 60 60 60|0101023425252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252|-261q0 1nX0 11B0 1nX0 8C10 JCL0 8x20 ix0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 Dd0 1Kn0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|21e4",
 			"America/Cambridge_Bay|-00 MST MWT MPT MDDT MDT CST CDT EST|0 70 60 60 50 60 60 50 50|0123141515151515151515151515151515151515151515678651515151515151515151515151515151515151515151515151515151515151515151515151|-21Jc0 RO90 8x20 ix0 LCL0 1fA0 zgO0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11A0 1nX0 2K0 WQ0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|15e2",
-			"America/Campo_Grande|LMT -04 -03|3C.s 40 30|012121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212|-2glwl.w HdLl.w 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 1EN0 Lz0 1C10 IL0 1HB0 Db0 1HB0 On0 1zd0 On0 1zd0 Lz0 1zd0 Rb0 1wN0 Wn0 1tB0 Rb0 1tB0 WL0 1tB0 Rb0 1zd0 On0 1HB0 FX0 1C10 Lz0 1Ip0 HX0 1zd0 On0 1HB0 IL0 1wp0 On0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 Rb0 1zd0 Lz0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 On0 1zd0 On0 1HB0 FX0 1HB0 FX0 1HB0 IL0 1HB0 FX0 1HB0 IL0 1EN0 FX0 1HB0 FX0 1HB0 IL0 1EN0 IL0 1HB0 FX0 1HB0 FX0 1HB0 FX0 1HB0 FX0 1HB0 FX0 1Kp0 FX0 1HB0 IL0 1EN0 FX0 1HB0 FX0 1HB0 IL0 1EN0|77e4",
+			"America/Campo_Grande|LMT -04 -03|3C.s 40 30|01212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2glwl.w HdLl.w 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 1EN0 Lz0 1C10 IL0 1HB0 Db0 1HB0 On0 1zd0 On0 1zd0 Lz0 1zd0 Rb0 1wN0 Wn0 1tB0 Rb0 1tB0 WL0 1tB0 Rb0 1zd0 On0 1HB0 FX0 1C10 Lz0 1Ip0 HX0 1zd0 On0 1HB0 IL0 1wp0 On0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 Rb0 1zd0 Lz0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 On0 1zd0 On0 1HB0 FX0|77e4",
 			"America/Cancun|LMT CST EST EDT CDT|5L.4 60 50 40 50|0123232341414141414141414141414141414141412|-1UQG0 2q2o0 yLB0 1lb0 14p0 1lb0 14p0 Lz0 xB0 14p0 1nX0 11B0 1nX0 1fB0 WL0 1fB0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 Dd0|63e4",
 			"America/Caracas|CMT -0430 -04|4r.E 4u 40|01212|-2kV7w.k 28KM2.k 1IwOu kqo0|29e5",
 			"America/Cayenne|LMT -04 -03|3t.k 40 30|012|-2mrwu.E 2gWou.E|58e3",
@@ -42161,18 +48244,18 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"America/Chihuahua|LMT MST CST CDT MDT|74.k 70 60 50 60|0121212323241414141414141414141414141414141414141414141414141414141414141414141414141414141|-1UQF0 deL0 8lc0 17c0 10M0 1dd0 2zQN0 1lb0 14p0 1lb0 14q0 1lb0 14p0 1nX0 11B0 1nX0 1fB0 WL0 1fB0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0|81e4",
 			"America/Costa_Rica|SJMT CST CDT|5A.d 60 50|0121212121|-1Xd6n.L 2lu0n.L Db0 1Kp0 Db0 pRB0 15b0 1kp0 mL0|12e5",
 			"America/Creston|MST PST|70 80|010|-29DR0 43B0|53e2",
-			"America/Cuiaba|LMT -04 -03|3I.k 40 30|0121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212|-2glwf.E HdLf.E 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 1EN0 Lz0 1C10 IL0 1HB0 Db0 1HB0 On0 1zd0 On0 1zd0 Lz0 1zd0 Rb0 1wN0 Wn0 1tB0 Rb0 1tB0 WL0 1tB0 Rb0 1zd0 On0 1HB0 FX0 4a10 HX0 1zd0 On0 1HB0 IL0 1wp0 On0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 Rb0 1zd0 Lz0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 On0 1zd0 On0 1HB0 FX0 1HB0 FX0 1HB0 IL0 1HB0 FX0 1HB0 IL0 1EN0 FX0 1HB0 FX0 1HB0 IL0 1EN0 IL0 1HB0 FX0 1HB0 FX0 1HB0 FX0 1HB0 FX0 1HB0 FX0 1Kp0 FX0 1HB0 IL0 1EN0 FX0 1HB0 FX0 1HB0 IL0 1EN0|54e4",
+			"America/Cuiaba|LMT -04 -03|3I.k 40 30|012121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2glwf.E HdLf.E 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 1EN0 Lz0 1C10 IL0 1HB0 Db0 1HB0 On0 1zd0 On0 1zd0 Lz0 1zd0 Rb0 1wN0 Wn0 1tB0 Rb0 1tB0 WL0 1tB0 Rb0 1zd0 On0 1HB0 FX0 4a10 HX0 1zd0 On0 1HB0 IL0 1wp0 On0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 Rb0 1zd0 Lz0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 On0 1zd0 On0 1HB0 FX0|54e4",
 			"America/Danmarkshavn|LMT -03 -02 GMT|1e.E 30 20 0|01212121212121212121212121212121213|-2a5WJ.k 2z5fJ.k 19U0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 DC0|8",
 			"America/Dawson_Creek|PST PDT PWT PPT MST|80 70 70 70 70|0102301010101010101010101010101010101010101010101010101014|-25TO0 1in0 UGp0 8x10 iy0 3NB0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 ML0|12e3",
-			"America/Dawson|YST YDT YWT YPT YDDT PST PDT|90 80 80 80 70 80 70|0101023040565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565|-25TN0 1in0 1o10 13V0 Ser0 8x00 iz0 LCL0 1fA0 jrA0 fNd0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|13e2",
+			"America/Dawson|YST YDT YWT YPT YDDT PST PDT MST|90 80 80 80 70 80 70 70|01010230405656565656565656565656565656565656565656565656565656565656565656565656565656565657|-25TN0 1in0 1o10 13V0 Ser0 8x00 iz0 LCL0 1fA0 jrA0 fNd0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0|13e2",
 			"America/Denver|MST MDT MWT MPT|70 60 60 60|01010101023010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261r0 1nX0 11B0 1nX0 11B0 1qL0 WN0 mn0 Ord0 8x20 ix0 LCN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|26e5",
-			"America/Detroit|LMT CST EST EWT EPT EDT|5w.b 60 50 40 40 40|012342525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252|-2Cgir.N peqr.N 156L0 8x40 iv0 6fd0 11z0 XQp0 1cL0 s10 1Vz0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|37e5",
-			"America/Edmonton|LMT MST MDT MWT MPT|7x.Q 70 60 60 60|01212121212121341212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2yd4q.8 shdq.8 1in0 17d0 hz0 2dB0 1fz0 1a10 11z0 1qN0 WL0 1qN0 11z0 IGN0 8x20 ix0 3NB0 11z0 LFB0 1cL0 3Cp0 1cL0 66N0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|10e5",
+			"America/Detroit|LMT CST EST EWT EPT EDT|5w.b 60 50 40 40 40|0123425252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252|-2Cgir.N peqr.N 156L0 8x40 iv0 6fd0 11z0 JxX1 SMX 1cN0 1cL0 aW10 1cL0 s10 1Vz0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|37e5",
+			"America/Edmonton|LMT MST MDT MWT MPT|7x.Q 70 60 60 60|0121212121212134121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2yd4q.8 shdq.8 1in0 17d0 hz0 2dB0 1fz0 1a10 11z0 1qN0 WL0 1qN0 11z0 IGN0 8x20 ix0 3NB0 11z0 XQp0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|10e5",
 			"America/Eirunepe|LMT -05 -04|4D.s 50 40|0121212121212121212121212121212121|-2glvk.w HdLk.w 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 dPB0 On0 yTd0 d5X0|31e3",
 			"America/El_Salvador|LMT CST CDT|5U.M 60 50|012121|-1XiG3.c 2Fvc3.c WL0 1qN0 WL0|11e5",
 			"America/Tijuana|LMT MST PST PDT PWT PPT|7M.4 70 80 70 70 70|012123245232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-1UQE0 4PX0 8mM0 8lc0 SN0 1cL0 pHB0 83r0 zI0 5O10 1Rz0 cOO0 11A0 1o00 11A0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 BUp0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 U10 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|20e5",
 			"America/Fort_Nelson|PST PDT PWT PPT MST|80 70 70 70 70|01023010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010104|-25TO0 1in0 UGp0 8x10 iy0 3NB0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0|39e2",
-			"America/Fort_Wayne|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|010101023010101010101010101040454545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 QI10 Db0 RB0 8x30 iw0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 5Tz0 1o10 qLb0 1cL0 1cN0 1cL0 1qhd0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
+			"America/Fort_Wayne|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|010101023010101010101010101040454545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 QI10 Db0 RB0 8x30 iw0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 5Tz0 1o10 qLb0 1cL0 1cN0 1cL0 1qhd0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
 			"America/Fortaleza|LMT -03 -02|2y 30 20|0121212121212121212121212121212121212121|-2glxq HdLq 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 nsp0 WL0 1tB0 5z0 2mN0 On0|34e5",
 			"America/Glace_Bay|LMT AST ADT AWT APT|3X.M 40 30 30 30|012134121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2IsI0.c CwO0.c 1in0 UGp0 8x50 iu0 iq10 11z0 Jg10 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|19e3",
 			"America/Godthab|LMT -03 -02|3q.U 30 20|0121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2a5Ux.4 2z5dx.4 19U0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|17e3",
@@ -42184,19 +48267,19 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"America/Halifax|LMT AST ADT AWT APT|4e.o 40 30 30 30|0121212121212121212121212121212121212121212121212134121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2IsHJ.A xzzJ.A 1db0 3I30 1in0 3HX0 IL0 1E10 ML0 1yN0 Pb0 1Bd0 Mn0 1Bd0 Rz0 1w10 Xb0 1w10 LX0 1w10 Xb0 1w10 Lz0 1C10 Jz0 1E10 OL0 1yN0 Un0 1qp0 Xb0 1qp0 11X0 1w10 Lz0 1HB0 LX0 1C10 FX0 1w10 Xb0 1qp0 Xb0 1BB0 LX0 1td0 Xb0 1qp0 Xb0 Rf0 8x50 iu0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 3Qp0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 3Qp0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 6i10 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|39e4",
 			"America/Havana|HMT CST CDT|5t.A 50 40|012121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-1Meuu.o 72zu.o ML0 sld0 An0 1Nd0 Db0 1Nd0 An0 6Ep0 An0 1Nd0 An0 JDd0 Mn0 1Ap0 On0 1fd0 11X0 1qN0 WL0 1wp0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 14n0 1ld0 14L0 1kN0 15b0 1kp0 1cL0 1cN0 1fz0 1a10 1fz0 1fB0 11z0 14p0 1nX0 11B0 1nX0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 14n0 1ld0 14n0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 1a10 1in0 1a10 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 17c0 1o00 11A0 1qM0 11A0 1o00 11A0 1o00 14o0 1lc0 14o0 1lc0 11A0 6i00 Rc0 1wo0 U00 1tA0 Rc0 1wo0 U00 1wo0 U00 1zc0 U00 1qM0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0|21e5",
 			"America/Hermosillo|LMT MST CST PST MDT|7n.Q 70 60 80 60|0121212131414141|-1UQF0 deL0 8lc0 17c0 10M0 1dd0 otX0 gmN0 P2N0 13Vd0 1lb0 14p0 1lb0 14p0 1lb0|64e4",
-			"America/Indiana/Knox|CST CDT CWT CPT EST|60 50 50 50 50|0101023010101010101010101010101010101040101010101010101010101010101010101010101010101010141010101010101010101010101010101010101010101010101010101010101010|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 3NB0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 11z0 1o10 11z0 1o10 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 3Cn0 8wp0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 z8o0 1o00 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"America/Indiana/Marengo|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|0101023010101010101010104545454545414545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 dyN0 11z0 6fd0 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 jrz0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1VA0 LA0 1BX0 1e6p0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"America/Indiana/Petersburg|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|01010230101010101010101010104010101010101010101010141014545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 njX0 WN0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 3Fb0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 19co0 1o00 Rd0 1zb0 Oo0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"America/Indiana/Tell_City|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|01010230101010101010101010101010454541010101010101010101010101010101010101010101010101010101010101010|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 1o10 11z0 g0p0 11z0 1o10 11z0 1qL0 WN0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 WL0 1qN0 1cL0 1cN0 1cL0 1cN0 caL0 1cL0 1cN0 1cL0 1qhd0 1o00 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"America/Indiana/Vevay|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|010102304545454545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 kPB0 Awn0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1lnd0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"America/Indiana/Vincennes|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|01010230101010101010101010101010454541014545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 1o10 11z0 g0p0 11z0 1o10 11z0 1qL0 WN0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 WL0 1qN0 1cL0 1cN0 1cL0 1cN0 caL0 1cL0 1cN0 1cL0 1qhd0 1o00 Rd0 1zb0 Oo0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"America/Indiana/Winamac|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|01010230101010101010101010101010101010454541054545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 jrz0 1cL0 1cN0 1cL0 1qhd0 1o00 Rd0 1za0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
+			"America/Indiana/Knox|CST CDT CWT CPT EST|60 50 50 50 50|0101023010101010101010101010101010101040101010101010101010101010101010101010101010101010141010101010101010101010101010101010101010101010101010101010101010|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 3NB0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 11z0 1o10 11z0 1o10 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 3Cn0 8wp0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 z8o0 1o00 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Indiana/Marengo|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|0101023010101010101010104545454545414545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 dyN0 11z0 6fd0 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 jrz0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1VA0 LA0 1BX0 1e6p0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Indiana/Petersburg|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|01010230101010101010101010104010101010101010101010141014545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 njX0 WN0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 3Fb0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 19co0 1o00 Rd0 1zb0 Oo0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Indiana/Tell_City|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|01010230101010101010101010401054541010101010101010101010101010101010101010101010101010101010101010|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 njX0 WN0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 8wn0 1cN0 1cL0 1cN0 1cK0 1cN0 1cL0 1qhd0 1o00 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Indiana/Vevay|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|010102304545454545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 kPB0 Awn0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1lnd0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Indiana/Vincennes|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|01010230101010101010101010101010454541014545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 1o10 11z0 g0p0 11z0 1o10 11z0 1qL0 WN0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 WL0 1qN0 1cL0 1cN0 1cL0 1cN0 caL0 1cL0 1cN0 1cL0 1qhd0 1o00 Rd0 1zb0 Oo0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Indiana/Winamac|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|01010230101010101010101010101010101010454541054545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 jrz0 1cL0 1cN0 1cL0 1qhd0 1o00 Rd0 1za0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
 			"America/Inuvik|-00 PST PDDT MST MDT|0 80 60 70 60|0121343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343|-FnA0 tWU0 1fA0 wPe0 2pz0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|35e2",
 			"America/Iqaluit|-00 EWT EPT EST EDDT EDT CST CDT|0 40 40 50 30 40 60 50|01234353535353535353535353535353535353535353567353535353535353535353535353535353535353535353535353535353535353535353535353|-16K00 7nX0 iv0 LCL0 1fA0 zgO0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11C0 1nX0 11A0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|67e2",
 			"America/Jamaica|KMT EST EDT|57.a 50 40|0121212121212121212121|-2l1uQ.O 2uM1Q.O 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0|94e4",
 			"America/Juneau|PST PWT PPT PDT YDT YST AKST AKDT|80 70 70 70 80 90 90 80|01203030303030303030303030403030356767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676|-17T20 8x10 iy0 Vo10 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cM0 1cM0 1cL0 1cN0 1fz0 1a10 1fz0 co0 10q0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|33e3",
-			"America/Kentucky/Louisville|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|0101010102301010101010101010101010101454545454545414545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 3Fd0 Nb0 LPd0 11z0 RB0 8x30 iw0 Bb0 10N0 2bB0 8in0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 xz0 gso0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1VA0 LA0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"America/Kentucky/Monticello|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|0101023010101010101010101010101010101010101010101010101010101010101010101454545454545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 SWp0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11A0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
+			"America/Kentucky/Louisville|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|0101010102301010101010101010101010101454545454545414545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 3Fd0 Nb0 LPd0 11z0 RB0 8x30 iw0 1nX1 e0X 9vd0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 xz0 gso0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1VA0 LA0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Kentucky/Monticello|CST CDT CWT CPT EST EDT|60 50 50 50 50 40|0101023010101010101010101010101010101010101010101010101010101010101010101454545454545454545454545454545454545454545454545454545454545454545454545454|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 SWp0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11A0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
 			"America/La_Paz|CMT BST -04|4w.A 3w.A 40|012|-1x37r.o 13b0|19e5",
 			"America/Lima|LMT -05 -04|58.A 50 40|0121212121212121|-2tyGP.o 1bDzP.o zX0 1aN0 1cL0 1cN0 1cL0 1PrB0 zX0 1O10 zX0 6Gp0 zX0 98p0 zX0|11e6",
 			"America/Los_Angeles|PST PDT PWT PPT|80 70 70 70|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261q0 1nX0 11B0 1nX0 SgN0 8x10 iy0 5Wp1 1VaX 3dA0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1a00 1fA0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|15e6",
@@ -42208,7 +48291,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"America/Mazatlan|LMT MST CST PST MDT|75.E 70 60 80 60|0121212131414141414141414141414141414141414141414141414141414141414141414141414141414141414141|-1UQF0 deL0 8lc0 17c0 10M0 1dd0 otX0 gmN0 P2N0 13Vd0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 1fB0 WL0 1fB0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0|44e4",
 			"America/Menominee|CST CDT CWT CPT EST|60 50 50 50 50|01010230101041010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 1o10 11z0 LCN0 1fz0 6410 9Jb0 1cM0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|85e2",
 			"America/Merida|LMT CST EST CDT|5W.s 60 50 50|0121313131313131313131313131313131313131313131313131313131313131313131313131313131313131|-1UQG0 2q2o0 2hz0 wu30 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 1fB0 WL0 1fB0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0|11e5",
-			"America/Metlakatla|PST PWT PPT PDT AKST AKDT|80 70 70 70 90 80|0120303030303030303030303030303030454545454545454545454545454545454545454545454|-17T20 8x10 iy0 Vo10 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1hU10 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|14e2",
+			"America/Metlakatla|PST PWT PPT PDT AKST AKDT|80 70 70 70 90 80|01203030303030303030303030303030304545450454545454545454545454545454545454545454|-17T20 8x10 iy0 Vo10 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1hU10 Rd0 1zb0 Op0 1zb0 Op0 1zb0 uM0 jB0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|14e2",
 			"America/Mexico_City|LMT MST CST CDT CWT|6A.A 70 60 50 50|012121232324232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-1UQF0 deL0 8lc0 17c0 10M0 1dd0 gEn0 TX0 3xd0 Jb0 6zB0 SL0 e5d0 17b0 1Pff0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 1fB0 WL0 1fB0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0|20e6",
 			"America/Miquelon|LMT AST -03 -02|3I.E 40 30 20|012323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-2mKkf.k 2LTAf.k gQ10 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|61e2",
 			"America/Moncton|EST AST ADT AWT APT|50 40 30 30 30|012121212121212121212134121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2IsH0 CwN0 1in0 zAo0 An0 1Nd0 An0 1Nd0 An0 1Nd0 An0 1Nd0 An0 1Nd0 An0 1K10 Lz0 1zB0 NX0 1u10 Wn0 S20 8x50 iu0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 3Cp0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14n1 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 ReX 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|64e3",
@@ -42220,9 +48303,9 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"America/Nipigon|EST EDT EWT EPT|50 40 40 40|010123010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-25TR0 1in0 Rnb0 3je0 8x40 iv0 19yN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|16e2",
 			"America/Nome|NST NWT NPT BST BDT YST AKST AKDT|b0 a0 a0 b0 a0 90 90 80|012034343434343434343434343434343456767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676|-17SX0 8wW0 iB0 Qlb0 52O0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 cl0 10q0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|38e2",
 			"America/Noronha|LMT -02 -01|29.E 20 10|0121212121212121212121212121212121212121|-2glxO.k HdKO.k 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 nsp0 WL0 1tB0 2L0 2pB0 On0|30e2",
-			"America/North_Dakota/Beulah|MST MDT MWT MPT CST CDT|70 60 60 60 60 50|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101014545454545454545454545454545454545454545454545454545454|-261r0 1nX0 11B0 1nX0 SgN0 8x20 ix0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Oo0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"America/North_Dakota/Center|MST MDT MWT MPT CST CDT|70 60 60 60 60 50|010102301010101010101010101010101010101010101010101010101014545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454|-261r0 1nX0 11B0 1nX0 SgN0 8x20 ix0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14o0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"America/North_Dakota/New_Salem|MST MDT MWT MPT CST CDT|70 60 60 60 60 50|010102301010101010101010101010101010101010101010101010101010101010101010101010101454545454545454545454545454545454545454545454545454545454545454545454|-261r0 1nX0 11B0 1nX0 SgN0 8x20 ix0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14o0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
+			"America/North_Dakota/Beulah|MST MDT MWT MPT CST CDT|70 60 60 60 60 50|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101014545454545454545454545454545454545454545454545454545454|-261r0 1nX0 11B0 1nX0 SgN0 8x20 ix0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Oo0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/North_Dakota/Center|MST MDT MWT MPT CST CDT|70 60 60 60 60 50|010102301010101010101010101010101010101010101010101010101014545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454|-261r0 1nX0 11B0 1nX0 SgN0 8x20 ix0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14o0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/North_Dakota/New_Salem|MST MDT MWT MPT CST CDT|70 60 60 60 60 50|010102301010101010101010101010101010101010101010101010101010101010101010101010101454545454545454545454545454545454545454545454545454545454545454545454|-261r0 1nX0 11B0 1nX0 SgN0 8x20 ix0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14o0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
 			"America/Ojinaga|LMT MST CST CDT MDT|6V.E 70 60 50 60|0121212323241414141414141414141414141414141414141414141414141414141414141414141414141414141|-1UQF0 deL0 8lc0 17c0 10M0 1dd0 2zQN0 1lb0 14p0 1lb0 14q0 1lb0 14p0 1nX0 11B0 1nX0 1fB0 WL0 1fB0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 U10 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|23e3",
 			"America/Pangnirtung|-00 AST AWT APT ADDT ADT EDT EST CST CDT|0 40 30 30 20 30 40 50 60 50|012314151515151515151515151515151515167676767689767676767676767676767676767676767676767676767676767676767676767676767676767|-1XiM0 PnG0 8x50 iu0 LCL0 1fA0 zgO0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1o00 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11C0 1nX0 11A0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|14e2",
 			"America/Paramaribo|LMT PMT PMT -0330 -03|3E.E 3E.Q 3E.A 3u 30|01234|-2nDUj.k Wqo0.c qanX.I 1yVXN.o|24e4",
@@ -42231,16 +48314,16 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"America/Rio_Branco|LMT -05 -04|4v.c 50 40|01212121212121212121212121212121|-2glvs.M HdLs.M 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 NBd0 d5X0|31e4",
 			"America/Porto_Velho|LMT -04 -03|4f.A 40 30|012121212121212121212121212121|-2glvI.o HdKI.o 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0|37e4",
 			"America/Puerto_Rico|AST AWT APT|40 30 30|0120|-17lU0 7XT0 iu0|24e5",
-			"America/Punta_Arenas|SMT -05 -04 -03|4G.K 50 40 30|0102021212121212121232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323|-2q2jh.e fJAh.e 5knG.K 1Vzh.e jRAG.K 1pbh.e 11d0 1oL0 11d0 1oL0 11d0 1oL0 11d0 1pb0 11d0 nHX0 op0 blz0 ko0 Qeo0 WL0 1zd0 On0 1ip0 11z0 1o10 11z0 1qN0 WL0 1ld0 14n0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 1cL0 1cN0 11z0 1o10 11z0 1qN0 WL0 1fB0 19X0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1ip0 1fz0 1fB0 11z0 1qN0 WL0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1o10 19X0 1fB0 1nX0 G10 1EL0 Op0 1zb0 Rd0 1wn0 Rd0 46n0 Ap0",
+			"America/Punta_Arenas|SMT -05 -04 -03|4G.K 50 40 30|0102021212121212121232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323|-2q2jh.e fJAh.e 5knG.K 1Vzh.e jRAG.K 1pbh.e 11d0 1oL0 11d0 1oL0 11d0 1oL0 11d0 1pb0 11d0 nHX0 op0 blz0 ko0 Qeo0 WL0 1zd0 On0 1ip0 11z0 1o10 11z0 1qN0 WL0 1ld0 14n0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 1cL0 1cN0 11z0 1o10 11z0 1qN0 WL0 1fB0 19X0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1ip0 1fz0 1fB0 11z0 1qN0 WL0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1o10 19X0 1fB0 1nX0 G10 1EL0 Op0 1zb0 Rd0 1wn0 Rd0 46n0 Ap0|",
 			"America/Rainy_River|CST CDT CWT CPT|60 50 50 50|010123010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-25TQ0 1in0 Rnb0 3je0 8x30 iw0 19yN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|842",
 			"America/Rankin_Inlet|-00 CST CDDT CDT EST|0 60 40 50 50|012131313131313131313131313131313131313131313431313131313131313131313131313131313131313131313131313131313131313131313131|-vDc0 keu0 1fA0 zgO0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|26e2",
 			"America/Recife|LMT -03 -02|2j.A 30 20|0121212121212121212121212121212121212121|-2glxE.o HdLE.o 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 nsp0 WL0 1tB0 2L0 2pB0 On0|33e5",
 			"America/Regina|LMT MST MDT MWT MPT CST|6W.A 70 60 60 60 60|012121212121212121212121341212121212121212121212121215|-2AD51.o uHe1.o 1in0 s2L0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 66N0 1cL0 1cN0 19X0 1fB0 1cL0 1fB0 1cL0 1cN0 1cL0 M30 8x20 ix0 1ip0 1cL0 1ip0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 3NB0 1cL0 1cN0|19e4",
 			"America/Resolute|-00 CST CDDT CDT EST|0 60 40 50 50|012131313131313131313131313131313131313131313431313131313431313131313131313131313131313131313131313131313131313131313131|-SnA0 GWS0 1fA0 zgO0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|229",
 			"America/Santarem|LMT -04 -03|3C.M 40 30|0121212121212121212121212121212|-2glwl.c HdLl.c 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 NBd0|21e4",
-			"America/Santiago|SMT -05 -04 -03|4G.K 50 40 30|010202121212121212321232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323|-2q2jh.e fJAh.e 5knG.K 1Vzh.e jRAG.K 1pbh.e 11d0 1oL0 11d0 1oL0 11d0 1oL0 11d0 1pb0 11d0 nHX0 op0 9Bz0 jb0 1oN0 ko0 Qeo0 WL0 1zd0 On0 1ip0 11z0 1o10 11z0 1qN0 WL0 1ld0 14n0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 1cL0 1cN0 11z0 1o10 11z0 1qN0 WL0 1fB0 19X0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1ip0 1fz0 1fB0 11z0 1qN0 WL0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1o10 19X0 1fB0 1nX0 G10 1EL0 Op0 1zb0 Rd0 1wn0 Rd0 46n0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Dd0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Dd0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Dd0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0|62e5",
+			"America/Santiago|SMT -05 -04 -03|4G.K 50 40 30|010202121212121212321232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323|-2q2jh.e fJAh.e 5knG.K 1Vzh.e jRAG.K 1pbh.e 11d0 1oL0 11d0 1oL0 11d0 1oL0 11d0 1pb0 11d0 nHX0 op0 9Bz0 jb0 1oN0 ko0 Qeo0 WL0 1zd0 On0 1ip0 11z0 1o10 11z0 1qN0 WL0 1ld0 14n0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 1cL0 1cN0 11z0 1o10 11z0 1qN0 WL0 1fB0 19X0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1ip0 1fz0 1fB0 11z0 1qN0 WL0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1o10 19X0 1fB0 1nX0 G10 1EL0 Op0 1zb0 Rd0 1wn0 Rd0 46n0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1zb0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0|62e5",
 			"America/Santo_Domingo|SDMT EST EDT -0430 AST|4E 50 40 4u 40|01213131313131414|-1ttjk 1lJMk Mn0 6sp0 Lbu 1Cou yLu 1RAu wLu 1QMu xzu 1Q0u xXu 1PAu 13jB0 e00|29e5",
-			"America/Sao_Paulo|LMT -03 -02|36.s 30 20|012121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212|-2glwR.w HdKR.w 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 pTd0 PX0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 1EN0 Lz0 1C10 IL0 1HB0 Db0 1HB0 On0 1zd0 On0 1zd0 Lz0 1zd0 Rb0 1wN0 Wn0 1tB0 Rb0 1tB0 WL0 1tB0 Rb0 1zd0 On0 1HB0 FX0 1C10 Lz0 1Ip0 HX0 1zd0 On0 1HB0 IL0 1wp0 On0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 Rb0 1zd0 Lz0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 On0 1zd0 On0 1HB0 FX0 1HB0 FX0 1HB0 IL0 1HB0 FX0 1HB0 IL0 1EN0 FX0 1HB0 FX0 1HB0 IL0 1EN0 IL0 1HB0 FX0 1HB0 FX0 1HB0 FX0 1HB0 FX0 1HB0 FX0 1Kp0 FX0 1HB0 IL0 1EN0 FX0 1HB0 FX0 1HB0 IL0 1EN0|20e6",
+			"America/Sao_Paulo|LMT -03 -02|36.s 30 20|01212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2glwR.w HdKR.w 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 pTd0 PX0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 1EN0 FX0 1HB0 Lz0 1EN0 Lz0 1C10 IL0 1HB0 Db0 1HB0 On0 1zd0 On0 1zd0 Lz0 1zd0 Rb0 1wN0 Wn0 1tB0 Rb0 1tB0 WL0 1tB0 Rb0 1zd0 On0 1HB0 FX0 1C10 Lz0 1Ip0 HX0 1zd0 On0 1HB0 IL0 1wp0 On0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 Rb0 1zd0 Lz0 1C10 Lz0 1C10 On0 1zd0 On0 1zd0 On0 1zd0 On0 1HB0 FX0|20e6",
 			"America/Scoresbysund|LMT -02 -01 +00|1r.Q 20 10 0|0121323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-2a5Ww.8 2z5ew.8 1a00 1cK0 1cL0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|452",
 			"America/Sitka|PST PWT PPT PDT YST AKST AKDT|80 70 70 70 90 90 80|01203030303030303030303030303030345656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565|-17T20 8x10 iy0 Vo10 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 co0 10q0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|90e2",
 			"America/St_Johns|NST NDT NST NDT NWT NPT NDDT|3u.Q 2u.Q 3u 2u 2u 2u 1u|01010101010101010101010101010101010102323232323232324523232323232323232323232323232323232323232323232323232323232323232323232323232323232326232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-28oit.8 14L0 1nB0 1in0 1gm0 Dz0 1JB0 1cL0 1cN0 1cL0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1fB0 1cL0 1cN0 1cL0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1fB0 1cL0 1fB0 19X0 1fB0 19X0 10O0 eKX.8 19X0 1iq0 WL0 1qN0 WL0 1qN0 WL0 1tB0 TX0 1tB0 WL0 1qN0 WL0 1qN0 7UHu itu 1tB0 WL0 1qN0 WL0 1qN0 WL0 1qN0 WL0 1tB0 WL0 1ld0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14n1 1lb0 14p0 1nW0 11C0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zcX Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|11e4",
@@ -42248,8 +48331,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"America/Tegucigalpa|LMT CST CDT|5M.Q 60 50|01212121|-1WGGb.8 2ETcb.8 WL0 1qN0 WL0 GRd0 AL0|11e5",
 			"America/Thule|LMT AST ADT|4z.8 40 30|012121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2a5To.Q 31NBo.Q 1cL0 1cN0 1cL0 1fB0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|656",
 			"America/Thunder_Bay|CST EST EWT EPT EDT|60 50 40 40 40|0123141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141|-2q5S0 1iaN0 8x40 iv0 XNB0 1cL0 1cN0 1fz0 1cN0 1cL0 3Cp0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|11e4",
-			"America/Vancouver|PST PDT PWT PPT|80 70 70 70|0102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-25TO0 1in0 UGp0 8x10 iy0 1o10 17b0 1ip0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|23e5",
-			"America/Whitehorse|YST YDT YWT YPT YDDT PST PDT|90 80 80 80 70 80 70|0101023040565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565|-25TN0 1in0 1o10 13V0 Ser0 8x00 iz0 LCL0 1fA0 3NA0 vrd0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|23e3",
+			"America/Vancouver|PST PDT PWT PPT|80 70 70 70|0102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-25TO0 1in0 UGp0 8x10 iy0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|23e5",
+			"America/Whitehorse|YST YDT YWT YPT YDDT PST PDT MST|90 80 80 80 70 80 70 70|01010230405656565656565656565656565656565656565656565656565656565656565656565656565656565657|-25TN0 1in0 1o10 13V0 Ser0 8x00 iz0 LCL0 1fA0 3NA0 vrd0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0|23e3",
 			"America/Winnipeg|CST CDT CWT CPT|60 50 50 50|010101023010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2aIi0 WL0 3ND0 1in0 Jap0 Rb0 aCN0 8x30 iw0 1tB0 11z0 1ip0 11z0 1o10 11z0 1o10 11z0 1rd0 10L0 1op0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 1cL0 1cN0 11z0 6i10 WL0 6i10 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1a00 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1a00 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 14o0 1lc0 14o0 1o00 11A0 1o00 11A0 1o00 14o0 1lc0 14o0 1lc0 14o0 1o00 11A0 1o00 11A0 1o00 14o0 1lc0 14o0 1lc0 14o0 1lc0 14o0 1o00 11A0 1o00 11A0 1o00 14o0 1lc0 14o0 1lc0 14o0 1o00 11A0 1o00 11A0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|66e4",
 			"America/Yakutat|YST YWT YPT YDT AKST AKDT|90 80 80 80 90 80|01203030303030303030303030303030304545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454|-17T10 8x00 iz0 Vo10 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 cn0 10q0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|642",
 			"America/Yellowknife|-00 MST MWT MPT MDDT MDT|0 70 60 60 50 60|012314151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151|-1pdA0 hix0 8x20 ix0 LCL0 1fA0 zgO0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|19e3",
@@ -42272,36 +48355,36 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Asia/Aqtau|LMT +04 +05 +06|-3l.4 -40 -50 -60|012323232323232323232123232312121212121212121212|-1Pc3l.4 eUnl.4 24PX0 2pX0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cN0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0|15e4",
 			"Asia/Aqtobe|LMT +04 +05 +06|-3M.E -40 -50 -60|0123232323232323232321232323232323232323232323232|-1Pc3M.E eUnM.E 23CL0 3Db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0|27e4",
 			"Asia/Ashgabat|LMT +04 +05 +06|-3R.w -40 -50 -60|0123232323232323232323212|-1Pc3R.w eUnR.w 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0|41e4",
-			"Asia/Atyrau|LMT +03 +05 +06 +04|-3r.I -30 -50 -60 -40|01232323232323232323242323232323232324242424242|-1Pc3r.I eUor.I 24PW0 2pX0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 2sp0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0",
+			"Asia/Atyrau|LMT +03 +05 +06 +04|-3r.I -30 -50 -60 -40|01232323232323232323242323232323232324242424242|-1Pc3r.I eUor.I 24PW0 2pX0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 2sp0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0|",
 			"Asia/Baghdad|BMT +03 +04|-2V.A -30 -40|012121212121212121212121212121212121212121212121212121|-26BeV.A 2ACnV.A 11b0 1cp0 1dz0 1dd0 1db0 1cN0 1cp0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1de0 1dc0 1dc0 1dc0 1cM0 1dc0 1cM0 1dc0 1cM0 1dc0 1dc0 1dc0 1cM0 1dc0 1cM0 1dc0 1cM0 1dc0 1dc0 1dc0 1cM0 1dc0 1cM0 1dc0 1cM0 1dc0 1dc0 1dc0 1cM0 1dc0 1cM0 1dc0 1cM0 1dc0|66e5",
 			"Asia/Qatar|LMT +04 +03|-3q.8 -40 -30|012|-21Jfq.8 27BXq.8|96e4",
 			"Asia/Baku|LMT +03 +04 +05|-3j.o -30 -40 -50|01232323232323232323232123232323232323232323232323232323232323232|-1Pc3j.o 1jUoj.o WCL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 1cM0 9Je0 1o00 11z0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00|27e5",
 			"Asia/Bangkok|BMT +07|-6G.4 -70|01|-218SG.4|15e6",
-			"Asia/Barnaul|LMT +06 +07 +08|-5z -60 -70 -80|0123232323232323232323212323232321212121212121212121212121212121212|-21S5z pCnz 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 p90 LE0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3rd0",
+			"Asia/Barnaul|LMT +06 +07 +08|-5z -60 -70 -80|0123232323232323232323212323232321212121212121212121212121212121212|-21S5z pCnz 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 p90 LE0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3rd0|",
 			"Asia/Beirut|EET EEST|-20 -30|010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-21aq0 1on0 1410 1db0 19B0 1in0 1ip0 WL0 1lQp0 11b0 1oN0 11b0 1oN0 11b0 1pd0 11b0 1oN0 11b0 q6N0 En0 1oN0 11b0 1oN0 11b0 1oN0 11b0 1pd0 11b0 1oN0 11b0 1op0 11b0 dA10 17b0 1iN0 17b0 1iN0 17b0 1iN0 17b0 1vB0 SL0 1mp0 13z0 1iN0 17b0 1iN0 17b0 1jd0 12n0 1a10 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0|22e5",
 			"Asia/Bishkek|LMT +05 +06 +07|-4W.o -50 -60 -70|012323232323232323232321212121212121212121212121212|-1Pc4W.o eUnW.o 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2e00 1tX0 17b0 1ip0 17b0 1ip0 17b0 1ip0 17b0 1ip0 19X0 1cPu 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0|87e4",
 			"Asia/Brunei|LMT +0730 +08|-7D.E -7u -80|012|-1KITD.E gDc9.E|42e4",
 			"Asia/Kolkata|MMT IST +0630|-5l.a -5u -6u|012121|-2zOtl.a 1r2LP.a 1un0 HB0 7zX0|15e6",
 			"Asia/Chita|LMT +08 +09 +10|-7x.Q -80 -90 -a0|012323232323232323232321232323232323232323232323232323232323232312|-21Q7x.Q pAnx.Q 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3re0|33e4",
 			"Asia/Choibalsan|LMT +07 +08 +10 +09|-7C -70 -80 -a0 -90|0123434343434343434343434343434343434343434343424242|-2APHC 2UkoC cKn0 1da0 1dd0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 6hD0 11z0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 3Db0 h1f0 1cJ0 1cP0 1cJ0|38e3",
-			"Asia/Shanghai|CST CDT|-80 -90|01010101010101010|-1c1I0 LX0 16p0 1jz0 1Myp0 Rb0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0|23e6",
+			"Asia/Shanghai|CST CDT|-80 -90|01010101010101010101010101010|-23uw0 18n0 OjB0 Rz0 11d0 1wL0 A10 8HX0 1G10 Tz0 1ip0 1jX0 1cN0 11b0 1oN0 aL0 1tU30 Rb0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0|23e6",
 			"Asia/Colombo|MMT +0530 +06 +0630|-5j.w -5u -60 -6u|01231321|-2zOtj.w 1rFbN.w 1zzu 7Apu 23dz0 11zu n3cu|22e5",
 			"Asia/Dhaka|HMT +0630 +0530 +06 +07|-5R.k -6u -5u -60 -70|0121343|-18LFR.k 1unn.k HB0 m6n0 2kxbu 1i00|16e6",
 			"Asia/Damascus|LMT EET EEST|-2p.c -20 -30|01212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-21Jep.c Hep.c 17b0 1ip0 17b0 1ip0 17b0 1ip0 19X0 1xRB0 11X0 1oN0 10L0 1pB0 11b0 1oN0 10L0 1mp0 13X0 1oN0 11b0 1pd0 11b0 1oN0 11b0 1oN0 11b0 1oN0 11b0 1pd0 11b0 1oN0 11b0 1oN0 11b0 1oN0 11b0 1pd0 11b0 1oN0 Nb0 1AN0 Nb0 bcp0 19X0 1gp0 19X0 3ld0 1xX0 Vd0 1Bz0 Sp0 1vX0 10p0 1dz0 1cN0 1cL0 1db0 1db0 1g10 1an0 1ap0 1db0 1fd0 1db0 1cN0 1db0 1dd0 1db0 1cp0 1dz0 1c10 1dX0 1cN0 1db0 1dd0 1db0 1cN0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1db0 1cN0 1db0 1cN0 19z0 1fB0 1qL0 11B0 1on0 Wp0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0|26e5",
 			"Asia/Dili|LMT +08 +09|-8m.k -80 -90|01212|-2le8m.k 1dnXm.k 1nfA0 Xld0|19e4",
 			"Asia/Dubai|LMT +04|-3F.c -40|01|-21JfF.c|39e5",
 			"Asia/Dushanbe|LMT +05 +06 +07|-4z.c -50 -60 -70|012323232323232323232321|-1Pc4z.c eUnz.c 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2hB0|76e4",
-			"Asia/Famagusta|LMT EET EEST +03|-2f.M -20 -30 -30|0121212121212121212121212121212121212121212121212121212121212121212121212121212121212312121212121212121212121212121212121212121|-1Vc2f.M 2a3cf.M 1cL0 1qp0 Xz0 19B0 19X0 1fB0 1db0 1cp0 1cL0 1fB0 19X0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1o30 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 15U0 2Ks0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00",
-			"Asia/Gaza|EET EEST IST IDT|-20 -30 -20 -30|010101010101010101010101010101012323232323232323232323232320101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-1c2q0 5Rb0 10r0 1px0 10N0 1pz0 16p0 1jB0 16p0 1jx0 pBd0 Vz0 1oN0 11b0 1oO0 10N0 1pz0 10N0 1pb0 10N0 1pb0 10N0 1pb0 10N0 1pz0 10N0 1pb0 10N0 1pb0 11d0 1oL0 dW0 hfB0 Db0 1fB0 Rb0 npB0 11z0 1C10 IL0 1s10 10n0 1o10 WL0 1zd0 On0 1ld0 11z0 1o10 14n0 1o10 14n0 1nd0 12n0 1nd0 Xz0 1q10 12n0 M10 C00 17c0 1io0 17c0 1io0 17c0 1o00 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 17c0 1io0 18N0 1bz0 19z0 1gp0 1610 1iL0 11z0 1o10 14o0 1lA1 SKX 1xd1 MKX 1AN0 1a00 1fA0 1cL0 1cN0 1nX0 1210 1nz0 1220 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1qL0|18e5",
-			"Asia/Hebron|EET EEST IST IDT|-20 -30 -20 -30|01010101010101010101010101010101232323232323232323232323232010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-1c2q0 5Rb0 10r0 1px0 10N0 1pz0 16p0 1jB0 16p0 1jx0 pBd0 Vz0 1oN0 11b0 1oO0 10N0 1pz0 10N0 1pb0 10N0 1pb0 10N0 1pb0 10N0 1pz0 10N0 1pb0 10N0 1pb0 11d0 1oL0 dW0 hfB0 Db0 1fB0 Rb0 npB0 11z0 1C10 IL0 1s10 10n0 1o10 WL0 1zd0 On0 1ld0 11z0 1o10 14n0 1o10 14n0 1nd0 12n0 1nd0 Xz0 1q10 12n0 M10 C00 17c0 1io0 17c0 1io0 17c0 1o00 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 17c0 1io0 18N0 1bz0 19z0 1gp0 1610 1iL0 12L0 1mN0 14o0 1lc0 Tb0 1xd1 MKX bB0 cn0 1cN0 1a00 1fA0 1cL0 1cN0 1nX0 1210 1nz0 1220 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1qL0|25e4",
+			"Asia/Famagusta|LMT EET EEST +03|-2f.M -20 -30 -30|0121212121212121212121212121212121212121212121212121212121212121212121212121212121212312121212121212121212121212121212121212121|-1Vc2f.M 2a3cf.M 1cL0 1qp0 Xz0 19B0 19X0 1fB0 1db0 1cp0 1cL0 1fB0 19X0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1o30 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 15U0 2Ks0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|",
+			"Asia/Gaza|EET EEST IST IDT|-20 -30 -20 -30|0101010101010101010101010101010123232323232323232323232323232320101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-1c2q0 5Rb0 10r0 1px0 10N0 1pz0 16p0 1jB0 16p0 1jx0 pBd0 Vz0 1oN0 11b0 1oO0 10N0 1pz0 10N0 1pb0 10N0 1pb0 10N0 1pb0 10N0 1pz0 10N0 1pb0 10N0 1pb0 11d0 1oL0 dW0 hfB0 Db0 1fB0 Rb0 bXd0 gM0 8Q00 IM0 1wM0 11z0 1C10 IL0 1s10 10n0 1o10 WL0 1zd0 On0 1ld0 11z0 1o10 14n0 1o10 14n0 1nd0 12n0 1nd0 Xz0 1q10 12n0 M10 C00 17c0 1io0 17c0 1io0 17c0 1o00 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 17c0 1io0 18N0 1bz0 19z0 1gp0 1610 1iL0 11z0 1o10 14o0 1lA1 SKX 1xd1 MKX 1AN0 1a00 1fA0 1cL0 1cN0 1nX0 1210 1nz0 1220 1qL0 WN0 1qL0 WN0 1qL0 11c0 1oo0 11c0 1rc0 Wo0 1rc0 Wo0 1rc0 11c0 1oo0 11c0 1oo0 11c0 1oo0 11c0 1rc0 Wo0 1rc0 11c0 1oo0 11c0 1oo0 11c0 1oo0 11c0 1oo0 11c0 1rc0 Wo0 1rc0 11c0 1oo0 11c0 1oo0 11c0 1oo0 11c0 1rc0|18e5",
+			"Asia/Hebron|EET EEST IST IDT|-20 -30 -20 -30|010101010101010101010101010101012323232323232323232323232323232010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-1c2q0 5Rb0 10r0 1px0 10N0 1pz0 16p0 1jB0 16p0 1jx0 pBd0 Vz0 1oN0 11b0 1oO0 10N0 1pz0 10N0 1pb0 10N0 1pb0 10N0 1pb0 10N0 1pz0 10N0 1pb0 10N0 1pb0 11d0 1oL0 dW0 hfB0 Db0 1fB0 Rb0 bXd0 gM0 8Q00 IM0 1wM0 11z0 1C10 IL0 1s10 10n0 1o10 WL0 1zd0 On0 1ld0 11z0 1o10 14n0 1o10 14n0 1nd0 12n0 1nd0 Xz0 1q10 12n0 M10 C00 17c0 1io0 17c0 1io0 17c0 1o00 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 17c0 1io0 18N0 1bz0 19z0 1gp0 1610 1iL0 12L0 1mN0 14o0 1lc0 Tb0 1xd1 MKX bB0 cn0 1cN0 1a00 1fA0 1cL0 1cN0 1nX0 1210 1nz0 1220 1qL0 WN0 1qL0 WN0 1qL0 11c0 1oo0 11c0 1rc0 Wo0 1rc0 Wo0 1rc0 11c0 1oo0 11c0 1oo0 11c0 1oo0 11c0 1rc0 Wo0 1rc0 11c0 1oo0 11c0 1oo0 11c0 1oo0 11c0 1oo0 11c0 1rc0 Wo0 1rc0 11c0 1oo0 11c0 1oo0 11c0 1oo0 11c0 1rc0|25e4",
 			"Asia/Ho_Chi_Minh|LMT PLMT +07 +08 +09|-76.E -76.u -70 -80 -90|0123423232|-2yC76.E bK00.a 1h7b6.u 5lz0 18o0 3Oq0 k5b0 aW00 BAM0|90e5",
-			"Asia/Hong_Kong|LMT HKT HKST JST|-7A.G -80 -90 -90|0121312121212121212121212121212121212121212121212121212121212121212121|-2CFHA.G 1sEP6.G 1cL0 ylu 93X0 1qQu 1tX0 Rd0 1In0 NB0 1cL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1kL0 14N0 1nX0 U10 1tz0 U10 1wn0 Rd0 1wn0 U10 1tz0 U10 1tz0 U10 1tz0 U10 1wn0 Rd0 1wn0 Rd0 1wn0 U10 1tz0 U10 1tz0 17d0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 s10 1Vz0 1cN0 1cL0 1cN0 1cL0 6fd0 14n0|73e5",
+			"Asia/Hong_Kong|LMT HKT HKST HKWT JST|-7A.G -80 -90 -8u -90|0123412121212121212121212121212121212121212121212121212121212121212121|-2CFH0 1taO0 Hc0 xUu 9tBu 11z0 1tDu Rc0 1wo0 11A0 1cM0 11A0 1o00 11A0 1o00 11A0 1o00 14o0 1o00 11A0 1nX0 U10 1tz0 U10 1wn0 Rd0 1wn0 U10 1tz0 U10 1tz0 U10 1tz0 U10 1wn0 Rd0 1wn0 Rd0 1wn0 U10 1tz0 U10 1tz0 17d0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 s10 1Vz0 1cN0 1cL0 1cN0 1cL0 6fd0 14n0|73e5",
 			"Asia/Hovd|LMT +06 +07 +08|-66.A -60 -70 -80|012323232323232323232323232323232323232323232323232|-2APG6.A 2Uko6.A cKn0 1db0 1dd0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 6hD0 11z0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 kEp0 1cJ0 1cP0 1cJ0|81e3",
 			"Asia/Irkutsk|IMT +07 +08 +09|-6V.5 -70 -80 -90|01232323232323232323232123232323232323232323232323232323232323232|-21zGV.5 pjXV.5 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0|60e4",
-			"Europe/Istanbul|IMT EET EEST +04 +03|-1U.U -20 -30 -40 -30|012121212121212121212121212121212121212121212121212121234343434342121212121212121212121212121212121212121212121212121212121212124|-2ogNU.U dzzU.U 11b0 8tB0 1on0 1410 1db0 19B0 1in0 3Rd0 Un0 1oN0 11b0 zSp0 CL0 mN0 1Vz0 1gN0 1pz0 5Rd0 1fz0 1yp0 ML0 1kp0 17b0 1ip0 17b0 1fB0 19X0 1jB0 18L0 1ip0 17z0 qdd0 xX0 3S10 Tz0 dA10 11z0 1o10 11z0 1qN0 11z0 1ze0 11B0 WM0 1qO0 WI0 1nX0 1rB0 10L0 11B0 1in0 17d0 1in0 2pX0 19E0 1fU0 16Q0 1iI0 16Q0 1iI0 1Vd0 pb0 3Kp0 14o0 1de0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1a00 1fA0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WO0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 Xc0 1qo0 WM0 1qM0 11A0 1o00 1200 1nA0 11A0 1tA0 U00 15w0|13e6",
+			"Europe/Istanbul|IMT EET EEST +03 +04|-1U.U -20 -30 -30 -40|0121212121212121212121212121212121212121212121234312121212121212121212121212121212121212121212121212121212121212123|-2ogNU.U dzzU.U 11b0 8tB0 1on0 1410 1db0 19B0 1in0 3Rd0 Un0 1oN0 11b0 zSN0 CL0 mp0 1Vz0 1gN0 8yn0 1yp0 ML0 1kp0 17b0 1ip0 17b0 1fB0 19X0 1ip0 19X0 1ip0 17b0 qdB0 38L0 1jd0 Tz0 l6O0 11A0 WN0 1qL0 TB0 1tX0 U10 1tz0 11B0 1in0 17d0 z90 cne0 pb0 2Cp0 1800 14o0 1dc0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1a00 1fA0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WO0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 Xc0 1qo0 WM0 1qM0 11A0 1o00 1200 1nA0 11A0 1tA0 U00 15w0|13e6",
 			"Asia/Jakarta|BMT +0720 +0730 +09 +08 WIB|-77.c -7k -7u -90 -80 -70|01232425|-1Q0Tk luM0 mPzO 8vWu 6kpu 4PXu xhcu|31e6",
 			"Asia/Jayapura|LMT +09 +0930 WIT|-9m.M -90 -9u -90|0123|-1uu9m.M sMMm.M L4nu|26e4",
-			"Asia/Jerusalem|JMT IST IDT IDDT|-2k.E -20 -30 -40|01212121212132121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-26Bek.E SyMk.E 5Rb0 10r0 1px0 10N0 1pz0 16p0 1jB0 16p0 1jx0 3LB0 Em0 or0 1cn0 1dB0 16n0 10O0 1ja0 1tC0 14o0 1cM0 1a00 11A0 1Na0 An0 1MP0 AJ0 1Kp0 LC0 1oo0 Wl0 EQN0 Db0 1fB0 Rb0 npB0 11z0 1C10 IL0 1s10 10n0 1o10 WL0 1zd0 On0 1ld0 11z0 1o10 14n0 1o10 14n0 1nd0 12n0 1nd0 Xz0 1q10 12n0 1hB0 1dX0 1ep0 1aL0 1eN0 17X0 1nf0 11z0 1tB0 19W0 1e10 17b0 1ep0 1gL0 18N0 1fz0 1eN0 17b0 1gq0 1gn0 19d0 1dz0 1c10 17X0 1hB0 1gn0 19d0 1dz0 1c10 17X0 1kp0 1dz0 1c10 1aL0 1eN0 1oL0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0|81e4",
+			"Asia/Jerusalem|JMT IST IDT IDDT|-2k.E -20 -30 -40|012121212121321212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-26Bek.E SyMk.E 5Rb0 10r0 1px0 10N0 1pz0 16p0 1jB0 16p0 1jx0 3LB0 Em0 or0 1cn0 1dB0 16n0 10O0 1ja0 1tC0 14o0 1cM0 1a00 11A0 1Na0 An0 1MP0 AJ0 1Kp0 LC0 1oo0 Wl0 EQN0 Db0 1fB0 Rb0 bXd0 gM0 8Q00 IM0 1wM0 11z0 1C10 IL0 1s10 10n0 1o10 WL0 1zd0 On0 1ld0 11z0 1o10 14n0 1o10 14n0 1nd0 12n0 1nd0 Xz0 1q10 12n0 1hB0 1dX0 1ep0 1aL0 1eN0 17X0 1nf0 11z0 1tB0 19W0 1e10 17b0 1ep0 1gL0 18N0 1fz0 1eN0 17b0 1gq0 1gn0 19d0 1dz0 1c10 17X0 1hB0 1gn0 19d0 1dz0 1c10 17X0 1kp0 1dz0 1c10 1aL0 1eN0 1oL0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0|81e4",
 			"Asia/Kabul|+04 +0430|-40 -4u|01|-10Qs0|46e5",
 			"Asia/Kamchatka|LMT +11 +12 +13|-ay.A -b0 -c0 -d0|012323232323232323232321232323232323232323232323232323232323212|-1SLKy.A ivXy.A 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 2sp0 WM0|18e4",
 			"Asia/Karachi|LMT +0530 +0630 +05 PKT PKST|-4s.c -5u -6u -50 -50 -60|012134545454|-2xoss.c 1qOKW.c 7zX0 eup0 LqMu 1fy00 1cL0 dK10 11b0 1610 1jX0|24e6",
@@ -42311,29 +48394,30 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Asia/Krasnoyarsk|LMT +06 +07 +08|-6b.q -60 -70 -80|01232323232323232323232123232323232323232323232323232323232323232|-21Hib.q prAb.q 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0|10e5",
 			"Asia/Kuala_Lumpur|SMT +07 +0720 +0730 +09 +08|-6T.p -70 -7k -7u -90 -80|0123435|-2Bg6T.p 17anT.p l5XE 17bO 8Fyu 1so1u|71e5",
 			"Asia/Kuching|LMT +0730 +08 +0820 +09|-7l.k -7u -80 -8k -90|0123232323232323242|-1KITl.k gDbP.k 6ynu AnE 1O0k AnE 1NAk AnE 1NAk AnE 1NAk AnE 1O0k AnE 1NAk AnE pAk 8Fz0|13e4",
-			"Asia/Macau|LMT CST CDT|-7y.k -80 -90|012121212121212121212121212121212121212121|-2le80 1XO3u 1wn0 Rd0 1wn0 R9u 1wqu U10 1tz0 TVu 1tz0 17gu 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cJu 1cL0 1cN0 1fz0 1cN0 1cOu 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cJu 1cL0 1cN0 1fz0 1cN0 1cL0|57e4",
+			"Asia/Macau|LMT CST +09 +10 CDT|-7y.a -80 -90 -a0 -90|012323214141414141414141414141414141414141414141414141414141414141414141|-2CFHy.a 1uqKy.a PX0 1kn0 15B0 11b0 4Qq0 1oM0 11c0 1ko0 1u00 11A0 1cM0 11c0 1o00 11A0 1o00 11A0 1oo0 1400 1o00 11A0 1o00 U00 1tA0 U00 1wo0 Rc0 1wru U10 1tz0 U10 1tz0 U10 1tz0 U10 1wn0 Rd0 1wn0 Rd0 1wn0 U10 1tz0 U10 1tz0 17d0 1cK0 1cO0 1cK0 1cO0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 s10 1Vz0 1cN0 1cL0 1cN0 1cL0 6fd0 14n0|57e4",
 			"Asia/Magadan|LMT +10 +11 +12|-a3.c -a0 -b0 -c0|012323232323232323232321232323232323232323232323232323232323232312|-1Pca3.c eUo3.c 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3Cq0|95e3",
 			"Asia/Makassar|LMT MMT +08 +09 WITA|-7V.A -7V.A -80 -90 -80|01234|-21JjV.A vfc0 myLV.A 8ML0|15e5",
-			"Asia/Manila|+08 +09|-80 -90|010101010|-1kJI0 AL0 cK10 65X0 mXB0 vX0 VK10 1db0|24e6",
+			"Asia/Manila|PST PDT JST|-80 -90 -90|010201010|-1kJI0 AL0 cK10 65X0 mXB0 vX0 VK10 1db0|24e6",
 			"Asia/Nicosia|LMT EET EEST|-2d.s -20 -30|01212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-1Vc2d.s 2a3cd.s 1cL0 1qp0 Xz0 19B0 19X0 1fB0 1db0 1cp0 1cL0 1fB0 19X0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1o30 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|32e4",
 			"Asia/Novokuznetsk|LMT +06 +07 +08|-5M.M -60 -70 -80|012323232323232323232321232323232323232323232323232323232323212|-1PctM.M eULM.M 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 2sp0 WM0|55e4",
 			"Asia/Novosibirsk|LMT +06 +07 +08|-5v.E -60 -70 -80|0123232323232323232323212323212121212121212121212121212121212121212|-21Qnv.E pAFv.E 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 ml0 Os0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 4eN0|15e5",
 			"Asia/Omsk|LMT +05 +06 +07|-4R.u -50 -60 -70|01232323232323232323232123232323232323232323232323232323232323232|-224sR.u pMLR.u 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0|12e5",
 			"Asia/Oral|LMT +03 +05 +06 +04|-3p.o -30 -50 -60 -40|01232323232323232424242424242424242424242424242|-1Pc3p.o eUop.o 23CK0 3Db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1fA0 1cM0 1cM0 IM0 1EM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0|27e4",
 			"Asia/Pontianak|LMT PMT +0730 +09 +08 WITA WIB|-7h.k -7h.k -7u -90 -80 -80 -70|012324256|-2ua7h.k XE00 munL.k 8Rau 6kpu 4PXu xhcu Wqnu|23e4",
-			"Asia/Pyongyang|LMT KST JST KST|-8n -8u -90 -90|012313|-2um8n 97XR 1lTzu 2Onc0 6BAu|29e5",
-			"Asia/Qyzylorda|LMT +04 +05 +06|-4l.Q -40 -50 -60|0123232323232323232323232323232323232323232323|-1Pc4l.Q eUol.Q 23CL0 3Db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 3ao0 1EM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0|73e4",
+			"Asia/Pyongyang|LMT KST JST KST|-8n -8u -90 -90|012313|-2um8n 97XR 1lTzu 2Onc0 6BA0|29e5",
+			"Asia/Qostanay|LMT +04 +05 +06|-4e.s -40 -50 -60|012323232323232323232123232323232323232323232323|-1Pc4e.s eUoe.s 23CL0 3Db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0|",
+			"Asia/Qyzylorda|LMT +04 +05 +06|-4l.Q -40 -50 -60|01232323232323232323232323232323232323232323232|-1Pc4l.Q eUol.Q 23CL0 3Db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 3ao0 1EM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 zQl0|73e4",
 			"Asia/Rangoon|RMT +0630 +09|-6o.L -6u -90|0121|-21Jio.L SmnS.L 7j9u|48e5",
 			"Asia/Sakhalin|LMT +09 +11 +12 +10|-9u.M -90 -b0 -c0 -a0|01232323232323232323232423232323232424242424242424242424242424242|-2AGVu.M 1BoMu.M 1qFa0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 2pB0 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3rd0|58e4",
 			"Asia/Samarkand|LMT +04 +05 +06|-4r.R -40 -50 -60|01232323232323232323232|-1Pc4r.R eUor.R 23CL0 3Db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0|36e4",
-			"Asia/Seoul|LMT KST JST KST KDT KDT|-8r.Q -8u -90 -90 -9u -a0|0123141414141414135353|-2um8r.Q 97XV.Q 1m1zu kKo0 2I0u OL0 1FB0 Rb0 1qN0 TX0 1tB0 TX0 1tB0 TX0 1tB0 TX0 2ap0 12FBu 11A0 1o00 11A0|23e6",
+			"Asia/Seoul|LMT KST JST KST KDT KDT|-8r.Q -8u -90 -90 -a0 -9u|012343434343151515151515134343|-2um8r.Q 97XV.Q 1m1zu 6CM0 Fz0 1kN0 14n0 1kN0 14L0 1zd0 On0 69B0 2I0u OL0 1FB0 Rb0 1qN0 TX0 1tB0 TX0 1tB0 TX0 1tB0 TX0 2ap0 12FBu 11A0 1o00 11A0|23e6",
 			"Asia/Srednekolymsk|LMT +10 +11 +12|-ae.Q -a0 -b0 -c0|01232323232323232323232123232323232323232323232323232323232323232|-1Pcae.Q eUoe.Q 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0|35e2",
 			"Asia/Taipei|CST JST CDT|-80 -90 -90|01020202020202020202020202020202020202020|-1iw80 joM0 1yo0 Tz0 1ip0 1jX0 1cN0 11b0 1oN0 11b0 1oN0 11b0 1oN0 11b0 10N0 1BX0 10p0 1pz0 10p0 1pz0 10p0 1db0 1dd0 1db0 1cN0 1db0 1cN0 1db0 1cN0 1db0 1BB0 ML0 1Bd0 ML0 uq10 1db0 1cN0 1db0 97B0 AL0|74e5",
 			"Asia/Tashkent|LMT +05 +06 +07|-4B.b -50 -60 -70|012323232323232323232321|-1Pc4B.b eUnB.b 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0|23e5",
 			"Asia/Tbilisi|TBMT +03 +04 +05|-2X.b -30 -40 -50|0123232323232323232323212121232323232323232323212|-1Pc2X.b 1jUnX.b WCL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 1cK0 1cL0 1cN0 1cL0 1cN0 2pz0 1cL0 1fB0 3Nz0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 An0 Os0 WM0|11e5",
 			"Asia/Tehran|LMT TMT +0330 +04 +05 +0430|-3p.I -3p.I -3u -40 -50 -4u|01234325252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252|-2btDp.I 1d3c0 1huLT.I TXu 1pz0 sN0 vAu 1cL0 1dB0 1en0 pNB0 UL0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cN0 1dz0 64p0 1dz0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0 1cN0 1dz0 1cp0 1dz0 1cp0 1dz0 1cp0 1dz0|14e6",
 			"Asia/Thimphu|LMT +0530 +06|-5W.A -5u -60|012|-Su5W.A 1BGMs.A|79e3",
-			"Asia/Tokyo|JST JDT|-90 -a0|010101010|-QJJ0 Rb0 1ld0 14n0 1zd0 On0 1zd0 On0|38e6",
+			"Asia/Tokyo|JST JDT|-90 -a0|010101010|-QJJ0 Rc0 1lc0 14o0 1zc0 Oo0 1zc0 Oo0|38e6",
 			"Asia/Tomsk|LMT +06 +07 +08|-5D.P -60 -70 -80|0123232323232323232323212323232323232323232323212121212121212121212|-21NhD.P pxzD.P 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 co0 1bB0 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3Qp0|10e5",
 			"Asia/Ulaanbaatar|LMT +07 +08 +09|-77.w -70 -80 -90|012323232323232323232323232323232323232323232323232|-2APH7.w 2Uko7.w cKn0 1db0 1dd0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 6hD0 11z0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 kEp0 1cJ0 1cP0 1cJ0|12e5",
 			"Asia/Ust-Nera|LMT +08 +09 +12 +11 +10|-9w.S -80 -90 -c0 -b0 -a0|012343434343434343434345434343434343434343434343434343434343434345|-21Q9w.S pApw.S 23CL0 1d90 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 17V0 7zD0|65e2",
@@ -42362,44 +48446,43 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Australia/Lindeman|AEST AEDT|-a0 -b0|010101010101010101010|-293lX xcX 10jd0 yL0 1cN0 1cL0 1fB0 19X0 17c10 LA0 H1A0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0|10",
 			"Australia/Melbourne|AEST AEDT|-a0 -b0|0101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101|-293lX xcX 10jd0 yL0 1cN0 1cL0 1fB0 19X0 17c10 LA0 1C00 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 U00 1qM0 WM0 1qM0 11A0 1tA0 U00 1tA0 U00 1tA0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 11A0 1o00 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 11A0 1o00 WM0 1qM0 14o0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0|39e5",
 			"Australia/Perth|AWST AWDT|-80 -90|0101010101010101010|-293jX xcX 10jd0 yL0 1cN0 1cL0 1gSp0 Oo0 l5A0 Oo0 iJA0 G00 zU00 IM0 1qM0 11A0 1o00 11A0|18e5",
-			"CET|CET CEST|-10 -20|01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2aFe0 11d0 1iO0 11A0 1o00 11A0 Qrc0 6i00 WM0 1fA0 1cM0 1cM0 1cM0 16M0 1gMM0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00",
-			"Pacific/Easter|EMT -07 -06 -05|7h.s 70 60 50|012121212121212121212121212123232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323|-1uSgG.w 1s4IG.w WL0 1zd0 On0 1ip0 11z0 1o10 11z0 1qN0 WL0 1ld0 14n0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 2pA0 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 1cL0 1cN0 11z0 1o10 11z0 1qN0 WL0 1fB0 19X0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1ip0 1fz0 1fB0 11z0 1qN0 WL0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1o10 19X0 1fB0 1nX0 G10 1EL0 Op0 1zb0 Rd0 1wn0 Rd0 46n0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Dd0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Dd0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Dd0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1Nb0 Ap0|30e2",
-			"CST6CDT|CST CDT CWT CPT|60 50 50 50|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"EET|EET EEST|-20 -30|010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|hDB0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00",
+			"CET|CET CEST|-10 -20|01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2aFe0 11d0 1iO0 11A0 1o00 11A0 Qrc0 6i00 WM0 1fA0 1cM0 1cM0 1cM0 16M0 1gMM0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|",
+			"Pacific/Easter|EMT -07 -06 -05|7h.s 70 60 50|012121212121212121212121212123232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323|-1uSgG.w 1s4IG.w WL0 1zd0 On0 1ip0 11z0 1o10 11z0 1qN0 WL0 1ld0 14n0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 2pA0 11z0 1o10 11z0 1qN0 WL0 1qN0 WL0 1qN0 1cL0 1cN0 11z0 1o10 11z0 1qN0 WL0 1fB0 19X0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1ip0 1fz0 1fB0 11z0 1qN0 WL0 1qN0 WL0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 17b0 1ip0 11z0 1o10 19X0 1fB0 1nX0 G10 1EL0 Op0 1zb0 Rd0 1wn0 Rd0 46n0 Ap0 1Nb0 Ap0 1Nb0 Ap0 1zb0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0|30e2",
+			"CST6CDT|CST CDT CWT CPT|60 50 50 50|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261s0 1nX0 11B0 1nX0 SgN0 8x30 iw0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"EET|EET EEST|-20 -30|010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|hDB0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|",
 			"Europe/Dublin|DMT IST GMT BST IST|p.l -y.D 0 -10 -10|01232323232324242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242|-2ax9y.D Rc0 1fzy.D 14M0 1fc0 1g00 1co0 1dc0 1co0 1oo0 1400 1dc0 19A0 1io0 1io0 WM0 1o00 14o0 1o00 17c0 1io0 17c0 1fA0 1a00 1lc0 17c0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1cM0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1a00 1io0 1qM0 Dc0 g600 14o0 1wo0 17c0 1io0 11A0 1o00 17c0 1fA0 1a00 1fA0 1cM0 1fA0 1a00 17c0 1fA0 1a00 1io0 17c0 1lc0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1a00 1a00 1qM0 WM0 1qM0 11A0 1o00 WM0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1tA0 IM0 90o0 U00 1tA0 U00 1tA0 U00 1tA0 U00 1tA0 WM0 1qM0 WM0 1qM0 WM0 1tA0 U00 1tA0 U00 1tA0 11z0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 14o0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|12e5",
-			"EST|EST|50|0|",
-			"EST5EDT|EST EDT EWT EPT|50 40 40 40|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261t0 1nX0 11B0 1nX0 SgN0 8x40 iv0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"Etc/GMT-0|GMT|0|0|",
-			"Etc/GMT-1|+01|-10|0|",
+			"EST|EST|50|0||",
+			"EST5EDT|EST EDT EWT EPT|50 40 40 40|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261t0 1nX0 11B0 1nX0 SgN0 8x40 iv0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"Etc/GMT-0|GMT|0|0||",
+			"Etc/GMT-1|+01|-10|0||",
 			"Pacific/Port_Moresby|+10|-a0|0||25e4",
-			"Pacific/Pohnpei|+11|-b0|0||34e3",
+			"Etc/GMT-11|+11|-b0|0||",
 			"Pacific/Tarawa|+12|-c0|0||29e3",
-			"Etc/GMT-13|+13|-d0|0|",
-			"Etc/GMT-14|+14|-e0|0|",
-			"Etc/GMT-2|+02|-20|0|",
-			"Etc/GMT-3|+03|-30|0|",
-			"Etc/GMT-4|+04|-40|0|",
-			"Etc/GMT-5|+05|-50|0|",
-			"Etc/GMT-6|+06|-60|0|",
+			"Etc/GMT-13|+13|-d0|0||",
+			"Etc/GMT-14|+14|-e0|0||",
+			"Etc/GMT-2|+02|-20|0||",
+			"Etc/GMT-3|+03|-30|0||",
+			"Etc/GMT-4|+04|-40|0||",
+			"Etc/GMT-5|+05|-50|0||",
+			"Etc/GMT-6|+06|-60|0||",
 			"Indian/Christmas|+07|-70|0||21e2",
-			"Etc/GMT-8|+08|-80|0|",
+			"Etc/GMT-8|+08|-80|0||",
 			"Pacific/Palau|+09|-90|0||21e3",
-			"Etc/GMT+1|-01|10|0|",
-			"Etc/GMT+10|-10|a0|0|",
-			"Etc/GMT+11|-11|b0|0|",
-			"Etc/GMT+12|-12|c0|0|",
-			"Etc/GMT+3|-03|30|0|",
-			"Etc/GMT+4|-04|40|0|",
-			"Etc/GMT+5|-05|50|0|",
-			"Etc/GMT+6|-06|60|0|",
-			"Etc/GMT+7|-07|70|0|",
-			"Etc/GMT+8|-08|80|0|",
-			"Etc/GMT+9|-09|90|0|",
-			"Etc/UCT|UCT|0|0|",
-			"Etc/UTC|UTC|0|0|",
+			"Etc/GMT+1|-01|10|0||",
+			"Etc/GMT+10|-10|a0|0||",
+			"Etc/GMT+11|-11|b0|0||",
+			"Etc/GMT+12|-12|c0|0||",
+			"Etc/GMT+3|-03|30|0||",
+			"Etc/GMT+4|-04|40|0||",
+			"Etc/GMT+5|-05|50|0||",
+			"Etc/GMT+6|-06|60|0||",
+			"Etc/GMT+7|-07|70|0||",
+			"Etc/GMT+8|-08|80|0||",
+			"Etc/GMT+9|-09|90|0||",
+			"Etc/UTC|UTC|0|0||",
 			"Europe/Amsterdam|AMT NST +0120 +0020 CEST CET|-j.w -1j.w -1k -k -20 -10|010101010101010101010101010101010101010101012323234545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545|-2aFcj.w 11b0 1iP0 11A0 1io0 1cM0 1fA0 1a00 1fA0 1a00 1fA0 1a00 1co0 1io0 1yo0 Pc0 1a00 1fA0 1Bc0 Mo0 1tc0 Uo0 1tA0 U00 1uo0 W00 1s00 VA0 1so0 Vc0 1sM0 UM0 1wo0 Rc0 1u00 Wo0 1rA0 W00 1s00 VA0 1sM0 UM0 1w00 fV0 BCX.w 1tA0 U00 1u00 Wo0 1sm0 601k WM0 1fA0 1cM0 1cM0 1cM0 16M0 1gMM0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|16e5",
 			"Europe/Andorra|WET CET CEST|0 -10 -20|012121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-UBA0 1xIN0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|79e3",
-			"Europe/Astrakhan|LMT +03 +04 +05|-3c.c -30 -40 -50|012323232323232323212121212121212121212121212121212121212121212|-1Pcrc.c eUMc.c 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1fA0 1cM0 3Co0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3rd0",
+			"Europe/Astrakhan|LMT +03 +04 +05|-3c.c -30 -40 -50|012323232323232323212121212121212121212121212121212121212121212|-1Pcrc.c eUMc.c 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1fA0 1cM0 3Co0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3rd0|10e5",
 			"Europe/Athens|AMT EET EEST CEST CET|-1y.Q -20 -30 -20 -10|012123434121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2a61x.Q CNbx.Q mn0 kU10 9b0 3Es0 Xa0 1fb0 1dd0 k3X0 Nz0 SCp0 1vc0 SO0 1cM0 1a00 1ao0 1fc0 1a10 1fG0 1cg0 1dX0 1bX0 1cQ0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|35e5",
 			"Europe/London|GMT BST BDST|0 -10 -20|0101010101010101010101010101010101010101010101010121212121210101210101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2axa0 Rc0 1fA0 14M0 1fc0 1g00 1co0 1dc0 1co0 1oo0 1400 1dc0 19A0 1io0 1io0 WM0 1o00 14o0 1o00 17c0 1io0 17c0 1fA0 1a00 1lc0 17c0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1cM0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1a00 1io0 1qM0 Dc0 2Rz0 Dc0 1zc0 Oo0 1zc0 Rc0 1wo0 17c0 1iM0 FA0 xB0 1fA0 1a00 14o0 bb0 LA0 xB0 Rc0 1wo0 11A0 1o00 17c0 1fA0 1a00 1fA0 1cM0 1fA0 1a00 17c0 1fA0 1a00 1io0 17c0 1lc0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1a00 1a00 1qM0 WM0 1qM0 11A0 1o00 WM0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1tA0 IM0 90o0 U00 1tA0 U00 1tA0 U00 1tA0 U00 1tA0 WM0 1qM0 WM0 1qM0 WM0 1tA0 U00 1tA0 U00 1tA0 11z0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 14o0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|10e6",
 			"Europe/Belgrade|CET CEST|-10 -20|01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-19RC0 3IP0 WM0 1fA0 1cM0 1cM0 1rc0 Qo0 1vmo0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|12e5",
@@ -42413,7 +48496,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Europe/Copenhagen|CET CEST|-10 -20|0101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2azC0 Tz0 VuO0 60q0 WM0 1fA0 1cM0 1cM0 1cM0 S00 1HA0 Nc0 1C00 Dc0 1Nc0 Ao0 1h5A0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|12e5",
 			"Europe/Gibraltar|GMT BST BDST CET CEST|0 -10 -20 -10 -20|010101010101010101010101010101010101010101010101012121212121010121010101010101010101034343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343434343|-2axa0 Rc0 1fA0 14M0 1fc0 1g00 1co0 1dc0 1co0 1oo0 1400 1dc0 19A0 1io0 1io0 WM0 1o00 14o0 1o00 17c0 1io0 17c0 1fA0 1a00 1lc0 17c0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1cM0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1a00 1io0 1qM0 Dc0 2Rz0 Dc0 1zc0 Oo0 1zc0 Rc0 1wo0 17c0 1iM0 FA0 xB0 1fA0 1a00 14o0 bb0 LA0 xB0 Rc0 1wo0 11A0 1o00 17c0 1fA0 1a00 1fA0 1cM0 1fA0 1a00 17c0 1fA0 1a00 1io0 17c0 1lc0 17c0 1fA0 10Jz0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|30e3",
 			"Europe/Helsinki|HMT EET EEST|-1D.N -20 -30|0121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-1WuND.N OULD.N 1dA0 1xGq0 1cM0 1cM0 1cM0 1cN0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|12e5",
-			"Europe/Kaliningrad|CET CEST CET CEST MSK MSD EEST EET +03|-10 -20 -20 -30 -30 -40 -30 -20 -30|0101010101010232454545454545454546767676767676767676767676767676767676767676787|-2aFe0 11d0 1iO0 11A0 1o00 11A0 Qrc0 6i00 WM0 1fA0 1cM0 1cM0 Am0 Lb0 1en0 op0 1pNz0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cN0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0|44e4",
+			"Europe/Kaliningrad|CET CEST EET EEST MSK MSD +03|-10 -20 -20 -30 -30 -40 -30|01010101010101232454545454545454543232323232323232323232323232323232323232323262|-2aFe0 11d0 1iO0 11A0 1o00 11A0 Qrc0 6i00 WM0 1fA0 1cM0 1cM0 1cM0 390 7A0 1en0 12N0 1pbb0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cN0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0|44e4",
 			"Europe/Kiev|KMT EET MSK CEST CET MSD EEST|-22.4 -20 -30 -20 -10 -40 -30|0123434252525252525252525256161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161|-1Pc22.4 eUo2.4 rnz0 2Hg0 WM0 1fA0 da0 1v4m0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 Db0 3220 1cK0 1cL0 1cN0 1cL0 1cN0 1cL0 1cQ0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|34e5",
 			"Europe/Kirov|LMT +03 +04 +05|-3i.M -30 -40 -50|01232323232323232321212121212121212121212121212121212121212121|-22WM0 qH90 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1fA0 1cM0 3Co0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0|48e4",
 			"Europe/Lisbon|LMT WET WEST WEMT CET CEST|A.J 0 -10 -20 -10 -20|012121212121212121212121212121212121212121212321232123212321212121212121212121212121212121212121214121212121212121212121212121212124545454212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2le00 aPX0 Sp0 LX0 1vc0 Tc0 1uM0 SM0 1vc0 Tc0 1vc0 SM0 1vc0 6600 1co0 3E00 17c0 1fA0 1a00 1io0 1a00 1io0 17c0 3I00 17c0 1cM0 1cM0 3Fc0 1cM0 1a00 1fA0 1io0 17c0 1cM0 1cM0 1a00 1fA0 1io0 1qM0 Dc0 1tA0 1cM0 1dc0 1400 gL0 IM0 s10 U00 dX0 Rc0 pd0 Rc0 gL0 Oo0 pd0 Rc0 gL0 Oo0 pd0 14o0 1cM0 1cP0 1cM0 1cM0 1cM0 1cM0 1cM0 3Co0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 pvy0 1cM0 1cM0 1fA0 1cM0 1cM0 1cN0 1cL0 1cN0 1cM0 1cM0 1cM0 1cM0 1cN0 1cL0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|27e5",
@@ -42427,20 +48510,20 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Europe/Riga|RMT LST EET MSK CEST CET MSD EEST|-1A.y -2A.y -20 -30 -20 -10 -40 -30|010102345454536363636363636363727272727272727272727272727272727272727272727272727272727272727272727272727272727272727272727272|-25TzA.y 11A0 1iM0 ko0 gWm0 yDXA.y 2bX0 3fE0 WM0 1fA0 1cM0 1cM0 4m0 1sLy0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cN0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cN0 1o00 11A0 1o00 11A0 1qM0 3oo0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|64e4",
 			"Europe/Rome|CET CEST|-10 -20|0101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2arB0 Lz0 1cN0 1db0 1410 1on0 Wp0 1qL0 17d0 1cL0 M3B0 5M20 WM0 1fA0 1cM0 16M0 1iM0 16m0 1de0 1lc0 14m0 1lc0 WO0 1qM0 GTW0 On0 1C10 LA0 1C00 LA0 1EM0 LA0 1C00 LA0 1zc0 Oo0 1C00 Oo0 1C00 LA0 1zc0 Oo0 1C00 LA0 1C00 LA0 1zc0 Oo0 1C00 Oo0 1zc0 Oo0 1fC0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|39e5",
 			"Europe/Samara|LMT +03 +04 +05|-3k.k -30 -40 -50|0123232323232323232121232323232323232323232323232323232323212|-22WM0 qH90 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1fA0 2y10 14m0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 2sp0 WM0|12e5",
-			"Europe/Saratov|LMT +03 +04 +05|-34.i -30 -40 -50|012323232323232321212121212121212121212121212121212121212121212|-22WM0 qH90 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1cM0 1cM0 1fA0 1cM0 3Co0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 5810",
+			"Europe/Saratov|LMT +03 +04 +05|-34.i -30 -40 -50|012323232323232321212121212121212121212121212121212121212121212|-22WM0 qH90 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1cM0 1cM0 1fA0 1cM0 3Co0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 5810|",
 			"Europe/Simferopol|SMT EET MSK CEST CET MSD EEST MSK|-2g -20 -30 -20 -10 -40 -30 -40|012343432525252525252525252161616525252616161616161616161616161616161616172|-1Pc2g eUog rEn0 2qs0 WM0 1fA0 1cM0 3V0 1u0L0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1Q00 4eL0 1cL0 1cN0 1cL0 1cN0 dX0 WL0 1cN0 1cL0 1fB0 1o30 11B0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11z0 1nW0|33e4",
 			"Europe/Sofia|EET CET CEST EEST|-20 -10 -20 -30|01212103030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030|-168L0 WM0 1fA0 1cM0 1cM0 1cN0 1mKH0 1dd0 1fb0 1ap0 1fb0 1a20 1fy0 1a30 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cK0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1nX0 11E0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|12e5",
 			"Europe/Stockholm|CET CEST|-10 -20|01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2azC0 TB0 2yDe0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|15e5",
 			"Europe/Tallinn|TMT CET CEST EET MSK MSD EEST|-1D -10 -20 -20 -30 -40 -30|012103421212454545454545454546363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363|-26oND teD 11A0 1Ta0 4rXl KSLD 2FX0 2Jg0 WM0 1fA0 1cM0 18J0 1sTX0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cN0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o10 11A0 1qM0 5QM0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|41e4",
 			"Europe/Tirane|LMT CET CEST|-1j.k -10 -20|01212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2glBj.k 14pcj.k 5LC0 WM0 4M0 1fCK0 10n0 1op0 11z0 1pd0 11z0 1qN0 WL0 1qp0 Xb0 1qp0 Xb0 1qp0 11z0 1lB0 11z0 1qN0 11z0 1iN0 16n0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|42e4",
-			"Europe/Ulyanovsk|LMT +03 +04 +05 +02|-3d.A -30 -40 -50 -20|01232323232323232321214121212121212121212121212121212121212121212|-22WM0 qH90 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3rd0",
+			"Europe/Ulyanovsk|LMT +03 +04 +05 +02|-3d.A -30 -40 -50 -20|01232323232323232321214121212121212121212121212121212121212121212|-22WM0 qH90 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3rd0|13e5",
 			"Europe/Uzhgorod|CET CEST MSK MSD EET EEST|-10 -20 -30 -40 -20 -30|010101023232323232323232320454545454545454545454545454545454545454545454545454545454545454545454545454545454545454545454|-1cqL0 6i00 WM0 1fA0 1cM0 1ml0 1Cp0 1r3W0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1Q00 1Nf0 2pw0 1cL0 1cN0 1cL0 1cN0 1cL0 1cQ0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|11e4",
-			"Europe/Vienna|CET CEST|-10 -20|0101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2aFe0 11d0 1iO0 11A0 1o00 11A0 3KM0 14o0 LA00 6i00 WM0 1fA0 1cM0 1cM0 1cM0 400 2qM0 1a00 1cM0 1cM0 1io0 17c0 1gHa0 19X0 1cP0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|18e5",
+			"Europe/Vienna|CET CEST|-10 -20|0101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2aFe0 11d0 1iO0 11A0 1o00 11A0 3KM0 14o0 LA00 6i00 WM0 1fA0 1cM0 1cM0 1cM0 400 2qM0 1ao0 1co0 1cM0 1io0 17c0 1gHa0 19X0 1cP0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|18e5",
 			"Europe/Vilnius|WMT KMT CET EET MSK CEST MSD EEST|-1o -1z.A -10 -20 -30 -20 -40 -30|012324525254646464646464646473737373737373737352537373737373737373737373737373737373737373737373737373737373737373737373|-293do 6ILM.o 1Ooz.A zz0 Mfd0 29W0 3is0 WM0 1fA0 1cM0 LV0 1tgL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cN0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11B0 1o00 11A0 1qM0 8io0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|54e4",
-			"Europe/Volgograd|LMT +03 +04 +05|-2V.E -30 -40 -50|01232323232323232121212121212121212121212121212121212121212121|-21IqV.E psLV.E 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1cM0 1cM0 1fA0 1cM0 3Co0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0|10e5",
+			"Europe/Volgograd|LMT +03 +04 +05|-2V.E -30 -40 -50|012323232323232321212121212121212121212121212121212121212121212|-21IqV.E psLV.E 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 2pB0 1cM0 1cM0 1cM0 1fA0 1cM0 3Co0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 9Jd0|10e5",
 			"Europe/Warsaw|WMT CET CEST EET EEST|-1o -10 -20 -20 -30|012121234312121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2ctdo 1LXo 11d0 1iO0 11A0 1o00 11A0 1on0 11A0 6zy0 HWP0 5IM0 WM0 1fA0 1cM0 1dz0 1mL0 1en0 15B0 1aq0 1nA0 11A0 1io0 17c0 1fA0 1a00 iDX0 LA0 1cM0 1cM0 1C00 Oo0 1cM0 1cM0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1C00 LA0 uso0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cN0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|17e5",
 			"Europe/Zaporozhye|+0220 EET MSK CEST CET MSD EEST|-2k -20 -30 -20 -10 -40 -30|01234342525252525252525252526161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161|-1Pc2k eUok rdb0 2RE0 WM0 1fA0 8m0 1v9a0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cK0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cQ0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|77e4",
-			"HST|HST|a0|0|",
+			"HST|HST|a0|0||",
 			"Indian/Chagos|LMT +05 +06|-4N.E -50 -60|012|-2xosN.E 3AGLN.E|30e2",
 			"Indian/Cocos|+0630|-6u|0||596",
 			"Indian/Kerguelen|-00 +05|0 -50|01|-MG00|130",
@@ -42448,37 +48531,39 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Indian/Maldives|MMT +05|-4S -50|01|-olgS|35e4",
 			"Indian/Mauritius|LMT +04 +05|-3O -40 -50|012121|-2xorO 34unO 14L0 12kr0 11z0|15e4",
 			"Indian/Reunion|LMT +04|-3F.Q -40|01|-2mDDF.Q|84e4",
-			"Pacific/Kwajalein|+11 -12 +12|-b0 c0 -c0|012|-AX0 W9X0|14e3",
-			"MET|MET MEST|-10 -20|01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2aFe0 11d0 1iO0 11A0 1o00 11A0 Qrc0 6i00 WM0 1fA0 1cM0 1cM0 1cM0 16M0 1gMM0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00",
-			"MST|MST|70|0|",
-			"MST7MDT|MST MDT MWT MPT|70 60 60 60|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261r0 1nX0 11B0 1nX0 SgN0 8x20 ix0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
+			"Pacific/Kwajalein|+11 +10 +09 -12 +12|-b0 -a0 -90 c0 -c0|012034|-1kln0 akp0 6Up0 12ry0 Wan0|14e3",
+			"MET|MET MEST|-10 -20|01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2aFe0 11d0 1iO0 11A0 1o00 11A0 Qrc0 6i00 WM0 1fA0 1cM0 1cM0 1cM0 16M0 1gMM0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|",
+			"MST|MST|70|0||",
+			"MST7MDT|MST MDT MWT MPT|70 60 60 60|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261r0 1nX0 11B0 1nX0 SgN0 8x20 ix0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
 			"Pacific/Chatham|+1215 +1245 +1345|-cf -cJ -dJ|012121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212|-WqAf 1adef IM0 1C00 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1qM0 14o0 1lc0 14o0 1lc0 14o0 1lc0 17c0 1io0 17c0 1io0 17c0 1io0 17c0 1lc0 14o0 1lc0 14o0 1lc0 17c0 1io0 17c0 1io0 17c0 1lc0 14o0 1lc0 14o0 1lc0 17c0 1io0 17c0 1io0 17c0 1io0 17c0 1io0 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00 1fA0 1a00|600",
 			"Pacific/Apia|LMT -1130 -11 -10 +14 +13|bq.U bu b0 a0 -e0 -d0|01232345454545454545454545454545454545454545454545454545454|-2nDMx.4 1yW03.4 2rRbu 1ff0 1a00 CI0 AQ0 1cM0 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00 1fA0 1a00|37e3",
 			"Pacific/Bougainville|+10 +09 +11|-a0 -90 -b0|0102|-16Wy0 7CN0 2MQp0|18e4",
+			"Pacific/Chuuk|+10 +09|-a0 -90|01010|-2ewy0 axB0 RVX0 axd0|49e3",
 			"Pacific/Efate|LMT +11 +12|-bd.g -b0 -c0|0121212121212121212121|-2l9nd.g 2Szcd.g 1cL0 1oN0 10L0 1fB0 19X0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 Lz0 1Nd0 An0|66e3",
 			"Pacific/Enderbury|-12 -11 +13|c0 b0 -d0|012|nIc0 B7X0|1",
 			"Pacific/Fakaofo|-11 +13|b0 -d0|01|1Gfn0|483",
-			"Pacific/Fiji|LMT +12 +13|-bT.I -c0 -d0|0121212121212121212121212121212121212121212121212121212121212121|-2bUzT.I 3m8NT.I LA0 1EM0 IM0 nJc0 LA0 1o00 Rc0 1wo0 Ao0 1Nc0 Ao0 1Q00 xz0 1SN0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0|88e4",
+			"Pacific/Fiji|LMT +12 +13|-bT.I -c0 -d0|0121212121212121212121212121212121212121212121212121212121212121|-2bUzT.I 3m8NT.I LA0 1EM0 IM0 nJc0 LA0 1o00 Rc0 1wo0 Ao0 1Nc0 Ao0 1Q00 xz0 1SN0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 s00 20o0 pc0 20o0 s00 20o0 pc0 20o0 pc0 20o0 pc0 20o0 pc0 20o0 s00 1VA0 s00 20o0 pc0 20o0 pc0 20o0 pc0 20o0 pc0 20o0 s00 20o0 pc0 20o0 pc0 20o0 pc0 20o0 pc0 20o0 s00 1VA0 s00|88e4",
 			"Pacific/Galapagos|LMT -05 -06|5W.o 50 60|01212|-1yVS1.A 2dTz1.A gNd0 rz0|25e3",
 			"Pacific/Gambier|LMT -09|8X.M 90|01|-2jof0.c|125",
 			"Pacific/Guadalcanal|LMT +11|-aD.M -b0|01|-2joyD.M|11e4",
-			"Pacific/Guam|GST ChST|-a0 -a0|01|1fpq0|17e4",
-			"Pacific/Honolulu|HST HDT HST|au 9u a0|010102|-1thLu 8x0 lef0 8Pz0 46p0|37e4",
+			"Pacific/Guam|GST +09 GDT ChST|-a0 -90 -b0 -a0|01020202020202020203|-18jK0 6pB0 AhB0 3QL0 g2p0 3p91 WOX rX0 1zd0 Rb0 1wp0 Rb0 5xd0 rX0 5sN0 zb1 1C0X On0 ULb0|17e4",
+			"Pacific/Honolulu|HST HDT HWT HPT HST|au 9u 9u 9u a0|0102304|-1thLu 8x0 lef0 8wWu iAu 46p0|37e4",
 			"Pacific/Kiritimati|-1040 -10 +14|aE a0 -e0|012|nIaE B7Xk|51e2",
-			"Pacific/Kosrae|+11 +12|-b0 -c0|010|-AX0 1bdz0|66e2",
-			"Pacific/Majuro|+11 +12|-b0 -c0|01|-AX0|28e3",
+			"Pacific/Kosrae|+11 +09 +10 +12|-b0 -90 -a0 -c0|01021030|-2ewz0 axC0 HBy0 akp0 axd0 WOK0 1bdz0|66e2",
+			"Pacific/Majuro|+11 +09 +10 +12|-b0 -90 -a0 -c0|0102103|-2ewz0 axC0 HBy0 akp0 6RB0 12um0|28e3",
 			"Pacific/Marquesas|LMT -0930|9i 9u|01|-2joeG|86e2",
 			"Pacific/Pago_Pago|LMT SST|bm.M b0|01|-2nDMB.c|37e2",
-			"Pacific/Nauru|LMT +1130 +09 +12|-b7.E -bu -90 -c0|01213|-1Xdn7.E PvzB.E 5RCu 1ouJu|10e3",
+			"Pacific/Nauru|LMT +1130 +09 +12|-b7.E -bu -90 -c0|01213|-1Xdn7.E QCnB.E 7mqu 1lnbu|10e3",
 			"Pacific/Niue|-1120 -1130 -11|bk bu b0|012|-KfME 17y0a|12e2",
-			"Pacific/Norfolk|+1112 +1130 +1230 +11|-bc -bu -cu -b0|01213|-Kgbc W01G On0 1COp0|25e4",
+			"Pacific/Norfolk|+1112 +1130 +1230 +11 +12|-bc -bu -cu -b0 -c0|012134343434343434343434343434343434343434|-Kgbc W01G Oo0 1COo0 9Jcu 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0|25e4",
 			"Pacific/Noumea|LMT +11 +12|-b5.M -b0 -c0|01212121|-2l9n5.M 2EqM5.M xX0 1PB0 yn0 HeP0 Ao0|98e3",
 			"Pacific/Pitcairn|-0830 -08|8u 80|01|18Vku|56",
+			"Pacific/Pohnpei|+11 +09 +10|-b0 -90 -a0|010210|-2ewz0 axC0 HBy0 akp0 axd0|34e3",
 			"Pacific/Rarotonga|-1030 -0930 -10|au 9u a0|012121212121212121212121212|lyWu IL0 1zcu Onu 1zcu Onu 1zcu Rbu 1zcu Onu 1zcu Onu 1zcu Onu 1zcu Onu 1zcu Onu 1zcu Rbu 1zcu Onu 1zcu Onu 1zcu Onu|13e3",
 			"Pacific/Tahiti|LMT -10|9W.g a0|01|-2joe1.I|18e4",
 			"Pacific/Tongatapu|+1220 +13 +14|-ck -d0 -e0|0121212121|-1aB0k 2n5dk 15A0 1wo0 xz0 1Q10 xz0 zWN0 s00|75e3",
-			"PST8PDT|PST PDT PWT PPT|80 70 70 70|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261q0 1nX0 11B0 1nX0 SgN0 8x10 iy0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-			"WET|WET WEST|0 -10|010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|hDB0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00"
+			"PST8PDT|PST PDT PWT PPT|80 70 70 70|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261q0 1nX0 11B0 1nX0 SgN0 8x10 iy0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"WET|WET WEST|0 -10|010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|hDB0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|"
 		],
 		"links": [
 			"Africa/Abidjan|Africa/Bamako",
@@ -42544,6 +48629,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"America/Fort_Wayne|America/Indiana/Indianapolis",
 			"America/Fort_Wayne|America/Indianapolis",
 			"America/Fort_Wayne|US/East-Indiana",
+			"America/Godthab|America/Nuuk",
 			"America/Halifax|Canada/Atlantic",
 			"America/Havana|Cuba",
 			"America/Indiana/Knox|America/Knox_IN",
@@ -42641,9 +48727,10 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Etc/GMT-0|GMT-0",
 			"Etc/GMT-0|GMT0",
 			"Etc/GMT-0|Greenwich",
-			"Etc/UCT|UCT",
+			"Etc/UTC|Etc/UCT",
 			"Etc/UTC|Etc/Universal",
 			"Etc/UTC|Etc/Zulu",
+			"Etc/UTC|UCT",
 			"Etc/UTC|UTC",
 			"Etc/UTC|Universal",
 			"Etc/UTC|Zulu",
@@ -42678,6 +48765,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Pacific/Auckland|Antarctica/South_Pole",
 			"Pacific/Auckland|NZ",
 			"Pacific/Chatham|NZ-CHAT",
+			"Pacific/Chuuk|Pacific/Truk",
+			"Pacific/Chuuk|Pacific/Yap",
 			"Pacific/Easter|Chile/EasterIsland",
 			"Pacific/Guam|Pacific/Saipan",
 			"Pacific/Honolulu|Pacific/Johnston",
@@ -42687,16 +48776,261 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 			"Pacific/Pago_Pago|Pacific/Samoa",
 			"Pacific/Pago_Pago|US/Samoa",
 			"Pacific/Palau|Etc/GMT-9",
-			"Pacific/Pohnpei|Etc/GMT-11",
 			"Pacific/Pohnpei|Pacific/Ponape",
 			"Pacific/Port_Moresby|Etc/GMT-10",
-			"Pacific/Port_Moresby|Pacific/Chuuk",
-			"Pacific/Port_Moresby|Pacific/Truk",
-			"Pacific/Port_Moresby|Pacific/Yap",
 			"Pacific/Tarawa|Etc/GMT-12",
 			"Pacific/Tarawa|Pacific/Funafuti",
 			"Pacific/Tarawa|Pacific/Wake",
 			"Pacific/Tarawa|Pacific/Wallis"
+		],
+		"countries": [
+			"AD|Europe/Andorra",
+			"AE|Asia/Dubai",
+			"AF|Asia/Kabul",
+			"AG|America/Port_of_Spain America/Antigua",
+			"AI|America/Port_of_Spain America/Anguilla",
+			"AL|Europe/Tirane",
+			"AM|Asia/Yerevan",
+			"AO|Africa/Lagos Africa/Luanda",
+			"AQ|Antarctica/Casey Antarctica/Davis Antarctica/DumontDUrville Antarctica/Mawson Antarctica/Palmer Antarctica/Rothera Antarctica/Syowa Antarctica/Troll Antarctica/Vostok Pacific/Auckland Antarctica/McMurdo",
+			"AR|America/Argentina/Buenos_Aires America/Argentina/Cordoba America/Argentina/Salta America/Argentina/Jujuy America/Argentina/Tucuman America/Argentina/Catamarca America/Argentina/La_Rioja America/Argentina/San_Juan America/Argentina/Mendoza America/Argentina/San_Luis America/Argentina/Rio_Gallegos America/Argentina/Ushuaia",
+			"AS|Pacific/Pago_Pago",
+			"AT|Europe/Vienna",
+			"AU|Australia/Lord_Howe Antarctica/Macquarie Australia/Hobart Australia/Currie Australia/Melbourne Australia/Sydney Australia/Broken_Hill Australia/Brisbane Australia/Lindeman Australia/Adelaide Australia/Darwin Australia/Perth Australia/Eucla",
+			"AW|America/Curacao America/Aruba",
+			"AX|Europe/Helsinki Europe/Mariehamn",
+			"AZ|Asia/Baku",
+			"BA|Europe/Belgrade Europe/Sarajevo",
+			"BB|America/Barbados",
+			"BD|Asia/Dhaka",
+			"BE|Europe/Brussels",
+			"BF|Africa/Abidjan Africa/Ouagadougou",
+			"BG|Europe/Sofia",
+			"BH|Asia/Qatar Asia/Bahrain",
+			"BI|Africa/Maputo Africa/Bujumbura",
+			"BJ|Africa/Lagos Africa/Porto-Novo",
+			"BL|America/Port_of_Spain America/St_Barthelemy",
+			"BM|Atlantic/Bermuda",
+			"BN|Asia/Brunei",
+			"BO|America/La_Paz",
+			"BQ|America/Curacao America/Kralendijk",
+			"BR|America/Noronha America/Belem America/Fortaleza America/Recife America/Araguaina America/Maceio America/Bahia America/Sao_Paulo America/Campo_Grande America/Cuiaba America/Santarem America/Porto_Velho America/Boa_Vista America/Manaus America/Eirunepe America/Rio_Branco",
+			"BS|America/Nassau",
+			"BT|Asia/Thimphu",
+			"BW|Africa/Maputo Africa/Gaborone",
+			"BY|Europe/Minsk",
+			"BZ|America/Belize",
+			"CA|America/St_Johns America/Halifax America/Glace_Bay America/Moncton America/Goose_Bay America/Blanc-Sablon America/Toronto America/Nipigon America/Thunder_Bay America/Iqaluit America/Pangnirtung America/Atikokan America/Winnipeg America/Rainy_River America/Resolute America/Rankin_Inlet America/Regina America/Swift_Current America/Edmonton America/Cambridge_Bay America/Yellowknife America/Inuvik America/Creston America/Dawson_Creek America/Fort_Nelson America/Vancouver America/Whitehorse America/Dawson",
+			"CC|Indian/Cocos",
+			"CD|Africa/Maputo Africa/Lagos Africa/Kinshasa Africa/Lubumbashi",
+			"CF|Africa/Lagos Africa/Bangui",
+			"CG|Africa/Lagos Africa/Brazzaville",
+			"CH|Europe/Zurich",
+			"CI|Africa/Abidjan",
+			"CK|Pacific/Rarotonga",
+			"CL|America/Santiago America/Punta_Arenas Pacific/Easter",
+			"CM|Africa/Lagos Africa/Douala",
+			"CN|Asia/Shanghai Asia/Urumqi",
+			"CO|America/Bogota",
+			"CR|America/Costa_Rica",
+			"CU|America/Havana",
+			"CV|Atlantic/Cape_Verde",
+			"CW|America/Curacao",
+			"CX|Indian/Christmas",
+			"CY|Asia/Nicosia Asia/Famagusta",
+			"CZ|Europe/Prague",
+			"DE|Europe/Zurich Europe/Berlin Europe/Busingen",
+			"DJ|Africa/Nairobi Africa/Djibouti",
+			"DK|Europe/Copenhagen",
+			"DM|America/Port_of_Spain America/Dominica",
+			"DO|America/Santo_Domingo",
+			"DZ|Africa/Algiers",
+			"EC|America/Guayaquil Pacific/Galapagos",
+			"EE|Europe/Tallinn",
+			"EG|Africa/Cairo",
+			"EH|Africa/El_Aaiun",
+			"ER|Africa/Nairobi Africa/Asmara",
+			"ES|Europe/Madrid Africa/Ceuta Atlantic/Canary",
+			"ET|Africa/Nairobi Africa/Addis_Ababa",
+			"FI|Europe/Helsinki",
+			"FJ|Pacific/Fiji",
+			"FK|Atlantic/Stanley",
+			"FM|Pacific/Chuuk Pacific/Pohnpei Pacific/Kosrae",
+			"FO|Atlantic/Faroe",
+			"FR|Europe/Paris",
+			"GA|Africa/Lagos Africa/Libreville",
+			"GB|Europe/London",
+			"GD|America/Port_of_Spain America/Grenada",
+			"GE|Asia/Tbilisi",
+			"GF|America/Cayenne",
+			"GG|Europe/London Europe/Guernsey",
+			"GH|Africa/Accra",
+			"GI|Europe/Gibraltar",
+			"GL|America/Godthab America/Danmarkshavn America/Scoresbysund America/Thule",
+			"GM|Africa/Abidjan Africa/Banjul",
+			"GN|Africa/Abidjan Africa/Conakry",
+			"GP|America/Port_of_Spain America/Guadeloupe",
+			"GQ|Africa/Lagos Africa/Malabo",
+			"GR|Europe/Athens",
+			"GS|Atlantic/South_Georgia",
+			"GT|America/Guatemala",
+			"GU|Pacific/Guam",
+			"GW|Africa/Bissau",
+			"GY|America/Guyana",
+			"HK|Asia/Hong_Kong",
+			"HN|America/Tegucigalpa",
+			"HR|Europe/Belgrade Europe/Zagreb",
+			"HT|America/Port-au-Prince",
+			"HU|Europe/Budapest",
+			"ID|Asia/Jakarta Asia/Pontianak Asia/Makassar Asia/Jayapura",
+			"IE|Europe/Dublin",
+			"IL|Asia/Jerusalem",
+			"IM|Europe/London Europe/Isle_of_Man",
+			"IN|Asia/Kolkata",
+			"IO|Indian/Chagos",
+			"IQ|Asia/Baghdad",
+			"IR|Asia/Tehran",
+			"IS|Atlantic/Reykjavik",
+			"IT|Europe/Rome",
+			"JE|Europe/London Europe/Jersey",
+			"JM|America/Jamaica",
+			"JO|Asia/Amman",
+			"JP|Asia/Tokyo",
+			"KE|Africa/Nairobi",
+			"KG|Asia/Bishkek",
+			"KH|Asia/Bangkok Asia/Phnom_Penh",
+			"KI|Pacific/Tarawa Pacific/Enderbury Pacific/Kiritimati",
+			"KM|Africa/Nairobi Indian/Comoro",
+			"KN|America/Port_of_Spain America/St_Kitts",
+			"KP|Asia/Pyongyang",
+			"KR|Asia/Seoul",
+			"KW|Asia/Riyadh Asia/Kuwait",
+			"KY|America/Panama America/Cayman",
+			"KZ|Asia/Almaty Asia/Qyzylorda Asia/Qostanay Asia/Aqtobe Asia/Aqtau Asia/Atyrau Asia/Oral",
+			"LA|Asia/Bangkok Asia/Vientiane",
+			"LB|Asia/Beirut",
+			"LC|America/Port_of_Spain America/St_Lucia",
+			"LI|Europe/Zurich Europe/Vaduz",
+			"LK|Asia/Colombo",
+			"LR|Africa/Monrovia",
+			"LS|Africa/Johannesburg Africa/Maseru",
+			"LT|Europe/Vilnius",
+			"LU|Europe/Luxembourg",
+			"LV|Europe/Riga",
+			"LY|Africa/Tripoli",
+			"MA|Africa/Casablanca",
+			"MC|Europe/Monaco",
+			"MD|Europe/Chisinau",
+			"ME|Europe/Belgrade Europe/Podgorica",
+			"MF|America/Port_of_Spain America/Marigot",
+			"MG|Africa/Nairobi Indian/Antananarivo",
+			"MH|Pacific/Majuro Pacific/Kwajalein",
+			"MK|Europe/Belgrade Europe/Skopje",
+			"ML|Africa/Abidjan Africa/Bamako",
+			"MM|Asia/Yangon",
+			"MN|Asia/Ulaanbaatar Asia/Hovd Asia/Choibalsan",
+			"MO|Asia/Macau",
+			"MP|Pacific/Guam Pacific/Saipan",
+			"MQ|America/Martinique",
+			"MR|Africa/Abidjan Africa/Nouakchott",
+			"MS|America/Port_of_Spain America/Montserrat",
+			"MT|Europe/Malta",
+			"MU|Indian/Mauritius",
+			"MV|Indian/Maldives",
+			"MW|Africa/Maputo Africa/Blantyre",
+			"MX|America/Mexico_City America/Cancun America/Merida America/Monterrey America/Matamoros America/Mazatlan America/Chihuahua America/Ojinaga America/Hermosillo America/Tijuana America/Bahia_Banderas",
+			"MY|Asia/Kuala_Lumpur Asia/Kuching",
+			"MZ|Africa/Maputo",
+			"NA|Africa/Windhoek",
+			"NC|Pacific/Noumea",
+			"NE|Africa/Lagos Africa/Niamey",
+			"NF|Pacific/Norfolk",
+			"NG|Africa/Lagos",
+			"NI|America/Managua",
+			"NL|Europe/Amsterdam",
+			"NO|Europe/Oslo",
+			"NP|Asia/Kathmandu",
+			"NR|Pacific/Nauru",
+			"NU|Pacific/Niue",
+			"NZ|Pacific/Auckland Pacific/Chatham",
+			"OM|Asia/Dubai Asia/Muscat",
+			"PA|America/Panama",
+			"PE|America/Lima",
+			"PF|Pacific/Tahiti Pacific/Marquesas Pacific/Gambier",
+			"PG|Pacific/Port_Moresby Pacific/Bougainville",
+			"PH|Asia/Manila",
+			"PK|Asia/Karachi",
+			"PL|Europe/Warsaw",
+			"PM|America/Miquelon",
+			"PN|Pacific/Pitcairn",
+			"PR|America/Puerto_Rico",
+			"PS|Asia/Gaza Asia/Hebron",
+			"PT|Europe/Lisbon Atlantic/Madeira Atlantic/Azores",
+			"PW|Pacific/Palau",
+			"PY|America/Asuncion",
+			"QA|Asia/Qatar",
+			"RE|Indian/Reunion",
+			"RO|Europe/Bucharest",
+			"RS|Europe/Belgrade",
+			"RU|Europe/Kaliningrad Europe/Moscow Europe/Simferopol Europe/Kirov Europe/Astrakhan Europe/Volgograd Europe/Saratov Europe/Ulyanovsk Europe/Samara Asia/Yekaterinburg Asia/Omsk Asia/Novosibirsk Asia/Barnaul Asia/Tomsk Asia/Novokuznetsk Asia/Krasnoyarsk Asia/Irkutsk Asia/Chita Asia/Yakutsk Asia/Khandyga Asia/Vladivostok Asia/Ust-Nera Asia/Magadan Asia/Sakhalin Asia/Srednekolymsk Asia/Kamchatka Asia/Anadyr",
+			"RW|Africa/Maputo Africa/Kigali",
+			"SA|Asia/Riyadh",
+			"SB|Pacific/Guadalcanal",
+			"SC|Indian/Mahe",
+			"SD|Africa/Khartoum",
+			"SE|Europe/Stockholm",
+			"SG|Asia/Singapore",
+			"SH|Africa/Abidjan Atlantic/St_Helena",
+			"SI|Europe/Belgrade Europe/Ljubljana",
+			"SJ|Europe/Oslo Arctic/Longyearbyen",
+			"SK|Europe/Prague Europe/Bratislava",
+			"SL|Africa/Abidjan Africa/Freetown",
+			"SM|Europe/Rome Europe/San_Marino",
+			"SN|Africa/Abidjan Africa/Dakar",
+			"SO|Africa/Nairobi Africa/Mogadishu",
+			"SR|America/Paramaribo",
+			"SS|Africa/Juba",
+			"ST|Africa/Sao_Tome",
+			"SV|America/El_Salvador",
+			"SX|America/Curacao America/Lower_Princes",
+			"SY|Asia/Damascus",
+			"SZ|Africa/Johannesburg Africa/Mbabane",
+			"TC|America/Grand_Turk",
+			"TD|Africa/Ndjamena",
+			"TF|Indian/Reunion Indian/Kerguelen",
+			"TG|Africa/Abidjan Africa/Lome",
+			"TH|Asia/Bangkok",
+			"TJ|Asia/Dushanbe",
+			"TK|Pacific/Fakaofo",
+			"TL|Asia/Dili",
+			"TM|Asia/Ashgabat",
+			"TN|Africa/Tunis",
+			"TO|Pacific/Tongatapu",
+			"TR|Europe/Istanbul",
+			"TT|America/Port_of_Spain",
+			"TV|Pacific/Funafuti",
+			"TW|Asia/Taipei",
+			"TZ|Africa/Nairobi Africa/Dar_es_Salaam",
+			"UA|Europe/Simferopol Europe/Kiev Europe/Uzhgorod Europe/Zaporozhye",
+			"UG|Africa/Nairobi Africa/Kampala",
+			"UM|Pacific/Pago_Pago Pacific/Wake Pacific/Honolulu Pacific/Midway",
+			"US|America/New_York America/Detroit America/Kentucky/Louisville America/Kentucky/Monticello America/Indiana/Indianapolis America/Indiana/Vincennes America/Indiana/Winamac America/Indiana/Marengo America/Indiana/Petersburg America/Indiana/Vevay America/Chicago America/Indiana/Tell_City America/Indiana/Knox America/Menominee America/North_Dakota/Center America/North_Dakota/New_Salem America/North_Dakota/Beulah America/Denver America/Boise America/Phoenix America/Los_Angeles America/Anchorage America/Juneau America/Sitka America/Metlakatla America/Yakutat America/Nome America/Adak Pacific/Honolulu",
+			"UY|America/Montevideo",
+			"UZ|Asia/Samarkand Asia/Tashkent",
+			"VA|Europe/Rome Europe/Vatican",
+			"VC|America/Port_of_Spain America/St_Vincent",
+			"VE|America/Caracas",
+			"VG|America/Port_of_Spain America/Tortola",
+			"VI|America/Port_of_Spain America/St_Thomas",
+			"VN|Asia/Bangkok Asia/Ho_Chi_Minh",
+			"VU|Pacific/Efate",
+			"WF|Pacific/Wallis",
+			"WS|Pacific/Apia",
+			"YE|Asia/Riyadh Asia/Aden",
+			"YT|Africa/Nairobi Indian/Mayotte",
+			"ZA|Africa/Johannesburg",
+			"ZM|Africa/Maputo Africa/Lusaka",
+			"ZW|Africa/Maputo Africa/Harare"
 		]
 	});
 
@@ -47158,8 +53492,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
                     $img = $('<img />');
                     this.assetElement.find('p').replaceWith($img);
                 }
-    
+
                 $img.attr('src', asset.getUrl('view', 400));
+                
             } else {
                 this.assetElement.find('img').replaceWith('<p>None set</p>');
             }
@@ -47228,8 +53563,13 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
         BoomCMS.ChunkLocationEditor.prototype.bind = function() {
             var locationEditor = this;
 
-            L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-                attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 15,
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: 'pk.eyJ1IjoidXhibG9uZG9uIiwiYSI6ImNrYXh4MDRyazAzd28ycm1pYm84Z256cGQifQ.T41skOkuE0sxLyDRuuxorw',
             }).addTo(this.map);
 
             if (this.mapElement.attr('data-lat') != 0 && this.mapElement.attr('data-lng') != 0) {
@@ -47340,7 +53680,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
             var locationEditor = this,
                 marker;
 
-            L.Icon.Default.imagePath = '/vendor/boomcms/boom-core/images';
+            L.Icon.Default.imagePath = '/vendor/boomcms/boom-core/images/';
 
             if (!this.marker) {
                 marker = this.marker = L.marker([lat, lng], {

@@ -12,8 +12,13 @@
         BoomCMS.ChunkLocationEditor.prototype.bind = function() {
             var locationEditor = this;
 
-            L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-                attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 15,
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: 'pk.eyJ1IjoidXhibG9uZG9uIiwiYSI6ImNrYXh4MDRyazAzd28ycm1pYm84Z256cGQifQ.T41skOkuE0sxLyDRuuxorw',
             }).addTo(this.map);
 
             if (this.mapElement.attr('data-lat') != 0 && this.mapElement.attr('data-lng') != 0) {
@@ -124,7 +129,7 @@
             var locationEditor = this,
                 marker;
 
-            L.Icon.Default.imagePath = '/vendor/boomcms/boom-core/images';
+            L.Icon.Default.imagePath = '/vendor/boomcms/boom-core/images/';
 
             if (!this.marker) {
                 marker = this.marker = L.marker([lat, lng], {

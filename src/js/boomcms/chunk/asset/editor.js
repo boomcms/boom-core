@@ -79,8 +79,9 @@
                     $img = $('<img />');
                     this.assetElement.find('p').replaceWith($img);
                 }
-    
+
                 $img.attr('src', asset.getUrl('view', 400));
+                
             } else {
                 this.assetElement.find('img').replaceWith('<p>None set</p>');
             }
