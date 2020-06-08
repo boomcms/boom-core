@@ -43,7 +43,7 @@ class Slide
 
     public function getCaption()
     {
-        return isset($this->attrs['caption']) ? $this->attrs['caption'] : '';
+        return isset($this->attrs['caption']) ? htmlspecialchars($this->attrs['caption']) : '';
     }
 
     public function getId()
