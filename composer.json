@@ -11,7 +11,7 @@
         "hautelook/phpass": "1.*",
         "thujohn/rss": "~1.0",
         "intervention/imagecache" : "2.*",
-        "laravel/framework": "5.5.*",
+        "laravel/framework": "5.5.40",
         "rych/bytesize": "1.0.*",
         "laravelcollective/html": "5.5.*",
         "lootils/geo": "^0.1.1",
@@ -24,7 +24,7 @@
     "require-dev": {
         "phpunit/phpunit": "~6.0",
         "Mockery/Mockery": "0.9.*",
-        "laravel/laravel": "5.5.*",
+        "laravel/laravel": "5.5.28",
         "codeclimate/php-test-reporter": "dev-master",
         "symfony/dom-crawler": "3.1.*",
         "laravel/browser-kit-testing": "2.*",
