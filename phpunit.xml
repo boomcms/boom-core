@@ -24,10 +24,10 @@
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
-        <env name="DB_DATABASE" value="boomcms_tests"/>
+        <env name="DB_DATABASE" value="boomcms"/>
         <env name="DB_HOST" value="127.0.0.1"/>
         <env name="DB_DRIVER" value="mysql"/>
         <env name="DB_USERNAME" value="root"/>
-        <env name="DB_PASSWORD" value=""/>
+        <env name="DB_PASSWORD" value="hasan076"/>
     </php>
 </phpunit>

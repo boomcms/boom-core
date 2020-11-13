@@ -20,4 +20,9 @@ abstract class Filter
     {
         return true;
     }
+
+    public function shouldNotBeApplied()
+    {
+        return false;
+    }
 }

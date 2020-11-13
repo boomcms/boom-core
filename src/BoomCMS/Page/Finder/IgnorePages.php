@@ -19,10 +19,10 @@ class IgnorePages extends Filter
 
     public function build(Builder $query)
     {
-        if (is_array($this->pages)) {
+        if(is_array($this->pages)) {
             return $query->whereNotIn('pages.id', $this->pages);
-        } else {
+        } elseif(is_numeric($this->pages) && !is_array($this->pages)) {
             return $query->where('pages.id', '!=', $this->pages);
-        }
+        } 
     }
 }

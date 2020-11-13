@@ -30,8 +30,8 @@ class IgnorePagesFilterTest extends AbstractTestCase
         $this->assertTrue($filter->shouldBeApplied());
 
         $query
-            ->shouldReceive('where')
-            ->with('pages.id', 'not in', [1, 2]);
+            ->shouldReceive('whereNotIn')
+            ->with('pages.id', [1, 2]);
 
         $filter->build($query);
     }
@@ -39,21 +39,20 @@ class IgnorePagesFilterTest extends AbstractTestCase
     public function testNoPageIdShouldNotBeApplied()
     {
         $filter = new Filter(null);
-
-        $this->assertFalse($filter->shouldBeApplied());
+        $this->assertFalse($filter->shouldNotBeApplied());
     }
 
     public function testNonNumericPageIdShouldNotBeApplied()
     {
         $filter = new Filter('heya');
 
-        $this->assertFalse($filter->shouldBeApplied());
+        $this->assertFalse($filter->shouldNotBeApplied());
     }
 
     public function testEmptyArrayOfPageIdsShouldNotBeApplied()
     {
         $filter = new Filter([]);
 
-        $this->assertFalse($filter->shouldBeApplied());
+        $this->assertFalse($filter->shouldNotBeApplied());
     }
 }
