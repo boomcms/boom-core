@@ -3,12 +3,21 @@
 
 <div id="b-topbar" class="b-toolbar">
     <?= $menuButton() ?>
+    <div class="welcome-name"><?= trans('boomcms::dashboard.welcome', ['name' => $person->getName()]) ?></div>
+
+    <ul class="b-toolbar-list">
+        <li><button><span class="fa fa-phone"></span> 020 7690 5431</button></li>
+        <li><button onclick="window.open('https://www.boomcms.net/boom-support', '_blank')"><span class="fa fa-book"></span> User Guidelines</button></li>
+        <li><button onclick="window.open('https://www.boomcms.net', '_blank')"><span class="fa fa-star"></span> About Boom</button></li>
+        <li><img class="corner-logo" src="/vendor/boomcms/boom-core/img/logo.png" alt="BoomCMS Logo"></li>
+    </ul>
+
+  
 </div>
 
 <main id="b-container">
     <div id="b-dashboard">
-        <h1 class="dashboard-title"><?= trans('boomcms::dashboard.welcome', ['name' => $person->getName()]) ?></h1>
-
+        
         <div class="cols">
             <div class="col-7">
                 <div class="buttons">
@@ -47,9 +56,7 @@
                 </div>
             </div>
 
-            <div class="col-3">
-                <img class="logo" src="/vendor/boomcms/boom-core/img/logo.png" alt="BoomCMS Logo">
-            </div>
+            
         </div>
 
         <div class="cols">

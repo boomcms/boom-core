@@ -115,6 +115,44 @@ html.boom .b-toolbar, .b-toolbar {
 		margin-top: 5px;
 	}
 
+	.b-toolbar-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		float: right;
+		li {
+			float: left;
+			margin: 0;
+
+			button {
+				background: transparent;
+				border: none;
+				padding: 16px;
+
+				&:hover {
+					color: @pink;
+					border: none;
+				}
+
+				&:focus, &:visited {
+					border: none;
+				}
+			}
+
+			.corner-logo {
+				width: 200px;
+				padding: 10px;
+			}
+		}
+	}
+
+	.welcome-name {
+        float: left;
+        margin: 0;
+        padding: 20px 0;
+        font-weight: bold;
+    }
+
 	#b-gethelp[data-email=""] {
 		display: none;
 	}
