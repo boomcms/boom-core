@@ -1,114 +1,147 @@
 #b-dashboard {
-    .dashboard-title {
-        border-bottom: 0;
+  .dashboard-title {
+    border-bottom: 0;
+  }
+
+  section {
+    background: @lightest-grey;
+    padding: 2rem;
+
+    + section {
+      margin-top: 5rem;
     }
 
-    section {
-        background: @lightest-grey;
-        padding: 2rem;
+    h2 {
+      margin-bottom: 2rem;
+    }
+  }
 
-        + section {
-            margin-top: 5rem;
-        }
+  .logo {
+    height: 59px;
+    width: auto;
+    margin-bottom: 3rem;
+  }
 
-        h2 {
-            margin-bottom: 2rem;
-        }
+  .cols {
+    > * + * {
+      margin-top: 5rem;
     }
 
-    .logo {
-        height: 59px;
-        width: auto;
-        margin-bottom: 3rem;
+    .col-7 {
+      width: 100%;
+
+      @media all and (min-width: 768px) {
+        width: 70%;
+      }
     }
 
-    .cols {
-        > * + * {
-            margin-top: 5rem;
-        }
+    .col-3 {
+      width: 100%;
 
-        .col-7 {
-            width: 100%;
+      @media all and (min-width: 768px) {
+        width: 30%;
+      }
+    }
+  }
 
-            @media all and (min-width: 768px) {
-                width: 70%;                
-            }
-        }
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
 
-        .col-3 {
-            width: 100%;
+    a {
+      background: @pink;
+      border: 1px solid @pink;
+      color: @white;
+      padding: 1.5rem;
+      min-width: 15rem;
+      display: block;
+      margin-right: 1rem;
 
-            @media all and (min-width: 768px) {
-                width: 30%;                
-            }
-        }
+      .fa {
+        margin-right: 1rem;
+      }
+
+      &:hover,
+      &:focus {
+        color: @pink;
+        background: @white;
+      }
+    }
+  }
+
+  .page-list {
+    list-style-type: none;
+    padding-left: 0;
+    max-height: 40rem;
+    overflow: auto;
+
+    li {
+      + li {
+        margin-top: 3rem;
+      }
     }
 
-    .buttons {
-        display: flex;
-        flex-wrap: wrap;
-
-        a {
-            background: @pink;
-            border: 1px solid @pink;
-            color: @white;
-            padding: 1.5rem;
-            min-width: 15rem;
-            display: block;
-            margin-right: 1rem;
-            
-            .fa {
-                margin-right: 1rem;
-            }
-
-            &:hover, &:focus {
-                color: @pink;
-                background: @white;
-            }
-        }
+    time {
+      display: block;
+      margin-bottom: 1.5rem;
     }
-
-    .page-list {
-        list-style-type: none;
-        padding-left: 0;
-        max-height: 40rem;
-        overflow: auto;
-
-        li {
-            + li {
-                margin-top: 3rem;
-            }
-        }
-
-        time {
-            display: block;
-            margin-bottom: 1.5rem;
-        }
-    }
+  }
 }
 
 @media all and (min-width: 765px) {
-    #b-dashboard {
-        .logo {
-            float: right;
-            margin-bottom: 3.6rem;
+  #b-dashboard {
+    .logo {
+      float: right;
+      margin-bottom: 3.6rem;
 
-            + * {
-                clear: right;
-            }
-        }
-
-        .cols {
-            overflow: hidden;
-            margin: -2rem;
-
-            > * {
-                display: inline-block;
-                float: left;
-                width: 50%;
-                padding: 2.5rem;
-                margin: 0;
-            }
-        }
+      + * {
+        clear: right;
+      }
     }
+
+    .cols {
+      overflow: hidden;
+      margin: -2rem;
+
+      > * {
+        display: inline-block;
+        float: left;
+        width: 50%;
+        padding: 2.5rem;
+        margin: 0;
+      }
+    }
+  }
+}
+
+.dashboard-button-list {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    background-color: @blue;
+    min-height: 55px;
+
+  ul {
+    list-style: none;
+
+    li {
+      float: left;
+      margin: 0;
+      margin-right: 24px;
+      a {
+          font-weight: bold;
+          font-size: 16px;
+          color: @white;
+          text-transform: uppercase;
+
+          span {
+              margin-right: 8px;
+          }
+
+          &:hover {
+              color: @black;
+          }
+      }
+    }
+  }
 }
