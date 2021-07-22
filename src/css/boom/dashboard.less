@@ -4,7 +4,6 @@
   }
 
   section {
-    background: @lightest-grey;
     padding: 2rem;
 
     + section {
@@ -72,12 +71,13 @@
   .page-list {
     list-style-type: none;
     padding-left: 0;
-    max-height: 40rem;
+    max-height: 50rem;
     overflow: auto;
 
     li {
       + li {
         margin-top: 3rem;
+        background: @lightest-grey;
       }
     }
 

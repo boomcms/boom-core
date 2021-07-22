@@ -47,14 +47,17 @@
 
                         <ol class="page-list">
                             <?php foreach ($pages as $p): ?>
-                                <li>
+                                <li style="display: block; overflow: hidden;">
+                                <img style="float: left; width: 180px; height: 100%; margin-right: 10px;" src="/asset/<?= $p->getFeatureImageId() ?>"/> 
                                     <a href="<?= $p->url() ?>">
                                         <h3><?= $p->getTitle() ?></h3>
                                         <time datetime="<?= $p->getVisibleFrom()->format('d M Y H:i') ?>"></time>
                                         <p><?= $p->url() ?></p>
                                         <p><?= Chunk::get('text', 'standfirst', $p)->text() ?></p>
                                     </a>
-                                    <!-- <img src="/asset/<?php // $p->getFeatureImageId() ?>"/> -->
+                                     
+
+                                    
                                 </li>
                             <?php endforeach ?>
                         </ol>
