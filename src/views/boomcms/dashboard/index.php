@@ -38,11 +38,29 @@
 
 <main id="b-container">
     <div id="b-dashboard">
+
+   
+
+
         <div class="cols">
+
+
+        
+
+
+
+
             <div>
+
+            <ul class="b-dashboard-pages-control">
+        <li>Pages</li>
+        <li><button id="btn-recently-added" class="active"><?= trans('boomcms::dashboard.recent-pages') ?></button></li>
+        <li><button id="btn-pending-approval" class=""><?= trans('boomcms::dashboard.approvals.heading') ?></button></li>
+    </ul>
+
+
                 <?php if (count($pages)): ?>
-                    <section>
-                        <h2><?= trans('boomcms::dashboard.recent-pages') ?></h2>
+                    <section id="recently-added-pages" class="pages-section">
                         <ol class="page-list">
                             <?php foreach ($pages as $p): ?>
                                 <li>
@@ -96,9 +114,7 @@
                 <?php endif ?>
 
                 <?php if (Gate::allows('managePages', Router::getActiveSite())): ?>
-                    <section>
-                        <h2><?= trans('boomcms::dashboard.approvals.heading') ?></h2>
-
+                    <section id="pending-approval-pages" class="pages-section hidden">
                         <?php if (count($approvals)): ?>
                             <ol class='page-list'>
                                 <?php foreach ($approvals as $p): ?>
@@ -121,9 +137,10 @@
             </div>
 
             <div>
+            <h2 class="section-title"><?= trans('boomcms::dashboard.news.heading') ?></h2>
                 <?php if (!empty($news)): ?>
                     <section>
-                        <h2><?= trans('boomcms::dashboard.news.heading') ?></h2>
+                        
 
                         <ol class="page-list">
                             <?php foreach ($news as $item): ?>

@@ -2,7 +2,7 @@
 
 return [
     'approvals' => [
-        'heading' => 'Pages pending approval',
+        'heading' => 'Pending approval',
         'none'    => 'No pages are pending approval',
     ],
     'heading'        => 'Welcome to BoomCMS',
