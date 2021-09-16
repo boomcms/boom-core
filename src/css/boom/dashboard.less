@@ -1,114 +1,336 @@
 #b-dashboard {
-    .dashboard-title {
-        border-bottom: 0;
+
+  .dashboard-title {
+    border-bottom: 0;
+  }
+
+  .section-title {
+    margin: 0px 20px;
+    text-transform: uppercase;
+      font-size: 18px;
+      font-weight: bold;
+  }
+
+  section {
+    padding: 2rem;
+
+    &.hidden {
+      display: none;
     }
 
-    section {
-        background: @lightest-grey;
-        padding: 2rem;
-
-        + section {
-            margin-top: 5rem;
-        }
-
-        h2 {
-            margin-bottom: 2rem;
-        }
+    + section {
+      margin-top: 5rem;
     }
 
-    .logo {
-        height: 59px;
-        width: auto;
-        margin-bottom: 3rem;
+    h2 {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .logo {
+    height: 59px;
+    width: auto;
+    margin-bottom: 3rem;
+  }
+
+  .cols {
+    > * + * {
+      margin-top: 5rem;
     }
 
-    .cols {
-        > * + * {
-            margin-top: 5rem;
-        }
+    .col-7 {
+      width: 100%;
 
-        .col-7 {
-            width: 100%;
-
-            @media all and (min-width: 768px) {
-                width: 70%;                
-            }
-        }
-
-        .col-3 {
-            width: 100%;
-
-            @media all and (min-width: 768px) {
-                width: 30%;                
-            }
-        }
+      @media all and (min-width: 768px) {
+        width: 70%;
+      }
     }
 
-    .buttons {
-        display: flex;
-        flex-wrap: wrap;
+    .col-3 {
+      width: 100%;
+
+      @media all and (min-width: 768px) {
+        width: 30%;
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+
+    a {
+      background: @pink;
+      border: 1px solid @pink;
+      color: @white;
+      padding: 1.5rem;
+      min-width: 15rem;
+      display: block;
+      margin-right: 1rem;
+
+      .fa {
+        margin-right: 1rem;
+      }
+
+      &:hover,
+      &:focus {
+        color: @pink;
+        background: @white;
+      }
+    }
+  }
+
+  .page-list {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    height: 460px;
+    overflow-y: auto;
+  
+      /* width */
+      &::-webkit-scrollbar {
+        width: 2px;
+      }
+      
+      /* Track */
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 2px @grey; 
+        border-radius: 2px;
+      }
+       
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: @pink; 
+        border-radius: 2px;
+      }
+      
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+        background: @grey; 
+      }
+  
+      li {
+        display: block;
+        overflow: hidden;
+        background-color: @lightest-grey;
+        margin-bottom: 12px;
+        margin-right: 12px;
+        padding: 0;
+        border: 1px solid @lightest-grey;
 
         a {
-            background: @pink;
-            border: 1px solid @pink;
-            color: @white;
-            padding: 1.5rem;
-            min-width: 15rem;
-            display: block;
-            margin-right: 1rem;
-            
-            .fa {
-                margin-right: 1rem;
+          margin: 0;
+          padding: 0;
+          display: block;
+
+          .page-info {
+            display: flex;
+            align-items: stretch;
+            flex-direction: column;
+
+            @media all and (min-width: 992px) {
+              flex-direction: row;
             }
 
-            &:hover, &:focus {
+            .page-image {
+              width: 100%;
+              overflow: hidden;
+
+              @media all and (min-width: 992px) {
+                width: 160px;
+              }
+          
+              img {
+                width: 100%;
+                height: 160px;
+                object-fit: cover;
+                transition: 0.33s ease-in-out all;
+
+                @media all and (min-width: 992px) {
+                  width: 160px;
+                  height: 100%;
+                }
+              }
+            }
+  
+            .page-text {
+              width: 380px;
+              padding: 8px 20px;
+
+              h3 {
+                display: block;
+                margin: 0;
+                font-size: 18px;
+                font-weight: bold;
+                padding: 0;
+                margin-bottom: 2px;
+
+              }
+
+              time {
+                font-size: 14px;
+                margin-bottom: 6px;
+
+              }
+
+              .page-url {
+                font-size: 12px;
+                margin-bottom: 6px;
+              }
+
+              .page-standfirst {
+                display: none;
+                font-size: 14px;
+
+                @media all and (min-width: 992px) {
+                  display: block;
+                }
+              }
+  
+            }
+  
+            .page-status {
+              display: block;
+              width: 120px;
+              padding: 8px 20px;
+              font-size: 16px;
+              font-weight: bold;
+
+              .published {
+                color: @blue;
+              }
+
+              .fa {
+                font-size: 24px;
+                font-weight: bold;
+              }
+
+              .fa-eye-slash {
                 color: @pink;
-                background: @white;
+              }
+  
             }
-        }
-    }
+          }
 
-    .page-list {
-        list-style-type: none;
-        padding-left: 0;
-        max-height: 40rem;
-        overflow: auto;
+          
+          &:hover {
+            .page-info {
+              color: @black;
 
-        li {
-            + li {
-                margin-top: 3rem;
+              .page-image {
+                img {
+                  transform: scale(1.1);
+                }
+              }
+              .page-text {
+                h3 {
+                  color: @blue;
+                }
+              }
             }
-        }
+          }
 
-        time {
-            display: block;
-            margin-bottom: 1.5rem;
         }
-    }
+      }
+    
+  }
+
+  
 }
 
 @media all and (min-width: 765px) {
-    #b-dashboard {
-        .logo {
-            float: right;
-            margin-bottom: 3.6rem;
+  #b-dashboard {
+    .logo {
+      float: right;
+      margin-bottom: 3.6rem;
 
-            + * {
-                clear: right;
-            }
-        }
-
-        .cols {
-            overflow: hidden;
-            margin: -2rem;
-
-            > * {
-                display: inline-block;
-                float: left;
-                width: 50%;
-                padding: 2.5rem;
-                margin: 0;
-            }
-        }
+      + * {
+        clear: right;
+      }
     }
+
+    .cols {
+      overflow: hidden;
+      margin: -2rem;
+
+      > * {
+        display: inline-block;
+        float: left;
+        width: 50%;
+        padding: 2.5rem;
+        margin: 0;
+      }
+    }
+  }
 }
+
+.b-dashboard-button-list {
+    display: flex;
+    overflow: hidden;
+    position: static;
+    background-color: @blue;
+
+  ul {
+    list-style: none;
+    margin: 0px 28px;
+    padding: 8px;
+
+    li {
+      float: left;
+      margin: 8px;
+
+      a {
+          font-weight: bold;
+          font-size: 16px;
+          color: @white;
+          text-transform: uppercase;
+          padding: 8px 16px;
+          border: 1px solid @light-grey;
+          border-radius: 4px;
+          display: inline-block;
+
+          span {
+              margin-right: 8px;
+          }
+
+          &:hover {
+              background-color: @black;
+              color: @white;
+          }
+      }
+    }
+  }
+}
+
+.b-dashboard-pages-control {
+  margin: 0 20px;
+  padding: 0;
+  display: flex;
+  list-style: none;
+
+  li {
+    margin-right: 24px;
+    text-transform: uppercase;
+      font-size: 18px;
+      font-weight: bold;
+
+    button {
+      background-color: transparent;
+      border: none;
+      text-transform: uppercase;
+      font-size: 18px;
+      font-weight: bold;
+      color: @light-grey;
+
+      &.active, &:hover {
+        color: @blue;
+        border-bottom: 2px solid @blue;
+      }
+
+    }
+  }
+}
+
+

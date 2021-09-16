@@ -2,18 +2,18 @@
 
 return [
     'approvals' => [
-        'heading' => 'Pages pending approval',
+        'heading' => 'Pending approval',
         'none'    => 'No pages are pending approval',
     ],
     'heading'        => 'Welcome to BoomCMS',
-    'manage-account' => 'Password',
+    'manage-account' => 'Change Password',
     'news'           => [
         'heading' => 'News from BoomCMS',
     ],
     'recent-pages'  => 'Recently added',
     'view-site'     => 'Edit site',
     'welcome'       => 'Welcome :name',
-    'asset-manager' => 'Assets',
-    'asset-upload'  => 'Upload',
-    'page-manager'  => 'Pages',
+    'asset-manager' => 'Manage Assets',
+    'asset-upload'  => 'Upload Assets',
+    'page-manager'  => 'Manage Pages',
 ];

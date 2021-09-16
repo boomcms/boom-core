@@ -142,7 +142,8 @@ module.exports = function(grunt) {
                     'src/js/boomcms/asset/nameAutocomplete.js',
 					'src/js/boomcms/group/permissionsEditor.js',
 					'src/js/jquery/jqpagination.js',
-					'src/js/boomcms/page/manager.js'
+					'src/js/boomcms/page/manager.js',
+                    'src/js/boomcms/dashboard.js'
 				],
 				dest: 'public/js/cms.js'
 			}

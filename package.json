@@ -1,6 +1,6 @@
 {
     "name": "boom-core",
-    "version": "9.0.1",
+    "version": "9.0.4",
     "dependencies": {
         "geodesy": "~1.0.2",
         "jstimezonedetect": "~1.0.6",
