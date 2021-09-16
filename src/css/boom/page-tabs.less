@@ -1,0 +1,45 @@
+.page-tabs {
+  position: relative;
+  min-height: 200px; /* This part sucks */
+  clear: both;
+  margin: 25px 0;
+
+  .page-tab {
+    float: left;
+
+    label {
+      background: #eee;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-left: -1px;
+      position: relative;
+      left: 1px;
+    }
+
+    [type="radio"] {
+      display: none;
+
+      &:checked {
+        ~ label {
+          background: white;
+          border-bottom: 1px solid white;
+          z-index: 2;
+        }
+
+        ~ label ~ .content {
+          z-index: 1;
+        }
+      }
+    }
+
+    .content {
+      position: absolute;
+      top: 28px;
+      left: 0;
+      background: white;
+      right: 0;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+  }
+}

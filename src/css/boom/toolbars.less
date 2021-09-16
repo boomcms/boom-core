@@ -1,186 +1,216 @@
-html.boom .b-toolbar, .b-toolbar {
-	background: @darkest-grey;
-	overflow: hidden;
-	color: @white;
-	top: 0;
-	left: 0;
-	height: 60px;
-	width: 100%;
-	overflow: visible;
-	position: fixed;
-	padding-left: 80px;
-	z-index: 1000;
-    transition: width 0.25s ease-in;
+html.boom .b-toolbar,
+.b-toolbar {
+  background: @darkest-grey;
+  overflow: hidden;
+  color: @white;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 100%;
+  overflow: visible;
+  position: fixed;
+  padding-left: 80px;
+  z-index: 1000;
+  transition: width 0.25s ease-in;
 
-	+ * {
-		margin-top: 60px;
-	}
+  + * {
+    margin-top: 60px;
+  }
 
-	&.b-toolbar-vertical {
-		width: 60px;
-		height: 100%;
-		z-index: 10000;
-		padding-left: 0;
-		margin-bottom: 0;
+  &.b-toolbar-vertical {
+    width: 60px;
+    height: 100%;
+    z-index: 10000;
+    padding-left: 0;
+    margin-bottom: 0;
 
-		.b-button {
-			border-right: 0;
-		}
-
-		+ * {
-			margin-top: auto;
-		}
-	}
-
-	&.b-page-toolbar-history {
-		height: 100vh;
-		background: @darkest-grey;
-		padding-left: 0;
-		width: 101px;
-
-		#b-page-editbutton {
-			height: 35px;
-			border-bottom: 1px solid @light-grey;
-		}
-
-		#b-page-viewlive {
-			margin: 5rem auto 0 auto;
-		}
-
-		.summary {
-			margin: 2.5rem 0 0 0;
-			text-align: center;
-			padding: 0 0 0.5rem 0;
-
-			.fa {
-				font-size: 3rem;
-			}
-
-			p {
-				.text-small;
-			}
-		}
-
-		button[data-editor-time], button.b-version-info {
-			display: block;
-			position: relative;
-			overflow: hidden;
-			text-align: center;
-			margin-top: 2rem;
-			background: transparent;
-			width: 100%;
-			border: 0;
-
-			&:hover, &:focus {
-				.fa {
-					color: @red;
-				}
-			}
-
-			.fa {
-				font-size: 3rem;
-				color: @white;
-			}
-
-			.text {
-				position: absolute;
-				top: -1000%;
-			}
-		}
-	}
-
-	&.b-toolbar-text {
-		overflow: visible;
-	}
-
-	&.b-page-toolbar {
-		#b-topbar-page-buttons {
-			position: absolute;
-			width: 60px;
-			left: 0;
-			bottom: 0;
-			padding: 0 5px;
-			background: @darkest-grey;
-			z-index: 6;
-			box-sizing: border-box;
-			top: 60px;
-		}
-	}
-
-	a, a:visited, a:hover {
-		color: #ffffff;
-	}
-	
-	.b-button {
-		margin-top: 5px;
-	}
-
-	.b-toolbar-list {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		float: right;
-		li {
-			float: left;
-			margin: 0;
-
-			button {
-				background: transparent;
-				border: none;
-				padding: 16px;
-
-				&:hover {
-					color: @pink;
-					border: none;
-				}
-
-				&:focus, &:visited {
-					border: none;
-				}
-			}
-
-			.corner-logo {
-				width: 200px;
-				padding: 10px;
-			}
-		}
-	}
-
-	.welcome-name {
-        float: left;
-        margin: 0;
-        padding: 20px 0;
-        font-weight: bold;
+    .b-button {
+      border-right: 0;
     }
 
-	#b-gethelp[data-email=""] {
-		display: none;
-	}
+    + * {
+      margin-top: auto;
+    }
+  }
+
+  &.b-page-toolbar-history {
+    height: 100vh;
+    background: @darkest-grey;
+    padding-left: 0;
+    width: 101px;
+
+    #b-page-editbutton {
+      height: 35px;
+      border-bottom: 1px solid @light-grey;
+    }
+
+    #b-page-viewlive {
+      margin: 5rem auto 0 auto;
+    }
+
+    .summary {
+      margin: 2.5rem 0 0 0;
+      text-align: center;
+      padding: 0 0 0.5rem 0;
+
+      .fa {
+        font-size: 3rem;
+      }
+
+      p {
+        .text-small;
+      }
+    }
+
+    button[data-editor-time],
+    button.b-version-info {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      margin-top: 2rem;
+      background: transparent;
+      width: 100%;
+      border: 0;
+
+      &:hover,
+      &:focus {
+        .fa {
+          color: @red;
+        }
+      }
+
+      .fa {
+        font-size: 3rem;
+        color: @white;
+      }
+
+      .text {
+        position: absolute;
+        top: -1000%;
+      }
+    }
+  }
+
+  &.b-toolbar-text {
+    overflow: visible;
+  }
+
+  &.b-page-toolbar {
+    #b-topbar-page-buttons {
+      position: absolute;
+      width: 60px;
+      left: 0;
+      bottom: 0;
+      padding: 0 5px;
+      background: @darkest-grey;
+      z-index: 6;
+      box-sizing: border-box;
+      top: 60px;
+    }
+  }
+
+  a,
+  a:visited,
+  a:hover {
+    color: #ffffff;
+  }
+
+  .b-button {
+    margin-top: 5px;
+  }
+
+  .b-toolbar-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    float: right;
+    li {
+      float: left;
+      margin: 0;
+      padding: 0;
+      height: 60px;
+      line-height: 60px;
+
+      button {
+        background: transparent;
+        border: none;
+        padding: 0px 16px;
+
+        &:hover {
+          color: @pink;
+          border: none;
+        }
+
+        &:focus,
+        &:visited {
+          border: none;
+        }
+
+        .fa {
+          font-size: 24px;
+        }
+
+        .button-text {
+          display: none;
+          text-transform: uppercase;
+
+          @media all and (min-width: 768px) {
+            display: inline-block;
+          }
+        }
+      }
+
+      .b-corner-logo {
+        display: none;
+
+        @media all and (min-width: 992px) {
+          display: inline-block;
+          height: 60px;
+		  width: auto;
+          padding: 8px;
+		  object-fit: contain;
+        }
+      }
+    }
+  }
+
+  .b-welcome-name {
+    float: left;
+    margin: 0;
+    padding: 20px 0;
+    font-weight: bold;
+  }
+
+  #b-gethelp[data-email=""] {
+    display: none;
+  }
 }
 
 html.boom .b-toolbar.b-page-toolbar-preview {
-	height: 34px;
-	width: 100%;
-	padding: 0;
+  height: 34px;
+  width: 100%;
+  padding: 0;
 }
 
-html.boom body.menu-open, body.menu-open {
-	.b-page-toolbar {
-		width: 250px;
-		transition: width 0.25s ease-out;
-	}
+html.boom body.menu-open,
+body.menu-open {
+  .b-page-toolbar {
+    width: 250px;
+    transition: width 0.25s ease-out;
+  }
 
-	.b-toolbar:not(.b-asset-manager) {
-		position: static;
+  .b-toolbar:not(.b-asset-manager) {
+    position: static;
 
-		+ *:not(#b-page-settings-toolbar) {
-			margin-top: 0;
-		}
-	}
+    + *:not(#b-page-settings-toolbar) {
+      margin-top: 0;
+    }
+  }
 }
 
 @media print {
-	.b-toolbar {
-		display: none;
-	}
+  .b-toolbar {
+    display: none;
+  }
 }

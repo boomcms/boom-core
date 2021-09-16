@@ -52543,8 +52543,8 @@ $.widget( 'boom.pageToolbar', {
                     },
                     automatic_uploads: true,
                     style_formats: [
-                        {title: 'Heading', block: 'h2'},
-                        {title: 'Sub-heading', block: 'h3'},
+                        {title: 'Heading', block: 'h3'},
+                        {title: 'Sub-heading', block: 'h4'},
                         {title: 'Paragraph', block: 'p'},
                         {title: 'Quote', block: 'blockquote'}
                    ],

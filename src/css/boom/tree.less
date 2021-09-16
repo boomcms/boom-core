@@ -51,18 +51,37 @@
 			&:before {
 				.text-large;
 				position: absolute;
-				top: 0;
-				left: 0;
+				top: 15px;
+				left: 25px;
 				right: 0;
 				bottom: 0;
 				line-height: 40px;
-				content: '+';
+			
 				text-align: center;
 				color: @darkest-grey;
+				content: '';
+
+				width: 0;
+				height: 0;
+
+				border-top: 6px solid transparent;
+				border-left: 9px solid @darkest-grey;
+				border-bottom: 6px solid transparent;
+				
 			}
 
 			&.expanded:before {
-				content: '-';
+				content: '';
+
+				top: 17px;
+				left: 23px;
+
+				width: 0;
+				height: 0;
+				
+				border-left: 6px solid transparent;
+				border-right: 6px solid transparent;
+				border-top: 9px solid @pink;
 			}
 
 			&:hover, &:focus {
