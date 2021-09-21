@@ -8,9 +8,9 @@
         "ext-zip": "*",
         "mpratt/embera": "1.9.*",
         "genphrase/genphrase": "1.*",
-        "hautelook/phpass": "1.*",
+        "bordoni/phpass": "dev-main",
         "thujohn/rss": "~1.0",
-        "intervention/imagecache" : "2.*",
+        "intervention/imagecache": "2.*",
         "laravel/framework": "5.5.43",
         "rych/bytesize": "1.0.*",
         "laravelcollective/html": "5.5.*",
@@ -31,12 +31,16 @@
         "filp/whoops": "~2.0"
     },
     "autoload": {
-        "psr-4": {"BoomCMS\\": "src/BoomCMS/"}
+        "psr-4": {
+            "BoomCMS\\": "src/BoomCMS/"
+        }
     },
     "autoload-dev": {
-        "psr-4": {"BoomCMS\\Tests\\": "tests/"}
+        "psr-4": {
+            "BoomCMS\\Tests\\": "tests/"
+        }
     },
-    "minimum-stability" : "dev",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
         "test": "phpunit"
