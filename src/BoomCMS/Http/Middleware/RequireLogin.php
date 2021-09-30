@@ -33,9 +33,6 @@ class RequireLogin
     {
         if (!$this->auth->check()) {
             Session::put('url.intended', $request->path());
-            echo 'session: '.session('url.intended').' :session';
-            echo $request->path();
-           // exit;
             return new RedirectResponse(route('login'));
         }
 
