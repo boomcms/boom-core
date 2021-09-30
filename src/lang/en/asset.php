@@ -131,6 +131,9 @@ return [
         'not-writable' => 'Unable to upload assets. Please ensure you asset storage location is writable',
         'select-files' => 'Select files',
     ],
+    'metrics' => [
+        'heading' => 'Asset Metrics'
+    ],
     'copy' => [
         'title'   => 'Copy',
         'heading' => 'Copy asset',

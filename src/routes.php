@@ -60,6 +60,8 @@ Route::group(['middleware' => [
 
             Route::get('/asset-manager/albums/{album}/list', 'Asset\AlbumController@list');
 
+            Route::get('/asset-manager/metrics', 'Asset\AssetMetricController@index');
+
             Route::get('asset-manager{path}', 'Asset\AssetManagerController@index')
                 ->where([
                     'path' => '(/.*)?',
