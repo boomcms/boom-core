@@ -25,6 +25,7 @@ Route::group(['middleware' => [
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
             Route::get('', ['as' => 'dashboard', 'uses' => 'Dashboard@index']);
+
             Route::get('logout', 'Auth\AuthController@logout');
 
             Route::get('autocomplete/assets', 'Autocomplete@getAssets');
