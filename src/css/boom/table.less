@@ -2,7 +2,7 @@
 	border: 0;
 	width: 100%;
 
-	thead {
+	thead, tfoot {
 		background: @red;
 
 		tr th {
@@ -10,6 +10,16 @@
 			text-transform: uppercase;
 			text-align: left;
 			font-weight: normal;
+
+			a {
+				color: @white;
+				text-decoration: none;
+
+				&:hover {
+					color: @red;
+					text-decoration: none;
+				}
+			}
 		}
 	}
 

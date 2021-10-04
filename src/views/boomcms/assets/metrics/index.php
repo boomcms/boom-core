@@ -6,39 +6,77 @@
 </div>
 
 <main id="b-container">
+    <div class="b-asset-metrics">
+        <h1><?= trans('boomcms::asset.metrics.heading') ?></h1>
 
-<table id="b-templates" class="b-table tablesorter">
-        <thead>
-            <tr>
-                <th><a href="?sort=filename&order=asc"><?= trans('boomcms::asset-metrics.filename') ?></a></th>
-                <th><a href="?sort=extension&order=asc"><?= trans('boomcms::asset-metrics.ext') ?></a></th>
-                <th><a href="?sort=uploaded&order=desc"><?= trans('boomcms::asset-metrics.uploaded-on') ?></a></th>
-                <th><a href="?sort=downloads&order=desc"><?= trans('boomcms::asset-metrics.downloads') ?></a></th>
-            </tr>
-        </thead>
+        <div class="b-asset-metric-form">
+            <div class="form-left">
+                <form action="/boomcms/asset-manager/metrics" method="post">
+                    <span class="form-title">DATE RANGE</span>
+                    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                    FROM <input class="boom-datepicker" type="text" name="from" value="<?= $request->get('from') ?: $request->old('from') ?>" />
+                    TO <input class="boom-datepicker" type="text" name="to" value="<?= $request->get('to') ?: $request->old('to') ?>" />
+                    <button type="submit">SUBMIT</button>
+                    <a href="/boomcms/asset-manager/metrics">CLEAR RANGE</a>
+                </form>
+            </div>
+            <div class="form-right">
+                <form action="/boomcms/asset-manager/metrics/csv" method="post">
+                    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                    <button type="submit">EXPORT TO CSV</button>
+                </form>
+            </div>
+        </div>
 
-        <tbody>
-            <?php foreach($assets as $asset) { ?>
+        <ul>
+            <?php if (count($errors->get('from'))) { ?>
+                <li class="error"><?= $errors->first('from') ?></li>
+            <?php }
+            if (count($errors->get('to'))) { ?>
+                <li class="error"><?= $errors->first('to') ?></li>
+            <?php } ?>
+        </ul>
+
+        <?php 
+        $from = trim($request->get('from')) !== '' ? trim($request->get('from')) : session('from_date');
+        $to = trim($request->get('to')) !== '' ? trim($request->get('to')) : session('to_date');
+
+        if ((trim($request->get('from')) !== '' && trim($request->get('to')) !== '') || (session('from_date') !== '' && session('to_date') !== '')) { ?>
+            <h3>Data from <?= $from ?> to <?= $to ?></h3>
+        <?php } ?>
+
+        <table id="b-templates" class="b-table tablesorter">
+            <thead>
                 <tr>
-                <td><?= $asset->filename ?></td>
-                <td><?= $asset->extension ?></td>
-                <td><?= date('d M Y', $asset->created_at) ?></td>
-                <td><?= $asset->downloads ?></td>
-            </tr>
-                <?php } ?>
-        </tbody>
-
-        <tfoot>
-            <tr>
-                <th colspan="2"></th>
-                <th><?= trans('boomcms::asset-metrics.total') ?></th>
-                <th><?= trans('boomcms::asset-metrics.downloads') ?></th>
-            </tr>
-        </tfoot>
-    </table>
-
+                    <th><a href="?sort=filename"><?= trans('boomcms::asset.metrics.filename') ?></a></th>
+                    <th><a href="?sort=extension"><?= trans('boomcms::asset.metrics.ext') ?></a></th>
+                    <th><a href="?sort=uploaded"><?= trans('boomcms::asset.metrics.uploaded-on') ?></a></th>
+                    <th><a href="?sort=downloads"><?= trans('boomcms::asset.metrics.downloads') ?></a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $total_downloads = 0;
+                foreach ($assets as $asset) { ?>
+                    <tr>
+                        <td><?= $asset->filename ?></td>
+                        <td><?= $asset->extension ?></td>
+                        <td><?= date('d M Y', $asset->created_at) ?></td>
+                        <td><a href="/boomcms/asset-manager/metrics/<?= $asset->id ?>/details"><?= $asset->downloads ?></a></td>
+                    </tr>
+                <?php
+                    $total_downloads += $asset->downloads;
+                } ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="2"></th>
+                    <th><?= trans('boomcms::asset.metrics.total') ?></th>
+                    <th><?= $total_downloads ?></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </main>
-
-</div>
 
 <?= view('boomcms::footer') ?>

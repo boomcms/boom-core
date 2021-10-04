@@ -132,7 +132,18 @@ return [
         'select-files' => 'Select files',
     ],
     'metrics' => [
-        'heading' => 'Asset Metrics'
+        'heading'           => 'Asset Metrics',
+        'filename'          => 'Filename',
+        'ext'               => 'Extension',
+        'uploaded-on'       => 'Uploaded on',
+        'downloads'         => 'Download',
+        'download-date'     => 'Download Date',
+        'no-of-downloads'   => 'No of Downloads',
+        'total'             => 'Total',
+        'from'              => 'From',
+        'to'                => 'To',
+        'submit'            => 'Submit',
+        'export-to-csv'     => 'Export to CSV'
     ],
     'copy' => [
         'title'   => 'Copy',

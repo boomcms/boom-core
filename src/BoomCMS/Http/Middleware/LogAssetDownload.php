@@ -39,6 +39,7 @@ class LogAssetDownload
                     'asset_id' => $asset->getId(),
                     'ip'       => $ip,
                     'time'     => time(),
+                    'created_at' => date('Y-m-d')
                 ]);
 
                 $asset->incrementDownloads();
