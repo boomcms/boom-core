@@ -15,6 +15,13 @@ return [
         'break' => 0,
     ],
 
+    'asset-metrics' => [
+        'url'  => '/boomcms/asset-manager/metrics',
+        'role' => 'metricAssets',
+        'icon' => 'bar-chart',
+        'break' => 0,
+    ],
+
     'pages' => [
         'url'  => '/boomcms/page-manager',
         'role' => 'managePages',

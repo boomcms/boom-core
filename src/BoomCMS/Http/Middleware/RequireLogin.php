@@ -6,6 +6,8 @@ use Closure;
 use Illuminate\Contracts\Auth\Guard as Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
 
 class RequireLogin
 {
@@ -30,6 +32,7 @@ class RequireLogin
     public function handle(Request $request, Closure $next)
     {
         if (!$this->auth->check()) {
+            Session::put('url.intended', $request->path());
             return new RedirectResponse(route('login'));
         }
 
