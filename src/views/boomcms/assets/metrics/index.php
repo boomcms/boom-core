@@ -17,7 +17,7 @@
                     FROM <input class="boom-datepicker" type="text" name="from" value="<?= $request->get('from') ?: $request->old('from') ?>" />
                     TO <input class="boom-datepicker" type="text" name="to" value="<?= $request->get('to') ?: $request->old('to') ?>" />
                     <button type="submit">SUBMIT</button>
-                    <a href="/boomcms/asset-manager/metrics">CLEAR RANGE</a>
+                    <a href="/boomcms/asset-manager/metrics?clear=1">CLEAR RANGE</a>
                 </form>
             </div>
             <div class="form-right">
@@ -38,10 +38,10 @@
         </ul>
 
         <?php 
-        $from = trim($request->get('from')) !== '' ? trim($request->get('from')) : session('from_date');
-        $to = trim($request->get('to')) !== '' ? trim($request->get('to')) : session('to_date');
+        $from = trim($request->get('from')) !== '' ? trim($request->get('from')) : trim(session('from_date'));
+        $to = trim($request->get('to')) !== '' ? trim($request->get('to')) : trim(session('to_date'));
 
-        if ((trim($request->get('from')) !== '' && trim($request->get('to')) !== '') || (session('from_date') !== '' && session('to_date') !== '')) { ?>
+        if ($from !== '' && $to !== '') { ?>
             <h3>Data from <?= $from ?> to <?= $to ?></h3>
         <?php } ?>
 
@@ -59,7 +59,7 @@
                 $total_downloads = 0;
                 foreach ($assets as $asset) { ?>
                     <tr>
-                        <td><?= $asset->filename ?></td>
+                        <td><a href="/boomcms/asset-manager/asset/<?= $asset->id ?>/info"><?= $asset->filename ?></a></td>
                         <td><?= $asset->extension ?></td>
                         <td><?= date('d M Y', $asset->created_at) ?></td>
                         <td><a href="/boomcms/asset-manager/metrics/<?= $asset->id ?>/details"><?= $asset->downloads ?></a></td>

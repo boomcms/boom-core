@@ -63,8 +63,8 @@ Route::group(['middleware' => [
             Route::post('/asset-manager/metrics/{asset_id}/details', 'Asset\AssetMetricController@filterAssetDownloads');
             Route::post('/asset-manager/metrics', 'Asset\AssetMetricController@filterDownloads');
 
-            Route::post('/asset-manager/metrics/{asset_id}/csv', 'Asset\AssetMetricController@exportAssetDownloads');
-            Route::post('/asset-manager/metrics/csv', 'Asset\AssetMetricController@exportDownloads');
+            Route::post('/asset-manager/metrics/{asset_id}/csv', 'Asset\AssetMetricController@csvExportAsset');
+            Route::post('/asset-manager/metrics/csv', 'Asset\AssetMetricController@csvExportAssets');
 
             Route::get('/asset-manager/metrics/{asset_id}/details', 'Asset\AssetMetricController@show');
             Route::get('/asset-manager/metrics', 'Asset\AssetMetricController@index');
