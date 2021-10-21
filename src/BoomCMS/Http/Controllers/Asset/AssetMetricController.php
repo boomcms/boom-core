@@ -58,7 +58,7 @@ class AssetMetricController extends Controller
         $to_date = session('to_date');
 
         if (trim($from_date) !== '' && trim($to_date) !== '') {
-            $downloads = Asset::join('asset_versions', 'asset_versions.asset_id', 'assets.id')
+            $assets = Asset::join('asset_versions', 'asset_versions.asset_id', 'assets.id')
                 ->join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
                 ->where('assets.type', 'doc')
                 ->where('asset_versions.created_at', '>=', strtotime($from_date))
