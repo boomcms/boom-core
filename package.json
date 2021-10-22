@@ -8,7 +8,7 @@
         "grunt-contrib-copy": "~0.8.0",
         "jstimezonedetect": "~1.0.6",
         "natives": "^1.1.6",
-        "tinymce": "^4.9.7"
+        "tinymce": "^5.9.0"
     },
     "devDependencies": {
         "grunt": "~0.4.5",
