@@ -139,6 +139,7 @@ return [
         'downloads'         => 'Download',
         'download-date'     => 'Download Date',
         'no-of-downloads'   => 'No of Downloads',
+        'type'              => 'Type',
         'total'             => 'Total',
         'from'              => 'From',
         'to'                => 'To',
