@@ -161,27 +161,27 @@ class AssetMetricController extends Controller
     public function csvExportAssets()
     {
         $assets = Asset::where('assets.type', 'doc')
-                ->orderBy('title', 'asc')
-                ->get([
-                    'id',
-                    'title',
-                    'created_at',
-                    'type',
-                    'downloads'
-                ]);
+            ->orderBy('title', 'asc')
+            ->get([
+                'id',
+                'title',
+                'created_at',
+                'type',
+                'downloads'
+            ]);
 
         if ($assets && $assets->count() > 0) {
 
-            $filename = 'asset-download-'.date('Y-m-d-H-i-s').'.csv';
+            $filename = 'asset-download-' . date('Y-m-d-H-i-s') . '.csv';
             $headers = [
                 'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                 'Content-type'        => 'text/csv',
-                'Content-Disposition' => 'attachment; filename='.$filename,
+                'Content-Disposition' => 'attachment; filename=' . $filename,
                 'Expires'             => '0',
                 'Pragma'              => 'public'
-        ];
-    
-    
+            ];
+
+
             $list = $assets->toArray();
 
             $callback = function () use ($list) {
@@ -193,25 +193,25 @@ class AssetMetricController extends Controller
                     'TYPE',
                     'UPLOADED ON',
                     'DOWNLOAD'
-                        );
+                );
 
                 fputcsv($csv, $header);
 
                 foreach ($list as $row) {
 
                     $asset = array(
-                            $row['title'],
-                            $row['type'],
-                            date('d F Y', $row['created_at']),
-                            $row['downloads'],
-                        );
+                        $row['title'],
+                        $row['type'],
+                        date('d F Y', $row['created_at']),
+                        $row['downloads'],
+                    );
 
                     fputcsv($csv, $asset);
                 }
                 fclose($csv);
             };
 
-           return Response::stream($callback, 200, $headers);
+            return Response::stream($callback, 200, $headers);
         }
 
         return redirect('/')->with('warning', 'No asset found to download!');
@@ -362,26 +362,26 @@ class AssetMetricController extends Controller
             ]);
 
         $downloads = AssetDownload::where('asset_id', $asset_id)
-                ->groupBy('created_at')
-                ->orderBy('created_at', 'desc')
-                ->get([
-                    'created_at',
-                    DB::raw('count(id) as downloads')
-                ]);
-                
+            ->groupBy('created_at')
+            ->orderBy('created_at', 'desc')
+            ->get([
+                'created_at',
+                DB::raw('count(id) as downloads')
+            ]);
+
 
         if ($downloads && $downloads->count() > 0) {
 
-            $filename = strtolower(str_replace(' ', '-', $asset->filename)).'-downloads-'.date('Y-m-d-H-i-s').'.csv';
+            $filename = strtolower(str_replace(' ', '-', $asset->filename)) . '-downloads-' . date('Y-m-d-H-i-s') . '.csv';
             $headers = [
                 'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
                 'Content-type'        => 'text/csv',
-                'Content-Disposition' => 'attachment; filename='.$filename,
+                'Content-Disposition' => 'attachment; filename=' . $filename,
                 'Expires'             => '0',
                 'Pragma'              => 'public'
-        ];
-    
-    
+            ];
+
+
             $list = $downloads->toArray();
 
             $callback = function () use ($list) {
@@ -391,23 +391,23 @@ class AssetMetricController extends Controller
                 $header = array(
                     'DOWNLOAD DATE',
                     'NUMBER OF DOWNLOADS',
-                        );
+                );
 
                 fputcsv($csv, $header);
 
                 foreach ($list as $row) {
 
                     $asset = array(
-                            date('d F Y', strtotime($row['created_at'])),
-                            $row['downloads'],
-                        );
+                        date('d F Y', strtotime($row['created_at'])),
+                        $row['downloads'],
+                    );
 
                     fputcsv($csv, $asset);
                 }
                 fclose($csv);
             };
 
-           return Response::stream($callback, 200, $headers);
+            return Response::stream($callback, 200, $headers);
         }
 
         return redirect('/')->with('warning', 'No asset found to download!');
