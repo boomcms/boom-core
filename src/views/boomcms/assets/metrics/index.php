@@ -48,8 +48,8 @@
         <table id="b-templates" class="b-table tablesorter">
             <thead>
                 <tr>
-                    <th><a href="?sort=filename"><?= trans('boomcms::asset.metrics.filename') ?></a></th>
-                    <th><a href="?sort=extension"><?= trans('boomcms::asset.metrics.ext') ?></a></th>
+                    <th><a href="?sort=title"><?= trans('boomcms::asset.metrics.filename') ?></a></th>
+                    <th><a href="?sort=type"><?= trans('boomcms::asset.metrics.type') ?></a></th>
                     <th><a href="?sort=uploaded"><?= trans('boomcms::asset.metrics.uploaded-on') ?></a></th>
                     <th><a href="?sort=downloads"><?= trans('boomcms::asset.metrics.downloads') ?></a></th>
                 </tr>
@@ -59,8 +59,8 @@
                 $total_downloads = 0;
                 foreach ($assets as $asset) { ?>
                     <tr>
-                        <td><a href="/boomcms/asset-manager/asset/<?= $asset->id ?>/info"><?= $asset->filename ?></a></td>
-                        <td><?= $asset->extension ?></td>
+                        <td><a href="/boomcms/asset-manager/asset/<?= $asset->id ?>/info"><?= $asset->title ?></a></td>
+                        <td><?= $asset->type ?></td>
                         <td><?= date('d M Y', $asset->created_at) ?></td>
                         <td><a href="/boomcms/asset-manager/metrics/<?= $asset->id ?>/details"><?= $asset->downloads ?></a></td>
                     </tr>

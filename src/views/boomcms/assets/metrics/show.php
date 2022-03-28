@@ -49,7 +49,7 @@
             <h3>Data from <?= $from ?> to <?= $to ?></h3>
         <?php } ?>
 
-        <div class="b-asset-filename"><a href="/boomcms/asset-manager/asset/<?= $asset->id ?>/info"><?= $asset->filename ?></a></div>
+        <div class="b-asset-filename"><a href="/boomcms/asset-manager/asset/<?= $asset->id ?>/info"><?= $asset->title ?></a></div>
 
         <table id="b-templates" class="b-table tablesorter">
             <thead>

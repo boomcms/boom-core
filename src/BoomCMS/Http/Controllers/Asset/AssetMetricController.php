@@ -32,20 +32,20 @@ class AssetMetricController extends Controller
 
         $sort = $request->get('sort');
 
-        if ($sort == 'filename') {
-            $sort = 'asset_versions.filename';
+        if ($sort == 'title') {
+            $sort = 'title';
             $order = 'asc';
-        } elseif ($sort == 'extension') {
-            $sort = 'filename';
+        } elseif ($sort == 'type') {
+            $sort = 'type';
             $order = 'asc';
         } elseif ($sort == 'uploaded') {
-            $sort = 'asset_versions.created_at';
+            $sort = 'created_at';
             $order = 'desc';
         } elseif ($sort == 'downloads') {
             $sort = 'downloads';
             $order = 'desc';
         } else {
-            $sort = 'asset_versions.filename';
+            $sort = 'title';
             $order = 'asc';
         }
 
@@ -58,32 +58,26 @@ class AssetMetricController extends Controller
         $to_date = session('to_date');
 
         if (trim($from_date) !== '' && trim($to_date) !== '') {
-            $assets = Asset::join('asset_versions', 'asset_versions.asset_id', 'assets.id')
-                ->join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
-                ->where('assets.type', 'doc')
-                ->where('asset_versions.created_at', '>=', strtotime($from_date))
-                ->where('asset_versions.created_at', '<=', strtotime($to_date))
-                ->groupBy('assets.id')
+            $assets = Asset::where('assets.type', 'doc')
+                ->where('created_at', '>=', strtotime($from_date))
+                ->where('created_at', '<=', strtotime($to_date))
                 ->orderBy($sort, $order)
                 ->get([
-                    'assets.id',
-                    'asset_versions.filename',
-                    'asset_versions.created_at',
-                    'asset_versions.extension',
-                    DB::raw('count(asset_downloads.asset_id) as downloads')
+                    'id',
+                    'title',
+                    'created_at',
+                    'type',
+                    'downloads'
                 ]);
         } else {
-            $assets = Asset::join('asset_versions', 'asset_versions.asset_id', 'assets.id')
-                ->join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
-                ->where('assets.type', 'doc')
-                ->groupBy('assets.id')
+            $assets = Asset::where('assets.type', 'doc')
                 ->orderBy($sort, $order)
                 ->get([
-                    'assets.id',
-                    'asset_versions.filename',
-                    'asset_versions.created_at',
-                    'asset_versions.extension',
-                    DB::raw('count(asset_downloads.asset_id) as downloads')
+                    'id',
+                    'title',
+                    'created_at',
+                    'type',
+                    'downloads'
                 ]);
         }
 
@@ -98,20 +92,20 @@ class AssetMetricController extends Controller
 
         $sort = $request->get('sort');
 
-        if ($sort == 'filename') {
-            $sort = 'asset_versions.filename';
+        if ($sort == 'title') {
+            $sort = 'title';
             $order = 'asc';
-        } elseif ($sort == 'extension') {
-            $sort = 'filename';
+        } elseif ($sort == 'type') {
+            $sort = 'type';
             $order = 'asc';
         } elseif ($sort == 'uploaded') {
-            $sort = 'asset_versions.created_at';
+            $sort = 'created_at';
             $order = 'desc';
         } elseif ($sort == 'downloads') {
             $sort = 'downloads';
             $order = 'desc';
         } else {
-            $sort = 'asset_versions.filename';
+            $sort = 'title';
             $order = 'asc';
         }
 
@@ -135,33 +129,27 @@ class AssetMetricController extends Controller
             Session::put('to_date', $to_date);
 
 
-            $assets = Asset::join('asset_versions', 'asset_versions.asset_id', 'assets.id')
-                ->join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
-                ->where('assets.type', 'doc')
-                ->where('asset_versions.created_at', '>=', strtotime($from_date))
-                ->where('asset_versions.created_at', '<=', strtotime($to_date))
-                ->groupBy('assets.id')
+            $assets = Asset::where('assets.type', 'doc')
+                ->where('created_at', '>=', strtotime($from_date))
+                ->where('created_at', '<=', strtotime($to_date))
                 ->orderBy($sort, $order)
                 ->get([
-                    'assets.id',
-                    'asset_versions.filename',
-                    'asset_versions.created_at',
-                    'asset_versions.extension',
-                    DB::raw('count(asset_downloads.asset_id) as downloads')
+                    'id',
+                    'title',
+                    'created_at',
+                    'type',
+                    'downloads'
                 ]);
         } else {
 
-            $assets = Asset::join('asset_versions', 'asset_versions.asset_id', 'assets.id')
-                ->join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
-                ->where('assets.type', 'doc')
-                ->groupBy('assets.id')
+            $assets = Asset::where('assets.type', 'doc')
                 ->orderBy($sort, $order)
                 ->get([
-                    'assets.id',
-                    'asset_versions.filename',
-                    'asset_versions.created_at',
-                    'asset_versions.extension',
-                    DB::raw('count(asset_downloads.asset_id) as downloads')
+                    'id',
+                    'title',
+                    'created_at',
+                    'type',
+                    'downloads'
                 ]);
         }
 
@@ -172,17 +160,14 @@ class AssetMetricController extends Controller
 
     public function csvExportAssets()
     {
-        $assets = Asset::join('asset_versions', 'asset_versions.asset_id', 'assets.id')
-                ->join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
-                ->where('assets.type', 'doc')
-                ->groupBy('assets.id')
-                ->orderBy('asset_versions.filename', 'asc')
+        $assets = Asset::where('assets.type', 'doc')
+                ->orderBy('title', 'asc')
                 ->get([
-                    'assets.id',
-                    'asset_versions.filename',
-                    'asset_versions.created_at',
-                    'asset_versions.extension',
-                    DB::raw('count(asset_downloads.asset_id) as downloads')
+                    'id',
+                    'title',
+                    'created_at',
+                    'type',
+                    'downloads'
                 ]);
 
         if ($assets && $assets->count() > 0) {
@@ -204,8 +189,8 @@ class AssetMetricController extends Controller
                 $csv = fopen('php://output', 'w');
 
                 $header = array(
-                    'FILENAME',
-                    'EXTENSION',
+                    'TITLE',
+                    'TYPE',
                     'UPLOADED ON',
                     'DOWNLOAD'
                         );
@@ -215,8 +200,8 @@ class AssetMetricController extends Controller
                 foreach ($list as $row) {
 
                     $asset = array(
-                            $row['filename'],
-                            $row['extension'],
+                            $row['title'],
+                            $row['type'],
                             date('d F Y', $row['created_at']),
                             $row['downloads'],
                         );
@@ -255,8 +240,8 @@ class AssetMetricController extends Controller
             ->where('assets.id', $asset_id)
             ->first([
                 'assets.id',
-                'asset_versions.filename',
-                'asset_versions.extension'
+                'title',
+                'type'
             ]);
 
         if ($request->get('clear') == 1) {
@@ -311,14 +296,13 @@ class AssetMetricController extends Controller
             $order = 'desc';
         }
 
-        $asset = Asset::join('asset_versions', 'asset_versions.asset_id', 'assets.id')
-            ->join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
+        $asset = Asset::join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
             ->where('assets.type', 'doc')
             ->where('assets.id', $asset_id)
             ->first([
                 'assets.id',
-                'asset_versions.filename',
-                'asset_versions.extension'
+                'title',
+                'type',
             ]);
 
         $validator = Validator::make($request->all(), [
@@ -368,14 +352,13 @@ class AssetMetricController extends Controller
 
     public function csvExportAsset($asset_id)
     {
-        $asset = Asset::join('asset_versions', 'asset_versions.asset_id', 'assets.id')
-            ->join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
+        $asset = Asset::join('asset_downloads', 'asset_downloads.asset_id', 'assets.id')
             ->where('assets.type', 'doc')
             ->where('assets.id', $asset_id)
             ->first([
                 'assets.id',
-                'asset_versions.filename',
-                'asset_versions.extension'
+                'title',
+                'type',
             ]);
 
         $downloads = AssetDownload::where('asset_id', $asset_id)
