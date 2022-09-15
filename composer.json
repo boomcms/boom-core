@@ -8,7 +8,7 @@
         "ext-zip": "*",
         "mpratt/embera": "1.9.*",
         "genphrase/genphrase": "1.*",
-        "hautelook/phpass": "1.*",
+        "bordoni/phpass": "dev-main",
         "thujohn/rss": "~1.0",
         "intervention/imagecache" : "2.*",
         "laravel/framework": "5.5.43",
