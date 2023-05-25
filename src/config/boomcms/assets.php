@@ -19,6 +19,7 @@ return [
                 'application/zip',
                 'application/postscript',
                 'text/plain',
+                'application/vnd.ms-powerpoint'
             ],
             'video' => [
                 'video/mp4',
