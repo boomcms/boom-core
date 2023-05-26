@@ -342,7 +342,18 @@
                         <% for (var i = 0; i < versions.length; i++) { %>
                             <li data-version-id="<%= versions[i].getId() %>">
                                 <div>
-                                    <img src="<%= versions[i].getThumbnail() %>" />
+                                    <%
+                                    var extension = versions[i].attributes.extension;
+                                    if(extension == 'png' || 
+                                    extension == 'jpeg' || 
+                                    extension == 'jpg' || 
+                                    extension == 'gif' ||
+                                    extension == 'tiff' || 
+                                    extension == 'svg') { %>
+                                        <img width="200" src="<%= versions[i].getThumbnail() %>" />
+                                    <% } else { %>
+                                        <img width="200" src="/vendor/boomcms/boom-core/img/extensions/<%= extension %>.png" />
+                                    <% } %>
                                 </div>
 
                                 <div>
@@ -353,7 +364,7 @@
                                     </p>
 
                                     <h3><?= trans('boomcms::asset.edited-at') ?></h3>
-                                    <time datetime="<%= moment.unix(versions[i].getEditedAt()).format() %>"></time>
+                                    <time datetime="<%= moment.unix(versions[i].getEditedAt()).format('YYYY-MM-DD hh:ss a') %>"></time>
 
                                     <% if (i > 0) { %>
                                         <?= $button('undo', 'asset-revert', ['class' => 'b-button-withtext b-assets-revert']) ?>
