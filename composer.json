@@ -3,28 +3,32 @@
     "description": "Core classes for BoomCMS",
     "license": "MIT",
     "require": {
-        "php": ">=8.1",
+        "php": ">=7.2",
         "ext-imagick": "*",
         "ext-zip": "*",
-        "laravel/framework": "^10.0",
-        "doctrine/dbal": "^3.0",
-        "laravelcollective/html": "6.4.*",
-        "lootils/geo": "^0.1.1",
-        "php-ffmpeg/php-ffmpeg": "^1.2.0",
-        "smalot/pdfparser": "*",
-        "phpoffice/phpword": "1.2.*",
-        "mpratt/embera": "2.0.*",
+        "mpratt/embera": "1.9.*",
         "genphrase/genphrase": "1.*",
         "bordoni/phpass": "dev-main",
-        "intervention/imagecache": "2.*"
+        "thujohn/rss": "~1.0",
+        "intervention/imagecache": "2.*",
+        "laravel/framework": "5.6.*",
+        "rych/bytesize": "1.0.*",
+        "laravelcollective/html": "5.5.*",
+        "lootils/geo": "^0.1.1",
+        "caxy/php-htmldiff": "^0.1.3",
+        "doctrine/dbal": "2.5.*",
+        "php-ffmpeg/php-ffmpeg": "0.9.*",
+        "smalot/pdfparser": "*",
+        "phpoffice/phpword": "0.13.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0",
-        "mockery/mockery": "1.6.*",
-        "laravel/laravel": "^10.0",
-        "symfony/dom-crawler": "7.0.*",
-        "laravel/browser-kit-testing": "7.*"
-     
+        "phpunit/phpunit": "^7.0",
+        "mockery/mockery": "0.9.*",
+        "laravel/laravel": "5.5.28",
+        "codeclimate/php-test-reporter": "dev-master",
+        "symfony/dom-crawler": "3.1.*",
+        "laravel/browser-kit-testing": "4.*",
+        "filp/whoops": "~2.0"
     },
     "autoload": {
         "psr-4": {
