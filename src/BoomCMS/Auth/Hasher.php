@@ -30,4 +30,9 @@ class Hasher implements HasherContract
     public function needsRehash($hashedValue, array $options = [])
     {
     }
+
+    public function info($hashedValue)
+    {
+        
+    }
 }
